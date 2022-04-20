@@ -1,0 +1,251 @@
+.shhh, .printonly {
+    display: none;
+}
+
+
+/* compare things */
+
+.BandOneBar {
+    color: white !important;
+    font-color: white !important;
+    background-color: #316497 !important;
+}
+
+.BandTwoBar {
+    color: black !important
+    font-color: black !important;
+    background-color: #99ccff !important;
+}
+
+/* Contest Calendar */
+
+#calendar table {
+    width: 100%;
+}
+
+#calendar table tr th {
+    text-align: center;
+    font-size: 16px;
+    background-color: #316497;
+    color: #99ccff;
+}
+
+#calendar table tr td {
+    width: 10%;
+    border: 1px solid #555;
+    vertical-align: top;
+    height: 120px;
+    padding: 2px;
+}
+
+#calendar td.noday {
+    background-color: #eee;
+}
+
+#calendar td.filled {
+    background-color: #99ccff;
+}
+
+#calendar td.today {
+    border: 4px solid #316497;
+}
+
+#calendar .dayNumber {
+    font-size: 16px !important;
+    font-weight: bold;
+}
+
+#calendar a {
+    font-size: 10px;
+}
+
+/* flot charts */
+#flot_chart {
+  width: 100%;
+  height: 300px;
+}
+
+#flot_pie {
+  width: 220px;
+  height: 220px;
+}
+
+#flot_pie.leaderboard {
+  width: 275px;
+  height: 275px;
+}
+
+#flot_pie .pieLabel {
+  color: #000;
+}
+
+#flot_chart_tooltip{
+  font-family: verdana, arial, sans-serif;
+  position: absolute;
+  display: none;
+  border: 1px solid #ddd;
+  padding: 2px;
+  background-color: #eee;
+  opacity: 0.80;
+}
+
+/* Tags */
+.contest-event-name #tags {
+    display: none;
+    margin-bottom: 1px;
+    margin-top: 6px;
+    text-align: left;
+}
+
+
+#tags a {
+    background: none repeat scroll 0 0 #DDDDDD;
+    border-radius: 4px;
+    padding: 4px;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+#tags a:hover {
+    background: none repeat scroll 0 0 #000000;
+    color: #fff;
+}
+
+
+/* Gold/Silver/Bronze results highlight */
+tbody tr.result-1 td, td.result-1 {
+    background-color: gold !important;
+}
+
+tbody tr.result-2 td, td.result-2 {
+    background-color: silver !important;
+}
+
+tbody tr.result-3 td, td.result-3 {
+    background-color: #ac9a77 !important;
+}
+
+/* User profile tabs */
+
+#UserProfile #tabs {
+ border-bottom: 1px solid black;
+}
+
+#UserProfile #tabs ul {
+ margin-bottom: 2px;
+ padding-left: 5px;
+}
+
+#UserProfile #tabs li {
+  list-style-type: none;
+  display: inline;
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+  border-top: 1px solid black;
+  padding-left: 2px;
+  padding-right: 2px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  font-weight: bold;
+}
+
+#UserProfile #tabs li.selected {
+  border-bottom: 1px solid white;
+}
+
+/* Center text */
+
+.center {
+  text-align: center;
+}
+
+/* Popup suggestion box */
+.suggestionsBox {
+    position: relative;
+    left: 30px;
+    margin: 10px 0px 0px 0px;
+    width: 400px;
+    background-color: #212427;
+    -webkit-border-radius: 7px;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+    border: 2px solid #000;
+    color: #fff;
+}
+
+.suggestionList {
+    margin: 0px;
+    padding: 0px;
+}
+
+.suggestionList li {
+    margin: 0px 0px 3px 0px;
+    padding: 3px;
+    cursor: pointer;
+}
+
+.suggestionList li:hover {
+    background-color: #659CD8;
+}
+
+#ProfileImage img {
+  float: right;
+  border: 1px solid black;
+  margin-left: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #000;
+  margin: 5px;
+  border-radius: 5px;
+  box-shadow: 2px 2px 3px rgba(0,0,0,.5);
+}
+
+#contestform div.resultbox div.innerbox {
+  display: inline-block;
+}
+
+#contestform div.resultbox {
+  border: 1px solid black;
+  padding: 10px;
+  margin-bottom: 5px;
+}
+
+a {
+  color: #003366 !important;
+}
+
+#twitterStatus {
+  border: 1px solid #ddd;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  box-shadow: 2px 2px 3px rgba(0,0,0,.5);
+  text-align: left;
+}
+
+.twitterAvatar {
+  float: right;
+  border: 1px solid white;
+  margin: 5px;
+  border-radius: 5px;
+}
+
+#twitterDate {
+  width: 100%;
+  font-weight: bold;
+  font-size: 0.8em;
+  text-align: right;
+  padding-bottom: 2px;
+  padding-right: 2px;
+}
+
+#champions {
+  border: 2px solid #FFD700;
+  margin-bottom: 10px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+#champions li {
+  list-style-image: url('/../icons/trophy.png');
+}
