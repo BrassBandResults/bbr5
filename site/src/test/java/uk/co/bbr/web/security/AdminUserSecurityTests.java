@@ -9,6 +9,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.ui.ExtendedModelMap;
+import org.springframework.web.client.RestTemplate;
 import uk.co.bbr.services.security.JwtService;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.services.security.ex.AuthenticationFailedException;
@@ -28,7 +29,7 @@ class AdminUserSecurityTests implements LoginMixin {
     @Autowired private TestSecurityController securityTestController;
 
     @Autowired private CsrfTokenRepository csrfTokenRepository;
-    @Autowired private TestRestTemplate restTemplate;
+    @Autowired private RestTemplate restTemplate;
     @LocalServerPort private int port;
 
 

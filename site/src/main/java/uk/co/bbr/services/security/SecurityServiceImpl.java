@@ -19,8 +19,8 @@ public class SecurityServiceImpl implements SecurityService {
     }
 
     @Override
-    public BbrUserDao authenticate(String email, String password) throws AuthenticationFailedException {
-        BbrUserDao user = new BbrUserDao("Test", UserRole.MEMBER);
+    public BbrUserDao authenticate(String username, String password) throws AuthenticationFailedException {
+        BbrUserDao user = new BbrUserDao(username, UserRole.MEMBER);
         user.setId(1L);
         // TODO do this properly!
         return user;

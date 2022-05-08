@@ -51,11 +51,11 @@ public interface LoginMixin {
         SecurityContextHolder.getContext().setAuthentication(auth);
     }
 
-    default void loginAdminByWeb(TestRestTemplate restTemplate, CsrfTokenRepository csrfTokenRepository, int port) throws AuthenticationFailedException {
-        loginByWeb("admin", "admin_password", restTemplate, csrfTokenRepository, port);
+    default void loginAdminByWeb(RestTemplate restTemplate, CsrfTokenRepository csrfTokenRepository, int port) throws AuthenticationFailedException {
+        loginByWeb("admin_user", "admin_password", restTemplate, csrfTokenRepository, port);
     }
 
-    default void loginByWeb(String username, String password, TestRestTemplate restTemplate, CsrfTokenRepository csrfTokenRepository, int port) {
+    default void loginByWeb(String username, String password, RestTemplate restTemplate, CsrfTokenRepository csrfTokenRepository, int port) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
@@ -73,5 +73,6 @@ public interface LoginMixin {
 
         ResponseEntity<String> response = restTemplate.postForEntity("http://localhost:" + port + SecurityFilter.URL_SIGN_IN, request, String.class);
         assertEquals(302, response.getStatusCode().value());
+        assertEquals("http://localhost:" + port + "/", response.getHeaders().get("Location").get(0));
     }
 }
