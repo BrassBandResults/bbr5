@@ -34,23 +34,20 @@ class AuthenticatedUserSecurityTests {
 
     @Test
     void testAccessProAccountPageWithAuthenticatedUserFails() {
-        AccessDeniedException thrown = assertThrows(AccessDeniedException.class, () -> {
-            securityTestController.testPro(new ExtendedModelMap());
-        });
+        AccessDeniedException thrown = assertThrows(AccessDeniedException.class, () -> securityTestController.testPro(new ExtendedModelMap()));
+        assertEquals("Access is denied", thrown.getMessage());
     }
 
     @Test
     void testAccessSuperuserPageWithAuthenticatedUserFails() {
-        AccessDeniedException thrown = assertThrows(AccessDeniedException.class, () -> {
-            securityTestController.testSuperuser(new ExtendedModelMap());
-        });
+        AccessDeniedException thrown = assertThrows(AccessDeniedException.class, () -> securityTestController.testSuperuser(new ExtendedModelMap()));
+        assertEquals("Access is denied", thrown.getMessage());
     }
 
     @Test
     void testAccessAdminPageWithAuthenticatedUserFails() {
-        AccessDeniedException thrown = assertThrows(AccessDeniedException.class, () -> {
-            securityTestController.testAdmin(new ExtendedModelMap());
-        });
+        AccessDeniedException thrown = assertThrows(AccessDeniedException.class, () -> securityTestController.testAdmin(new ExtendedModelMap()));
+        assertEquals("Access is denied", thrown.getMessage());
     }
 
 }

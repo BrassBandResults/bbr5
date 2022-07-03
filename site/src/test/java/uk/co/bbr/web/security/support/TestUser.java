@@ -14,7 +14,7 @@ public enum TestUser {
     @Getter private final String password;
     @Getter private final String email;
 
-    private TestUser(String username, String password, String email) {
+    TestUser(String username, String password, String email) {
         this.username = username;
         this.password = password;
         this.email = email;

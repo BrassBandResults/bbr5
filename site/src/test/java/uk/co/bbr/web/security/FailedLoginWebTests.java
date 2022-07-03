@@ -13,13 +13,14 @@ import uk.co.bbr.web.LoginMixin;
 import uk.co.bbr.web.security.support.TestUser;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ActiveProfiles("test")
 @SpringBootTest(properties = { "spring.config.name=security-web-tests-fail-h2", "spring.datasource.url=jdbc:h2:mem:security-web-tests-fail-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE"},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class FailedLoginWebTests implements LoginMixin {
+class FailedLoginWebTests implements LoginMixin {
     @Autowired
     private CsrfTokenRepository csrfTokenRepository;
     @Autowired private RestTemplate restTemplate;
@@ -30,6 +31,7 @@ public class FailedLoginWebTests implements LoginMixin {
     void testLoginWithInvalidUserFails() {
         ResponseEntity<String> response = httpLoginTestUserByWeb(TestUser.TEST_INVALID, this.restTemplate, this.csrfTokenRepository, this.port);
         assertEquals(200, response.getStatusCode().value());
+        assertNotNull(response.getBody());
         assertTrue(response.getBody().indexOf("Signin") > 0);
     }
 }

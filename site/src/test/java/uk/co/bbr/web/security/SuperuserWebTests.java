@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @WithMockUser(username="admin_user", roles= { "BBR_ADMIN" })
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class SuperuserWebTests implements LoginMixin {
+class SuperuserWebTests implements LoginMixin {
 
     @Autowired private SecurityService securityService;
     @Autowired
@@ -66,7 +66,7 @@ public class SuperuserWebTests implements LoginMixin {
     void testGetRequestAdminPageWithSuperuserFails() {
         loginTestUserByWeb(TestUser.TEST_SUPERUSER, this.restTemplate, this.csrfTokenRepository, this.port);
 
-        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> { String response = this.restTemplate.getForObject("http://localhost:" + port + "/test/admin", String.class ); });
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + port + "/test/admin", String.class ));
         assertEquals("Forbidden", ex.getStatusCode().getReasonPhrase());
         assertEquals(403, ex.getStatusCode().value());
     }

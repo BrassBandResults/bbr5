@@ -12,7 +12,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import uk.co.bbr.services.security.SecurityService;
-import uk.co.bbr.services.security.ex.AuthenticationFailedException;
 import uk.co.bbr.web.LoginMixin;
 import uk.co.bbr.web.security.support.TestUser;
 
@@ -24,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @WithMockUser(username="admin_user", roles= { "BBR_ADMIN" })
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class ProUserWebTests implements LoginMixin {
+class ProUserWebTests implements LoginMixin {
 
     @Autowired private SecurityService securityService;
     @Autowired
@@ -40,7 +39,7 @@ public class ProUserWebTests implements LoginMixin {
     }
 
     @Test
-    void testGetRequestUnsecuredPageWithProUserSucceeds() throws AuthenticationFailedException {
+    void testGetRequestUnsecuredPageWithProUserSucceeds() {
         loginTestUserByWeb(TestUser.TEST_PRO, this.restTemplate, this.csrfTokenRepository, this.port);
 
         String response = this.restTemplate.getForObject("http://localhost:" + port + "/test/public", String.class);
@@ -48,7 +47,7 @@ public class ProUserWebTests implements LoginMixin {
     }
 
     @Test
-    void testGetRequestMemberPageWithProUserSucceeds() throws AuthenticationFailedException {
+    void testGetRequestMemberPageWithProUserSucceeds() {
         loginTestUserByWeb(TestUser.TEST_PRO, this.restTemplate, this.csrfTokenRepository, this.port);
 
         String response = this.restTemplate.getForObject("http://localhost:" + port + "/test/member", String.class);
@@ -56,7 +55,7 @@ public class ProUserWebTests implements LoginMixin {
     }
 
     @Test
-    void testGetRequestProPageWithProUserSucceeds() throws AuthenticationFailedException {
+    void testGetRequestProPageWithProUserSucceeds() {
         loginTestUserByWeb(TestUser.TEST_PRO, this.restTemplate, this.csrfTokenRepository, this.port);
 
         String response = this.restTemplate.getForObject("http://localhost:" + port + "/test/pro", String.class);
@@ -64,19 +63,19 @@ public class ProUserWebTests implements LoginMixin {
     }
 
     @Test
-    void testGetRequestAdminPageWithProUserFails() throws AuthenticationFailedException {
+    void testGetRequestAdminPageWithProUserFails() {
         loginTestUserByWeb(TestUser.TEST_PRO, this.restTemplate, this.csrfTokenRepository, this.port);
 
-        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> { String response = this.restTemplate.getForObject("http://localhost:" + port + "/test/admin", String.class ); });
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + port + "/test/admin", String.class ));
         assertEquals("Forbidden", ex.getStatusCode().getReasonPhrase());
         assertEquals(403, ex.getStatusCode().value());
     }
 
     @Test
-    void testGetRequestSuperuserPageWithProUserFails() throws AuthenticationFailedException {
+    void testGetRequestSuperuserPageWithProUserFails() {
         loginTestUserByWeb(TestUser.TEST_PRO, this.restTemplate, this.csrfTokenRepository, this.port);
 
-        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> { String response = this.restTemplate.getForObject("http://localhost:" + port + "/test/superuser", String.class ); });
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + port + "/test/superuser", String.class ));
         assertEquals("Forbidden", ex.getStatusCode().getReasonPhrase());
         assertEquals(403, ex.getStatusCode().value());
     }

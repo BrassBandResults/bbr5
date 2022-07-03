@@ -12,7 +12,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import uk.co.bbr.services.security.SecurityService;
-import uk.co.bbr.services.security.ex.AuthenticationFailedException;
 import uk.co.bbr.web.LoginMixin;
 import uk.co.bbr.web.security.support.TestUser;
 
@@ -24,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @WithMockUser(username="admin_user", roles= { "BBR_ADMIN" })
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class AuthenticatedUserWebTests implements LoginMixin {
+class AuthenticatedUserWebTests implements LoginMixin {
 
     @Autowired private SecurityService securityService;
     @Autowired
@@ -39,7 +38,7 @@ public class AuthenticatedUserWebTests implements LoginMixin {
     }
 
     @Test
-    void testGetRequestUnsecuredPageWithMemberUserSucceeds() throws AuthenticationFailedException {
+    void testGetRequestUnsecuredPageWithMemberUserSucceeds() {
         loginTestUserByWeb(TestUser.TEST_MEMBER, this.restTemplate, this.csrfTokenRepository, this.port);
 
         String response = this.restTemplate.getForObject("http://localhost:" + port + "/test/public", String.class);
@@ -47,7 +46,7 @@ public class AuthenticatedUserWebTests implements LoginMixin {
     }
 
     @Test
-    void testGetRequestMemberPageWithMemberUserSucceeds() throws AuthenticationFailedException {
+    void testGetRequestMemberPageWithMemberUserSucceeds() {
         loginTestUserByWeb(TestUser.TEST_MEMBER, this.restTemplate, this.csrfTokenRepository, this.port);
 
         String response = this.restTemplate.getForObject("http://localhost:" + port + "/test/member", String.class);
@@ -55,28 +54,28 @@ public class AuthenticatedUserWebTests implements LoginMixin {
     }
 
     @Test
-    void testGetRequestProPageWithMemberUserFails() throws AuthenticationFailedException {
+    void testGetRequestProPageWithMemberUserFails() {
         loginTestUserByWeb(TestUser.TEST_MEMBER, this.restTemplate, this.csrfTokenRepository, this.port);
 
-        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> { String response = this.restTemplate.getForObject("http://localhost:" + port + "/test/pro", String.class ); });
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + port + "/test/pro", String.class ));
         assertEquals("Forbidden", ex.getStatusCode().getReasonPhrase());
         assertEquals(403, ex.getStatusCode().value());
     }
 
     @Test
-    void testGetRequestAdminPageWithMemberUserFails() throws AuthenticationFailedException {
+    void testGetRequestAdminPageWithMemberUserFails() {
         loginTestUserByWeb(TestUser.TEST_MEMBER, this.restTemplate, this.csrfTokenRepository, this.port);
 
-        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> { String response = this.restTemplate.getForObject("http://localhost:" + port + "/test/admin", String.class ); });
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + port + "/test/admin", String.class ));
         assertEquals("Forbidden", ex.getStatusCode().getReasonPhrase());
         assertEquals(403, ex.getStatusCode().value());
     }
 
     @Test
-    void testGetRequestSuperuserPageWithMemberUserFails() throws AuthenticationFailedException {
+    void testGetRequestSuperuserPageWithMemberUserFails() {
         loginTestUserByWeb(TestUser.TEST_MEMBER, this.restTemplate, this.csrfTokenRepository, this.port);
 
-        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> { String response = this.restTemplate.getForObject("http://localhost:" + port + "/test/superuser", String.class ); });
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + port + "/test/superuser", String.class ));
         assertEquals("Forbidden", ex.getStatusCode().getReasonPhrase());
         assertEquals(403, ex.getStatusCode().value());
     }
