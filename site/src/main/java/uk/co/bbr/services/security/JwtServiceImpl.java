@@ -21,10 +21,10 @@ public class JwtServiceImpl implements JwtService {
         Algorithm algorithmHS = Algorithm.HMAC256(PRIVATE_KEY);
         String token = JWT.create().withIssuer(JWT_ISSUER)
                 .withClaim(JwtAuthenticationToken.CLAIM_USER_ID, irisUser.getId())
-                .withClaim(JwtAuthenticationToken.CLAIM_USER_NAME, irisUser.getName())
+                .withClaim(JwtAuthenticationToken.CLAIM_USER_NAME, irisUser.getUsercode())
                 .withClaim(JwtAuthenticationToken.CLAIM_ROLE, irisUser.getRole().asString())
                 .sign(algorithmHS);
-        System.out.println(token);
+        System.out.println("+++ JWT Created " + token);
         return token;
     }
 

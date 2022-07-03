@@ -17,6 +17,7 @@ import uk.co.bbr.services.security.JwtService;
 import uk.co.bbr.services.security.dao.BbrUserDao;
 import uk.co.bbr.services.security.dao.UserRole;
 import uk.co.bbr.services.security.ex.AuthenticationFailedException;
+import uk.co.bbr.web.security.TestUserConstants;
 import uk.co.bbr.web.security.filter.SecurityFilter;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -24,22 +25,22 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public interface LoginMixin {
 
     default void loginAdmin(JwtService jwtService) throws AuthenticationFailedException {
-        BbrUserDao user = new BbrUserDao("Administrator", UserRole.ADMIN);
+        BbrUserDao user = BbrUserDao.testUserCreate("Administrator", UserRole.ADMIN);
         login(user, jwtService);
     }
 
     default void loginSuperuser(JwtService jwtService) throws AuthenticationFailedException {
-        BbrUserDao user = new BbrUserDao("Superuser", UserRole.SUPERUSER);
+        BbrUserDao user = BbrUserDao.testUserCreate("Superuser", UserRole.SUPERUSER);
         login(user, jwtService);
     }
 
     default void loginPro(JwtService jwtService) throws AuthenticationFailedException {
-        BbrUserDao user = new BbrUserDao("Pro User", UserRole.PRO);
+        BbrUserDao user = BbrUserDao.testUserCreate("Pro User", UserRole.PRO);
         login(user, jwtService);
     }
 
     default void loginMember(JwtService jwtService) throws AuthenticationFailedException {
-        BbrUserDao user = new BbrUserDao("Member", UserRole.MEMBER);
+        BbrUserDao user = BbrUserDao.testUserCreate("Member", UserRole.MEMBER);
         login(user, jwtService);
     }
 
@@ -51,8 +52,20 @@ public interface LoginMixin {
         SecurityContextHolder.getContext().setAuthentication(auth);
     }
 
+    default void loginMemberByWeb(RestTemplate restTemplate, CsrfTokenRepository csrfTokenRepository, int port) throws AuthenticationFailedException {
+        loginByWeb(TestUserConstants.TEST_USER_USERNAME_MEMBER, TestUserConstants.TEST_USER_PASSWORD_MEMBER, restTemplate, csrfTokenRepository, port);
+    }
+
+    default void loginProByWeb(RestTemplate restTemplate, CsrfTokenRepository csrfTokenRepository, int port) throws AuthenticationFailedException {
+        loginByWeb(TestUserConstants.TEST_USER_USERNAME_PRO, TestUserConstants.TEST_USER_PASSWORD_PRO, restTemplate, csrfTokenRepository, port);
+    }
+
+    default void loginSuperuserByWeb(RestTemplate restTemplate, CsrfTokenRepository csrfTokenRepository, int port) throws AuthenticationFailedException {
+        loginByWeb(TestUserConstants.TEST_USER_USERNAME_SUPERUSER, TestUserConstants.TEST_USER_PASSWORD_SUPERUSER, restTemplate, csrfTokenRepository, port);
+    }
+
     default void loginAdminByWeb(RestTemplate restTemplate, CsrfTokenRepository csrfTokenRepository, int port) throws AuthenticationFailedException {
-        loginByWeb("admin_user", "admin_password", restTemplate, csrfTokenRepository, port);
+        loginByWeb(TestUserConstants.TEST_USER_USERNAME_ADMIN, TestUserConstants.TEST_USER_PASSWORD_ADMIN, restTemplate, csrfTokenRepository, port);
     }
 
     default void loginByWeb(String username, String password, RestTemplate restTemplate, CsrfTokenRepository csrfTokenRepository, int port) {
@@ -72,6 +85,7 @@ public interface LoginMixin {
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(map, headers);
 
         ResponseEntity<String> response = restTemplate.postForEntity("http://localhost:" + port + SecurityFilter.URL_SIGN_IN, request, String.class);
+        System.out.println(response.getBody());
         assertEquals(302, response.getStatusCode().value());
         assertEquals("http://localhost:" + port + "/", response.getHeaders().get("Location").get(0));
     }
