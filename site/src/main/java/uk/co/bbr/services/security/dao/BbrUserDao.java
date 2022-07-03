@@ -35,18 +35,6 @@ public class BbrUserDao extends AbstractDao {
     @Column(name="password_version", length=1, nullable=false)
     private String passwordVersion;
 
-    public static BbrUserDao testUserCreate(String usercode, UserRole role) {
-        BbrUserDao newUser = new BbrUserDao();
-        newUser.usercode = usercode;
-        newUser.password = "DUMMY";
-        newUser.email = "test.email@brassbandresults.co.uk";
-        newUser.accessLevel = role.getCode();
-        newUser.salt = "SALT";
-        newUser.passwordVersion = "";
-
-        return newUser;
-    }
-
     public UserRole getRole() {
         return UserRole.fromCode(this.accessLevel);
     }

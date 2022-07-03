@@ -1,7 +1,6 @@
 package uk.co.bbr.web;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
-import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -17,58 +16,21 @@ import uk.co.bbr.services.security.JwtService;
 import uk.co.bbr.services.security.dao.BbrUserDao;
 import uk.co.bbr.services.security.dao.UserRole;
 import uk.co.bbr.services.security.ex.AuthenticationFailedException;
-import uk.co.bbr.web.security.TestUserConstants;
 import uk.co.bbr.web.security.filter.SecurityFilter;
+import uk.co.bbr.web.security.support.TestUser;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public interface LoginMixin {
 
-    default void loginAdmin(JwtService jwtService) throws AuthenticationFailedException {
-        BbrUserDao user = BbrUserDao.testUserCreate("Administrator", UserRole.ADMIN);
-        login(user, jwtService);
+    default void loginTestUserByWeb(TestUser testUser, RestTemplate restTemplate, CsrfTokenRepository csrfTokenRepository, int port) {
+        ResponseEntity<String> response = httpLoginTestUserByWeb(testUser, restTemplate, csrfTokenRepository, port);
+
+        assertEquals(302, response.getStatusCode().value());
+        assertEquals("http://localhost:" + port + "/", response.getHeaders().get("Location").get(0));
     }
 
-    default void loginSuperuser(JwtService jwtService) throws AuthenticationFailedException {
-        BbrUserDao user = BbrUserDao.testUserCreate("Superuser", UserRole.SUPERUSER);
-        login(user, jwtService);
-    }
-
-    default void loginPro(JwtService jwtService) throws AuthenticationFailedException {
-        BbrUserDao user = BbrUserDao.testUserCreate("Pro User", UserRole.PRO);
-        login(user, jwtService);
-    }
-
-    default void loginMember(JwtService jwtService) throws AuthenticationFailedException {
-        BbrUserDao user = BbrUserDao.testUserCreate("Member", UserRole.MEMBER);
-        login(user, jwtService);
-    }
-
-    default void login(BbrUserDao user, JwtService jwtService) {
-        String jwtString = jwtService.createJwt(user);
-        DecodedJWT jwt = jwtService.verifyJwt(jwtString);
-
-        final Authentication auth = jwtService.getAuthentication(jwt);
-        SecurityContextHolder.getContext().setAuthentication(auth);
-    }
-
-    default void loginMemberByWeb(RestTemplate restTemplate, CsrfTokenRepository csrfTokenRepository, int port) throws AuthenticationFailedException {
-        loginByWeb(TestUserConstants.TEST_USER_USERNAME_MEMBER, TestUserConstants.TEST_USER_PASSWORD_MEMBER, restTemplate, csrfTokenRepository, port);
-    }
-
-    default void loginProByWeb(RestTemplate restTemplate, CsrfTokenRepository csrfTokenRepository, int port) throws AuthenticationFailedException {
-        loginByWeb(TestUserConstants.TEST_USER_USERNAME_PRO, TestUserConstants.TEST_USER_PASSWORD_PRO, restTemplate, csrfTokenRepository, port);
-    }
-
-    default void loginSuperuserByWeb(RestTemplate restTemplate, CsrfTokenRepository csrfTokenRepository, int port) throws AuthenticationFailedException {
-        loginByWeb(TestUserConstants.TEST_USER_USERNAME_SUPERUSER, TestUserConstants.TEST_USER_PASSWORD_SUPERUSER, restTemplate, csrfTokenRepository, port);
-    }
-
-    default void loginAdminByWeb(RestTemplate restTemplate, CsrfTokenRepository csrfTokenRepository, int port) throws AuthenticationFailedException {
-        loginByWeb(TestUserConstants.TEST_USER_USERNAME_ADMIN, TestUserConstants.TEST_USER_PASSWORD_ADMIN, restTemplate, csrfTokenRepository, port);
-    }
-
-    default void loginByWeb(String username, String password, RestTemplate restTemplate, CsrfTokenRepository csrfTokenRepository, int port) {
+    default ResponseEntity<String> httpLoginTestUserByWeb(TestUser testUser, RestTemplate restTemplate, CsrfTokenRepository csrfTokenRepository, int port) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
@@ -77,16 +39,14 @@ public interface LoginMixin {
         headers.add("Cookie", SecurityFilter.CSRF_HEADER_NAME + "=" + csrfToken.getToken());
 
         MultiValueMap<String, String> map= new LinkedMultiValueMap<String, String>();
-        map.add("username", username);
-        map.add("password", password);
+        map.add("username", testUser.getUsername());
+        map.add("password", testUser.getPassword());
         map.add("_csrf", csrfToken.getToken());
         map.add("_csrf_header", SecurityFilter.CSRF_HEADER_NAME);
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(map, headers);
 
         ResponseEntity<String> response = restTemplate.postForEntity("http://localhost:" + port + SecurityFilter.URL_SIGN_IN, request, String.class);
-        System.out.println(response.getBody());
-        assertEquals(302, response.getStatusCode().value());
-        assertEquals("http://localhost:" + port + "/", response.getHeaders().get("Location").get(0));
+        return response;
     }
 }

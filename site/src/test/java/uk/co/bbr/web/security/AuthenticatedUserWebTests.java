@@ -14,6 +14,7 @@ import org.springframework.web.client.RestTemplate;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.services.security.ex.AuthenticationFailedException;
 import uk.co.bbr.web.LoginMixin;
+import uk.co.bbr.web.security.support.TestUser;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -34,28 +35,28 @@ public class AuthenticatedUserWebTests implements LoginMixin {
 
     @BeforeAll
     void setupUser() {
-        this.securityService.createUser(TestUserConstants.TEST_USER_USERNAME_MEMBER, TestUserConstants.TEST_USER_PASSWORD_MEMBER, TestUserConstants.TEST_USER_EMAIL_MEMBER);
+        this.securityService.createUser(TestUser.TEST_MEMBER.getUsername(), TestUser.TEST_MEMBER.getPassword(), TestUser.TEST_MEMBER.getEmail());
     }
 
     @Test
     void testGetRequestUnsecuredPageWithMemberUserSucceeds() throws AuthenticationFailedException {
-        loginMemberByWeb(this.restTemplate, this.csrfTokenRepository, this.port);
+        loginTestUserByWeb(TestUser.TEST_MEMBER, this.restTemplate, this.csrfTokenRepository, this.port);
 
         String response = this.restTemplate.getForObject("http://localhost:" + port + "/test/public", String.class);
-        assertEquals("user_member", response);
+        assertEquals(TestUser.TEST_MEMBER.getUsername(), response);
     }
 
     @Test
     void testGetRequestMemberPageWithMemberUserSucceeds() throws AuthenticationFailedException {
-        loginMemberByWeb(this.restTemplate, this.csrfTokenRepository, this.port);
+        loginTestUserByWeb(TestUser.TEST_MEMBER, this.restTemplate, this.csrfTokenRepository, this.port);
 
         String response = this.restTemplate.getForObject("http://localhost:" + port + "/test/member", String.class);
-        assertEquals("user_member", response);
+        assertEquals(TestUser.TEST_MEMBER.getUsername(), response);
     }
 
     @Test
-    void testGetRequestProPageWithMemberUserSucceeds() throws AuthenticationFailedException {
-        loginMemberByWeb(this.restTemplate, this.csrfTokenRepository, this.port);
+    void testGetRequestProPageWithMemberUserFails() throws AuthenticationFailedException {
+        loginTestUserByWeb(TestUser.TEST_MEMBER, this.restTemplate, this.csrfTokenRepository, this.port);
 
         HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> { String response = this.restTemplate.getForObject("http://localhost:" + port + "/test/pro", String.class ); });
         assertEquals("Forbidden", ex.getStatusCode().getReasonPhrase());
@@ -63,8 +64,8 @@ public class AuthenticatedUserWebTests implements LoginMixin {
     }
 
     @Test
-    void testGetRequestAdminPageWithMemberUserSucceeds() throws AuthenticationFailedException {
-        loginMemberByWeb(this.restTemplate, this.csrfTokenRepository, this.port);
+    void testGetRequestAdminPageWithMemberUserFails() throws AuthenticationFailedException {
+        loginTestUserByWeb(TestUser.TEST_MEMBER, this.restTemplate, this.csrfTokenRepository, this.port);
 
         HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> { String response = this.restTemplate.getForObject("http://localhost:" + port + "/test/admin", String.class ); });
         assertEquals("Forbidden", ex.getStatusCode().getReasonPhrase());
@@ -73,7 +74,7 @@ public class AuthenticatedUserWebTests implements LoginMixin {
 
     @Test
     void testGetRequestSuperuserPageWithMemberUserFails() throws AuthenticationFailedException {
-        loginMemberByWeb(this.restTemplate, this.csrfTokenRepository, this.port);
+        loginTestUserByWeb(TestUser.TEST_MEMBER, this.restTemplate, this.csrfTokenRepository, this.port);
 
         HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> { String response = this.restTemplate.getForObject("http://localhost:" + port + "/test/superuser", String.class ); });
         assertEquals("Forbidden", ex.getStatusCode().getReasonPhrase());

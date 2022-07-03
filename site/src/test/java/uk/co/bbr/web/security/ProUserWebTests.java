@@ -14,6 +14,7 @@ import org.springframework.web.client.RestTemplate;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.services.security.ex.AuthenticationFailedException;
 import uk.co.bbr.web.LoginMixin;
+import uk.co.bbr.web.security.support.TestUser;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -34,37 +35,37 @@ public class ProUserWebTests implements LoginMixin {
 
     @BeforeAll
     void setupUser() {
-        this.securityService.createUser(TestUserConstants.TEST_USER_USERNAME_PRO, TestUserConstants.TEST_USER_PASSWORD_PRO, TestUserConstants.TEST_USER_EMAIL_PRO);
-        this.securityService.makeUserPro(TestUserConstants.TEST_USER_USERNAME_PRO);
+        this.securityService.createUser(TestUser.TEST_PRO.getUsername(), TestUser.TEST_PRO.getPassword(), TestUser.TEST_PRO.getEmail());
+        this.securityService.makeUserPro(TestUser.TEST_PRO.getUsername());
     }
 
     @Test
     void testGetRequestUnsecuredPageWithProUserSucceeds() throws AuthenticationFailedException {
-        loginProByWeb(this.restTemplate, this.csrfTokenRepository, this.port);
+        loginTestUserByWeb(TestUser.TEST_PRO, this.restTemplate, this.csrfTokenRepository, this.port);
 
         String response = this.restTemplate.getForObject("http://localhost:" + port + "/test/public", String.class);
-        assertEquals("user_pro", response);
+        assertEquals(TestUser.TEST_PRO.getUsername(), response);
     }
 
     @Test
     void testGetRequestMemberPageWithProUserSucceeds() throws AuthenticationFailedException {
-        loginProByWeb(this.restTemplate, this.csrfTokenRepository, this.port);
+        loginTestUserByWeb(TestUser.TEST_PRO, this.restTemplate, this.csrfTokenRepository, this.port);
 
         String response = this.restTemplate.getForObject("http://localhost:" + port + "/test/member", String.class);
-        assertEquals("user_pro", response);
+        assertEquals(TestUser.TEST_PRO.getUsername(), response);
     }
 
     @Test
     void testGetRequestProPageWithProUserSucceeds() throws AuthenticationFailedException {
-        loginProByWeb(this.restTemplate, this.csrfTokenRepository, this.port);
+        loginTestUserByWeb(TestUser.TEST_PRO, this.restTemplate, this.csrfTokenRepository, this.port);
 
         String response = this.restTemplate.getForObject("http://localhost:" + port + "/test/pro", String.class);
-        assertEquals("user_pro", response);
+        assertEquals(TestUser.TEST_PRO.getUsername(), response);
     }
 
     @Test
-    void testGetRequestAdminPageWithProUserSucceeds() throws AuthenticationFailedException {
-        loginProByWeb(this.restTemplate, this.csrfTokenRepository, this.port);
+    void testGetRequestAdminPageWithProUserFails() throws AuthenticationFailedException {
+        loginTestUserByWeb(TestUser.TEST_PRO, this.restTemplate, this.csrfTokenRepository, this.port);
 
         HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> { String response = this.restTemplate.getForObject("http://localhost:" + port + "/test/admin", String.class ); });
         assertEquals("Forbidden", ex.getStatusCode().getReasonPhrase());
@@ -73,7 +74,7 @@ public class ProUserWebTests implements LoginMixin {
 
     @Test
     void testGetRequestSuperuserPageWithProUserFails() throws AuthenticationFailedException {
-        loginProByWeb(this.restTemplate, this.csrfTokenRepository, this.port);
+        loginTestUserByWeb(TestUser.TEST_PRO, this.restTemplate, this.csrfTokenRepository, this.port);
 
         HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> { String response = this.restTemplate.getForObject("http://localhost:" + port + "/test/superuser", String.class ); });
         assertEquals("Forbidden", ex.getStatusCode().getReasonPhrase());

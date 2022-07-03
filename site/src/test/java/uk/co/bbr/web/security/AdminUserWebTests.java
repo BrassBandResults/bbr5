@@ -13,6 +13,7 @@ import org.springframework.web.client.RestTemplate;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.services.security.ex.AuthenticationFailedException;
 import uk.co.bbr.web.LoginMixin;
+import uk.co.bbr.web.security.support.TestUser;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -32,13 +33,13 @@ public class AdminUserWebTests  implements LoginMixin {
 
     @BeforeAll
     void setupUser() {
-        this.securityService.createUser(TestUserConstants.TEST_USER_USERNAME_ADMIN, TestUserConstants.TEST_USER_PASSWORD_ADMIN, TestUserConstants.TEST_USER_EMAIL_ADMIN);
-        this.securityService.makeUserAdmin(TestUserConstants.TEST_USER_USERNAME_ADMIN);
+        this.securityService.createUser(TestUser.TEST_ADMIN.getUsername(), TestUser.TEST_ADMIN.getPassword(), TestUser.TEST_ADMIN.getEmail());
+        this.securityService.makeUserAdmin(TestUser.TEST_ADMIN.getUsername());
     }
 
     @Test
     void testGetRequestUnsecuredPageWithAdminUserSucceeds() throws AuthenticationFailedException {
-        loginAdminByWeb(this.restTemplate, this.csrfTokenRepository, this.port);
+        loginTestUserByWeb(TestUser.TEST_ADMIN, this.restTemplate, this.csrfTokenRepository, this.port);
 
         String response = this.restTemplate.getForObject("http://localhost:" + port + "/test/public", String.class);
         assertEquals("user_admin", response);
@@ -46,7 +47,7 @@ public class AdminUserWebTests  implements LoginMixin {
 
     @Test
     void testGetRequestMemberPageWithAdminUserSucceeds() throws AuthenticationFailedException {
-        loginAdminByWeb(this.restTemplate, this.csrfTokenRepository, this.port);
+        loginTestUserByWeb(TestUser.TEST_ADMIN, this.restTemplate, this.csrfTokenRepository, this.port);
 
         String response = this.restTemplate.getForObject("http://localhost:" + port + "/test/member", String.class);
         assertEquals("user_admin", response);
@@ -54,7 +55,7 @@ public class AdminUserWebTests  implements LoginMixin {
 
     @Test
     void testGetRequestProPageWithAdminUserSucceeds() throws AuthenticationFailedException {
-        loginAdminByWeb(this.restTemplate, this.csrfTokenRepository, this.port);
+        loginTestUserByWeb(TestUser.TEST_ADMIN, this.restTemplate, this.csrfTokenRepository, this.port);
 
         String response = this.restTemplate.getForObject("http://localhost:" + port + "/test/pro", String.class);
         assertEquals("user_admin", response);
@@ -62,15 +63,15 @@ public class AdminUserWebTests  implements LoginMixin {
 
     @Test
     void testGetRequestAdminPageWithAdminUserSucceeds() throws AuthenticationFailedException {
-        loginAdminByWeb(this.restTemplate, this.csrfTokenRepository, this.port);
+        loginTestUserByWeb(TestUser.TEST_ADMIN, this.restTemplate, this.csrfTokenRepository, this.port);
 
         String response = this.restTemplate.getForObject("http://localhost:" + port + "/test/admin", String.class);
         assertEquals("user_admin", response);
     }
 
     @Test
-    void testGetRequestSuperuserPageWithAdminUserFails() throws AuthenticationFailedException {
-        loginAdminByWeb(this.restTemplate, this.csrfTokenRepository, this.port);
+    void testGetRequestSuperuserPageWithAdminUserSucceeds() throws AuthenticationFailedException {
+        loginTestUserByWeb(TestUser.TEST_ADMIN, this.restTemplate, this.csrfTokenRepository, this.port);
 
         String response = this.restTemplate.getForObject("http://localhost:" + port + "/test/superuser", String.class);
         assertEquals("user_admin", response);

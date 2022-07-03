@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.security.dao.BbrUserDao;
 import uk.co.bbr.services.security.dao.BbrUserRepository;
+import uk.co.bbr.services.security.dao.UserRole;
 import uk.co.bbr.services.security.ex.AuthenticationFailedException;
 
 import java.util.Optional;
@@ -38,7 +39,7 @@ public class SecurityServiceImpl implements SecurityService {
 
         Optional<BbrUserDao> userOptional = this.bbrUserRepository.loginCheck(usercode, hashedPassword);
         if (userOptional.isEmpty()) {
-
+            throw new AuthenticationFailedException();
         }
         return userOptional.get();
     }
@@ -50,7 +51,7 @@ public class SecurityServiceImpl implements SecurityService {
 
         BbrUserDao newUser = new BbrUserDao();
         newUser.setEmail(email);
-        newUser.setAccessLevel("M");
+        newUser.setAccessLevel(UserRole.MEMBER.getCode());
         newUser.setUsercode(usercode);
 
         newUser.setSalt(salt);
@@ -68,7 +69,7 @@ public class SecurityServiceImpl implements SecurityService {
 
         BbrUserDao matchingUser = matchingUserOptional.get();
 
-        matchingUser.setAccessLevel("A");
+        matchingUser.setAccessLevel(UserRole.ADMIN.getCode());
         this.bbrUserRepository.save(matchingUser);
     }
 
@@ -81,7 +82,7 @@ public class SecurityServiceImpl implements SecurityService {
 
         BbrUserDao matchingUser = matchingUserOptional.get();
 
-        matchingUser.setAccessLevel("P");
+        matchingUser.setAccessLevel(UserRole.PRO.getCode());
         this.bbrUserRepository.save(matchingUser);
     }
 
@@ -94,7 +95,7 @@ public class SecurityServiceImpl implements SecurityService {
 
         BbrUserDao matchingUser = matchingUserOptional.get();
 
-        matchingUser.setAccessLevel("S");
+        matchingUser.setAccessLevel(UserRole.SUPERUSER.getCode());
         this.bbrUserRepository.save(matchingUser);
     }
 }

@@ -12,8 +12,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import uk.co.bbr.services.security.SecurityService;
-import uk.co.bbr.services.security.ex.AuthenticationFailedException;
 import uk.co.bbr.web.LoginMixin;
+import uk.co.bbr.web.security.support.TestUser;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -34,37 +34,37 @@ public class SuperuserWebTests implements LoginMixin {
 
     @BeforeAll
     void setupUser() {
-        this.securityService.createUser(TestUserConstants.TEST_USER_USERNAME_SUPERUSER, TestUserConstants.TEST_USER_PASSWORD_SUPERUSER, TestUserConstants.TEST_USER_EMAIL_SUPERUSER);
-        this.securityService.makeUserSuperuser(TestUserConstants.TEST_USER_USERNAME_SUPERUSER);
+        this.securityService.createUser(TestUser.TEST_SUPERUSER.getUsername(), TestUser.TEST_SUPERUSER.getPassword(), TestUser.TEST_SUPERUSER.getEmail());
+        this.securityService.makeUserSuperuser(TestUser.TEST_SUPERUSER.getUsername());
     }
 
     @Test
-    void testGetRequestUnsecuredPageWithSuperuserSucceeds() throws AuthenticationFailedException {
-        loginSuperuserByWeb(this.restTemplate, this.csrfTokenRepository, this.port);
+    void testGetRequestUnsecuredPageWithSuperuserSucceeds() {
+        loginTestUserByWeb(TestUser.TEST_SUPERUSER, this.restTemplate, this.csrfTokenRepository, this.port);
 
         String response = this.restTemplate.getForObject("http://localhost:" + port + "/test/public", String.class);
-        assertEquals("user_superuser", response);
+        assertEquals(TestUser.TEST_SUPERUSER.getUsername(), response);
     }
 
     @Test
-    void testGetRequestMemberPageWithSuperuserSucceeds() throws AuthenticationFailedException {
-        loginSuperuserByWeb(this.restTemplate, this.csrfTokenRepository, this.port);
+    void testGetRequestMemberPageWithSuperuserSucceeds(){
+        loginTestUserByWeb(TestUser.TEST_SUPERUSER, this.restTemplate, this.csrfTokenRepository, this.port);
 
         String response = this.restTemplate.getForObject("http://localhost:" + port + "/test/member", String.class);
-        assertEquals("user_superuser", response);
+        assertEquals(TestUser.TEST_SUPERUSER.getUsername(), response);
     }
 
     @Test
-    void testGetRequestProPageWithSuperuserSucceeds() throws AuthenticationFailedException {
-        loginSuperuserByWeb(this.restTemplate, this.csrfTokenRepository, this.port);
+    void testGetRequestProPageWithSuperuserSucceeds() {
+        loginTestUserByWeb(TestUser.TEST_SUPERUSER, this.restTemplate, this.csrfTokenRepository, this.port);
 
         String response = this.restTemplate.getForObject("http://localhost:" + port + "/test/pro", String.class);
-        assertEquals("user_superuser", response);
+        assertEquals(TestUser.TEST_SUPERUSER.getUsername(), response);
     }
 
     @Test
-    void testGetRequestAdminPageWithSuperuserSucceeds() throws AuthenticationFailedException {
-        loginSuperuserByWeb(this.restTemplate, this.csrfTokenRepository, this.port);
+    void testGetRequestAdminPageWithSuperuserFails() {
+        loginTestUserByWeb(TestUser.TEST_SUPERUSER, this.restTemplate, this.csrfTokenRepository, this.port);
 
         HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> { String response = this.restTemplate.getForObject("http://localhost:" + port + "/test/admin", String.class ); });
         assertEquals("Forbidden", ex.getStatusCode().getReasonPhrase());
@@ -72,10 +72,10 @@ public class SuperuserWebTests implements LoginMixin {
     }
 
     @Test
-    void testGetRequestSuperuserPageWithSuperuserFails() throws AuthenticationFailedException {
-        loginSuperuserByWeb(this.restTemplate, this.csrfTokenRepository, this.port);
+    void testGetRequestSuperuserPageWithSuperuserFails() {
+        loginTestUserByWeb(TestUser.TEST_SUPERUSER, this.restTemplate, this.csrfTokenRepository, this.port);
 
         String response = this.restTemplate.getForObject("http://localhost:" + port + "/test/superuser", String.class);
-        assertEquals("user_superuser", response);
+        assertEquals(TestUser.TEST_SUPERUSER.getUsername(), response);
     }
 }
