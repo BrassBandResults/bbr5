@@ -26,10 +26,10 @@ public class AbstractDao {
     private LocalDateTime updated = LocalDateTime.now();
     
     @Column(name="OWNER_ID", nullable=false)
-    private long createdBy;
+    private long createdBy = 1L;
 
     @Column(name="UPDATED_BY_ID", nullable=false)
-    private long updatedBy;
+    private long updatedBy = 1L;
 }
 
 

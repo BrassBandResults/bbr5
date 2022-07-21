@@ -4,9 +4,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import uk.co.bbr.services.framework.AbstractDao;
+import uk.co.bbr.services.region.dao.RegionDao;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.time.LocalDate;
 
@@ -15,7 +19,7 @@ import java.time.LocalDate;
 @Entity
 @NoArgsConstructor
 @Table(name="BAND")
-public class BandDao  extends AbstractDao {
+public class BandDao extends AbstractDao {
 
     @Column(name="NAME", nullable=false)
     private String name;
@@ -26,14 +30,9 @@ public class BandDao  extends AbstractDao {
     @Column(name="WEBSITE")
     private String website;
 
-    @Column(name="REGION_ID", nullable=false)
-    private long regionId;
-
-    @Column(name="REHEARSAL_NIGHT_1")
-    private long rehearsalNight1;
-
-    @Column(name="REHEARSAL_NIGHT_2")
-    private long rehearsalNight2;
+    @ManyToOne(fetch= FetchType.EAGER, optional=false)
+    @JoinColumn(name="REGION_ID")
+    private RegionDao region;
 
     @Column(name="LONGITUDE")
     private String longitude;
@@ -46,12 +45,6 @@ public class BandDao  extends AbstractDao {
 
     @Column(name="MAPPER_ID")
     private Long mapperId;
-
-    @Column(name="FIRST_PARENT_ID")
-    private Long firstParentBandId;
-
-    @Column(name="SECOND_PARENT_ID")
-    private Long secondParentBandId;
 
     @Column(name="START_DATE")
     private LocalDate startDate;

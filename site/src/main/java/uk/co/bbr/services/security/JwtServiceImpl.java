@@ -14,11 +14,20 @@ import uk.co.bbr.services.security.dao.BbrUserDao;
 public class JwtServiceImpl implements JwtService {
 
     private static final String JWT_ISSUER = "brassbandresults.co.uk";
-    private static final String PRIVATE_KEY = "ThisIsAPrivateKeyHorseBoltBatteryStaple"; // TODO make dynamic
+    private static String DEFAULT_PRIVATE_KEY = "ThisIsAPrivateKeyHorseBoltBatteryStaple";
+
+
+    private String getPrivateKey() {
+        String key = System.getenv("JWT_PRIVATE_KEY");
+        if (key == null || key.trim().length() < 1) {
+            key = DEFAULT_PRIVATE_KEY;
+        }
+        return key;
+    }
 
     @Override
     public String createJwt(BbrUserDao irisUser) {
-        Algorithm algorithmHS = Algorithm.HMAC256(PRIVATE_KEY);
+        Algorithm algorithmHS = Algorithm.HMAC256(this.getPrivateKey());
         String token = JWT.create().withIssuer(JWT_ISSUER)
                 .withClaim(JwtAuthenticationToken.CLAIM_USER_ID, irisUser.getId())
                 .withClaim(JwtAuthenticationToken.CLAIM_USER_NAME, irisUser.getUsercode())
@@ -30,7 +39,7 @@ public class JwtServiceImpl implements JwtService {
 
     @Override
     public DecodedJWT verifyJwt(String jwtToken) {
-        Algorithm algorithmHS = Algorithm.HMAC256(PRIVATE_KEY);
+        Algorithm algorithmHS = Algorithm.HMAC256(this.getPrivateKey());
         JWTVerifier verifier = JWT.require(algorithmHS).withIssuer(JWT_ISSUER).build();
         return verifier.verify(jwtToken);
     }

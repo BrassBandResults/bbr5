@@ -5,9 +5,13 @@ import uk.co.bbr.services.region.dao.RegionDao;
 import java.util.List;
 
 public interface RegionService {
-    RegionDao createRegion(RegionDao newRegion);
+    RegionDao create(RegionDao newRegion);
 
-    List<RegionDao> fetchAllRegions();
+    RegionDao create(String regionName);
 
-    void deleteRegion(RegionDao createdRegion);
+    List<RegionDao> fetchAll();
+
+    void delete(RegionDao createdRegion);
+
+    RegionDao fetchUnknownRegion();
 }
