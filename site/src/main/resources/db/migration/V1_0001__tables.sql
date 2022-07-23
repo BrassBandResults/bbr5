@@ -132,6 +132,7 @@ INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_cod
 
 CREATE TABLE band (
     id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    old_id BIGINT,
     updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_by_id BIGINT NOT NULL REFERENCES user(id),
@@ -210,6 +211,7 @@ CREATE TABLE band_relationship (
 
 CREATE TABLE person (
     id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    old_id BIGINT,
     updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_by_id BIGINT NOT NULL REFERENCES user(id),
