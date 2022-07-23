@@ -55,7 +55,7 @@ public class CreateBandServiceTests implements LoginMixin {
     @Test
     void testCreateBandWithRegionWorkSuccessfully() {
         // arrange
-        RegionDao northWestRegion = this.regionService.create("North West");
+        RegionDao northWestRegion = this.regionService.findBySlug("north-west");
 
         // act
         BandDao band = this.bandService.create("Foden's", northWestRegion);
@@ -69,7 +69,7 @@ public class CreateBandServiceTests implements LoginMixin {
     @Test
     void testCreateBandFromObjectWorksSuccessfully() {
         // arrange
-        RegionDao yorkshireRegion = this.regionService.create("Yorkshire");
+        RegionDao yorkshireRegion = this.regionService.findBySlug("yorkshire");
         SectionDao championshipSection = this.sectionService.fetchBySlug("championship");
 
         BandDao newBand = new BandDao();
