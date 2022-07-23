@@ -3,7 +3,7 @@ package uk.co.bbr.services.region;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import uk.co.bbr.services.framework.SlugTools;
+import uk.co.bbr.services.framework.mixins.SlugTools;
 import uk.co.bbr.services.framework.ValidationException;
 import uk.co.bbr.services.region.dao.RegionDao;
 import uk.co.bbr.services.region.dao.RegionRepository;

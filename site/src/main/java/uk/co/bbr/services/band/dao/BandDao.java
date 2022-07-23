@@ -3,8 +3,11 @@ package uk.co.bbr.services.band.dao;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import uk.co.bbr.services.band.types.BandStatus;
 import uk.co.bbr.services.framework.AbstractDao;
+import uk.co.bbr.services.framework.mixins.NameTools;
 import uk.co.bbr.services.region.dao.RegionDao;
+import uk.co.bbr.services.section.dao.SectionDao;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,7 +22,7 @@ import java.time.LocalDate;
 @Entity
 @NoArgsConstructor
 @Table(name="BAND")
-public class BandDao extends AbstractDao {
+public class BandDao extends AbstractDao implements NameTools {
 
     @Column(name="NAME", nullable=false)
     private String name;
@@ -53,14 +56,47 @@ public class BandDao extends AbstractDao {
     private LocalDate endDate;
 
     @Column(name="STATUS")
-    private Long status;
+    private BandStatus status;
 
-    @Column(name="NATIONAL_GRADING")
-    private String nationalGrading;
+    @ManyToOne(fetch= FetchType.EAGER)
+    @JoinColumn(name="SECTION_ID")
+    private SectionDao section;
 
     @Column(name="TWITTER_NAME")
     private String twitterName;
 
-    @Column(name="SCRATCH_BAND")
-    private boolean scratchBand;
+    public void setName(String sourceName) {
+        String nameToSet = simplifyName(sourceName);
+        this.name = nameToSet;
+    }
+
+    public void setLatitude(String latitude) {
+        if (latitude.trim().length() > 15) {
+            latitude = latitude.trim().substring(0, 15);
+        }
+        this.latitude = latitude.trim();
+    }
+
+    public void setLongitude(String longitude) {
+        if (longitude.trim().length() > 15) {
+            longitude = longitude.trim().substring(0, 15);
+        }
+        this.longitude = longitude.trim();
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes.trim();
+    }
+
+    public void setWebsite(String website) {
+        this.website = website.trim();
+    }
+
+    public void setTwitterName(String twitterName) {
+        if (twitterName.trim().startsWith("@")) {
+            twitterName = twitterName.trim().substring(1);
+        }
+
+        this.twitterName = twitterName.trim();
+    }
 }

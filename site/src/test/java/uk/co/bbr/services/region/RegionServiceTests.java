@@ -19,6 +19,13 @@ class RegionServiceTests {
     private RegionService regionService;
 
     @Test
+    void testUnknownRegionReturnsSuccessfully() {
+        RegionDao unknownRegion = this.regionService.fetchUnknownRegion();
+        assertEquals("Unknown", unknownRegion.getName());
+        assertEquals("unknown", unknownRegion.getSlug());
+    }
+
+    @Test
     void testCreateRegionWorksSuccessfully() {
         // arrange
         RegionDao newRegion = new RegionDao();

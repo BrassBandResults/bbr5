@@ -1,6 +1,7 @@
 package uk.co.bbr.services.framework;
 
 import org.junit.jupiter.api.Test;
+import uk.co.bbr.services.framework.mixins.SlugTools;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

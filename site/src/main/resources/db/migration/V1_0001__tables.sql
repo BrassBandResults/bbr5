@@ -21,7 +21,7 @@ CREATE TABLE region (
     updated_by_id BIGINT NOT NULL REFERENCES user(id),
     owner_id BIGINT NOT NULL REFERENCES user(id),
     name VARCHAR(100) NOT NULL,
-    slug VARCHAR(50) NOT NULL,
+    slug VARCHAR(60) NOT NULL,
     container_id BIGINT REFERENCES region(id),
     country_code VARCHAR(20),
     latitude VARCHAR(15),
@@ -31,6 +31,32 @@ CREATE TABLE region (
 
 INSERT INTO region(updated_by_id, owner_id, name, slug, country_code) VALUES (1, 1, 'Unknown', 'unknown', 'none');
 
+CREATE TABLE section (
+    id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_by_id BIGINT NOT NULL REFERENCES user(id),
+    owner_id BIGINT NOT NULL REFERENCES user(id),
+    name VARCHAR(100) NOT NULL,
+    slug VARCHAR(60) NOT NULL,
+    position INT NOT NULL DEFAULT 0,
+    map_short_code VARCHAR(1) NOT NULL
+);
+
+INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code) VALUES (1, 1, 'Excellence', 'excellence', 0, 'C');
+INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code) VALUES (1, 1, 'Elite', 'elite', 1, 'C');
+INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code) VALUES (1, 1, 'Championship', 'championship', 5, 'C');
+INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code) VALUES (1, 1, 'First', 'first', 10, '1');
+INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code) VALUES (1, 1, 'Second', 'second', 20, '2');
+INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code) VALUES (1, 1, 'Third', 'third', 30, '3');
+INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code) VALUES (1, 1, 'Forth', 'fourth', 40, '4');
+INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code) VALUES (1, 1, 'Fifth', 'fifth', 50, '5');
+INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code) VALUES (1, 1, 'Youth', 'youth', 60, 'Y');
+INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code) VALUES (1, 1, 'A Grade', 'a', 110, 'A');
+INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code) VALUES (1, 1, 'B Grade', 'b', 120, 'B');
+INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code) VALUES (1, 1, 'C Grade', 'c', 130, 'C');
+INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code) VALUES (1, 1, 'D Grade', 'd', 140, 'D');
+
 CREATE TABLE band (
     id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
     updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -38,7 +64,7 @@ CREATE TABLE band (
     updated_by_id BIGINT NOT NULL REFERENCES user(id),
     owner_id BIGINT NOT NULL REFERENCES user(id),
     name VARCHAR(100) NOT NULL,
-    slug VARCHAR(50) NOT NULL,
+    slug VARCHAR(60) NOT NULL,
     website VARCHAR(100),
     region_id BIGINT NOT NULL REFERENCES region(id),
     longitude VARCHAR(15),
@@ -48,9 +74,8 @@ CREATE TABLE band (
     start_date DATE,
     end_date DATE,
     status BIGINT,
-    national_grading VARCHAR(20),
-    twitter_name VARCHAR(100),
-    scratch_band BIT NOT NULL DEFAULT 0
+    section_id BIGINT REFERENCES section(id),
+    twitter_name VARCHAR(100)
 );
 
 CREATE TABLE band_rehearsal_night (
