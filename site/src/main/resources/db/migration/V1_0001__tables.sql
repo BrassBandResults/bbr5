@@ -1,3 +1,5 @@
+-- USER
+
 CREATE TABLE user (
     id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
     updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -13,6 +15,8 @@ CREATE TABLE user (
 );
 
 INSERT INTO user (updated_by_id, owner_id, usercode, password, email, salt, password_version, access_level) VALUES (1, 1, 'owner', 'password', 'owner@brassbandresults.co.uk', 'ABC123', 0, 'A');
+
+-- REGION
 
 CREATE TABLE region (
     id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
@@ -30,6 +34,8 @@ CREATE TABLE region (
 );
 
 INSERT INTO region(updated_by_id, owner_id, name, slug, country_code) VALUES (1, 1, 'Unknown', 'unknown', 'none');
+
+-- SECTION
 
 CREATE TABLE section (
     id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
@@ -56,6 +62,8 @@ INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_cod
 INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code) VALUES (1, 1, 'B Grade', 'b', 120, 'B');
 INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code) VALUES (1, 1, 'C Grade', 'c', 130, 'C');
 INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code) VALUES (1, 1, 'D Grade', 'd', 140, 'D');
+
+-- BAND
 
 CREATE TABLE band (
     id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
@@ -130,4 +138,51 @@ CREATE TABLE band_relationship (
     right_band_name VARCHAR(100),
     start_date DATE,
     end_date DATE
+);
+
+-- PERSON
+
+CREATE TABLE person (
+    id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_by_id BIGINT NOT NULL REFERENCES user(id),
+    owner_id BIGINT NOT NULL REFERENCES user(id),
+    first_names VARCHAR(100),
+    surname VARCHAR(100) NOT NULL,
+    suffix VARCHAR(10),
+    slug VARCHAR(60) NOT NULL,
+    known_for VARCHAR(100),
+    notes TEXT,
+    deceased BIT NOT NULL DEFAULT 0,
+    start_date DATE,
+    end_date DATE
+);
+
+CREATE TABLE person_previous_name (
+    id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_by_id BIGINT NOT NULL REFERENCES user(id),
+    owner_id BIGINT NOT NULL REFERENCES user(id),
+    old_name VARCHAR(100) NOT NULL,
+    hidden BIT NOT NULL DEFAULT 0
+);
+
+CREATE TABLE person_profile (
+    id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_by_id BIGINT NOT NULL REFERENCES user(id),
+    owner_id BIGINT NOT NULL REFERENCES user(id),
+    person_id BIGINT NOT NULL REFERENCES person(id),
+    title VARCHAR(10),
+    qualifications VARCHAR(30),
+    email VARCHAR(50),
+    website VARCHAR(50),
+    home_phone VARCHAR(20),
+    mobile_phone VARCHAR(20),
+    address VARCHAR(200),
+    profile TEXT NOT NULL,
+    visible BIT NOT NULL DEFAULT 0
 );
