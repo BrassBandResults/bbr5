@@ -102,6 +102,7 @@ CREATE TABLE band_previous_name (
     created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_by_id BIGINT NOT NULL REFERENCES user(id),
     owner_id BIGINT NOT NULL REFERENCES user(id),
+    band_id BIGINT NOT NULL REFERENCES band(id),
     old_name VARCHAR(100) NOT NULL,
     start_date DATE,
     end_date DATE,
@@ -159,13 +160,14 @@ CREATE TABLE person (
     end_date DATE
 );
 
-CREATE TABLE person_previous_name (
+CREATE TABLE person_alternative_name (
     id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
     updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_by_id BIGINT NOT NULL REFERENCES user(id),
     owner_id BIGINT NOT NULL REFERENCES user(id),
-    old_name VARCHAR(100) NOT NULL,
+    person_id BIGINT NOT NULL REFERENCES person(id),
+    name VARCHAR(100) NOT NULL,
     hidden BIT NOT NULL DEFAULT 0
 );
 
@@ -185,4 +187,33 @@ CREATE TABLE person_profile (
     address VARCHAR(200),
     profile TEXT NOT NULL,
     visible BIT NOT NULL DEFAULT 0
+);
+
+CREATE TABLE person_relationship_type (
+    id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_by_id BIGINT NOT NULL REFERENCES user(id),
+    owner_id BIGINT NOT NULL REFERENCES user(id),
+    name VARCHAR(100) NOT NULL,
+    reverse_name VARCHAR(100) NOT NULL
+);
+
+INSERT INTO person_relationship_type (updated_by_id, owner_id, name, reverse_name) values (1, 1, 'Is Father Of', 'Has Father');
+INSERT INTO person_relationship_type (updated_by_id, owner_id, name, reverse_name) values (1, 1, 'Is Mother Of', 'Has Mother');
+INSERT INTO person_relationship_type (updated_by_id, owner_id, name, reverse_name) values (1, 1, 'Is Brother Of', 'Has Brother');
+INSERT INTO person_relationship_type (updated_by_id, owner_id, name, reverse_name) values (1, 1, 'Is Sister Of', 'Has Sister');
+INSERT INTO person_relationship_type (updated_by_id, owner_id, name, reverse_name) values (1, 1, 'Is Married To', 'Is Married To');
+
+CREATE TABLE person_relationship (
+    id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_by_id BIGINT NOT NULL REFERENCES user(id),
+    owner_id BIGINT NOT NULL REFERENCES user(id),
+    left_person_id BIGINT REFERENCES band(id),
+    left_person_name VARCHAR(100),
+    relationship_id BIGINT REFERENCES band_relationship_type(id),
+    right_person_id BIGINT REFERENCES band(id),
+    right_person_name VARCHAR(100)
 );

@@ -1,8 +1,9 @@
-package uk.co.bbr.services.band.dao;
+package uk.co.bbr.services.people.dao;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import uk.co.bbr.services.band.dao.BandDao;
 import uk.co.bbr.services.framework.AbstractDao;
 
 import javax.persistence.Column;
@@ -11,27 +12,20 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import java.time.LocalDate;
 
 @Getter
 @Setter
 @Entity
 @NoArgsConstructor
-@Table(name="BAND_PREVIOUS_NAME")
-public class BandPreviousNameDao extends AbstractDao {
+@Table(name="PERSON_ALTENATIVE_NAME")
+public class PersonAlternativeNameDao extends AbstractDao {
 
     @ManyToOne(fetch= FetchType.EAGER, optional=false)
-    @JoinColumn(name="BAND_ID")
-    private BandDao band;
+    @JoinColumn(name="PERSON_ID")
+    private PersonDao person;
 
-    @Column(name="OLD_NAME", nullable=false)
-    private String oldName;
-
-    @Column(name="START_DATE")
-    private LocalDate startDate;
-
-    @Column(name="END_DATE")
-    private LocalDate endDate;
+    @Column(name="NAME", nullable=false)
+    private String name;
 
     @Column(name="HIDDEN")
     private boolean hidden;

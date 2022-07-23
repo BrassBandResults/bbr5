@@ -1,8 +1,9 @@
-package uk.co.bbr.services.band.dao;
+package uk.co.bbr.services.people.dao;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import uk.co.bbr.services.band.dao.BandDao;
 import uk.co.bbr.services.framework.AbstractDao;
 
 import javax.persistence.Column;
@@ -17,30 +18,24 @@ import java.time.LocalDate;
 @Setter
 @Entity
 @NoArgsConstructor
-@Table(name="BAND_RELATIONSHIP")
-public class BandRelationshipDao extends AbstractDao {
+@Table(name="PERSON_RELATIONSHIP")
+public class PersonRelationshipDao extends AbstractDao {
 
     @ManyToOne(fetch= FetchType.EAGER, optional=false)
-    @JoinColumn(name="LEFT_BAND_ID")
-    private BandDao leftBand;
+    @JoinColumn(name="LEFT_PERSON_ID")
+    private PersonDao leftPerson;
 
-    @Column(name="LEFT_BAND_NAME")
-    private String leftBandName;
+    @Column(name="LEFT_PERSON_NAME")
+    private String leftPersonName;
 
     @ManyToOne(fetch= FetchType.EAGER, optional=false)
     @JoinColumn(name="RELATIONSHIP_ID")
-    private BandRelationshipTypeDao relationship;
+    private PersonRelationshipTypeDao relationship;
 
     @ManyToOne(fetch= FetchType.EAGER, optional=false)
-    @JoinColumn(name="RIGHT_BAND_ID")
-    private BandDao rightBand;
+    @JoinColumn(name="RIGHT_PERSON_ID")
+    private PersonDao rightPerson;
 
-    @Column(name="RIGHT_BAND_NAME")
-    private String rightBandName;
-
-    @Column(name="START_DATE")
-    private LocalDate startDate;
-
-    @Column(name="END_DATE")
-    private LocalDate endDate;
+    @Column(name="RIGHT_PERSON_NAME")
+    private String rightPersonName;
 }

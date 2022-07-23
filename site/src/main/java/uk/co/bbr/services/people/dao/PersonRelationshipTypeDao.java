@@ -8,18 +8,17 @@ import uk.co.bbr.services.framework.AbstractDao;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import java.time.LocalDate;
 
 @Getter
 @Setter
 @Entity
 @NoArgsConstructor
-@Table(name="PERSON_PREVIOUS_NAME")
-public class PersonPreviousNameDao extends AbstractDao {
+@Table(name="PERSON_RELATIONSHIP_TYPE")
+public class PersonRelationshipTypeDao extends AbstractDao {
 
-    @Column(name="OLD_NAME", nullable=false)
-    private String oldName;
+    @Column(name="NAME", nullable=false)
+    private String name;
 
-    @Column(name="HIDDEN")
-    private boolean hidden;
+    @Column(name="REVERSE_NAME", nullable=false)
+    private String reverseName;
 }
