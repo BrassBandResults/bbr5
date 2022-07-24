@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.thymeleaf.org" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="AUTHOR" content="Tim Sawyer" />
+    <link rel="shortcut icon" href="https://static.brassbandresults.co.uk/favicon.ico" >
+    <meta name="Description" content="Brass Band Results: Project to build a comprehensive database of contest results." />
+    <meta name="Keywords" content="Brass,Band,Contest,Music,Competition,Group,Results" />
+    <title><div layout:fragment="title"></div> - Brass Band Results</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://bbr-site-media.s3.amazonaws.com/css2018/bbr.css"/>
+    <link rel="stylesheet" href="https://static.brassbandresults.co.uk/css2018/bbr-print.css" media="print"/>
+    <link rel="stylesheet" href="https://static.brassbandresults.co.uk/js/tablesorter/theme.bootstrap_4.css">
+    <link rel="stylesheet" href="https://static.brassbandresults.co.uk/jqueryui/jquery-ui.min.css">
+
+    <div layout:fragment="head"></div>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-xl bg-light navbar-light">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bbrnav" aria-controls="bbrnav" aria-expanded="false" aria-label="Toggle Navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <a class="navbar-brand text-info" href="/">Brass Band Results</a>
+    <div class="collapse navbar-collapse" id="bbrnav">
+        <div class="navbar-nav mr-auto">
+
+            <div class="dropdown">
+                <a class="nav-item nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="bandsDropdown" aria-haspopup="true" aria-expanded="false">Bands</a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" aria-labelledby="bandsDropdown" href="/bands/">List Bands</a>
+                    <a class="dropdown-item" aria-labelledby="bandsDropdown" href="/regions/">Regions</a>
+                    <a class="dropdown-item" aria-labelledby="bandsDropdown" href="/sections/">Sections</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" aria-labelledby="bandsDropdown" href="/map">Band Map</a>
+                    <a class="dropdown-item" aria-labelledby="bandsDropdown" href="/map2/">New Map (Experimental)</a>
+                    <a class="dropdown-item" aria-labelledby="bandsDropdown" href="/map/search/">Search Map</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" aria-labelledby="bandsDropdown" href="/compare/bands/">Compare Bands</a>
+                    <a class="dropdown-item" aria-labelledby="bandsDropdown" href="/bands/winners/">Winning Bands</a>
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <a class="nav-item nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="contestsDropdown" aria-haspopup="true" aria-expanded="false">Contests</a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/contests/">List Contests</a>
+                    <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/contests/groups/" sec:authorize="hasRole('BBR_SUPERUSER')">Groups</a>
+                    <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/calendar/">Calendar</a>
+                    <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/years/">Years</a>
+                    <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/venues/">List Venues</a>
+                    <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/map/venues/">Venue Map</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/addresults/">Add Results</a>
+                    <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/addwhitfriday/">Add Whit Friday</a>
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <a class="nav-item nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="peopleDropdown" aria-haspopup="true" aria-expanded="false">People</a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" aria-labelledby="peopleDropdown" href="/people/">List People</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" aria-labelledby="peopleDropdown" href="/compare/conductors/">Compare Conductors</a>
+                    <a class="dropdown-item" aria-labelledby="peopleDropdown" href="/people/winners/">Winning Conductors</a>
+                    <a class="dropdown-item" aria-labelledby="peopleDropdown" href="/people/bands/">Most Bands Conducted</a>
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <a class="nav-item nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="piecesDropdown" aria-haspopup="true" aria-expanded="false">Pieces</a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" aria-labelledby="piecesDropdown" href="/pieces/">List Pieces</a>
+                    <a class="dropdown-item" aria-labelledby="piecesDropdown" href="/pieces/BySection/">By Section</a>
+                    <a class="dropdown-item" aria-labelledby="piecesDropdown" href="/pieces/BestOwnChoice/">Successful</a>
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <a class="nav-item nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="siteDropdown" aria-haspopup="true" aria-expanded="false">Site</a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" aria-labelledby="siteDropdown" href="/tags/">List Tags</a>
+                    <a class="dropdown-item" aria-labelledby="siteDropdown" href="/leaderboard/">Leaderboard</a>
+                    <a class="dropdown-item" aria-labelledby="siteDropdown" href="/badges/">Badges</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" aria-labelledby="siteDropdown" href="/feedback/queue/" sec:authorize="hasRole('BBR_SUPERUSER')">Feedback Queue</a>
+                    <a class="dropdown-item" aria-labelledby="siteDropdown" href="/feedback/admin/" sec:authorize="hasRole('BBR_ADMIN')">Owner Queue</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" aria-labelledby="siteDropdown" href="/statistics/">Statistics</a>
+                    <a class="dropdown-item" aria-labelledby="siteDropdown" href="/faq/">FAQ</a>
+                    <a class="dropdown-item" aria-labelledby="siteDropdown" href="/aboutus/">Who We Are</a>
+                    <a class="dropdown-item" aria-labelledby="siteDropdown" href="/privacy/">Privacy Policy</a>
+                </div>
+            </div>
+
+            <div class="dropdown" sec:authorize="hasRole('BBR_SUPERUSER')">
+                <a class="nav-item nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="mergesDropdown" aria-haspopup="true" aria-expanded="false">Merges</a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" aria-labelledby="mergesDropdown" href="/move/bands/">Bands</a>
+                    <a class="dropdown-item" aria-labelledby="mergesDropdown" href="/move/people/">People</a>
+                    <a class="dropdown-item" aria-labelledby="mergesDropdown" href="/move/venues/">Venues</a>
+                    <a class="dropdown-item" aria-labelledby="mergesDropdown" href="/move/pieces/">Pieces</a>
+                </div>
+            </div>
+
+            <a class="nav-item nav-link" href="/signup/" sec:authorize="isAnonymous()">Create Account</a>
+            <a class="nav-item nav-link"  href="/accounts/login/?next=/" sec:authorize="isAnonymous()">Sign In</a>
+            <a class="nav-item nav-link"  href="/users/{{user.username}}/" sec:authorize="isAuthenticated()">Profile</a>
+            <a class="nav-item nav-link"  href="/accounts/logout/" sec:authorize="isAuthenticated()">Logout</a>
+
+        </div>
+
+        <form class="form-inline" role="search" action="/search/">
+            <input type="text" class="form-control" placeholder="Search" name="q">
+            <button type="submit" class="btn btn-default search"><img src="https://static.brassbandresults.co.uk/search.png"/></button>
+        </form>
+
+    </div>
+</nav>
+
+<div class="clear"></div>
+<br/>
+
+<div layout:fragment="content">
+<h1>Content</h1>
+<p>You'll be wanting to override block content</p>
+</div>
+
+<br/><br/>
+<footer class="bg-dark text-white pt-2 pb-2" role="contentinfo">
+    <div layout:fragment="feedback">
+        <div class="footer-bottom">
+            <div id="commentbox" class="container">
+                <br/>
+                <h2>Comments or Corrections?</h2>
+                <p>Is something on this page incorrect?  Tell us what's wrong in the box below and click send.  Include your email address if you like.  If you're including contest results please remember to include the date, and as much detail about the contest as you can (conductor, adjudicators, set test piece etc.).  Don't forget you can always register and add missing results yourself!</p>
+                <form action="/feedback/" method="post">
+                    <p><textarea class="form-control" name="feedback" rows="4"></textarea>
+                        <script>
+                            document.write('<input ');
+                            document.write('   type="hidden" ');
+                            document.write('   name="x_url" ');
+                            document.write('   value="' + document.URL + '">');
+                            document.write('<input ');
+                            document.write('   type="hidden" ');
+                            document.write('   name="x_owner" ');
+                            document.write('   value="{{OwnerId}}">');
+                        </script>
+                    <noscript> <!-- for non-JavaScript browsers -->
+                        Copy the URL in your browser's address bar and paste it here.<br>
+                        <input type="text" name="x_url" size="19">
+                        <br>
+                    </noscript>
+                    <br/><span class="shhh"><input type="text" name="url"/></span><input type="submit" value="Send Feedback" /></p>
+                </form>
+            </div>
+        </div>
+    </div>
+    <p class="text-center bg-inverse">Copyright © 2022 Brass Band Results &amp; Tim Sawyer, All Rights Reserved</p>
+</footer>
+
+<p class="printonly"><br/><br/>Printed from https://brassbandresults.co.uk/</p>
+
+<script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+<script src="https://static.brassbandresults.co.uk/js/tablesorter/jquery.tablesorter.min.js"></script>
+<script src="https://static.brassbandresults.co.uk/jqueryui/jquery-ui.min.js"></script>
+<script src="https://static.brassbandresults.co.uk/js/flot/jquery.flot.min.js"></script>
+<script src="https://static.brassbandresults.co.uk/js/flot/jquery.flot.time.min.js"></script>
+<script src="https://static.brassbandresults.co.uk/js/flot/jquery.flot.resize.min.js"></script>
+<script src="https://static.brassbandresults.co.uk/js/flot/jquery.flot.pie.min.js"></script>
+<div layout:fragment="scriptfooter"></div>
+</body>
+</html>
