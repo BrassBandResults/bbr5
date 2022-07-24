@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - static/**
+      - 'static/**'
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches:
