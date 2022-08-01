@@ -18,12 +18,11 @@ import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 @ActiveProfiles("test")
 @SpringBootTest(properties = { "spring.config.name=create-band-tests-h2", "spring.datasource.url=jdbc:h2:mem:create-band-tests-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE"})
 @WithMockUser(username="member_user", roles= { "BBR_MEMBER" })
-public class CreateBandServiceTests implements LoginMixin {
+class CreateBandServiceTests implements LoginMixin {
 
     @Autowired private BandService bandService;
     @Autowired private RegionService regionService;

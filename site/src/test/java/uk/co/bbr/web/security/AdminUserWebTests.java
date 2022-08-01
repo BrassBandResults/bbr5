@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @WithMockUser(username="admin_user", roles= { "BBR_ADMIN" })
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class AdminUserWebTests  implements LoginMixin {
+class AdminUserWebTests implements LoginMixin {
 
     @Autowired private SecurityService securityService;
     @Autowired
