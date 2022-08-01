@@ -1,14 +1,21 @@
 package uk.co.bbr.web;
 
+import com.auth0.jwt.interfaces.DecodedJWT;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import uk.co.bbr.services.security.JwtService;
+import uk.co.bbr.services.security.SecurityService;
+import uk.co.bbr.services.security.dao.BbrUserDao;
+import uk.co.bbr.services.security.ex.AuthenticationFailedException;
 import uk.co.bbr.web.security.filter.SecurityFilter;
 import uk.co.bbr.web.security.support.TestUser;
 
@@ -23,6 +30,21 @@ public interface LoginMixin {
         assertEquals(302, response.getStatusCode().value());
         assertNotNull(response.getHeaders().get("Location"));
         assertEquals("http://localhost:" + port + "/", response.getHeaders().get("Location").get(0));
+    }
+
+    default void loginTestUser(SecurityService securityService, JwtService jwtService, TestUser testUser) throws AuthenticationFailedException {
+        securityService.createUser(testUser.getUsername(), testUser.getPassword(), testUser.getEmail());
+        BbrUserDao localUser = securityService.authenticate(testUser.getUsername(), testUser.getPassword());
+        String jwtEncoded = jwtService.createJwt(localUser);
+        DecodedJWT jwt = jwtService.verifyJwt(jwtEncoded);
+
+        // Token is valid, set auth context
+        final Authentication auth = jwtService.getAuthentication(jwt);
+        SecurityContextHolder.getContext().setAuthentication(auth);
+    }
+
+    default void logoutTestUser() {
+        SecurityContextHolder.getContext().setAuthentication(null);
     }
 
     default ResponseEntity<String> httpLoginTestUserByWeb(TestUser testUser, RestTemplate restTemplate, CsrfTokenRepository csrfTokenRepository, int port) {

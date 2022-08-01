@@ -1,20 +1,11 @@
 package uk.co.bbr.services.bands;
 
-import com.auth0.jwt.interfaces.DecodedJWT;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.web.client.RestTemplate;
 import uk.co.bbr.services.band.BandService;
 import uk.co.bbr.services.band.dto.BandListBandDto;
 import uk.co.bbr.services.band.dto.BandListDto;
@@ -22,7 +13,6 @@ import uk.co.bbr.services.region.RegionService;
 import uk.co.bbr.services.region.dao.RegionDao;
 import uk.co.bbr.services.security.JwtService;
 import uk.co.bbr.services.security.SecurityService;
-import uk.co.bbr.services.security.dao.BbrUserDao;
 import uk.co.bbr.services.security.ex.AuthenticationFailedException;
 import uk.co.bbr.web.LoginMixin;
 import uk.co.bbr.web.security.support.TestUser;
@@ -32,9 +22,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ActiveProfiles("test")
-@SpringBootTest(properties = { "spring.config.name=list-band-tests-h2", "spring.datasource.url=jdbc:h2:mem:list-band-tests-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE"},
-                webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@WithMockUser(username="member_user", roles= { "BBR_MEMBER" })
+@SpringBootTest(properties = { "spring.config.name=list-band-tests-h2", "spring.datasource.url=jdbc:h2:mem:list-band-tests-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE"})
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ListBandServiceTests implements LoginMixin {
     @Autowired private BandService bandService;
@@ -44,14 +32,7 @@ class ListBandServiceTests implements LoginMixin {
 
     @BeforeAll
     void setupBands() throws AuthenticationFailedException {
-        this.securityService.createUser(TestUser.TEST_ADMIN.getUsername(), TestUser.TEST_ADMIN.getPassword(), TestUser.TEST_ADMIN.getEmail());
-        BbrUserDao localUser = this.securityService.authenticate(TestUser.TEST_ADMIN.getUsername(), TestUser.TEST_ADMIN.getPassword());
-        String jwtEncoded = this.jwtService.createJwt(localUser);
-        DecodedJWT jwt = this.jwtService.verifyJwt(jwtEncoded);
-
-        // Token is valid, set auth context
-        final Authentication auth = this.jwtService.getAuthentication(jwt);
-        SecurityContextHolder.getContext().setAuthentication(auth);
+        loginTestUser(this.securityService, this.jwtService, TestUser.TEST_MEMBER);
 
         RegionDao midlands = this.regionService.findBySlug("midlands");
         RegionDao yorkshire = this.regionService.findBySlug("yorkshire");
@@ -71,6 +52,8 @@ class ListBandServiceTests implements LoginMixin {
         this.bandService.create("Aberllefenni", wales);
         this.bandService.create("Aalborg Brass Band", denmark);
         this.bandService.create("102 (Cheshire) Transport Column R.A.S.C. (T.A.)", northWest);
+
+        logoutTestUser();
     }
 
     @Test
