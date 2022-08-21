@@ -30,6 +30,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .disable().authorizeRequests()
                 .antMatchers("/").permitAll()
                 .antMatchers("/test/public").permitAll()
+                .antMatchers("/bands/**").permitAll()
                 .antMatchers(SecurityFilter.URL_SIGN_IN).permitAll()
                 .antMatchers("/**").authenticated()
                 .and().exceptionHandling().authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint(SecurityFilter.URL_SIGN_IN))

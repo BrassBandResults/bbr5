@@ -7,7 +7,7 @@
     <link rel="shortcut icon" th:href="@{${STATIC_HOST} + '/favicon.ico'}" >
     <meta name="Description" content="Brass Band Results: Project to build a comprehensive database of contest results." />
     <meta name="Keywords" content="Brass,Band,Contest,Music,Competition,Group,Results" />
-    <title><div layout:fragment="title"></div> - Brass Band Results</title>
+    <title layout:fragment="title">Brass Band Results</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
     <link rel="stylesheet" th:href="@{${STATIC_HOST} + '/css2018/bbr.css'}"/>
     <link rel="stylesheet" th:href="@{${STATIC_HOST} + '/css2018/bbr-print.css'}" media="print"/>
@@ -122,9 +122,11 @@
 <div class="clear"></div>
 <br/>
 
+<div class="container pt-1">
 <div layout:fragment="content">
-<h1>Content</h1>
+<h2>Content</h2>
 <p>You'll be wanting to override block content</p>
+</div>
 </div>
 
 <br/><br/>
