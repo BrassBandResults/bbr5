@@ -3,8 +3,8 @@
 <body>
 <title layout:fragment="title">Bands - Brass Band Results</title>
 <div layout:fragment="content">
-    <span th:if="${BandPrefixLetter == 'ALL'}"><h2><span th:text="#{bands_all-bands}">All Bands</span></h2></span>
-    <span th:if="${BandPrefixLetter != 'ALL'}"><h2><span th:text="#{bands_bands-starting-with}"></span> <span th:text="${BandPrefixLetter}">A</span></h2></span>
+    <span th:if="${BandPrefixLetter == 'ALL'}"><h2><span th:text="#{bands_all-bands}" th:remove="tag">All Bands</span></h2></span>
+    <span th:if="${BandPrefixLetter != 'ALL'}"><h2><span th:text="#{bands_bands-starting-with(${BandPrefixLetter})}" th:remove="tag">Bands starting with R</span></h2></span>
     <p>Showing <span th:text="${Bands.returnedBandsCount}">123</span> of <span th:text="${Bands.allBandsCount}">123</span>. This is a list of current or last known names, previous band names can be found by searching.</p>
 </div>
 </body>
