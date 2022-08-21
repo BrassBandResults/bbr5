@@ -26,11 +26,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class AuthenticatedUserWebTests implements LoginMixin {
 
     @Autowired private SecurityService securityService;
-    @Autowired
-    private CsrfTokenRepository csrfTokenRepository;
+    @Autowired private CsrfTokenRepository csrfTokenRepository;
     @Autowired private RestTemplate restTemplate;
-    @LocalServerPort
-    private int port;
+    @LocalServerPort private int port;
 
     @BeforeAll
     void setupUser() {

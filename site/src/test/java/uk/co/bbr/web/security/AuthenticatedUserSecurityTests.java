@@ -17,8 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @WithMockUser(username="member_user", roles= { "BBR_MEMBER" })
 class AuthenticatedUserSecurityTests {
 
-    @Autowired
-    private TestSecurityController securityTestController;
+    @Autowired private TestSecurityController securityTestController;
 
     @Test
     void testAccessUnsecuredPageWithAuthenticatedUserSucceeds() {

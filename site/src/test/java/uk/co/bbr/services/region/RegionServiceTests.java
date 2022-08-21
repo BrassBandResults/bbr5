@@ -15,8 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 @SpringBootTest(properties = { "spring.config.name=region-tests-h2", "spring.datasource.url=jdbc:h2:mem:region-tests-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE"})
 class RegionServiceTests {
 
-    @Autowired
-    private RegionService regionService;
+    @Autowired private RegionService regionService;
 
     @Test
     void testUnknownRegionReturnsSuccessfully() {

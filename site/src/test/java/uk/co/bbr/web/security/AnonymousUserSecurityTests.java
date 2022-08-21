@@ -17,8 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @WithAnonymousUser
 class AnonymousUserSecurityTests {
 
-    @Autowired
-    private TestSecurityController securityTestController;
+    @Autowired private TestSecurityController securityTestController;
 
     @Test
     void testAccessUnsecuredPageWithAnonymousUserSucceeds() {

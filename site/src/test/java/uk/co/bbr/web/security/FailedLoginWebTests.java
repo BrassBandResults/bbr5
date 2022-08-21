@@ -21,11 +21,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class FailedLoginWebTests implements LoginMixin {
-    @Autowired
-    private CsrfTokenRepository csrfTokenRepository;
+    @Autowired private CsrfTokenRepository csrfTokenRepository;
     @Autowired private RestTemplate restTemplate;
-    @LocalServerPort
-    private int port;
+    @LocalServerPort private int port;
 
     @Test
     void testLoginWithInvalidUserFails() {

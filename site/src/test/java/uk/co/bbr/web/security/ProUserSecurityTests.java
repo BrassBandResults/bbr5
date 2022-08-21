@@ -17,8 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @WithMockUser(username="pro_user", roles= { "BBR_PRO" })
 class ProUserSecurityTests {
 
-    @Autowired
-    private TestSecurityController securityTestController;
+    @Autowired private TestSecurityController securityTestController;
 
     @Test
     void testAccessUnsecuredPageWithProUserSucceeds() {

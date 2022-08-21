@@ -17,11 +17,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @SpringBootTest(properties = { "spring.config.name=band-no-login-tests-h2", "spring.datasource.url=jdbc:h2:mem:band-no-login-tests-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE"})
 class BandServicesNotLoggedInTests {
 
-    @Autowired
-    private BandService bandService;
+    @Autowired private BandService bandService;
 
-    @Autowired
-    private RegionService regionService;
+    @Autowired private RegionService regionService;
 
     @Test
     void testCreateBandFailsWithoutLogin() {
