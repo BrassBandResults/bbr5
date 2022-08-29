@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @ActiveProfiles("test")
 @SpringBootTest(properties = { "spring.config.name=security-controller-tests-h2", "spring.datasource.url=jdbc:h2:mem:security-controller-tests-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE"},
                 webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@WithMockUser(username="admin_user", roles= { "BBR_ADMIN" })
+@WithMockUser(username="admin_user", roles= { "BBR_ADMIN", "BBR_SUPERUSER", "BBR_PRO", "BBR_MEMBER" })
 class AdminUserSecurityTests {
 
    @Autowired private TestSecurityController securityTestController;

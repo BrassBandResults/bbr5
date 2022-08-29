@@ -39,12 +39,18 @@ public class JwtAuthenticationToken implements Authentication {
             switch (role) {
                 case ROLE_TEXT_ADMIN:
                     authorities.add(new SimpleGrantedAuthority(GRANTED_AUTH_ADMIN));
+                    authorities.add(new SimpleGrantedAuthority(GRANTED_AUTH_SUPERUSER));
+                    authorities.add(new SimpleGrantedAuthority(GRANTED_AUTH_PRO));
+                    authorities.add(new SimpleGrantedAuthority(GRANTED_AUTH_MEMBER));
                     break;
                 case ROLE_TEXT_SUPERUSER:
                     authorities.add(new SimpleGrantedAuthority(GRANTED_AUTH_SUPERUSER));
+                    authorities.add(new SimpleGrantedAuthority(GRANTED_AUTH_PRO));
+                    authorities.add(new SimpleGrantedAuthority(GRANTED_AUTH_MEMBER));
                     break;
                 case ROLE_TEXT_PRO:
                     authorities.add(new SimpleGrantedAuthority(GRANTED_AUTH_PRO));
+                    authorities.add(new SimpleGrantedAuthority(GRANTED_AUTH_MEMBER));
                     break;
                 case ROLE_TEXT_MEMBER:
                     authorities.add(new SimpleGrantedAuthority(GRANTED_AUTH_MEMBER));

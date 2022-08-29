@@ -9,6 +9,6 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-@PreAuthorize("hasRole('BBR_MEMBER') or hasRole('BBR_PRO') or hasRole('BBR_SUPERUSER') or hasRole('BBR_ADMIN')")
+@PreAuthorize("hasRole('BBR_MEMBER')")
 public @interface IsBbrMember {
 }
