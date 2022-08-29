@@ -29,6 +29,8 @@ class RegionWebTests implements LoginMixin {
     @Test
     void testGetYorkshireRegionPageWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/regions/yorkshire", String.class);
+        assertTrue(response.contains("<title>Yorkshire - Region - Brass Band Results</title>"));
+
         assertTrue(response.contains("<h2>Yorkshire</h2>"));
         assertTrue(response.contains("<h3>Map</h3>"));
         assertTrue(response.contains("<h3>Contests</h3>"));
