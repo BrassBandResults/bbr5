@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+<html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <body>
 <title layout:fragment="title" th:text="#{regions_page-title}">Regions - Brass Band Results</title>
 <div layout:fragment="content">
@@ -19,17 +19,21 @@
         <thead>
         <tr>
             <th th:text="#{regions_column-header-name}">Name</th>
-            <th th:text="#{regions_column-header-bands}">Bands</th>
+            <th sec:authorize="!hasRole('BBR_PRO')" th:text="#{regions_column-header-bands}">Bands</th>
+            <th sec:authorize="hasRole('BBR_PRO')" th:text="#{regions_column-header-bands-active}">Active Bands</th>
+            <th sec:authorize="hasRole('BBR_PRO')" th:text="#{regions_column-header-bands-extinct}">Extinct Bands</th>
             <th></th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="region : ${Regions}">
+        <tr th:each="region : ${Regions}" th:id="${region.slug}">
             <td class="region">
                 <img th:src="@{${STATIC_HOST} + '/flags/' + ${region.countryCode} + '.png'}"/>
                 <a th:href="${'/regions/' + region.slug}" th:text="#{'region_' + ${region.slug}}">Region Name</span></a>
             </td>
-            <td class="band-count" th:text="${region.getBandCount()}"></td>
+            <td sec:authorize="!hasRole('BBR_PRO')" class="band-count" th:text="${region.getBandsCount()}"></td>
+            <td sec:authorize="hasRole('BBR_PRO')" class="active-band-count" th:text="${region.getActiveBandsCount()}"></td>
+            <td sec:authorize="hasRole('BBR_PRO')" class="extinct-band-count" th:text="${region.getExtinctBandsCount()}"></td>
             <td class="band-links"><a th:href="${'/regions/' + region.slug + '/links'}" th:text="#{regions_column-links}">Links</a></td>
         </tr>
         </tbody>

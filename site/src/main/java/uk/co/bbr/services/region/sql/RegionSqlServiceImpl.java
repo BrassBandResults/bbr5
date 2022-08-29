@@ -25,9 +25,6 @@ public class RegionSqlServiceImpl implements RegionSqlService {
             throw new NotFoundException("Region with slug " + regionSlug + " not found");
         }
 
-        int activeBandsCount = this.regionRepository.countActiveForRegion(regionSlug);
-        int extinctBandsCount = this.regionRepository.countExtinctForRegion(regionSlug);
-
-        return new RegionPageDto(region.get(), activeBandsCount, extinctBandsCount);
+        return new RegionPageDto(region.get());
     }
 }

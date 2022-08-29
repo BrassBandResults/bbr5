@@ -8,7 +8,6 @@ import uk.co.bbr.services.region.dao.RegionDao;
 @RequiredArgsConstructor
 public class RegionListDto {
     private final RegionDao region;
-    private final int bandCount;
 
     public String getSlug() {
         return this.region.getSlug();
@@ -16,5 +15,17 @@ public class RegionListDto {
 
     public String getCountryCode() {
         return this.region.getCountryCode();
+    }
+
+
+    public int getBandsCount() {
+        return this.region.getBandsCount();
+    }
+    public int getActiveBandsCount() {
+        return this.region.getActiveBandsCount();
+    }
+
+    public int getExtinctBandsCount() {
+        return this.region.getExtinctBandsCount();
     }
 }

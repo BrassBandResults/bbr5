@@ -8,10 +8,16 @@ import uk.co.bbr.services.region.dao.RegionDao;
 @RequiredArgsConstructor
 public class RegionPageDto {
     private final RegionDao region;
-    private final int activeBandsCount;
-    private final int extinctBandsCount;
 
     public String getSlug() {
         return this.region.getSlug();
+    }
+
+    public int getActiveBandsCount() {
+        return this.region.getActiveBandsCount();
+    }
+
+    public int getExtinctBandsCount() {
+        return this.region.getExtinctBandsCount();
     }
 }
