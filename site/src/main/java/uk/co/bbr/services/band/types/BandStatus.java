@@ -24,6 +24,13 @@ public enum BandStatus {
         return this.id;
     }
 
+    public boolean isExtinct() {
+        return this.getCode() == 0;
+    }
+    public boolean isNotExtinct() {
+        return this.getCode() != 0;
+    }
+
     public static BandStatus fromCode(int code) {
         return Stream.of(BandStatus.values())
                 .filter(c -> c.getCode() == code)

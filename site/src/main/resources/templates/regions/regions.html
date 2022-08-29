@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+<body>
+<title layout:fragment="title" th:text="#{regions_page-title}">Regions - Brass Band Results</title>
+<div layout:fragment="content">
+    <script>
+        $(document).ready(function(){
+            $("#bands").tablesorter();
+
+            $('button.reset').click(function(){
+                $('#bands').trigger('sortReset');
+                return false;
+            });
+        });
+    </script>
+    <h2 th:text="#{regions_region-title}">Region List</h2>
+    <button class="reset btn btn-outline-primary btn-sm float-right mb-1" th:text="#{bands_reset-sort}">Reset Sort</button>
+    <table id="bands" class="table table-hover">
+        <thead>
+        <tr>
+            <th th:text="#{regions_column-header-name}">Name</th>
+            <th th:text="#{regions_column-header-bands}">Bands</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="region : ${Regions}">
+            <td class="region">
+                <img th:src="@{${STATIC_HOST} + '/flags/' + ${region.countryCode} + '.png'}"/>
+                <a th:href="${'/regions/' + region.slug}" th:text="#{'region_' + ${region.slug}}">Region Name</span></a>
+            </td>
+            <td class="band-count" th:text="${region.getBandCount()}"></td>
+            <td class="band-links"><a th:href="${'/regions/' + region.slug + '/links'}" th:text="#{regions_column-links}">Links</a></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

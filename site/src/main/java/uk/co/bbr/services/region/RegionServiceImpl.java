@@ -1,13 +1,14 @@
 package uk.co.bbr.services.region;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.framework.mixins.SlugTools;
-import uk.co.bbr.services.framework.ValidationException;
 import uk.co.bbr.services.region.dao.RegionDao;
 import uk.co.bbr.services.region.dao.RegionRepository;
+import uk.co.bbr.services.region.dto.RegionPageDto;
+import uk.co.bbr.services.region.dto.RegionListDto;
+import uk.co.bbr.services.region.sql.RegionSqlService;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,8 +17,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class RegionServiceImpl implements RegionService, SlugTools {
 
-    @Autowired
-    private RegionRepository regionRepository;
+    private final RegionRepository regionRepository;
+    private final RegionSqlService regionSqlService;
 
     @Override
     public List<RegionDao> fetchAll() {
@@ -36,5 +37,15 @@ public class RegionServiceImpl implements RegionService, SlugTools {
             throw new NotFoundException("Region with slug " + slug + " not found");
         }
         return region.get();
+    }
+
+    @Override
+    public List<RegionListDto> fetchRegionsForListPage() {
+        return this.regionRepository.fetchRegionsForList();
+    }
+
+    @Override
+    public RegionPageDto findBySlugForPage(String regionSlug) {
+        return this.regionSqlService.findBySlugForPage(regionSlug);
     }
 }

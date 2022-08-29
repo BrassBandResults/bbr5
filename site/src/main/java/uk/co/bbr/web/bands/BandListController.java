@@ -21,7 +21,7 @@ public class BandListController {
 
     @GetMapping("/bands/{letter:[A-Z0-9]{1}}")
     public String bandListLetter(Model model, @PathVariable("letter") String letter) {
-        BandListDto bands = bandService.listBandsStartingWith(letter);
+        BandListDto bands = this.bandService.listBandsStartingWith(letter);
 
         model.addAttribute("BandPrefixLetter", letter);
         model.addAttribute("Bands", bands);
@@ -30,7 +30,7 @@ public class BandListController {
 
     @GetMapping("/bands/ALL")
     public String bandListAll(Model model) {
-        BandListDto bands = bandService.listBandsStartingWith("ALL");
+        BandListDto bands = this.bandService.listBandsStartingWith("ALL");
 
         model.addAttribute("BandPrefixLetter", "ALL");
         model.addAttribute("Bands", bands);

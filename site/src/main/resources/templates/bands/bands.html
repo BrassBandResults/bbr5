@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
 <body>
-<title layout:fragment="title">Bands - Brass Band Results</title>
+<title layout:fragment="title" th:text="#{bands_page-title}">Bands - Brass Band Results</title>
 <div layout:fragment="content">
     <script>
         $(document).ready(function(){

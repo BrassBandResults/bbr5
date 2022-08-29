@@ -3,11 +3,15 @@ package uk.co.bbr.services.region.dao;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import uk.co.bbr.services.band.dao.BandDao;
 import uk.co.bbr.services.framework.AbstractDao;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.List;
 
 @Getter
 @Setter

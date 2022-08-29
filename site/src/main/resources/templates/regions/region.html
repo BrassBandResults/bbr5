@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+<body>
+<title layout:fragment="title" th:text="#{region_page_page-title(${'region_' + ${Region.slug}})}">Yorkshire Region - Brass Band Results</title>
+<div layout:fragment="content">
+    <script>
+        $(document).ready(function(){
+            $("#bands").tablesorter();
+
+            $('button.reset').click(function(){
+                $('#bands').trigger('sortReset');
+                return false;
+            });
+        });
+    </script>
+    <h2 th:text="#{'region_' + ${Region.slug}}">Region Name</h2>
+    <p th:text="#{region_page_bands-count(${Region.activeBandsCount}, ${Region.extinctBandsCount})}">This region has {0} active bands, and {1} extinct.</p>
+
+    <h3 th:text="#{region_page_map-header}">Map</h3>
+    <h3 th:text="#{region_page_contests-header}">Contests</h3>
+    <h3 th:text="#{region_page_bands-header}">Bands</h3>
+</div>
+</body>
+</html>

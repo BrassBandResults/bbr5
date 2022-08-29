@@ -77,29 +77,29 @@
             </div>
 
             <div class="dropdown">
-                <a class="nav-item nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="siteDropdown" aria-haspopup="true" aria-expanded="false">Site</a>
+                <a class="nav-item nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="siteDropdown" aria-haspopup="true" aria-expanded="false" th:text="#{menu_site-title}">Site</a>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" aria-labelledby="siteDropdown" href="/tags/">List Tags</a>
-                    <a class="dropdown-item" aria-labelledby="siteDropdown" href="/leaderboard/">Leaderboard</a>
-                    <a class="dropdown-item" aria-labelledby="siteDropdown" href="/badges/">Badges</a>
+                    <a class="dropdown-item" aria-labelledby="siteDropdown" href="/tags/" th:text="#{menu_site-list-tags}">List Tags</a>
+                    <a class="dropdown-item" aria-labelledby="siteDropdown" href="/leaderboard/" th:text="#{menu_site-leaderboard}">Leaderboard</a>
+                    <a class="dropdown-item" aria-labelledby="siteDropdown" href="/badges/" th:text="#{menu_site-badges}">Badges</a>
+                    <div class="dropdown-divider"sec:authorize="hasRole('BBR_SUPERUSER') or hasRole('BBR_ADMIN')"></div>
+                    <a class="dropdown-item" aria-labelledby="siteDropdown" href="/feedback/queue/" th:text="#{menu_site-feedback-queue}" sec:authorize="hasRole('BBR_SUPERUSER')">Feedback Queue</a>
+                    <a class="dropdown-item" aria-labelledby="siteDropdown" href="/feedback/admin/" th:text="#{menu_site-owner-queue}" sec:authorize="hasRole('BBR_ADMIN')">Owner Queue</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" aria-labelledby="siteDropdown" href="/feedback/queue/" sec:authorize="hasRole('BBR_SUPERUSER')">Feedback Queue</a>
-                    <a class="dropdown-item" aria-labelledby="siteDropdown" href="/feedback/admin/" sec:authorize="hasRole('BBR_ADMIN')">Owner Queue</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" aria-labelledby="siteDropdown" href="/statistics/">Statistics</a>
-                    <a class="dropdown-item" aria-labelledby="siteDropdown" href="/faq/">FAQ</a>
-                    <a class="dropdown-item" aria-labelledby="siteDropdown" href="/aboutus/">Who We Are</a>
-                    <a class="dropdown-item" aria-labelledby="siteDropdown" href="/privacy/">Privacy Policy</a>
+                    <a class="dropdown-item" aria-labelledby="siteDropdown" href="/statistics/" th:text="#{menu_site-statistics}">Statistics</a>
+                    <a class="dropdown-item" aria-labelledby="siteDropdown" href="/faq/" th:text="#{menu_site-faq}">FAQ</a>
+                    <a class="dropdown-item" aria-labelledby="siteDropdown" href="/aboutus/" th:text="#{menu_site-who-we-are}">Who We Are</a>
+                    <a class="dropdown-item" aria-labelledby="siteDropdown" href="/privacy/" th:text="#{menu_site-privacy-policy}">Privacy Policy</a>
                 </div>
             </div>
 
             <div class="dropdown" sec:authorize="hasRole('BBR_SUPERUSER')">
-                <a class="nav-item nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="mergesDropdown" aria-haspopup="true" aria-expanded="false">Merges</a>
+                <a class="nav-item nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="mergesDropdown" aria-haspopup="true" aria-expanded="false" th:text="#{menu_merges-title}">Merges</a>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" aria-labelledby="mergesDropdown" href="/move/bands/">Bands</a>
-                    <a class="dropdown-item" aria-labelledby="mergesDropdown" href="/move/people/">People</a>
-                    <a class="dropdown-item" aria-labelledby="mergesDropdown" href="/move/venues/">Venues</a>
-                    <a class="dropdown-item" aria-labelledby="mergesDropdown" href="/move/pieces/">Pieces</a>
+                    <a class="dropdown-item" aria-labelledby="mergesDropdown" href="/move/bands/" th:text="#{menu_merges-bands}">Bands</a>
+                    <a class="dropdown-item" aria-labelledby="mergesDropdown" href="/move/people/" th:text="#{menu_merges-people}">People</a>
+                    <a class="dropdown-item" aria-labelledby="mergesDropdown" href="/move/venues/" th:text="#{menu_merges-venues}">Venues</a>
+                    <a class="dropdown-item" aria-labelledby="mergesDropdown" href="/move/pieces/" th:text="#{menu_merges-pieces}">Pieces</a>
                 </div>
             </div>
 
