@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import uk.co.bbr.services.region.dao.RegionDao;
-import uk.co.bbr.services.region.dto.RegionListDto;
 
 import java.util.List;
 
@@ -28,15 +27,6 @@ class RegionServiceTests {
     void testListRegionsWorksSuccessfully() {
         // act
         List<RegionDao> allRegions = this.regionService.fetchAll();
-
-        // assert
-        assertEquals(63, allRegions.size());
-    }
-
-    @Test
-    void testFetchRegionsForListPageWorksSuccessfully() {
-        // act
-        List<RegionListDto> allRegions = this.regionService.fetchRegionsForListPage();
 
         // assert
         assertEquals(63, allRegions.size());

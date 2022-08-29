@@ -7,7 +7,6 @@ import uk.co.bbr.services.framework.mixins.SlugTools;
 import uk.co.bbr.services.region.dao.RegionDao;
 import uk.co.bbr.services.region.dao.RegionRepository;
 import uk.co.bbr.services.region.dto.RegionPageDto;
-import uk.co.bbr.services.region.dto.RegionListDto;
 import uk.co.bbr.services.region.sql.RegionSqlService;
 
 import java.util.List;
@@ -37,11 +36,6 @@ public class RegionServiceImpl implements RegionService, SlugTools {
             throw new NotFoundException("Region with slug " + slug + " not found");
         }
         return region.get();
-    }
-
-    @Override
-    public List<RegionListDto> fetchRegionsForListPage() {
-        return this.regionRepository.fetchRegionsForList();
     }
 
     @Override

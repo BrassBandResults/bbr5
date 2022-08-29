@@ -6,9 +6,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import uk.co.bbr.services.region.RegionService;
+import uk.co.bbr.services.region.dao.RegionDao;
 import uk.co.bbr.services.region.dto.RegionPageDto;
-import uk.co.bbr.services.region.dto.RegionListDto;
-
 
 import java.util.List;
 
@@ -20,7 +19,7 @@ public class RegionController {
 
     @GetMapping("/regions")
     public String regionList(Model model) {
-        List<RegionListDto> regions = this.regionService.fetchRegionsForListPage();
+        List<RegionDao> regions = this.regionService.fetchAll();
 
         model.addAttribute("Regions", regions);
         return "regions/regions";
