@@ -14,7 +14,7 @@ import javax.persistence.Table;
 @Setter
 @Entity
 @NoArgsConstructor
-@Table(name="user")
+@Table(name="site_user")
 public class BbrUserDao extends AbstractDao {
 
     @Column(name="usercode", length=50, nullable=false)

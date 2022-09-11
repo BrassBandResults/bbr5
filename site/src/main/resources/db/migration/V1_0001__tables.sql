@@ -1,6 +1,6 @@
 -- USER
 
-CREATE TABLE user (
+CREATE TABLE site_user (
     id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
     updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -14,7 +14,7 @@ CREATE TABLE user (
     access_level VARCHAR(1) NOT NULL DEFAULT 'M'
 );
 
-INSERT INTO user (updated_by_id, owner_id, usercode, password, email, salt, password_version, access_level) VALUES (1, 1, 'owner', 'password', 'owner@brassbandresults.co.uk', 'ABC123', 0, 'A');
+INSERT INTO site_user (updated_by_id, owner_id, usercode, password, email, salt, password_version, access_level) VALUES (1, 1, 'owner', 'password', 'owner@brassbandresults.co.uk', 'ABC123', 0, 'A');
 
 -- REGION
 
@@ -23,8 +23,8 @@ CREATE TABLE region (
     old_id BIGINT,
     updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_by_id BIGINT NOT NULL REFERENCES user(id),
-    owner_id BIGINT NOT NULL REFERENCES user(id),
+    updated_by_id BIGINT NOT NULL REFERENCES site_user(id),
+    owner_id BIGINT NOT NULL REFERENCES site_user(id),
     name VARCHAR(100) NOT NULL,
     slug VARCHAR(60) NOT NULL,
     container_id BIGINT REFERENCES region(id),
@@ -106,27 +106,27 @@ CREATE TABLE section (
     id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
     updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_by_id BIGINT NOT NULL REFERENCES user(id),
-    owner_id BIGINT NOT NULL REFERENCES user(id),
+    updated_by_id BIGINT NOT NULL REFERENCES site_user(id),
+    owner_id BIGINT NOT NULL REFERENCES site_user(id),
     name VARCHAR(100) NOT NULL,
     slug VARCHAR(60) NOT NULL,
     position INT NOT NULL DEFAULT 0,
     map_short_code VARCHAR(1) NOT NULL
 );
 
-INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code) VALUES (1, 1, 'Excellence', 'excellence', 0, 'C');
-INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code) VALUES (1, 1, 'Elite', 'elite', 1, 'C');
-INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code) VALUES (1, 1, 'Championship', 'championship', 5, 'C');
-INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code) VALUES (1, 1, 'First', 'first', 10, '1');
-INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code) VALUES (1, 1, 'Second', 'second', 20, '2');
-INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code) VALUES (1, 1, 'Third', 'third', 30, '3');
-INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code) VALUES (1, 1, 'Forth', 'fourth', 40, '4');
-INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code) VALUES (1, 1, 'Fifth', 'fifth', 50, '5');
-INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code) VALUES (1, 1, 'Youth', 'youth', 60, 'Y');
-INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code) VALUES (1, 1, 'A Grade', 'a', 110, 'A');
-INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code) VALUES (1, 1, 'B Grade', 'b', 120, 'B');
-INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code) VALUES (1, 1, 'C Grade', 'c', 130, 'C');
-INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code) VALUES (1, 1, 'D Grade', 'd', 140, 'D');
+INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code) VALUES (1, 1, 'Excellence', 'excellence', 10, 'C');
+INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code) VALUES (1, 1, 'Elite', 'elite', 20, 'C');
+INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code) VALUES (1, 1, 'Championship', 'championship', 30, 'C');
+INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code) VALUES (1, 1, 'First', 'first', 110, '1');
+INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code) VALUES (1, 1, 'Second', 'second', 120, '2');
+INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code) VALUES (1, 1, 'Third', 'third', 130, '3');
+INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code) VALUES (1, 1, 'Forth', 'fourth', 140, '4');
+INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code) VALUES (1, 1, 'Fifth', 'fifth', 150, '5');
+INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code) VALUES (1, 1, 'Youth', 'youth', 160, 'Y');
+INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code) VALUES (1, 1, 'A Grade', 'a', 210, 'A');
+INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code) VALUES (1, 1, 'B Grade', 'b', 220, 'B');
+INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code) VALUES (1, 1, 'C Grade', 'c', 230, 'C');
+INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code) VALUES (1, 1, 'D Grade', 'd', 240, 'D');
 
 -- BAND
 
@@ -135,8 +135,8 @@ CREATE TABLE band (
     old_id BIGINT,
     updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_by_id BIGINT NOT NULL REFERENCES user(id),
-    owner_id BIGINT NOT NULL REFERENCES user(id),
+    updated_by_id BIGINT NOT NULL REFERENCES site_user(id),
+    owner_id BIGINT NOT NULL REFERENCES site_user(id),
     name VARCHAR(100) NOT NULL,
     slug VARCHAR(60) NOT NULL,
     website VARCHAR(100),
@@ -144,7 +144,7 @@ CREATE TABLE band (
     longitude VARCHAR(15),
     latitude VARCHAR(15),
     notes TEXT,
-    mapper_id BIGINT REFERENCES user(id),
+    mapper_id BIGINT REFERENCES site_user(id),
     start_date DATE,
     end_date DATE,
     status BIGINT,
@@ -156,8 +156,8 @@ CREATE TABLE band_rehearsal_night (
     id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
     updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_by_id BIGINT NOT NULL REFERENCES user(id),
-    owner_id BIGINT NOT NULL REFERENCES user(id),
+    updated_by_id BIGINT NOT NULL REFERENCES site_user(id),
+    owner_id BIGINT NOT NULL REFERENCES site_user(id),
     day_number INT NOT NULL,
     band_id BIGINT REFERENCES band(id)
 );
@@ -166,8 +166,8 @@ CREATE TABLE band_previous_name (
     id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
     updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_by_id BIGINT NOT NULL REFERENCES user(id),
-    owner_id BIGINT NOT NULL REFERENCES user(id),
+    updated_by_id BIGINT NOT NULL REFERENCES site_user(id),
+    owner_id BIGINT NOT NULL REFERENCES site_user(id),
     band_id BIGINT NOT NULL REFERENCES band(id),
     old_name VARCHAR(100) NOT NULL,
     start_date DATE,
@@ -179,8 +179,8 @@ CREATE TABLE band_relationship_type (
     id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
     updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_by_id BIGINT NOT NULL REFERENCES user(id),
-    owner_id BIGINT NOT NULL REFERENCES user(id),
+    updated_by_id BIGINT NOT NULL REFERENCES site_user(id),
+    owner_id BIGINT NOT NULL REFERENCES site_user(id),
     name VARCHAR(100) NOT NULL,
     reverse_name VARCHAR(100) NOT NULL
 );
@@ -196,8 +196,8 @@ CREATE TABLE band_relationship (
     id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
     updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_by_id BIGINT NOT NULL REFERENCES user(id),
-    owner_id BIGINT NOT NULL REFERENCES user(id),
+    updated_by_id BIGINT NOT NULL REFERENCES site_user(id),
+    owner_id BIGINT NOT NULL REFERENCES site_user(id),
     left_band_id BIGINT REFERENCES band(id),
     left_band_name VARCHAR(100),
     relationship_id BIGINT REFERENCES band_relationship_type(id),
@@ -214,8 +214,8 @@ CREATE TABLE person (
     old_id BIGINT,
     updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_by_id BIGINT NOT NULL REFERENCES user(id),
-    owner_id BIGINT NOT NULL REFERENCES user(id),
+    updated_by_id BIGINT NOT NULL REFERENCES site_user(id),
+    owner_id BIGINT NOT NULL REFERENCES site_user(id),
     first_names VARCHAR(100),
     surname VARCHAR(100) NOT NULL,
     suffix VARCHAR(10),
@@ -231,8 +231,8 @@ CREATE TABLE person_alternative_name (
     id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
     updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_by_id BIGINT NOT NULL REFERENCES user(id),
-    owner_id BIGINT NOT NULL REFERENCES user(id),
+    updated_by_id BIGINT NOT NULL REFERENCES site_user(id),
+    owner_id BIGINT NOT NULL REFERENCES site_user(id),
     person_id BIGINT NOT NULL REFERENCES person(id),
     name VARCHAR(100) NOT NULL,
     hidden BIT NOT NULL DEFAULT 0
@@ -242,8 +242,8 @@ CREATE TABLE person_profile (
     id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
     updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_by_id BIGINT NOT NULL REFERENCES user(id),
-    owner_id BIGINT NOT NULL REFERENCES user(id),
+    updated_by_id BIGINT NOT NULL REFERENCES site_user(id),
+    owner_id BIGINT NOT NULL REFERENCES site_user(id),
     person_id BIGINT NOT NULL REFERENCES person(id),
     title VARCHAR(10),
     qualifications VARCHAR(30),
@@ -260,8 +260,8 @@ CREATE TABLE person_relationship_type (
     id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
     updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_by_id BIGINT NOT NULL REFERENCES user(id),
-    owner_id BIGINT NOT NULL REFERENCES user(id),
+    updated_by_id BIGINT NOT NULL REFERENCES site_user(id),
+    owner_id BIGINT NOT NULL REFERENCES site_user(id),
     name VARCHAR(100) NOT NULL,
     reverse_name VARCHAR(100) NOT NULL
 );
@@ -276,8 +276,8 @@ CREATE TABLE person_relationship (
     id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
     updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_by_id BIGINT NOT NULL REFERENCES user(id),
-    owner_id BIGINT NOT NULL REFERENCES user(id),
+    updated_by_id BIGINT NOT NULL REFERENCES site_user(id),
+    owner_id BIGINT NOT NULL REFERENCES site_user(id),
     left_person_id BIGINT REFERENCES band(id),
     left_person_name VARCHAR(100),
     relationship_id BIGINT REFERENCES band_relationship_type(id),

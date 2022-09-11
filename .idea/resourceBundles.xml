@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ResourceBundleManager">
+    <file url="file://$PROJECT_DIR$/site/src/main/resources/translations/messages.properties" />
+    <custom-resource-bundle>
+      <file value="file://$PROJECT_DIR$/site/src/main/resources/translations/messages.properties" />
+      <file value="file://$PROJECT_DIR$/site/src/test/resources/translations/messages_test.properties" />
+      <base-name>messages</base-name>
+    </custom-resource-bundle>
+  </component>
+</project>
