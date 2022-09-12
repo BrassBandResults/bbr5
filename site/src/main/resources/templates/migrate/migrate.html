@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+<head>
+    <div layout:fragment="head">
+        <meta http-equiv="refresh" th:content="|0; URL=${Next}|" />
+    </div>
+</head>
+<body>
+<div layout:fragment="content">
+    <h1>Migrate</h1>
+    <table>
+    <tr th:each="message : ${Messages}">
+        <td th:text="${message}"></td>
+    </tr>
+    </table>
+</div>
+</body>
+</html>
