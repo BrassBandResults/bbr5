@@ -20,9 +20,13 @@ public enum BandStatus {
         this.displayName = displayName;
     }
 
+
+
     public int getCode() {
         return this.id;
     }
+
+    public String getDisplayName() { return this.displayName; }
 
     public boolean isExtinct() {
         return this.getCode() == 0;
@@ -34,6 +38,13 @@ public enum BandStatus {
     public static BandStatus fromCode(int code) {
         return Stream.of(BandStatus.values())
                 .filter(c -> c.getCode() == code)
+                .findFirst()
+                .orElseThrow(IllegalArgumentException::new);
+    }
+
+    public static BandStatus fromDescription(String description) {
+        return Stream.of(BandStatus.values())
+                .filter(c -> c.getDisplayName().equals(description))
                 .findFirst()
                 .orElseThrow(IllegalArgumentException::new);
     }

@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import uk.co.bbr.services.band.dao.BandDao;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface BandRepository extends JpaRepository<BandDao, Long> {
 
@@ -25,4 +26,10 @@ public interface BandRepository extends JpaRepository<BandDao, Long> {
             "OR b.name LIKE UPPER('8%') " +
             "OR b.name LIKE UPPER('9%') ORDER BY b.name")
     List<BandDao> findWithNumberPrefix();
+
+    @Query("SELECT b FROM BandDao b WHERE b.slug = ?1")
+    Optional<BandDao> findBySlug(String bandSlug);
+
+    @Query("SELECT b FROM BandDao b WHERE b.oldId = ?1")
+    Optional<BandDao> fetchByOldId(String bandOldId);
 }

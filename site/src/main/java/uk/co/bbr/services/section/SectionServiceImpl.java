@@ -14,4 +14,9 @@ public class SectionServiceImpl implements SectionService {
     public SectionDao fetchBySlug(String sectionSlug) {
         return this.sectionRepository.findBySlug(sectionSlug);
     }
+
+    @Override
+    public SectionDao fetchByName(String sectionName) {
+        return this.sectionRepository.findByName(sectionName);
+    }
 }

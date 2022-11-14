@@ -18,10 +18,7 @@ import javax.persistence.Table;
 @Entity
 @NoArgsConstructor
 @Table(name="BAND_REHEARSAL_NIGHT")
-public class BandRehearsalNightDao extends AbstractDao {
-
-    @Column(name="NAME", nullable=false)
-    private String name;
+public class BandRehearsalDayDao extends AbstractDao {
 
     @Column(name="day_number", nullable=false)
     private RehearsalDay day;

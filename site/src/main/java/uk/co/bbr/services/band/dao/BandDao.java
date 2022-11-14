@@ -29,6 +29,9 @@ public class BandDao extends AbstractDao implements NameTools {
     @Column(name="NAME", nullable=false)
     private String name;
 
+    @Column(name="OLD_ID")
+    private String oldId;
+
     @Column(name="SLUG", nullable=false)
     private String slug;
 
@@ -73,32 +76,42 @@ public class BandDao extends AbstractDao implements NameTools {
     }
 
     public void setLatitude(String latitude) {
-        if (latitude.trim().length() > 15) {
-            latitude = latitude.trim().substring(0, 15);
+        if (latitude != null) {
+            if (latitude.trim().length() > 15) {
+                latitude = latitude.trim().substring(0, 15);
+            }
+            this.latitude = latitude.trim();
         }
-        this.latitude = latitude.trim();
     }
 
     public void setLongitude(String longitude) {
-        if (longitude.trim().length() > 15) {
-            longitude = longitude.trim().substring(0, 15);
+        if (longitude != null) {
+            if (longitude.trim().length() > 15) {
+                longitude = longitude.trim().substring(0, 15);
+            }
+            this.longitude = longitude.trim();
         }
-        this.longitude = longitude.trim();
     }
 
     public void setNotes(String notes) {
-        this.notes = notes.trim();
+        if (notes != null) {
+            this.notes = notes.trim();
+        }
     }
 
     public void setWebsite(String website) {
-        this.website = website.trim();
+        if (website != null) {
+            this.website = website.trim();
+        }
     }
 
     public void setTwitterName(String twitterName) {
-        if (twitterName.trim().startsWith("@")) {
-            twitterName = twitterName.trim().substring(1);
-        }
+        if (twitterName != null) {
+            if (twitterName.trim().startsWith("@")) {
+                twitterName = twitterName.trim().substring(1);
+            }
 
-        this.twitterName = twitterName.trim();
+            this.twitterName = twitterName.trim();
+        }
     }
 }

@@ -23,10 +23,18 @@ public enum RehearsalDay {
     public int getCode() {
         return this.id;
     }
+    public String getDisplayName() { return this.displayName; }
 
     public static RehearsalDay fromCode(int code) {
         return Stream.of(RehearsalDay.values())
                 .filter(c -> c.getCode() == code)
+                .findFirst()
+                .orElseThrow(IllegalArgumentException::new);
+    }
+
+    public static RehearsalDay fromName(String name) {
+        return Stream.of(RehearsalDay.values())
+                .filter(c -> c.getDisplayName().equals(name))
                 .findFirst()
                 .orElseThrow(IllegalArgumentException::new);
     }

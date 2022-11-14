@@ -45,7 +45,7 @@ public class SecurityServiceImpl implements SecurityService {
     }
 
     @Override
-    public void createUser(String usercode, String plaintextPassword, String email) {
+    public BbrUserDao createUser(String usercode, String plaintextPassword, String email) {
         String salt = PasswordTools.createSalt();
         String passwordVersion = PasswordTools.latestVersion();
 
@@ -57,7 +57,8 @@ public class SecurityServiceImpl implements SecurityService {
         newUser.setSalt(salt);
         newUser.setPasswordVersion(passwordVersion);
         newUser.setPassword(PasswordTools.hashPassword(passwordVersion, salt, usercode, plaintextPassword));
-        this.bbrUserRepository.save(newUser);
+        this.bbrUserRepository.saveAndFlush(newUser);
+        return newUser;
     }
 
     @Override
@@ -70,7 +71,7 @@ public class SecurityServiceImpl implements SecurityService {
         BbrUserDao matchingUser = matchingUserOptional.get();
 
         matchingUser.setAccessLevel(UserRole.ADMIN.getCode());
-        this.bbrUserRepository.save(matchingUser);
+        this.bbrUserRepository.saveAndFlush(matchingUser);
     }
 
     @Override
@@ -83,7 +84,7 @@ public class SecurityServiceImpl implements SecurityService {
         BbrUserDao matchingUser = matchingUserOptional.get();
 
         matchingUser.setAccessLevel(UserRole.PRO.getCode());
-        this.bbrUserRepository.save(matchingUser);
+        this.bbrUserRepository.saveAndFlush(matchingUser);
     }
 
     @Override
@@ -96,6 +97,11 @@ public class SecurityServiceImpl implements SecurityService {
         BbrUserDao matchingUser = matchingUserOptional.get();
 
         matchingUser.setAccessLevel(UserRole.SUPERUSER.getCode());
-        this.bbrUserRepository.save(matchingUser);
+        this.bbrUserRepository.saveAndFlush(matchingUser);
+    }
+
+    @Override
+    public Optional<BbrUserDao> fetchUserByUsercode(String usercode) {
+        return this.bbrUserRepository.findByUsercode(usercode);
     }
 }
