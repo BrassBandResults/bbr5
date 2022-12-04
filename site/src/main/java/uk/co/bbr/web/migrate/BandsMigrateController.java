@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.xml.sax.SAXParseException;
 import uk.co.bbr.services.band.BandService;
 import uk.co.bbr.services.band.dao.BandDao;
 import uk.co.bbr.services.band.dao.BandPreviousNameDao;
@@ -62,10 +63,10 @@ public class BandsMigrateController {
     @GetMapping("/migrate/bands/clone")
     // TODO @IsBbrAdmin
     public String clone(Model model) throws GitAPIException {
-        // Git.cloneRepository()
-        //        .setURI("https://github.com/BrassBandResults/bbr-data.git")
-        //        .setDirectory(new File(BASE_PATH))
-        //        .call();
+         Git.cloneRepository()
+                .setURI("https://github.com/BrassBandResults/bbr-data.git")
+                .setDirectory(new File(BASE_PATH))
+                .call();
 
         List<String> messages = new ArrayList<>();
         messages.add("Repository clone complete...");
@@ -168,8 +169,15 @@ public class BandsMigrateController {
             String filename = eachBandFile.getAbsolutePath();
             System.out.println(filename);
 
-            SAXBuilder sax = new SAXBuilder();
-            Document doc = sax.build(new File(filename));
+            Document doc = null;
+            try {
+                SAXBuilder sax = new SAXBuilder();
+                doc = sax.build(new File(filename));
+            }
+            catch (Throwable ex) {
+                ex.printStackTrace();
+                continue;
+            }
             Element rootNode = doc.getRootElement();
 
             BandDao newBand = new BandDao();
@@ -228,16 +236,26 @@ public class BandsMigrateController {
 
             System.out.println(newBand.getName());
         }
+    }
 
+    private void linkBands(String indexLetter) {
         // go through list again and do bank links
-        files = Arrays.stream(letterLevel.list((current, name) -> new File(current, name).isFile())).sorted().toArray(String[]::new);
+        File letterLevel = new File(BASE_PATH + "/Bands/" + indexLetter);
+        String[] files = Arrays.stream(letterLevel.list((current, name) -> new File(current, name).isFile())).sorted().toArray(String[]::new);
 
         for (String eachFile : files) {
             File eachBandFile = new File(BASE_PATH + "/Bands/" + indexLetter + "/" + eachFile);
             String filename = eachBandFile.getAbsolutePath();
 
-            SAXBuilder sax = new SAXBuilder();
-            Document doc = sax.build(new File(filename));
+            Document doc = null;
+            try {
+                SAXBuilder sax = new SAXBuilder();
+                doc = sax.build(new File(filename));
+            }
+            catch (Throwable ex) {
+                ex.printStackTrace();
+                continue;
+            }
             Element rootNode = doc.getRootElement();
 
             Long bandOldId = Long.parseLong(rootNode.getAttributeValue("id"));
