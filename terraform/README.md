@@ -11,12 +11,12 @@ This terraform is the basic structures that span all deployed bbr environments. 
 * A storage account used for the Environment terraform state
 This terraform needs to be run manually.  It's likely already there in the correct state.
 
-## Evironment
+## Environment
 This terraform is the structure of a deployed bbr application.  Multiple versions of this can (in theory at this stage!) be deployed in isolation, though they do share static resources.
-The environment name is controlled using the value of the environment terraform variable.
+The environment name is controlled using the value of the __`environment`__ terraform variable.
 This deploys for each environment:
 * A resource group for the environment resources.
 * A SQL Database to host the data
 
 The following environment variables need to be set for this terraform run to work:
-ARM_ACCESS_KEY - This needs to be set to an Access Key for the bbr5state Storage Account that is created by the Global terraform
+* ARM_ACCESS_KEY - This needs to be set to an Access Key for the __`bbr5state`__ Storage Account that is created by the Global terraform
