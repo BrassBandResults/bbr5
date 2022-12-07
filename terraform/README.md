@@ -19,4 +19,4 @@ This deploys for each environment:
 * A SQL Database to host the data
 
 The following environment variables need to be set for this terraform run to work:
-* ARM_ACCESS_KEY - This needs to be set to an Access Key for the __`bbr5state`__ Storage Account that is created by the Global terraform
+* __`ARM_ACCESS_KEY`__ - This needs to be set to an Access Key for the __`bbr5state`__ Storage Account that is created by the Global terraform
