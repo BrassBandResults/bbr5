@@ -22,26 +22,64 @@
         <button class="bandTypeButton btn btn-sm btn-success" th:each="type : ${Region.sectionTypes}" th:text="${type}"></button>
     </span>
 
-    <button class="resetBands btn btn-outline-primary btn-sm float-right mb-1" th:text="#{page.reset-sort}">Reset Sort</button>
-    <table id="bands" class="table table-hover">
+    <table id="bands" class="table table-hover sortable">
         <thead>
-        <tr>
-            <th th:text="#{page.region.section.bands.column-band-name}">Band</th>
-            <th th:text="#{page.region.section.bands.column-band-type}">Type</th>
-            <th th:text="#{page.region.section.bands.column-band-results-count}">Results</th>
-        </tr>
+            <tr>
+                <th th:text="#{page.region.section.bands.column-band-name}">Band</th>
+                <th th:text="#{page.region.section.bands.column-band-type}">Type</th>
+                <th th:text="#{page.region.section.bands.column-band-results-count}">Results</th>
+            </tr>
         </thead>
         <tbody>
-        <tr th:each="band : ${Region.bands}">
-            <td class="band"><a th:href="${'/bands/' + band.slug}" th:text="${band.name}">Rothwell Temperance Band</a></td>
-            <td th:text="${band.sectionType}">Extinct</td>
-            <td>0</td>
-        </tr>
+            <tr th:each="band : ${Region.bands}">
+                <td class="band"><a th:href="${'/bands/' + band.slug}" th:text="${band.name}">Rothwell Temperance Band</a></td>
+                <td class="bandType" th:text="${band.sectionType}">Extinct</td>
+                <td>0</td>
+            </tr>
         </tbody>
     </table>
 </div>
 
 <div layout:fragment="scriptfooter">
+    <script>
+        let typeButtons = document.querySelectorAll("button.bandTypeButton");
+        for (let i=0; i<typeButtons.length; i++) {
+            let eachButton = typeButtons[i];
+            eachButton.addEventListener("click", toggleDisplayFunction(eachButton));
+        }
+
+        function toggleDisplayFunction(button) {
+            return function toggleTypeDisplay(ev) {
+                if (button.classList.contains("btn-success")) {
+                    showHideType(button.textContent, false);
+                    button.classList.remove("btn-success");
+                    button.classList.add("btn-danger");
+                } else {
+                    showHideType(button.textContent, true);
+                    button.classList.remove("btn-danger");
+                    button.classList.add("btn-success");
+                }
+                ev.preventDefault();
+            }
+
+        }
+
+        function showHideType(typeText, showType) {
+            let tbody = document.querySelector("table#bands").querySelector("tbody");
+            let tableRows = tbody.querySelectorAll("td.bandType");
+            for(let i=0; i<tableRows.length;i++) {
+                let td = tableRows[i];
+                let tr = td.parentNode;
+                if (td.textContent === typeText) {
+                    if (showType) {
+                        tr.style.display = '';
+                    } else {
+                        tr.style.display = 'none';
+                    }
+                }
+            }
+        }
+    </script>
 <script>
 
 </script>

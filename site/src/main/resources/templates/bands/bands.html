@@ -3,16 +3,6 @@
 <body>
 <title layout:fragment="title" th:text="#{page.bands.title}">Bands - Brass Band Results</title>
 <div layout:fragment="content">
-    <script>
-        $(document).ready(function(){
-            $("#bands").tablesorter();
-
-            $('button.reset').click(function(){
-                $('#bands').trigger('sortReset');
-                return false;
-            });
-        });
-    </script>
     <span th:if="${BandPrefixLetter == 'ALL'}"><h2><span th:text="#{page.bands.page-title}" th:remove="tag">All Bands</span></h2></span>
     <span th:if="${BandPrefixLetter != 'ALL'}"><h2><span th:text="#{page.bands.bands-starting-with(${BandPrefixLetter})}" th:remove="tag">Bands starting with R</span></h2></span>
     <p>
@@ -23,8 +13,7 @@
         {% if user.profile.enhanced_functionality %}<p>[<a href="/bands/add/">{% trans "Add New Band"%}</a>]</p>{% endif %}
     </p>
     <p th:replace="navigation/az-picker.html :: azPicker('bands', ${BandPrefixLetter})"></p>
-    <button class="reset btn btn-outline-primary btn-sm float-right mb-1" th:text="#{page.reset-sort}">Reset Sort</button>
-    <table id="bands" class="table table-hover">
+    <table id="bands" class="table table-hover sortable">
         <thead>
         <tr>
             <th th:text="#{page.bands.column-header-name}">Name</th>
