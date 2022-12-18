@@ -17,16 +17,16 @@ import javax.persistence.Table;
 @Setter
 @Entity
 @NoArgsConstructor
-@Table(name="PERSON_ALTENATIVE_NAME")
+@Table(name="person_alternative_name")
 public class PersonAlternativeNameDao extends AbstractDao {
 
     @ManyToOne(fetch= FetchType.EAGER, optional=false)
-    @JoinColumn(name="PERSON_ID")
+    @JoinColumn(name="person_id")
     private PersonDao person;
 
-    @Column(name="NAME", nullable=false)
+    @Column(name="name", nullable=false)
     private String name;
 
-    @Column(name="HIDDEN")
+    @Column(name="hidden")
     private boolean hidden;
 }

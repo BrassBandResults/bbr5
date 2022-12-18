@@ -1,0 +1,1 @@
+UPDATE region SET container_id = (SELECT id FROM region WHERE slug = 'great-britain') WHERE slug = 'england';

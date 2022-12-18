@@ -54,7 +54,7 @@ class BandFetchServiceTests implements LoginMixin {
         assertEquals(1, band.getUpdatedBy());
         assertEquals("Black Dyke Band", band.getName());
         assertEquals("black-dyke-band", band.getSlug());
-        assertEquals("Unknown", band.getRegion().getName());
+        assertEquals("Yorkshire", band.getRegion().getName());
     }
 }
 

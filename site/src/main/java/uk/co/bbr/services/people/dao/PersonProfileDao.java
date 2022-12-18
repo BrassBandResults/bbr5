@@ -18,37 +18,37 @@ import java.time.LocalDate;
 @Setter
 @Entity
 @NoArgsConstructor
-@Table(name="PERSON_PROFILE")
+@Table(name="person_profile")
 public class PersonProfileDao extends AbstractDao {
 
     @ManyToOne(fetch= FetchType.EAGER)
-    @JoinColumn(name="PERSON_ID")
+    @JoinColumn(name="person_id")
     private PersonDao person;
 
-    @Column(name="TITLE")
+    @Column(name="title")
     private String title;
 
-    @Column(name="QUALIFICATIONS")
+    @Column(name="qualifications")
     private String qualification;
 
-    @Column(name="EMAIL")
+    @Column(name="email")
     private String email;
 
-    @Column(name="WEBSITE")
+    @Column(name="website")
     private String website;
 
-    @Column(name="HOME_PHONE")
+    @Column(name="home_phone")
     private String homePhone;
 
-    @Column(name="MOBILE_PHONE")
+    @Column(name="mobile_phone")
     private String mobilePhone;
 
-    @Column(name="ADDREESS")
+    @Column(name="address")
     private String address;
 
-    @Column(name="PROFILE", nullable=false)
+    @Column(name="profile", nullable=false)
     private String profile;
 
-    @Column(name="VISIBLE")
+    @Column(name="visible")
     private boolean visible;
 }

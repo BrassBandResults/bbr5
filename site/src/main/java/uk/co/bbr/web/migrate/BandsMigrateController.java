@@ -63,10 +63,13 @@ public class BandsMigrateController {
     @GetMapping("/migrate/bands/clone")
     // TODO @IsBbrAdmin
     public String clone(Model model) throws GitAPIException {
-         Git.cloneRepository()
-                .setURI("https://github.com/BrassBandResults/bbr-data.git")
-                .setDirectory(new File(BASE_PATH))
-                .call();
+        if (!new File(BASE_PATH).exists()) {
+
+            Git.cloneRepository()
+                    .setURI("https://github.com/BrassBandResults/bbr-data.git")
+                    .setDirectory(new File(BASE_PATH))
+                    .call();
+        }
 
         List<String> messages = new ArrayList<>();
         messages.add("Repository clone complete...");

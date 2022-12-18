@@ -13,12 +13,12 @@ import javax.persistence.Table;
 @Setter
 @Entity
 @NoArgsConstructor
-@Table(name="PERSON_RELATIONSHIP_TYPE")
+@Table(name="person_relationship_type")
 public class PersonRelationshipTypeDao extends AbstractDao {
 
-    @Column(name="NAME", nullable=false)
+    @Column(name="name", nullable=false)
     private String name;
 
-    @Column(name="REVERSE_NAME", nullable=false)
+    @Column(name="reverse_name", nullable=false)
     private String reverseName;
 }

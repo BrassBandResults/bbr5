@@ -36,6 +36,4 @@ public class BandListController {
         model.addAttribute("Bands", bands);
         return "bands/bands";
     }
-
-
 }

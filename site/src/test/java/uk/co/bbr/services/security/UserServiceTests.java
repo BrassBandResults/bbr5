@@ -39,7 +39,7 @@ public class UserServiceTests {
         assertNotEquals("testPassword", fetchedUser.get().getPassword());
         assertEquals("M", fetchedUser.get().getAccessLevel());
         assertEquals("test@brassbandresults.co.uk", fetchedUser.get().getEmail());
-        assertEquals("tjs", fetchedUser.get().getCreatedBy());
-        assertEquals("tjs", fetchedUser.get().getUpdatedBy());
+        assertEquals(1, fetchedUser.get().getCreatedBy());
+        assertEquals(1, fetchedUser.get().getUpdatedBy());
     }
 }

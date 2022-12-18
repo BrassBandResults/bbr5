@@ -34,7 +34,10 @@
         </thead>
         <tbody>
         <tr th:each="band : ${Bands.returnedBands}">
-            <td class="band"><a th:href="${'/bands/' + band.slug}" th:text="${band.name}">Band Name</span></a> band.date_range_display</td>
+            <td class="band">
+              <a th:href="${'/bands/' + band.slug}" th:text="${band.name}">Band Name</span></a>
+              <small th:if="${band.dateRange.length > 0}">[<span th:text="${band.dateRange}">1950-2000</span>]</small>
+            </td>
             <td class="region"><img th:src="@{${STATIC_HOST} + '/flags/' + ${band.regionFlagCode} + '.png'}"/> <a th:href="${'/regions/' + band.regionSlug}" th:text="#{'region_' + ${band.regionSlug}}">Region Name</a></td>
             <td class="band-contest-count" th:text="${band.contestCount}">0</td>
         </tr>

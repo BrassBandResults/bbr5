@@ -4,50 +4,46 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Formula;
-import uk.co.bbr.services.band.dao.BandDao;
 import uk.co.bbr.services.framework.AbstractDao;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.util.List;
 
 @Getter
 @Setter
 @Entity
 @NoArgsConstructor
-@Table(name="REGION")
+@Table(name="region")
 public class RegionDao extends AbstractDao {
 
-    @Column(name="NAME", nullable=false)
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name="SLUG", nullable=false)
+    @Column(name = "slug", nullable = false)
     private String slug;
 
-    @Column(name="CONTAINER_ID")
+    @Column(name = "container_id")
     private Long containerRegionId;
 
-    @Column(name="COUNTRY_CODE")
+    @Column(name = "country_code")
     private String countryCode;
 
-    @Column(name="LONGITUDE")
+    @Column(name = "longitude")
     private String longitude;
 
-    @Column(name="LATITUDE")
+    @Column(name = "latitude")
     private String latitude;
 
-    @Column(name="DEFAULT_MAP_ZOOM")
+    @Column(name = "default_map_zoom")
     private Integer defaultMapZoom;
 
-    @Formula("SELECT COUNT(*) FROM band b WHERE b.region_id = id")
+    @Formula("(SELECT COUNT(*) FROM band b WHERE b.region_id = id)")
     private int bandsCount;
 
-    @Formula("SELECT COUNT(*) FROM band b WHERE b.region_id = id AND b.status = 0")
+    @Formula("(SELECT COUNT(*) FROM band b WHERE b.region_id = id AND b.status = 0)")
     private int extinctBandsCount;
 
-    @Formula("SELECT COUNT(*) FROM band b WHERE b.region_id = id AND b.status <> 0")
+    @Formula("(SELECT COUNT(*) FROM band b WHERE b.region_id = id AND b.status <> 0)")
     private int activeBandsCount;
 }

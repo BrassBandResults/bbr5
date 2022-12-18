@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="bbr@timpi" uuid="518bf407-6886-4839-b27e-a7af2f15cc95">
+      <driver-ref>sqlserver.ms</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.microsoft.sqlserver.jdbc.SQLServerDriver</jdbc-driver>
+      <jdbc-url>jdbc:sqlserver://timpi;database=bbr</jdbc-url>
+      <jdbc-additional-properties>
+        <property name="APPROVED_DRIVER" value="sqlserver.ms" />
+      </jdbc-additional-properties>
+      <working-dir>$ProjectFileDir$</working-dir>
+      <driver-properties>
+        <property name="trustServerCertificate" value="true" />
+      </driver-properties>
+    </data-source>
+  </component>
+</project>

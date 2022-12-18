@@ -3,22 +3,74 @@
 <body>
 <title layout:fragment="title" th:text="#{region_page_page-title(#{'region_' + ${Region.slug}})}">Yorkshire Region - Brass Band Results</title>
 <div layout:fragment="content">
-    <script>
-        $(document).ready(function(){
-            $("#bands").tablesorter();
-
-            $('button.reset').click(function(){
-                $('#bands').trigger('sortReset');
-                return false;
-            });
-        });
-    </script>
     <h2 th:text="#{'region_' + ${Region.slug}}">Region Name</h2>
-    <p th:text="#{region_page_bands-count(${Region.activeBandsCount}, ${Region.extinctBandsCount})}">This region has {0} active bands, and {1} extinct.</p>
+
+    <span th:if="${SubRegions.size > 0}">
+        <h3 th:text="#{region_page_sub-region-header}">Sub Regions</h3>
+        <table id="sub-regions" class="table table-hover">
+            <thead>
+              <th th:text="#{region_page_region-list-name}">Region</th>
+              <th th:text="#{region_page_region-band-count}">Bands</th>
+            </thead>
+            <tbody>
+             <tr th:each="subRegion : ${SubRegions}">
+            <td class="region"><a th:href="${'/regions/' + subRegion.slug}" th:text="${subRegion.name}">Yorkshire</a></td>
+            <td th:text="${subRegion.bandsCount}">123</td>
+        </tr>
+            </tbody>
+        </table>
+    </span>
 
     <h3 th:text="#{region_page_map-header}">Map</h3>
+
     <h3 th:text="#{region_page_contests-header}">Contests</h3>
+
     <h3 th:text="#{region_page_bands-header}">Bands</h3>
+    <p th:text="#{region_page_bands-count(${Region.activeBandsCount}, ${Region.extinctBandsCount})}">This region has {0} active bands, and {1} extinct.</p>
+    <p><span th:text="#{region_page_band-links-start}">There is also a page listing</span> <a th:href="${'/regions/' + Region.slug + '/links/'}" th:text="#{region_page_band-links-link}">Band Links</a> <span th:text="#{region_page_band-links-end}">for this region.</p>
+
+    <span>
+        <button class="bandTypeButton btn btn-primary active" aria-pressed="true" th:each="type : ${Region.sectionTypes}" th:text="${type}"></button>
+    </span>
+
+    <button class="resetBands btn btn-outline-primary btn-sm float-right mb-1">Reset Sort</button>
+    <table id="bands" class="table table-hover">
+        <thead>
+        <tr>
+            <th th:text="#{region_page_band-table-band}">Band</th>
+            <th th:text="#{region_page_band-table-type}">Type</th>
+            <th th:text="#{region_page_band-table-results}">Results</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="band : ${Region.bands}">
+            <td class="band"><a th:href="${'/bands/' + band.slug}" th:text="${band.name}">Rothwell Temperance Band</a></td>
+            <td th:text="${band.sectionType}">Extinct</td>
+            <td>0</td>
+        </tr>
+        </tbody>
+    </table>
 </div>
+
+<div layout:fragment="scriptfooter">
+<script>
+    $(document).ready(function(){
+        $("#bands").tablesorter();
+        $("#contests").tablesorter();
+
+        $('button.resetBands').click(function(){
+            $('#bands').trigger('sortReset');
+            return false;
+        });
+
+        $('button.resetContests').click(function(){
+            $('#contests').trigger('sortReset');
+            return false;
+        });
+    });
+</script>
+</div>
+
+
 </body>
 </html>

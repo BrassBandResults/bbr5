@@ -17,22 +17,22 @@ import java.time.LocalDate;
 @Setter
 @Entity
 @NoArgsConstructor
-@Table(name="BAND_PREVIOUS_NAME")
+@Table(name="band_previous_name")
 public class BandPreviousNameDao extends AbstractDao {
 
     @ManyToOne(fetch= FetchType.EAGER, optional=false)
-    @JoinColumn(name="BAND_ID")
+    @JoinColumn(name="band_id")
     private BandDao band;
 
-    @Column(name="OLD_NAME", nullable=false)
+    @Column(name="old_name", nullable=false)
     private String oldName;
 
-    @Column(name="START_DATE")
+    @Column(name="start_date")
     private LocalDate startDate;
 
-    @Column(name="END_DATE")
+    @Column(name="end_date")
     private LocalDate endDate;
 
-    @Column(name="HIDDEN")
+    @Column(name="hidden")
     private boolean hidden;
 }

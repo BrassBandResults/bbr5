@@ -39,6 +39,7 @@ public class BandServiceImpl implements BandService, SlugTools {
     private final BandRelationshipTypeRepository bandRelationshipTypeRepository;
 
     @Override
+    @IsBbrMember
     public BandDao create(BandDao band) {
         // validation
         if (band.getId() != null) {
@@ -102,7 +103,7 @@ public class BandServiceImpl implements BandService, SlugTools {
 
         List<BandListBandDto> returnedBands = new ArrayList<>();
         for (BandDao eachBand : bandsToReturn) {
-            returnedBands.add(new BandListBandDto(eachBand.getSlug(), eachBand.getName(), eachBand.getRegion().getName(), eachBand.getRegion().getSlug(), eachBand.getRegion().getCountryCode(), 0));
+            returnedBands.add(new BandListBandDto(eachBand.getSlug(), eachBand.getName(), eachBand.getRegion().getName(), eachBand.getRegion().getSlug(), eachBand.getRegion().getCountryCode(), 0, eachBand.getDateRange()));
         }
         return new BandListDto(bandsToReturn.size(), allBandsCount, prefix, returnedBands);
     }

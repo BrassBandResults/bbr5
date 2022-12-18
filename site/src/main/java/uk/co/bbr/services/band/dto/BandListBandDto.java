@@ -12,4 +12,5 @@ public class BandListBandDto {
     private final String regionSlug;
     private final String regionFlagCode;
     private final int contestCount;
+    private final String dateRange;
 }

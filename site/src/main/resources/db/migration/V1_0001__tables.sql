@@ -38,14 +38,14 @@ CREATE TABLE region (
 INSERT INTO region(updated_by_id, owner_id, old_id, name, slug, country_code) VALUES (1, 1, 17, 'Unknown', 'unknown', 'none');
 INSERT INTO region(updated_by_id, owner_id, old_id, name, slug, country_code) VALUES (1, 1, 26, 'Great Britain', 'great-britain', 'gb');
 
-INSERT INTO region(updated_by_id, owner_id, old_id, name, slug, country_code, container_id, latitude, longitude, default_map_zoom) VALUES (1, 1, 1, 'Yorkshire', 'yorkshire', 'england', SELECT DISTINCT id FROM region WHERE slug='great-britain', '53.703211', '-1.511536', 9);
-INSERT INTO region(updated_by_id, owner_id, old_id, name, slug, country_code, container_id, latitude, longitude, default_map_zoom) VALUES (1, 1, 4, 'London and Southern Counties', 'london-and-southern-counties', 'england', SELECT DISTINCT id FROM region WHERE slug='great-britain', '51.530106', '-0.125198', 6);
-INSERT INTO region(updated_by_id, owner_id, old_id, name, slug, country_code, container_id, latitude, longitude, default_map_zoom) VALUES (1, 1, 5, 'Midlands', 'midlands', 'england', SELECT DISTINCT id FROM region WHERE slug='great-britain', '53.153359', '-1.478577', 7);
-INSERT INTO region(updated_by_id, owner_id, old_id, name, slug, country_code, container_id, latitude, longitude, default_map_zoom) VALUES (1, 1, 6, 'North of England', 'north', 'england', SELECT DISTINCT id FROM region WHERE slug='great-britain', '54.711929', '-1.221314', 7);
-INSERT INTO region(updated_by_id, owner_id, old_id, name, slug, country_code, container_id, latitude, longitude, default_map_zoom) VALUES (1, 1, 2, 'North West', 'north-west', 'england', SELECT DISTINCT id FROM region WHERE slug='great-britain', '53.722717', '-3.352661', 8);
-INSERT INTO region(updated_by_id, owner_id, old_id, name, slug, country_code, container_id, latitude, longitude, default_map_zoom) VALUES (1, 1, 8, 'West of England', 'west-england', 'england', SELECT DISTINCT id FROM region WHERE slug='great-britain', '50.889174', '-3.550415', 7);
-INSERT INTO region(updated_by_id, owner_id, old_id, name, slug, country_code, container_id, latitude, longitude, default_map_zoom) VALUES (1, 1, 3, 'Wales', 'wales', 'wales', SELECT DISTINCT id FROM region WHERE slug='great-britain', '52.462704', '-3.231812', 7);
-INSERT INTO region(updated_by_id, owner_id, old_id, name, slug, country_code, container_id, latitude, longitude, default_map_zoom) VALUES (1, 1, 7, 'Scotland', 'scotland', 'scotland', SELECT DISTINCT id FROM region WHERE slug='great-britain', '57.028774', '-4.442139', 5);
+INSERT INTO region(updated_by_id, owner_id, old_id, name, slug, country_code, container_id, latitude, longitude, default_map_zoom) VALUES (1, 1, 1, 'Yorkshire', 'yorkshire', 'england', (SELECT DISTINCT id FROM region WHERE slug='great-britain'), '53.703211', '-1.511536', 9);
+INSERT INTO region(updated_by_id, owner_id, old_id, name, slug, country_code, container_id, latitude, longitude, default_map_zoom) VALUES (1, 1, 4, 'London and Southern Counties', 'london-and-southern-counties', 'england', (SELECT DISTINCT id FROM region WHERE slug='great-britain'), '51.530106', '-0.125198', 6);
+INSERT INTO region(updated_by_id, owner_id, old_id, name, slug, country_code, container_id, latitude, longitude, default_map_zoom) VALUES (1, 1, 5, 'Midlands', 'midlands', 'england', (SELECT DISTINCT id FROM region WHERE slug='great-britain'), '53.153359', '-1.478577', 7);
+INSERT INTO region(updated_by_id, owner_id, old_id, name, slug, country_code, container_id, latitude, longitude, default_map_zoom) VALUES (1, 1, 6, 'North of England', 'north', 'england', (SELECT DISTINCT id FROM region WHERE slug='great-britain'), '54.711929', '-1.221314', 7);
+INSERT INTO region(updated_by_id, owner_id, old_id, name, slug, country_code, container_id, latitude, longitude, default_map_zoom) VALUES (1, 1, 2, 'North West', 'north-west', 'england', (SELECT DISTINCT id FROM region WHERE slug='great-britain'), '53.722717', '-3.352661', 8);
+INSERT INTO region(updated_by_id, owner_id, old_id, name, slug, country_code, container_id, latitude, longitude, default_map_zoom) VALUES (1, 1, 8, 'West of England', 'west-england', 'england', (SELECT DISTINCT id FROM region WHERE slug='great-britain'), '50.889174', '-3.550415', 7);
+INSERT INTO region(updated_by_id, owner_id, old_id, name, slug, country_code, container_id, latitude, longitude, default_map_zoom) VALUES (1, 1, 3, 'Wales', 'wales', 'wales', (SELECT DISTINCT id FROM region WHERE slug='great-britain'), '52.462704', '-3.231812', 7);
+INSERT INTO region(updated_by_id, owner_id, old_id, name, slug, country_code, container_id, latitude, longitude, default_map_zoom) VALUES (1, 1, 7, 'Scotland', 'scotland', 'scotland', (SELECT DISTINCT id FROM region WHERE slug='great-britain'), '57.028774', '-4.442139', 5);
 
 INSERT INTO region(updated_by_id, owner_id, old_id, name, slug, country_code, latitude, longitude, default_map_zoom) VALUES (1, 1, 38, 'Chile', 'chile', 'cl', '-36.456636', '-71.7334', 4);
 INSERT INTO region(updated_by_id, owner_id, old_id, name, slug, country_code, latitude, longitude, default_map_zoom) VALUES (1, 1, 44, 'China', 'china', 'cn', '33.94336', '103.081053',4);
@@ -153,7 +153,7 @@ CREATE TABLE band (
     twitter_name VARCHAR(100)
 );
 
-CREATE TABLE band_rehearsal_night (
+CREATE TABLE band_rehearsal_day (
     id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
     updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -267,11 +267,12 @@ CREATE TABLE person_relationship_type (
     reverse_name VARCHAR(100) NOT NULL
 );
 
-INSERT INTO person_relationship_type (updated_by_id, owner_id, name, reverse_name) values (1, 1, 'Is Father Of', 'Has Father');
-INSERT INTO person_relationship_type (updated_by_id, owner_id, name, reverse_name) values (1, 1, 'Is Mother Of', 'Has Mother');
-INSERT INTO person_relationship_type (updated_by_id, owner_id, name, reverse_name) values (1, 1, 'Is Brother Of', 'Has Brother');
-INSERT INTO person_relationship_type (updated_by_id, owner_id, name, reverse_name) values (1, 1, 'Is Sister Of', 'Has Sister');
+INSERT INTO person_relationship_type (updated_by_id, owner_id, name, reverse_name) values (1, 1, 'Is Father Of', 'Is Child Of');
+INSERT INTO person_relationship_type (updated_by_id, owner_id, name, reverse_name) values (1, 1, 'Is Mother Of', 'Is Child Of');
+INSERT INTO person_relationship_type (updated_by_id, owner_id, name, reverse_name) values (1, 1, 'Is Brother Of', 'Is Sibling Of');
+INSERT INTO person_relationship_type (updated_by_id, owner_id, name, reverse_name) values (1, 1, 'Is Sister Of', 'Is Sibling Of');
 INSERT INTO person_relationship_type (updated_by_id, owner_id, name, reverse_name) values (1, 1, 'Is Married To', 'Is Married To');
+INSERT INTO person_relationship_type (updated_by_id, owner_id, name, reverse_name) values (1, 1, 'Is Grandparent Of', 'Is Grandchild Of');
 
 CREATE TABLE person_relationship (
     id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,

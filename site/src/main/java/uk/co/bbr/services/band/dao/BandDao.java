@@ -23,51 +23,51 @@ import java.util.List;
 @Setter
 @Entity
 @NoArgsConstructor
-@Table(name="BAND")
+@Table(name="band")
 public class BandDao extends AbstractDao implements NameTools {
 
-    @Column(name="NAME", nullable=false)
+    @Column(name="name", nullable=false)
     private String name;
 
-    @Column(name="OLD_ID")
+    @Column(name="old_id")
     private String oldId;
 
-    @Column(name="SLUG", nullable=false)
+    @Column(name="slug", nullable=false)
     private String slug;
 
-    @Column(name="WEBSITE")
+    @Column(name="website")
     private String website;
 
     @ManyToOne(fetch= FetchType.EAGER, optional=false)
-    @JoinColumn(name="REGION_ID")
+    @JoinColumn(name="region_id")
     private RegionDao region;
 
-    @Column(name="LONGITUDE")
+    @Column(name="longitude")
     private String longitude;
 
-    @Column(name="LATITUDE")
+    @Column(name="latitude")
     private String latitude;
 
-    @Column(name="NOTES")
+    @Column(name="notes")
     private String notes;
 
-    @Column(name="MAPPER_ID")
+    @Column(name="mapper_id")
     private Long mapperId;
 
-    @Column(name="START_DATE")
+    @Column(name="start_date")
     private LocalDate startDate;
 
-    @Column(name="END_DATE")
+    @Column(name="end_date")
     private LocalDate endDate;
 
-    @Column(name="STATUS")
+    @Column(name="status")
     private BandStatus status;
 
     @ManyToOne(fetch= FetchType.EAGER)
-    @JoinColumn(name="SECTION_ID")
+    @JoinColumn(name="section_id")
     private SectionDao section;
 
-    @Column(name="TWITTER_NAME")
+    @Column(name="twitter_name")
     private String twitterName;
 
     public void setName(String sourceName) {
@@ -113,5 +113,28 @@ public class BandDao extends AbstractDao implements NameTools {
 
             this.twitterName = twitterName.trim();
         }
+    }
+
+    public String getDateRange() {
+        if (this.startDate == null && this.endDate == null) {
+            return "";
+        }
+
+        StringBuilder builder = new StringBuilder();
+        if (this.startDate != null) {
+            builder.append(this.startDate.getYear());
+        }
+        builder.append("-");
+        if (this.endDate != null) {
+            builder.append(this.endDate.getYear());
+        }
+        return builder.toString();
+    }
+
+    public String getSectionType() {
+        if (this.section == null) {
+            return this.status.getDisplayName();
+        }
+        return this.section.getName();
     }
 }

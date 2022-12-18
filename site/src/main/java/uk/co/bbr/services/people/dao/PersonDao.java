@@ -14,32 +14,32 @@ import java.time.LocalDate;
 @Setter
 @Entity
 @NoArgsConstructor
-@Table(name="PERSON")
+@Table(name="person")
 public class PersonDao extends AbstractDao {
-    @Column(name="FIRST_NAMES")
+    @Column(name="first_names")
     private String first_names;
 
-    @Column(name="SURNAME", nullable=false)
+    @Column(name="surname", nullable=false)
     private String surname;
 
-    @Column(name="SLUG", nullable=false)
+    @Column(name="slug", nullable=false)
     private String slug;
 
-    @Column(name="SUFFIX")
+    @Column(name="suffix")
     private String suffix;
 
-    @Column(name="KNOWN_FOR")
+    @Column(name="known_for")
     private String knownFor;
 
-    @Column(name="NOTES")
+    @Column(name="notes")
     private String notes;
 
-    @Column(name="DECEASED", nullable=false)
+    @Column(name="deceased", nullable=false)
     private boolean deceased;
 
-    @Column(name="START_DATE")
+    @Column(name="start_date")
     private LocalDate startDate;
 
-    @Column(name="END_DATE")
+    @Column(name="end_date")
     private LocalDate endDate;
 }

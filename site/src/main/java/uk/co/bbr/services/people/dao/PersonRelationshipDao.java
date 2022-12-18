@@ -18,24 +18,24 @@ import java.time.LocalDate;
 @Setter
 @Entity
 @NoArgsConstructor
-@Table(name="PERSON_RELATIONSHIP")
+@Table(name="person_relationship")
 public class PersonRelationshipDao extends AbstractDao {
 
     @ManyToOne(fetch= FetchType.EAGER, optional=false)
-    @JoinColumn(name="LEFT_PERSON_ID")
+    @JoinColumn(name="left_person_id")
     private PersonDao leftPerson;
 
-    @Column(name="LEFT_PERSON_NAME")
+    @Column(name="left_person_name")
     private String leftPersonName;
 
     @ManyToOne(fetch= FetchType.EAGER, optional=false)
-    @JoinColumn(name="RELATIONSHIP_ID")
+    @JoinColumn(name="relationship_id")
     private PersonRelationshipTypeDao relationship;
 
     @ManyToOne(fetch= FetchType.EAGER, optional=false)
-    @JoinColumn(name="RIGHT_PERSON_ID")
+    @JoinColumn(name="right_person_id")
     private PersonDao rightPerson;
 
-    @Column(name="RIGHT_PERSON_NAME")
+    @Column(name="right_person_name")
     private String rightPersonName;
 }

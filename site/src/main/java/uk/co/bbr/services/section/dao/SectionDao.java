@@ -13,18 +13,18 @@ import javax.persistence.Table;
 @Setter
 @Entity
 @NoArgsConstructor
-@Table(name="SECTION")
+@Table(name="section")
 public class SectionDao extends AbstractDao {
 
-    @Column(name="NAME", nullable=false)
+    @Column(name="name", nullable=false)
     private String name;
 
-    @Column(name="SLUG", nullable=false)
+    @Column(name="slug", nullable=false)
     private String slug;
 
-    @Column(name="POSITION", nullable=false)
+    @Column(name="position", nullable=false)
     private int position;
 
-    @Column(name="MAP_SHORT_CODE")
+    @Column(name="map_short_code")
     private String mapShortCode;
 }

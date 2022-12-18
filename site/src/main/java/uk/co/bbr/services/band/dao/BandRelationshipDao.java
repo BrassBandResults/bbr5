@@ -17,30 +17,30 @@ import java.time.LocalDate;
 @Setter
 @Entity
 @NoArgsConstructor
-@Table(name="BAND_RELATIONSHIP")
+@Table(name="band_relationship")
 public class BandRelationshipDao extends AbstractDao {
 
     @ManyToOne(fetch= FetchType.EAGER, optional=false)
-    @JoinColumn(name="LEFT_BAND_ID")
+    @JoinColumn(name="left_band_id")
     private BandDao leftBand;
 
-    @Column(name="LEFT_BAND_NAME")
+    @Column(name="left_band_name")
     private String leftBandName;
 
     @ManyToOne(fetch= FetchType.EAGER, optional=false)
-    @JoinColumn(name="RELATIONSHIP_ID")
+    @JoinColumn(name="relationship_id")
     private BandRelationshipTypeDao relationship;
 
     @ManyToOne(fetch= FetchType.EAGER, optional=false)
-    @JoinColumn(name="RIGHT_BAND_ID")
+    @JoinColumn(name="right_band_id")
     private BandDao rightBand;
 
-    @Column(name="RIGHT_BAND_NAME")
+    @Column(name="right_band_name")
     private String rightBandName;
 
-    @Column(name="START_DATE")
+    @Column(name="start_date")
     private LocalDate startDate;
 
-    @Column(name="END_DATE")
+    @Column(name="end_date")
     private LocalDate endDate;
 }

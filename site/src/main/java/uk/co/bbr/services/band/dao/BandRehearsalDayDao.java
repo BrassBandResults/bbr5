@@ -17,7 +17,7 @@ import javax.persistence.Table;
 @Setter
 @Entity
 @NoArgsConstructor
-@Table(name="BAND_REHEARSAL_NIGHT")
+@Table(name="band_rehearsal_day")
 public class BandRehearsalDayDao extends AbstractDao {
 
     @Column(name="day_number", nullable=false)
