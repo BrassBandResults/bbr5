@@ -16,13 +16,13 @@
 
     <h3 th:text="#{page.region.section.bands}">Bands</h3>
     <p th:text="#{page.region.section.bands.count(${Region.activeBandsCount}, ${Region.extinctBandsCount})}">This region has {0} active bands, and {1} extinct.</p>
-    <p><span th:text="#{page.region.section.bands.links-page-start}">There is also a page listing</span> <a th:href="${'/regions/' + Region.slug + '/links/'}" th:text="#{page.region.section.bands.links-page-link}">Band Links</a> <span th:text="#{page.region.section.bands.links-page-end}">for this region.</p>
+    <p th:if="${Region.bands.size > 0}"><span th:text="#{page.region.section.bands.links-page-start}">There is also a page listing</span> <a th:href="${'/regions/' + Region.slug + '/links/'}" th:text="#{page.region.section.bands.links-page-link}">Band Links</a> <span th:text="#{page.region.section.bands.links-page-end}">for this region.</p>
 
     <span>
-        <button class="bandTypeButton btn btn-sm btn-success" th:each="type : ${Region.sectionTypes}" th:text="${type}"></button>
+        <button class="bandTypeButton btn btn-sm btn-success" type="button" th:each="type : ${Region.sectionTypes}" th:text="#{${type}}"></button>
     </span>
 
-    <table id="bands" class="table table-hover sortable">
+    <table id="bands" class="table table-hover sortable" th:if="${Region.bands.size > 0}">
         <thead>
             <tr>
                 <th th:text="#{page.region.section.bands.column-band-name}">Band</th>
@@ -33,7 +33,7 @@
         <tbody>
             <tr th:each="band : ${Region.bands}">
                 <td class="band"><a th:href="${'/bands/' + band.slug}" th:text="${band.name}">Rothwell Temperance Band</a></td>
-                <td class="bandType" th:text="${band.sectionType}">Extinct</td>
+                <td class="bandType" th:text="#{${band.sectionType}}">Extinct</td>
                 <td>0</td>
             </tr>
         </tbody>
@@ -53,10 +53,10 @@
                 if (button.classList.contains("btn-success")) {
                     showHideType(button.textContent, false);
                     button.classList.remove("btn-success");
-                    button.classList.add("btn-danger");
+                    button.classList.add("btn-outline-dark");
                 } else {
                     showHideType(button.textContent, true);
-                    button.classList.remove("btn-danger");
+                    button.classList.remove("btn-outline-dark");
                     button.classList.add("btn-success");
                 }
                 ev.preventDefault();

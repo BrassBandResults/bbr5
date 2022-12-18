@@ -56,20 +56,20 @@ public class RegionServiceImpl implements RegionService, SlugTools {
     }
 
     @Override
-    public List<LinkSectionDto> fetchBandsBySection(RegionDao region, String ungradedDescription) {
+    public List<LinkSectionDto> fetchBandsBySection(RegionDao region, String ungradedTranslationKey) {
         List<LinkSectionDto> returnList = new ArrayList<>();
 
         SectionDao ungradedSection = new SectionDao();
-        ungradedSection.setName(ungradedDescription);
+        ungradedSection.setTranslationKey(ungradedTranslationKey);
         ungradedSection.setPosition(99999);
         LinkSectionDto ungraded = new LinkSectionDto(ungradedSection);
 
         List<BandDao> bandsBySection = this.regionRepository.findActiveBandsBySection(region.getId());
         String lastSectionName = null;
         for (BandDao band : bandsBySection) {
-            String sectionName = ungraded.getName();
+            String sectionName = ungraded.getTranslationKey();
             if (band.getSection() != null) {
-                sectionName = band.getSection().getName();
+                sectionName = band.getSection().getTranslationKey();
             }
             if (!sectionName.equals(lastSectionName)) {
                 if (band.getSection() == null) {

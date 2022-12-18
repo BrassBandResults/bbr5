@@ -18,8 +18,8 @@ public class LinkSectionDto {
         this.section = section;
     }
 
-    public String getName() {
-        return this.section.getName();
+    public String getTranslationKey() {
+        return this.section.getTranslationKey();
     }
 
     public int getPosition() {

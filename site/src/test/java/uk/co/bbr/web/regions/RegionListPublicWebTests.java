@@ -23,7 +23,7 @@ class RegionListPublicWebTests implements LoginMixin {
     void testGetRegionListWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/regions", String.class);
          assertTrue(response.contains("<title>Regions - Brass Band Results</title>"));
-        assertTrue(response.contains("<h2>Region List</h2>"));
+        assertTrue(response.contains("<h2>Regions</h2>"));
 
          assertTrue(response.contains("Angola"));
          assertTrue(response.contains("Yorkshire"));

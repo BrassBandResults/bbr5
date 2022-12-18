@@ -36,14 +36,15 @@ CREATE TABLE region (
 );
 
 INSERT INTO region(updated_by_id, owner_id, old_id, name, slug, country_code) VALUES (1, 1, 17, 'Unknown', 'unknown', 'none');
-INSERT INTO region(updated_by_id, owner_id, old_id, name, slug, country_code) VALUES (1, 1, 26, 'Great Britain', 'great-britain', 'gb');
+INSERT INTO region(updated_by_id, owner_id, old_id, name, slug, country_code) VALUES (1, 1, 0, 'England', 'england', 'england');
+INSERT INTO region(updated_by_id, owner_id, old_id, name, slug, country_code, container_id) VALUES (1, 1, 26, 'Great Britain', 'great-britain', 'gb', (SELECT id FROM region WHERE slug = 'great-britain'));
 
-INSERT INTO region(updated_by_id, owner_id, old_id, name, slug, country_code, container_id, latitude, longitude, default_map_zoom) VALUES (1, 1, 1, 'Yorkshire', 'yorkshire', 'england', (SELECT DISTINCT id FROM region WHERE slug='great-britain'), '53.703211', '-1.511536', 9);
-INSERT INTO region(updated_by_id, owner_id, old_id, name, slug, country_code, container_id, latitude, longitude, default_map_zoom) VALUES (1, 1, 4, 'London and Southern Counties', 'london-and-southern-counties', 'england', (SELECT DISTINCT id FROM region WHERE slug='great-britain'), '51.530106', '-0.125198', 6);
-INSERT INTO region(updated_by_id, owner_id, old_id, name, slug, country_code, container_id, latitude, longitude, default_map_zoom) VALUES (1, 1, 5, 'Midlands', 'midlands', 'england', (SELECT DISTINCT id FROM region WHERE slug='great-britain'), '53.153359', '-1.478577', 7);
-INSERT INTO region(updated_by_id, owner_id, old_id, name, slug, country_code, container_id, latitude, longitude, default_map_zoom) VALUES (1, 1, 6, 'North of England', 'north', 'england', (SELECT DISTINCT id FROM region WHERE slug='great-britain'), '54.711929', '-1.221314', 7);
-INSERT INTO region(updated_by_id, owner_id, old_id, name, slug, country_code, container_id, latitude, longitude, default_map_zoom) VALUES (1, 1, 2, 'North West', 'north-west', 'england', (SELECT DISTINCT id FROM region WHERE slug='great-britain'), '53.722717', '-3.352661', 8);
-INSERT INTO region(updated_by_id, owner_id, old_id, name, slug, country_code, container_id, latitude, longitude, default_map_zoom) VALUES (1, 1, 8, 'West of England', 'west-england', 'england', (SELECT DISTINCT id FROM region WHERE slug='great-britain'), '50.889174', '-3.550415', 7);
+INSERT INTO region(updated_by_id, owner_id, old_id, name, slug, country_code, container_id, latitude, longitude, default_map_zoom) VALUES (1, 1, 1, 'Yorkshire', 'yorkshire', 'england', (SELECT DISTINCT id FROM region WHERE slug='england'), '53.703211', '-1.511536', 9);
+INSERT INTO region(updated_by_id, owner_id, old_id, name, slug, country_code, container_id, latitude, longitude, default_map_zoom) VALUES (1, 1, 4, 'London and Southern Counties', 'london-and-southern-counties', 'england', (SELECT DISTINCT id FROM region WHERE slug='england'), '51.530106', '-0.125198', 6);
+INSERT INTO region(updated_by_id, owner_id, old_id, name, slug, country_code, container_id, latitude, longitude, default_map_zoom) VALUES (1, 1, 5, 'Midlands', 'midlands', 'england', (SELECT DISTINCT id FROM region WHERE slug='england'), '53.153359', '-1.478577', 7);
+INSERT INTO region(updated_by_id, owner_id, old_id, name, slug, country_code, container_id, latitude, longitude, default_map_zoom) VALUES (1, 1, 6, 'North of England', 'north', 'england', (SELECT DISTINCT id FROM region WHERE slug='england'), '54.711929', '-1.221314', 7);
+INSERT INTO region(updated_by_id, owner_id, old_id, name, slug, country_code, container_id, latitude, longitude, default_map_zoom) VALUES (1, 1, 2, 'North West', 'north-west', 'england', (SELECT DISTINCT id FROM region WHERE slug='england'), '53.722717', '-3.352661', 8);
+INSERT INTO region(updated_by_id, owner_id, old_id, name, slug, country_code, container_id, latitude, longitude, default_map_zoom) VALUES (1, 1, 8, 'West of England', 'west-england', 'england', (SELECT DISTINCT id FROM region WHERE slug='england'), '50.889174', '-3.550415', 7);
 INSERT INTO region(updated_by_id, owner_id, old_id, name, slug, country_code, container_id, latitude, longitude, default_map_zoom) VALUES (1, 1, 3, 'Wales', 'wales', 'wales', (SELECT DISTINCT id FROM region WHERE slug='great-britain'), '52.462704', '-3.231812', 7);
 INSERT INTO region(updated_by_id, owner_id, old_id, name, slug, country_code, container_id, latitude, longitude, default_map_zoom) VALUES (1, 1, 7, 'Scotland', 'scotland', 'scotland', (SELECT DISTINCT id FROM region WHERE slug='great-britain'), '57.028774', '-4.442139', 5);
 
@@ -112,22 +113,23 @@ CREATE TABLE section (
     name VARCHAR(100) NOT NULL,
     slug VARCHAR(60) NOT NULL,
     position INT NOT NULL DEFAULT 0,
-    map_short_code VARCHAR(1) NOT NULL
+    map_short_code VARCHAR(1) NOT NULL,
+    translation_key VARCHAR(30) NOT NULL
 );
 
-INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code) VALUES (1, 1, 'Excellence', 'excellence', 10, 'C');
-INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code) VALUES (1, 1, 'Elite', 'elite', 20, 'C');
-INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code) VALUES (1, 1, 'Championship', 'championship', 30, 'C');
-INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code) VALUES (1, 1, 'First', 'first', 110, '1');
-INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code) VALUES (1, 1, 'Second', 'second', 120, '2');
-INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code) VALUES (1, 1, 'Third', 'third', 130, '3');
-INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code) VALUES (1, 1, 'Forth', 'fourth', 140, '4');
-INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code) VALUES (1, 1, 'Fifth', 'fifth', 150, '5');
-INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code) VALUES (1, 1, 'Youth', 'youth', 160, 'Y');
-INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code) VALUES (1, 1, 'A Grade', 'a', 210, 'A');
-INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code) VALUES (1, 1, 'B Grade', 'b', 220, 'B');
-INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code) VALUES (1, 1, 'C Grade', 'c', 230, 'C');
-INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code) VALUES (1, 1, 'D Grade', 'd', 240, 'D');
+INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code, translation_key) VALUES (1, 1, 'Excellence', 'excellence', 10, 'C', 'section.excellence');
+INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code, translation_key) VALUES (1, 1, 'Elite', 'elite', 20, 'C', 'section.elite');
+INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code, translation_key) VALUES (1, 1, 'Championship', 'championship', 30, 'C', 'section.championship');
+INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code, translation_key) VALUES (1, 1, 'First', 'first', 110, '1', 'section.first');
+INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code, translation_key) VALUES (1, 1, 'Second', 'second', 120, '2', 'section.second');
+INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code, translation_key) VALUES (1, 1, 'Third', 'third', 130, '3', 'section.third');
+INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code, translation_key) VALUES (1, 1, 'Forth', 'fourth', 140, '4', 'section.fourth');
+INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code, translation_key) VALUES (1, 1, 'Fifth', 'fifth', 150, '5', 'section.fifth');
+INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code, translation_key) VALUES (1, 1, 'Youth', 'youth', 160, 'Y', 'section.youth');
+INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code, translation_key) VALUES (1, 1, 'A Grade', 'a', 210, 'A', 'section.a-grade');
+INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code, translation_key) VALUES (1, 1, 'B Grade', 'b', 220, 'B', 'section.b-grade');
+INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code, translation_key) VALUES (1, 1, 'C Grade', 'c', 230, 'C', 'section.c-grade');
+INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code, translation_key) VALUES (1, 1, 'D Grade', 'd', 240, 'D', 'section.d-grade');
 
 -- BAND
 

@@ -133,8 +133,8 @@ public class BandDao extends AbstractDao implements NameTools {
 
     public String getSectionType() {
         if (this.section == null) {
-            return this.status.getDisplayName();
+            return this.status.getTranslationKey();
         }
-        return this.section.getName();
+        return this.section.getTranslationKey();
     }
 }

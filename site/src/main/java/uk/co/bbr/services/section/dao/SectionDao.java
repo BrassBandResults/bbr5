@@ -27,4 +27,7 @@ public class SectionDao extends AbstractDao {
 
     @Column(name="map_short_code")
     private String mapShortCode;
+
+    @Column(name="translation_key")
+    private String translationKey;
 }
