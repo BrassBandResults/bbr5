@@ -7,6 +7,7 @@ import uk.co.bbr.services.region.dao.RegionDao;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -31,7 +32,7 @@ public class RegionPageDto {
     }
 
     public Map<String, Integer> getSectionTypes() {
-        Map<String, Integer> sectionTypes = new HashMap<>();
+        Map<String, Integer> sectionTypes = new LinkedHashMap<>();
         for (BandDao band : this.bands) {
             if (sectionTypes.get(band.getSectionType()) == null) {
                 sectionTypes.put(band.getSectionType(), 1);

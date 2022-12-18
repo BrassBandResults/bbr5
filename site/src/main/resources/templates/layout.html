@@ -15,13 +15,13 @@
 </head>
 <body>
 
-<nav class="navbar navbar-expand-xxl bg-light navbar-light">
+<nav class="navbar navbar-expand-xl bg-light navbar-light">
     <div class="container-fluid">
         <a class="navbar-brand text-info" href="/">Brass Band Results</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#bbr-nav" aria-controls="bbr-nav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="bbrnav">
+        <div class="collapse navbar-collapse" id="bbr-nav">
             <div class="navbar-nav me-auto mb-2 mb-lg-0">
 
                 <div class="nav-item dropdown">
@@ -29,7 +29,6 @@
                     <div class="dropdown-menu">
                         <a class="dropdown-item" aria-labelledby="bandsDropdown" href="/bands/" th:text="#{menu.bands.list-bands}">List Bands</a>
                         <a class="dropdown-item" aria-labelledby="bandsDropdown" href="/regions/" th:text="#{menu.bands.regions}">Regions</a>
-                        <a class="dropdown-item" aria-labelledby="bandsDropdown" href="/sections/" th:text="#{menu.bands.sections}">Sections</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" aria-labelledby="bandsDropdown" href="/map" th:text="#{menu.bands.map}">Band Map</a>
                         <a class="dropdown-item" aria-labelledby="bandsDropdown" href="/map/search/" th:text="#{manu_bands-map-search}">Search Map</a>
