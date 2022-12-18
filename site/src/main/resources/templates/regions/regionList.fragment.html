@@ -1,0 +1,25 @@
+<div th:fragment="regionList(Regions)" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <table id="regions" class="table table-hover">
+        <thead>
+            <tr>
+                <th th:text="#{page.regions.column-header-name}">Name</th>
+                <th sec:authorize="!hasRole('BBR_PRO')" th:text="#{page.regions.column-header-bands}">Bands</th>
+                <th sec:authorize="hasRole('BBR_PRO')" th:text="#{page.regions.column-header-bands-active}">Active Bands</th>
+                <th sec:authorize="hasRole('BBR_PRO')" th:text="#{page.regions.column-header-bands-extinct}">Extinct Bands</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="region : ${Regions}" th:id="${region.slug}">
+                <td class="region">
+                    <img th:src="@{${STATIC_HOST} + '/flags/' + ${region.countryCode} + '.png'}"/>
+                    <a th:href="${'/regions/' + region.slug}" th:text="#{'region.' + ${region.slug}}">Region Name</span></a>
+                </td>
+                <td sec:authorize="!hasRole('BBR_PRO')" class="band-count" th:text="${region.getBandsCount()}"></td>
+                <td sec:authorize="hasRole('BBR_PRO')" class="active-band-count" th:text="${region.getActiveBandsCount()}"></td>
+                <td sec:authorize="hasRole('BBR_PRO')" class="extinct-band-count" th:text="${region.getExtinctBandsCount()}"></td>
+                <td class="band-links"><a th:href="${'/regions/' + region.slug + '/links'}" th:text="#{page.regions.column-links}">Links</a></td>
+            </tr>
+        </tbody>
+    </table>
+</div>

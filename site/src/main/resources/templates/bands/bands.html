@@ -22,7 +22,7 @@
     <p>
         {% if user.profile.enhanced_functionality %}<p>[<a href="/bands/add/">{% trans "Add New Band"%}</a>]</p>{% endif %}
     </p>
-    <p th:replace="navigation/azPicker.html :: azPicker('bands', ${BandPrefixLetter})"></p>
+    <p th:replace="navigation/az-picker.html :: azPicker('bands', ${BandPrefixLetter})"></p>
     <button class="reset btn btn-outline-primary btn-sm float-right mb-1" th:text="#{page.reset-sort}">Reset Sort</button>
     <table id="bands" class="table table-hover">
         <thead>
@@ -43,7 +43,7 @@
         </tr>
         </tbody>
     </table>
-    <p th:replace="navigation/azPicker.html :: azPicker('bands', ${BandPrefixLetter})"></p>
+    <p th:replace="navigation/az-picker.html :: azPicker('bands', ${BandPrefixLetter})"></p>
 </div>
 </body>
 </html>

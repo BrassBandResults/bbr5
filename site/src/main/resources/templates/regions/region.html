@@ -7,18 +7,7 @@
 
     <span th:if="${SubRegions.size > 0}">
         <h3 th:text="#{page.region.section.sub-regions}">Sub Regions</h3>
-        <table id="sub-regions" class="table table-hover">
-            <thead>
-              <th th:text="#{page.region.section.sub-regions.column-name}">Region</th>
-              <th th:text="#{page.region.section.sub-regions.column-band-count}">Bands</th>
-            </thead>
-            <tbody>
-             <tr th:each="subRegion : ${SubRegions}">
-            <td class="region"><a th:href="${'/regions/' + subRegion.slug}" th:text="${subRegion.name}">Yorkshire</a></td>
-            <td th:text="${subRegion.bandsCount}">123</td>
-        </tr>
-            </tbody>
-        </table>
+        <p th:replace="regions/regionList.fragment.html :: regionList(${SubRegions})"></p>
     </span>
 
     <h3 th:text="#{page.region.section.map}">Map</h3>
