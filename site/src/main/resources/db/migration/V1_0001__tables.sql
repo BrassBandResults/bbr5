@@ -15,7 +15,7 @@ CREATE TABLE site_user (
     access_level VARCHAR(1) NOT NULL DEFAULT 'M'
 );
 
-INSERT INTO site_user (updated_by_id, owner_id, usercode, password, email, salt, password_version, access_level) VALUES (1, 1, 'owner', 'password', 'owner@brassbandresults.co.uk', 'ABC123', 0, 'A');
+INSERT INTO site_user (updated_by_id, owner_id, usercode, password, email, salt, password_version, access_level) VALUES (1, 1, 'owner', 'password', 'owner@brassbandresults.co.uk', 'ABC123', '0', 'A');
 
 -- REGION
 
