@@ -102,7 +102,7 @@
 
                 <a class="nav-item nav-link" href="/acc/signup" sec:authorize="isAnonymous()" th:text="#{menu.user.create-account}">Create Account</a>
                 <a class="nav-item nav-link" href="/acc/signin?next=/" sec:authorize="isAnonymous()" th:text="#{menu.user.sign-in}">Sign In</a>
-                <a class="nav-item nav-link" href="/users/{{user.username}}" sec:authorize="isAuthenticated()" th:text="#{menu.user.profile}">Profile</a>
+                <a class="nav-item nav-link" th:href="${'/users/' + #authentication.getName()}" sec:authorize="isAuthenticated()" th:text="#{menu.user.profile}">Profile</a>
                 <a class="nav-item nav-link" href="/acc/signout" sec:authorize="isAuthenticated()" th:text="#{menu.user.sign-out}">Logout</a>
 
             </div>

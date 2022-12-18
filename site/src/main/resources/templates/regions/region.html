@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+<html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <body>
 <title layout:fragment="title" th:text="#{page.region.page-title(#{'region.' + ${Region.slug}})}">Yorkshire Region - Brass Band Results</title>
 <div layout:fragment="content">
@@ -18,7 +18,7 @@
     <p th:text="#{page.region.section.bands.count(${Region.activeBandsCount}, ${Region.extinctBandsCount})}">This region has {0} active bands, and {1} extinct.</p>
     <p th:if="${Region.bands.size > 0}"><span th:text="#{page.region.section.bands.links-page-start}">There is also a page listing</span> <a th:href="${'/regions/' + Region.slug + '/links/'}" th:text="#{page.region.section.bands.links-page-link}">Band Links</a> <span th:text="#{page.region.section.bands.links-page-end}">for this region.</p>
 
-    <span>
+    <span sec:authorize="hasRole('BBR_PRO')">
         <button class="bandTypeButton btn btn-sm btn-success" type="button" th:each="type : ${Region.sectionTypes}"><span class="typeDescription" th:text="#{${type.key}}">Type</span> (<span th:text="${type.value}">123</span>)</button>
     </span>
 
@@ -41,7 +41,7 @@
 </div>
 
 <div layout:fragment="scriptfooter">
-    <script>
+    <script sec:authorize="hasRole('BBR_PRO')">
         let typeButtons = document.querySelectorAll("button.bandTypeButton");
         for (let i=0; i<typeButtons.length; i++) {
             let eachButton = typeButtons[i];
