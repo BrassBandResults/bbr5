@@ -19,7 +19,7 @@
     <p th:if="${Region.bands.size > 0}"><span th:text="#{page.region.section.bands.links-page-start}">There is also a page listing</span> <a th:href="${'/regions/' + Region.slug + '/links/'}" th:text="#{page.region.section.bands.links-page-link}">Band Links</a> <span th:text="#{page.region.section.bands.links-page-end}">for this region.</p>
 
     <span>
-        <button class="bandTypeButton btn btn-sm btn-success" type="button" th:each="type : ${Region.sectionTypes}" th:text="#{${type}}"></button>
+        <button class="bandTypeButton btn btn-sm btn-success" type="button" th:each="type : ${Region.sectionTypes}"><span class="typeDescription" th:text="#{${type.key}}">Type</span> (<span th:text="${type.value}">123</span>)</button>
     </span>
 
     <table id="bands" class="table table-hover sortable" th:if="${Region.bands.size > 0}">
@@ -51,11 +51,11 @@
         function toggleDisplayFunction(button) {
             return function toggleTypeDisplay(ev) {
                 if (button.classList.contains("btn-success")) {
-                    showHideType(button.textContent, false);
+                    showHideType(button.querySelector("span.typeDescription").textContent, false);
                     button.classList.remove("btn-success");
                     button.classList.add("btn-outline-dark");
                 } else {
-                    showHideType(button.textContent, true);
+                    showHideType(button.querySelector("span.typeDescription").textContent, true);
                     button.classList.remove("btn-outline-dark");
                     button.classList.add("btn-success");
                 }

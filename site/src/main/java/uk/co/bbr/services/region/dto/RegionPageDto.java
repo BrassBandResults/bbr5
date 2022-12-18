@@ -5,8 +5,10 @@ import lombok.RequiredArgsConstructor;
 import uk.co.bbr.services.band.dao.BandDao;
 import uk.co.bbr.services.region.dao.RegionDao;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @Getter
@@ -28,10 +30,14 @@ public class RegionPageDto {
         return this.region.getExtinctBandsCount();
     }
 
-    public Set<String> getSectionTypes() {
-        Set<String> sectionTypes = new HashSet<>();
+    public Map<String, Integer> getSectionTypes() {
+        Map<String, Integer> sectionTypes = new HashMap<>();
         for (BandDao band : this.bands) {
-            sectionTypes.add(band.getSectionType());
+            if (sectionTypes.get(band.getSectionType()) == null) {
+                sectionTypes.put(band.getSectionType(), 1);
+            } else {
+                sectionTypes.put(band.getSectionType(), sectionTypes.get(band.getSectionType()) + 1);
+            }
         }
         return sectionTypes;
     }
