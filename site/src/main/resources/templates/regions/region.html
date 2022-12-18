@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
 <body>
-<title layout:fragment="title" th:text="#{region_page_page-title(#{'region_' + ${Region.slug}})}">Yorkshire Region - Brass Band Results</title>
+<title layout:fragment="title" th:text="#{page.region.page-title(#{'region.' + ${Region.slug}})}">Yorkshire Region - Brass Band Results</title>
 <div layout:fragment="content">
-    <h2 th:text="#{'region_' + ${Region.slug}}">Region Name</h2>
+    <h2 th:text="#{'region.' + ${Region.slug}}">Region Name</h2>
 
     <span th:if="${SubRegions.size > 0}">
-        <h3 th:text="#{region_page_sub-region-header}">Sub Regions</h3>
+        <h3 th:text="#{page.region.section.sub-regions}">Sub Regions</h3>
         <table id="sub-regions" class="table table-hover">
             <thead>
-              <th th:text="#{region_page_region-list-name}">Region</th>
-              <th th:text="#{region_page_region-band-count}">Bands</th>
+              <th th:text="#{page.region.section.sub-regions.column-name}">Region</th>
+              <th th:text="#{page.region.section.sub-regions.column-band-count}">Bands</th>
             </thead>
             <tbody>
              <tr th:each="subRegion : ${SubRegions}">
@@ -21,13 +21,13 @@
         </table>
     </span>
 
-    <h3 th:text="#{region_page_map-header}">Map</h3>
+    <h3 th:text="#{page.region.section.map}">Map</h3>
 
-    <h3 th:text="#{region_page_contests-header}">Contests</h3>
+    <h3 th:text="#{page.region.section.contests}">Contests</h3>
 
-    <h3 th:text="#{region_page_bands-header}">Bands</h3>
-    <p th:text="#{region_page_bands-count(${Region.activeBandsCount}, ${Region.extinctBandsCount})}">This region has {0} active bands, and {1} extinct.</p>
-    <p><span th:text="#{region_page_band-links-start}">There is also a page listing</span> <a th:href="${'/regions/' + Region.slug + '/links/'}" th:text="#{region_page_band-links-link}">Band Links</a> <span th:text="#{region_page_band-links-end}">for this region.</p>
+    <h3 th:text="#{page.region.section.bands}">Bands</h3>
+    <p th:text="#{page.region.section.bands.count(${Region.activeBandsCount}, ${Region.extinctBandsCount})}">This region has {0} active bands, and {1} extinct.</p>
+    <p><span th:text="#{page.region.section.bands.links-page-start}">There is also a page listing</span> <a th:href="${'/regions/' + Region.slug + '/links/'}" th:text="#{page.region.section.bands.links-page-link}">Band Links</a> <span th:text="#{page.region.section.bands.links-page-end}">for this region.</p>
 
     <span>
         <button class="bandTypeButton btn btn-primary active" aria-pressed="true" th:each="type : ${Region.sectionTypes}" th:text="${type}"></button>
@@ -37,9 +37,9 @@
     <table id="bands" class="table table-hover">
         <thead>
         <tr>
-            <th th:text="#{region_page_band-table-band}">Band</th>
-            <th th:text="#{region_page_band-table-type}">Type</th>
-            <th th:text="#{region_page_band-table-results}">Results</th>
+            <th th:text="#{page.region.section.bands.column-band-name}">Band</th>
+            <th th:text="#{page.region.section.bands.column-band-type}">Type</th>
+            <th th:text="#{page.region.section.bands.column-band-results-count}">Results</th>
         </tr>
         </thead>
         <tbody>

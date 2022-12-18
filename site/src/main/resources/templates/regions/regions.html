@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <body>
-<title layout:fragment="title" th:text="#{regions_page-title}">Regions - Brass Band Results</title>
+<title layout:fragment="title" th:text="#{page.regions.title}">Regions - Brass Band Results</title>
 <div layout:fragment="content">
     <script>
         $(document).ready(function(){
@@ -13,15 +13,15 @@
             });
         });
     </script>
-    <h2 th:text="#{regions_region-title}">Region List</h2>
-    <button class="reset btn btn-outline-primary btn-sm float-right mb-1" th:text="#{bands_reset-sort}">Reset Sort</button>
+    <h2 th:text="#{page.regions.page-title}">Region List</h2>
+    <button class="reset btn btn-outline-primary btn-sm float-right mb-1" th:text="#{page.reset-sort}">Reset Sort</button>
     <table id="bands" class="table table-hover">
         <thead>
         <tr>
-            <th th:text="#{regions_column-header-name}">Name</th>
-            <th sec:authorize="!hasRole('BBR_PRO')" th:text="#{regions_column-header-bands}">Bands</th>
-            <th sec:authorize="hasRole('BBR_PRO')" th:text="#{regions_column-header-bands-active}">Active Bands</th>
-            <th sec:authorize="hasRole('BBR_PRO')" th:text="#{regions_column-header-bands-extinct}">Extinct Bands</th>
+            <th th:text="#{page.regions.column-header-name}">Name</th>
+            <th sec:authorize="!hasRole('BBR_PRO')" th:text="#{page.regions.column-header-bands}">Bands</th>
+            <th sec:authorize="hasRole('BBR_PRO')" th:text="#{page.regions.column-header-bands-active}">Active Bands</th>
+            <th sec:authorize="hasRole('BBR_PRO')" th:text="#{page.regions.column-header-bands-extinct}">Extinct Bands</th>
             <th></th>
         </tr>
         </thead>
@@ -29,12 +29,12 @@
         <tr th:each="region : ${Regions}" th:id="${region.slug}">
             <td class="region">
                 <img th:src="@{${STATIC_HOST} + '/flags/' + ${region.countryCode} + '.png'}"/>
-                <a th:href="${'/regions/' + region.slug}" th:text="#{'region_' + ${region.slug}}">Region Name</span></a>
+                <a th:href="${'/regions/' + region.slug}" th:text="#{'region.' + ${region.slug}}">Region Name</span></a>
             </td>
             <td sec:authorize="!hasRole('BBR_PRO')" class="band-count" th:text="${region.getBandsCount()}"></td>
             <td sec:authorize="hasRole('BBR_PRO')" class="active-band-count" th:text="${region.getActiveBandsCount()}"></td>
             <td sec:authorize="hasRole('BBR_PRO')" class="extinct-band-count" th:text="${region.getExtinctBandsCount()}"></td>
-            <td class="band-links"><a th:href="${'/regions/' + region.slug + '/links'}" th:text="#{regions_column-links}">Links</a></td>
+            <td class="band-links"><a th:href="${'/regions/' + region.slug + '/links'}" th:text="#{page.regions.column-links}">Links</a></td>
         </tr>
         </tbody>
     </table>

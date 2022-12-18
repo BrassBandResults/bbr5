@@ -44,7 +44,7 @@ public class RegionController {
     public String regionLinks(Model model, Locale locale, @PathVariable("regionSlug") String regionSlug) {
         RegionDao region = this.regionService.findBySlug(regionSlug);
 
-        String ungradedDescription = this.messageSource.getMessage("section_ungraded", null, locale);
+        String ungradedDescription = this.messageSource.getMessage("section.ungraded", null, locale);
         List<LinkSectionDto> bandsBySection = this.regionService.fetchBandsBySection(region, ungradedDescription);
 
         model.addAttribute("Region", region);

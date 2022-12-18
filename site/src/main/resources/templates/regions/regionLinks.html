@@ -1,20 +1,20 @@
 <!DOCTYPE html>
 <html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
 <body>
-<title layout:fragment="title" th:text="#{region_links_page_page-title(#{'region_' + ${Region.slug}})}">Yorkshire Region - Brass Band Results</title>
+<title layout:fragment="title" th:text="#{page.region-links.page-title(#{'region.' + ${Region.slug}})}">Yorkshire Region - Brass Band Results</title>
 <div layout:fragment="content">
-    <h2 th:text="#{'region_' + ${Region.slug}}">Region Name</h2>
+    <h2 th:text="#{'region.' + ${Region.slug}}">Region Name</h2>
     <div th:each="section : ${Sections}">
         <h3 th:text="${section.name}"></h3>
         <ul>
             <li th:each="band : ${section.bands}">
               [
-                <a th:if="${band.website != null}" th:href="${band.website}">web</a>
-                <span class="text-muted" th:if="${band.website == null}">web</span>
+                <a th:if="${band.website != null}" th:href="${band.website}" th:text="#{page.region-links.web-link}">xweb</a>
+                <span class="text-muted" th:if="${band.website == null}" th:text="#{page.region-links.web-link}">xweb</span>
               ]
               [
-                <a th:if="${band.twitterName != null}"  th:href="${'https://twitter.com/' + band.twitterName}">twitter</a>
-                <span class="text-muted" th:if="${band.twitterName == null}">twitter</span>
+                <a th:if="${band.twitterName != null}"  th:href="${'https://twitter.com/' + band.twitterName}" th:text="#{page.region-links.twitter-link}">twitter</a>
+                <span class="text-muted" th:if="${band.twitterName == null}" th:text="#{page.region-links.twitter-link}">txwitter</span>
               ]
               <a class="band" th:href="${'/bands/' + band.slug}" th:text="${band.name}">Band Name</span></a>
             </li>

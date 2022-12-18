@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
 <body>
-<title layout:fragment="title" th:text="#{bands_page-title}">Bands - Brass Band Results</title>
+<title layout:fragment="title" th:text="#{page.bands.title}">Bands - Brass Band Results</title>
 <div layout:fragment="content">
     <script>
         $(document).ready(function(){
@@ -13,23 +13,23 @@
             });
         });
     </script>
-    <span th:if="${BandPrefixLetter == 'ALL'}"><h2><span th:text="#{bands_all-bands}" th:remove="tag">All Bands</span></h2></span>
-    <span th:if="${BandPrefixLetter != 'ALL'}"><h2><span th:text="#{bands_bands-starting-with(${BandPrefixLetter})}" th:remove="tag">Bands starting with R</span></h2></span>
+    <span th:if="${BandPrefixLetter == 'ALL'}"><h2><span th:text="#{page.bands.page-title}" th:remove="tag">All Bands</span></h2></span>
+    <span th:if="${BandPrefixLetter != 'ALL'}"><h2><span th:text="#{page.bands.bands-starting-with(${BandPrefixLetter})}" th:remove="tag">Bands starting with R</span></h2></span>
     <p>
-        Showing <span th:text="#{bands_band-counts(${Bands.returnedBandsCount},${Bands.allBandsCount})}" th:remove="tag"></span>
-        <span th:text="#{bands_band-list-header}" th:remove="tag">This is a list of current or last known names, previous band names can be found by searching.</span>
+        Showing <span th:text="#{page.bands.band-counts(${Bands.returnedBandsCount},${Bands.allBandsCount})}" th:remove="tag"></span>
+        <span th:text="#{page.bands.band-list-header}" th:remove="tag">This is a list of current or last known names, previous band names can be found by searching.</span>
     </p>
     <p>
         {% if user.profile.enhanced_functionality %}<p>[<a href="/bands/add/">{% trans "Add New Band"%}</a>]</p>{% endif %}
     </p>
     <p th:replace="navigation/azPicker.html :: azPicker('bands', ${BandPrefixLetter})"></p>
-    <button class="reset btn btn-outline-primary btn-sm float-right mb-1" th:text="#{bands_reset-sort}">Reset Sort</button>
+    <button class="reset btn btn-outline-primary btn-sm float-right mb-1" th:text="#{page.reset-sort}">Reset Sort</button>
     <table id="bands" class="table table-hover">
         <thead>
         <tr>
-            <th th:text="#{bands_column-header-name}">Name</th>
-            <th th:text="#{bands_column-header-region}">Region</th>
-            <th th:text="#{bands_column-header-contest-results}">Contest Results</th>
+            <th th:text="#{page.bands.column-header-name}">Name</th>
+            <th th:text="#{page.bands.column-header-region}">Region</th>
+            <th th:text="#{page.bands.column-header-contest-results}">Contest Results</th>
         </tr>
         </thead>
         <tbody>
@@ -38,7 +38,7 @@
               <a th:href="${'/bands/' + band.slug}" th:text="${band.name}">Band Name</span></a>
               <small th:if="${band.dateRange.length > 0}">[<span th:text="${band.dateRange}">1950-2000</span>]</small>
             </td>
-            <td class="region"><img th:src="@{${STATIC_HOST} + '/flags/' + ${band.regionFlagCode} + '.png'}"/> <a th:href="${'/regions/' + band.regionSlug}" th:text="#{'region_' + ${band.regionSlug}}">Region Name</a></td>
+            <td class="region"><img th:src="@{${STATIC_HOST} + '/flags/' + ${band.regionFlagCode} + '.png'}"/> <a th:href="${'/regions/' + band.regionSlug}" th:text="#{'region.' + ${band.regionSlug}}">Region Name</a></td>
             <td class="band-contest-count" th:text="${band.contestCount}">0</td>
         </tr>
         </tbody>
