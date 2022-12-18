@@ -19,10 +19,10 @@
     <p><span th:text="#{page.region.section.bands.links-page-start}">There is also a page listing</span> <a th:href="${'/regions/' + Region.slug + '/links/'}" th:text="#{page.region.section.bands.links-page-link}">Band Links</a> <span th:text="#{page.region.section.bands.links-page-end}">for this region.</p>
 
     <span>
-        <button class="bandTypeButton btn btn-primary active" aria-pressed="true" th:each="type : ${Region.sectionTypes}" th:text="${type}"></button>
+        <button class="bandTypeButton btn btn-sm btn-success" th:each="type : ${Region.sectionTypes}" th:text="${type}"></button>
     </span>
 
-    <button class="resetBands btn btn-outline-primary btn-sm float-right mb-1">Reset Sort</button>
+    <button class="resetBands btn btn-outline-primary btn-sm float-right mb-1" th:text="#{page.reset-sort}">Reset Sort</button>
     <table id="bands" class="table table-hover">
         <thead>
         <tr>
@@ -43,20 +43,7 @@
 
 <div layout:fragment="scriptfooter">
 <script>
-    $(document).ready(function(){
-        $("#bands").tablesorter();
-        $("#contests").tablesorter();
 
-        $('button.resetBands').click(function(){
-            $('#bands').trigger('sortReset');
-            return false;
-        });
-
-        $('button.resetContests').click(function(){
-            $('#contests').trigger('sortReset');
-            return false;
-        });
-    });
 </script>
 </div>
 
