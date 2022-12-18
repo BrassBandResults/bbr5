@@ -20,12 +20,12 @@ public class PasswordTools {
     }
 
     public static String hashPassword(String passwordVersion, String salt, String usercode, String plaintextPassword) {
-        String plaintext = salt + ";" + plaintextPassword;
         switch (passwordVersion) {
             case "1":
             default:
                 try {
-                    KeySpec spec = new PBEKeySpec(plaintextPassword.toCharArray(), salt.getBytes(), 100000, 256);
+                    String plaintext = salt + ";" + plaintextPassword;
+                    KeySpec spec = new PBEKeySpec(plaintext.toCharArray(), salt.getBytes(), 100000, 256);
                     SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
                     byte[] hashBytes = factory.generateSecret(spec).getEncoded();
                     return PasswordTools.bytesToHex(hashBytes);

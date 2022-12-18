@@ -33,6 +33,7 @@ class AuthenticatedUserWebTests implements LoginMixin {
     @BeforeAll
     void setupUser() {
         this.securityService.createUser(TestUser.TEST_MEMBER.getUsername(), TestUser.TEST_MEMBER.getPassword(), TestUser.TEST_MEMBER.getEmail());
+        this.securityService.createUserWithDjangoStylePassword(TestUser.DJANGO_MEMBER.getUsername(), TestUser.DJANGO_MEMBER.getHash(), TestUser.DJANGO_MEMBER.getEmail());
     }
 
     @Test
@@ -76,5 +77,13 @@ class AuthenticatedUserWebTests implements LoginMixin {
         HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + port + "/test/superuser", String.class ));
         assertEquals("Forbidden", ex.getStatusCode().getReasonPhrase());
         assertEquals(403, ex.getStatusCode().value());
+    }
+
+    @Test
+    void testLoginWithDjangoUserWorksSuccessfully() {
+        loginTestUserByWeb(TestUser.DJANGO_MEMBER, this.restTemplate, this.csrfTokenRepository, this.port);
+
+        String response = this.restTemplate.getForObject("http://localhost:" + port + "/test/member", String.class);
+        assertEquals(TestUser.DJANGO_MEMBER.getUsername(), response);
     }
 }

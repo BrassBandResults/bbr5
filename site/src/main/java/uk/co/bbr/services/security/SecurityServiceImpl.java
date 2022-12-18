@@ -34,14 +34,44 @@ public class SecurityServiceImpl implements SecurityService {
             throw new AuthenticationFailedException();
         }
         BbrUserDao fetchedUser = fetchedUserOptional.get();
+        BbrUserDao loggedInUser;
 
-        String hashedPassword = PasswordTools.hashPassword(fetchedUser.getPasswordVersion(), fetchedUser.getSalt(), usercode, plaintextPassword);
-
-        Optional<BbrUserDao> userOptional = this.bbrUserRepository.loginCheck(usercode, hashedPassword);
-        if (userOptional.isEmpty()) {
-            throw new AuthenticationFailedException();
+        switch (fetchedUser.getPasswordVersion()) {
+            case "D":
+                // django password
+                DjangoHasher djangoHash = new DjangoHasher();
+                boolean success = djangoHash.checkPassword(plaintextPassword, fetchedUser.getPassword());
+                if (!success) {
+                    throw new AuthenticationFailedException();
+                }
+                loggedInUser = fetchedUser;
+                break;
+            case "1":
+            default:
+                // java password
+                String hashedPassword = PasswordTools.hashPassword(fetchedUser.getPasswordVersion(), fetchedUser.getSalt(), usercode, plaintextPassword);
+                Optional<BbrUserDao> userOptional = this.bbrUserRepository.loginCheck(usercode, hashedPassword);
+                if (userOptional.isEmpty()) {
+                    throw new AuthenticationFailedException();
+                }
+                loggedInUser = userOptional.get();
         }
-        return userOptional.get();
+
+        return loggedInUser;
+    }
+
+    @Override
+    public BbrUserDao createUserWithDjangoStylePassword(String usercode, String hashedPassword, String email) {
+        BbrUserDao newUser = new BbrUserDao();
+        newUser.setEmail(email);
+        newUser.setAccessLevel(UserRole.MEMBER.getCode());
+        newUser.setUsercode(usercode);
+
+        newUser.setSalt("");
+        newUser.setPasswordVersion("D");
+        newUser.setPassword(hashedPassword);
+        this.bbrUserRepository.saveAndFlush(newUser);
+        return newUser;
     }
 
     @Override

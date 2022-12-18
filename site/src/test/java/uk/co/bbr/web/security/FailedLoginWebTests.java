@@ -30,6 +30,6 @@ class FailedLoginWebTests implements LoginMixin {
         ResponseEntity<String> response = httpLoginTestUserByWeb(TestUser.TEST_INVALID, this.restTemplate, this.csrfTokenRepository, this.port);
         assertEquals(200, response.getStatusCode().value());
         assertNotNull(response.getBody());
-        assertTrue(response.getBody().indexOf("Signin") > 0);
+        assertTrue(response.getBody().indexOf("Sign In") > 0);
     }
 }

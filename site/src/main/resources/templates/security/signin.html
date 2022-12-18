@@ -1,5 +1,36 @@
-<html>
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <body>
-<h1>Signin</h1>
+<title layout:fragment="title" th:text="#{page.security.sign-in.title}">Sign In - Brass Band Results</title>
+<div layout:fragment="content">
+    <h2 th:text="#{page.security.sign-in.page-title}">Sign In</h2>
+    <p><span th:text="#{page.security.sign-in.not-joined}">Not joined yet?</span> <a href="/acc/signup" th:text="#{page.security.sign-in.register-text}">Register here to create your account</a></p>
+    <form action="." method="post">
+        <table>
+            <tr>
+                <td><label for="id_username" th:text="#{page.security.sign-in.username-prompt}">Username:</label></td>
+                <td><input type="text" name="username" autofocus autocapitalize="none" autocomplete="username" maxlength="150" required id="id_username"></td>
+            </tr>
+            <tr>
+                <td><label for="id_password" th:text="#{page.security.sign-in.password-prompt}">Password:</label></td>
+                <td><input type="password" name="password" autocomplete="current-password" required id="id_password"></td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td>
+                    <input type="submit" th:value="#{page.security.sign-in.submit-button}" />
+                    <input type="hidden" name="next" value="/"/>
+                    <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                </td>
+            </tr>
+        </table>
+    </form><br/>
+    <p><a href="/acc/forgotten-password" th:text="#{page.security.sign-in.forgotten-login}">Forgotten your login?</a></p>
+</div>
+
+</div>
+
+<div layout:fragment="feedback">
+</div>
 </body>
 </html>

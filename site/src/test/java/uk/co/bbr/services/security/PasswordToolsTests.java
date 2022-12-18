@@ -29,7 +29,7 @@ public class PasswordToolsTests {
     @Test
     void testHashPasswordWorksSuccessfully() {
         String hashedPassword = PasswordTools.hashPassword("1", "ABCD1234", "test-user", "password1");
-        assertEquals("c8f5e70f9d9bc00c2a9b27fc2e720965231a5508613f68778d30d39a529e8121", hashedPassword);
+        assertEquals("1ae4766aa2281d7535cca49bace4f05df82095a9128774b7127e65c094db4972", hashedPassword);
     }
 
     @Test
@@ -38,8 +38,8 @@ public class PasswordToolsTests {
         String hashedPassword2 = PasswordTools.hashPassword("1", "ABCD1235", "test-user", "password1");
 
         assertNotEquals(hashedPassword1, hashedPassword2);
-        assertEquals("c8f5e70f9d9bc00c2a9b27fc2e720965231a5508613f68778d30d39a529e8121", hashedPassword1);
-        assertEquals("d586e5dc6d7a5f8946e3061124b39e9eb1ce92618675788b301f3b462bb7da4f", hashedPassword2);
+        assertEquals("1ae4766aa2281d7535cca49bace4f05df82095a9128774b7127e65c094db4972", hashedPassword1);
+        assertEquals("4b86eefbee01dc2a5588b2ce119c95c1c8d4d020f7fc5ac00c775a88c9208701", hashedPassword2);
     }
 
     @Test
@@ -48,7 +48,7 @@ public class PasswordToolsTests {
         String hashedPassword2 = PasswordTools.hashPassword("1", "ABCD1234", "test-user", "password2");
 
         assertNotEquals(hashedPassword1, hashedPassword2);
-        assertEquals("c8f5e70f9d9bc00c2a9b27fc2e720965231a5508613f68778d30d39a529e8121", hashedPassword1);
-        assertEquals("1ae04ffddf119487deead3315ea0290a3767b2361dd5a06365f384d8dcaebd86", hashedPassword2);
+        assertEquals("1ae4766aa2281d7535cca49bace4f05df82095a9128774b7127e65c094db4972", hashedPassword1);
+        assertEquals("6cc8dcb30f6fb750607f61109c27f5b03cfa7f359db0c70387cd2234358eb057", hashedPassword2);
     }
 }

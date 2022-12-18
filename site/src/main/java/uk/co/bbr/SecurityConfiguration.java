@@ -11,6 +11,7 @@ import org.springframework.security.web.authentication.LoginUrlAuthenticationEnt
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
+import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import uk.co.bbr.services.security.JwtService;
 import uk.co.bbr.web.security.filter.SecurityFilter;
@@ -26,7 +27,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().httpBasic()
-                .and().csrf().csrfTokenRepository(csrfTokenRepository())
+                .and().csrf().csrfTokenRepository(this.csrfTokenRepository())
                 .disable().authorizeRequests()
                 .antMatchers("/**").permitAll()
                 .antMatchers("/bbr-admin/**").authenticated()
