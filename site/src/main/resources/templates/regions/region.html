@@ -13,17 +13,14 @@
         <p th:replace="regions/regionList.fragment.html :: regionList(${SubRegions})"></p>
     </span>
 
-    <span th:if="${Region.slug != 'unknown'}">
-        <h3 th:text="#{page.region.section.map}">Map</h3>
-        <div id="map" style="width: 100%; height: 600px"></div>
-    </span>
-
     <h3 th:text="#{page.region.section.bands}">Bands</h3>
+    <div  th:if="${Region.slug != 'unknown'}" id="map" style="width: 100%; height: 600px"></div>
+
     <p th:text="#{page.region.section.bands.count(${Region.activeBandsCount}, ${Region.extinctBandsCount})}">This region has {0} active bands, and {1} extinct.</p>
     <p th:if="${Region.bands.size > 0}"><span th:text="#{page.region.section.bands.links-page-start}">There is also a page listing</span> <a th:href="${'/regions/' + Region.slug + '/links/'}" th:text="#{page.region.section.bands.links-page-link}">Band Links</a> <span th:text="#{page.region.section.bands.links-page-end}">for this region.</p>
 
     <span sec:authorize="hasRole('BBR_PRO')">
-        <button class="bandTypeButton btn btn-sm btn-success" type="button" th:each="type : ${Region.sectionTypes}"><span class="typeDescription" th:text="#{${type.key}}">Type</span> (<span th:text="${type.value}">123</span>)</button>
+        <button class="bandTypeButton btn btn-sm btn-success" type="button" th:each="type : ${Region.sectionTypes}" th:id="${type.key}"><span class="typeDescription" th:text="#{${type.key}}">Type</span> (<span th:text="${type.value}">123</span>)</button>
     </span>
 
     <table id="bands" class="table table-hover sortable" th:if="${Region.bands.size > 0}">
@@ -76,7 +73,6 @@
         }
 
         function onEachFeature(feature, layer) {
-            console.log(feature.properties.type);
             layer.bindPopup('<b>' + feature.properties.name + '</b><br/><br/>[<a href="/bands/' + feature.properties.slug + '/">More Details</a>]');
         }
         function pointToLayer(feature, latlng) {
@@ -93,24 +89,30 @@
         let longitude = "[[${Region.longitude}]]";
         let mapZoom = "[[${Region.defaultMapZoom}]]";
         let regionSlug = "[[${Region.slug}]]";
-        let map = L.map('map').setView([latitude, longitude], mapZoom);
+        var map = L.map('map').setView([latitude, longitude], mapZoom);
         var icon_markers = buildIcons();
-        let layers = new Map();
+        var layers = {};
 
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
             attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         }).addTo(map);
 
-        var bandsLayer = L.geoJson(null, {
-            onEachFeature: onEachFeature,
-            pointToLayer: pointToLayer
-        }).addTo(map);
-        let url = '/regions/' + regionSlug + '/bands.json';
-        fetch(url)
-            .then(response => response.json())
-            .then(json => populateBandsOnMap(json, bandsLayer));
-
+        let typeButtonsList = document.querySelectorAll("button.bandTypeButton");
+        for (let i=0; i<typeButtonsList.length; i++) {
+            let eachButton = typeButtonsList[i];
+            let id = eachButton.id;
+            if (!layers.hasOwnProperty(id)) {
+                layers[id] = L.geoJson(null, {
+                    onEachFeature: onEachFeature,
+                    pointToLayer: pointToLayer
+                }).addTo(map);
+                let url = '/regions/' + regionSlug + '/' + id + '/bands.json';
+                fetch(url)
+                    .then(response => response.json())
+                    .then(json => populateBandsOnMap(json, layers[id]));
+            }
+        }
     </script>
 
     <script sec:authorize="hasRole('BBR_PRO')">
@@ -126,10 +128,12 @@
                     showHideType(button.querySelector("span.typeDescription").textContent, false);
                     button.classList.remove("btn-success");
                     button.classList.add("btn-outline-dark");
+                    map.removeLayer(layers[button.id]);
                 } else {
                     showHideType(button.querySelector("span.typeDescription").textContent, true);
                     button.classList.remove("btn-outline-dark");
                     button.classList.add("btn-success");
+                    map.addLayer(layers[button.id]);
                 }
                 ev.preventDefault();
             }

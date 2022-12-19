@@ -20,6 +20,7 @@ import uk.co.bbr.services.region.dto.RegionPageDto;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
@@ -57,11 +58,11 @@ public class RegionController {
         return "regions/regionLinks";
     }
 
-    @GetMapping(value="/regions/{regionSlug}/bands.json", produces="application/json")
-    public ResponseEntity<JsonNode> regionBandsJson(@PathVariable("regionSlug") String regionSlug) {
+    @GetMapping(value="/regions/{regionSlug}/{sectionType}/bands.json", produces="application/json")
+    public ResponseEntity<JsonNode> regionBandsJson(@PathVariable("regionSlug") String regionSlug, @PathVariable("sectionType") String sectionType) {
         RegionDao region = this.regionService.findBySlug(regionSlug);
 
-        List<BandDao> bandsForMap = this.regionService.fetchBandsWithMapLocation(region);
+        List<BandDao> bandsForMap = this.regionService.fetchBandsWithMapLocation(region).stream().filter(t -> t.getSectionType().equals(sectionType)).collect(Collectors.toList());
 
         ObjectNode objectNode = objectMapper.createObjectNode();
         objectNode.put("type", "FeatureCollection");
