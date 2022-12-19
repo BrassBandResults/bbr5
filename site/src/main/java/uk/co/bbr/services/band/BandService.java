@@ -33,4 +33,6 @@ public interface BandService {
     BandRelationshipTypeDao fetchIsParentOfRelationship();
 
     void saveRelationship(BandRelationshipDao relationship);
+
+    void update(BandDao band);
 }

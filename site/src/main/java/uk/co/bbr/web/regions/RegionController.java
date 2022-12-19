@@ -69,23 +69,9 @@ public class RegionController {
         ArrayNode features = objectNode.putArray("features");
 
         for (BandDao eachBand : bandsForMap) {
-            ObjectNode bandGeometry = objectMapper.createObjectNode();
-            bandGeometry.put("type", "Point");
-            bandGeometry.putArray("coordinates").add(Float.parseFloat(eachBand.getLongitude())).add(Float.parseFloat(eachBand.getLatitude()));
-
-            ObjectNode bandProperties = objectMapper.createObjectNode();
-            bandProperties.put("name", eachBand.getName());
-            bandProperties.put("slug", eachBand.getSlug());
-            bandProperties.put("type", eachBand.getSectionType());
-
-            ObjectNode bandNode = objectMapper.createObjectNode();
-            bandNode.put("type", "Feature");
-            bandNode.put("geometry", bandGeometry);
-            bandNode.put("properties", bandProperties);
-            features.add(bandNode);
+            features.add(eachBand.asGeoJson(this.objectMapper));
         }
 
         return ResponseEntity.ok(objectNode);
-
     }
 }

@@ -30,6 +30,9 @@ public class SectionServiceTests {
         // assert
         assertEquals("Championship", section.getName());
         assertEquals("championship", section.getSlug());
+        assertEquals(30, section.getPosition());
+        assertEquals("C", section.getMapShortCode());
+        assertEquals("section.championship", section.getTranslationKey());
     }
 
     @Test
@@ -40,5 +43,8 @@ public class SectionServiceTests {
         // assert
         assertEquals("First", section.getName());
         assertEquals("first", section.getSlug());
+        assertEquals(110, section.getPosition());
+        assertEquals("1", section.getMapShortCode());
+        assertEquals("section.first", section.getTranslationKey());
     }
 }

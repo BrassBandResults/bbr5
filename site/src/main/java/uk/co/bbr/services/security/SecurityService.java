@@ -11,6 +11,8 @@ import java.util.Optional;
 public interface SecurityService {
     String getCurrentUsername();
 
+    BbrUserDao getCurrentUser();
+
     BbrUserDao authenticate(String email, String plaintextPassword) throws AuthenticationFailedException;
 
     BbrUserDao createUser(String usercode, String plaintextPassword, String email);

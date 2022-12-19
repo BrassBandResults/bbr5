@@ -1,5 +1,7 @@
 package uk.co.bbr.services.band.dao;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -139,5 +141,23 @@ public class BandDao extends AbstractDao implements NameTools {
             return "status.youth";
         }
         return this.section.getTranslationKey();
+    }
+
+    public ObjectNode asGeoJson(ObjectMapper objectMapper) {
+        ObjectNode bandGeometry = objectMapper.createObjectNode();
+        bandGeometry.put("type", "Point");
+        bandGeometry.putArray("coordinates").add(Float.parseFloat(this.getLongitude())).add(Float.parseFloat(this.getLatitude()));
+
+        ObjectNode bandProperties = objectMapper.createObjectNode();
+        bandProperties.put("name", this.getName());
+        bandProperties.put("slug", this.getSlug());
+        bandProperties.put("type", this.getSectionType());
+
+        ObjectNode bandNode = objectMapper.createObjectNode();
+        bandNode.put("type", "Feature");
+        bandNode.put("geometry", bandGeometry);
+        bandNode.put("properties", bandProperties);
+
+        return bandNode;
     }
 }

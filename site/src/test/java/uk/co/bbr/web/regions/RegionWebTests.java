@@ -1,5 +1,7 @@
 package uk.co.bbr.web.regions;
 
+import com.jayway.jsonpath.DocumentContext;
+import com.jayway.jsonpath.JsonPath;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -9,6 +11,8 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.client.RestTemplate;
 import uk.co.bbr.services.band.BandService;
+import uk.co.bbr.services.band.dao.BandDao;
+import uk.co.bbr.services.band.types.BandStatus;
 import uk.co.bbr.services.region.RegionService;
 import uk.co.bbr.services.region.dao.RegionDao;
 import uk.co.bbr.services.security.JwtService;
@@ -17,6 +21,7 @@ import uk.co.bbr.services.security.ex.AuthenticationFailedException;
 import uk.co.bbr.web.LoginMixin;
 import uk.co.bbr.web.security.support.TestUser;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -56,6 +61,12 @@ class RegionWebTests implements LoginMixin {
         this.bandService.create("Aalborg Brass Band", denmark);
         this.bandService.create("102 (Cheshire) Transport Column R.A.S.C. (T.A.)", northWest);
 
+        BandDao extinct = this.bandService.create("Extinct Yorkshire", yorkshire);
+        extinct.setStatus(BandStatus.EXTINCT);
+        extinct.setLatitude("0.00");
+        extinct.setLongitude("0.00");
+        this.bandService.update(extinct);
+
         logoutTestUser();
     }
 
@@ -65,7 +76,6 @@ class RegionWebTests implements LoginMixin {
         assertTrue(response.contains("<title>Yorkshire - Region - Brass Band Results</title>"));
 
         assertTrue(response.contains("<h2>Yorkshire</h2>"));
-        assertTrue(response.contains("<h3>Map</h3>"));
         assertTrue(response.contains("<h3>Contests</h3>"));
         assertTrue(response.contains("<h3>Bands"));
 
@@ -82,5 +92,12 @@ class RegionWebTests implements LoginMixin {
 
         assertTrue(response.contains("Rothwell Temperance"));
         assertFalse(response.contains("Accrington Borough"));
+    }
+
+    @Test
+    void testGetYorkshireExtinctBandsGeoJsonWorksSuccessfully() {
+        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/regions/yorkshire/status.extinct/bands.json", String.class);
+        DocumentContext parsedJson = JsonPath.parse(response);
+        assertEquals("FeatureCollection", parsedJson.read("$['type']"));
     }
 }

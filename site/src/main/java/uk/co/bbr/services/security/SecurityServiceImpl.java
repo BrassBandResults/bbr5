@@ -28,6 +28,15 @@ public class SecurityServiceImpl implements SecurityService {
     }
 
     @Override
+    public BbrUserDao getCurrentUser() {
+        Optional<BbrUserDao> user = this.bbrUserRepository.findByUsercode(this.getCurrentUsername());
+        if (user.isEmpty()) {
+            throw new NotFoundException("Current user not found");
+        }
+        return user.get();
+    }
+
+    @Override
     public BbrUserDao authenticate(String usercode, String plaintextPassword) throws AuthenticationFailedException {
         Optional<BbrUserDao> fetchedUserOptional = this.bbrUserRepository.findByUsercode(usercode);
         if (fetchedUserOptional.isEmpty()) {

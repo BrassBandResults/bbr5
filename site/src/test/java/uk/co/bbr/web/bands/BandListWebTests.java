@@ -65,7 +65,7 @@ class BandListWebTests implements LoginMixin {
     void testGetBandListWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/bands", String.class);
         assertTrue(response.contains("<h2>Bands starting with A</h2>"));
-        assertTrue(response.contains("Showing 7 of 11."));
+        assertTrue(response.contains("Showing 7 of 11 bands."));
 
         assertTrue(response.contains("Abercrombie Primary School Community"));
         assertTrue(response.contains("Midlands"));
@@ -79,7 +79,7 @@ class BandListWebTests implements LoginMixin {
     void testGetBandListForSpecificLetterWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/R", String.class);
         assertTrue(response.contains("<h2>Bands starting with R</h2>"));
-        assertTrue(response.contains("Showing 1 of 11."));
+        assertTrue(response.contains("Showing 1 of 11 bands."));
 
         assertTrue(response.contains("Rothwell Temperance"));
         assertTrue(response.contains("Yorkshire"));
@@ -92,7 +92,7 @@ class BandListWebTests implements LoginMixin {
     void testGetAllBandListWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/ALL", String.class);
         assertTrue(response.contains("<h2>All Bands</h2>"));
-        assertTrue(response.contains("Showing 11 of 11."));
+        assertTrue(response.contains("Showing 11 of 11 bands."));
 
         assertTrue(response.contains("Abercrombie Primary School Community"));
         assertTrue(response.contains("Midlands"));

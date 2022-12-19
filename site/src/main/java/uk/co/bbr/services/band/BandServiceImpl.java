@@ -21,8 +21,10 @@ import uk.co.bbr.services.framework.mixins.SlugTools;
 import uk.co.bbr.services.framework.ValidationException;
 import uk.co.bbr.services.region.RegionService;
 import uk.co.bbr.services.region.dao.RegionDao;
+import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -31,8 +33,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class BandServiceImpl implements BandService, SlugTools {
     private final RegionService regionService;
-
     private final BandRepository bandRepository;
+    private final SecurityService securityService;
     private final BandPreviousNameRepository bandPreviousNameRepository;
     private final BandRehearsalNightRepository bandRehearsalNightRepository;
     private final BandRelationshipRepository bandRelationshipRepository;
@@ -159,5 +161,12 @@ public class BandServiceImpl implements BandService, SlugTools {
     @Override
     public void saveRelationship(BandRelationshipDao relationship) {
         this.bandRelationshipRepository.saveAndFlush(relationship);
+    }
+
+    @Override
+    public void update(BandDao band) {
+        band.setUpdated(LocalDateTime.now());
+        band.setUpdatedBy(this.securityService.getCurrentUser().getId());
+        this.bandRepository.saveAndFlush(band);
     }
 }
