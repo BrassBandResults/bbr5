@@ -31,6 +31,10 @@ public class RegionPageDto {
         return this.region.getExtinctBandsCount();
     }
 
+    public String getLatitude() { return this.region.getLatitude();}
+    public String getLongitude() { return this.region.getLongitude();}
+    public Integer getDefaultMapZoom() { return this.region.getDefaultMapZoom();}
+
     public Map<String, Integer> getSectionTypes() {
         Map<String, Integer> sectionTypes = new LinkedHashMap<>();
         for (BandDao band : this.bands) {

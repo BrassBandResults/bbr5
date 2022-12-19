@@ -1,7 +1,6 @@
 package uk.co.bbr.services.region;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import uk.co.bbr.services.band.dao.BandDao;
 import uk.co.bbr.services.framework.NotFoundException;
@@ -87,5 +86,10 @@ public class RegionServiceImpl implements RegionService, SlugTools {
     @Override
     public List<RegionDao> fetchSubRegions(RegionDao region) {
         return this.regionRepository.fetchSubRegionsOf(region.getId());
+    }
+
+    @Override
+    public List<BandDao> fetchBandsWithMapLocation(RegionDao region) {
+        return this.regionRepository.fetchBandsForMapForRegion(region.getId());
     }
 }

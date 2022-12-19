@@ -3,7 +3,7 @@
 <body>
 <title layout:fragment="title" th:text="#{page.region.page-title(#{'region.' + ${Region.slug}})}">Yorkshire Region - Brass Band Results</title>
 <div layout:fragment="head">
-    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin=""/>
 </div>
 <div layout:fragment="content">
     <h2 th:text="#{'region.' + ${Region.slug}}">Region Name</h2>
@@ -13,10 +13,10 @@
         <p th:replace="regions/regionList.fragment.html :: regionList(${SubRegions})"></p>
     </span>
 
-    <h3 th:text="#{page.region.section.map}">Map</h3>
-    <div id="map"></div>
-
-    <h3 th:text="#{page.region.section.contests}">Contests</h3>
+    <span th:if="${Region.slug != 'unknown'}">
+        <h3 th:text="#{page.region.section.map}">Map</h3>
+        <div id="map" style="width: 100%; height: 600px"></div>
+    </span>
 
     <h3 th:text="#{page.region.section.bands}">Bands</h3>
     <p th:text="#{page.region.section.bands.count(${Region.activeBandsCount}, ${Region.extinctBandsCount})}">This region has {0} active bands, and {1} extinct.</p>
@@ -42,9 +42,77 @@
             </tr>
         </tbody>
     </table>
+
+    <h3 th:text="#{page.region.section.contests}">Contests</h3>
 </div>
 
 <div layout:fragment="scriptfooter">
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+    <script>
+        function buildIcons() {
+            let icons = new Map();
+            let basePath = "[[${STATIC_HOST} + '/map']]";
+            icons.set('section.championship', L.icon({iconUrl: basePath + '/championship.png'}));
+            icons.set('section.first', L.icon({iconUrl: basePath + '/first.png'}));
+            icons.set('section.second', L.icon({iconUrl: basePath + '/second.png'}));
+            icons.set('section.third', L.icon({iconUrl: basePath + '/third.png'}));
+            icons.set('section.fourth', L.icon({iconUrl: basePath + '/fourth.png'}));
+            icons.set('section.fifth', L.icon({iconUrl: basePath + '/fifth.png'}));
+            icons.set('section.elite', L.icon({iconUrl: basePath + '/elite.png'}));
+            icons.set('section.excellence', L.icon({iconUrl: basePath + '/excellence.png'}));
+            icons.set('status.competing', L.icon({iconUrl: basePath + '/band.png'}));
+            icons.set('status.scratch', L.icon({iconUrl: basePath + '/band.png'}));
+            icons.set('status.extinct', L.icon({iconUrl: basePath + '/extinct.png'}));
+            icons.set('status.youth', L.icon({iconUrl: basePath + '/youth.png'}));
+            icons.set('section.youth', L.icon({iconUrl: basePath + '/youth.png'}));
+            icons.set('status.non-competing', L.icon({iconUrl: basePath + '/non_competing.png'}));
+            icons.set('status.salvation-army', L.icon({iconUrl: basePath + '/sa.png'}));
+            icons.set('section.a-grade', L.icon({iconUrl: basePath + '/a_grade.png'}));
+            icons.set('section.b-grade', L.icon({iconUrl: basePath + '/b_grade.png'}));
+            icons.set('section.c-grade', L.icon({iconUrl: basePath + '/c_grade.png'}));
+            icons.set('section.d-grade', L.icon({iconUrl: basePath + '/d_grade.png'}));
+
+            return icons;
+        }
+
+        function onEachFeature(feature, layer) {
+            console.log(feature.properties.type);
+            layer.bindPopup('<b>' + feature.properties.name + '</b><br/><br/>[<a href="/bands/' + feature.properties.slug + '/">More Details</a>]');
+        }
+        function pointToLayer(feature, latlng) {
+            return L.marker(latlng, {
+                icon: icon_markers.get(feature.properties.type)
+            });
+        }
+
+        function populateBandsOnMap(data, bandsLayer){
+            bandsLayer.addData(data);
+        }
+
+        let latitude = "[[${Region.latitude}]]";
+        let longitude = "[[${Region.longitude}]]";
+        let mapZoom = "[[${Region.defaultMapZoom}]]";
+        let regionSlug = "[[${Region.slug}]]";
+        let map = L.map('map').setView([latitude, longitude], mapZoom);
+        var icon_markers = buildIcons();
+        let layers = new Map();
+
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(map);
+
+        var bandsLayer = L.geoJson(null, {
+            onEachFeature: onEachFeature,
+            pointToLayer: pointToLayer
+        }).addTo(map);
+        let url = '/regions/' + regionSlug + '/bands.json';
+        fetch(url)
+            .then(response => response.json())
+            .then(json => populateBandsOnMap(json, bandsLayer));
+
+    </script>
+
     <script sec:authorize="hasRole('BBR_PRO')">
         let typeButtons = document.querySelectorAll("button.bandTypeButton");
         for (let i=0; i<typeButtons.length; i++) {
