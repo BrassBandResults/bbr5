@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+<body>
+<title layout:fragment="title" th:text="#{page.people.title}">People - Brass Band Results</title>
+<div layout:fragment="content">
+    <span th:if="${PeoplePrefixLetter == 'ALL'}"><h2><span th:text="#{page.people.page-title}" th:remove="tag">All People</span></h2></span>
+    <span th:if="${PeoplePrefixLetter != 'ALL'}"><h2><span th:text="#{page.people.people-starting-with(${PeoplePrefixLetter})}" th:remove="tag">People surnames starting with R</span></h2></span>
+    <p>
+        <span th:text="#{page.people.people-counts(${People.returnedPeopleCount},${People.allPeopleCount})}" th:remove="tag">Showing 1 of 6 people.</span>
+    </p>
+    <p>
+        {% if user.profile.enhanced_functionality %}<p>[<a href="/people/add/">{% trans "Add New Person"%}</a>]</p>{% endif %}
+    </p>
+    <p th:replace="navigation/az-picker.html :: azPicker('people', ${PeoplePrefixLetter}, false, false)"></p>
+    <table id="people" class="table table-hover sortable">
+        <thead>
+        <tr>
+            <th th:text="#{page.people.column-header-name}">Name</th>
+            <th th:text="#{page.people.column-header-conducting}">Conducting</th>
+            <th th:text="#{page.people.column-header-adjudications}">Adjudications</th>
+            <th th:text="#{page.people.column-header-compositions}">Compositions</th>
+            <th th:text="#{page.people.column-header-arrangements}">Arrangements</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="person : ${People.returnedPeople}">
+            <td class="person">
+              <a th:href="${'/people/' + person.slug}" th:text="${person.nameSurnameFirst}">Sawyer, Tim</span></a>
+              <small th:if="${person.knownFor != null && person.knownFor.length > 0}"><span th:text="${person.knownFor}">Rothwell Temperance</span></small>
+            </td>
+            <td th:text="${person.conductingCount}">0</td>
+            <td th:text="${person.adjudicationsCount}">0</td>
+            <td th:text="${person.compositionsCount}">0</td>
+            <td th:text="${person.arrangementsCount}">0</td>
+        </tr>
+        </tbody>
+    </table>
+    <p th:replace="navigation/az-picker.html :: azPicker('people', ${PeoplePrefixLetter}, false, false)"></p>
+</div>
+</body>
+</html>

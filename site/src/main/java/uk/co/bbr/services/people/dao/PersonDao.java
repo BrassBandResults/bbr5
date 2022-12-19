@@ -3,6 +3,7 @@ package uk.co.bbr.services.people.dao;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Formula;
 import uk.co.bbr.services.framework.AbstractDao;
 
 import javax.persistence.Column;
@@ -45,6 +46,18 @@ public class PersonDao extends AbstractDao {
 
     @Column(name="end_date")
     private LocalDate endDate;
+
+    @Formula("0")
+    private int conductingCount;
+
+    @Formula("0")
+    private int adjudicationsCount;
+
+    @Formula("0")
+    private int compositionsCount;
+
+    @Formula("0")
+    private int arrangementsCount;
 
     public void setNotes(String notes) {
         if (notes != null) {
@@ -95,6 +108,23 @@ public class PersonDao extends AbstractDao {
         if (this.suffix != null && this.suffix.trim().length() > 0) {
             returnValue.append(" ");
             returnValue.append(this.suffix);
+        }
+
+        return returnValue.toString();
+    }
+
+    public String getNameSurnameFirst() {
+        StringBuilder returnValue = new StringBuilder();
+        returnValue.append(this.surname);
+
+        if (this.suffix != null && this.suffix.trim().length() > 0) {
+            returnValue.append(" ");
+            returnValue.append(this.suffix);
+        }
+
+        if (this.firstNames != null && this.firstNames.trim().length() > 0) {
+            returnValue.append(", ");
+            returnValue.append(this.firstNames);
         }
 
         return returnValue.toString();

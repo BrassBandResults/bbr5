@@ -12,7 +12,7 @@
     <p>
         {% if user.profile.enhanced_functionality %}<p>[<a href="/bands/add/">{% trans "Add New Band"%}</a>]</p>{% endif %}
     </p>
-    <p th:replace="navigation/az-picker.html :: azPicker('bands', ${BandPrefixLetter})"></p>
+    <p th:replace="navigation/az-picker.html :: azPicker('bands', ${BandPrefixLetter}, true, true)"></p>
     <table id="bands" class="table table-hover sortable">
         <thead>
         <tr>
@@ -32,7 +32,7 @@
         </tr>
         </tbody>
     </table>
-    <p th:replace="navigation/az-picker.html :: azPicker('bands', ${BandPrefixLetter})"></p>
+    <p th:replace="navigation/az-picker.html :: azPicker('bands', ${BandPrefixLetter}, true, true)"></p>
 </div>
 </body>
 </html>

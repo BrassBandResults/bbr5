@@ -1,4 +1,4 @@
-<div th:fragment="azPicker(offset, selectedLetter)">
+<div th:fragment="azPicker(offset, selectedLetter, enableNumbers, enableAll)">
     <p><span th:text="#{az-picker.starts-with}" th:remove="tag">Starts with:</span>
         <span th:if="${selectedLetter == 'A'}" class="bg-dark text-light rounded p-1">A</span><span th:remove="tag" th:unless="${selectedLetter == 'A'}"><a th:href="${'/' + offset + '/A/'}">A</a></span>
         <span th:if="${selectedLetter == 'B'}" class="bg-dark text-light rounded p-1">B</span><span th:remove="tag" th:unless="${selectedLetter == 'B'}"><a th:href="${'/' + offset + '/B/'}">B</a></span>
@@ -27,7 +27,11 @@
         <span th:if="${selectedLetter == 'Y'}" class="bg-dark text-light rounded p-1">Y</span><span th:remove="tag" th:unless="${selectedLetter == 'Y'}"><a th:href="${'/' + offset + '/Y/'}">Y</a></span>
         <span th:if="${selectedLetter == 'Z'}" class="bg-dark text-light rounded p-1">Z</span><span th:remove="tag" th:unless="${selectedLetter == 'Z'}"><a th:href="${'/' + offset + '/Z/'}">Z</a></span>
 
-        <span th:if="${selectedLetter == '0'}" class="bg-dark text-light rounded p-1">0-9</span><span th:remove="tag" th:unless="${selectedLetter == '0'}"><a th:href="${'/' + offset + '/0/'}">0-9</a></span>
-        <span th:if="${selectedLetter == 'ALL'}" class="bg-dark text-light rounded p-1" th:text="#{az-picker.show-all}">Show All</span><span th:remove="tag" th:unless="${selectedLetter == 'ALL'}"><a th:href="${'/' + offset + '/ALL/'}" th:text="#{az-picker.show-all}">Show All</a></span>
+        <span th:if="${enableNumbers}">
+            <span th:if="${selectedLetter == '0'}" class="bg-dark text-light rounded p-1">0-9</span><span th:remove="tag" th:unless="${selectedLetter == '0'}"><a th:href="${'/' + offset + '/0/'}">0-9</a></span>
+        </span>
+        <span th:if="${enableAll}">
+            <span th:if="${selectedLetter == 'ALL'}" class="bg-dark text-light rounded p-1" th:text="#{az-picker.show-all}">Show All</span><span th:remove="tag" th:unless="${selectedLetter == 'ALL'}"><a th:href="${'/' + offset + '/ALL/'}" th:text="#{az-picker.show-all}">Show All</a></span>
+        </span>
     </p>
 </div>
