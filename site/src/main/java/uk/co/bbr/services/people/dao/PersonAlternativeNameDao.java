@@ -3,7 +3,6 @@ package uk.co.bbr.services.people.dao;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import uk.co.bbr.services.band.dao.BandDao;
 import uk.co.bbr.services.framework.AbstractDao;
 
 import javax.persistence.Column;
@@ -25,7 +24,7 @@ public class PersonAlternativeNameDao extends AbstractDao {
     private PersonDao person;
 
     @Column(name="name", nullable=false)
-    private String name;
+    private String oldName;
 
     @Column(name="hidden")
     private boolean hidden;
