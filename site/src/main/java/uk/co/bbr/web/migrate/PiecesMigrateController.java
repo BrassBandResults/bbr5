@@ -11,6 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import uk.co.bbr.services.people.PeopleService;
+import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.pieces.PieceService;
 import uk.co.bbr.services.pieces.dao.PieceAlternativeNameDao;
 import uk.co.bbr.services.pieces.dao.PieceDao;
@@ -28,6 +30,7 @@ public class PiecesMigrateController extends AbstractMigrateController  {
 
     private final PieceService pieceService;
     private final SecurityService securityService;
+    private final PeopleService peopleService;
 
     @GetMapping("/migrate/pieces")
     // TODO @IsBbrAdmin
@@ -91,7 +94,6 @@ public class PiecesMigrateController extends AbstractMigrateController  {
         for (String eachFile : files) {
             File eachBandFile = new File(BASE_PATH + "/Pieces/" + indexLetter + "/" + eachFile);
             String filename = eachBandFile.getAbsolutePath();
-            System.out.println(filename);
 
             Document doc = null;
             try {
@@ -109,6 +111,24 @@ public class PiecesMigrateController extends AbstractMigrateController  {
             newPiece.setSlug(rootNode.getChildText("slug"));
             newPiece.setName(rootNode.getChildText("name"));
             newPiece.setNotes(this.notBlank(rootNode, "notes"));
+            newPiece.setYear(this.notBlank(rootNode, "year"));
+            if (newPiece.getYear() != null && newPiece.getYear().length() > 4) {
+                System.out.println("****" + newPiece.getYear());
+                newPiece.setYear(newPiece.getYear().substring(0,4));
+            }
+
+            PersonDao composer = null;
+            if (rootNode.getChildText("composer") != null) {
+                composer = this.peopleService.fetchBySlug(rootNode.getChild("composer").getAttributeValue("slug"));
+            }
+
+            PersonDao arranger = null;
+            if (rootNode.getChildText("arranger") != null) {
+                arranger = this.peopleService.fetchBySlug(rootNode.getChild("arranger").getAttributeValue("slug"));
+            }
+
+            newPiece.setComposer(composer);
+            newPiece.setArranger(arranger);
 
             newPiece.setCreatedBy(this.createUser(this.notBlank(rootNode, "owner"), this.securityService));
             newPiece.setUpdatedBy(this.createUser(this.notBlank(rootNode, "lastChangedBy"), this.securityService));

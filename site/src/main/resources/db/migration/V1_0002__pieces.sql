@@ -9,6 +9,8 @@ CREATE TABLE piece (
     owner_id BIGINT NOT NULL REFERENCES site_user(id),
     name VARCHAR(100) NOT NULL,
     slug VARCHAR(60) NOT NULL,
+    composer_id BIGINT REFERENCES person(id),
+    arranger_id BIGINT REFERENCES person(id),
     piece_year VARCHAR(4),
     category VARCHAR(1) NOT NULL DEFAULT 'T',
     notes TEXT

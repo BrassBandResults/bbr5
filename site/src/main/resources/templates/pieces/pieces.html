@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body>
+<title layout:fragment="title" th:text="#{page.pieces.title}">Pieces - Brass Band Results</title>
+<div layout:fragment="content">
+    <span th:if="${PiecePrefixLetter == 'ALL'}"><h2><span th:text="#{page.pieces.page-title}" th:remove="tag">All Bands</span></h2></span>
+    <span th:if="${PiecePrefixLetter != 'ALL'}"><h2><span th:text="#{page.pieces.pieces-starting-with(${PiecePrefixLetter})}" th:remove="tag">Pieces starting with R</span></h2></span>
+    <p>
+        <span th:text="#{page.pieces.piece-counts(${Pieces.returnedPiecesCount},${Pieces.allPiecesCount})}" th:remove="tag">Showing 1 of 6 pieces.</span>
+    </p>
+    <p>
+        {% if user.profile.enhanced_functionality %}<p>[<a href="/bands/add/">{% trans "Add New Piece"%}</a>]</p>{% endif %}
+    </p>
+    <p th:replace="navigation/az-picker.html :: azPicker('pieces', ${PiecePrefixLetter}, true, true)"></p>
+    <table id="bands" class="table table-hover sortable">
+        <thead>
+        <tr>
+            <th th:text="#{page.pieces.column-header-name}">Name</th>
+            <th th:text="#{page.pieces.column-header-composer}">Composer</th>
+            <th th:text="#{page.pieces.column-header-arranger}">Arranger</th>
+            <th th:text="#{page.pieces.column-header-set-test}" sec:authorize="hasRole('BBR_PRO')">Set Test Count</th>
+            <th th:text="#{page.pieces.column-header-own-choice}" sec:authorize="hasRole('BBR_PRO')">Own Choice Count</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="piece : ${Pieces.returnedPieces}">
+            <td class="piece">
+                <a th:href="${'/pieces/' + piece.slug}" th:text="${piece.name}">Piece Name</span></a>
+                <small th:text="${piece.year}">1990</small>
+            </td>
+            <td class="composer person"><a th:if="${piece.composer != null}" th:href="${'/people/' + piece.composer.slug}" th:text="${piece.composer.name}">Composer Name</a></td>
+            <td class="arranger person"><a th:if="${piece.arranger != null}" th:href="${'/people/' + piece.arranger.slug}" th:text="${piece.arranger.name}">Arranger Name</a></td>
+            <td th:text="${piece.setTestCount}"></td>
+            <td th:text="${piece.ownChoiceCount}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <p th:replace="navigation/az-picker.html :: azPicker('pieces', ${PiecePrefixLetter}, true, true)"></p>
+</div>
+</body>
+</html>

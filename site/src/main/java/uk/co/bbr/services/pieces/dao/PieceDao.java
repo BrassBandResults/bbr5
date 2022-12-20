@@ -3,11 +3,17 @@ package uk.co.bbr.services.pieces.dao;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Formula;
 import uk.co.bbr.services.framework.AbstractDao;
+import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.pieces.types.PieceCategory;
+import uk.co.bbr.services.sections.dao.SectionDao;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Getter
@@ -33,6 +39,20 @@ public class PieceDao extends AbstractDao {
 
     @Column(name="category")
     private PieceCategory category;
+
+    @ManyToOne(fetch= FetchType.EAGER)
+    @JoinColumn(name="composer_id")
+    private PersonDao composer;
+
+    @ManyToOne(fetch= FetchType.EAGER)
+    @JoinColumn(name="arranger_id")
+    private PersonDao arranger;
+
+    @Formula("0")
+    private int setTestCount;
+
+    @Formula("0")
+    private int ownChoiceCount;
 
     public void setNotes(String notes) {
         if (notes != null) {

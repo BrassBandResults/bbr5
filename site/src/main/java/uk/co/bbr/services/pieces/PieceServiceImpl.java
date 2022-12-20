@@ -4,8 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import uk.co.bbr.services.framework.ValidationException;
 import uk.co.bbr.services.framework.mixins.SlugTools;
+import uk.co.bbr.services.people.dao.PersonDao;
+import uk.co.bbr.services.people.dto.PeopleListDto;
 import uk.co.bbr.services.pieces.dao.PieceAlternativeNameDao;
 import uk.co.bbr.services.pieces.dao.PieceDao;
+import uk.co.bbr.services.pieces.dto.PieceListDto;
 import uk.co.bbr.services.pieces.repo.PieceAlternativeNameRepository;
 import uk.co.bbr.services.pieces.repo.PieceRepository;
 import uk.co.bbr.services.pieces.types.PieceCategory;
@@ -44,6 +47,15 @@ public class PieceServiceImpl implements PieceService, SlugTools {
     }
 
     @Override
+    public PieceDao create(String name, PieceCategory category, PersonDao composer) {
+        PieceDao newPiece = new PieceDao();
+        newPiece.setName(name);
+        newPiece.setCategory(category);
+        newPiece.setComposer(composer);
+        return this.create(newPiece);
+    }
+
+    @Override
     public void createAlternativeName(PieceDao piece, PieceAlternativeNameDao alternativeName) {
         alternativeName.setPiece(piece);
         this.pieceAlternativeNameRepository.saveAndFlush(alternativeName);
@@ -70,5 +82,25 @@ public class PieceServiceImpl implements PieceService, SlugTools {
     @Override
     public List<PieceAlternativeNameDao> fetchAlternateNames(PieceDao piece) {
         return this.pieceAlternativeNameRepository.findForPieceId(piece.getId());
+    }
+
+    @Override
+    public PieceListDto listPiecesStartingWith(String prefix) {
+        List<PieceDao> piecesToReturn;
+
+        switch (prefix.toUpperCase()) {
+            case "ALL" -> piecesToReturn = this.pieceRepository.findAll();
+            case "0" -> piecesToReturn = this.pieceRepository.findWithNumberPrefix();
+            default -> {
+                if (prefix.trim().length() != 1) {
+                    throw new UnsupportedOperationException("Prefix must be a single character");
+                }
+                piecesToReturn = this.pieceRepository.findByPrefix(prefix.trim().toUpperCase());
+            }
+        }
+
+        long allBandsCount = this.pieceRepository.count();
+
+        return new PieceListDto(piecesToReturn.size(), allBandsCount, prefix, piecesToReturn);
     }
 }
