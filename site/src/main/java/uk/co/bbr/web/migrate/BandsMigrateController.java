@@ -11,37 +11,28 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.xml.sax.SAXParseException;
-import uk.co.bbr.services.band.BandService;
-import uk.co.bbr.services.band.dao.BandDao;
-import uk.co.bbr.services.band.dao.BandPreviousNameDao;
-import uk.co.bbr.services.band.dao.BandRelationshipDao;
-import uk.co.bbr.services.band.dao.BandRelationshipTypeDao;
-import uk.co.bbr.services.band.types.BandStatus;
-import uk.co.bbr.services.band.types.RehearsalDay;
-import uk.co.bbr.services.region.RegionService;
-import uk.co.bbr.services.region.dao.RegionDao;
-import uk.co.bbr.services.section.SectionService;
-import uk.co.bbr.services.section.dao.SectionDao;
+import uk.co.bbr.services.bands.BandService;
+import uk.co.bbr.services.bands.dao.BandDao;
+import uk.co.bbr.services.bands.dao.BandPreviousNameDao;
+import uk.co.bbr.services.bands.dao.BandRelationshipDao;
+import uk.co.bbr.services.bands.types.BandStatus;
+import uk.co.bbr.services.bands.types.RehearsalDay;
+import uk.co.bbr.services.regions.RegionService;
+import uk.co.bbr.services.regions.dao.RegionDao;
+import uk.co.bbr.services.sections.SectionService;
+import uk.co.bbr.services.sections.dao.SectionDao;
 import uk.co.bbr.services.security.SecurityService;
-import uk.co.bbr.services.security.dao.BbrUserDao;
 
 import java.io.File;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
-public class BandsMigrateController {
-
-    private static final String BASE_PATH = "/tmp/bbr";
+public class BandsMigrateController extends AbstractMigrateController {
 
     private final RegionService regionService;
     private final BandService bandService;
@@ -103,66 +94,6 @@ public class BandsMigrateController {
         return "migrate/migrate";
     }
 
-    private String notBlank(Element node, String childName) {
-        if (node == null) {
-            throw new UnsupportedOperationException("Node passed is null");
-        }
-        String value = node.getChildText(childName);
-        if ("None".equals(value)) {
-            return null;
-        }
-        if (value == null) {
-            return null;
-        }
-
-        if (value.trim().length() == 0) {
-            return null;
-        }
-
-        return value;
-    }
-
-    private LocalDate notBlankDate(Element node, String childName) {
-        String value = this.notBlank(node, childName);
-        if (value == null) {
-            return null;
-        }
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        return LocalDate.parse(value, formatter);
-    }
-
-    private LocalDateTime notBlankDateTime(Element node, String childName) {
-        String value = this.notBlank(node, childName);
-        if (value == null) {
-            return null;
-        }
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        return LocalDateTime.parse(value, formatter);
-    }
-
-    private boolean notBlankBoolean(Element node, String childName) {
-        String value = this.notBlank(node, childName);
-        if ("true".equalsIgnoreCase(value)) {
-            return true;
-        }
-        return false;
-    }
-
-    private long createUser(String username) {
-        if (username == null) {
-            return 1;
-        }
-
-        Optional<BbrUserDao> user = this.securityService.fetchUserByUsercode(username);
-        if (user.isPresent()) {
-            return user.get().getId();
-        }
-
-        BbrUserDao newUser = this.securityService.createUser(username, "NoPassword", "migrated@brassbandresults.co.uk");
-        return newUser.getId();
-    }
-
     private void importBands(String indexLetter) throws JDOMException, IOException {
         File letterLevel = new File(BASE_PATH + "/Bands/" + indexLetter);
         String[] files = Arrays.stream(letterLevel.list((current, name) -> new File(current, name).isFile())).sorted().toArray(String[]::new);
@@ -216,9 +147,9 @@ public class BandsMigrateController {
                 newBand.setSection(section);
             }
 
-            newBand.setMapperId(this.createUser(this.notBlank(rootNode, "mapper")));
-            newBand.setCreatedBy(this.createUser(this.notBlank(rootNode, "owner")));
-            newBand.setUpdatedBy(this.createUser(this.notBlank(rootNode, "lastChangedBy")));
+            newBand.setMapperId(this.createUser(this.notBlank(rootNode, "mapper"), this.securityService));
+            newBand.setCreatedBy(this.createUser(this.notBlank(rootNode, "owner"), this.securityService));
+            newBand.setUpdatedBy(this.createUser(this.notBlank(rootNode, "lastChangedBy"), this.securityService));
 
             newBand.setCreated(this.notBlankDateTime(rootNode, "created"));
             newBand.setUpdated(this.notBlankDateTime(rootNode, "lastModified"));
@@ -288,8 +219,8 @@ public class BandsMigrateController {
         relationship.setLeftBandName(toBandName);
         relationship.setRelationship(this.bandService.fetchIsParentOfRelationship());
 
-        relationship.setCreatedBy(this.createUser("tjs"));
-        relationship.setUpdatedBy(this.createUser("tjs"));
+        relationship.setCreatedBy(this.createUser("tjs", this.securityService));
+        relationship.setUpdatedBy(this.createUser("tjs", this.securityService));
         relationship.setCreated(LocalDateTime.now());
         relationship.setUpdated(LocalDateTime.now());
 
@@ -298,8 +229,8 @@ public class BandsMigrateController {
 
     private void createPreviousName(BandDao band, Element oldNameElement) {
         BandPreviousNameDao previousName = new BandPreviousNameDao();
-        previousName.setCreatedBy(this.createUser(this.notBlank(oldNameElement, "owner")));
-        previousName.setUpdatedBy(this.createUser(this.notBlank(oldNameElement, "lastChangedBy")));
+        previousName.setCreatedBy(this.createUser(this.notBlank(oldNameElement, "owner"), this.securityService));
+        previousName.setUpdatedBy(this.createUser(this.notBlank(oldNameElement, "lastChangedBy"), this.securityService));
         previousName.setCreated(this.notBlankDateTime(oldNameElement, "created"));
         previousName.setUpdated(this.notBlankDateTime(oldNameElement, "lastModified"));
         previousName.setOldName(oldNameElement.getChildText("name"));
@@ -314,10 +245,5 @@ public class BandsMigrateController {
         if (rehearsalNight != null) {
             this.bandService.createRehearsalNight(band, RehearsalDay.fromName(rehearsalNight));
         }
-    }
-
-    private String[] fetchDirectories() {
-        File topLevel = new File(BASE_PATH + "/Bands");
-        return Arrays.stream(Objects.requireNonNull(topLevel.list((current, name) -> new File(current, name).isDirectory()))).sorted().toArray(String[]::new);
     }
 }

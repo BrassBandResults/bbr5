@@ -6,13 +6,11 @@ import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import uk.co.bbr.services.band.BandService;
-import uk.co.bbr.services.band.dao.BandDao;
-import uk.co.bbr.services.band.types.BandStatus;
-import uk.co.bbr.services.band.types.RehearsalDay;
-import uk.co.bbr.services.region.RegionService;
-import uk.co.bbr.services.region.dao.RegionDao;
-import uk.co.bbr.services.section.SectionService;
+import uk.co.bbr.services.bands.dao.BandDao;
+import uk.co.bbr.services.bands.types.BandStatus;
+import uk.co.bbr.services.regions.RegionService;
+import uk.co.bbr.services.regions.dao.RegionDao;
+import uk.co.bbr.services.sections.SectionService;
 import uk.co.bbr.services.security.JwtService;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.services.security.ex.AuthenticationFailedException;
@@ -20,7 +18,6 @@ import uk.co.bbr.web.LoginMixin;
 import uk.co.bbr.web.security.support.TestUser;
 
 import java.time.LocalDate;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;

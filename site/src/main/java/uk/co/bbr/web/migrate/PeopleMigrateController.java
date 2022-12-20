@@ -11,8 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import uk.co.bbr.services.band.types.BandStatus;
-import uk.co.bbr.services.band.types.RehearsalDay;
 import uk.co.bbr.services.people.PeopleService;
 import uk.co.bbr.services.people.dao.PersonAlternativeNameDao;
 import uk.co.bbr.services.people.dao.PersonDao;
@@ -32,9 +30,7 @@ import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
-public class PeopleMigrateController {
-
-    private static final String BASE_PATH = "/tmp/bbr";
+public class PeopleMigrateController extends AbstractMigrateController  {
 
     private final PeopleService peopleService;
     private final SecurityService securityService;
@@ -94,66 +90,6 @@ public class PeopleMigrateController {
         return "migrate/migrate";
     }
 
-    private String notBlank(Element node, String childName) {
-        if (node == null) {
-            throw new UnsupportedOperationException("Node passed is null");
-        }
-        String value = node.getChildText(childName);
-        if ("None".equals(value)) {
-            return null;
-        }
-        if (value == null) {
-            return null;
-        }
-
-        if (value.trim().length() == 0) {
-            return null;
-        }
-
-        return value;
-    }
-
-    private LocalDate notBlankDate(Element node, String childName) {
-        String value = this.notBlank(node, childName);
-        if (value == null) {
-            return null;
-        }
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        return LocalDate.parse(value, formatter);
-    }
-
-    private LocalDateTime notBlankDateTime(Element node, String childName) {
-        String value = this.notBlank(node, childName);
-        if (value == null) {
-            return null;
-        }
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        return LocalDateTime.parse(value, formatter);
-    }
-
-    private boolean notBlankBoolean(Element node, String childName) {
-        String value = this.notBlank(node, childName);
-        if ("true".equalsIgnoreCase(value)) {
-            return true;
-        }
-        return false;
-    }
-
-    private long createUser(String username) {
-        if (username == null) {
-            return 1;
-        }
-
-        Optional<BbrUserDao> user = this.securityService.fetchUserByUsercode(username);
-        if (user.isPresent()) {
-            return user.get().getId();
-        }
-
-        BbrUserDao newUser = this.securityService.createUser(username, "NoPassword", "migrated@brassbandresults.co.uk");
-        return newUser.getId();
-    }
-
     private void importPeople(String indexLetter) throws JDOMException, IOException {
         File letterLevel = new File(BASE_PATH + "/People/" + indexLetter);
         String[] files = Arrays.stream(letterLevel.list((current, name) -> new File(current, name).isFile())).sorted().toArray(String[]::new);
@@ -185,8 +121,8 @@ public class PeopleMigrateController {
             newPerson.setStartDate(this.notBlankDate(rootNode, "start"));
             newPerson.setEndDate(this.notBlankDate(rootNode, "end"));
 
-            newPerson.setCreatedBy(this.createUser(this.notBlank(rootNode, "owner")));
-            newPerson.setUpdatedBy(this.createUser(this.notBlank(rootNode, "lastChangedBy")));
+            newPerson.setCreatedBy(this.createUser(this.notBlank(rootNode, "owner"), this.securityService));
+            newPerson.setUpdatedBy(this.createUser(this.notBlank(rootNode, "lastChangedBy"), this.securityService));
 
             newPerson.setCreated(this.notBlankDateTime(rootNode, "created"));
             newPerson.setUpdated(this.notBlankDateTime(rootNode, "lastModified"));
@@ -206,18 +142,13 @@ public class PeopleMigrateController {
 
     private void createPreviousName(PersonDao person, Element oldNameElement) {
         PersonAlternativeNameDao previousName = new PersonAlternativeNameDao();
-        previousName.setCreatedBy(this.createUser(this.notBlank(oldNameElement, "owner")));
-        previousName.setUpdatedBy(this.createUser(this.notBlank(oldNameElement, "lastChangedBy")));
+        previousName.setCreatedBy(this.createUser(this.notBlank(oldNameElement, "owner"), this.securityService));
+        previousName.setUpdatedBy(this.createUser(this.notBlank(oldNameElement, "lastChangedBy"), this.securityService));
         previousName.setCreated(this.notBlankDateTime(oldNameElement, "created"));
         previousName.setUpdated(this.notBlankDateTime(oldNameElement, "lastModified"));
         previousName.setOldName(oldNameElement.getChildText("name"));
         previousName.setHidden(this.notBlankBoolean(oldNameElement, "hidden"));
 
         this.peopleService.createAlternativeName(person, previousName);
-    }
-
-    private String[] fetchDirectories() {
-        File topLevel = new File(BASE_PATH + "/People");
-        return Arrays.stream(Objects.requireNonNull(topLevel.list((current, name) -> new File(current, name).isDirectory()))).sorted().toArray(String[]::new);
     }
 }

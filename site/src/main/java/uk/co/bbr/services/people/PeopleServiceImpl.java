@@ -2,10 +2,6 @@ package uk.co.bbr.services.people;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import uk.co.bbr.services.band.dao.BandDao;
-import uk.co.bbr.services.band.dto.BandListBandDto;
-import uk.co.bbr.services.band.dto.BandListDto;
-import uk.co.bbr.services.band.types.BandStatus;
 import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.framework.ValidationException;
 import uk.co.bbr.services.framework.mixins.SlugTools;
@@ -14,9 +10,7 @@ import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.people.dto.PeopleListDto;
 import uk.co.bbr.services.people.repo.PersonAlternativeNameRepository;
 import uk.co.bbr.services.people.repo.PersonRepository;
-import uk.co.bbr.services.region.dao.RegionDao;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,6 +38,14 @@ public class PeopleServiceImpl implements PeopleService, SlugTools {
         }
 
         return this.personRepository.saveAndFlush(person);
+    }
+
+    @Override
+    public PersonDao create(String surname, String firstNames) {
+        PersonDao person = new PersonDao();
+        person.setSurname(surname);
+        person.setFirstNames(firstNames);
+        return this.create(person);
     }
 
     @Override
@@ -93,4 +95,6 @@ public class PeopleServiceImpl implements PeopleService, SlugTools {
 
         return new PeopleListDto(peopleToReturn.size(), allBandsCount, prefix, peopleToReturn);
     }
+
+
 }

@@ -2,7 +2,6 @@ package uk.co.bbr.services.people.repo;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import uk.co.bbr.services.band.dao.BandDao;
 import uk.co.bbr.services.people.dao.PersonDao;
 
 import java.util.List;
@@ -17,6 +16,7 @@ public interface PersonRepository extends JpaRepository<PersonDao, Long> {
 
     @Query("SELECT p FROM PersonDao p ORDER BY p.surname, p.firstNames")
     List<PersonDao> findAll();
+
     @Query("SELECT p FROM PersonDao p WHERE UPPER(p.surname) LIKE UPPER(CONCAT(:prefix, '%'))  ORDER BY p.surname, p.firstNames")
     List<PersonDao> findByPrefix(String prefix);
 }

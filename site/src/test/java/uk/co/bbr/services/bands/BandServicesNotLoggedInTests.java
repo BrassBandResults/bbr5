@@ -5,10 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.test.context.ActiveProfiles;
-import uk.co.bbr.services.band.BandService;
-import uk.co.bbr.services.band.dao.BandDao;
-import uk.co.bbr.services.region.RegionService;
-import uk.co.bbr.services.region.dao.RegionDao;
+import uk.co.bbr.services.bands.dao.BandDao;
+import uk.co.bbr.services.regions.RegionService;
+import uk.co.bbr.services.regions.dao.RegionDao;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;

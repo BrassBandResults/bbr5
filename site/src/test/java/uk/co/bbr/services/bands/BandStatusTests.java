@@ -1,7 +1,7 @@
 package uk.co.bbr.services.bands;
 
 import org.junit.jupiter.api.Test;
-import uk.co.bbr.services.band.types.BandStatus;
+import uk.co.bbr.services.bands.types.BandStatus;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;

@@ -5,8 +5,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import uk.co.bbr.services.band.BandService;
-import uk.co.bbr.services.band.dto.BandListDto;
+import uk.co.bbr.services.bands.BandService;
+import uk.co.bbr.services.bands.dto.BandListDto;
 
 @Controller
 @RequiredArgsConstructor
