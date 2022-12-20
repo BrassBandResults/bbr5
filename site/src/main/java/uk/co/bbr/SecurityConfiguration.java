@@ -3,6 +3,8 @@ package uk.co.bbr;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -46,7 +48,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/favicon.ico");
+    protected void configure(AuthenticationManagerBuilder authManager) throws Exception {
+        // This is the code you usually have to configure your authentication manager.
+        // This configuration will be used by authenticationManagerBean() below.
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        // ALTHOUGH THIS SEEMS LIKE USELESS CODE,
+        // IT'S REQUIRED TO PREVENT SPRING BOOT AUTO-CONFIGURATION
+        return super.authenticationManagerBean();
     }
 }

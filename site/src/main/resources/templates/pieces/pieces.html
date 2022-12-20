@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title th:text="#{page.pieces.title}">Pieces - Brass Band Results</title>
+</head>
 <body>
-<title layout:fragment="title" th:text="#{page.pieces.title}">Pieces - Brass Band Results</title>
 <div layout:fragment="content">
     <span th:if="${PiecePrefixLetter == 'ALL'}"><h2><span th:text="#{page.pieces.page-title}" th:remove="tag">All Bands</span></h2></span>
     <span th:if="${PiecePrefixLetter != 'ALL'}"><h2><span th:text="#{page.pieces.pieces-starting-with(${PiecePrefixLetter})}" th:remove="tag">Pieces starting with R</span></h2></span>

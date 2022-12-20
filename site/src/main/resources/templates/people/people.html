@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+<head>
+    <title th:text="#{page.people.title}">People - Brass Band Results</title>
+</head>
 <body>
-<title layout:fragment="title" th:text="#{page.people.title}">People - Brass Band Results</title>
 <div layout:fragment="content">
     <span th:if="${PeoplePrefixLetter == 'ALL'}"><h2><span th:text="#{page.people.page-title}" th:remove="tag">All People</span></h2></span>
     <span th:if="${PeoplePrefixLetter != 'ALL'}"><h2><span th:text="#{page.people.people-starting-with(${PeoplePrefixLetter})}" th:remove="tag">People surnames starting with R</span></h2></span>

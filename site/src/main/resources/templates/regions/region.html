@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<body>
-<title layout:fragment="title" th:text="#{page.region.page-title(#{'region.' + ${Region.slug}})}">Yorkshire Region - Brass Band Results</title>
-<div layout:fragment="head">
+<head>
+    <title th:text="#{page.region.page-title(#{'region.' + ${Region.slug}})}">Yorkshire Region - Brass Band Results</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin=""/>
-</div>
+</head>
+<body>
 <div layout:fragment="content">
     <h2 th:text="#{'region.' + ${Region.slug}}">Region Name</h2>
 
