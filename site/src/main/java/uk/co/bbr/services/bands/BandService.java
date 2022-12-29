@@ -26,13 +26,13 @@ public interface BandService {
 
     BandDao findBandBySlug(String bandSlug);
 
-    BandDao fetchBandByOldId(Long bandOldId);
+    BandDao fetchBandByOldId(String bandOldId);
 
-    void createPreviousName(BandDao band, BandPreviousNameDao previousName);
+    BandPreviousNameDao createPreviousName(BandDao band, BandPreviousNameDao previousName);
 
     BandRelationshipTypeDao fetchIsParentOfRelationship();
 
-    void saveRelationship(BandRelationshipDao relationship);
+    BandRelationshipDao saveRelationship(BandRelationshipDao relationship);
 
-    void update(BandDao band);
+    BandDao update(BandDao band);
 }

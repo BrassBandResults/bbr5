@@ -12,17 +12,17 @@ import javax.persistence.*;
 @Setter
 @Entity
 @NoArgsConstructor
-@Table(name="contest_alternative_name")
-public class ContestAlternativeNameDao extends AbstractDao implements NameTools {
+@Table(name="contest_grouo_alternative_name")
+public class ContestGroupAlternativeNameDao extends AbstractDao implements NameTools {
     @Column(name="name", nullable=false)
     private String name;
 
     @Column(name="old_id")
     private String oldId;
 
-    @ManyToOne(fetch= FetchType.EAGER, optional=false)
-    @JoinColumn(name="contest_id")
-    private ContestDao contest;
+    @ManyToOne(fetch=FetchType.EAGER, optional=false)
+    @JoinColumn(name="contest_group_id")
+    private ContestGroupDao contestGroup;
 
     public void setName(){
         String nameToSet = simplifyName(name);

@@ -4,15 +4,19 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
+import uk.co.bbr.services.framework.ValidationException;
+import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.pieces.dao.PieceDao;
 import uk.co.bbr.services.pieces.types.PieceCategory;
+import uk.co.bbr.services.security.JwtService;
+import uk.co.bbr.services.security.SecurityService;
+import uk.co.bbr.services.security.ex.AuthenticationFailedException;
 import uk.co.bbr.web.LoginMixin;
+import uk.co.bbr.web.security.support.TestUser;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ActiveProfiles("test")
 @SpringBootTest(properties = { "spring.config.name=piece-create-tests-h2", "spring.datasource.url=jdbc:h2:mem:piece-create-tests-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE"})
@@ -20,10 +24,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class CreatePieceTests implements LoginMixin {
 
     @Autowired private PieceService pieceService;
+    @Autowired private SecurityService securityService;
+    @Autowired private JwtService jwtService;
 
     @Test
-    void createPieceWorksSuccessfully() {
+    void createPieceWorksSuccessfully() throws AuthenticationFailedException {
         // arrange
+        loginTestUser(this.securityService, this.jwtService, TestUser.TEST_MEMBER);
+
         PieceDao piece = new PieceDao();
         piece.setNotes(" Notes ");
         piece.setName(" Piece Name ");
@@ -39,13 +47,17 @@ class CreatePieceTests implements LoginMixin {
         assertEquals("123", returnedPiece.getOldId());
         assertEquals("1982", returnedPiece.getYear());
         assertEquals(PieceCategory.TEST_PIECE, returnedPiece.getCategory());
+
+        logoutTestUser();
     }
 
     @Test
-    void testCreatedPieceCanBeFetchedByIdSuccessfully() {
+    void testCreatedPieceCanBeFetchedByIdSuccessfully() throws AuthenticationFailedException {
         // arrange
+        loginTestUser(this.securityService, this.jwtService, TestUser.TEST_MEMBER);
+
         PieceDao piece = new PieceDao();
-        piece.setName(" Piece Name   ");
+        piece.setName(" Piece Name  2  ");
         piece.setOldId("432 ");
         piece.setYear("  1980  ");
         piece.setCategory(PieceCategory.MARCH);
@@ -55,16 +67,20 @@ class CreatePieceTests implements LoginMixin {
         PieceDao returnedPiece = this.pieceService.fetchById(savedPiece.getId());
 
         // assert
-        assertEquals("Piece Name", returnedPiece.getName());
+        assertEquals("Piece Name 2", returnedPiece.getName());
         assertNull(returnedPiece.getNotes());
         assertEquals("432", returnedPiece.getOldId());
         assertEquals("1980", returnedPiece.getYear());
         assertEquals(PieceCategory.MARCH, returnedPiece.getCategory());
+
+        logoutTestUser();
     }
 
     @Test
-    void testCreatedPieceCanBeFetchedBySlugSuccessfully() {
+    void testCreatedPieceCanBeFetchedBySlugSuccessfully() throws AuthenticationFailedException {
         // arrange
+        loginTestUser(this.securityService, this.jwtService, TestUser.TEST_MEMBER);
+
         PieceDao piece = new PieceDao();
         piece.setNotes(" Notes Section ");
         piece.setName(" Piece Title ");
@@ -82,5 +98,23 @@ class CreatePieceTests implements LoginMixin {
         assertEquals("43233", returnedPiece.getOldId());
         assertEquals("1981", returnedPiece.getYear());
         assertEquals(PieceCategory.HYMN, returnedPiece.getCategory());
+
+        logoutTestUser();
+    }
+
+    @Test
+    void testCreatingPieceWithDuplicateSlugFails() throws AuthenticationFailedException {
+        // arrange
+        loginTestUser(this.securityService, this.jwtService, TestUser.TEST_MEMBER);
+
+        PieceDao piece = this.pieceService.create(" PIECE    1 ");
+
+        // act
+        ValidationException ex = assertThrows(ValidationException.class, ()-> {this.pieceService.create("Piece 1");});
+
+        // assert
+        assertEquals("Piece with slug piece-1 already exists.", ex.getMessage());
+
+        logoutTestUser();
     }
 }

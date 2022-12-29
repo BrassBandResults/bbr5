@@ -45,27 +45,19 @@ public class BandServiceImpl implements BandService, SlugTools {
     public BandDao create(BandDao band) {
         // validation
         if (band.getId() != null) {
-            throw new ValidationException("Can't create with specific id");
+            throw new ValidationException("Can't create band with specific id");
         }
 
-        if (band.getName() == null || band.getName().trim().length() == 0) {
-            throw new ValidationException("Band name must be specified");
+       this.validateMandatory(band);
+
+        // does the slug already exist?
+        Optional<BandDao> slugMatches = this.bandRepository.findBySlug(band.getSlug());
+        if (slugMatches.isPresent()) {
+            throw new ValidationException("Band with slug " + band.getSlug() + " already exists.");
         }
 
-        // defaults
-        if (band.getSlug() == null || band.getSlug().trim().length() == 0) {
-            band.setSlug(slugify(band.getName()));
-        }
-
-        if (band.getRegion() == null) {
-            RegionDao unknownRegion = this.regionService.fetchUnknownRegion();
-            band.setRegion(unknownRegion);
-        }
-
-        if (band.getStatus() == null) {
-            band.setStatus(BandStatus.COMPETING);
-        }
-
+        band.setCreated(LocalDateTime.now());
+        band.setCreatedBy(this.securityService.getCurrentUserId());
         return this.bandRepository.saveAndFlush(band);
     }
 
@@ -84,6 +76,40 @@ public class BandServiceImpl implements BandService, SlugTools {
         newBand.setName(bandName);
         newBand.setRegion(region);
         return this.create(newBand);
+    }
+
+    @Override
+    @IsBbrMember
+    public BandDao update(BandDao band) {
+        if (band.getId() == null) {
+            throw new UnsupportedOperationException("Can't update without an id");
+        }
+
+        this.validateMandatory(band);
+
+        band.setUpdated(LocalDateTime.now());
+        band.setUpdatedBy(this.securityService.getCurrentUserId());
+        return this.bandRepository.saveAndFlush(band);
+    }
+
+    private void validateMandatory(BandDao band){
+        if (band.getName() == null || band.getName().trim().length() == 0) {
+            throw new ValidationException("Band name must be specified");
+        }
+
+        // defaults
+        if (band.getSlug() == null || band.getSlug().trim().length() == 0) {
+            band.setSlug(slugify(band.getName()));
+        }
+
+        if (band.getRegion() == null) {
+            RegionDao unknownRegion = this.regionService.fetchUnknownRegion();
+            band.setRegion(unknownRegion);
+        }
+
+        if (band.getStatus() == null) {
+            band.setStatus(BandStatus.COMPETING);
+        }
     }
 
     @Override
@@ -111,6 +137,7 @@ public class BandServiceImpl implements BandService, SlugTools {
     }
 
     @Override
+    @IsBbrMember
     public void createRehearsalNight(BandDao band, RehearsalDay day) {
         BandRehearsalDayDao rehearsalNight = new BandRehearsalDayDao();
         rehearsalNight.setBand(band);
@@ -139,8 +166,8 @@ public class BandServiceImpl implements BandService, SlugTools {
     }
 
     @Override
-    public BandDao fetchBandByOldId(Long bandOldId) {
-        Optional<BandDao> band = this.bandRepository.fetchByOldId(Long.toString(bandOldId));
+    public BandDao fetchBandByOldId(String bandOldId) {
+        Optional<BandDao> band = this.bandRepository.fetchByOldId(bandOldId);
         if (band.isEmpty()) {
             throw new NotFoundException("Band with old id " + bandOldId + " not found");
         }
@@ -148,9 +175,10 @@ public class BandServiceImpl implements BandService, SlugTools {
     }
 
     @Override
-    public void createPreviousName(BandDao band, BandPreviousNameDao previousName) {
+    @IsBbrMember
+    public BandPreviousNameDao createPreviousName(BandDao band, BandPreviousNameDao previousName) {
         previousName.setBand(band);
-        this.bandPreviousNameRepository.saveAndFlush(previousName);
+        return this.bandPreviousNameRepository.saveAndFlush(previousName);
     }
 
     @Override
@@ -159,14 +187,20 @@ public class BandServiceImpl implements BandService, SlugTools {
     }
 
     @Override
-    public void saveRelationship(BandRelationshipDao relationship) {
-        this.bandRelationshipRepository.saveAndFlush(relationship);
-    }
+    @IsBbrMember
+    public BandRelationshipDao saveRelationship(BandRelationshipDao relationship) {
+        if (relationship.getLeftBand() != null) {
+            if (relationship.getLeftBandName() == null || relationship.getLeftBandName().trim().length() == 0) {
+                relationship.setLeftBandName(relationship.getLeftBand().getName());
+            }
+        }
 
-    @Override
-    public void update(BandDao band) {
-        band.setUpdated(LocalDateTime.now());
-        band.setUpdatedBy(this.securityService.getCurrentUser().getId());
-        this.bandRepository.saveAndFlush(band);
+        if (relationship.getRightBand() != null) {
+            if (relationship.getRightBandName() == null || relationship.getRightBandName().trim().length() == 0) {
+                relationship.setRightBandName(relationship.getRightBand().getName());
+            }
+        }
+
+        return this.bandRelationshipRepository.saveAndFlush(relationship);
     }
 }

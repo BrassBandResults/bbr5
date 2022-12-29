@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import uk.co.bbr.services.framework.AbstractDao;
+import uk.co.bbr.services.framework.mixins.NameTools;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,7 +19,7 @@ import java.time.LocalDate;
 @Entity
 @NoArgsConstructor
 @Table(name="band_previous_name")
-public class BandPreviousNameDao extends AbstractDao {
+public class BandPreviousNameDao extends AbstractDao implements NameTools {
 
     @ManyToOne(fetch= FetchType.EAGER, optional=false)
     @JoinColumn(name="band_id")
@@ -35,4 +36,9 @@ public class BandPreviousNameDao extends AbstractDao {
 
     @Column(name="hidden")
     private boolean hidden;
+
+    public void setOldName(String name) {
+        String nameToSet = simplifyName(name);
+        this.oldName = nameToSet;
+    }
 }

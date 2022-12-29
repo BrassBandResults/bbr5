@@ -3,7 +3,7 @@ package uk.co.bbr.services.sections;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import uk.co.bbr.services.sections.dao.SectionDao;
-import uk.co.bbr.services.sections.dao.SectionRepository;
+import uk.co.bbr.services.sections.repo.SectionRepository;
 
 @Service
 @RequiredArgsConstructor

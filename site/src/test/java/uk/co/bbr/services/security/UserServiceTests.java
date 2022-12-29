@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ActiveProfiles("test")
 @SpringBootTest(properties = { "spring.config.name=user-tests-h2", "spring.datasource.url=jdbc:h2:mem:user-tests-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE"})
-public class UserServiceTests {
+class UserServiceTests {
 
     @Autowired
     private SecurityService securityService;

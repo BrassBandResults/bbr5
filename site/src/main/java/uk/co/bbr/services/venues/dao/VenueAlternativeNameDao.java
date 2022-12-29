@@ -6,6 +6,7 @@ import lombok.Setter;
 import uk.co.bbr.services.framework.AbstractDao;
 import uk.co.bbr.services.framework.mixins.NameTools;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -15,4 +16,9 @@ import javax.persistence.Table;
 @NoArgsConstructor
 @Table(name="venue_alternative_name")
 public class VenueAlternativeNameDao extends AbstractDao implements NameTools {
+    @Column(name="name", nullable=false)
+    private String name;
+
+    @Column(name="old_id")
+    private String oldId;
 }

@@ -21,4 +21,10 @@ public interface RegionService {
     List<RegionDao> fetchSubRegions(RegionDao region);
 
     List<BandDao> fetchBandsWithMapLocation(RegionDao region);
+
+    RegionDao create(RegionDao region);
+
+    RegionDao create(String regionName);
+
+    RegionDao create(String regionName, RegionDao parent);
 }

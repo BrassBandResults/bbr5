@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Formula;
 import uk.co.bbr.services.framework.AbstractDao;
+import uk.co.bbr.services.framework.mixins.NameTools;
 import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.pieces.types.PieceCategory;
 import uk.co.bbr.services.sections.dao.SectionDao;
@@ -21,7 +22,7 @@ import javax.persistence.Table;
 @Entity
 @NoArgsConstructor
 @Table(name="piece")
-public class PieceDao extends AbstractDao {
+public class PieceDao extends AbstractDao implements NameTools {
     @Column(name="old_id")
     private String oldId;
 
@@ -56,25 +57,27 @@ public class PieceDao extends AbstractDao {
 
     public void setNotes(String notes) {
         if (notes != null) {
-            this.notes = notes.trim();
+            notes = notes.trim();
         }
+        this.notes = notes;
     }
 
     public void setOldId(String oldId) {
         if (oldId != null) {
-            this.oldId = oldId.trim();
+            oldId = oldId.trim();
         }
+        this.oldId = oldId;
     }
 
     public void setName(String name) {
-        if (name != null) {
-            this.name = name.trim();
-        }
+        String nameToSet = simplifyName(name);
+        this.name = nameToSet;
     }
 
     public void setYear(String year) {
         if (year != null) {
-            this.year = year.trim();
+            year = year.trim();
         }
+        this.year = year;
     }
 }

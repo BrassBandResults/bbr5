@@ -2,6 +2,7 @@ package uk.co.bbr.services.people;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.framework.ValidationException;
 import uk.co.bbr.services.framework.mixins.SlugTools;
@@ -10,7 +11,10 @@ import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.people.dto.PeopleListDto;
 import uk.co.bbr.services.people.repo.PersonAlternativeNameRepository;
 import uk.co.bbr.services.people.repo.PersonRepository;
+import uk.co.bbr.services.security.SecurityService;
+import uk.co.bbr.web.security.annotations.IsBbrMember;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,8 +24,10 @@ public class PeopleServiceImpl implements PeopleService, SlugTools {
 
     private final PersonRepository personRepository;
     private final PersonAlternativeNameRepository personAlternativeNameRepository;
+    private final SecurityService securityService;
 
     @Override
+    @IsBbrMember
     public PersonDao create(PersonDao person) {
         // validation
         if (person.getId() != null) {
@@ -37,10 +43,19 @@ public class PeopleServiceImpl implements PeopleService, SlugTools {
             person.setSlug(slugify(person.getName()));
         }
 
+        // does the slug already exist?
+        Optional<PersonDao> slugMatches = this.personRepository.fetchBySlug(person.getSlug());
+        if (slugMatches.isPresent()) {
+            throw new ValidationException("Person with slug " + person.getSlug() + " already exists.");
+        }
+
+        person.setCreated(LocalDateTime.now());
+        person.setCreatedBy(this.securityService.getCurrentUserId());
         return this.personRepository.saveAndFlush(person);
     }
 
     @Override
+    @IsBbrMember
     public PersonDao create(String surname, String firstNames) {
         PersonDao person = new PersonDao();
         person.setSurname(surname);
@@ -49,6 +64,7 @@ public class PeopleServiceImpl implements PeopleService, SlugTools {
     }
 
     @Override
+    @IsBbrMember
     public void createAlternativeName(PersonDao person, PersonAlternativeNameDao previousName) {
         previousName.setPerson(person);
         this.personAlternativeNameRepository.saveAndFlush(previousName);

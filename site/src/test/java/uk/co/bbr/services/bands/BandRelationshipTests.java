@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import uk.co.bbr.services.bands.dao.BandDao;
+import uk.co.bbr.services.bands.dao.BandRelationshipDao;
 import uk.co.bbr.services.bands.types.BandStatus;
 import uk.co.bbr.services.regions.RegionService;
 import uk.co.bbr.services.regions.dao.RegionDao;
@@ -19,14 +20,12 @@ import uk.co.bbr.web.security.support.TestUser;
 
 import java.time.LocalDate;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ActiveProfiles("test")
-@SpringBootTest(properties = { "spring.config.name=band-fetch-tests-h2", "spring.datasource.url=jdbc:h2:mem:band-fetch-tests-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE"})
+@SpringBootTest(properties = { "spring.config.name=band-relationship-tests-h2", "spring.datasource.url=jdbc:h2:mem:band-relationship-tests-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE"})
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class BandFetchServiceTests implements LoginMixin {
+class BandRelationshipTests implements LoginMixin {
     @Autowired private BandService bandService;
     @Autowired private SectionService sectionService;
     @Autowired private RegionService regionService;
@@ -64,60 +63,30 @@ class BandFetchServiceTests implements LoginMixin {
     }
 
     @Test
-    void testFetchBandBySlugWorksCorrectly() {
+    void testCreateBandRelationshipWorksSuccessfully() throws AuthenticationFailedException {
+        // arrange
+        loginTestUser(this.securityService, this.jwtService, TestUser.TEST_MEMBER);
+
+        BandDao rothwellTemperance = this.bandService.findBandBySlug("rothwell-temperance");
+        BandDao wallaceArnold = this.bandService.findBandBySlug("wallace-arnold-rothwell-band");
+
+        BandRelationshipDao newRelationship = new BandRelationshipDao();
+        newRelationship.setLeftBand(wallaceArnold);
+        newRelationship.setRightBand(rothwellTemperance);
+        newRelationship.setRelationship(this.bandService.fetchIsParentOfRelationship());
+
         // act
-        BandDao band = this.bandService.findBandBySlug("black-dyke-band");
+        BandRelationshipDao relationship = this.bandService.saveRelationship(newRelationship);
 
         // assert
-        assertNotNull(band.getId());
-        assertNotNull(band.getCreated());
-        assertNotNull(band.getUpdated());
-        assertTrue(band.getUpdatedBy() > 0);
-        assertEquals("Black Dyke Band", band.getName());
-        assertEquals("black-dyke-band", band.getSlug());
-        assertEquals("Yorkshire", band.getRegion().getName());
-        assertEquals("Championship", band.getSection().getName());
-        assertEquals("section.championship", band.getSectionType());
-    }
+        assertEquals("Rothwell Temperance", relationship.getRightBandName());
+        assertEquals("Wallace Arnold (Rothwell) Band", relationship.getLeftBandName());
+        assertEquals("Rothwell Temperance", relationship.getRightBand().getName());
+        assertEquals("Wallace Arnold (Rothwell) Band", relationship.getLeftBand().getName());
+        assertEquals("Is Parent Of", relationship.getRelationship().getName());
+        assertEquals("Has Parent Of", relationship.getRelationship().getReverseName());
 
-    @Test
-    void testFullDateRangeWorksCorrectly() {
-        // act
-        BandDao band = this.bandService.findBandBySlug("wallace-arnold-rothwell-band");
-
-        // assert
-        assertEquals("1881-2000", band.getDateRange());
-        assertEquals("status.scratch", band.getSectionType());
-        assertEquals("123", band.getOldId());
-    }
-
-    @Test
-    void testEndDateRangeWorksCorrectly() {
-        // act
-        BandDao band = this.bandService.findBandBySlug("rothwell-old");
-
-        // assert
-        assertEquals("-1980", band.getDateRange());
-        assertEquals("status.extinct", band.getSectionType());
-    }
-
-    @Test
-    void testStartDateRangeWorksCorrectly() {
-        // act
-        BandDao band = this.bandService.findBandBySlug("rothwell-temperance");
-
-        // assert
-        assertEquals("1985-", band.getDateRange());
-        assertEquals("status.competing", band.getSectionType());
-    }
-
-    @Test
-    void testFetchByOldIdWorksSuccessfully() {
-        // act
-        BandDao band = this.bandService.fetchBandByOldId("987654");
-
-        // assert
-        assertEquals("Rothwell Old", band.getName());
+        logoutTestUser();
     }
 }
 

@@ -7,52 +7,66 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.bands.types.BandStatus;
+import uk.co.bbr.services.contests.dao.ContestTagDao;
+import uk.co.bbr.services.framework.ValidationException;
 import uk.co.bbr.services.regions.RegionService;
 import uk.co.bbr.services.regions.dao.RegionDao;
 import uk.co.bbr.services.sections.SectionService;
 import uk.co.bbr.services.sections.dao.SectionDao;
+import uk.co.bbr.services.security.JwtService;
+import uk.co.bbr.services.security.SecurityService;
+import uk.co.bbr.services.security.ex.AuthenticationFailedException;
 import uk.co.bbr.web.LoginMixin;
+import uk.co.bbr.web.security.support.TestUser;
 
 import java.time.LocalDate;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ActiveProfiles("test")
 @SpringBootTest(properties = { "spring.config.name=create-band-tests-h2", "spring.datasource.url=jdbc:h2:mem:create-band-tests-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE"})
-@WithMockUser(username="member_user", roles= { "BBR_MEMBER" })
 class CreateBandServiceTests implements LoginMixin {
 
     @Autowired private BandService bandService;
     @Autowired private RegionService regionService;
     @Autowired private SectionService sectionService;
+    @Autowired private SecurityService securityService;
+    @Autowired private JwtService jwtService;
 
     @Test
-    void testCreateBandWorksSuccessfullyWithJustName() {
+    void testCreateBandWorksSuccessfullyWithJustName() throws AuthenticationFailedException {
+        loginTestUser(this.securityService, this.jwtService, TestUser.TEST_MEMBER);
+
         // act
         BandDao createdBand = this.bandService.create("Black Dyke Band");
 
         // assert
         assertNotNull(createdBand.getId());
         assertNotNull(createdBand.getCreated());
-        assertEquals(1, createdBand.getCreatedBy());
         assertNotNull(createdBand.getUpdated());
-        assertEquals(1, createdBand.getUpdatedBy());
         assertEquals("Black Dyke Band", createdBand.getName());
         assertEquals("black-dyke-band", createdBand.getSlug());
         assertEquals("Unknown", createdBand.getRegion().getName());
+
+        logoutTestUser();
     }
 
     @Test
-    void testCreateBandWithMultipleSpacesInNameCompressesSpaces() {
+    void testCreateBandWithMultipleSpacesInNameCompressesSpaces() throws AuthenticationFailedException {
+        loginTestUser(this.securityService, this.jwtService, TestUser.TEST_MEMBER);
+
         BandDao createdBand = this.bandService.create("  Roth well  Temperance   Band   ");
         assertEquals("Roth well Temperance Band", createdBand.getName());
         assertEquals("roth-well-temperance-band", createdBand.getSlug());
+
+        logoutTestUser();
     }
 
     @Test
-    void testCreateBandWithRegionWorkSuccessfully() {
+    void testCreateBandWithRegionWorkSuccessfully() throws AuthenticationFailedException {
         // arrange
+        loginTestUser(this.securityService, this.jwtService, TestUser.TEST_MEMBER);
+
         RegionDao northWestRegion = this.regionService.findBySlug("north-west");
 
         // act
@@ -62,11 +76,15 @@ class CreateBandServiceTests implements LoginMixin {
         assertEquals("Foden's", band.getName());
         assertEquals("foden-s", band.getSlug());
         assertEquals("North West", band.getRegion().getName());
+
+        logoutTestUser();
     }
 
     @Test
-    void testCreateBandFromObjectWorksSuccessfully() {
+    void testCreateBandFromObjectWorksSuccessfully() throws AuthenticationFailedException {
         // arrange
+        loginTestUser(this.securityService, this.jwtService, TestUser.TEST_MEMBER);
+
         RegionDao yorkshireRegion = this.regionService.findBySlug("yorkshire");
         SectionDao championshipSection = this.sectionService.fetchBySlug("championship");
 
@@ -107,6 +125,39 @@ class CreateBandServiceTests implements LoginMixin {
         assertEquals(BandStatus.EXTINCT, createdBand.getStatus());
         assertEquals("Twitter", createdBand.getTwitterName());
         assertEquals("http://ybsband.org.uk", createdBand.getWebsite());
+
+        logoutTestUser();
+    }
+
+    @Test
+    void testCreatingBandWithDuplicateSlugFails() throws AuthenticationFailedException {
+        // arrange
+        loginTestUser(this.securityService, this.jwtService, TestUser.TEST_MEMBER);
+
+        BandDao band = this.bandService.create(" BAND  1 ");
+
+        // act
+        ValidationException ex = assertThrows(ValidationException.class, ()-> {this.bandService.create("Band 1");});
+
+        // assert
+        assertEquals("Band with slug band-1 already exists.", ex.getMessage());
+
+        logoutTestUser();
+    }
+
+    @Test
+    void testWhenCreateWithPresentIdFailsAsExpected() throws AuthenticationFailedException {
+        // arrange
+        loginTestUser(this.securityService, this.jwtService, TestUser.TEST_MEMBER);
+
+        BandDao band = new BandDao();
+        band.setId(123L);
+
+        // act
+        ValidationException ex = assertThrows(ValidationException.class, () -> {this.bandService.create(band);});
+
+        // assert
+        assertEquals("Can't create band with specific id", ex.getMessage());
     }
 }
 

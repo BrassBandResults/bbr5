@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Formula;
 import uk.co.bbr.services.framework.AbstractDao;
+import uk.co.bbr.services.framework.mixins.NameTools;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,7 +16,7 @@ import javax.persistence.Table;
 @Entity
 @NoArgsConstructor
 @Table(name="region")
-public class RegionDao extends AbstractDao {
+public class RegionDao extends AbstractDao implements NameTools {
 
     @Column(name = "name", nullable = false)
     private String name;
@@ -46,4 +47,19 @@ public class RegionDao extends AbstractDao {
 
     @Formula("(SELECT COUNT(*) FROM band b WHERE b.region_id = id AND b.status <> 0)")
     private int activeBandsCount;
+
+
+    @Formula("(SELECT COUNT(*) FROM band b WHERE b.region_id IN (SELECT r.id FROM region r WHERE r.container_id = id))")
+    private int subRegionBandsCount;
+
+    @Formula("(SELECT COUNT(*) FROM band b WHERE b.region_id IN (SELECT r.id FROM region r WHERE r.container_id = id) AND b.status = 0)")
+    private int subRegionExtinctBandsCount;
+
+    @Formula("(SELECT COUNT(*) FROM band b WHERE b.region_id IN (SELECT r.id FROM region r WHERE r.container_id = id) AND b.status <> 0)")
+    private int subRegionActiveBandsCount;
+
+    public void setName(String name){
+        String nameToSet = simplifyName(name);
+        this.name = nameToSet;
+    }
 }

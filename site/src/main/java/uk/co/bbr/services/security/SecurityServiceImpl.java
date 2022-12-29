@@ -7,7 +7,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.security.dao.BbrUserDao;
-import uk.co.bbr.services.security.dao.BbrUserRepository;
+import uk.co.bbr.services.security.repo.BbrUserRepository;
 import uk.co.bbr.services.security.dao.UserRole;
 import uk.co.bbr.services.security.ex.AuthenticationFailedException;
 
@@ -24,7 +24,12 @@ public class SecurityServiceImpl implements SecurityService {
     public String getCurrentUsername() {
         SecurityContext securityContext = SecurityContextHolder.getContext();
         return securityContext.getAuthentication().getName();
+    }
 
+    @Override
+    public Long getCurrentUserId() {
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        return (Long)securityContext.getAuthentication().getPrincipal();
     }
 
     @Override
@@ -142,5 +147,10 @@ public class SecurityServiceImpl implements SecurityService {
     @Override
     public Optional<BbrUserDao> fetchUserByUsercode(String usercode) {
         return this.bbrUserRepository.findByUsercode(usercode);
+    }
+
+    @Override
+    public boolean userExists(String usercode) {
+        return this.fetchUserByUsercode(usercode).isPresent();
     }
 }

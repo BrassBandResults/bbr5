@@ -192,7 +192,7 @@ public class BandsMigrateController extends AbstractMigrateController {
             }
             Element rootNode = doc.getRootElement();
 
-            Long bandOldId = Long.parseLong(rootNode.getAttributeValue("id"));
+            String bandOldId = rootNode.getAttributeValue("id");
 
             Element parent1Element = rootNode.getChild("parent1");
             Element parent2Element = rootNode.getChild("parent2");
@@ -202,14 +202,14 @@ public class BandsMigrateController extends AbstractMigrateController {
         }
     }
 
-    private void createBandLink(Long bandOldId, Element parentElement) {
+    private void createBandLink(String bandOldId, Element parentElement) {
         if (parentElement == null) {
             return;
         }
         BandDao fromBand = this.bandService.fetchBandByOldId(bandOldId);
 
         String toBandName = parentElement.getText();
-        Long toBandOldId = Long.parseLong(parentElement.getAttributeValue("id"));
+        String toBandOldId = parentElement.getAttributeValue("id");
         BandDao toBand = this.bandService.fetchBandByOldId(toBandOldId);
 
         BandRelationshipDao relationship = new BandRelationshipDao();

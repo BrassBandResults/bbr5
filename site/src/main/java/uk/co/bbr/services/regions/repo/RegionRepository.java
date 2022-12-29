@@ -1,8 +1,9 @@
-package uk.co.bbr.services.regions.dao;
+package uk.co.bbr.services.regions.repo;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import uk.co.bbr.services.bands.dao.BandDao;
+import uk.co.bbr.services.regions.dao.RegionDao;
 
 import java.util.List;
 import java.util.Optional;

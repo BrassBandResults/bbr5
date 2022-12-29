@@ -11,6 +11,8 @@ import java.util.Optional;
 public interface SecurityService {
     String getCurrentUsername();
 
+    Long getCurrentUserId();
+
     BbrUserDao getCurrentUser();
 
     BbrUserDao authenticate(String email, String plaintextPassword) throws AuthenticationFailedException;
@@ -25,4 +27,6 @@ public interface SecurityService {
     void makeUserSuperuser(String usercode);
 
     Optional<BbrUserDao> fetchUserByUsercode(String usercode);
+
+    boolean userExists(String username);
 }

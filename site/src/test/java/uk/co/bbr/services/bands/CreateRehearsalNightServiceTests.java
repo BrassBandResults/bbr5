@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.bands.types.RehearsalDay;
@@ -23,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @ActiveProfiles("test")
 @SpringBootTest(properties = { "spring.config.name=rehearsal-tests-h2", "spring.datasource.url=jdbc:h2:mem:rehearsal-tests-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE"})
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class RehersalNightServiceTests implements LoginMixin {
+class CreateRehearsalNightServiceTests implements LoginMixin {
     @Autowired private BandService bandService;
     @Autowired private RegionService regionService;
     @Autowired private SecurityService securityService;
@@ -40,8 +41,10 @@ class RehersalNightServiceTests implements LoginMixin {
     }
 
     @Test
-    void testAddBandRehearsalNightWorksCorrectly() {
+    void testAddBandRehearsalNightWorksCorrectly() throws AuthenticationFailedException {
         // arrange
+        loginTestUser(this.securityService, this.jwtService, TestUser.TEST_MEMBER);
+
         BandDao band = this.bandService.findBandBySlug("black-dyke-band");
 
         // act
@@ -53,6 +56,8 @@ class RehersalNightServiceTests implements LoginMixin {
         assertEquals(2, bandRehearsalDays.size());
         assertEquals(RehearsalDay.MONDAY, bandRehearsalDays.get(0));
         assertEquals(RehearsalDay.FRIDAY, bandRehearsalDays.get(1));
+
+        logoutTestUser();
     }
 }
 

@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Formula;
 import uk.co.bbr.services.framework.AbstractDao;
+import uk.co.bbr.services.framework.mixins.NameTools;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,7 +17,7 @@ import java.time.LocalDate;
 @Entity
 @NoArgsConstructor
 @Table(name="person")
-public class PersonDao extends AbstractDao {
+public class PersonDao extends AbstractDao implements NameTools {
     @Column(name="old_id")
     private String oldId;
 
@@ -72,27 +73,27 @@ public class PersonDao extends AbstractDao {
     }
 
     public void setFirstNames(String firstNames) {
-        if (firstNames != null) {
-            this.firstNames = firstNames.trim();
-        }
+        String nameToSet = simplifyName(firstNames);
+        this.firstNames = nameToSet;
     }
 
     public void setSurname(String surname) {
-        if (surname != null) {
-            this.surname = surname.trim();
-        }
+        String nameToSet = simplifyName(surname);
+        this.surname = nameToSet;
     }
 
     public void setSuffix(String suffix) {
         if (suffix != null) {
-            this.suffix = suffix.trim();
+            suffix = suffix.trim();
         }
+        this.suffix = suffix;
     }
 
     public void setKnownFor(String knownFor) {
         if (knownFor != null) {
-            this.knownFor = knownFor.trim();
+            knownFor = knownFor.trim();
         }
+        this.knownFor = knownFor;
     }
 
     public String getName() {

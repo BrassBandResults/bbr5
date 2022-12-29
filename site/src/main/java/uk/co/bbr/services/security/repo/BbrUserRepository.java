@@ -1,7 +1,8 @@
-package uk.co.bbr.services.security.dao;
+package uk.co.bbr.services.security.repo;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import uk.co.bbr.services.security.dao.BbrUserDao;
 
 import java.util.Optional;
 

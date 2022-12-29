@@ -12,6 +12,7 @@ public interface PieceService {
     PieceDao create(PieceDao newPiece);
 
     PieceDao create(String name, PieceCategory category, PersonDao composer);
+    PieceDao create(String name);
 
     void createAlternativeName(PieceDao piece, PieceAlternativeNameDao alternativeName);
 

@@ -4,14 +4,18 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
+import uk.co.bbr.services.bands.dao.BandDao;
+import uk.co.bbr.services.framework.ValidationException;
 import uk.co.bbr.services.people.dao.PersonDao;
+import uk.co.bbr.services.security.JwtService;
+import uk.co.bbr.services.security.SecurityService;
+import uk.co.bbr.services.security.ex.AuthenticationFailedException;
 import uk.co.bbr.web.LoginMixin;
+import uk.co.bbr.web.security.support.TestUser;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ActiveProfiles("test")
 @SpringBootTest(properties = { "spring.config.name=person-create-tests-h2", "spring.datasource.url=jdbc:h2:mem:person-create-tests-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE"})
@@ -19,10 +23,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class CreatePersonTests implements LoginMixin {
 
     @Autowired private PeopleService peopleService;
+    @Autowired private SecurityService securityService;
+    @Autowired private JwtService jwtService;
 
     @Test
-    void createPersonWorksSuccessfully() {
+    void createPersonWorksSuccessfully() throws AuthenticationFailedException {
         // arrange
+        loginTestUser(this.securityService, this.jwtService, TestUser.TEST_MEMBER);
+
         PersonDao person = new PersonDao();
         person.setNotes(" Notes ");
         person.setDeceased(false);
@@ -45,11 +53,15 @@ class CreatePersonTests implements LoginMixin {
         assertEquals("III", returnedPerson.getSuffix());
         assertEquals("123", returnedPerson.getOldId());
         assertEquals("Rothwell Temperance", returnedPerson.getKnownFor());
+
+        logoutTestUser();
     }
 
     @Test
-    void testCreatedPersonCanBeFetchedByIdSuccessfully() {
+    void testCreatedPersonCanBeFetchedByIdSuccessfully() throws AuthenticationFailedException {
         // arrange
+        loginTestUser(this.securityService, this.jwtService, TestUser.TEST_MEMBER);
+
         PersonDao person = new PersonDao();
         person.setNotes("My Notes ");
         person.setDeceased(false);
@@ -73,11 +85,15 @@ class CreatePersonTests implements LoginMixin {
         assertEquals("I", returnedPerson.getSuffix());
         assertEquals("432", returnedPerson.getOldId());
         assertEquals("Black Dyke", returnedPerson.getKnownFor());
+
+        logoutTestUser();
     }
 
     @Test
-    void testCreatedPersonCanBeFetchedBySlugSuccessfully() {
+    void testCreatedPersonCanBeFetchedBySlugSuccessfully() throws AuthenticationFailedException {
         // arrange
+        loginTestUser(this.securityService, this.jwtService, TestUser.TEST_MEMBER);
+
         PersonDao person = new PersonDao();
         person.setNotes(" No Notes ");
         person.setDeceased(true);
@@ -101,10 +117,14 @@ class CreatePersonTests implements LoginMixin {
         assertEquals("", returnedPerson.getSuffix());
         assertEquals("111", returnedPerson.getOldId());
         assertEquals("Carlton Main", returnedPerson.getKnownFor());
+
+        logoutTestUser();
     }
 
     @Test
-    void testCreatePersonFromJustNameWorksSuccessfully() {
+    void testCreatePersonFromJustNameWorksSuccessfully() throws AuthenticationFailedException {
+        loginTestUser(this.securityService, this.jwtService, TestUser.TEST_MEMBER);
+
         // act
         PersonDao returnedPerson = this.peopleService.create("Childs", "David");
 
@@ -118,5 +138,23 @@ class CreatePersonTests implements LoginMixin {
         assertNull(returnedPerson.getSuffix());
         assertNull(returnedPerson.getOldId());
         assertNull(returnedPerson.getKnownFor());
+
+        logoutTestUser();
+    }
+
+    @Test
+    void testCreatingPersonWithDuplicateSlugFails() throws AuthenticationFailedException {
+        // arrange
+        loginTestUser(this.securityService, this.jwtService, TestUser.TEST_MEMBER);
+
+        PersonDao person = this.peopleService.create(" PERSON  ", " FIRST ");
+
+        // act
+        ValidationException ex = assertThrows(ValidationException.class, ()-> {this.peopleService.create("Person", "First");});
+
+        // assert
+        assertEquals("Person with slug first-person already exists.", ex.getMessage());
+
+        logoutTestUser();
     }
 }

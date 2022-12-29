@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import uk.co.bbr.services.framework.AbstractDao;
+import uk.co.bbr.services.framework.mixins.NameTools;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,7 +15,7 @@ import javax.persistence.Table;
 @Entity
 @NoArgsConstructor
 @Table(name="section")
-public class SectionDao extends AbstractDao {
+public class SectionDao extends AbstractDao implements NameTools {
 
     @Column(name="name", nullable=false)
     private String name;
@@ -30,4 +31,9 @@ public class SectionDao extends AbstractDao {
 
     @Column(name="translation_key")
     private String translationKey;
+
+    public void setName(String name){
+        String nameToSet = simplifyName(name);
+        this.name = nameToSet;
+    }
 }

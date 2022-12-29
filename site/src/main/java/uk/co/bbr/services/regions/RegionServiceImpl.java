@@ -4,13 +4,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.framework.NotFoundException;
+import uk.co.bbr.services.framework.ValidationException;
 import uk.co.bbr.services.framework.mixins.SlugTools;
 import uk.co.bbr.services.regions.dao.RegionDao;
-import uk.co.bbr.services.regions.dao.RegionRepository;
+import uk.co.bbr.services.regions.repo.RegionRepository;
 import uk.co.bbr.services.regions.dto.LinkSectionDto;
 import uk.co.bbr.services.regions.dto.RegionPageDto;
 import uk.co.bbr.services.sections.dao.SectionDao;
+import uk.co.bbr.services.security.SecurityService;
+import uk.co.bbr.web.security.annotations.IsBbrMember;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -22,6 +26,7 @@ import java.util.stream.Collectors;
 public class RegionServiceImpl implements RegionService, SlugTools {
 
     private final RegionRepository regionRepository;
+    private final SecurityService securityService;
 
     @Override
     public List<RegionDao> fetchAll() {
@@ -91,5 +96,46 @@ public class RegionServiceImpl implements RegionService, SlugTools {
     @Override
     public List<BandDao> fetchBandsWithMapLocation(RegionDao region) {
         return this.regionRepository.fetchBandsForMapForRegion(region.getId());
+    }
+
+    @Override
+    @IsBbrMember
+    public RegionDao create(String regionName) {
+        RegionDao region = new RegionDao();
+        region.setName(regionName);
+
+        return this.create(region);
+    }
+
+    @Override
+    @IsBbrMember
+    public RegionDao create(String regionName, RegionDao parent) {
+        RegionDao region = new RegionDao();
+        region.setName(regionName);
+        region.setContainerRegionId(parent.getId());
+
+        return this.create(region);
+    }
+
+    @Override
+    @IsBbrMember
+    public RegionDao create(RegionDao region) {
+        // validation
+        if (region.getId() != null) {
+            throw new ValidationException("Can't create with specific id");
+        }
+
+        if (region.getName() == null || region.getName().trim().length() == 0) {
+            throw new ValidationException("Band name must be specified");
+        }
+
+        // defaults
+        if (region.getSlug() == null || region.getSlug().trim().length() == 0) {
+            region.setSlug(slugify(region.getName()));
+        }
+
+        region.setCreated(LocalDateTime.now());
+        region.setCreatedBy(this.securityService.getCurrentUserId());
+        return this.regionRepository.saveAndFlush(region);
     }
 }

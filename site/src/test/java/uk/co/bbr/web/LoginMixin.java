@@ -33,7 +33,9 @@ public interface LoginMixin {
     }
 
     default void loginTestUser(SecurityService securityService, JwtService jwtService, TestUser testUser) throws AuthenticationFailedException {
-        securityService.createUser(testUser.getUsername(), testUser.getPassword(), testUser.getEmail());
+        if (!securityService.userExists(testUser.getUsername())) {
+            securityService.createUser(testUser.getUsername(), testUser.getPassword(), testUser.getEmail());
+        }
         BbrUserDao localUser = securityService.authenticate(testUser.getUsername(), testUser.getPassword());
         String jwtEncoded = jwtService.createJwt(localUser);
         DecodedJWT jwt = jwtService.verifyJwt(jwtEncoded);

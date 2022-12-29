@@ -12,7 +12,10 @@ import uk.co.bbr.services.pieces.dto.PieceListDto;
 import uk.co.bbr.services.pieces.repo.PieceAlternativeNameRepository;
 import uk.co.bbr.services.pieces.repo.PieceRepository;
 import uk.co.bbr.services.pieces.types.PieceCategory;
+import uk.co.bbr.services.security.SecurityService;
+import uk.co.bbr.web.security.annotations.IsBbrMember;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,8 +25,10 @@ public class PieceServiceImpl implements PieceService, SlugTools {
 
     private final PieceRepository pieceRepository;
     private final PieceAlternativeNameRepository pieceAlternativeNameRepository;
+    private final SecurityService securityService;
 
     @Override
+    @IsBbrMember
     public PieceDao create(PieceDao newPiece) {
         // validation
         if (newPiece.getId() != null) {
@@ -43,10 +48,19 @@ public class PieceServiceImpl implements PieceService, SlugTools {
             newPiece.setCategory(PieceCategory.TEST_PIECE);
         }
 
+        // does the slug already exist?
+        Optional<PieceDao> slugMatches = this.pieceRepository.fetchBySlug(newPiece.getSlug());
+        if (slugMatches.isPresent()) {
+            throw new ValidationException("Piece with slug " + newPiece.getSlug() + " already exists.");
+        }
+
+        newPiece.setCreated(LocalDateTime.now());
+        newPiece.setCreatedBy(this.securityService.getCurrentUserId());
         return this.pieceRepository.saveAndFlush(newPiece);
     }
 
     @Override
+    @IsBbrMember
     public PieceDao create(String name, PieceCategory category, PersonDao composer) {
         PieceDao newPiece = new PieceDao();
         newPiece.setName(name);
@@ -56,6 +70,16 @@ public class PieceServiceImpl implements PieceService, SlugTools {
     }
 
     @Override
+    @IsBbrMember
+    public PieceDao create(String name) {
+        PieceDao newPiece = new PieceDao();
+        newPiece.setName(name);
+        newPiece.setCategory(PieceCategory.TEST_PIECE);
+        return this.create(newPiece);
+    }
+
+    @Override
+    @IsBbrMember
     public void createAlternativeName(PieceDao piece, PieceAlternativeNameDao alternativeName) {
         alternativeName.setPiece(piece);
         this.pieceAlternativeNameRepository.saveAndFlush(alternativeName);

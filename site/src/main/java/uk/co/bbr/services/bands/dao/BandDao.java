@@ -80,8 +80,9 @@ public class BandDao extends AbstractDao implements NameTools {
             if (latitude.trim().length() > 15) {
                 latitude = latitude.trim().substring(0, 15);
             }
-            this.latitude = latitude.trim();
+            latitude = latitude.trim();
         }
+        this.latitude = latitude;
     }
 
     public void setLongitude(String longitude) {
@@ -89,20 +90,23 @@ public class BandDao extends AbstractDao implements NameTools {
             if (longitude.trim().length() > 15) {
                 longitude = longitude.trim().substring(0, 15);
             }
-            this.longitude = longitude.trim();
+            longitude = longitude.trim();
         }
+        this.longitude = longitude;
     }
 
     public void setNotes(String notes) {
         if (notes != null) {
-            this.notes = notes.trim();
+            notes = notes.trim();
         }
+        this.notes = notes;
     }
 
     public void setWebsite(String website) {
         if (website != null) {
-            this.website = website.trim();
+            website = website.trim();
         }
+        this.website = website;
     }
 
     public void setTwitterName(String twitterName) {
@@ -110,9 +114,8 @@ public class BandDao extends AbstractDao implements NameTools {
             if (twitterName.trim().startsWith("@")) {
                 twitterName = twitterName.trim().substring(1);
             }
-
-            this.twitterName = twitterName.trim();
         }
+        this.twitterName = twitterName;
     }
 
     public String getDateRange() {
