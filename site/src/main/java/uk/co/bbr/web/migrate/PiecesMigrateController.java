@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import uk.co.bbr.services.people.PeopleService;
 import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.pieces.PieceService;
-import uk.co.bbr.services.pieces.dao.PieceAlternativeNameDao;
+import uk.co.bbr.services.pieces.dao.PieceAlias;
 import uk.co.bbr.services.pieces.dao.PieceDao;
 import uk.co.bbr.services.security.SecurityService;
 
@@ -150,7 +150,7 @@ public class PiecesMigrateController extends AbstractMigrateController  {
     }
 
     private void createPreviousName(PieceDao piece, Element oldNameElement) {
-        PieceAlternativeNameDao previousName = new PieceAlternativeNameDao();
+        PieceAlias previousName = new PieceAlias();
         previousName.setCreatedBy(this.createUser(this.notBlank(oldNameElement, "owner"), this.securityService));
         previousName.setUpdatedBy(this.createUser(this.notBlank(oldNameElement, "lastChangedBy"), this.securityService));
         previousName.setCreated(this.notBlankDateTime(oldNameElement, "created"));

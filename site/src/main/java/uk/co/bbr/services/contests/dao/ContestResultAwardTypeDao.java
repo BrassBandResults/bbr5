@@ -1,9 +1,10 @@
-package uk.co.bbr.services.pieces.dao;
+package uk.co.bbr.services.contests.dao;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import uk.co.bbr.services.framework.AbstractDao;
+import uk.co.bbr.services.framework.mixins.NameTools;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,22 +17,9 @@ import javax.persistence.Table;
 @Setter
 @Entity
 @NoArgsConstructor
-@Table(name="piece_alternative_name")
-public class PieceAlternativeNameDao extends AbstractDao {
-
-    @ManyToOne(fetch= FetchType.EAGER, optional=false)
-    @JoinColumn(name="piece_id")
-    private PieceDao piece;
+@Table(name="contest_result_award_type")
+public class ContestResultAwardTypeDao extends AbstractDao implements NameTools {
 
     @Column(name="name", nullable=false)
     private String name;
-
-    @Column(name="hidden")
-    private boolean hidden;
-
-    public void setName(String name) {
-        if (name != null) {
-            this.name = name.trim();
-        }
-    }
 }

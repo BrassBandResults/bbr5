@@ -12,8 +12,8 @@ import javax.persistence.*;
 @Setter
 @Entity
 @NoArgsConstructor
-@Table(name="contest_alternative_name")
-public class ContestAlternativeNameDao extends AbstractDao implements NameTools {
+@Table(name="contest_alias")
+public class ContestAliasDao extends AbstractDao implements NameTools {
     @Column(name="name", nullable=false)
     private String name;
 

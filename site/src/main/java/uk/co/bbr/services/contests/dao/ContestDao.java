@@ -31,6 +31,10 @@ public class ContestDao extends AbstractDao implements NameTools {
     @JoinColumn(name="contest_group_id")
     private ContestGroupDao contestGroup;
 
+    @ManyToOne(fetch=FetchType.EAGER)
+    @JoinColumn(name="default_contest_type_id")
+    private ContestTypeDao defaultContestType;
+
     @Column(name="ordering")
     private int ordering;
 
@@ -49,13 +53,13 @@ public class ContestDao extends AbstractDao implements NameTools {
     @Column(name="prevent_future_bands")
     private boolean preventFutureBands;
 
-    @Column(name="period")
-    private int period;
+    @Column(name="repeat_period")
+    private int repeatPeriod;
 
     @ManyToMany(fetch= FetchType.EAGER)
     @JoinTable(
-            name = "contest_group_tags",
-            joinColumns = @JoinColumn(name = "contest_group_id"),
+            name = "contest_tag_link",
+            joinColumns = @JoinColumn(name = "contest_id"),
             inverseJoinColumns = @JoinColumn(name = "contest_tag_id"))
     private Set<ContestTagDao> tags = new HashSet<>();
 

@@ -2,11 +2,10 @@ package uk.co.bbr.services.people;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.framework.ValidationException;
 import uk.co.bbr.services.framework.mixins.SlugTools;
-import uk.co.bbr.services.people.dao.PersonAlternativeNameDao;
+import uk.co.bbr.services.people.dao.PersonAliasDao;
 import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.people.dto.PeopleListDto;
 import uk.co.bbr.services.people.repo.PersonAlternativeNameRepository;
@@ -65,7 +64,7 @@ public class PeopleServiceImpl implements PeopleService, SlugTools {
 
     @Override
     @IsBbrMember
-    public void createAlternativeName(PersonDao person, PersonAlternativeNameDao previousName) {
+    public void createAlternativeName(PersonDao person, PersonAliasDao previousName) {
         previousName.setPerson(person);
         this.personAlternativeNameRepository.saveAndFlush(previousName);
     }
@@ -89,7 +88,7 @@ public class PeopleServiceImpl implements PeopleService, SlugTools {
     }
 
     @Override
-    public List<PersonAlternativeNameDao> fetchAlternateNames(PersonDao person) {
+    public List<PersonAliasDao> fetchAlternateNames(PersonDao person) {
         return this.personAlternativeNameRepository.findForPersonId(person.getId());
     }
 

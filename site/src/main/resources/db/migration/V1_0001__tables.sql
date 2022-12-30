@@ -15,6 +15,8 @@ CREATE TABLE site_user (
     access_level VARCHAR(1) NOT NULL DEFAULT 'M'
 );
 
+CREATE UNIQUE INDEX idx_siteuser_usercode ON site_user(usercode);
+
 INSERT INTO site_user (updated_by_id, owner_id, usercode, password, email, salt, password_version, access_level) VALUES (1, 1, 'owner', 'password', 'owner@brassbandresults.co.uk', 'ABC123', 0, 'A');
 
 -- REGION
@@ -34,6 +36,9 @@ CREATE TABLE region (
     longitude VARCHAR(15),
     default_map_zoom INTEGER
 );
+
+CREATE UNIQUE INDEX idx_region_slug ON region(slug);
+CREATE UNIQUE INDEX idx_region_name ON region(name);
 
 INSERT INTO region(updated_by_id, owner_id, old_id, name, slug, country_code) VALUES (1, 1, 17, 'Unknown', 'unknown', 'none');
 INSERT INTO region(updated_by_id, owner_id, old_id, name, slug, country_code) VALUES (1, 1, 0, 'England', 'england', 'england');
@@ -117,6 +122,9 @@ CREATE TABLE section (
     translation_key VARCHAR(30) NOT NULL
 );
 
+CREATE UNIQUE INDEX idx_section_slug ON section(slug);
+CREATE UNIQUE INDEX idx_section_name ON section(name);
+
 INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code, translation_key) VALUES (1, 1, 'Excellence', 'excellence', 10, 'C', 'section.excellence');
 INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code, translation_key) VALUES (1, 1, 'Elite', 'elite', 20, 'C', 'section.elite');
 INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code, translation_key) VALUES (1, 1, 'Championship', 'championship', 30, 'C', 'section.championship');
@@ -155,6 +163,9 @@ CREATE TABLE band (
     twitter_name VARCHAR(100)
 );
 
+CREATE UNIQUE INDEX idx_band_slug ON band(slug);
+CREATE UNIQUE INDEX idx_band_name ON band(name);
+
 CREATE TABLE band_rehearsal_day (
     id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
     updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -164,6 +175,8 @@ CREATE TABLE band_rehearsal_day (
     day_number INT NOT NULL,
     band_id BIGINT REFERENCES band(id)
 );
+
+CREATE UNIQUE INDEX idx_band_rehearsal_day ON band_rehearsal_day(day_number, band_id);
 
 CREATE TABLE band_previous_name (
     id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
@@ -177,6 +190,9 @@ CREATE TABLE band_previous_name (
     end_date DATE,
     hidden BIT NOT NULL DEFAULT 0
 );
+
+CREATE UNIQUE INDEX idx_previous_band_name_unique ON band_previous_name(band_id, old_name);
+CREATE INDEX idx_band_previous_name_band ON band_previous_name(band_id);
 
 CREATE TABLE band_relationship_type (
     id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
@@ -210,6 +226,9 @@ CREATE TABLE band_relationship (
     end_date DATE
 );
 
+CREATE INDEX idx_band_relationship_left ON band_relationship(left_band_id);
+CREATE INDEX idx_band_relationship_right ON band_relationship(right_band_id);
+
 -- PERSON
 
 CREATE TABLE person (
@@ -230,7 +249,10 @@ CREATE TABLE person (
     end_date DATE
 );
 
-CREATE TABLE person_alternative_name (
+CREATE UNIQUE INDEX idx_person_slug ON person(slug);
+CREATE UNIQUE INDEX idx_person_name ON person(surname, first_names);
+
+CREATE TABLE person_alias (
     id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
     updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -240,6 +262,10 @@ CREATE TABLE person_alternative_name (
     name VARCHAR(100) NOT NULL,
     hidden BIT NOT NULL DEFAULT 0
 );
+
+CREATE UNIQUE INDEX idx_person_alias_unique ON person_alias(person_id, name);
+CREATE INDEX idx_person_alias_person ON person_alias(person_id);
+
 
 CREATE TABLE person_profile (
     id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
@@ -288,3 +314,237 @@ CREATE TABLE person_relationship (
     right_person_id BIGINT REFERENCES band(id),
     right_person_name VARCHAR(100)
 );
+
+CREATE INDEX idx_person_relationship_left ON person_relationship(left_person_id);
+CREATE INDEX idx_person_relationship_right ON person_relationship(right_person_id);
+
+-- PIECE
+
+CREATE TABLE piece (
+    id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    old_id BIGINT,
+    updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_by_id BIGINT NOT NULL REFERENCES site_user(id),
+    owner_id BIGINT NOT NULL REFERENCES site_user(id),
+    name VARCHAR(100) NOT NULL,
+    slug VARCHAR(60) NOT NULL,
+    composer_id BIGINT REFERENCES person(id),
+    arranger_id BIGINT REFERENCES person(id),
+    piece_year VARCHAR(4),
+    category VARCHAR(1) NOT NULL DEFAULT 'T',
+    notes TEXT
+);
+
+CREATE UNIQUE INDEX idx_piece_slug ON piece(slug);
+CREATE UNIQUE INDEX idx_piece_name ON piece(name);
+
+CREATE TABLE piece_alias (
+    id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_by_id BIGINT NOT NULL REFERENCES site_user(id),
+    owner_id BIGINT NOT NULL REFERENCES site_user(id),
+    piece_id BIGINT NOT NULL REFERENCES piece(id),
+    name VARCHAR(100) NOT NULL,
+    hidden BIT NOT NULL DEFAULT 0
+);
+
+CREATE UNIQUE INDEX idx_piece_alias_unique ON piece_alias(piece_id, name);
+CREATE INDEX idx_piece_alias_piece ON piece_alias(piece_id);
+
+-- VENUE
+
+CREATE TABLE venue (
+    id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    old_id BIGINT,
+    updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_by_id BIGINT NOT NULL REFERENCES site_user(id),
+    owner_id BIGINT NOT NULL REFERENCES site_user(id),
+    name VARCHAR(100) NOT NULL,
+    slug VARCHAR(60) NOT NULL,
+    region_id BIGINT REFERENCES region(id),
+    longitude VARCHAR(15),
+    latitude VARCHAR(15),
+    notes TEXT,
+    exact BIT NOT NULL DEFAULT 0,
+    mapper_id BIGINT REFERENCES site_user(id),
+    parent_id BIGINT REFERENCES venue(id)
+);
+
+CREATE UNIQUE INDEX idx_venue_slug ON venue(slug);
+CREATE UNIQUE INDEX idx_venue_name ON venue(name);
+
+CREATE TABLE venue_alias (
+    id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    old_id BIGINT,
+    updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_by_id BIGINT NOT NULL REFERENCES site_user(id),
+    owner_id BIGINT NOT NULL REFERENCES site_user(id),
+    name VARCHAR(100) NOT NULL,
+    venue_id BIGINT NOT NULL REFERENCES venue(id)
+);
+
+CREATE UNIQUE INDEX idx_venue_alt_name_unique ON venue_alias(venue_id, name);
+
+-- CONTESTS
+
+
+CREATE TABLE contest_tag (
+    id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    old_id BIGINT,
+    updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_by_id BIGINT NOT NULL REFERENCES site_user(id),
+    owner_id BIGINT NOT NULL REFERENCES site_user(id),
+    name VARCHAR(100) NOT NULL,
+    slug VARCHAR(60) NOT NULL
+);
+
+CREATE UNIQUE INDEX idx_contest_tag_slug ON contest_tag(slug);
+CREATE UNIQUE INDEX idx_contest_tag_name ON contest_tag(name);
+
+CREATE TABLE contest_group (
+    id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    old_id BIGINT,
+    updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_by_id BIGINT NOT NULL REFERENCES site_user(id),
+    owner_id BIGINT NOT NULL REFERENCES site_user(id),
+    name VARCHAR(100) NOT NULL,
+    slug VARCHAR(60) NOT NULL,
+    group_type VARCHAR(1) NOT NULL,
+    notes TEXT
+);
+
+CREATE UNIQUE INDEX idx_contest_group_slug ON contest_group(slug);
+CREATE UNIQUE INDEX idx_contest_group_name ON contest_group(name);
+
+CREATE TABLE contest_group_tag_link (
+    contest_group_id BIGINT NOT NULL REFERENCES contest_group(id),
+    contest_tag_id BIGINT NOT NULL REFERENCES contest_tag(id)
+);
+
+CREATE UNIQUE INDEX idx_contest_group_tags ON contest_group_tag_link(contest_group_id, contest_tag_id);
+
+CREATE TABLE contest_group_alias (
+    id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    old_id BIGINT,
+    updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_by_id BIGINT NOT NULL REFERENCES site_user(id),
+    owner_id BIGINT NOT NULL REFERENCES site_user(id),
+    name VARCHAR(100) NOT NULL,
+    contest_group_id BIGINT NOT NULL REFERENCES contest_group(id)
+);
+
+CREATE UNIQUE INDEX idx_contest_group_alt_name_unique ON contest_group_alias(contest_group_id, name);
+
+CREATE TABLE contest_type (
+    id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    old_id BIGINT,
+    updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_by_id BIGINT NOT NULL REFERENCES site_user(id),
+    owner_id BIGINT NOT NULL REFERENCES site_user(id),
+    name VARCHAR(100) NOT NULL,
+    slug VARCHAR(60) NOT NULL,
+    draw_one_title VARCHAR(20),
+    draw_two_title VARCHAR(20),
+    points_total_title VARCHAR(20),
+    points_one_title VARCHAR(20),
+    points_two_title VARCHAR(20),
+    points_three_title VARCHAR(20),
+    points_four_title VARCHAR(20),
+    points_penalty_title VARCHAR(20),
+    has_test_piece BIT NOT NULL DEFAULT 0,
+    has_own_choice BIT NOT NULL DEFAULT 0,
+    has_entertainments BIT NOT NULL DEFAULT 0,
+    statistics_show BIT NOT NULL DEFAULT 0,
+    statistics_limit INT
+);
+
+CREATE UNIQUE INDEX idx_contest_type_slug_unique ON contest_type(slug);
+CREATE UNIQUE INDEX idx_contest_type_name_unique ON contest_type(name);
+
+CREATE TABLE contest (
+    id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    old_id BIGINT,
+    updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_by_id BIGINT NOT NULL REFERENCES site_user(id),
+    owner_id BIGINT NOT NULL REFERENCES site_user(id),
+    name VARCHAR(100) NOT NULL,
+    slug VARCHAR(60) NOT NULL,
+    contest_group_id BIGINT REFERENCES contest_group(id),
+    default_contest_type_id BIGINT NOT NULL REFERENCES contest_type(id),
+    ordering INT,
+    notes TEXT,
+    extinct BIT NOT NULL DEFAULT 0,
+    exclude_from_group_results BIT NOT NULL DEFAULT 0,
+    all_events_added BIT NOT NULL DEFAULT 0,
+    prevent_future_bands BIT NOT NULL DEFAULT 0,
+    repeat_period INT
+);
+
+CREATE UNIQUE INDEX idx_contest_slug_unique ON contest(slug);
+CREATE UNIQUE INDEX idx_contest_name_unique ON contest(name);
+
+CREATE TABLE contest_tag_link (
+    contest_id BIGINT NOT NULL REFERENCES contest(id),
+    contest_tag_id BIGINT NOT NULL REFERENCES contest_tag(id)
+);
+
+CREATE UNIQUE INDEX idx_contest_tags ON contest_tag_link(contest_id, contest_tag_id);
+
+CREATE TABLE contest_alias (
+    id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    old_id BIGINT,
+    updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_by_id BIGINT NOT NULL REFERENCES site_user(id),
+    owner_id BIGINT NOT NULL REFERENCES site_user(id),
+    name VARCHAR(100) NOT NULL,
+    contest_id BIGINT NOT NULL REFERENCES contest_group(id)
+);
+
+CREATE UNIQUE INDEX idx_contest_alt_name_unique ON contest_alias(contest_id, name);
+
+CREATE TABLE contest_event (
+    id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    old_id BIGINT,
+    updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_by_id BIGINT NOT NULL REFERENCES site_user(id),
+    owner_id BIGINT NOT NULL REFERENCES site_user(id),
+    name VARCHAR(100) NOT NULL,
+    date_of_event DATE NOT NULL,
+    date_resolution VARCHAR(1) NOT NULL,
+    contest_id BIGINT NOT NULL REFERENCES contest(id),
+    notes TEXT,
+    venue_id BIGINT REFERENCES venue(id),
+    complete BIT NOT NULL DEFAULT 0,
+    no_contest BIT NOT NULL DEFAULT 0,
+    contest_type_id BIGINT NOT NULL REFERENCES contest_type(id),
+    original_owner VARCHAR(50) NOT NULL
+);
+
+CREATE INDEX idx_contest_event ON contest_event(contest_id);
+
+CREATE TABLE contest_test_piece (
+    id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_by_id BIGINT NOT NULL REFERENCES site_user(id),
+    owner_id BIGINT NOT NULL REFERENCES site_user(id),
+    contest_event_id BIGINT NOT NULL REFERENCES contest_event(id),
+    piece_id BIGINT NOT NULL REFERENCES piece(id),
+    and_or VARCHAR(1) NOT NULL
+);
+
+CREATE UNIQUE INDEX idx_contest_test_piece ON contest_test_piece(contest_event_id, piece_id);
+
+
+

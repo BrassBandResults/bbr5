@@ -5,8 +5,7 @@ import org.springframework.stereotype.Service;
 import uk.co.bbr.services.framework.ValidationException;
 import uk.co.bbr.services.framework.mixins.SlugTools;
 import uk.co.bbr.services.people.dao.PersonDao;
-import uk.co.bbr.services.people.dto.PeopleListDto;
-import uk.co.bbr.services.pieces.dao.PieceAlternativeNameDao;
+import uk.co.bbr.services.pieces.dao.PieceAlias;
 import uk.co.bbr.services.pieces.dao.PieceDao;
 import uk.co.bbr.services.pieces.dto.PieceListDto;
 import uk.co.bbr.services.pieces.repo.PieceAlternativeNameRepository;
@@ -80,7 +79,7 @@ public class PieceServiceImpl implements PieceService, SlugTools {
 
     @Override
     @IsBbrMember
-    public void createAlternativeName(PieceDao piece, PieceAlternativeNameDao alternativeName) {
+    public void createAlternativeName(PieceDao piece, PieceAlias alternativeName) {
         alternativeName.setPiece(piece);
         this.pieceAlternativeNameRepository.saveAndFlush(alternativeName);
     }
@@ -104,7 +103,7 @@ public class PieceServiceImpl implements PieceService, SlugTools {
     }
 
     @Override
-    public List<PieceAlternativeNameDao> fetchAlternateNames(PieceDao piece) {
+    public List<PieceAlias> fetchAlternateNames(PieceDao piece) {
         return this.pieceAlternativeNameRepository.findForPieceId(piece.getId());
     }
 

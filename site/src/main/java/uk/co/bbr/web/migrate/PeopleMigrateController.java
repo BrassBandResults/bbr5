@@ -12,21 +12,15 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import uk.co.bbr.services.people.PeopleService;
-import uk.co.bbr.services.people.dao.PersonAlternativeNameDao;
+import uk.co.bbr.services.people.dao.PersonAliasDao;
 import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.security.SecurityService;
-import uk.co.bbr.services.security.dao.BbrUserDao;
 
 import java.io.File;
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -141,7 +135,7 @@ public class PeopleMigrateController extends AbstractMigrateController  {
     }
 
     private void createPreviousName(PersonDao person, Element oldNameElement) {
-        PersonAlternativeNameDao previousName = new PersonAlternativeNameDao();
+        PersonAliasDao previousName = new PersonAliasDao();
         previousName.setCreatedBy(this.createUser(this.notBlank(oldNameElement, "owner"), this.securityService));
         previousName.setUpdatedBy(this.createUser(this.notBlank(oldNameElement, "lastChangedBy"), this.securityService));
         previousName.setCreated(this.notBlankDateTime(oldNameElement, "created"));

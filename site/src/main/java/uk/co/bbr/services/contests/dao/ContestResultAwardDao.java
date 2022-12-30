@@ -1,4 +1,4 @@
-package uk.co.bbr.services.people.dao;
+package uk.co.bbr.services.contests.dao;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,21 +17,18 @@ import javax.persistence.Table;
 @Setter
 @Entity
 @NoArgsConstructor
-@Table(name="person_alternative_name")
-public class PersonAlternativeNameDao extends AbstractDao implements NameTools {
+@Table(name="contest_result_award")
+public class ContestResultAwardDao extends AbstractDao implements NameTools {
 
     @ManyToOne(fetch= FetchType.EAGER, optional=false)
-    @JoinColumn(name="person_id")
-    private PersonDao person;
+    @JoinColumn(name="contest_result_id")
+    private ContestResultDao contestResult;
 
-    @Column(name="name", nullable=false)
-    private String oldName;
+    @ManyToOne(fetch= FetchType.EAGER, optional=false)
+    @JoinColumn(name="award_type_id")
+    private ContestResultAwardTypeDao awardType;
 
-    @Column(name="hidden")
-    private boolean hidden;
+    @Column(name="description", nullable=false)
+    private String description;
 
-    public void setOldName(String name) {
-        String nameToSet = simplifyName(name);
-        this.oldName = nameToSet;
-    }
 }

@@ -37,7 +37,7 @@ public class ContestGroupDao extends AbstractDao implements NameTools {
 
     @ManyToMany(fetch= FetchType.EAGER)
     @JoinTable(
-            name = "contest_group_tags",
+            name = "contest_group_tag_link",
             joinColumns = @JoinColumn(name = "contest_group_id"),
             inverseJoinColumns = @JoinColumn(name = "contest_tag_id"))
     private Set<ContestTagDao> tags = new HashSet<>();

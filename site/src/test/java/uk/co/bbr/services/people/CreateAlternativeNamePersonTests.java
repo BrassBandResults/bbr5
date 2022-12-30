@@ -4,9 +4,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
-import uk.co.bbr.services.people.dao.PersonAlternativeNameDao;
+import uk.co.bbr.services.people.dao.PersonAliasDao;
 import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.security.JwtService;
 import uk.co.bbr.services.security.SecurityService;
@@ -44,14 +43,14 @@ class CreateAlternativeNamePersonTests implements LoginMixin {
         person.setOldId(" 123 ");
         PersonDao returnedPerson = this.peopleService.create(person);
 
-        PersonAlternativeNameDao altName = new PersonAlternativeNameDao();
+        PersonAliasDao altName = new PersonAliasDao();
         altName.setOldName("Timothy Sawyer");
 
         // act
         this.peopleService.createAlternativeName(person, altName);
 
         // assert
-        List<PersonAlternativeNameDao> altNames = this.peopleService.fetchAlternateNames(person);
+        List<PersonAliasDao> altNames = this.peopleService.fetchAlternateNames(person);
         assertEquals(1, altNames.size());
         assertEquals("Timothy Sawyer", altNames.get(0).getOldName());
         assertEquals(person.getName(), altNames.get(0).getPerson().getName());
