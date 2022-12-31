@@ -1,6 +1,7 @@
 package uk.co.bbr.services.contests;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import uk.co.bbr.services.contests.dao.ContestTagDao;
 import uk.co.bbr.services.contests.repo.ContestTagRepository;
@@ -37,12 +38,12 @@ public class ContestTagServiceImpl implements ContestTagService, SlugTools {
             throw new ValidationException("Can't create with specific id");
         }
 
-        if (contestTag.getName() == null || contestTag.getName().trim().length() == 0) {
+        if (StringUtils.isBlank(contestTag.getName())) {
             throw new ValidationException("Band name must be specified");
         }
 
         // defaults
-        if (contestTag.getSlug() == null || contestTag.getSlug().trim().length() == 0) {
+        if (StringUtils.isBlank(contestTag.getSlug())) {
             contestTag.setSlug(slugify(contestTag.getName()));
         }
 

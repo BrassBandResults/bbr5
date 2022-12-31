@@ -4,9 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
-import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.framework.ValidationException;
 import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.security.JwtService;
@@ -22,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class CreatePersonTests implements LoginMixin {
 
-    @Autowired private PeopleService peopleService;
+    @Autowired private PersonService personService;
     @Autowired private SecurityService securityService;
     @Autowired private JwtService jwtService;
 
@@ -41,7 +39,7 @@ class CreatePersonTests implements LoginMixin {
         person.setOldId(" 123 ");
 
         // act
-        PersonDao returnedPerson = this.peopleService.create(person);
+        PersonDao returnedPerson = this.personService.create(person);
 
         // assert
         assertEquals("Tim Sawyer III", returnedPerson.getName());
@@ -70,10 +68,10 @@ class CreatePersonTests implements LoginMixin {
         person.setSurname(" Childs ");
         person.setFirstNames("    ");
         person.setOldId("432 ");
-        PersonDao savedPerson = this.peopleService.create(person);
+        PersonDao savedPerson = this.personService.create(person);
 
         // act
-        PersonDao returnedPerson = this.peopleService.fetchById(savedPerson.getId());
+        PersonDao returnedPerson = this.personService.fetchById(savedPerson.getId());
 
         // assert
         assertEquals("Childs I", returnedPerson.getName());
@@ -102,10 +100,10 @@ class CreatePersonTests implements LoginMixin {
         person.setSurname(" Simpson ");
         person.setFirstNames(" Bart ");
         person.setOldId("111");
-        PersonDao savedPerson = this.peopleService.create(person);
+        PersonDao savedPerson = this.personService.create(person);
 
         // act
-        PersonDao returnedPerson = this.peopleService.fetchBySlug(savedPerson.getSlug());
+        PersonDao returnedPerson = this.personService.fetchBySlug(savedPerson.getSlug());
 
         // assert
         assertEquals("Bart Simpson", returnedPerson.getName());
@@ -126,7 +124,7 @@ class CreatePersonTests implements LoginMixin {
         loginTestUser(this.securityService, this.jwtService, TestUser.TEST_MEMBER);
 
         // act
-        PersonDao returnedPerson = this.peopleService.create("Childs", "David");
+        PersonDao returnedPerson = this.personService.create("Childs", "David");
 
         // assert
         assertEquals("David Childs", returnedPerson.getName());
@@ -147,10 +145,10 @@ class CreatePersonTests implements LoginMixin {
         // arrange
         loginTestUser(this.securityService, this.jwtService, TestUser.TEST_MEMBER);
 
-        PersonDao person = this.peopleService.create(" PERSON  ", " FIRST ");
+        PersonDao person = this.personService.create(" PERSON  ", " FIRST ");
 
         // act
-        ValidationException ex = assertThrows(ValidationException.class, ()-> {this.peopleService.create("Person", "First");});
+        ValidationException ex = assertThrows(ValidationException.class, ()-> {this.personService.create("Person", "First");});
 
         // assert
         assertEquals("Person with slug first-person already exists.", ex.getMessage());

@@ -40,7 +40,7 @@ public class ContestResultDao extends AbstractDao implements NameTools {
     private ResultPositionType resultPositionType;
 
     @Column(name="result_position")
-    private Integer result;
+    private Integer position;
 
     @Column(name="draw")
     private Integer draw;
@@ -63,7 +63,7 @@ public class ContestResultDao extends AbstractDao implements NameTools {
     @Column(name="points_third")
     private String pointsThird;
 
-    @Column(name="points_forth")
+    @Column(name="points_fourth")
     private String pointsFourth;
 
     @Column(name="points_penalty")

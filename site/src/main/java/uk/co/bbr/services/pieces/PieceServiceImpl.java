@@ -1,6 +1,7 @@
 package uk.co.bbr.services.pieces;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import uk.co.bbr.services.framework.ValidationException;
 import uk.co.bbr.services.framework.mixins.SlugTools;
@@ -34,12 +35,12 @@ public class PieceServiceImpl implements PieceService, SlugTools {
             throw new ValidationException("Can't create with specific id");
         }
 
-        if (newPiece.getName() == null || newPiece.getName().trim().length() == 0) {
+        if (StringUtils.isBlank(newPiece.getName())) {
             throw new ValidationException("Piece name must be specified");
         }
 
         // defaults
-        if (newPiece.getSlug() == null || newPiece.getSlug().trim().length() == 0) {
+        if (StringUtils.isBlank(newPiece.getSlug())) {
             newPiece.setSlug(slugify(newPiece.getName()));
         }
 

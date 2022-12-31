@@ -8,7 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.client.RestTemplate;
-import uk.co.bbr.services.people.PeopleService;
+import uk.co.bbr.services.people.PersonService;
 import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.pieces.PieceService;
 import uk.co.bbr.services.pieces.types.PieceCategory;
@@ -30,7 +30,7 @@ class PieceListWebTests implements LoginMixin {
     @Autowired private SecurityService securityService;
     @Autowired private JwtService jwtService;
     @Autowired private PieceService pieceService;
-    @Autowired private PeopleService personService;
+    @Autowired private PersonService personService;
     @Autowired private RestTemplate restTemplate;
     @LocalServerPort private int port;
 

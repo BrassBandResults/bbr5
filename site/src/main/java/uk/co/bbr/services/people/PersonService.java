@@ -6,7 +6,7 @@ import uk.co.bbr.services.people.dto.PeopleListDto;
 
 import java.util.List;
 
-public interface PeopleService {
+public interface PersonService {
     PersonDao create(PersonDao person);
     PersonDao create(String surname, String firstNames);
 

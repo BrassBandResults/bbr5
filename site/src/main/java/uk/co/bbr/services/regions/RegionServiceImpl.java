@@ -1,6 +1,7 @@
 package uk.co.bbr.services.regions;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.framework.NotFoundException;
@@ -125,12 +126,12 @@ public class RegionServiceImpl implements RegionService, SlugTools {
             throw new ValidationException("Can't create with specific id");
         }
 
-        if (region.getName() == null || region.getName().trim().length() == 0) {
+        if (StringUtils.isBlank(region.getName())) {
             throw new ValidationException("Band name must be specified");
         }
 
         // defaults
-        if (region.getSlug() == null || region.getSlug().trim().length() == 0) {
+        if (StringUtils.isBlank(region.getSlug())) {
             region.setSlug(slugify(region.getName()));
         }
 

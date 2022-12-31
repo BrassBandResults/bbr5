@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class CreateAlternativeNamePersonTests implements LoginMixin {
 
-    @Autowired private PeopleService peopleService;
+    @Autowired private PersonService personService;
     @Autowired private SecurityService securityService;
     @Autowired private JwtService jwtService;
 
@@ -41,16 +41,16 @@ class CreateAlternativeNamePersonTests implements LoginMixin {
         person.setSurname(" Sawyer ");
         person.setFirstNames(" Tim ");
         person.setOldId(" 123 ");
-        PersonDao returnedPerson = this.peopleService.create(person);
+        PersonDao returnedPerson = this.personService.create(person);
 
         PersonAliasDao altName = new PersonAliasDao();
         altName.setOldName("Timothy Sawyer");
 
         // act
-        this.peopleService.createAlternativeName(person, altName);
+        this.personService.createAlternativeName(person, altName);
 
         // assert
-        List<PersonAliasDao> altNames = this.peopleService.fetchAlternateNames(person);
+        List<PersonAliasDao> altNames = this.personService.fetchAlternateNames(person);
         assertEquals(1, altNames.size());
         assertEquals("Timothy Sawyer", altNames.get(0).getOldName());
         assertEquals(person.getName(), altNames.get(0).getPerson().getName());

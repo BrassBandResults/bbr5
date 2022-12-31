@@ -1,6 +1,7 @@
 package uk.co.bbr.services.contests;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import uk.co.bbr.services.contests.dao.ContestGroupDao;
 import uk.co.bbr.services.contests.repo.ContestGroupRepository;
@@ -38,12 +39,12 @@ public class ContestGroupServiceImpl implements ContestGroupService, SlugTools {
             throw new ValidationException("Can't create with specific id");
         }
 
-        if (contestGroup.getName() == null || contestGroup.getName().trim().length() == 0) {
+        if (StringUtils.isBlank(contestGroup.getName())) {
             throw new ValidationException("Band name must be specified");
         }
 
         // defaults
-        if (contestGroup.getSlug() == null || contestGroup.getSlug().trim().length() == 0) {
+        if (StringUtils.isBlank(contestGroup.getSlug())) {
             contestGroup.setSlug(slugify(contestGroup.getName()));
         }
 
@@ -57,7 +58,7 @@ public class ContestGroupServiceImpl implements ContestGroupService, SlugTools {
             throw new ValidationException("Contest Group with slug " + contestGroup.getSlug() + " already exists.");
         }
 
-        // does the slug already exist?
+        // does the name already exist?
         Optional<ContestGroupDao> nameMatches = this.contestGroupRepository.findByName(contestGroup.getName());
         if (nameMatches.isPresent()) {
             throw new ValidationException("Contest Group with name " + contestGroup.getName() + " already exists.");

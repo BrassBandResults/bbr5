@@ -11,7 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import uk.co.bbr.services.people.PeopleService;
+import uk.co.bbr.services.people.PersonService;
 import uk.co.bbr.services.people.dao.PersonAliasDao;
 import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.security.SecurityService;
@@ -26,7 +26,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PeopleMigrateController extends AbstractMigrateController  {
 
-    private final PeopleService peopleService;
+    private final PersonService personService;
     private final SecurityService securityService;
 
     @GetMapping("/migrate/people")
@@ -122,7 +122,7 @@ public class PeopleMigrateController extends AbstractMigrateController  {
             newPerson.setUpdated(this.notBlankDateTime(rootNode, "lastModified"));
 
             // notes
-            newPerson = this.peopleService.create(newPerson);
+            newPerson = this.personService.create(newPerson);
 
             Element previousNames = rootNode.getChild("previous_names");
             List<Element> previousNameNodes = previousNames.getChildren();
@@ -143,6 +143,6 @@ public class PeopleMigrateController extends AbstractMigrateController  {
         previousName.setOldName(oldNameElement.getChildText("name"));
         previousName.setHidden(this.notBlankBoolean(oldNameElement, "hidden"));
 
-        this.peopleService.createAlternativeName(person, previousName);
+        this.personService.createAlternativeName(person, previousName);
     }
 }

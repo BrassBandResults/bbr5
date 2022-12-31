@@ -11,7 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import uk.co.bbr.services.people.PeopleService;
+import uk.co.bbr.services.people.PersonService;
 import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.pieces.PieceService;
 import uk.co.bbr.services.pieces.dao.PieceAlias;
@@ -30,7 +30,7 @@ public class PiecesMigrateController extends AbstractMigrateController  {
 
     private final PieceService pieceService;
     private final SecurityService securityService;
-    private final PeopleService peopleService;
+    private final PersonService personService;
 
     @GetMapping("/migrate/pieces")
     // TODO @IsBbrAdmin
@@ -119,12 +119,12 @@ public class PiecesMigrateController extends AbstractMigrateController  {
 
             PersonDao composer = null;
             if (rootNode.getChildText("composer") != null) {
-                composer = this.peopleService.fetchBySlug(rootNode.getChild("composer").getAttributeValue("slug"));
+                composer = this.personService.fetchBySlug(rootNode.getChild("composer").getAttributeValue("slug"));
             }
 
             PersonDao arranger = null;
             if (rootNode.getChildText("arranger") != null) {
-                arranger = this.peopleService.fetchBySlug(rootNode.getChild("arranger").getAttributeValue("slug"));
+                arranger = this.personService.fetchBySlug(rootNode.getChild("arranger").getAttributeValue("slug"));
             }
 
             newPiece.setComposer(composer);

@@ -1,6 +1,7 @@
 package uk.co.bbr.services.venues;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.bands.types.BandStatus;
@@ -42,12 +43,12 @@ public class VenueServiceImpl implements VenueService, SlugTools {
     }
 
     private void validateMandatory(VenueDao venue){
-        if (venue.getName() == null || venue.getName().trim().length() == 0) {
+        if (StringUtils.isBlank(venue.getName())) {
             throw new ValidationException("Venue name must be specified");
         }
 
         // defaults
-        if (venue.getSlug() == null || venue.getSlug().trim().length() == 0) {
+        if (StringUtils.isBlank(venue.getSlug())) {
             venue.setSlug(slugify(venue.getName()));
         }
     }

@@ -1,6 +1,7 @@
 package uk.co.bbr.services.people;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.framework.ValidationException;
@@ -19,7 +20,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class PeopleServiceImpl implements PeopleService, SlugTools {
+public class PersonServiceImpl implements PersonService, SlugTools {
 
     private final PersonRepository personRepository;
     private final PersonAlternativeNameRepository personAlternativeNameRepository;
@@ -33,12 +34,12 @@ public class PeopleServiceImpl implements PeopleService, SlugTools {
             throw new ValidationException("Can't create with specific id");
         }
 
-        if (person.getSurname() == null || person.getSurname().trim().length() == 0) {
+        if (StringUtils.isBlank(person.getSurname())) {
             throw new ValidationException("Person surname must be specified");
         }
 
         // defaults
-        if (person.getSlug() == null || person.getSlug().trim().length() == 0) {
+        if (StringUtils.isBlank(person.getSlug())) {
             person.setSlug(slugify(person.getName()));
         }
 

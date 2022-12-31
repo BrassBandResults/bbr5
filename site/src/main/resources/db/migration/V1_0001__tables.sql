@@ -451,9 +451,11 @@ CREATE TABLE contest_type (
     owner_id BIGINT NOT NULL REFERENCES site_user(id),
     name VARCHAR(100) NOT NULL,
     slug VARCHAR(60) NOT NULL,
-    draw_one_title VARCHAR(20),
+    translation_key VARCHAR(100) NOT NULL,
+    draw_one_title VARCHAR(20) NOT NULL,
     draw_two_title VARCHAR(20),
-    points_total_title VARCHAR(20),
+    draw_three_title VARCHAR(20),
+    points_total_title VARCHAR(20) NOT NULL,
     points_one_title VARCHAR(20),
     points_two_title VARCHAR(20),
     points_three_title VARCHAR(20),
@@ -463,11 +465,13 @@ CREATE TABLE contest_type (
     has_own_choice BIT NOT NULL DEFAULT 0,
     has_entertainments BIT NOT NULL DEFAULT 0,
     statistics_show BIT NOT NULL DEFAULT 0,
-    statistics_limit INT
+    statistics_limit INT NOT NULL DEFAULT 2
 );
 
 CREATE UNIQUE INDEX idx_contest_type_slug_unique ON contest_type(slug);
 CREATE UNIQUE INDEX idx_contest_type_name_unique ON contest_type(name);
+
+INSERT INTO contest_type(updated_by_id, owner_id, name, slug, translation_key, draw_one_title, points_total_title, has_test_piece) values (1, 1, 'Test Piece Contest', 'test-piece-contest', 'contest-type.test-piece', 'Draw', 'Points', 1);
 
 CREATE TABLE contest (
     id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
@@ -546,5 +550,31 @@ CREATE TABLE contest_test_piece (
 
 CREATE UNIQUE INDEX idx_contest_test_piece ON contest_test_piece(contest_event_id, piece_id);
 
-
+CREATE TABLE contest_result (
+    id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    old_id BIGINT,
+    updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_by_id BIGINT NOT NULL REFERENCES site_user(id),
+    owner_id BIGINT NOT NULL REFERENCES site_user(id),
+    contest_event_id BIGINT NOT NULL REFERENCES contest_event(id),
+    band_id BIGINT NOT NULL REFERENCES band(id),
+    band_name VARCHAR(100) NOT NULL,
+    result_position_type VARCHAR(1) NOT NULL,
+    result_position INT,
+    draw INT,
+    draw_second INT,
+    draw_third INT,
+    points_total VARCHAR(10),
+    points_first VARCHAR(10),
+    points_second VARCHAR(10),
+    points_third VARCHAR(10),
+    points_fourth VARCHAR(10),
+    points_penalty VARCHAR(10),
+    conductor_name VARCHAR(100),
+    conductor_id BIGINT REFERENCES person(id),
+    conductor_two_id BIGINT REFERENCES person(id),
+    conductor_three_id BIGINT REFERENCES person(id),
+    notes TEXT
+);
 

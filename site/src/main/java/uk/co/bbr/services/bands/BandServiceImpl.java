@@ -1,6 +1,7 @@
 package uk.co.bbr.services.bands;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.bands.dao.BandPreviousNameDao;
@@ -93,12 +94,12 @@ public class BandServiceImpl implements BandService, SlugTools {
     }
 
     private void validateMandatory(BandDao band){
-        if (band.getName() == null || band.getName().trim().length() == 0) {
+        if (StringUtils.isBlank(band.getName())) {
             throw new ValidationException("Band name must be specified");
         }
 
         // defaults
-        if (band.getSlug() == null || band.getSlug().trim().length() == 0) {
+        if (StringUtils.isBlank(band.getSlug())) {
             band.setSlug(slugify(band.getName()));
         }
 
@@ -190,13 +191,13 @@ public class BandServiceImpl implements BandService, SlugTools {
     @IsBbrMember
     public BandRelationshipDao saveRelationship(BandRelationshipDao relationship) {
         if (relationship.getLeftBand() != null) {
-            if (relationship.getLeftBandName() == null || relationship.getLeftBandName().trim().length() == 0) {
+            if (StringUtils.isBlank(relationship.getLeftBandName())) {
                 relationship.setLeftBandName(relationship.getLeftBand().getName());
             }
         }
 
         if (relationship.getRightBand() != null) {
-            if (relationship.getRightBandName() == null || relationship.getRightBandName().trim().length() == 0) {
+            if (StringUtils.isBlank(relationship.getRightBandName())) {
                 relationship.setRightBandName(relationship.getRightBand().getName());
             }
         }

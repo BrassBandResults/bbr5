@@ -8,10 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.client.RestTemplate;
-import uk.co.bbr.services.bands.BandService;
-import uk.co.bbr.services.people.PeopleService;
-import uk.co.bbr.services.regions.RegionService;
-import uk.co.bbr.services.regions.dao.RegionDao;
+import uk.co.bbr.services.people.PersonService;
 import uk.co.bbr.services.security.JwtService;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.services.security.ex.AuthenticationFailedException;
@@ -29,7 +26,7 @@ class PeopleListWebTests implements LoginMixin {
 
     @Autowired private SecurityService securityService;
     @Autowired private JwtService jwtService;
-    @Autowired private PeopleService peopleService;
+    @Autowired private PersonService personService;
     @Autowired private RestTemplate restTemplate;
     @LocalServerPort private int port;
 
@@ -37,10 +34,10 @@ class PeopleListWebTests implements LoginMixin {
     void setupPeople() throws AuthenticationFailedException {
         loginTestUser(this.securityService, this.jwtService, TestUser.TEST_MEMBER);
 
-        this.peopleService.create("Childs", "David");
-        this.peopleService.create("Childs", "Nick");
-        this.peopleService.create("Childs", "Bob");
-        this.peopleService.create("Roberts", "David");
+        this.personService.create("Childs", "David");
+        this.personService.create("Childs", "Nick");
+        this.personService.create("Childs", "Bob");
+        this.personService.create("Roberts", "David");
 
         logoutTestUser();
     }
