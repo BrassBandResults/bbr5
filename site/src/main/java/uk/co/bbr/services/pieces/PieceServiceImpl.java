@@ -9,7 +9,7 @@ import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.pieces.dao.PieceAlias;
 import uk.co.bbr.services.pieces.dao.PieceDao;
 import uk.co.bbr.services.pieces.dto.PieceListDto;
-import uk.co.bbr.services.pieces.repo.PieceAlternativeNameRepository;
+import uk.co.bbr.services.pieces.repo.PieceAliasRepository;
 import uk.co.bbr.services.pieces.repo.PieceRepository;
 import uk.co.bbr.services.pieces.types.PieceCategory;
 import uk.co.bbr.services.security.SecurityService;
@@ -24,7 +24,7 @@ import java.util.Optional;
 public class PieceServiceImpl implements PieceService, SlugTools {
 
     private final PieceRepository pieceRepository;
-    private final PieceAlternativeNameRepository pieceAlternativeNameRepository;
+    private final PieceAliasRepository pieceAlternativeNameRepository;
     private final SecurityService securityService;
 
     @Override

@@ -578,3 +578,22 @@ CREATE TABLE contest_result (
     notes TEXT
 );
 
+CREATE INDEX idx_contest_result_event ON contest_result(contest_event_id);
+CREATE INDEX idx_conductor ON contest_result(conductor_id);
+CREATE INDEX idx_band ON contest_result(band_id);
+
+CREATE TABLE contest_event_adjudicator (
+    id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    old_id BIGINT,
+    updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_by_id BIGINT NOT NULL REFERENCES site_user(id),
+    owner_id BIGINT NOT NULL REFERENCES site_user(id),
+    contest_event_id BIGINT NOT NULL REFERENCES contest_event(id),
+    person_id BIGINT NOT NULL REFERENCES person(id),
+    adjudicator_name VARCHAR(50) NOT NULL
+);
+
+CREATE INDEX idx_adjudicator_event ON contest_event_adjudicator(contest_event_id);
+CREATE INDEX idx_adjudicator_person ON contest_event_adjudicator(person_id);
+

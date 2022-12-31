@@ -56,13 +56,13 @@ public class ContestServiceImpl implements ContestService, SlugTools {
         }
 
         // does the slug already exist?
-        Optional<ContestGroupDao> slugMatches = this.contestRepository.findBySlug(contest.getSlug());
+        Optional<ContestDao> slugMatches = this.contestRepository.findBySlug(contest.getSlug());
         if (slugMatches.isPresent()) {
             throw new ValidationException("Contest with slug " + contest.getSlug() + " already exists.");
         }
 
         // does the slug already exist?
-        Optional<ContestGroupDao> nameMatches = this.contestRepository.findByName(contest.getName());
+        Optional<ContestDao> nameMatches = this.contestRepository.findByName(contest.getName());
         if (nameMatches.isPresent()) {
             throw new ValidationException("Contest with name " + contest.getName() + " already exists.");
         }

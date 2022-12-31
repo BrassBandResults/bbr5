@@ -9,7 +9,7 @@ import uk.co.bbr.services.framework.mixins.SlugTools;
 import uk.co.bbr.services.people.dao.PersonAliasDao;
 import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.people.dto.PeopleListDto;
-import uk.co.bbr.services.people.repo.PersonAlternativeNameRepository;
+import uk.co.bbr.services.people.repo.PersonAliasRepository;
 import uk.co.bbr.services.people.repo.PersonRepository;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
@@ -23,7 +23,7 @@ import java.util.Optional;
 public class PersonServiceImpl implements PersonService, SlugTools {
 
     private final PersonRepository personRepository;
-    private final PersonAlternativeNameRepository personAlternativeNameRepository;
+    private final PersonAliasRepository personAliasRepository;
     private final SecurityService securityService;
 
     @Override
@@ -67,7 +67,7 @@ public class PersonServiceImpl implements PersonService, SlugTools {
     @IsBbrMember
     public void createAlternativeName(PersonDao person, PersonAliasDao previousName) {
         previousName.setPerson(person);
-        this.personAlternativeNameRepository.saveAndFlush(previousName);
+        this.personAliasRepository.saveAndFlush(previousName);
     }
 
     @Override
@@ -90,7 +90,7 @@ public class PersonServiceImpl implements PersonService, SlugTools {
 
     @Override
     public List<PersonAliasDao> fetchAlternateNames(PersonDao person) {
-        return this.personAlternativeNameRepository.findForPersonId(person.getId());
+        return this.personAliasRepository.findForPersonId(person.getId());
     }
 
     @Override

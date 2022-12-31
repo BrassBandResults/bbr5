@@ -6,6 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import uk.co.bbr.services.bands.BandService;
 import uk.co.bbr.services.bands.dao.BandDao;
+import uk.co.bbr.services.contests.dao.ContestAdjudicatorDao;
 import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.contests.dao.ContestEventDao;
 import uk.co.bbr.services.contests.dao.ContestResultDao;
@@ -19,6 +20,7 @@ import uk.co.bbr.web.LoginMixin;
 import uk.co.bbr.web.security.support.TestUser;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -29,6 +31,7 @@ class CreateContestEventTests implements LoginMixin {
 
     @Autowired private ContestService contestService;
     @Autowired private ContestEventService contestEventService;
+    @Autowired private PersonService personService;
     @Autowired private SecurityService securityService;
     @Autowired private JwtService jwtService;
 
@@ -45,12 +48,33 @@ class CreateContestEventTests implements LoginMixin {
         // assert
         assertNotNull(event.getContest());
         assertEquals("Yorkshire Area", event.getContest().getName());
+        assertEquals("yorkshire-area", event.getContest().getSlug());
         assertNotNull(event.getContest().getId());
         assertEquals(contest.getId(), event.getContest().getId());
         assertEquals(contest.getSlug(), event.getContest().getSlug());
         assertEquals(LocalDate.of(2021, 4, 4), event.getEventDate());
         assertNotNull(event.getContestType());
         assertEquals(contest.getDefaultContestType(), event.getContestType());
+
+        logoutTestUser();
+    }
+
+    @Test
+    void testAdjudicatorsCanBeAddedToContestEventSuccessfully() throws AuthenticationFailedException {
+        // arrange
+        loginTestUser(this.securityService, this.jwtService, TestUser.TEST_MEMBER);
+
+        ContestDao contest = this.contestService.create("West of England Area");
+        ContestEventDao event = this.contestEventService.create(contest, LocalDate.of(2021, 4, 4));
+        PersonDao person = this.personService.create("Childs", "Bob");
+
+        // act
+        List<ContestAdjudicatorDao> adjudicators = this.contestEventService.addAdjudicator(event, person);
+
+        // assert
+        assertEquals(1, adjudicators.size());
+        assertEquals("bob-childs", adjudicators.get(0).getAdjudicator().getSlug());
+        assertEquals("Bob Childs", adjudicators.get(0).getAdjudicator().getName());
 
         logoutTestUser();
     }

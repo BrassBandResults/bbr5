@@ -9,8 +9,8 @@ import java.util.Optional;
 
 public interface ContestRepository extends JpaRepository<ContestDao, Long> {
     @Query("SELECT c FROM ContestDao c WHERE c.slug = ?1")
-    Optional<ContestGroupDao> findBySlug(String slug);
+    Optional<ContestDao> findBySlug(String slug);
 
     @Query("SELECT c FROM ContestDao c WHERE c.name = ?1")
-    Optional<ContestGroupDao> findByName(String name);
+    Optional<ContestDao> findByName(String name);
 }

@@ -39,7 +39,7 @@ class CreateContestResultTests implements LoginMixin {
         // arrange
         loginTestUser(this.securityService, this.jwtService, TestUser.TEST_MEMBER);
 
-        ContestDao contest = this.contestService.create("Yorkshire Area");
+        ContestDao contest = this.contestService.create("  Yorkshire   Area      ");
         ContestEventDao event = this.contestEventService.create(contest, LocalDate.of(2020, 03, 03));
         BandDao band = this.bandService.create("Rothwell Temperance");
         PersonDao conductor = this.personService.create("Roberts", "David");

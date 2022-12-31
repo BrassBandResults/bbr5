@@ -32,10 +32,11 @@ class CreateContestTests implements LoginMixin {
         loginTestUser(this.securityService, this.jwtService, TestUser.TEST_MEMBER);
 
         // act
-        ContestDao contest = this.contestService.create("North West Area");
+        ContestDao contest = this.contestService.create("  North  West   Area   ");
 
         // assert
         assertEquals("North West Area", contest.getName());
+        assertEquals("north-west-area", contest.getSlug());
         assertNotNull(contest.getId());
         assertNotNull(contest.getDefaultContestType());
         assertEquals(this.contestTypeService.fetchDefaultContestType().getSlug(), contest.getDefaultContestType().getSlug());
