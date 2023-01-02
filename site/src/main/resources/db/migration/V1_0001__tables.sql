@@ -545,7 +545,7 @@ CREATE TABLE contest_test_piece (
     owner_id BIGINT NOT NULL REFERENCES site_user(id),
     contest_event_id BIGINT NOT NULL REFERENCES contest_event(id),
     piece_id BIGINT NOT NULL REFERENCES piece(id),
-    and_or VARCHAR(1) NOT NULL
+    and_or VARCHAR(1)
 );
 
 CREATE UNIQUE INDEX idx_contest_test_piece ON contest_test_piece(contest_event_id, piece_id);

@@ -6,9 +6,11 @@ import uk.co.bbr.services.contests.dao.ContestAdjudicatorDao;
 import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.contests.dao.ContestEventDao;
 import uk.co.bbr.services.contests.dao.ContestGroupDao;
+import uk.co.bbr.services.contests.dao.ContestTestPieceDao;
 import uk.co.bbr.services.contests.repo.ContestAdjudicatorRepository;
 import uk.co.bbr.services.contests.repo.ContestEventRepository;
 import uk.co.bbr.services.contests.repo.ContestGroupRepository;
+import uk.co.bbr.services.contests.repo.ContestTestPieceRepository;
 import uk.co.bbr.services.contests.types.ContestEventDateResolution;
 import uk.co.bbr.services.contests.types.ContestGroupType;
 import uk.co.bbr.services.framework.ValidationException;
@@ -28,6 +30,7 @@ public class ContestEventServiceImpl implements ContestEventService {
 
     private final SecurityService securityService;
     private final ContestEventRepository contestEventRepository;
+    private final ContestTestPieceRepository contestTestPieceRepository;
     private final ContestAdjudicatorRepository contestAdjudicatorRepository;
 
     @Override
@@ -92,6 +95,17 @@ public class ContestEventServiceImpl implements ContestEventService {
     @Override
     public ContestEventDao fetch(ContestDao contest, LocalDate eventDate) {
         return this.contestEventRepository.findByContestAndDate(contest.getId(), eventDate);
+    }
+
+    @Override
+    public ContestTestPieceDao addTestPieceToContest(ContestEventDao event, ContestTestPieceDao testPiece) {
+        testPiece.setContestEvent(event);
+        return this.contestTestPieceRepository.saveAndFlush(testPiece);
+    }
+
+    @Override
+    public List<ContestTestPieceDao> listTestPieces(ContestEventDao event) {
+        return this.contestTestPieceRepository.fetchForEvent(event.getId());
     }
 
 

@@ -26,6 +26,9 @@ public enum TestPieceAndOr {
     }
 
     public static TestPieceAndOr fromCode(String code) {
+        if (code == null) {
+            return null;
+        }
         return Stream.of(TestPieceAndOr.values())
                 .filter(c -> c.getCode().equals(code))
                 .findFirst()
