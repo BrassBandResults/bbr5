@@ -89,5 +89,10 @@ public class ContestEventServiceImpl implements ContestEventService {
         return this.contestAdjudicatorRepository.fetchForEvent(event.getId());
     }
 
+    @Override
+    public ContestEventDao fetch(ContestDao contest, LocalDate eventDate) {
+        return this.contestEventRepository.findByContestAndDate(contest.getId(), eventDate);
+    }
+
 
 }

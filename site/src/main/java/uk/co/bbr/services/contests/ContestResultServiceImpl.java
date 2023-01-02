@@ -17,6 +17,7 @@ import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -30,25 +31,22 @@ public class ContestResultServiceImpl implements ContestResultService {
     public ContestResultDao addResult(ContestEventDao event, ContestResultDao result) {
         result.setContestEvent(event);
 
-        // default in band name if not specified
-        if (StringUtils.isBlank(result.getBandName())) {
-            result.setBandName(result.getBand().getName());
+        ContestResultDao returnResult = null;
+        // is there an existing result for the same band?
+        Optional<ContestResultDao> existingResult = this.contestResultRepository.fetchForEventAndBand(event.getId(), result.getBand().getId());
+        if (existingResult.isPresent()) {
+            ContestResultDao existingResultObject = existingResult.get();
+            existingResultObject.populateFrom(result);
+            returnResult = this.contestResultRepository.saveAndFlush(existingResultObject);
+        } else {
+            returnResult = this.contestResultRepository.saveAndFlush(result);
         }
 
-        // default in conductor name if not specified
-        if (StringUtils.isBlank(result.getConductorName())) {
-            result.setConductorName(result.getConductor().getName());
-        }
+        return returnResult;
+    }
 
-        // default in the result position type
-        if (result.getResultPositionType() == null) {
-            if (result.getPosition() != null && result.getPosition() > 0) {
-                result.setResultPositionType(ResultPositionType.RESULT);
-            } else {
-                result.setResultPositionType(ResultPositionType.UNKNOWN);
-            }
-        }
-
-        return this.contestResultRepository.saveAndFlush(result);
+    @Override
+    public List<ContestResultDao> fetchForEvent(ContestEventDao event) {
+        return this.contestResultRepository.findAllForEvent(event.getId());
     }
 }

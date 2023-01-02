@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @ActiveProfiles("test")
 @SpringBootTest(properties = { "spring.config.name=person-alternative-tests-h2", "spring.datasource.url=jdbc:h2:mem:person-alternative-tests-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE"})
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class CreateAlternativeNamePersonTests implements LoginMixin {
+class CreatePersonAliasTests implements LoginMixin {
 
     @Autowired private PersonService personService;
     @Autowired private SecurityService securityService;
