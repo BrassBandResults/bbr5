@@ -25,11 +25,11 @@ public interface BandService {
     void createRehearsalNight(BandDao band, RehearsalDay day);
     void migrateRehearsalNight(BandDao band, RehearsalDay day);
 
-    List<RehearsalDay> fetchRehearsalNights(BandDao band);
+    List<RehearsalDay> findRehearsalNights(BandDao band);
 
-    BandDao findBandBySlug(String bandSlug);
+    Optional<BandDao> fetchBandBySlug(String bandSlug);
 
-    BandDao fetchBandByOldId(String bandOldId);
+    Optional<BandDao> fetchBandByOldId(String bandOldId);
 
     BandPreviousNameDao createPreviousName(BandDao band, BandPreviousNameDao previousName);
     BandPreviousNameDao migratePreviousName(BandDao band, BandPreviousNameDao previousName);

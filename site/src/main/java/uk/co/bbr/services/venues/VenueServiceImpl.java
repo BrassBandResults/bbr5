@@ -3,11 +3,8 @@ package uk.co.bbr.services.venues;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
-import uk.co.bbr.services.bands.dao.BandDao;
-import uk.co.bbr.services.bands.types.BandStatus;
 import uk.co.bbr.services.framework.ValidationException;
 import uk.co.bbr.services.framework.mixins.SlugTools;
-import uk.co.bbr.services.regions.dao.RegionDao;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.services.venues.dao.VenueDao;
 import uk.co.bbr.services.venues.repo.VenueRepository;
@@ -32,7 +29,7 @@ public class VenueServiceImpl implements VenueService, SlugTools {
         this.validateMandatory(venue);
 
         // does the slug already exist?
-        Optional<VenueDao> slugMatches = this.venueRepository.findBySlug(venue.getSlug());
+        Optional<VenueDao> slugMatches = this.venueRepository.fetchBySlug(venue.getSlug());
         if (slugMatches.isPresent()) {
             throw new ValidationException("Venue with slug " + venue.getSlug() + " already exists.");
         }

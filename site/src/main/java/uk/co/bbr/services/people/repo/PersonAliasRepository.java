@@ -12,5 +12,5 @@ public interface PersonAliasRepository extends JpaRepository<PersonAliasDao, Lon
     List<PersonAliasDao> findForPersonId(Long personId);
 
     @Query("SELECT a FROM PersonAliasDao a WHERE a.person.id = ?1 AND a.oldName = ?2")
-    Optional<PersonAliasDao> findByNameForPerson(Long personId, String aliasName);
+    Optional<PersonAliasDao> fetchByNameForPerson(Long personId, String aliasName);
 }

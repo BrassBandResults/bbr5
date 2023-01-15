@@ -12,7 +12,7 @@ public interface BandRepository extends JpaRepository<BandDao, Long> {
     @Query("SELECT b FROM BandDao b ORDER BY b.name")
     List<BandDao> findAll();
     @Query("SELECT b FROM BandDao b WHERE UPPER(b.name) LIKE UPPER(CONCAT(:prefix, '%')) ORDER BY b.name")
-    List<BandDao> findByPrefix(String prefix);
+    List<BandDao> findByPrefixOrderByName(String prefix);
 
     @Query("SELECT b FROM BandDao b " +
             "WHERE b.name LIKE UPPER('0%')" +
@@ -28,7 +28,7 @@ public interface BandRepository extends JpaRepository<BandDao, Long> {
     List<BandDao> findWithNumberPrefix();
 
     @Query("SELECT b FROM BandDao b WHERE b.slug = ?1")
-    Optional<BandDao> findBySlug(String bandSlug);
+    Optional<BandDao> fetchBySlug(String bandSlug);
 
     @Query("SELECT b FROM BandDao b WHERE b.oldId = ?1")
     Optional<BandDao> fetchByOldId(String bandOldId);

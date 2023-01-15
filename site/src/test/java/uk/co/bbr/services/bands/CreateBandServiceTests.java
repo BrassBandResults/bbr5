@@ -3,11 +3,9 @@ package uk.co.bbr.services.bands;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.bands.types.BandStatus;
-import uk.co.bbr.services.contests.dao.ContestTagDao;
 import uk.co.bbr.services.framework.ValidationException;
 import uk.co.bbr.services.regions.RegionService;
 import uk.co.bbr.services.regions.dao.RegionDao;
@@ -67,7 +65,7 @@ class CreateBandServiceTests implements LoginMixin {
         // arrange
         loginTestUser(this.securityService, this.jwtService, TestUser.TEST_MEMBER);
 
-        RegionDao northWestRegion = this.regionService.findBySlug("north-west");
+        RegionDao northWestRegion = this.regionService.fetchBySlug("north-west").get();
 
         // act
         BandDao band = this.bandService.create("Foden's", northWestRegion);
@@ -85,8 +83,8 @@ class CreateBandServiceTests implements LoginMixin {
         // arrange
         loginTestUser(this.securityService, this.jwtService, TestUser.TEST_MEMBER);
 
-        RegionDao yorkshireRegion = this.regionService.findBySlug("yorkshire");
-        SectionDao championshipSection = this.sectionService.fetchBySlug("championship");
+        RegionDao yorkshireRegion = this.regionService.fetchBySlug("yorkshire").get();
+        SectionDao championshipSection = this.sectionService.fetchBySlug("championship").get();
 
         BandDao newBand = new BandDao();
         newBand.setName("  Yorkshire Building Society Band  Of Yorkshire formerly Hammonds Sauce Works Band ");

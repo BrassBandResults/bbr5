@@ -6,21 +6,22 @@ import uk.co.bbr.services.regions.dto.LinkSectionDto;
 import uk.co.bbr.services.regions.dto.RegionPageDto;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface RegionService {
-    List<RegionDao> fetchAll();
+    List<RegionDao> findAll();
 
     RegionDao fetchUnknownRegion();
 
-    RegionDao findBySlug(String slug);
+    Optional<RegionDao> fetchBySlug(String slug);
 
-    RegionPageDto findBySlugForPage(String regionSlug);
+    RegionPageDto fetchBySlugForPage(String regionSlug);
 
-    List<LinkSectionDto> fetchBandsBySection(RegionDao region, String ungradedDescription);
+    List<LinkSectionDto> findBandsBySection(RegionDao region, String ungradedDescription);
 
-    List<RegionDao> fetchSubRegions(RegionDao region);
+    List<RegionDao> findSubRegions(RegionDao region);
 
-    List<BandDao> fetchBandsWithMapLocation(RegionDao region);
+    List<BandDao> findBandsWithMapLocation(RegionDao region);
 
     RegionDao create(RegionDao region);
 

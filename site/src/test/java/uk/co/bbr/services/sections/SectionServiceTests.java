@@ -6,7 +6,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import uk.co.bbr.services.sections.dao.SectionDao;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -21,9 +24,14 @@ class SectionServiceTests {
     @Test
     void testFetchByNameWorksSuccessfully() {
         // act
-        SectionDao section = this.sectionService.fetchByName("Championship");
+        Optional<SectionDao> sectionOptional = this.sectionService.fetchByName("Championship");
 
         // assert
+        assertTrue(sectionOptional.isPresent());
+        assertFalse(sectionOptional.isEmpty());
+
+        SectionDao section = sectionOptional.get();
+
         assertEquals("Championship", section.getName());
         assertEquals("championship", section.getSlug());
         assertEquals(30, section.getPosition());
@@ -34,9 +42,14 @@ class SectionServiceTests {
     @Test
     void testFetchBySlugWorksSuccessfully() {
         // act
-        SectionDao section = this.sectionService.fetchBySlug("first");
+        Optional<SectionDao> sectionOptional = this.sectionService.fetchBySlug("first");
 
         // assert
+        assertTrue(sectionOptional.isPresent());
+        assertFalse(sectionOptional.isEmpty());
+
+        SectionDao section = sectionOptional.get();
+
         assertEquals("First", section.getName());
         assertEquals("first", section.getSlug());
         assertEquals(110, section.getPosition());

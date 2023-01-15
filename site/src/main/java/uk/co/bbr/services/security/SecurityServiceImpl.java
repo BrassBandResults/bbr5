@@ -35,7 +35,7 @@ public class SecurityServiceImpl implements SecurityService {
 
     @Override
     public BbrUserDao getCurrentUser() {
-        Optional<BbrUserDao> user = this.bbrUserRepository.findByUsercode(this.getCurrentUsername());
+        Optional<BbrUserDao> user = this.bbrUserRepository.fetchByUsercode(this.getCurrentUsername());
         if (user.isEmpty()) {
             throw new NotFoundException("Current user not found");
         }
@@ -44,7 +44,7 @@ public class SecurityServiceImpl implements SecurityService {
 
     @Override
     public BbrUserDao authenticate(String usercode, String plaintextPassword) throws AuthenticationFailedException {
-        Optional<BbrUserDao> fetchedUserOptional = this.bbrUserRepository.findByUsercode(usercode);
+        Optional<BbrUserDao> fetchedUserOptional = this.bbrUserRepository.fetchByUsercode(usercode);
         if (fetchedUserOptional.isEmpty()) {
             throw new AuthenticationFailedException();
         }
@@ -118,7 +118,7 @@ public class SecurityServiceImpl implements SecurityService {
 
     @Override
     public void makeUserAdmin(String usercode) {
-        Optional<BbrUserDao> matchingUserOptional = this.bbrUserRepository.findByUsercode(usercode);
+        Optional<BbrUserDao> matchingUserOptional = this.bbrUserRepository.fetchByUsercode(usercode);
         if (matchingUserOptional.isEmpty()){
             throw new NotFoundException("User " + usercode + " not found");
         }
@@ -131,7 +131,7 @@ public class SecurityServiceImpl implements SecurityService {
 
     @Override
     public void makeUserPro(String usercode) {
-        Optional<BbrUserDao> matchingUserOptional = this.bbrUserRepository.findByUsercode(usercode);
+        Optional<BbrUserDao> matchingUserOptional = this.bbrUserRepository.fetchByUsercode(usercode);
         if (matchingUserOptional.isEmpty()){
             throw new NotFoundException("User " + usercode + " not found");
         }
@@ -144,7 +144,7 @@ public class SecurityServiceImpl implements SecurityService {
 
     @Override
     public void makeUserSuperuser(String usercode) {
-        Optional<BbrUserDao> matchingUserOptional = this.bbrUserRepository.findByUsercode(usercode);
+        Optional<BbrUserDao> matchingUserOptional = this.bbrUserRepository.fetchByUsercode(usercode);
         if (matchingUserOptional.isEmpty()){
             throw new NotFoundException("User " + usercode + " not found");
         }
@@ -157,7 +157,7 @@ public class SecurityServiceImpl implements SecurityService {
 
     @Override
     public Optional<BbrUserDao> fetchUserByUsercode(String usercode) {
-        return this.bbrUserRepository.findByUsercode(usercode);
+        return this.bbrUserRepository.fetchByUsercode(usercode);
     }
 
     @Override

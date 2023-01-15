@@ -54,7 +54,7 @@ class CreateVenueServiceTests implements LoginMixin {
         newVenue.setLatitude(" 123 ");
         newVenue.setLongitude(" 456 ");
         newVenue.setExact(true);
-        newVenue.setRegion(this.regionService.findBySlug("yorkshire"));
+        newVenue.setRegion(this.regionService.fetchBySlug("yorkshire").get());
         newVenue.setMapperUser(this.securityService.getCurrentUserId());
 
         // act

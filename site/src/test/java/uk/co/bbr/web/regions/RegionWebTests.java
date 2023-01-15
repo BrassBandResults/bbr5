@@ -42,12 +42,12 @@ class RegionWebTests implements LoginMixin {
     void setupBands() throws AuthenticationFailedException {
         loginTestUser(this.securityService, this.jwtService, TestUser.TEST_MEMBER);
 
-        RegionDao midlands = this.regionService.findBySlug("midlands");
-        RegionDao yorkshire = this.regionService.findBySlug("yorkshire");
-        RegionDao northWest = this.regionService.findBySlug("north-west");
-        RegionDao wales = this.regionService.findBySlug("wales");
-        RegionDao norway = this.regionService.findBySlug("norway");
-        RegionDao denmark = this.regionService.findBySlug("denmark");
+        RegionDao midlands = this.regionService.fetchBySlug("midlands").get();
+        RegionDao yorkshire = this.regionService.fetchBySlug("yorkshire").get();
+        RegionDao northWest = this.regionService.fetchBySlug("north-west").get();
+        RegionDao wales = this.regionService.fetchBySlug("wales").get();
+        RegionDao norway = this.regionService.fetchBySlug("norway").get();
+        RegionDao denmark = this.regionService.fetchBySlug("denmark").get();
 
         this.bandService.create("Abercrombie Primary School Community", midlands);
         this.bandService.create("Black Dyke Band", yorkshire);

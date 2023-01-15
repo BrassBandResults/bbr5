@@ -5,18 +5,20 @@ import org.springframework.stereotype.Service;
 import uk.co.bbr.services.sections.dao.SectionDao;
 import uk.co.bbr.services.sections.repo.SectionRepository;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class SectionServiceImpl implements SectionService {
 
     private final SectionRepository sectionRepository;
     @Override
-    public SectionDao fetchBySlug(String sectionSlug) {
-        return this.sectionRepository.findBySlug(sectionSlug);
+    public Optional<SectionDao> fetchBySlug(String sectionSlug) {
+        return this.sectionRepository.fetchBySlug(sectionSlug);
     }
 
     @Override
-    public SectionDao fetchByName(String sectionName) {
-        return this.sectionRepository.findByName(sectionName);
+    public Optional<SectionDao> fetchByName(String sectionName) {
+        return this.sectionRepository.fetchByName(sectionName);
     }
 }

@@ -3,7 +3,6 @@ package uk.co.bbr.services.contests;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
-import uk.co.bbr.services.contests.dao.ContestGroupDao;
 import uk.co.bbr.services.contests.dao.ContestTagDao;
 import uk.co.bbr.services.contests.repo.ContestTagRepository;
 import uk.co.bbr.services.framework.ValidationException;
@@ -12,7 +11,6 @@ import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -40,7 +38,7 @@ public class ContestTagServiceImpl implements ContestTagService, SlugTools {
 
     @Override
     public Optional<ContestTagDao> fetchByName(String name) {
-        return this.contestTagRepository.findByName(name);
+        return this.contestTagRepository.fetchByName(name);
     }
 
     @Override
@@ -65,13 +63,13 @@ public class ContestTagServiceImpl implements ContestTagService, SlugTools {
         }
 
         // does the slug already exist?
-        Optional<ContestTagDao> slugMatches = this.contestTagRepository.findBySlug(contestTag.getSlug());
+        Optional<ContestTagDao> slugMatches = this.contestTagRepository.fetchBySlug(contestTag.getSlug());
         if (slugMatches.isPresent()) {
             throw new ValidationException("Contest Tag with slug " + contestTag.getSlug() + " already exists.");
         }
 
         // does the slug already exist?
-        Optional<ContestTagDao> nameMatches = this.contestTagRepository.findByName(contestTag.getName());
+        Optional<ContestTagDao> nameMatches = this.contestTagRepository.fetchByName(contestTag.getName());
         if (nameMatches.isPresent()) {
             throw new ValidationException("Contest Tag with name " + contestTag.getName() + " already exists.");
         }

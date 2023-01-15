@@ -26,7 +26,7 @@ class RegionServiceTests {
     @Test
     void testListRegionsWorksSuccessfully() {
         // act
-        List<RegionDao> allRegions = this.regionService.fetchAll();
+        List<RegionDao> allRegions = this.regionService.findAll();
 
         // assert
         assertEquals(64, allRegions.size());

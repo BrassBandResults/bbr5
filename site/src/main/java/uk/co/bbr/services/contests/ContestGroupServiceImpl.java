@@ -3,18 +3,16 @@ package uk.co.bbr.services.contests;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
-import uk.co.bbr.services.bands.dao.BandDao;
-import uk.co.bbr.services.bands.dao.BandPreviousNameDao;
 import uk.co.bbr.services.contests.dao.ContestGroupAliasDao;
 import uk.co.bbr.services.contests.dao.ContestGroupDao;
 import uk.co.bbr.services.contests.repo.ContestGroupAliasRepository;
-import uk.co.bbr.services.contests.repo.ContestGroupRepository;
 import uk.co.bbr.services.contests.repo.ContestGroupRepository;
 import uk.co.bbr.services.contests.types.ContestGroupType;
 import uk.co.bbr.services.framework.ValidationException;
 import uk.co.bbr.services.framework.mixins.SlugTools;
 import uk.co.bbr.services.people.dao.PersonAliasDao;
 import uk.co.bbr.services.security.SecurityService;
+import uk.co.bbr.web.security.annotations.IsBbrAdmin;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
 import java.time.LocalDateTime;
@@ -44,6 +42,7 @@ public class ContestGroupServiceImpl implements ContestGroupService, SlugTools {
     }
 
     @Override
+    @IsBbrAdmin
     public ContestGroupDao migrate(ContestGroupDao contestGroup) {
         return this.create(contestGroup, true);
     }
@@ -68,13 +67,13 @@ public class ContestGroupServiceImpl implements ContestGroupService, SlugTools {
         }
 
         // does the slug already exist?
-        Optional<ContestGroupDao> slugMatches = this.contestGroupRepository.findBySlug(contestGroup.getSlug());
+        Optional<ContestGroupDao> slugMatches = this.contestGroupRepository.fetchBySlug(contestGroup.getSlug());
         if (slugMatches.isPresent()) {
             throw new ValidationException("Contest Group with slug " + contestGroup.getSlug() + " already exists.");
         }
 
         // does the name already exist?
-        Optional<ContestGroupDao> nameMatches = this.contestGroupRepository.findByName(contestGroup.getName());
+        Optional<ContestGroupDao> nameMatches = this.contestGroupRepository.fetchByName(contestGroup.getName());
         if (nameMatches.isPresent()) {
             throw new ValidationException("Contest Group with name " + contestGroup.getName() + " already exists.");
         }
@@ -106,10 +105,12 @@ public class ContestGroupServiceImpl implements ContestGroupService, SlugTools {
     }
 
     @Override
+    @IsBbrAdmin
     public ContestGroupAliasDao migrateAlias(ContestGroupDao group, ContestGroupAliasDao alias) {
         return this.createAlias(group, alias, true);
     }
     @Override
+    @IsBbrMember
     public ContestGroupAliasDao createAlias(ContestGroupDao group, ContestGroupAliasDao alias) {
         return this.createAlias(group, alias, false);
     }
@@ -124,4 +125,11 @@ public class ContestGroupServiceImpl implements ContestGroupService, SlugTools {
         }
         return this.contestGroupAliasRepository.saveAndFlush(previousName);
     }
+
+    @Override
+    public Optional<ContestGroupDao> fetchBySlug(String groupSlug) {
+        return this.contestGroupRepository.fetchBySlug(groupSlug);
+    }
+
+
 }

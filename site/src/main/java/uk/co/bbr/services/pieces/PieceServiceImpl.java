@@ -143,13 +143,13 @@ public class PieceServiceImpl implements PieceService, SlugTools {
         List<PieceDao> piecesToReturn;
 
         switch (prefix.toUpperCase()) {
-            case "ALL" -> piecesToReturn = this.pieceRepository.findAll();
-            case "0" -> piecesToReturn = this.pieceRepository.findWithNumberPrefix();
+            case "ALL" -> piecesToReturn = this.pieceRepository.findAllOrderByName();
+            case "0" -> piecesToReturn = this.pieceRepository.findWithNumberPrefixOrderByName();
             default -> {
                 if (prefix.trim().length() != 1) {
                     throw new UnsupportedOperationException("Prefix must be a single character");
                 }
-                piecesToReturn = this.pieceRepository.findByPrefix(prefix.trim().toUpperCase());
+                piecesToReturn = this.pieceRepository.findByPrefixOrderByName(prefix.trim().toUpperCase());
             }
         }
 

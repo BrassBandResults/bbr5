@@ -120,7 +120,7 @@ public class PersonServiceImpl implements PersonService, SlugTools {
     }
 
     @Override
-    public List<PersonAliasDao> fetchAlternateNames(PersonDao person) {
+    public List<PersonAliasDao> findAlternateNames(PersonDao person) {
         return this.personAliasRepository.findForPersonId(person.getId());
     }
 
@@ -129,12 +129,12 @@ public class PersonServiceImpl implements PersonService, SlugTools {
         List<PersonDao> peopleToReturn;
 
         switch (prefix.toUpperCase()) {
-            case "ALL" -> peopleToReturn = this.personRepository.findAll();
+            case "ALL" -> peopleToReturn = this.personRepository.findAllOrderBySurname();
             default -> {
                 if (prefix.trim().length() != 1) {
                     throw new UnsupportedOperationException("Prefix must be a single character");
                 }
-                peopleToReturn = this.personRepository.findByPrefix(prefix.trim().toUpperCase());
+                peopleToReturn = this.personRepository.findByPrefixOrderBySurname(prefix.trim().toUpperCase());
             }
         }
 
@@ -146,7 +146,7 @@ public class PersonServiceImpl implements PersonService, SlugTools {
     @Override
     public Optional<PersonAliasDao> aliasExists(PersonDao person, String aliasName) {
         String name = person.simplifyName(aliasName);
-        return this.personAliasRepository.findByNameForPerson(person.getId(), name);
+        return this.personAliasRepository.fetchByNameForPerson(person.getId(), name);
     }
 
 

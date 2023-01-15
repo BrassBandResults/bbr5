@@ -36,10 +36,10 @@ class BandRelationshipTests implements LoginMixin {
     void setupBands() throws AuthenticationFailedException {
         loginTestUser(this.securityService, this.jwtService, TestUser.TEST_MEMBER);
 
-        RegionDao yorkshire = this.regionService.findBySlug("yorkshire");
+        RegionDao yorkshire = this.regionService.fetchBySlug("yorkshire").get();
 
         BandDao blackDyke = this.bandService.create("Black Dyke Band", yorkshire);
-        blackDyke.setSection(this.sectionService.fetchBySlug("championship"));
+        blackDyke.setSection(this.sectionService.fetchBySlug("championship").get());
         this.bandService.update(blackDyke);
 
         BandDao rothwell = this.bandService.create("Rothwell Temperance", yorkshire);
@@ -67,8 +67,8 @@ class BandRelationshipTests implements LoginMixin {
         // arrange
         loginTestUser(this.securityService, this.jwtService, TestUser.TEST_MEMBER);
 
-        BandDao rothwellTemperance = this.bandService.findBandBySlug("rothwell-temperance");
-        BandDao wallaceArnold = this.bandService.findBandBySlug("wallace-arnold-rothwell-band");
+        BandDao rothwellTemperance = this.bandService.fetchBandBySlug("rothwell-temperance").get();
+        BandDao wallaceArnold = this.bandService.fetchBandBySlug("wallace-arnold-rothwell-band").get();
 
         BandRelationshipDao newRelationship = new BandRelationshipDao();
         newRelationship.setLeftBand(wallaceArnold);

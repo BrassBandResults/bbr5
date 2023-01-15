@@ -5,6 +5,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import uk.co.bbr.services.framework.AbstractDao;
 import uk.co.bbr.services.framework.mixins.NameTools;
+import uk.co.bbr.services.regions.dao.RegionDao;
+import uk.co.bbr.services.sections.dao.SectionDao;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -35,8 +37,19 @@ public class ContestDao extends AbstractDao implements NameTools {
     @JoinColumn(name="default_contest_type_id")
     private ContestTypeDao defaultContestType;
 
+    @ManyToOne(fetch= FetchType.EAGER)
+    @JoinColumn(name="region_id")
+    private RegionDao region;
+
+    @ManyToOne(fetch= FetchType.EAGER)
+    @JoinColumn(name="section_id")
+    private SectionDao section;
+
     @Column(name="ordering")
     private int ordering;
+
+    @Column(name="description")
+    private String description;
 
     @Column(name="notes")
     private String notes;
@@ -54,7 +67,7 @@ public class ContestDao extends AbstractDao implements NameTools {
     private boolean preventFutureBands;
 
     @Column(name="repeat_period")
-    private int repeatPeriod;
+    private Integer repeatPeriod;
 
     @ManyToMany(fetch= FetchType.EAGER)
     @JoinTable(

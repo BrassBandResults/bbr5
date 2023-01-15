@@ -17,4 +17,6 @@ public interface ContestGroupService {
 
     ContestGroupAliasDao migrateAlias(ContestGroupDao group, ContestGroupAliasDao alias);
     ContestGroupAliasDao createAlias(ContestGroupDao group, ContestGroupAliasDao alias);
+
+    Optional<ContestGroupDao> fetchBySlug(String groupSlug);
 }

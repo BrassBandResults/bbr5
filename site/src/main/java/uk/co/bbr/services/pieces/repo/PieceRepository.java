@@ -15,10 +15,10 @@ public interface PieceRepository extends JpaRepository<PieceDao, Long> {
     Optional<PieceDao> fetchById(long pieceId);
 
     @Query("SELECT p FROM PieceDao p ORDER BY p.name")
-    List<PieceDao> findAll();
+    List<PieceDao> findAllOrderByName();
 
     @Query("SELECT p FROM PieceDao p WHERE UPPER(p.name) LIKE UPPER(CONCAT(:prefix, '%'))  ORDER BY p.name")
-    List<PieceDao> findByPrefix(String prefix);
+    List<PieceDao> findByPrefixOrderByName(String prefix);
 
     @Query("SELECT p FROM PieceDao p " +
             "WHERE p.name LIKE UPPER('0%')" +
@@ -31,5 +31,5 @@ public interface PieceRepository extends JpaRepository<PieceDao, Long> {
             "OR p.name LIKE UPPER('7%') " +
             "OR p.name LIKE UPPER('8%') " +
             "OR p.name LIKE UPPER('9%') ORDER BY p.name")
-    List<PieceDao> findWithNumberPrefix();
+    List<PieceDao> findWithNumberPrefixOrderByName();
 }

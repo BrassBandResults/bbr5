@@ -20,7 +20,6 @@ import uk.co.bbr.services.bands.types.RehearsalDay;
 import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.framework.mixins.SlugTools;
 import uk.co.bbr.services.framework.ValidationException;
-import uk.co.bbr.services.people.dao.PersonAliasDao;
 import uk.co.bbr.services.regions.RegionService;
 import uk.co.bbr.services.regions.dao.RegionDao;
 import uk.co.bbr.services.security.SecurityService;
@@ -64,7 +63,7 @@ public class BandServiceImpl implements BandService, SlugTools {
        this.validateMandatory(band);
 
         // does the slug already exist?
-        Optional<BandDao> slugMatches = this.bandRepository.findBySlug(band.getSlug());
+        Optional<BandDao> slugMatches = this.bandRepository.fetchBySlug(band.getSlug());
         if (slugMatches.isPresent()) {
             throw new ValidationException("Band with slug " + band.getSlug() + " already exists.");
         }
@@ -114,7 +113,7 @@ public class BandServiceImpl implements BandService, SlugTools {
     @Override
     public Optional<BandPreviousNameDao> aliasExists(BandDao band, String aliasName) {
         String name = band.simplifyName(aliasName);
-        return this.bandPreviousNameRepository.findByNameForBand(band.getId(), name);
+        return this.bandPreviousNameRepository.fetchByNameForBand(band.getId(), name);
     }
 
     private void validateMandatory(BandDao band){
@@ -148,7 +147,7 @@ public class BandServiceImpl implements BandService, SlugTools {
                 if (prefix.trim().length() != 1) {
                     throw new UnsupportedOperationException("Prefix must be a single character");
                 }
-                bandsToReturn = this.bandRepository.findByPrefix(prefix.trim().toUpperCase());
+                bandsToReturn = this.bandRepository.findByPrefixOrderByName(prefix.trim().toUpperCase());
             }
         }
 
@@ -195,8 +194,8 @@ public class BandServiceImpl implements BandService, SlugTools {
     }
 
     @Override
-    public List<RehearsalDay> fetchRehearsalNights(BandDao band) {
-        List<BandRehearsalDayDao> rehearsalDays = this.bandRehearsalNightRepository.fetchForBand(band.getId());
+    public List<RehearsalDay> findRehearsalNights(BandDao band) {
+        List<BandRehearsalDayDao> rehearsalDays = this.bandRehearsalNightRepository.findForBand(band.getId());
 
         List<RehearsalDay> returnDays = new ArrayList<>();
         for (BandRehearsalDayDao bandDay : rehearsalDays) {
@@ -206,21 +205,13 @@ public class BandServiceImpl implements BandService, SlugTools {
     }
 
     @Override
-    public BandDao findBandBySlug(String bandSlug) {
-        Optional<BandDao> band = this.bandRepository.findBySlug(bandSlug);
-        if (band.isEmpty()) {
-            throw new NotFoundException("Band with slug " + bandSlug + " not found");
-        }
-        return band.get();
+    public Optional<BandDao> fetchBandBySlug(String bandSlug) {
+        return this.bandRepository.fetchBySlug(bandSlug);
     }
 
     @Override
-    public BandDao fetchBandByOldId(String bandOldId) {
-        Optional<BandDao> band = this.bandRepository.fetchByOldId(bandOldId);
-        if (band.isEmpty()) {
-            throw new NotFoundException("Band with old id " + bandOldId + " not found");
-        }
-        return band.get();
+    public Optional<BandDao> fetchBandByOldId(String bandOldId) {
+        return this.bandRepository.fetchByOldId(bandOldId);
     }
 
     @Override

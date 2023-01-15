@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import uk.co.bbr.services.bands.dao.BandDao;
+import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.regions.RegionService;
 import uk.co.bbr.services.regions.dao.RegionDao;
 import uk.co.bbr.services.regions.dto.LinkSectionDto;
@@ -18,6 +19,7 @@ import uk.co.bbr.services.regions.dto.RegionPageDto;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Controller
@@ -29,7 +31,7 @@ public class RegionController {
 
     @GetMapping("/regions")
     public String regionList(Model model) {
-        List<RegionDao> regions = this.regionService.fetchAll();
+        List<RegionDao> regions = this.regionService.findAll();
 
         model.addAttribute("Regions", regions);
         return "regions/regions";
@@ -37,8 +39,8 @@ public class RegionController {
 
     @GetMapping("/regions/{regionSlug}")
     public String region(Model model, @PathVariable("regionSlug") String regionSlug) {
-        RegionPageDto region = this.regionService.findBySlugForPage(regionSlug);
-        List<RegionDao> subRegions = this.regionService.fetchSubRegions(region.getRegion());
+        RegionPageDto region = this.regionService.fetchBySlugForPage(regionSlug);
+        List<RegionDao> subRegions = this.regionService.findSubRegions(region.getRegion());
 
         model.addAttribute("Region", region);
         model.addAttribute("SubRegions", subRegions);
@@ -47,20 +49,26 @@ public class RegionController {
 
     @GetMapping("/regions/{regionSlug}/links")
     public String regionLinks(Model model, Locale locale, @PathVariable("regionSlug") String regionSlug) {
-        RegionDao region = this.regionService.findBySlug(regionSlug);
+        Optional<RegionDao> region = this.regionService.fetchBySlug(regionSlug);
+        if (region.isEmpty()) {
+            throw new NotFoundException("Region not found");
+        }
 
-        List<LinkSectionDto> bandsBySection = this.regionService.fetchBandsBySection(region, "section.ungraded");
+        List<LinkSectionDto> bandsBySection = this.regionService.findBandsBySection(region.get(), "section.ungraded");
 
-        model.addAttribute("Region", region);
+        model.addAttribute("Region", region.get());
         model.addAttribute("Sections", bandsBySection);
         return "regions/regionLinks";
     }
 
     @GetMapping(value="/regions/{regionSlug}/{sectionType}/bands.json", produces="application/json")
     public ResponseEntity<JsonNode> regionBandsJson(@PathVariable("regionSlug") String regionSlug, @PathVariable("sectionType") String sectionType) {
-        RegionDao region = this.regionService.findBySlug(regionSlug);
+        Optional<RegionDao> region = this.regionService.fetchBySlug(regionSlug);
+        if (region.isEmpty()) {
+            throw new NotFoundException("Region not found");
+        }
 
-        List<BandDao> bandsForMap = this.regionService.fetchBandsWithMapLocation(region).stream().filter(t -> t.getSectionType().equals(sectionType)).collect(Collectors.toList());
+        List<BandDao> bandsForMap = this.regionService.findBandsWithMapLocation(region.get()).stream().filter(t -> t.getSectionType().equals(sectionType)).collect(Collectors.toList());
 
         ObjectNode objectNode = objectMapper.createObjectNode();
         objectNode.put("type", "FeatureCollection");

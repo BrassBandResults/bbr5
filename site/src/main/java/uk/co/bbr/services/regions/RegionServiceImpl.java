@@ -30,8 +30,8 @@ public class RegionServiceImpl implements RegionService, SlugTools {
     private final SecurityService securityService;
 
     @Override
-    public List<RegionDao> fetchAll() {
-        return this.regionRepository.fetchAll();
+    public List<RegionDao> findAll() {
+        return this.regionRepository.findAllOrderByName();
     }
 
     @Override
@@ -40,17 +40,13 @@ public class RegionServiceImpl implements RegionService, SlugTools {
     }
 
     @Override
-    public RegionDao findBySlug(String slug) {
-        Optional<RegionDao> region = this.regionRepository.findBySlug(slug);
-        if (region.isEmpty()) {
-            throw new NotFoundException("Region with slug " + slug + " not found");
-        }
-        return region.get();
+    public Optional<RegionDao> fetchBySlug(String slug) {
+        return this.regionRepository.fetchBySlug(slug);
     }
 
     @Override
-    public RegionPageDto findBySlugForPage(String regionSlug) {
-        Optional<RegionDao> region = this.regionRepository.findBySlug(regionSlug);
+    public RegionPageDto fetchBySlugForPage(String regionSlug) {
+        Optional<RegionDao> region = this.regionRepository.fetchBySlug(regionSlug);
         if (region.isEmpty()) {
             throw new NotFoundException("Region with slug " + regionSlug + " not found");
         }
@@ -61,7 +57,7 @@ public class RegionServiceImpl implements RegionService, SlugTools {
     }
 
     @Override
-    public List<LinkSectionDto> fetchBandsBySection(RegionDao region, String ungradedTranslationKey) {
+    public List<LinkSectionDto> findBandsBySection(RegionDao region, String ungradedTranslationKey) {
         List<LinkSectionDto> returnList = new ArrayList<>();
 
         SectionDao ungradedSection = new SectionDao();
@@ -90,12 +86,12 @@ public class RegionServiceImpl implements RegionService, SlugTools {
     }
 
     @Override
-    public List<RegionDao> fetchSubRegions(RegionDao region) {
+    public List<RegionDao> findSubRegions(RegionDao region) {
         return this.regionRepository.fetchSubRegionsOf(region.getId());
     }
 
     @Override
-    public List<BandDao> fetchBandsWithMapLocation(RegionDao region) {
+    public List<BandDao> findBandsWithMapLocation(RegionDao region) {
         return this.regionRepository.fetchBandsForMapForRegion(region.getId());
     }
 

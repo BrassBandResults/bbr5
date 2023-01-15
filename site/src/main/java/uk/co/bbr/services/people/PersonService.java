@@ -19,7 +19,7 @@ public interface PersonService {
 
     PersonDao fetchById(long personId);
 
-    List<PersonAliasDao> fetchAlternateNames(PersonDao person);
+    List<PersonAliasDao> findAlternateNames(PersonDao person);
 
     PeopleListDto listPeopleStartingWith(String prefix);
 

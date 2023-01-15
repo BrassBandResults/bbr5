@@ -5,16 +5,11 @@ import org.springframework.stereotype.Service;
 import uk.co.bbr.services.contests.dao.ContestAdjudicatorDao;
 import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.contests.dao.ContestEventDao;
-import uk.co.bbr.services.contests.dao.ContestGroupDao;
 import uk.co.bbr.services.contests.dao.ContestTestPieceDao;
 import uk.co.bbr.services.contests.repo.ContestAdjudicatorRepository;
 import uk.co.bbr.services.contests.repo.ContestEventRepository;
-import uk.co.bbr.services.contests.repo.ContestGroupRepository;
 import uk.co.bbr.services.contests.repo.ContestTestPieceRepository;
 import uk.co.bbr.services.contests.types.ContestEventDateResolution;
-import uk.co.bbr.services.contests.types.ContestGroupType;
-import uk.co.bbr.services.framework.ValidationException;
-import uk.co.bbr.services.framework.mixins.SlugTools;
 import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
@@ -22,7 +17,6 @@ import uk.co.bbr.web.security.annotations.IsBbrMember;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -98,7 +92,7 @@ public class ContestEventServiceImpl implements ContestEventService {
 
     @Override
     public ContestEventDao fetch(ContestDao contest, LocalDate eventDate) {
-        return this.contestEventRepository.findByContestAndDate(contest.getId(), eventDate);
+        return this.contestEventRepository.fetchByContestAndDate(contest.getId(), eventDate);
     }
 
     @Override

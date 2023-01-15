@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface BbrUserRepository  extends JpaRepository<BbrUserDao, Long> {
     @Query("SELECT u FROM BbrUserDao u WHERE u.usercode = ?1")
-    Optional<BbrUserDao> findByUsercode(String usercode);
+    Optional<BbrUserDao> fetchByUsercode(String usercode);
 
     @Query("SELECT u FROM BbrUserDao u WHERE u.usercode = ?1 AND u.password = ?2")
     Optional<BbrUserDao> loginCheck(String usercode, String hashedPassword);

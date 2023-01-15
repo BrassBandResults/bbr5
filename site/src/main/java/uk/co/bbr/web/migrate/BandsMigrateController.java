@@ -3,6 +3,7 @@ package uk.co.bbr.web.migrate;
 import lombok.RequiredArgsConstructor;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
+import org.hibernate.annotations.NotFound;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
@@ -17,6 +18,7 @@ import uk.co.bbr.services.bands.dao.BandPreviousNameDao;
 import uk.co.bbr.services.bands.dao.BandRelationshipDao;
 import uk.co.bbr.services.bands.types.BandStatus;
 import uk.co.bbr.services.bands.types.RehearsalDay;
+import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.regions.RegionService;
 import uk.co.bbr.services.regions.dao.RegionDao;
 import uk.co.bbr.services.sections.SectionService;
@@ -121,8 +123,11 @@ public class BandsMigrateController extends AbstractMigrateController {
 
                 newBand.setTwitterName(this.notBlank(rootNode, "twitter"));
 
-                RegionDao region = this.regionService.findBySlug(rootNode.getChild("region").getAttributeValue("slug"));
-                newBand.setRegion(region);
+                Optional<RegionDao> region = this.regionService.fetchBySlug(rootNode.getChild("region").getAttributeValue("slug"));
+                if (region.isEmpty()) {
+                    throw new NotFoundException("Region not found");
+                }
+                newBand.setRegion(region.get());
 
                 newBand.setLatitude(this.notBlank(rootNode, "latitude"));
                 newBand.setLongitude(this.notBlank(rootNode, "longitude"));
@@ -140,8 +145,11 @@ public class BandsMigrateController extends AbstractMigrateController {
 
                 String gradingName = this.notBlank(rootNode, "grading");
                 if (gradingName != null) {
-                    SectionDao section = this.sectionService.fetchByName(gradingName);
-                    newBand.setSection(section);
+                    Optional<SectionDao> section = this.sectionService.fetchByName(gradingName);
+                    if (section.isEmpty()) {
+                        throw new NotFoundException("Section not found");
+                    }
+                    newBand.setSection(section.get());
                 }
 
                 newBand.setMapper(this.createUser(this.notBlank(rootNode, "mapper"), this.securityService));
@@ -204,11 +212,18 @@ public class BandsMigrateController extends AbstractMigrateController {
         if (parentElement == null) {
             return;
         }
-        BandDao fromBand = this.bandService.fetchBandByOldId(bandOldId);
+        Optional<BandDao> fromBandOptional = this.bandService.fetchBandByOldId(bandOldId);
 
         String toBandName = parentElement.getText();
         String toBandOldId = parentElement.getAttributeValue("id");
-        BandDao toBand = this.bandService.fetchBandByOldId(toBandOldId);
+        Optional<BandDao> toBandOptional = this.bandService.fetchBandByOldId(toBandOldId);
+
+        if (fromBandOptional.isEmpty() || toBandOptional.isEmpty()) {
+            throw new NotFoundException("Can't find bands to link");
+        }
+
+        BandDao fromBand = fromBandOptional.get();
+        BandDao toBand = toBandOptional.get();
 
         BandRelationshipDao relationship = new BandRelationshipDao();
         relationship.setRightBand(fromBand);

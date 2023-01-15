@@ -73,6 +73,14 @@ public class AbstractMigrateController {
         return "true".equalsIgnoreCase(value);
     }
 
+    protected final Integer notBlankInteger(Element node, String childName) {
+        String value = this.notBlank(node, childName);
+        if (value == null) {
+            return null;
+        }
+        return Integer.parseInt(value);
+    }
+
     protected final String[] fetchDirectories() {
         File topLevel = new File(BASE_PATH + "/People");
         return Arrays.stream(Objects.requireNonNull(topLevel.list((current, name) -> new File(current, name).isDirectory()))).sorted().toArray(String[]::new);

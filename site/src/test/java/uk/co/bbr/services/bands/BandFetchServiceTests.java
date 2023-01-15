@@ -18,8 +18,10 @@ import uk.co.bbr.web.LoginMixin;
 import uk.co.bbr.web.security.support.TestUser;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -37,10 +39,10 @@ class BandFetchServiceTests implements LoginMixin {
     void setupBands() throws AuthenticationFailedException {
         loginTestUser(this.securityService, this.jwtService, TestUser.TEST_MEMBER);
 
-        RegionDao yorkshire = this.regionService.findBySlug("yorkshire");
+        RegionDao yorkshire = this.regionService.fetchBySlug("yorkshire").get();
 
         BandDao blackDyke = this.bandService.create("Black Dyke Band", yorkshire);
-        blackDyke.setSection(this.sectionService.fetchBySlug("championship"));
+        blackDyke.setSection(this.sectionService.fetchBySlug("championship").get());
         this.bandService.update(blackDyke);
 
         BandDao rothwell = this.bandService.create("Rothwell Temperance", yorkshire);
@@ -66,9 +68,14 @@ class BandFetchServiceTests implements LoginMixin {
     @Test
     void testFetchBandBySlugWorksCorrectly() {
         // act
-        BandDao band = this.bandService.findBandBySlug("black-dyke-band");
+        Optional<BandDao> bandOptional = this.bandService.fetchBandBySlug("black-dyke-band");
 
         // assert
+        assertTrue(bandOptional.isPresent());
+        assertFalse(bandOptional.isEmpty());
+
+        BandDao band = bandOptional.get();
+
         assertNotNull(band.getId());
         assertNotNull(band.getCreated());
         assertNotNull(band.getUpdated());
@@ -83,9 +90,14 @@ class BandFetchServiceTests implements LoginMixin {
     @Test
     void testFullDateRangeWorksCorrectly() {
         // act
-        BandDao band = this.bandService.findBandBySlug("wallace-arnold-rothwell-band");
+        Optional<BandDao> bandOptional = this.bandService.fetchBandBySlug("wallace-arnold-rothwell-band");
 
         // assert
+        assertTrue(bandOptional.isPresent());
+        assertFalse(bandOptional.isEmpty());
+
+        BandDao band = bandOptional.get();
+
         assertEquals("1881-2000", band.getDateRange());
         assertEquals("status.scratch", band.getSectionType());
         assertEquals("123", band.getOldId());
@@ -94,9 +106,14 @@ class BandFetchServiceTests implements LoginMixin {
     @Test
     void testEndDateRangeWorksCorrectly() {
         // act
-        BandDao band = this.bandService.findBandBySlug("rothwell-old");
+        Optional<BandDao> bandOptional = this.bandService.fetchBandBySlug("rothwell-old");
 
         // assert
+        assertTrue(bandOptional.isPresent());
+        assertFalse(bandOptional.isEmpty());
+
+        BandDao band = bandOptional.get();
+
         assertEquals("-1980", band.getDateRange());
         assertEquals("status.extinct", band.getSectionType());
     }
@@ -104,9 +121,14 @@ class BandFetchServiceTests implements LoginMixin {
     @Test
     void testStartDateRangeWorksCorrectly() {
         // act
-        BandDao band = this.bandService.findBandBySlug("rothwell-temperance");
+        Optional<BandDao> bandOptional = this.bandService.fetchBandBySlug("rothwell-temperance");
 
         // assert
+        assertTrue(bandOptional.isPresent());
+        assertFalse(bandOptional.isEmpty());
+
+        BandDao band = bandOptional.get();
+
         assertEquals("1985-", band.getDateRange());
         assertEquals("status.competing", band.getSectionType());
     }
@@ -114,9 +136,14 @@ class BandFetchServiceTests implements LoginMixin {
     @Test
     void testFetchByOldIdWorksSuccessfully() {
         // act
-        BandDao band = this.bandService.fetchBandByOldId("987654");
+        Optional<BandDao> bandOptional = this.bandService.fetchBandByOldId("987654");
 
         // assert
+        assertTrue(bandOptional.isPresent());
+        assertFalse(bandOptional.isEmpty());
+
+        BandDao band = bandOptional.get();
+
         assertEquals("Rothwell Old", band.getName());
     }
 }

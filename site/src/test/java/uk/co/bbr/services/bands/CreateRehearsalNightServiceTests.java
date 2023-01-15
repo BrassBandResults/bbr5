@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.bands.types.RehearsalDay;
@@ -34,7 +33,7 @@ class CreateRehearsalNightServiceTests implements LoginMixin {
     void setupBands() throws AuthenticationFailedException {
         loginTestUser(this.securityService, this.jwtService, TestUser.TEST_MEMBER);
 
-        RegionDao yorkshire = this.regionService.findBySlug("yorkshire");
+        RegionDao yorkshire = this.regionService.fetchBySlug("yorkshire").get();
         this.bandService.create("Black Dyke Band", yorkshire);
 
         logoutTestUser();
@@ -45,14 +44,14 @@ class CreateRehearsalNightServiceTests implements LoginMixin {
         // arrange
         loginTestUser(this.securityService, this.jwtService, TestUser.TEST_MEMBER);
 
-        BandDao band = this.bandService.findBandBySlug("black-dyke-band");
+        BandDao band = this.bandService.fetchBandBySlug("black-dyke-band").get();
 
         // act
         this.bandService.createRehearsalNight(band, RehearsalDay.FRIDAY);
         this.bandService.createRehearsalNight(band, RehearsalDay.MONDAY);
 
         // assert
-        List<RehearsalDay> bandRehearsalDays = this.bandService.fetchRehearsalNights(band);
+        List<RehearsalDay> bandRehearsalDays = this.bandService.findRehearsalNights(band);
         assertEquals(2, bandRehearsalDays.size());
         assertEquals(RehearsalDay.MONDAY, bandRehearsalDays.get(0));
         assertEquals(RehearsalDay.FRIDAY, bandRehearsalDays.get(1));

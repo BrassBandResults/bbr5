@@ -37,7 +37,7 @@ class BandServicesNotLoggedInTests {
 
     @Test
     void testCreateBandWithNameAndRegionFailsWithoutLogin() {
-        RegionDao yorkshireRegion = this.regionService.findBySlug("yorkshire");
+        RegionDao yorkshireRegion = this.regionService.fetchBySlug("yorkshire").get();
         AuthenticationCredentialsNotFoundException ex = assertThrows(AuthenticationCredentialsNotFoundException.class, () -> this.bandService.create("Black Dyke Band", yorkshireRegion));
         assertEquals("An Authentication object was not found in the SecurityContext", ex.getMessage());
     }

@@ -10,13 +10,18 @@ import uk.co.bbr.services.bands.BandService;
 import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.bands.types.BandStatus;
 import uk.co.bbr.services.regions.dao.RegionDao;
+import uk.co.bbr.services.sections.dao.SectionDao;
 import uk.co.bbr.services.security.JwtService;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.services.security.ex.AuthenticationFailedException;
 import uk.co.bbr.web.LoginMixin;
 import uk.co.bbr.web.security.support.TestUser;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ActiveProfiles("test")
 @SpringBootTest(properties = { "spring.config.name=region-inherit-tests-h2", "spring.datasource.url=jdbc:h2:mem:region-inherit-tests-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE"})
@@ -67,9 +72,14 @@ class RegionInheritanceTests implements LoginMixin {
     @Test
     void testFetchSpecificRegionWorks() {
         // act
-        RegionDao yorkshire = this.regionService.findBySlug("test-yorkshire");
+        Optional<RegionDao> yorkshireOptional = this.regionService.fetchBySlug("test-yorkshire");
 
         // assert
+        assertTrue(yorkshireOptional.isPresent());
+        assertFalse(yorkshireOptional.isEmpty());
+
+        RegionDao yorkshire = yorkshireOptional.get();
+
         assertEquals(4, yorkshire.getBandsCount());
         assertEquals(3, yorkshire.getActiveBandsCount());
         assertEquals(1, yorkshire.getExtinctBandsCount());
@@ -81,9 +91,14 @@ class RegionInheritanceTests implements LoginMixin {
     @Test
     void testFetchParentRegionIncludesCountsFromSubRegions() {
         // act
-        RegionDao england = this.regionService.findBySlug("test-england");
+        Optional<RegionDao> englandOptional = this.regionService.fetchBySlug("test-england");
 
         // assert
+        assertTrue(englandOptional.isPresent());
+        assertFalse(englandOptional.isEmpty());
+
+        RegionDao england = englandOptional.get();
+
         assertEquals(3, england.getBandsCount());
         assertEquals(2, england.getActiveBandsCount());
         assertEquals(1, england.getExtinctBandsCount());
