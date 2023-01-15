@@ -134,14 +134,14 @@ public class ContestGroupMigrateController extends AbstractMigrateController  {
                 contestGroup.setCreated(this.notBlankDateTime(rootNode, "created"));
                 contestGroup.setUpdated(this.notBlankDateTime(rootNode, "lastModified"));
 
+                contestGroup = this.contestGroupService.migrate(contestGroup);
+
                 // aliases
                 Element previousNames = rootNode.getChild("previous_names");
                 List<Element> previousNameNodes = previousNames.getChildren();
                 for (Element eachOldName : previousNameNodes) {
                     this.createPreviousName(contestGroup, eachOldName);
                 }
-
-                contestGroup = this.contestGroupService.migrate(contestGroup);
 
                 System.out.println(contestGroup.getName());
             }
