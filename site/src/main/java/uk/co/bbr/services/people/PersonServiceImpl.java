@@ -12,6 +12,7 @@ import uk.co.bbr.services.people.dto.PeopleListDto;
 import uk.co.bbr.services.people.repo.PersonAliasRepository;
 import uk.co.bbr.services.people.repo.PersonRepository;
 import uk.co.bbr.services.security.SecurityService;
+import uk.co.bbr.web.security.annotations.IsBbrAdmin;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
 import java.time.LocalDateTime;
@@ -29,6 +30,16 @@ public class PersonServiceImpl implements PersonService, SlugTools {
     @Override
     @IsBbrMember
     public PersonDao create(PersonDao person) {
+        return this.create(person, false);
+    }
+
+    @Override
+    @IsBbrAdmin
+    public PersonDao migrate(PersonDao person) {
+        return this.create(person, true);
+    }
+
+    private PersonDao create(PersonDao person, boolean migrating) {
         // validation
         if (person.getId() != null) {
             throw new ValidationException("Can't create with specific id");
@@ -49,8 +60,12 @@ public class PersonServiceImpl implements PersonService, SlugTools {
             throw new ValidationException("Person with slug " + person.getSlug() + " already exists.");
         }
 
-        person.setCreated(LocalDateTime.now());
-        person.setCreatedBy(this.securityService.getCurrentUserId());
+        if (!migrating) {
+            person.setCreated(LocalDateTime.now());
+            person.setCreatedBy(this.securityService.getCurrentUser());
+            person.setUpdated(LocalDateTime.now());
+            person.setUpdatedBy(this.securityService.getCurrentUser());
+        }
         return this.personRepository.saveAndFlush(person);
     }
 
@@ -66,7 +81,23 @@ public class PersonServiceImpl implements PersonService, SlugTools {
     @Override
     @IsBbrMember
     public void createAlternativeName(PersonDao person, PersonAliasDao previousName) {
+        this.createAlternativeName(person, previousName, false);
+    }
+
+    @Override
+    @IsBbrAdmin
+    public void migrateAlternativeName(PersonDao person, PersonAliasDao previousName) {
+        this.createAlternativeName(person, previousName, true);
+    }
+
+    private void createAlternativeName(PersonDao person, PersonAliasDao previousName, boolean migrating) {
         previousName.setPerson(person);
+        if (!migrating) {
+            previousName.setCreated(LocalDateTime.now());
+            previousName.setCreatedBy(this.securityService.getCurrentUser());
+            previousName.setUpdated(LocalDateTime.now());
+            previousName.setUpdatedBy(this.securityService.getCurrentUser());
+        }
         this.personAliasRepository.saveAndFlush(previousName);
     }
 
@@ -110,6 +141,12 @@ public class PersonServiceImpl implements PersonService, SlugTools {
         long allBandsCount = this.personRepository.count();
 
         return new PeopleListDto(peopleToReturn.size(), allBandsCount, prefix, peopleToReturn);
+    }
+
+    @Override
+    public Optional<PersonAliasDao> aliasExists(PersonDao person, String aliasName) {
+        String name = person.simplifyName(aliasName);
+        return this.personAliasRepository.findByNameForPerson(person.getId(), name);
     }
 
 

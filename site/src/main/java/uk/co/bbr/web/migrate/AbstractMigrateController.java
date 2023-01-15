@@ -15,18 +15,18 @@ import java.util.Optional;
 public class AbstractMigrateController {
     protected static final String BASE_PATH = "/tmp/bbr";
 
-    protected final long createUser(String username, SecurityService securityService) {
+    protected final BbrUserDao createUser(String username, SecurityService securityService) {
         if (username == null) {
-            return 1;
+            return null;
         }
 
         Optional<BbrUserDao> user = securityService.fetchUserByUsercode(username);
         if (user.isPresent()) {
-            return user.get().getId();
+            return user.get();
         }
 
         BbrUserDao newUser = securityService.createUser(username, "NoPassword", "migrated@brassbandresults.co.uk");
-        return newUser.getId();
+        return newUser;
     }
 
     protected final String notBlank(Element node, String childName) {
@@ -64,15 +64,13 @@ public class AbstractMigrateController {
             return null;
         }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        return LocalDateTime.parse(value, formatter);
+        LocalDateTime returnValue = LocalDateTime.parse(value, formatter);
+        return returnValue;
     }
 
     protected final boolean notBlankBoolean(Element node, String childName) {
         String value = this.notBlank(node, childName);
-        if ("true".equalsIgnoreCase(value)) {
-            return true;
-        }
-        return false;
+        return "true".equalsIgnoreCase(value);
     }
 
     protected final String[] fetchDirectories() {

@@ -68,8 +68,9 @@ public class ContestServiceImpl implements ContestService, SlugTools {
         }
 
         contest.setCreated(LocalDateTime.now());
-        contest.setCreatedBy(this.securityService.getCurrentUserId());
-
+        contest.setCreatedBy(this.securityService.getCurrentUser());
+        contest.setUpdated(LocalDateTime.now());
+        contest.setUpdatedBy(this.securityService.getCurrentUser());
         return this.contestRepository.saveAndFlush(contest);
     }
 }

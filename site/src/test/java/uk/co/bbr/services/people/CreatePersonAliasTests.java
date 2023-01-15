@@ -14,6 +14,7 @@ import uk.co.bbr.web.LoginMixin;
 import uk.co.bbr.web.security.support.TestUser;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -54,6 +55,55 @@ class CreatePersonAliasTests implements LoginMixin {
         assertEquals(1, altNames.size());
         assertEquals("Timothy Sawyer", altNames.get(0).getOldName());
         assertEquals(person.getName(), altNames.get(0).getPerson().getName());
+
+        logoutTestUser();
+    }
+
+    @Test
+    void testAliasExistsWhereAliasDoesExistWorksCorrectly() throws AuthenticationFailedException {
+        // arrange
+        loginTestUser(this.securityService, this.jwtService, TestUser.TEST_MEMBER);
+
+        PersonDao person = new PersonDao();
+        person.setSurname(" Childs ");
+        person.setFirstNames(" David ");
+        PersonDao returnedPerson = this.personService.create(person);
+
+        PersonAliasDao altName = new PersonAliasDao();
+        altName.setOldName("Dave Childs");
+
+        this.personService.createAlternativeName(person, altName);
+
+        // act
+        Optional<PersonAliasDao> matchingAlias = this.personService.aliasExists(person, "Dave    Childs");
+
+        // assert
+        assertTrue(matchingAlias.isPresent());
+        assertEquals("Dave Childs", matchingAlias.get().getOldName());
+
+        logoutTestUser();
+    }
+
+    @Test
+    void testAliasExistsWhereAliasDoesNotExistWorksCorrectly() throws AuthenticationFailedException {
+        // arrange
+        loginTestUser(this.securityService, this.jwtService, TestUser.TEST_MEMBER);
+
+        PersonDao person = new PersonDao();
+        person.setSurname(" Childs ");
+        person.setFirstNames(" Robert ");
+        PersonDao returnedPerson = this.personService.create(person);
+
+        PersonAliasDao altName = new PersonAliasDao();
+        altName.setOldName("Rob Childs");
+
+        this.personService.createAlternativeName(person, altName);
+
+        // act
+        Optional<PersonAliasDao> matchingAlias = this.personService.aliasExists(person, "Bob    Childs");
+
+        // assert
+        assertFalse(matchingAlias.isPresent());
 
         logoutTestUser();
     }

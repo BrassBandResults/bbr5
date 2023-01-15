@@ -25,6 +25,7 @@ import java.util.Optional;
 public class ContestResultServiceImpl implements ContestResultService {
 
     private final ContestResultRepository contestResultRepository;
+    private final SecurityService securityService;
 
     @Override
     @IsBbrMember
@@ -37,8 +38,14 @@ public class ContestResultServiceImpl implements ContestResultService {
         if (existingResult.isPresent()) {
             ContestResultDao existingResultObject = existingResult.get();
             existingResultObject.populateFrom(result);
+            existingResultObject.setUpdated(LocalDateTime.now());
+            existingResultObject.setUpdatedBy(this.securityService.getCurrentUser());
             returnResult = this.contestResultRepository.saveAndFlush(existingResultObject);
         } else {
+            result.setCreated(LocalDateTime.now());
+            result.setCreatedBy(this.securityService.getCurrentUser());
+            result.setUpdated(LocalDateTime.now());
+            result.setUpdatedBy(this.securityService.getCurrentUser());
             returnResult = this.contestResultRepository.saveAndFlush(result);
         }
 

@@ -21,6 +21,7 @@ import uk.co.bbr.web.security.support.TestUser;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public interface LoginMixin {
 
@@ -29,7 +30,7 @@ public interface LoginMixin {
 
         assertEquals(302, response.getStatusCode().value());
         assertNotNull(response.getHeaders().get("Location"));
-        assertEquals("http://localhost:" + port + "/", response.getHeaders().get("Location").get(0));
+        assertTrue(response.getHeaders().get("Location").get(0).startsWith("http://localhost:" + port + "/"));
     }
 
     default void loginTestUser(SecurityService securityService, JwtService jwtService, TestUser testUser) throws AuthenticationFailedException {

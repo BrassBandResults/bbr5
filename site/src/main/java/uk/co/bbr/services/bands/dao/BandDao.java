@@ -10,6 +10,7 @@ import uk.co.bbr.services.framework.AbstractDao;
 import uk.co.bbr.services.framework.mixins.NameTools;
 import uk.co.bbr.services.regions.dao.RegionDao;
 import uk.co.bbr.services.sections.dao.SectionDao;
+import uk.co.bbr.services.security.dao.BbrUserDao;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -51,8 +52,9 @@ public class BandDao extends AbstractDao implements NameTools {
     @Column(name="notes")
     private String notes;
 
-    @Column(name="mapper_id")
-    private Long mapperId;
+    @ManyToOne(fetch= FetchType.EAGER)
+    @JoinColumn(name="mapper_id")
+    private BbrUserDao mapper;
 
     @Column(name="start_date")
     private LocalDate startDate;

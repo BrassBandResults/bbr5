@@ -5,6 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import uk.co.bbr.services.security.dao.BbrUserDao;
+import uk.co.bbr.services.security.ex.AuthenticationFailedException;
+import uk.co.bbr.web.LoginMixin;
+import uk.co.bbr.web.security.support.TestUser;
 
 import java.util.Optional;
 
@@ -15,13 +18,16 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ActiveProfiles("test")
 @SpringBootTest(properties = { "spring.config.name=user-tests-h2", "spring.datasource.url=jdbc:h2:mem:user-tests-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE"})
-class UserServiceTests {
+class UserServiceTests implements LoginMixin {
 
-    @Autowired
-    private SecurityService securityService;
+    @Autowired private SecurityService securityService;
+    @Autowired private JwtService jwtService;
 
     @Test
-    void testCreateUser() {
+    void testCreateUser() throws AuthenticationFailedException {
+        // arrange
+        loginTestUser(this.securityService, this.jwtService, TestUser.TEST_MEMBER);
+
         // act
         this.securityService.createUser("test_User", "testPassword", "test@brassbandresults.co.uk");
 
@@ -38,7 +44,9 @@ class UserServiceTests {
         assertNotEquals("testPassword", fetchedUser.get().getPassword());
         assertEquals("M", fetchedUser.get().getAccessLevel());
         assertEquals("test@brassbandresults.co.uk", fetchedUser.get().getEmail());
-        assertEquals(1, fetchedUser.get().getCreatedBy());
-        assertEquals(1, fetchedUser.get().getUpdatedBy());
+        assertEquals(1, fetchedUser.get().getCreatedBy().getId());
+        assertEquals(1, fetchedUser.get().getUpdatedBy().getId());
+
+        logoutTestUser();
     }
 }

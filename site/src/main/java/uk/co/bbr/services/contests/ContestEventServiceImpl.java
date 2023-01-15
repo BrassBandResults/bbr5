@@ -67,7 +67,9 @@ public class ContestEventServiceImpl implements ContestEventService {
         }
 
         event.setCreated(LocalDateTime.now());
-        event.setCreatedBy(this.securityService.getCurrentUserId());
+        event.setCreatedBy(this.securityService.getCurrentUser());
+        event.setUpdated(LocalDateTime.now());
+        event.setUpdatedBy(this.securityService.getCurrentUser());
         return this.contestEventRepository.saveAndFlush(event);
     }
 
@@ -80,7 +82,9 @@ public class ContestEventServiceImpl implements ContestEventService {
         newAdjudicator.setContestEvent(event);
 
         newAdjudicator.setCreated(LocalDateTime.now());
-        newAdjudicator.setCreatedBy(this.securityService.getCurrentUserId());
+        newAdjudicator.setCreatedBy(this.securityService.getCurrentUser());
+        newAdjudicator.setUpdated(LocalDateTime.now());
+        newAdjudicator.setUpdatedBy(this.securityService.getCurrentUser());
 
         this.contestAdjudicatorRepository.saveAndFlush(newAdjudicator);
 
@@ -100,6 +104,10 @@ public class ContestEventServiceImpl implements ContestEventService {
     @Override
     public ContestTestPieceDao addTestPieceToContest(ContestEventDao event, ContestTestPieceDao testPiece) {
         testPiece.setContestEvent(event);
+        testPiece.setCreated(LocalDateTime.now());
+        testPiece.setCreatedBy(this.securityService.getCurrentUser());
+        testPiece.setUpdated(LocalDateTime.now());
+        testPiece.setUpdatedBy(this.securityService.getCurrentUser());
         return this.contestTestPieceRepository.saveAndFlush(testPiece);
     }
 

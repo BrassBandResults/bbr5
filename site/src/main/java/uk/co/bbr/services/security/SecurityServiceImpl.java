@@ -11,6 +11,7 @@ import uk.co.bbr.services.security.repo.BbrUserRepository;
 import uk.co.bbr.services.security.dao.UserRole;
 import uk.co.bbr.services.security.ex.AuthenticationFailedException;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -81,6 +82,11 @@ public class SecurityServiceImpl implements SecurityService {
         newUser.setAccessLevel(UserRole.MEMBER.getCode());
         newUser.setUsercode(usercode);
 
+        newUser.setCreated(LocalDateTime.now());
+        newUser.setCreatedBy(new BbrUserDao(1L));
+        newUser.setUpdated(LocalDateTime.now());
+        newUser.setUpdatedBy(new BbrUserDao(1L));
+
         newUser.setSalt("");
         newUser.setPasswordVersion("D");
         newUser.setPassword(hashedPassword);
@@ -97,6 +103,11 @@ public class SecurityServiceImpl implements SecurityService {
         newUser.setEmail(email);
         newUser.setAccessLevel(UserRole.MEMBER.getCode());
         newUser.setUsercode(usercode);
+
+        newUser.setCreated(LocalDateTime.now());
+        newUser.setCreatedBy(new BbrUserDao(1L));
+        newUser.setUpdated(LocalDateTime.now());
+        newUser.setUpdatedBy(new BbrUserDao(1L));
 
         newUser.setSalt(salt);
         newUser.setPasswordVersion(passwordVersion);

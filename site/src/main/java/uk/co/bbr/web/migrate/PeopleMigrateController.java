@@ -15,12 +15,14 @@ import uk.co.bbr.services.people.PersonService;
 import uk.co.bbr.services.people.dao.PersonAliasDao;
 import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.security.SecurityService;
+import uk.co.bbr.web.security.annotations.IsBbrAdmin;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -30,7 +32,7 @@ public class PeopleMigrateController extends AbstractMigrateController  {
     private final SecurityService securityService;
 
     @GetMapping("/migrate/people")
-    // TODO @IsBbrAdmin
+    @IsBbrAdmin
     public String home(Model model)  {
         List<String> messages = new ArrayList<>();
         messages.add("Cloning people repository...");
@@ -42,7 +44,7 @@ public class PeopleMigrateController extends AbstractMigrateController  {
     }
 
     @GetMapping("/migrate/people/clone")
-    // TODO @IsBbrAdmin
+    @IsBbrAdmin
     public String clone(Model model) throws GitAPIException {
         if (!new File(BASE_PATH).exists()) {
 
@@ -62,7 +64,7 @@ public class PeopleMigrateController extends AbstractMigrateController  {
     }
 
     @GetMapping("/migrate/people/{index}")
-    // TODO @IsBbrAdmin
+    @IsBbrAdmin
     public String clone(Model model, @PathVariable("index") int index) throws GitAPIException, IOException, JDOMException {
 
         List<String> messages = new ArrayList<>();
@@ -121,8 +123,7 @@ public class PeopleMigrateController extends AbstractMigrateController  {
             newPerson.setCreated(this.notBlankDateTime(rootNode, "created"));
             newPerson.setUpdated(this.notBlankDateTime(rootNode, "lastModified"));
 
-            // notes
-            newPerson = this.personService.create(newPerson);
+            newPerson = this.personService.migrate(newPerson);
 
             Element previousNames = rootNode.getChild("previous_names");
             List<Element> previousNameNodes = previousNames.getChildren();
@@ -135,14 +136,21 @@ public class PeopleMigrateController extends AbstractMigrateController  {
     }
 
     private void createPreviousName(PersonDao person, Element oldNameElement) {
-        PersonAliasDao previousName = new PersonAliasDao();
-        previousName.setCreatedBy(this.createUser(this.notBlank(oldNameElement, "owner"), this.securityService));
-        previousName.setUpdatedBy(this.createUser(this.notBlank(oldNameElement, "lastChangedBy"), this.securityService));
-        previousName.setCreated(this.notBlankDateTime(oldNameElement, "created"));
-        previousName.setUpdated(this.notBlankDateTime(oldNameElement, "lastModified"));
-        previousName.setOldName(oldNameElement.getChildText("name"));
-        previousName.setHidden(this.notBlankBoolean(oldNameElement, "hidden"));
+        String name = oldNameElement.getChildText("name");
+        // does it already exist?
 
-        this.personService.createAlternativeName(person, previousName);
+        Optional<PersonAliasDao> existingAlias = this.personService.aliasExists(person, name);
+        if (existingAlias.isEmpty()) {
+
+            PersonAliasDao previousName = new PersonAliasDao();
+            previousName.setCreatedBy(this.createUser(this.notBlank(oldNameElement, "owner"), this.securityService));
+            previousName.setUpdatedBy(this.createUser(this.notBlank(oldNameElement, "lastChangedBy"), this.securityService));
+            previousName.setCreated(this.notBlankDateTime(oldNameElement, "created"));
+            previousName.setUpdated(this.notBlankDateTime(oldNameElement, "lastModified"));
+            previousName.setOldName(name);
+            previousName.setHidden(this.notBlankBoolean(oldNameElement, "hidden"));
+
+            this.personService.migrateAlternativeName(person, previousName);
+        }
     }
 }

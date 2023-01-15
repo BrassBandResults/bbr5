@@ -3,6 +3,7 @@ package uk.co.bbr.services.contests;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import uk.co.bbr.services.contests.dao.ContestGroupDao;
 import uk.co.bbr.services.contests.dao.ContestTagDao;
 import uk.co.bbr.services.contests.repo.ContestTagRepository;
 import uk.co.bbr.services.framework.ValidationException;
@@ -19,6 +20,7 @@ import java.util.Optional;
 public class ContestTagServiceImpl implements ContestTagService, SlugTools {
 
     private final ContestTagRepository contestTagRepository;
+
     private final SecurityService securityService;
 
     @Override
@@ -32,7 +34,22 @@ public class ContestTagServiceImpl implements ContestTagService, SlugTools {
 
     @Override
     @IsBbrMember
+    public ContestTagDao migrate(ContestTagDao contestTag) {
+        return this.create(contestTag, true);
+    }
+
+    @Override
+    public Optional<ContestTagDao> fetchByName(String name) {
+        return this.contestTagRepository.findByName(name);
+    }
+
+    @Override
+    @IsBbrMember
     public ContestTagDao create(ContestTagDao contestTag) {
+        return this.create(contestTag, false);
+    }
+
+    private ContestTagDao create(ContestTagDao contestTag, boolean migrating) {
         // validation
         if (contestTag.getId() != null) {
             throw new ValidationException("Can't create with specific id");
@@ -59,8 +76,12 @@ public class ContestTagServiceImpl implements ContestTagService, SlugTools {
             throw new ValidationException("Contest Tag with name " + contestTag.getName() + " already exists.");
         }
 
-        contestTag.setCreated(LocalDateTime.now());
-        contestTag.setCreatedBy(this.securityService.getCurrentUserId());
+        if (!migrating) {
+            contestTag.setCreated(LocalDateTime.now());
+            contestTag.setCreatedBy(this.securityService.getCurrentUser());
+            contestTag.setUpdated(LocalDateTime.now());
+            contestTag.setUpdatedBy(this.securityService.getCurrentUser());
+        }
         return this.contestTagRepository.saveAndFlush(contestTag);
     }
 }

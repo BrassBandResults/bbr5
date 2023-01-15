@@ -2,11 +2,15 @@ package uk.co.bbr.services.framework;
 
 import lombok.Getter;
 import lombok.Setter;
+import uk.co.bbr.services.security.dao.BbrUserDao;
 
 import javax.persistence.Column;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import java.time.LocalDateTime;
 
@@ -19,17 +23,19 @@ public class AbstractDao {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name="CREATED", nullable=false)
+    @Column(name="created", nullable=false)
     private LocalDateTime created = LocalDateTime.now();
 
-    @Column(name="UPDATED", nullable=false)
+    @Column(name="updated", nullable=false)
     private LocalDateTime updated = LocalDateTime.now();
-    
-    @Column(name="OWNER_ID", nullable=false)
-    private long createdBy = 1L;
 
-    @Column(name="UPDATED_BY_ID", nullable=false)
-    private long updatedBy = 1L;
+    @ManyToOne(fetch= FetchType.EAGER, optional=false)
+    @JoinColumn(name="owner_id")
+    private BbrUserDao createdBy;
+
+    @ManyToOne(fetch= FetchType.EAGER, optional=false)
+    @JoinColumn(name="updated_by_id")
+    private BbrUserDao updatedBy;
 }
 
 

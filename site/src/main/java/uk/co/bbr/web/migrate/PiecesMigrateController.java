@@ -17,6 +17,7 @@ import uk.co.bbr.services.pieces.PieceService;
 import uk.co.bbr.services.pieces.dao.PieceAlias;
 import uk.co.bbr.services.pieces.dao.PieceDao;
 import uk.co.bbr.services.security.SecurityService;
+import uk.co.bbr.web.security.annotations.IsBbrAdmin;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,7 +34,7 @@ public class PiecesMigrateController extends AbstractMigrateController  {
     private final PersonService personService;
 
     @GetMapping("/migrate/pieces")
-    // TODO @IsBbrAdmin
+    @IsBbrAdmin
     public String home(Model model)  {
         List<String> messages = new ArrayList<>();
         messages.add("Cloning pieces repository...");
@@ -45,7 +46,7 @@ public class PiecesMigrateController extends AbstractMigrateController  {
     }
 
     @GetMapping("/migrate/pieces/clone")
-    // TODO @IsBbrAdmin
+    @IsBbrAdmin
     public String clone(Model model) throws GitAPIException {
         if (!new File(BASE_PATH).exists()) {
 
@@ -65,7 +66,7 @@ public class PiecesMigrateController extends AbstractMigrateController  {
     }
 
     @GetMapping("/migrate/pieces/{index}")
-    // TODO @IsBbrAdmin
+    @IsBbrAdmin
     public String clone(Model model, @PathVariable("index") int index) throws GitAPIException, IOException, JDOMException {
 
         List<String> messages = new ArrayList<>();
@@ -137,7 +138,7 @@ public class PiecesMigrateController extends AbstractMigrateController  {
             newPiece.setUpdated(this.notBlankDateTime(rootNode, "lastModified"));
 
             // notes
-            newPiece = this.pieceService.create(newPiece);
+            newPiece = this.pieceService.migrate(newPiece);
 
             Element previousNames = rootNode.getChild("previous_names");
             List<Element> previousNameNodes = previousNames.getChildren();
@@ -158,6 +159,6 @@ public class PiecesMigrateController extends AbstractMigrateController  {
         previousName.setName(oldNameElement.getChildText("name"));
         previousName.setHidden(false);
 
-        this.pieceService.createAlternativeName(piece, previousName);
+        this.pieceService.migrateAlternativeName(piece, previousName);
     }
 }

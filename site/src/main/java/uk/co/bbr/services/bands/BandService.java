@@ -9,10 +9,12 @@ import uk.co.bbr.services.bands.types.RehearsalDay;
 import uk.co.bbr.services.regions.dao.RegionDao;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface BandService {
 
     BandDao create(BandDao band);
+    BandDao migrate(BandDao band);
 
     BandDao create(String bandName);
 
@@ -21,6 +23,7 @@ public interface BandService {
     BandListDto listBandsStartingWith(String prefix);
 
     void createRehearsalNight(BandDao band, RehearsalDay day);
+    void migrateRehearsalNight(BandDao band, RehearsalDay day);
 
     List<RehearsalDay> fetchRehearsalNights(BandDao band);
 
@@ -29,10 +32,22 @@ public interface BandService {
     BandDao fetchBandByOldId(String bandOldId);
 
     BandPreviousNameDao createPreviousName(BandDao band, BandPreviousNameDao previousName);
+    BandPreviousNameDao migratePreviousName(BandDao band, BandPreviousNameDao previousName);
 
     BandRelationshipTypeDao fetchIsParentOfRelationship();
 
     BandRelationshipDao saveRelationship(BandRelationshipDao relationship);
+    BandRelationshipDao migrateRelationship(BandRelationshipDao relationship);
 
     BandDao update(BandDao band);
+
+    Optional<BandPreviousNameDao> aliasExists(BandDao band, String aliasName);
+
+
+
+
+
+
+
+
 }

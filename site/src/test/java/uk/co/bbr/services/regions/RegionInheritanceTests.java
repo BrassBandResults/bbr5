@@ -57,9 +57,9 @@ class RegionInheritanceTests implements LoginMixin {
 
         this.bandService.create("Lancashire Band 1",lancashire);
         this.bandService.create("Lancashire Band 2", lancashire);
-        BandDao extinctLAancashire = this.bandService.create("Lancashire Band 3", lancashire);
-        extinctLAancashire.setStatus(BandStatus.EXTINCT);
-        this.bandService.update(extinctLAancashire);
+        BandDao extinctLancashire = this.bandService.create("Lancashire Band 3", lancashire);
+        extinctLancashire.setStatus(BandStatus.EXTINCT);
+        this.bandService.update(extinctLancashire);
 
         logoutTestUser();
     }

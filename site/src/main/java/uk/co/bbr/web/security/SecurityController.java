@@ -10,6 +10,7 @@ import uk.co.bbr.services.security.JwtService;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.services.security.dao.BbrUserDao;
 import uk.co.bbr.services.security.ex.AuthenticationFailedException;
+import uk.co.bbr.web.SessionKeys;
 import uk.co.bbr.web.security.filter.SecurityFilter;
 
 import javax.servlet.http.Cookie;
@@ -37,12 +38,14 @@ public class SecurityController {
     }
 
     @PostMapping(SecurityFilter.URL_SIGN_IN)
-    public String signInPost(Model model, HttpServletRequest request, HttpServletResponse response, @RequestParam("username") String username, @RequestParam("password") String plaintextPassword, @RequestParam(name="next", required=false) String nextUrl) {
+    public String signInPost(Model model, HttpServletRequest request, HttpServletResponse response, @RequestParam("username") String username, @RequestParam("password") String plaintextPassword) {
         try {
             BbrUserDao user = this.securityService.authenticate(username, plaintextPassword);
 
             Cookie securityCookie = buildLoginCookie(-1, user);
             response.addCookie(securityCookie);
+
+            String nextUrl = (String)request.getSession().getAttribute(SessionKeys.LOGIN_NEXT_PAGE);
 
             if (nextUrl != null && nextUrl.trim().length() > 0 && nextUrl.startsWith("/")) {
                 System.out.println("Redirecting to " + nextUrl);
@@ -52,7 +55,6 @@ public class SecurityController {
             return "redirect:/";
         } catch (AuthenticationFailedException e) {
             model.addAttribute("LoginError", e.getMessage());
-            model.addAttribute("Next", nextUrl);
             return this.signInGet(model, request);
         }
     }

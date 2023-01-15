@@ -1,24 +1,3 @@
--- USER
-
-CREATE TABLE site_user (
-    id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
-    old_id BIGINT,
-    updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_by_id BIGINT NOT NULL,
-    owner_id BIGINT NOT NULL,
-    usercode VARCHAR(50) NOT NULL,
-    password VARCHAR(100) NOT NULL,
-    email VARCHAR(100) NOT NULL,
-    salt VARCHAR(10) NOT NULL,
-    password_version VARCHAR(1) NOT NULL,
-    access_level VARCHAR(1) NOT NULL DEFAULT 'M'
-);
-
-CREATE UNIQUE INDEX idx_siteuser_usercode ON site_user(usercode);
-
-INSERT INTO site_user (updated_by_id, owner_id, usercode, password, email, salt, password_version, access_level) VALUES (1, 1, 'owner', 'password', 'owner@brassbandresults.co.uk', 'ABC123', 0, 'A');
-
 -- REGION
 
 CREATE TABLE region (
@@ -26,11 +5,11 @@ CREATE TABLE region (
     old_id BIGINT,
     updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_by_id BIGINT NOT NULL REFERENCES site_user(id),
-    owner_id BIGINT NOT NULL REFERENCES site_user(id),
+    updated_by_id BIGINT NOT NULL CONSTRAINT fk_region_updated REFERENCES site_user(id),
+    owner_id BIGINT NOT NULL CONSTRAINT fk_region_owner REFERENCES site_user(id),
     name VARCHAR(100) NOT NULL,
     slug VARCHAR(60) NOT NULL,
-    container_id BIGINT REFERENCES region(id),
+    container_id BIGINT CONSTRAINT fk_region_container REFERENCES region(id),
     country_code VARCHAR(20),
     latitude VARCHAR(15),
     longitude VARCHAR(15),
@@ -113,8 +92,8 @@ CREATE TABLE section (
     id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
     updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_by_id BIGINT NOT NULL REFERENCES site_user(id),
-    owner_id BIGINT NOT NULL REFERENCES site_user(id),
+    updated_by_id BIGINT NOT NULL CONSTRAINT fk_section_updated REFERENCES site_user(id),
+    owner_id BIGINT NOT NULL CONSTRAINT fk_section_owner REFERENCES site_user(id),
     name VARCHAR(100) NOT NULL,
     slug VARCHAR(60) NOT NULL,
     position INT NOT NULL DEFAULT 0,
@@ -146,34 +125,33 @@ CREATE TABLE band (
     old_id BIGINT,
     updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_by_id BIGINT NOT NULL REFERENCES site_user(id),
-    owner_id BIGINT NOT NULL REFERENCES site_user(id),
+    updated_by_id BIGINT NOT NULL CONSTRAINT fk_band_updated REFERENCES site_user(id),
+    owner_id BIGINT NOT NULL CONSTRAINT fk_band_owner REFERENCES site_user(id),
     name VARCHAR(100) NOT NULL,
     slug VARCHAR(60) NOT NULL,
     website VARCHAR(100),
-    region_id BIGINT NOT NULL REFERENCES region(id),
+    region_id BIGINT NOT NULL CONSTRAINT fk_band_region REFERENCES region(id),
     longitude VARCHAR(15),
     latitude VARCHAR(15),
     notes TEXT,
-    mapper_id BIGINT REFERENCES site_user(id),
+    mapper_id BIGINT CONSTRAINT fk_band_mapper REFERENCES site_user(id),
     start_date DATE,
     end_date DATE,
     status BIGINT,
-    section_id BIGINT REFERENCES section(id),
+    section_id BIGINT CONSTRAINT fk_band_section REFERENCES section(id),
     twitter_name VARCHAR(100)
 );
 
 CREATE UNIQUE INDEX idx_band_slug ON band(slug);
-CREATE UNIQUE INDEX idx_band_name ON band(name);
 
 CREATE TABLE band_rehearsal_day (
     id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
     updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_by_id BIGINT NOT NULL REFERENCES site_user(id),
-    owner_id BIGINT NOT NULL REFERENCES site_user(id),
+    updated_by_id BIGINT NOT NULL CONSTRAINT fk_band_rehearsal_day_updated REFERENCES site_user(id),
+    owner_id BIGINT NOT NULL CONSTRAINT fk_band_rehearsal_day_owner REFERENCES site_user(id),
     day_number INT NOT NULL,
-    band_id BIGINT REFERENCES band(id)
+    band_id BIGINT CONSTRAINT fk_band_rehearsal_day_band REFERENCES band(id)
 );
 
 CREATE UNIQUE INDEX idx_band_rehearsal_day ON band_rehearsal_day(day_number, band_id);
@@ -182,9 +160,9 @@ CREATE TABLE band_previous_name (
     id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
     updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_by_id BIGINT NOT NULL REFERENCES site_user(id),
-    owner_id BIGINT NOT NULL REFERENCES site_user(id),
-    band_id BIGINT NOT NULL REFERENCES band(id),
+    updated_by_id BIGINT NOT NULL CONSTRAINT fk_band_previous_name_updated REFERENCES site_user(id),
+    owner_id BIGINT NOT NULL CONSTRAINT fk_band_previous_name_owner REFERENCES site_user(id),
+    band_id BIGINT NOT NULL CONSTRAINT fk_band_previous_name_band REFERENCES band(id),
     old_name VARCHAR(100) NOT NULL,
     start_date DATE,
     end_date DATE,
@@ -198,8 +176,8 @@ CREATE TABLE band_relationship_type (
     id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
     updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_by_id BIGINT NOT NULL REFERENCES site_user(id),
-    owner_id BIGINT NOT NULL REFERENCES site_user(id),
+    updated_by_id BIGINT NOT NULL CONSTRAINT fk_band_relationship_type_updated REFERENCES site_user(id),
+    owner_id BIGINT NOT NULL CONSTRAINT fk_band_relationship_type_owner REFERENCES site_user(id),
     name VARCHAR(100) NOT NULL,
     reverse_name VARCHAR(100) NOT NULL
 );
@@ -215,12 +193,12 @@ CREATE TABLE band_relationship (
     id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
     updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_by_id BIGINT NOT NULL REFERENCES site_user(id),
-    owner_id BIGINT NOT NULL REFERENCES site_user(id),
-    left_band_id BIGINT REFERENCES band(id),
+    updated_by_id BIGINT NOT NULL CONSTRAINT fk_band_relationship_updated REFERENCES site_user(id),
+    owner_id BIGINT NOT NULL CONSTRAINT fk_band_relationship_owner REFERENCES site_user(id),
+    left_band_id BIGINT CONSTRAINT fk_band_relationship_left_band REFERENCES band(id),
     left_band_name VARCHAR(100),
-    relationship_id BIGINT REFERENCES band_relationship_type(id),
-    right_band_id BIGINT REFERENCES band(id),
+    relationship_id BIGINT CONSTRAINT fk_band_relationship_type REFERENCES band_relationship_type(id),
+    right_band_id BIGINT CONSTRAINT fk_band_relationship_right_band REFERENCES band(id),
     right_band_name VARCHAR(100),
     start_date DATE,
     end_date DATE
@@ -236,8 +214,8 @@ CREATE TABLE person (
     old_id BIGINT,
     updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_by_id BIGINT NOT NULL REFERENCES site_user(id),
-    owner_id BIGINT NOT NULL REFERENCES site_user(id),
+    updated_by_id BIGINT NOT NULL CONSTRAINT fk_person_updated REFERENCES site_user(id),
+    owner_id BIGINT NOT NULL CONSTRAINT fk_person_owner REFERENCES site_user(id),
     first_names VARCHAR(100),
     surname VARCHAR(100) NOT NULL,
     suffix VARCHAR(10),
@@ -250,15 +228,14 @@ CREATE TABLE person (
 );
 
 CREATE UNIQUE INDEX idx_person_slug ON person(slug);
-CREATE UNIQUE INDEX idx_person_name ON person(surname, first_names);
 
 CREATE TABLE person_alias (
     id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
     updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_by_id BIGINT NOT NULL REFERENCES site_user(id),
-    owner_id BIGINT NOT NULL REFERENCES site_user(id),
-    person_id BIGINT NOT NULL REFERENCES person(id),
+    updated_by_id BIGINT NOT NULL CONSTRAINT fk_person_alias_updated REFERENCES site_user(id),
+    owner_id BIGINT NOT NULL CONSTRAINT fk_person_alias_owner REFERENCES site_user(id),
+    person_id BIGINT NOT NULL CONSTRAINT fk_person_alias_person REFERENCES person(id),
     name VARCHAR(100) NOT NULL,
     hidden BIT NOT NULL DEFAULT 0
 );
@@ -271,9 +248,9 @@ CREATE TABLE person_profile (
     id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
     updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_by_id BIGINT NOT NULL REFERENCES site_user(id),
-    owner_id BIGINT NOT NULL REFERENCES site_user(id),
-    person_id BIGINT NOT NULL REFERENCES person(id),
+    updated_by_id BIGINT NOT NULL CONSTRAINT fk_person_profile_updated REFERENCES site_user(id),
+    owner_id BIGINT NOT NULL CONSTRAINT fk_person_profile_owner REFERENCES site_user(id),
+    person_id BIGINT NOT NULL CONSTRAINT fk_person_profile_person REFERENCES person(id),
     title VARCHAR(10),
     qualifications VARCHAR(30),
     email VARCHAR(50),
@@ -289,8 +266,8 @@ CREATE TABLE person_relationship_type (
     id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
     updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_by_id BIGINT NOT NULL REFERENCES site_user(id),
-    owner_id BIGINT NOT NULL REFERENCES site_user(id),
+    updated_by_id BIGINT NOT NULL CONSTRAINT fk_person_relationship_type_updated REFERENCES site_user(id),
+    owner_id BIGINT NOT NULL CONSTRAINT fk_person_relationship_type_owner REFERENCES site_user(id),
     name VARCHAR(100) NOT NULL,
     reverse_name VARCHAR(100) NOT NULL
 );
@@ -306,12 +283,12 @@ CREATE TABLE person_relationship (
     id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
     updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_by_id BIGINT NOT NULL REFERENCES site_user(id),
-    owner_id BIGINT NOT NULL REFERENCES site_user(id),
-    left_person_id BIGINT REFERENCES band(id),
+    updated_by_id BIGINT NOT NULL CONSTRAINT fk_person_relationship_updated REFERENCES site_user(id),
+    owner_id BIGINT NOT NULL CONSTRAINT fk_person_relationship_owner REFERENCES site_user(id),
+    left_person_id BIGINT CONSTRAINT fk_person_relationship_left_person REFERENCES band(id),
     left_person_name VARCHAR(100),
-    relationship_id BIGINT REFERENCES band_relationship_type(id),
-    right_person_id BIGINT REFERENCES band(id),
+    relationship_id BIGINT CONSTRAINT fk_person_relationship_type REFERENCES band_relationship_type(id),
+    right_person_id BIGINT CONSTRAINT fk_person_relationship_right_person REFERENCES band(id),
     right_person_name VARCHAR(100)
 );
 
@@ -325,27 +302,27 @@ CREATE TABLE piece (
     old_id BIGINT,
     updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_by_id BIGINT NOT NULL REFERENCES site_user(id),
-    owner_id BIGINT NOT NULL REFERENCES site_user(id),
+    updated_by_id BIGINT NOT NULL CONSTRAINT fk_piece_updated REFERENCES site_user(id),
+    owner_id BIGINT NOT NULL CONSTRAINT fk_piece_owner REFERENCES site_user(id),
     name VARCHAR(100) NOT NULL,
     slug VARCHAR(60) NOT NULL,
-    composer_id BIGINT REFERENCES person(id),
-    arranger_id BIGINT REFERENCES person(id),
+    composer_id BIGINT CONSTRAINT fk_piece_composer REFERENCES person(id),
+    arranger_id BIGINT CONSTRAINT fk_piece_arranger REFERENCES person(id),
     piece_year VARCHAR(4),
     category VARCHAR(1) NOT NULL DEFAULT 'T',
     notes TEXT
 );
 
 CREATE UNIQUE INDEX idx_piece_slug ON piece(slug);
-CREATE UNIQUE INDEX idx_piece_name ON piece(name);
+CREATE UNIQUE INDEX idx_piece_name ON piece(name, piece_year);
 
 CREATE TABLE piece_alias (
     id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
     updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_by_id BIGINT NOT NULL REFERENCES site_user(id),
-    owner_id BIGINT NOT NULL REFERENCES site_user(id),
-    piece_id BIGINT NOT NULL REFERENCES piece(id),
+    updated_by_id BIGINT NOT NULL CONSTRAINT fk_piece_alias_updated REFERENCES site_user(id),
+    owner_id BIGINT NOT NULL CONSTRAINT fk_piece_alias_owner REFERENCES site_user(id),
+    piece_id BIGINT NOT NULL CONSTRAINT fk_piece_alias_piece REFERENCES piece(id),
     name VARCHAR(100) NOT NULL,
     hidden BIT NOT NULL DEFAULT 0
 );
@@ -360,17 +337,17 @@ CREATE TABLE venue (
     old_id BIGINT,
     updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_by_id BIGINT NOT NULL REFERENCES site_user(id),
-    owner_id BIGINT NOT NULL REFERENCES site_user(id),
+    updated_by_id BIGINT NOT NULL CONSTRAINT fk_venue_updated REFERENCES site_user(id),
+    owner_id BIGINT NOT NULL CONSTRAINT fk_venue_owner REFERENCES site_user(id),
     name VARCHAR(100) NOT NULL,
     slug VARCHAR(60) NOT NULL,
-    region_id BIGINT REFERENCES region(id),
+    region_id BIGINT CONSTRAINT fk_venue_region REFERENCES region(id),
     longitude VARCHAR(15),
     latitude VARCHAR(15),
     notes TEXT,
     exact BIT NOT NULL DEFAULT 0,
-    mapper_id BIGINT REFERENCES site_user(id),
-    parent_id BIGINT REFERENCES venue(id)
+    mapper_id BIGINT CONSTRAINT fk_venue_mapper REFERENCES site_user(id),
+    parent_id BIGINT CONSTRAINT fk_venue_parent REFERENCES venue(id)
 );
 
 CREATE UNIQUE INDEX idx_venue_slug ON venue(slug);
@@ -381,10 +358,10 @@ CREATE TABLE venue_alias (
     old_id BIGINT,
     updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_by_id BIGINT NOT NULL REFERENCES site_user(id),
-    owner_id BIGINT NOT NULL REFERENCES site_user(id),
+    updated_by_id BIGINT NOT NULL CONSTRAINT fk_venue_alias_updated REFERENCES site_user(id),
+    owner_id BIGINT NOT NULL CONSTRAINT fk_venue_alias_owner REFERENCES site_user(id),
     name VARCHAR(100) NOT NULL,
-    venue_id BIGINT NOT NULL REFERENCES venue(id)
+    venue_id BIGINT NOT NULL CONSTRAINT fk_venue_alias_venue REFERENCES venue(id)
 );
 
 CREATE UNIQUE INDEX idx_venue_alt_name_unique ON venue_alias(venue_id, name);
@@ -397,8 +374,8 @@ CREATE TABLE contest_tag (
     old_id BIGINT,
     updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_by_id BIGINT NOT NULL REFERENCES site_user(id),
-    owner_id BIGINT NOT NULL REFERENCES site_user(id),
+    updated_by_id BIGINT NOT NULL CONSTRAINT fk_contest_tag_updated REFERENCES site_user(id),
+    owner_id BIGINT NOT NULL CONSTRAINT fk_contest_tag_owner REFERENCES site_user(id),
     name VARCHAR(100) NOT NULL,
     slug VARCHAR(60) NOT NULL
 );
@@ -411,8 +388,8 @@ CREATE TABLE contest_group (
     old_id BIGINT,
     updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_by_id BIGINT NOT NULL REFERENCES site_user(id),
-    owner_id BIGINT NOT NULL REFERENCES site_user(id),
+    updated_by_id BIGINT NOT NULL CONSTRAINT fk_contest_group_updated REFERENCES site_user(id),
+    owner_id BIGINT NOT NULL CONSTRAINT fk_contest_group_owner REFERENCES site_user(id),
     name VARCHAR(100) NOT NULL,
     slug VARCHAR(60) NOT NULL,
     group_type VARCHAR(1) NOT NULL,
@@ -423,8 +400,8 @@ CREATE UNIQUE INDEX idx_contest_group_slug ON contest_group(slug);
 CREATE UNIQUE INDEX idx_contest_group_name ON contest_group(name);
 
 CREATE TABLE contest_group_tag_link (
-    contest_group_id BIGINT NOT NULL REFERENCES contest_group(id),
-    contest_tag_id BIGINT NOT NULL REFERENCES contest_tag(id)
+    contest_group_id BIGINT NOT NULL CONSTRAINT fk_contest_group_tag_link_group REFERENCES contest_group(id),
+    contest_tag_id BIGINT NOT NULL CONSTRAINT fk_contest_group_tag_link_contest REFERENCES contest_tag(id)
 );
 
 CREATE UNIQUE INDEX idx_contest_group_tags ON contest_group_tag_link(contest_group_id, contest_tag_id);
@@ -434,10 +411,10 @@ CREATE TABLE contest_group_alias (
     old_id BIGINT,
     updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_by_id BIGINT NOT NULL REFERENCES site_user(id),
-    owner_id BIGINT NOT NULL REFERENCES site_user(id),
+    updated_by_id BIGINT NOT NULL CONSTRAINT fk_contest_group_alias_updated REFERENCES site_user(id),
+    owner_id BIGINT NOT NULL CONSTRAINT fk_contest_group_alias_owner REFERENCES site_user(id),
     name VARCHAR(100) NOT NULL,
-    contest_group_id BIGINT NOT NULL REFERENCES contest_group(id)
+    contest_group_id BIGINT NOT NULL CONSTRAINT fk_contest_group_alias_group REFERENCES contest_group(id)
 );
 
 CREATE UNIQUE INDEX idx_contest_group_alt_name_unique ON contest_group_alias(contest_group_id, name);
@@ -447,8 +424,8 @@ CREATE TABLE contest_type (
     old_id BIGINT,
     updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_by_id BIGINT NOT NULL REFERENCES site_user(id),
-    owner_id BIGINT NOT NULL REFERENCES site_user(id),
+    updated_by_id BIGINT NOT NULL CONSTRAINT fk_contest_type_updated REFERENCES site_user(id),
+    owner_id BIGINT NOT NULL CONSTRAINT fk_contest_type_owner REFERENCES site_user(id),
     name VARCHAR(100) NOT NULL,
     slug VARCHAR(60) NOT NULL,
     translation_key VARCHAR(100) NOT NULL,
@@ -478,12 +455,12 @@ CREATE TABLE contest (
     old_id BIGINT,
     updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_by_id BIGINT NOT NULL REFERENCES site_user(id),
-    owner_id BIGINT NOT NULL REFERENCES site_user(id),
+    updated_by_id BIGINT NOT NULL CONSTRAINT fk_contest_updated REFERENCES site_user(id),
+    owner_id BIGINT NOT NULL CONSTRAINT fk_contest_owner REFERENCES site_user(id),
     name VARCHAR(100) NOT NULL,
     slug VARCHAR(60) NOT NULL,
-    contest_group_id BIGINT REFERENCES contest_group(id),
-    default_contest_type_id BIGINT NOT NULL REFERENCES contest_type(id),
+    contest_group_id BIGINT CONSTRAINT fk_contest_contest_group REFERENCES contest_group(id),
+    default_contest_type_id BIGINT NOT NULL CONSTRAINT fk_contest_default_type REFERENCES contest_type(id),
     ordering INT,
     notes TEXT,
     extinct BIT NOT NULL DEFAULT 0,
@@ -497,8 +474,8 @@ CREATE UNIQUE INDEX idx_contest_slug_unique ON contest(slug);
 CREATE UNIQUE INDEX idx_contest_name_unique ON contest(name);
 
 CREATE TABLE contest_tag_link (
-    contest_id BIGINT NOT NULL REFERENCES contest(id),
-    contest_tag_id BIGINT NOT NULL REFERENCES contest_tag(id)
+    contest_id BIGINT NOT NULL CONSTRAINT fk_contest_tag_link_contest REFERENCES contest(id),
+    contest_tag_id BIGINT NOT NULL CONSTRAINT fk_contest_tag_link_tag REFERENCES contest_tag(id)
 );
 
 CREATE UNIQUE INDEX idx_contest_tags ON contest_tag_link(contest_id, contest_tag_id);
@@ -508,10 +485,10 @@ CREATE TABLE contest_alias (
     old_id BIGINT,
     updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_by_id BIGINT NOT NULL REFERENCES site_user(id),
-    owner_id BIGINT NOT NULL REFERENCES site_user(id),
+    updated_by_id BIGINT NOT NULL CONSTRAINT fk_contest_alias_updated REFERENCES site_user(id),
+    owner_id BIGINT NOT NULL CONSTRAINT fk_contest_alias_owner REFERENCES site_user(id),
     name VARCHAR(100) NOT NULL,
-    contest_id BIGINT NOT NULL REFERENCES contest_group(id)
+    contest_id BIGINT NOT NULL CONSTRAINT fk_contest_alias_contest REFERENCES contest_group(id)
 );
 
 CREATE UNIQUE INDEX idx_contest_alt_name_unique ON contest_alias(contest_id, name);
@@ -521,17 +498,17 @@ CREATE TABLE contest_event (
     old_id BIGINT,
     updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_by_id BIGINT NOT NULL REFERENCES site_user(id),
-    owner_id BIGINT NOT NULL REFERENCES site_user(id),
+    updated_by_id BIGINT NOT NULL CONSTRAINT fk_contest_event_updated REFERENCES site_user(id),
+    owner_id BIGINT NOT NULL CONSTRAINT fk_contest_event_owner REFERENCES site_user(id),
     name VARCHAR(100) NOT NULL,
     date_of_event DATE NOT NULL,
     date_resolution VARCHAR(1) NOT NULL,
-    contest_id BIGINT NOT NULL REFERENCES contest(id),
+    contest_id BIGINT NOT NULL CONSTRAINT fk_contest_event_contest REFERENCES contest(id),
     notes TEXT,
-    venue_id BIGINT REFERENCES venue(id),
+    venue_id BIGINT CONSTRAINT fk_contest_event_venue REFERENCES venue(id),
     complete BIT NOT NULL DEFAULT 0,
     no_contest BIT NOT NULL DEFAULT 0,
-    contest_type_id BIGINT NOT NULL REFERENCES contest_type(id),
+    contest_type_id BIGINT NOT NULL CONSTRAINT fk_contest_event_contest_type REFERENCES contest_type(id),
     original_owner VARCHAR(50) NOT NULL
 );
 
@@ -541,10 +518,10 @@ CREATE TABLE contest_test_piece (
     id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
     updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_by_id BIGINT NOT NULL REFERENCES site_user(id),
-    owner_id BIGINT NOT NULL REFERENCES site_user(id),
-    contest_event_id BIGINT NOT NULL REFERENCES contest_event(id),
-    piece_id BIGINT NOT NULL REFERENCES piece(id),
+    updated_by_id BIGINT NOT NULL CONSTRAINT fk_contest_test_piece_updated REFERENCES site_user(id),
+    owner_id BIGINT NOT NULL CONSTRAINT fk_contest_test_piece_owner REFERENCES site_user(id),
+    contest_event_id BIGINT NOT NULL CONSTRAINT fk_contest_test_piece_contest_event REFERENCES contest_event(id),
+    piece_id BIGINT NOT NULL CONSTRAINT fk_contest_test_piece_piece REFERENCES piece(id),
     and_or VARCHAR(1)
 );
 
@@ -555,10 +532,10 @@ CREATE TABLE contest_result (
     old_id BIGINT,
     updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_by_id BIGINT NOT NULL REFERENCES site_user(id),
-    owner_id BIGINT NOT NULL REFERENCES site_user(id),
-    contest_event_id BIGINT NOT NULL REFERENCES contest_event(id),
-    band_id BIGINT NOT NULL REFERENCES band(id),
+    updated_by_id BIGINT NOT NULL CONSTRAINT fk_contest_result_updated REFERENCES site_user(id),
+    owner_id BIGINT NOT NULL CONSTRAINT fk_contest_result_owner REFERENCES site_user(id),
+    contest_event_id BIGINT NOT NULL CONSTRAINT fk_contest_result_contest_event REFERENCES contest_event(id),
+    band_id BIGINT NOT NULL CONSTRAINT fk_contest_result_band REFERENCES band(id),
     band_name VARCHAR(100) NOT NULL,
     result_position_type VARCHAR(1) NOT NULL,
     result_position INT,
@@ -572,9 +549,9 @@ CREATE TABLE contest_result (
     points_fourth VARCHAR(10),
     points_penalty VARCHAR(10),
     conductor_name VARCHAR(100),
-    conductor_id BIGINT REFERENCES person(id),
-    conductor_two_id BIGINT REFERENCES person(id),
-    conductor_three_id BIGINT REFERENCES person(id),
+    conductor_id BIGINT CONSTRAINT fk_contest_result_conductor_one REFERENCES person(id),
+    conductor_two_id BIGINT CONSTRAINT fk_contest_result_conductor_two REFERENCES person(id),
+    conductor_three_id BIGINT CONSTRAINT fk_contest_result_conductor_three REFERENCES person(id),
     notes TEXT
 );
 
@@ -587,10 +564,10 @@ CREATE TABLE contest_event_adjudicator (
     old_id BIGINT,
     updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_by_id BIGINT NOT NULL REFERENCES site_user(id),
-    owner_id BIGINT NOT NULL REFERENCES site_user(id),
-    contest_event_id BIGINT NOT NULL REFERENCES contest_event(id),
-    person_id BIGINT NOT NULL REFERENCES person(id),
+    updated_by_id BIGINT NOT NULL CONSTRAINT fk_contest_event_adjudicator_updated REFERENCES site_user(id),
+    owner_id BIGINT NOT NULL CONSTRAINT fk_contest_event_adjudicator_owner REFERENCES site_user(id),
+    contest_event_id BIGINT NOT NULL CONSTRAINT fk_contest_event_adjudicator_contest_event REFERENCES contest_event(id),
+    person_id BIGINT NOT NULL CONSTRAINT fk_contest_event_adjudicator_person REFERENCES person(id),
     adjudicator_name VARCHAR(50) NOT NULL
 );
 

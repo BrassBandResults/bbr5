@@ -38,7 +38,9 @@ public class VenueServiceImpl implements VenueService, SlugTools {
         }
 
         venue.setCreated(LocalDateTime.now());
-        venue.setCreatedBy(this.securityService.getCurrentUserId());
+        venue.setCreatedBy(this.securityService.getCurrentUser());
+        venue.setUpdated(LocalDateTime.now());
+        venue.setUpdatedBy(this.securityService.getCurrentUser());
         return this.venueRepository.saveAndFlush(venue);
     }
 

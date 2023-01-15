@@ -13,6 +13,7 @@ import uk.co.bbr.services.pieces.repo.PieceAliasRepository;
 import uk.co.bbr.services.pieces.repo.PieceRepository;
 import uk.co.bbr.services.pieces.types.PieceCategory;
 import uk.co.bbr.services.security.SecurityService;
+import uk.co.bbr.web.security.annotations.IsBbrAdmin;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
 import java.time.LocalDateTime;
@@ -29,34 +30,48 @@ public class PieceServiceImpl implements PieceService, SlugTools {
 
     @Override
     @IsBbrMember
-    public PieceDao create(PieceDao newPiece) {
+    public PieceDao create(PieceDao piece) {
+        return this.create(piece, false);
+    }
+
+    @Override
+    @IsBbrAdmin
+    public PieceDao migrate(PieceDao piece) {
+        return this.create(piece, true);
+    }
+
+    private PieceDao create(PieceDao piece, boolean migrating) {
         // validation
-        if (newPiece.getId() != null) {
+        if (piece.getId() != null) {
             throw new ValidationException("Can't create with specific id");
         }
 
-        if (StringUtils.isBlank(newPiece.getName())) {
+        if (StringUtils.isBlank(piece.getName())) {
             throw new ValidationException("Piece name must be specified");
         }
 
         // defaults
-        if (StringUtils.isBlank(newPiece.getSlug())) {
-            newPiece.setSlug(slugify(newPiece.getName()));
+        if (StringUtils.isBlank(piece.getSlug())) {
+            piece.setSlug(slugify(piece.getName()));
         }
 
-        if (newPiece.getCategory() == null) {
-            newPiece.setCategory(PieceCategory.TEST_PIECE);
+        if (piece.getCategory() == null) {
+            piece.setCategory(PieceCategory.TEST_PIECE);
         }
 
         // does the slug already exist?
-        Optional<PieceDao> slugMatches = this.pieceRepository.fetchBySlug(newPiece.getSlug());
+        Optional<PieceDao> slugMatches = this.pieceRepository.fetchBySlug(piece.getSlug());
         if (slugMatches.isPresent()) {
-            throw new ValidationException("Piece with slug " + newPiece.getSlug() + " already exists.");
+            throw new ValidationException("Piece with slug " + piece.getSlug() + " already exists.");
         }
 
-        newPiece.setCreated(LocalDateTime.now());
-        newPiece.setCreatedBy(this.securityService.getCurrentUserId());
-        return this.pieceRepository.saveAndFlush(newPiece);
+        if (!migrating) {
+            piece.setCreated(LocalDateTime.now());
+            piece.setCreatedBy(this.securityService.getCurrentUser());
+            piece.setUpdated(LocalDateTime.now());
+            piece.setUpdatedBy(this.securityService.getCurrentUser());
+        }
+        return this.pieceRepository.saveAndFlush(piece);
     }
 
     @Override
@@ -81,7 +96,22 @@ public class PieceServiceImpl implements PieceService, SlugTools {
     @Override
     @IsBbrMember
     public void createAlternativeName(PieceDao piece, PieceAlias alternativeName) {
+        this.createAlternativeName(piece, alternativeName, false);
+    }
+
+    @Override
+    public void migrateAlternativeName(PieceDao piece, PieceAlias alternativeName) {
+        this.createAlternativeName(piece, alternativeName, true);
+    }
+
+    private void createAlternativeName(PieceDao piece, PieceAlias alternativeName, boolean migrating) {
         alternativeName.setPiece(piece);
+        if (!migrating) {
+            alternativeName.setCreated(LocalDateTime.now());
+            alternativeName.setCreatedBy(this.securityService.getCurrentUser());
+            alternativeName.setUpdated(LocalDateTime.now());
+            alternativeName.setUpdatedBy(this.securityService.getCurrentUser());
+        }
         this.pieceAlternativeNameRepository.saveAndFlush(alternativeName);
     }
 
@@ -127,4 +157,6 @@ public class PieceServiceImpl implements PieceService, SlugTools {
 
         return new PieceListDto(piecesToReturn.size(), allBandsCount, prefix, piecesToReturn);
     }
+
+
 }

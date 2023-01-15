@@ -22,6 +22,7 @@ import uk.co.bbr.services.regions.dao.RegionDao;
 import uk.co.bbr.services.sections.SectionService;
 import uk.co.bbr.services.sections.dao.SectionDao;
 import uk.co.bbr.services.security.SecurityService;
+import uk.co.bbr.web.security.annotations.IsBbrAdmin;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,6 +30,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -40,7 +42,7 @@ public class BandsMigrateController extends AbstractMigrateController {
     private final SecurityService securityService;
 
     @GetMapping("/migrate/bands")
-    // TODO @IsBbrAdmin
+    @IsBbrAdmin
     public String home(Model model)  {
         List<String> messages = new ArrayList<>();
         messages.add("Cloning bands repository...");
@@ -52,7 +54,7 @@ public class BandsMigrateController extends AbstractMigrateController {
     }
 
     @GetMapping("/migrate/bands/clone")
-    // TODO @IsBbrAdmin
+    @IsBbrAdmin
     public String clone(Model model) throws GitAPIException {
         if (!new File(BASE_PATH).exists()) {
 
@@ -72,7 +74,7 @@ public class BandsMigrateController extends AbstractMigrateController {
     }
 
     @GetMapping("/migrate/bands/{index}")
-    // TODO @IsBbrAdmin
+    @IsBbrAdmin
     public String clone(Model model, @PathVariable("index") int index) throws GitAPIException, IOException, JDOMException {
 
         List<String> messages = new ArrayList<>();
@@ -96,79 +98,75 @@ public class BandsMigrateController extends AbstractMigrateController {
 
     private void importBands(String indexLetter) throws JDOMException, IOException {
         File letterLevel = new File(BASE_PATH + "/Bands/" + indexLetter);
-        String[] files = Arrays.stream(letterLevel.list((current, name) -> new File(current, name).isFile())).sorted().toArray(String[]::new);
+        if (letterLevel.exists()) {
+            String[] files = Arrays.stream(letterLevel.list((current, name) -> new File(current, name).isFile())).sorted().toArray(String[]::new);
 
-        for (String eachFile : files) {
-            File eachBandFile = new File(BASE_PATH + "/Bands/" + indexLetter + "/" + eachFile);
-            String filename = eachBandFile.getAbsolutePath();
-            System.out.println(filename);
+            for (String eachFile : files) {
+                File eachBandFile = new File(BASE_PATH + "/Bands/" + indexLetter + "/" + eachFile);
+                String filename = eachBandFile.getAbsolutePath();
+                System.out.println(filename);
 
-            Document doc = null;
-            try {
+                Document doc = null;
                 SAXBuilder sax = new SAXBuilder();
                 doc = sax.build(new File(filename));
+                Element rootNode = doc.getRootElement();
+
+                BandDao newBand = new BandDao();
+                newBand.setOldId(rootNode.getAttributeValue("id"));
+                newBand.setName(rootNode.getChildText("name"));
+                newBand.setSlug(rootNode.getChildText("slug"));
+                if (!rootNode.getChildText("website").equals("http://")){
+                    newBand.setWebsite(this.notBlank(rootNode, "website"));
+                }
+
+                newBand.setTwitterName(this.notBlank(rootNode, "twitter"));
+
+                RegionDao region = this.regionService.findBySlug(rootNode.getChild("region").getAttributeValue("slug"));
+                newBand.setRegion(region);
+
+                newBand.setLatitude(this.notBlank(rootNode, "latitude"));
+                newBand.setLongitude(this.notBlank(rootNode, "longitude"));
+
+                newBand.setStartDate(this.notBlankDate(rootNode, "start"));
+                newBand.setEndDate(this.notBlankDate(rootNode, "end"));
+
+                String statusText = this.notBlank(rootNode, "status");
+                if (statusText != null && statusText.length() > 0) {
+                    newBand.setStatus(BandStatus.fromDescription(statusText));
+                }
+                if ("True".equalsIgnoreCase(this.notBlank(rootNode, "scratch_band"))){
+                    newBand.setStatus(BandStatus.SCRATCH);
+                }
+
+                String gradingName = this.notBlank(rootNode, "grading");
+                if (gradingName != null) {
+                    SectionDao section = this.sectionService.fetchByName(gradingName);
+                    newBand.setSection(section);
+                }
+
+                newBand.setMapper(this.createUser(this.notBlank(rootNode, "mapper"), this.securityService));
+                newBand.setCreatedBy(this.createUser(this.notBlank(rootNode, "owner"), this.securityService));
+                newBand.setUpdatedBy(this.createUser(this.notBlank(rootNode, "lastChangedBy"), this.securityService));
+
+                newBand.setCreated(this.notBlankDateTime(rootNode, "created"));
+                newBand.setUpdated(this.notBlankDateTime(rootNode, "lastModified"));
+
+                newBand.setNotes(this.notBlank(rootNode, "notes"));
+
+                // notes
+                newBand = this.bandService.migrate(newBand);
+
+                this.createBandRehearsalNight(newBand, this.notBlank(rootNode,"rehearsal1"));
+                this.createBandRehearsalNight(newBand, this.notBlank(rootNode,"rehearsal2"));
+
+                Element previousNames = rootNode.getChild("previous_names");
+                List<Element> previousNameNodes = previousNames.getChildren();
+                for (Element eachOldName : previousNameNodes) {
+                    this.createPreviousName(newBand, eachOldName);
+                }
+
+                System.out.println(newBand.getName());
             }
-            catch (Throwable ex) {
-                ex.printStackTrace();
-                continue;
-            }
-            Element rootNode = doc.getRootElement();
-
-            BandDao newBand = new BandDao();
-            newBand.setOldId(rootNode.getAttributeValue("id"));
-            newBand.setName(rootNode.getChildText("name"));
-            newBand.setSlug(rootNode.getChildText("slug"));
-            if (!rootNode.getChildText("website").equals("http://")){
-                newBand.setWebsite(this.notBlank(rootNode, "website"));
-            }
-
-            newBand.setTwitterName(this.notBlank(rootNode, "twitter"));
-
-            RegionDao region = this.regionService.findBySlug(rootNode.getChild("region").getAttributeValue("slug"));
-            newBand.setRegion(region);
-
-            newBand.setLatitude(this.notBlank(rootNode, "latitude"));
-            newBand.setLongitude(this.notBlank(rootNode, "longitude"));
-
-            newBand.setStartDate(this.notBlankDate(rootNode, "start"));
-            newBand.setEndDate(this.notBlankDate(rootNode, "end"));
-
-            String statusText = this.notBlank(rootNode, "status");
-            if (statusText != null && statusText.length() > 0) {
-                newBand.setStatus(BandStatus.fromDescription(statusText));
-            }
-            if ("True".equalsIgnoreCase(this.notBlank(rootNode, "scratch_band"))){
-                newBand.setStatus(BandStatus.SCRATCH);
-            }
-
-            String gradingName = this.notBlank(rootNode, "grading");
-            if (gradingName != null) {
-                SectionDao section = this.sectionService.fetchByName(gradingName);
-                newBand.setSection(section);
-            }
-
-            newBand.setMapperId(this.createUser(this.notBlank(rootNode, "mapper"), this.securityService));
-            newBand.setCreatedBy(this.createUser(this.notBlank(rootNode, "owner"), this.securityService));
-            newBand.setUpdatedBy(this.createUser(this.notBlank(rootNode, "lastChangedBy"), this.securityService));
-
-            newBand.setCreated(this.notBlankDateTime(rootNode, "created"));
-            newBand.setUpdated(this.notBlankDateTime(rootNode, "lastModified"));
-
-            newBand.setNotes(this.notBlank(rootNode, "notes"));
-
-            // notes
-            newBand = this.bandService.create(newBand);
-
-            this.createBandRehearsalNight(newBand, this.notBlank(rootNode,"rehearsal1"));
-            this.createBandRehearsalNight(newBand, this.notBlank(rootNode,"rehearsal2"));
-
-            Element previousNames = rootNode.getChild("previous_names");
-            List<Element> previousNameNodes = previousNames.getChildren();
-            for (Element eachOldName : previousNameNodes) {
-                this.createPreviousName(newBand, eachOldName);
-            }
-
-            System.out.println(newBand.getName());
         }
     }
 
@@ -182,13 +180,13 @@ public class BandsMigrateController extends AbstractMigrateController {
             String filename = eachBandFile.getAbsolutePath();
 
             Document doc = null;
+            SAXBuilder sax = new SAXBuilder();
             try {
-                SAXBuilder sax = new SAXBuilder();
                 doc = sax.build(new File(filename));
-            }
-            catch (Throwable ex) {
-                ex.printStackTrace();
-                continue;
+            } catch (JDOMException e) {
+                throw new RuntimeException(e);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
             Element rootNode = doc.getRootElement();
 
@@ -224,26 +222,39 @@ public class BandsMigrateController extends AbstractMigrateController {
         relationship.setCreated(LocalDateTime.now());
         relationship.setUpdated(LocalDateTime.now());
 
-        this.bandService.saveRelationship(relationship);
+        this.bandService.migrateRelationship(relationship);
     }
 
     private void createPreviousName(BandDao band, Element oldNameElement) {
-        BandPreviousNameDao previousName = new BandPreviousNameDao();
-        previousName.setCreatedBy(this.createUser(this.notBlank(oldNameElement, "owner"), this.securityService));
-        previousName.setUpdatedBy(this.createUser(this.notBlank(oldNameElement, "lastChangedBy"), this.securityService));
-        previousName.setCreated(this.notBlankDateTime(oldNameElement, "created"));
-        previousName.setUpdated(this.notBlankDateTime(oldNameElement, "lastModified"));
-        previousName.setOldName(oldNameElement.getChildText("name"));
-        previousName.setStartDate(this.notBlankDate(oldNameElement, "start"));
-        previousName.setEndDate(this.notBlankDate(oldNameElement, "end"));
-        previousName.setHidden(this.notBlankBoolean(oldNameElement, "hidden"));
+        String name = oldNameElement.getChildText("name");
+        // does it already exist?
 
-        this.bandService.createPreviousName(band, previousName);
+        Optional<BandPreviousNameDao> existingAlias = this.bandService.aliasExists(band, name);
+        if (existingAlias.isEmpty()) {
+            BandPreviousNameDao previousName = new BandPreviousNameDao();
+            previousName.setCreatedBy(this.createUser(this.notBlank(oldNameElement, "owner"), this.securityService));
+            previousName.setUpdatedBy(this.createUser(this.notBlank(oldNameElement, "lastChangedBy"), this.securityService));
+            previousName.setCreated(this.notBlankDateTime(oldNameElement, "created"));
+            previousName.setUpdated(this.notBlankDateTime(oldNameElement, "lastModified"));
+            previousName.setOldName(name);
+            previousName.setStartDate(this.notBlankDate(oldNameElement, "start"));
+            previousName.setEndDate(this.notBlankDate(oldNameElement, "end"));
+            previousName.setHidden(this.notBlankBoolean(oldNameElement, "hidden"));
+
+            if (previousName.getCreatedBy() == null) {
+                previousName.setCreatedBy(band.getCreatedBy());
+            }
+            if (previousName.getUpdatedBy() == null) {
+                previousName.setUpdatedBy(band.getUpdatedBy());
+            }
+
+            this.bandService.migratePreviousName(band, previousName);
+        }
     }
 
     private void createBandRehearsalNight(BandDao band, String rehearsalNight) {
         if (rehearsalNight != null) {
-            this.bandService.createRehearsalNight(band, RehearsalDay.fromName(rehearsalNight));
+            this.bandService.migrateRehearsalNight(band, RehearsalDay.fromName(rehearsalNight));
         }
     }
 }

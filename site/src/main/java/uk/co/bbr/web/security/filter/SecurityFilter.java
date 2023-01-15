@@ -9,6 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.GenericFilterBean;
 import uk.co.bbr.services.security.JwtService;
+import uk.co.bbr.web.SessionKeys;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -36,6 +37,11 @@ public class SecurityFilter extends GenericFilterBean {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest servletRequest = (HttpServletRequest)request;
 
+        String nextPage = servletRequest.getServletPath();
+        if (!SecurityFilter.URL_SIGN_IN.equals(nextPage)) {
+            servletRequest.getSession().setAttribute(SessionKeys.LOGIN_NEXT_PAGE, nextPage);
+        }
+
         if (servletRequest.getServletPath().startsWith(SecurityFilter.URL_SIGN_IN)) {
             chain.doFilter(request, response);
             return;
@@ -46,7 +52,7 @@ public class SecurityFilter extends GenericFilterBean {
             return;
         }
 
-        Cookie[] cookies = ((HttpServletRequest) (request)).getCookies();
+        Cookie[] cookies = servletRequest.getCookies();
         if (cookies != null) {
             Optional<Cookie> securityCookie = Arrays.stream(cookies).filter(n -> n.getName().equals(COOKIE_NAME)).findFirst();
 
@@ -66,7 +72,6 @@ public class SecurityFilter extends GenericFilterBean {
                     // Token failed validation
                     ((HttpServletResponse) response).setStatus(HttpStatus.FORBIDDEN.value());
                     response.getWriter().write("Invalid user session");
-
                 }
             } else {
                 // no token, pass request on

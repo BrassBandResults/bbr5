@@ -17,6 +17,10 @@ import javax.persistence.Table;
 @Table(name="site_user")
 public class BbrUserDao extends AbstractDao {
 
+    public BbrUserDao(long id) {
+        this.setId(id);
+    }
+
     @Column(name="usercode", length=50, nullable=false)
     private String usercode;
 

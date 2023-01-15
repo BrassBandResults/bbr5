@@ -10,11 +10,14 @@ import java.util.List;
 
 public interface PieceService {
     PieceDao create(PieceDao newPiece);
+    PieceDao migrate(PieceDao piece);
 
     PieceDao create(String name, PieceCategory category, PersonDao composer);
     PieceDao create(String name);
 
     void createAlternativeName(PieceDao piece, PieceAlias alternativeName);
+
+    void migrateAlternativeName(PieceDao piece, PieceAlias previousName);
 
     PieceDao fetchBySlug(String pieceSlug);
 
@@ -23,4 +26,8 @@ public interface PieceService {
     List<PieceAlias> fetchAlternateNames(PieceDao piece);
 
     PieceListDto listPiecesStartingWith(String letter);
+
+
+
+
 }
