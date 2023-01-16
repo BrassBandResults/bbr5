@@ -12,6 +12,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -28,6 +29,12 @@ public class VenueAliasDao extends AbstractDao implements NameTools {
     @ManyToOne(fetch= FetchType.EAGER, optional=false)
     @JoinColumn(name="venue_id")
     private VenueDao venue;
+
+    @Column(name="start_date")
+    private LocalDate startDate;
+
+    @Column(name="end_date")
+    private LocalDate endDate;
 
     public void setName(){
         String nameToSet = simplifyName(name);

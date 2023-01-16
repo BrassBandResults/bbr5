@@ -38,7 +38,7 @@ class CreateVenueServiceTests implements LoginMixin {
         assertNull(venue.getLongitude());
         assertFalse(venue.isExact());
         assertNull(venue.getRegion());
-        assertNull(venue.getMapperUser());
+        assertNull(venue.getMapper());
 
         logoutTestUser();
     }
@@ -55,7 +55,7 @@ class CreateVenueServiceTests implements LoginMixin {
         newVenue.setLongitude(" 456 ");
         newVenue.setExact(true);
         newVenue.setRegion(this.regionService.fetchBySlug("yorkshire").get());
-        newVenue.setMapperUser(this.securityService.getCurrentUserId());
+        newVenue.setMapper(this.securityService.getCurrentUser());
 
         // act
         VenueDao venue = this.venueService.create(newVenue);
@@ -68,7 +68,7 @@ class CreateVenueServiceTests implements LoginMixin {
         assertEquals("456", venue.getLongitude());
         assertTrue(venue.isExact());
         assertEquals("Yorkshire", venue.getRegion().getName());
-        assertEquals(this.securityService.getCurrentUserId(), venue.getMapperUser());
+        assertEquals(this.securityService.getCurrentUser().getUsercode(), venue.getMapper().getUsercode());
 
         logoutTestUser();
     }

@@ -13,7 +13,7 @@ public interface ContestGroupService {
 
     ContestGroupDao update(ContestGroupDao group);
 
-    Optional<PersonAliasDao> aliasExists(ContestGroupDao group, String name);
+    Optional<ContestGroupAliasDao> aliasExists(ContestGroupDao group, String name);
 
     ContestGroupAliasDao migrateAlias(ContestGroupDao group, ContestGroupAliasDao alias);
     ContestGroupAliasDao createAlias(ContestGroupDao group, ContestGroupAliasDao alias);

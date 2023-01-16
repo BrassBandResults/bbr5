@@ -110,7 +110,7 @@ INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_cod
 INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code, translation_key) VALUES (1, 1, 'First', 'first', 110, '1', 'section.first');
 INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code, translation_key) VALUES (1, 1, 'Second', 'second', 120, '2', 'section.second');
 INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code, translation_key) VALUES (1, 1, 'Third', 'third', 130, '3', 'section.third');
-INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code, translation_key) VALUES (1, 1, 'Forth', 'fourth', 140, '4', 'section.fourth');
+INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code, translation_key) VALUES (1, 1, 'Fourth', 'fourth', 140, '4', 'section.fourth');
 INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code, translation_key) VALUES (1, 1, 'Fifth', 'fifth', 150, '5', 'section.fifth');
 INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code, translation_key) VALUES (1, 1, 'Youth', 'youth', 160, 'Y', 'section.youth');
 INSERT INTO section(updated_by_id, owner_id, name, slug, position, map_short_code, translation_key) VALUES (1, 1, 'A Grade', 'a', 210, 'A', 'section.a-grade');
@@ -339,7 +339,7 @@ CREATE TABLE venue (
     created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_by_id BIGINT NOT NULL CONSTRAINT fk_venue_updated REFERENCES site_user(id),
     owner_id BIGINT NOT NULL CONSTRAINT fk_venue_owner REFERENCES site_user(id),
-    name VARCHAR(100) NOT NULL,
+    name VARCHAR(255) NOT NULL,
     slug VARCHAR(60) NOT NULL,
     region_id BIGINT CONSTRAINT fk_venue_region REFERENCES region(id),
     longitude VARCHAR(15),
@@ -356,11 +356,13 @@ CREATE UNIQUE INDEX idx_venue_name ON venue(name);
 CREATE TABLE venue_alias (
     id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
     old_id BIGINT,
+    start_date DATE,
+    end_date DATE,
     updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_by_id BIGINT NOT NULL CONSTRAINT fk_venue_alias_updated REFERENCES site_user(id),
     owner_id BIGINT NOT NULL CONSTRAINT fk_venue_alias_owner REFERENCES site_user(id),
-    name VARCHAR(100) NOT NULL,
+    name VARCHAR(255) NOT NULL,
     venue_id BIGINT NOT NULL CONSTRAINT fk_venue_alias_venue REFERENCES venue(id)
 );
 

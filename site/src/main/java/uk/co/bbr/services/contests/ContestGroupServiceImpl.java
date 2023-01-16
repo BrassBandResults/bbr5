@@ -100,8 +100,8 @@ public class ContestGroupServiceImpl implements ContestGroupService, SlugTools {
     }
 
     @Override
-    public Optional<PersonAliasDao> aliasExists(ContestGroupDao group, String name) {
-        return Optional.empty();
+    public Optional<ContestGroupAliasDao> aliasExists(ContestGroupDao group, String name) {
+        return this.contestGroupAliasRepository.fetchByName(group.getId(), name);
     }
 
     @Override

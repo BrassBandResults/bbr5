@@ -6,6 +6,7 @@ import lombok.Setter;
 import uk.co.bbr.services.framework.AbstractDao;
 import uk.co.bbr.services.framework.mixins.NameTools;
 import uk.co.bbr.services.regions.dao.RegionDao;
+import uk.co.bbr.services.security.dao.BbrUserDao;
 
 import javax.persistence.*;
 
@@ -30,14 +31,20 @@ public class VenueDao extends AbstractDao implements NameTools {
 
     @Column(name="longitude")
     private String longitude;
+
     @Column(name="latitude")
     private String latitude;
+
     @Column(name="notes")
     private String notes;
+
     @Column(name="exact")
     private boolean exact;
-    @Column(name="mapper_id")
-    private Long mapperUser;
+
+    @ManyToOne(fetch= FetchType.EAGER)
+    @JoinColumn(name="mapper_id")
+    private BbrUserDao mapper;
+
     @ManyToOne(fetch= FetchType.EAGER)
     @JoinColumn(name="parent_id")
     private VenueDao parent;

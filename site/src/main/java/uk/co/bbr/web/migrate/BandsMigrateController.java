@@ -147,7 +147,7 @@ public class BandsMigrateController extends AbstractMigrateController {
                 if (gradingName != null) {
                     Optional<SectionDao> section = this.sectionService.fetchByName(gradingName);
                     if (section.isEmpty()) {
-                        throw new NotFoundException("Section not found");
+                        throw new NotFoundException("Section not found " + gradingName);
                     }
                     newBand.setSection(section.get());
                 }

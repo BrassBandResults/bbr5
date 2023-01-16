@@ -11,15 +11,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import uk.co.bbr.services.contests.ContestGroupService;
-import uk.co.bbr.services.contests.ContestTagService;
-import uk.co.bbr.services.contests.dao.ContestGroupAliasDao;
-import uk.co.bbr.services.contests.dao.ContestGroupDao;
-import uk.co.bbr.services.contests.dao.ContestTagDao;
-import uk.co.bbr.services.contests.types.ContestGroupType;
 import uk.co.bbr.services.framework.NotFoundException;
-import uk.co.bbr.services.people.dao.PersonAliasDao;
+import uk.co.bbr.services.regions.RegionService;
+import uk.co.bbr.services.regions.dao.RegionDao;
 import uk.co.bbr.services.security.SecurityService;
+import uk.co.bbr.services.venues.VenueService;
+import uk.co.bbr.services.venues.dao.VenueAliasDao;
+import uk.co.bbr.services.venues.dao.VenueDao;
 import uk.co.bbr.web.security.annotations.IsBbrAdmin;
 
 import java.io.File;
@@ -31,25 +29,25 @@ import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
-public class ContestGroupMigrateController extends AbstractMigrateController  {
+public class VenueMigrateController extends AbstractMigrateController  {
 
     private final SecurityService securityService;
-    private final ContestGroupService contestGroupService;
-    private final ContestTagService contestTagService;
+    private final VenueService venueService;
+    private final RegionService regionService;
 
-    @GetMapping("/migrate/groups")
+    @GetMapping("/migrate/venues")
     @IsBbrAdmin
     public String home(Model model)  {
         List<String> messages = new ArrayList<>();
-        messages.add("Cloning groups repository...");
+        messages.add("Cloning venues repository...");
 
         model.addAttribute("Messages", messages);
-        model.addAttribute("Next", "/migrate/groups/clone");
+        model.addAttribute("Next", "/migrate/venues/clone");
 
         return "migrate/migrate";
     }
 
-    @GetMapping("/migrate/groups/clone")
+    @GetMapping("/migrate/venues/clone")
     @IsBbrAdmin
     public String clone(Model model) throws GitAPIException {
         if (!new File(BASE_PATH).exists()) {
@@ -64,12 +62,12 @@ public class ContestGroupMigrateController extends AbstractMigrateController  {
         messages.add("Repository clone complete...");
 
         model.addAttribute("Messages", messages);
-        model.addAttribute("Next", "/migrate/groups/0");
+        model.addAttribute("Next", "/migrate/venues/0");
 
         return "migrate/migrate";
     }
 
-    @GetMapping("/migrate/groups/{index}")
+    @GetMapping("/migrate/venues/{index}")
     @IsBbrAdmin
     public String clone(Model model, @PathVariable("index") int index) throws GitAPIException, IOException, JDOMException {
 
@@ -77,7 +75,7 @@ public class ContestGroupMigrateController extends AbstractMigrateController  {
         String[] directories = this.fetchDirectories();
         try {
             String indexLetter = directories[index];
-            this.importContestGroups(indexLetter);
+            this.importContestVenues(indexLetter);
             messages.add("Processing letter " + indexLetter + "...");
         }
         catch (IndexOutOfBoundsException ex) {
@@ -87,18 +85,18 @@ public class ContestGroupMigrateController extends AbstractMigrateController  {
         int nextIndex = index + 1;
         
         model.addAttribute("Messages", messages);
-        model.addAttribute("Next", "/migrate/groups/" + nextIndex);
+        model.addAttribute("Next", "/migrate/venues/" + nextIndex);
 
         return "migrate/migrate";
     }
 
-    private void importContestGroups(String indexLetter) throws JDOMException, IOException {
-        File letterLevel = new File(BASE_PATH + "/Groups/" + indexLetter);
+    private void importContestVenues(String indexLetter) throws JDOMException, IOException {
+        File letterLevel = new File(BASE_PATH + "/Venues/" + indexLetter);
         if (letterLevel.exists()) {
             String[] files = Arrays.stream(letterLevel.list((current, name) -> new File(current, name).isFile())).sorted().toArray(String[]::new);
 
             for (String eachFile : files) {
-                File eachBandFile = new File(BASE_PATH + "/Groups/" + indexLetter + "/" + eachFile);
+                File eachBandFile = new File(BASE_PATH + "/Venues/" + indexLetter + "/" + eachFile);
                 String filename = eachBandFile.getAbsolutePath();
 
                 Document doc = null;
@@ -111,69 +109,62 @@ public class ContestGroupMigrateController extends AbstractMigrateController  {
                 }
                 Element rootNode = doc.getRootElement();
 
-                ContestGroupDao contestGroup = new ContestGroupDao();
-                contestGroup.setOldId(rootNode.getAttributeValue("id"));
-                contestGroup.setSlug(rootNode.getChildText("slug"));
-                contestGroup.setName(rootNode.getChildText("name"));
-                contestGroup.setNotes(rootNode.getChildText("notes"));
-                contestGroup.setGroupType(ContestGroupType.NORMAL);
-                if (contestGroup.getName().contains("Whit Friday")) {
-                    contestGroup.setGroupType(ContestGroupType.WHIT_FRIDAY);
+                VenueDao venue = new VenueDao();
+                venue.setOldId(rootNode.getAttributeValue("id"));
+                venue.setSlug(rootNode.getChildText("slug"));
+                venue.setName(rootNode.getChildText("name"));
+                venue.setNotes(rootNode.getChildText("notes"));
+
+                String regionSlug = rootNode.getChild("country").getAttributeValue("slug");
+                if (regionSlug != null && regionSlug.trim().length() > 0) {
+                    Optional<RegionDao> region = this.regionService.fetchBySlug(regionSlug);
+                    if (region.isEmpty()) {
+                        throw new NotFoundException("Region not found " + regionSlug);
+                    }
+                    venue.setRegion(region.get());
                 }
+                venue.setLatitude(this.notBlank(rootNode, "latitude"));
+                venue.setLongitude(this.notBlank(rootNode, "longitude"));
+                venue.setExact(this.notBlankBoolean(rootNode, "exact"));
+                venue.setMapper(this.createUser(this.notBlank(rootNode, "mapper"), this.securityService));
 
-                // tags
-                Element tags = rootNode.getChild("tags");
-                List<Element> tagNodes = tags.getChildren();
-                for (Element eachTag : tagNodes) {
-                    this.createTag(contestGroup, eachTag);
-                }
+                venue.setCreatedBy(this.createUser(this.notBlank(rootNode, "owner"), this.securityService));
+                venue.setUpdatedBy(this.createUser(this.notBlank(rootNode, "lastChangedBy"), this.securityService));
 
-                contestGroup.setCreatedBy(this.createUser(this.notBlank(rootNode, "owner"), this.securityService));
-                contestGroup.setUpdatedBy(this.createUser(this.notBlank(rootNode, "lastChangedBy"), this.securityService));
+                venue.setCreated(this.notBlankDateTime(rootNode, "created"));
+                venue.setUpdated(this.notBlankDateTime(rootNode, "lastModified"));
 
-                contestGroup.setCreated(this.notBlankDateTime(rootNode, "created"));
-                contestGroup.setUpdated(this.notBlankDateTime(rootNode, "lastModified"));
-
-                contestGroup = this.contestGroupService.migrate(contestGroup);
+                venue = this.venueService.migrate(venue);
 
                 // aliases
                 Element previousNames = rootNode.getChild("previous_names");
                 List<Element> previousNameNodes = previousNames.getChildren();
                 for (Element eachOldName : previousNameNodes) {
-                    this.createPreviousName(contestGroup, eachOldName);
+                    this.createPreviousName(venue, eachOldName);
                 }
 
-                System.out.println(contestGroup.getName());
+                System.out.println(venue.getName());
             }
         }
     }
 
-    private void createPreviousName(ContestGroupDao group, Element oldNameElement) {
+    private void createPreviousName(VenueDao venue, Element oldNameElement) {
         String name = oldNameElement.getChildText("name");
         // does it already exist?
 
-        Optional<ContestGroupAliasDao> existingAlias = this.contestGroupService.aliasExists(group, name);
+        Optional<VenueAliasDao> existingAlias = this.venueService.aliasExists(venue, name);
         if (existingAlias.isEmpty()) {
 
-            ContestGroupAliasDao previousName = new ContestGroupAliasDao();
+            VenueAliasDao previousName = new VenueAliasDao();
             previousName.setCreatedBy(this.createUser(this.notBlank(oldNameElement, "owner"), this.securityService));
             previousName.setUpdatedBy(this.createUser(this.notBlank(oldNameElement, "lastChangedBy"), this.securityService));
             previousName.setCreated(this.notBlankDateTime(oldNameElement, "created"));
             previousName.setUpdated(this.notBlankDateTime(oldNameElement, "lastModified"));
+            previousName.setStartDate(this.notBlankDate(oldNameElement, "start"));
+            previousName.setEndDate(this.notBlankDate(oldNameElement, "end"));
             previousName.setName(name);
 
-            this.contestGroupService.migrateAlias(group, previousName);
+            this.venueService.migrateAlias(venue, previousName);
         }
-    }
-
-    private void createTag(ContestGroupDao group, Element oldNameElement) {
-        String name = oldNameElement.getText();
-
-        Optional<ContestTagDao> contestTag = this.contestTagService.fetchByName(name);
-        if (contestTag.isEmpty()) {
-            throw new NotFoundException("Contest tag with name " + name + " not found");
-        }
-
-        group.getTags().add(contestTag.get());
     }
 }
