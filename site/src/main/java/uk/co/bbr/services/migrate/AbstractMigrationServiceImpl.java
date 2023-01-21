@@ -1,19 +1,15 @@
-package uk.co.bbr.web.migrate;
+package uk.co.bbr.services.migrate;
 
 import org.jdom2.Element;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.services.security.dao.BbrUserDao;
 
-import java.io.File;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.Objects;
 import java.util.Optional;
 
-public class AbstractMigrateController {
-    protected static final String BASE_PATH = "/tmp/bbr";
+public class AbstractMigrationServiceImpl {
 
     protected final BbrUserDao createUser(String username, SecurityService securityService) {
         if (username == null) {
@@ -79,10 +75,5 @@ public class AbstractMigrateController {
             return null;
         }
         return Integer.parseInt(value);
-    }
-
-    protected final String[] fetchDirectories() {
-        File topLevel = new File(BASE_PATH + "/People");
-        return Arrays.stream(Objects.requireNonNull(topLevel.list((current, name) -> new File(current, name).isDirectory()))).sorted().toArray(String[]::new);
     }
 }
