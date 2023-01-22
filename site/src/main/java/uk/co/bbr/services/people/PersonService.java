@@ -15,9 +15,9 @@ public interface PersonService {
     void createAlternativeName(PersonDao person, PersonAliasDao previousName);
     void migrateAlternativeName(PersonDao person, PersonAliasDao previousName);
 
-    PersonDao fetchBySlug(String personSlug);
+    Optional<PersonDao> fetchBySlug(String personSlug);
 
-    PersonDao fetchById(long personId);
+    Optional<PersonDao> fetchById(long personId);
 
     List<PersonAliasDao> findAlternateNames(PersonDao person);
 

@@ -15,6 +15,8 @@ public interface ContestEventService {
 
     ContestEventDao create(ContestDao contest, ContestEventDao event);
 
+    ContestEventDao migrate(ContestDao contest, ContestEventDao contestEvent);
+
     List<ContestAdjudicatorDao> addAdjudicator(ContestEventDao event, PersonDao adjudicator);
 
     List<ContestAdjudicatorDao> fetchAdjudicators(ContestEventDao event);
@@ -24,4 +26,6 @@ public interface ContestEventService {
     ContestTestPieceDao addTestPieceToContest(ContestEventDao event, ContestTestPieceDao testPiece);
 
     List<ContestTestPieceDao> listTestPieces(ContestEventDao event);
+
+
 }

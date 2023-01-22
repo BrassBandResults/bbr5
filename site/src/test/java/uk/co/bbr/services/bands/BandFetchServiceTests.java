@@ -68,7 +68,7 @@ class BandFetchServiceTests implements LoginMixin {
     @Test
     void testFetchBandBySlugWorksCorrectly() {
         // act
-        Optional<BandDao> bandOptional = this.bandService.fetchBandBySlug("black-dyke-band");
+        Optional<BandDao> bandOptional = this.bandService.fetchBySlug("black-dyke-band");
 
         // assert
         assertTrue(bandOptional.isPresent());
@@ -90,7 +90,7 @@ class BandFetchServiceTests implements LoginMixin {
     @Test
     void testFullDateRangeWorksCorrectly() {
         // act
-        Optional<BandDao> bandOptional = this.bandService.fetchBandBySlug("wallace-arnold-rothwell-band");
+        Optional<BandDao> bandOptional = this.bandService.fetchBySlug("wallace-arnold-rothwell-band");
 
         // assert
         assertTrue(bandOptional.isPresent());
@@ -106,7 +106,7 @@ class BandFetchServiceTests implements LoginMixin {
     @Test
     void testEndDateRangeWorksCorrectly() {
         // act
-        Optional<BandDao> bandOptional = this.bandService.fetchBandBySlug("rothwell-old");
+        Optional<BandDao> bandOptional = this.bandService.fetchBySlug("rothwell-old");
 
         // assert
         assertTrue(bandOptional.isPresent());
@@ -121,7 +121,7 @@ class BandFetchServiceTests implements LoginMixin {
     @Test
     void testStartDateRangeWorksCorrectly() {
         // act
-        Optional<BandDao> bandOptional = this.bandService.fetchBandBySlug("rothwell-temperance");
+        Optional<BandDao> bandOptional = this.bandService.fetchBySlug("rothwell-temperance");
 
         // assert
         assertTrue(bandOptional.isPresent());

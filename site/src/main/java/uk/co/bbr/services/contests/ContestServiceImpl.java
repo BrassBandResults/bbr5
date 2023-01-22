@@ -116,4 +116,9 @@ public class ContestServiceImpl implements ContestService, SlugTools {
     public Optional<ContestAliasDao> aliasExists(ContestDao contest, String aliasName) {
         return this.contestAliasRepository.fetchByNameAndContest(contest.getId(), aliasName);
     }
+
+    @Override
+    public Optional<ContestDao> fetchBySlug(String slug) {
+        return this.contestRepository.fetchBySlug(slug);
+    }
 }

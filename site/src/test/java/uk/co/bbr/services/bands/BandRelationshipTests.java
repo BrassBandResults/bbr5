@@ -67,8 +67,8 @@ class BandRelationshipTests implements LoginMixin {
         // arrange
         loginTestUser(this.securityService, this.jwtService, TestUser.TEST_MEMBER);
 
-        BandDao rothwellTemperance = this.bandService.fetchBandBySlug("rothwell-temperance").get();
-        BandDao wallaceArnold = this.bandService.fetchBandBySlug("wallace-arnold-rothwell-band").get();
+        BandDao rothwellTemperance = this.bandService.fetchBySlug("rothwell-temperance").get();
+        BandDao wallaceArnold = this.bandService.fetchBySlug("wallace-arnold-rothwell-band").get();
 
         BandRelationshipDao newRelationship = new BandRelationshipDao();
         newRelationship.setLeftBand(wallaceArnold);

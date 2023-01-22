@@ -12,6 +12,7 @@ import uk.co.bbr.services.contests.repo.ContestTestPieceRepository;
 import uk.co.bbr.services.contests.types.ContestEventDateResolution;
 import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.security.SecurityService;
+import uk.co.bbr.web.security.annotations.IsBbrAdmin;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
 import java.time.LocalDate;
@@ -39,6 +40,16 @@ public class ContestEventServiceImpl implements ContestEventService {
     @Override
     @IsBbrMember
     public ContestEventDao create(ContestDao contest, ContestEventDao event) {
+        return this.create(contest, event, false);
+    }
+
+    @Override
+    @IsBbrAdmin
+    public ContestEventDao migrate(ContestDao contest, ContestEventDao contestEvent) {
+        return this.create(contest, contestEvent, true);
+    }
+
+    private ContestEventDao create(ContestDao contest, ContestEventDao event, boolean migrating) {
         event.setContest(contest);
 
         // default in contest type if not specified
@@ -47,8 +58,8 @@ public class ContestEventServiceImpl implements ContestEventService {
         }
 
         // default in date resolution if not specified
-        if (event.getDateResolution() == null) {
-            event.setDateResolution(ContestEventDateResolution.EXACT_DATE);
+        if (event.getEventDateResolution() == null) {
+            event.setEventDateResolution(ContestEventDateResolution.EXACT_DATE);
         }
 
         // default in name if not specified
@@ -60,10 +71,12 @@ public class ContestEventServiceImpl implements ContestEventService {
             event.setOriginalOwner(this.securityService.getCurrentUsername());
         }
 
-        event.setCreated(LocalDateTime.now());
-        event.setCreatedBy(this.securityService.getCurrentUser());
-        event.setUpdated(LocalDateTime.now());
-        event.setUpdatedBy(this.securityService.getCurrentUser());
+        if (!migrating) {
+            event.setCreated(LocalDateTime.now());
+            event.setCreatedBy(this.securityService.getCurrentUser());
+            event.setUpdated(LocalDateTime.now());
+            event.setUpdatedBy(this.securityService.getCurrentUser());
+        }
         return this.contestEventRepository.saveAndFlush(event);
     }
 

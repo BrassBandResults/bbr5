@@ -47,6 +47,7 @@ class CreateContestResultTests implements LoginMixin {
 
         ContestResultDao newResult = new ContestResultDao();
         newResult.setBand(band);
+        newResult.setBandName("  Rothwell  Temperance  ");
         newResult.setPosition("1");
         newResult.setConductor(conductor);
         newResult.setDraw(2);
@@ -60,7 +61,7 @@ class CreateContestResultTests implements LoginMixin {
         assertEquals("Rothwell Temperance", result.getBand().getName());
         assertEquals("Rothwell Temperance", result.getBandName());
         assertEquals("David Roberts", result.getConductor().getName());
-        assertEquals("David Roberts", result.getConductorName());
+        assertEquals("David Roberts", result.getOriginalConductorName());
         assertEquals(1, result.getPosition());
         assertEquals(ResultPositionType.RESULT, result.getResultPositionType());
         assertEquals(2, result.getDraw());
@@ -82,6 +83,7 @@ class CreateContestResultTests implements LoginMixin {
 
         ContestResultDao existingResult = new ContestResultDao();
         existingResult.setBand(band);
+        existingResult.setBandName(band.getName());
         this.contestResultService.addResult(event, existingResult);
 
         // act
@@ -115,7 +117,7 @@ class CreateContestResultTests implements LoginMixin {
         assertEquals("Black Dyke Band", results.get(0).getBand().getName());
         assertEquals("Black Dyke Band", results.get(0).getBandName());
         assertEquals("John Roberts", results.get(0).getConductor().getName());
-        assertEquals("John Roberts", results.get(0).getConductorName());
+        assertEquals("John Roberts", results.get(0).getOriginalConductorName());
         assertEquals("Bob Childs", results.get(0).getConductorSecond().getName());
         assertEquals("Nick Childs", results.get(0).getConductorThird().getName());
         assertEquals(1, results.get(0).getPosition());
@@ -148,6 +150,7 @@ class CreateContestResultTests implements LoginMixin {
 
         ContestResultDao existingResult = new ContestResultDao();
         existingResult.setBand(band);
+        existingResult.setBandName("  Rothwell   Temperance  ");
         existingResult.setDraw(2);
         existingResult.setDrawSecond(3);
         existingResult.setDrawThird(4);
@@ -192,9 +195,9 @@ class CreateContestResultTests implements LoginMixin {
         assertEquals("North West Area", results.get(0).getContestEvent().getContest().getName());
         assertEquals(LocalDate.of(2020, 3, 3), results.get(0).getContestEvent().getEventDate());
         assertEquals("Grimethorpe", results.get(0).getBand().getName());
-        assertEquals("Grimethorpe", results.get(0).getBandName());
+        assertEquals("Rothwell Temperance", results.get(0).getBandName());
         assertEquals("Peter Roberts", results.get(0).getConductor().getName());
-        assertEquals("Peter Roberts", results.get(0).getConductorName());
+        assertEquals("Peter Roberts", results.get(0).getOriginalConductorName());
         assertEquals("David Childs", results.get(0).getConductorSecond().getName());
         assertEquals("Richard Childs", results.get(0).getConductorThird().getName());
         assertEquals(1, results.get(0).getPosition());

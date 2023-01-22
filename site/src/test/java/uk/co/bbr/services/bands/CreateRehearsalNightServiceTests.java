@@ -44,7 +44,7 @@ class CreateRehearsalNightServiceTests implements LoginMixin {
         // arrange
         loginTestUser(this.securityService, this.jwtService, TestUser.TEST_MEMBER);
 
-        BandDao band = this.bandService.fetchBandBySlug("black-dyke-band").get();
+        BandDao band = this.bandService.fetchBySlug("black-dyke-band").get();
 
         // act
         this.bandService.createRehearsalNight(band, RehearsalDay.FRIDAY);

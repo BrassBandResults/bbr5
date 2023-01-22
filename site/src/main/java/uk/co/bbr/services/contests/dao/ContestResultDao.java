@@ -81,7 +81,7 @@ public class ContestResultDao extends AbstractDao implements NameTools {
     private PersonDao conductorThird;
 
     @Column(name="conductor_name")
-    private String conductorName;
+    private String originalConductorName;
 
     @Column(name="notes")
     private String notes;
@@ -136,14 +136,16 @@ public class ContestResultDao extends AbstractDao implements NameTools {
 
     public void setBand(BandDao band) {
         this.band = band;
-        if (StringUtils.isBlank(this.bandName)) {
-            this.bandName = band.getName();
-        }
     }
+
+    public void setBandName(String name) {
+        this.bandName = simplifyName(name);
+    }
+
     public void setConductor(PersonDao person) {
         this.conductor = person;
-        if (StringUtils.isBlank(this.conductorName)) {
-            this.conductorName = person.getName();
+        if (StringUtils.isBlank(this.originalConductorName)) {
+            this.originalConductorName = person.getName();
         }
     }
     public void setConductorSecond(PersonDao conductorTwo) {
@@ -151,6 +153,10 @@ public class ContestResultDao extends AbstractDao implements NameTools {
     }
     public void setConductorThird(PersonDao conductorThree) {
         this.conductorThird = conductorThree;
+    }
+
+    public void setOriginalConductorName(String name) {
+        this.originalConductorName = simplifyName(name);
     }
 
     public void setOldId(String id) {
@@ -172,6 +178,7 @@ public class ContestResultDao extends AbstractDao implements NameTools {
                 this.resultPositionType = ResultPositionType.DISQUALIFIED;
                 break;
             case "0":
+            case "":
                 this.position = null;
                 this.resultPositionType = ResultPositionType.UNKNOWN;
                 break;
@@ -195,22 +202,46 @@ public class ContestResultDao extends AbstractDao implements NameTools {
     }
 
     public void setPointsTotal(String points){
-        this.pointsTotal = points.trim();
+        if (points == null) {
+            this.pointsTotal = null;
+        } else {
+            this.pointsTotal = points.trim();
+        }
     }
     public void setPointsFirst(String points){
-        this.pointsFirst = points.trim();
+        if (points == null) {
+            this.pointsFirst = null;
+        } else {
+            this.pointsFirst = points.trim();
+        }
     }
     public void setPointsSecond(String points) {
-        this.pointsSecond = points.trim();
+        if (points == null) {
+            this.pointsSecond = null;
+        } else {
+            this.pointsSecond = points.trim();
+        }
     }
     public void setPointsThird(String points){
-        this.pointsThird = points.trim();
+        if (points == null) {
+            this.pointsThird = null;
+        } else {
+            this.pointsThird = points.trim();
+        }
     }
     public void setPointsFourth(String points){
-        this.pointsFourth = points.trim();
+        if (points == null) {
+            this.pointsFourth = null;
+        } else {
+            this.pointsFourth = points.trim();
+        }
     }
     public void setPointsPenalty(String points){
-        this.pointsPenalty = points.trim();
+        if (points == null) {
+            this.pointsPenalty = null;
+        } else {
+            this.pointsPenalty = points.trim();
+        }
     }
 
     public void setNotes(String notes) {

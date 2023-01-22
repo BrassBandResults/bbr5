@@ -33,7 +33,7 @@ public class ContestEventDao extends AbstractDao implements NameTools {
     private LocalDate eventDate;
 
     @Column(name="date_resolution", nullable=false)
-    private ContestEventDateResolution dateResolution;
+    private ContestEventDateResolution eventDateResolution;
 
     @ManyToOne(fetch= FetchType.EAGER, optional=false)
     @JoinColumn(name="contest_id")

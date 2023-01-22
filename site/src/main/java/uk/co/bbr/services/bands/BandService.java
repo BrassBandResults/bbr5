@@ -27,7 +27,7 @@ public interface BandService {
 
     List<RehearsalDay> findRehearsalNights(BandDao band);
 
-    Optional<BandDao> fetchBandBySlug(String bandSlug);
+    Optional<BandDao> fetchBySlug(String bandSlug);
 
     Optional<BandDao> fetchBandByOldId(String bandOldId);
 

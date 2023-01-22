@@ -13,6 +13,8 @@ import uk.co.bbr.services.security.ex.AuthenticationFailedException;
 import uk.co.bbr.web.LoginMixin;
 import uk.co.bbr.web.security.support.TestUser;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @ActiveProfiles("test")
@@ -71,18 +73,20 @@ class CreatePersonTests implements LoginMixin {
         PersonDao savedPerson = this.personService.create(person);
 
         // act
-        PersonDao returnedPerson = this.personService.fetchById(savedPerson.getId());
+        Optional<PersonDao> returnedPerson = this.personService.fetchById(savedPerson.getId());
 
         // assert
-        assertEquals("Childs I", returnedPerson.getName());
-        assertEquals("Childs I", returnedPerson.getNameSurnameFirst());
-        assertEquals("", returnedPerson.getFirstNames());
-        assertEquals("Childs", returnedPerson.getSurname());
-        assertEquals("My Notes", returnedPerson.getNotes());
-        assertFalse(person.isDeceased());
-        assertEquals("I", returnedPerson.getSuffix());
-        assertEquals("432", returnedPerson.getOldId());
-        assertEquals("Black Dyke", returnedPerson.getKnownFor());
+        assertTrue(returnedPerson.isPresent());
+        assertFalse(returnedPerson.isEmpty());
+        assertEquals("Childs I", returnedPerson.get().getName());
+        assertEquals("Childs I", returnedPerson.get().getNameSurnameFirst());
+        assertEquals("", returnedPerson.get().getFirstNames());
+        assertEquals("Childs", returnedPerson.get().getSurname());
+        assertEquals("My Notes", returnedPerson.get().getNotes());
+        assertFalse(returnedPerson.get().isDeceased());
+        assertEquals("I", returnedPerson.get().getSuffix());
+        assertEquals("432", returnedPerson.get().getOldId());
+        assertEquals("Black Dyke", returnedPerson.get().getKnownFor());
 
         logoutTestUser();
     }
@@ -103,18 +107,20 @@ class CreatePersonTests implements LoginMixin {
         PersonDao savedPerson = this.personService.create(person);
 
         // act
-        PersonDao returnedPerson = this.personService.fetchBySlug(savedPerson.getSlug());
+        Optional<PersonDao> returnedPerson = this.personService.fetchBySlug(savedPerson.getSlug());
 
         // assert
-        assertEquals("Bart Simpson", returnedPerson.getName());
-        assertEquals("Simpson, Bart", returnedPerson.getNameSurnameFirst());
-        assertEquals("Bart", returnedPerson.getFirstNames());
-        assertEquals("Simpson", returnedPerson.getSurname());
-        assertEquals("No Notes", returnedPerson.getNotes());
-        assertTrue(person.isDeceased());
-        assertEquals("", returnedPerson.getSuffix());
-        assertEquals("111", returnedPerson.getOldId());
-        assertEquals("Carlton Main", returnedPerson.getKnownFor());
+        assertTrue(returnedPerson.isPresent());
+        assertFalse(returnedPerson.isEmpty());
+        assertEquals("Bart Simpson", returnedPerson.get().getName());
+        assertEquals("Simpson, Bart", returnedPerson.get().getNameSurnameFirst());
+        assertEquals("Bart", returnedPerson.get().getFirstNames());
+        assertEquals("Simpson", returnedPerson.get().getSurname());
+        assertEquals("No Notes", returnedPerson.get().getNotes());
+        assertTrue(returnedPerson.get().isDeceased());
+        assertEquals("", returnedPerson.get().getSuffix());
+        assertEquals("111", returnedPerson.get().getOldId());
+        assertEquals("Carlton Main", returnedPerson.get().getKnownFor());
 
         logoutTestUser();
     }

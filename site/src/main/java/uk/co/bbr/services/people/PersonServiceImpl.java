@@ -102,21 +102,13 @@ public class PersonServiceImpl implements PersonService, SlugTools {
     }
 
     @Override
-    public PersonDao fetchBySlug(String personSlug) {
-        Optional<PersonDao> matchedPerson = this.personRepository.fetchBySlug(personSlug);
-        if (matchedPerson.isEmpty()) {
-            throw new NotFoundException("Person with slug " + personSlug + " not found");
-        }
-        return matchedPerson.get();
+    public Optional<PersonDao> fetchBySlug(String personSlug) {
+        return this.personRepository.fetchBySlug(personSlug);
     }
 
     @Override
-    public PersonDao fetchById(long personId) {
-        Optional<PersonDao> matchedPerson = this.personRepository.fetchById(personId);
-        if (matchedPerson.isEmpty()) {
-            throw new NotFoundException("Person with id " + personId + " not found");
-        }
-        return matchedPerson.get();
+    public Optional<PersonDao> fetchById(long personId) {
+        return this.personRepository.fetchById(personId);
     }
 
     @Override

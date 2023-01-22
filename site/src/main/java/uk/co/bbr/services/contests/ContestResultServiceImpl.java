@@ -56,4 +56,10 @@ public class ContestResultServiceImpl implements ContestResultService {
     public List<ContestResultDao> fetchForEvent(ContestEventDao event) {
         return this.contestResultRepository.findAllForEvent(event.getId());
     }
+
+    @Override
+    public ContestResultDao migrate(ContestEventDao event, ContestResultDao contestResult) {
+        contestResult.setContestEvent(event);
+        return this.contestResultRepository.save(contestResult);
+    }
 }

@@ -71,6 +71,8 @@ public class MigrateResultsController {
         for (File eachFile : allFilesForYear) {
             String filename = eachFile.getAbsolutePath();
 
+            System.out.println(filename);
+
             Document doc;
             try {
                 SAXBuilder sax = new SAXBuilder();

@@ -205,7 +205,7 @@ public class BandServiceImpl implements BandService, SlugTools {
     }
 
     @Override
-    public Optional<BandDao> fetchBandBySlug(String bandSlug) {
+    public Optional<BandDao> fetchBySlug(String bandSlug) {
         return this.bandRepository.fetchBySlug(bandSlug);
     }
 

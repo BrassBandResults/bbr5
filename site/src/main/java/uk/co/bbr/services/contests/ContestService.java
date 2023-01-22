@@ -17,5 +17,5 @@ public interface ContestService {
 
     Optional<ContestAliasDao> aliasExists(ContestDao contest, String aliasName);
 
-
+    Optional<ContestDao> fetchBySlug(String slug);
 }

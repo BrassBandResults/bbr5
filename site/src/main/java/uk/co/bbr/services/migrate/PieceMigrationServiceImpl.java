@@ -12,6 +12,7 @@ import uk.co.bbr.services.pieces.dao.PieceDao;
 import uk.co.bbr.services.security.SecurityService;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -35,18 +36,24 @@ public class PieceMigrationServiceImpl extends AbstractMigrationServiceImpl impl
             newPiece.setYear(newPiece.getYear().substring(0,4));
         }
 
-        PersonDao composer = null;
+        Optional<PersonDao> composer = null;
         if (rootNode.getChildText("composer") != null) {
             composer = this.personService.fetchBySlug(rootNode.getChild("composer").getAttributeValue("slug"));
         }
+        if (composer.isEmpty()) {
+            throw new UnsupportedOperationException("Composer not found");
+        }
 
-        PersonDao arranger = null;
+        Optional<PersonDao> arranger = null;
         if (rootNode.getChildText("arranger") != null) {
             arranger = this.personService.fetchBySlug(rootNode.getChild("arranger").getAttributeValue("slug"));
         }
+        if (arranger.isEmpty()) {
+            throw new UnsupportedOperationException("Arranger not found");
+        }
 
-        newPiece.setComposer(composer);
-        newPiece.setArranger(arranger);
+        newPiece.setComposer(composer.get());
+        newPiece.setArranger(arranger.get());
 
         newPiece.setCreatedBy(this.createUser(this.notBlank(rootNode, "owner"), this.securityService));
         newPiece.setUpdatedBy(this.createUser(this.notBlank(rootNode, "lastChangedBy"), this.securityService));

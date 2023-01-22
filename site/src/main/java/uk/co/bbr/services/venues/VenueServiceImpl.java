@@ -84,6 +84,11 @@ public class VenueServiceImpl implements VenueService, SlugTools {
         return this.createAlias(venue, previousName, true);
     }
 
+    @Override
+    public Optional<VenueDao> fetchBySlug(String slug) {
+        return this.venueRepository.fetchBySlug(slug);
+    }
+
     private VenueAliasDao createAlias(VenueDao venue, VenueAliasDao previousName, boolean migrating) {
         previousName.setVenue(venue);
 
