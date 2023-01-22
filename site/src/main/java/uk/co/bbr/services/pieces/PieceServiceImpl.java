@@ -116,21 +116,13 @@ public class PieceServiceImpl implements PieceService, SlugTools {
     }
 
     @Override
-    public PieceDao fetchBySlug(String pieceSlug) {
-        Optional<PieceDao> piece = this.pieceRepository.fetchBySlug(pieceSlug);
-        if (piece.isEmpty()) {
-            throw new UnsupportedOperationException("Piece with slug " + pieceSlug + " not found");
-        }
-        return piece.get();
+    public Optional<PieceDao> fetchBySlug(String pieceSlug) {
+        return this.pieceRepository.fetchBySlug(pieceSlug);
     }
 
     @Override
-    public PieceDao fetchById(Long pieceId) {
-        Optional<PieceDao> piece = this.pieceRepository.fetchById(pieceId);
-        if (piece.isEmpty()) {
-            throw new UnsupportedOperationException("Piece with id " + pieceId + " not found");
-        }
-        return piece.get();
+    public Optional<PieceDao> fetchById(Long pieceId) {
+        return this.pieceRepository.fetchById(pieceId);
     }
 
     @Override

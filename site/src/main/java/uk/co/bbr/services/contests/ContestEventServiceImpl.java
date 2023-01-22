@@ -5,10 +5,10 @@ import org.springframework.stereotype.Service;
 import uk.co.bbr.services.contests.dao.ContestAdjudicatorDao;
 import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.contests.dao.ContestEventDao;
-import uk.co.bbr.services.contests.dao.ContestTestPieceDao;
+import uk.co.bbr.services.contests.dao.ContestEventTestPieceDao;
 import uk.co.bbr.services.contests.repo.ContestAdjudicatorRepository;
 import uk.co.bbr.services.contests.repo.ContestEventRepository;
-import uk.co.bbr.services.contests.repo.ContestTestPieceRepository;
+import uk.co.bbr.services.contests.repo.ContestEventTestPieceRepository;
 import uk.co.bbr.services.contests.types.ContestEventDateResolution;
 import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.security.SecurityService;
@@ -25,7 +25,7 @@ public class ContestEventServiceImpl implements ContestEventService {
 
     private final SecurityService securityService;
     private final ContestEventRepository contestEventRepository;
-    private final ContestTestPieceRepository contestTestPieceRepository;
+    private final ContestEventTestPieceRepository contestTestPieceRepository;
     private final ContestAdjudicatorRepository contestAdjudicatorRepository;
 
     @Override
@@ -109,7 +109,7 @@ public class ContestEventServiceImpl implements ContestEventService {
     }
 
     @Override
-    public ContestTestPieceDao addTestPieceToContest(ContestEventDao event, ContestTestPieceDao testPiece) {
+    public ContestEventTestPieceDao addTestPieceToContest(ContestEventDao event, ContestEventTestPieceDao testPiece) {
         testPiece.setContestEvent(event);
         testPiece.setCreated(LocalDateTime.now());
         testPiece.setCreatedBy(this.securityService.getCurrentUser());
@@ -119,7 +119,7 @@ public class ContestEventServiceImpl implements ContestEventService {
     }
 
     @Override
-    public List<ContestTestPieceDao> listTestPieces(ContestEventDao event) {
+    public List<ContestEventTestPieceDao> listTestPieces(ContestEventDao event) {
         return this.contestTestPieceRepository.fetchForEvent(event.getId());
     }
 

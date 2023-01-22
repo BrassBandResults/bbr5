@@ -90,7 +90,7 @@ public class MigrateController {
 
         List<String> messages = new ArrayList<>();
 
-        File topLevel = new File(BASE_PATH + "/Results");
+        File topLevel = new File(BASE_PATH + "/" + type);
         String[] directories = Arrays.stream(Objects.requireNonNull(topLevel.list((current, name) -> new File(current, name).isDirectory()))).sorted().toArray(String[]::new);
         try {
             String indexLetter = directories[index];

@@ -1,18 +1,12 @@
 package uk.co.bbr.services.contests;
 
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import uk.co.bbr.services.contests.dao.ContestEventDao;
-import uk.co.bbr.services.contests.dao.ContestGroupDao;
 import uk.co.bbr.services.contests.dao.ContestResultDao;
-import uk.co.bbr.services.contests.repo.ContestEventRepository;
-import uk.co.bbr.services.contests.repo.ContestGroupRepository;
+import uk.co.bbr.services.contests.dao.ContestResultPieceDao;
+import uk.co.bbr.services.contests.repo.ContestResultPieceRepository;
 import uk.co.bbr.services.contests.repo.ContestResultRepository;
-import uk.co.bbr.services.contests.types.ContestGroupType;
-import uk.co.bbr.services.contests.types.ResultPositionType;
-import uk.co.bbr.services.framework.ValidationException;
-import uk.co.bbr.services.framework.mixins.SlugTools;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
@@ -25,6 +19,7 @@ import java.util.Optional;
 public class ContestResultServiceImpl implements ContestResultService {
 
     private final ContestResultRepository contestResultRepository;
+    private final ContestResultPieceRepository contestResultPieceRepository;
     private final SecurityService securityService;
 
     @Override
@@ -58,8 +53,14 @@ public class ContestResultServiceImpl implements ContestResultService {
     }
 
     @Override
+    public ContestResultPieceDao addPieceToResult(ContestResultDao contestResult, ContestResultPieceDao contestResultTestPiece) {
+        contestResultTestPiece.setContestResult(contestResult);
+        return this.contestResultPieceRepository.saveAndFlush(contestResultTestPiece);
+    }
+
+    @Override
     public ContestResultDao migrate(ContestEventDao event, ContestResultDao contestResult) {
         contestResult.setContestEvent(event);
-        return this.contestResultRepository.save(contestResult);
+        return this.contestResultRepository.saveAndFlush(contestResult);
     }
 }

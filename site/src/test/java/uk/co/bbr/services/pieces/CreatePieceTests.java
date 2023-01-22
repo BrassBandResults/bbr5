@@ -16,6 +16,8 @@ import uk.co.bbr.services.security.ex.AuthenticationFailedException;
 import uk.co.bbr.web.LoginMixin;
 import uk.co.bbr.web.security.support.TestUser;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @ActiveProfiles("test")
@@ -64,14 +66,16 @@ class CreatePieceTests implements LoginMixin {
         PieceDao savedPiece = this.pieceService.create(piece);
 
         // act
-        PieceDao returnedPiece = this.pieceService.fetchById(savedPiece.getId());
+        Optional<PieceDao> returnedPiece = this.pieceService.fetchById(savedPiece.getId());
 
         // assert
-        assertEquals("Piece Name 2", returnedPiece.getName());
-        assertNull(returnedPiece.getNotes());
-        assertEquals("432", returnedPiece.getOldId());
-        assertEquals("1980", returnedPiece.getYear());
-        assertEquals(PieceCategory.MARCH, returnedPiece.getCategory());
+        assertTrue(returnedPiece.isPresent());
+        assertFalse(returnedPiece.isEmpty());
+        assertEquals("Piece Name 2", returnedPiece.get().getName());
+        assertNull(returnedPiece.get().getNotes());
+        assertEquals("432", returnedPiece.get().getOldId());
+        assertEquals("1980", returnedPiece.get().getYear());
+        assertEquals(PieceCategory.MARCH, returnedPiece.get().getCategory());
 
         logoutTestUser();
     }
@@ -90,14 +94,16 @@ class CreatePieceTests implements LoginMixin {
         PieceDao savedPiece = this.pieceService.create(piece);
 
         // act
-        PieceDao returnedPiece = this.pieceService.fetchBySlug(savedPiece.getSlug());
+        Optional<PieceDao> returnedPiece = this.pieceService.fetchBySlug(savedPiece.getSlug());
 
         // assert
-        assertEquals("Piece Title", returnedPiece.getName());
-        assertEquals("Notes Section", returnedPiece.getNotes());
-        assertEquals("43233", returnedPiece.getOldId());
-        assertEquals("1981", returnedPiece.getYear());
-        assertEquals(PieceCategory.HYMN, returnedPiece.getCategory());
+        assertTrue(returnedPiece.isPresent());
+        assertFalse(returnedPiece.isEmpty());
+        assertEquals("Piece Title", returnedPiece.get().getName());
+        assertEquals("Notes Section", returnedPiece.get().getNotes());
+        assertEquals("43233", returnedPiece.get().getOldId());
+        assertEquals("1981", returnedPiece.get().getYear());
+        assertEquals(PieceCategory.HYMN, returnedPiece.get().getCategory());
 
         logoutTestUser();
     }

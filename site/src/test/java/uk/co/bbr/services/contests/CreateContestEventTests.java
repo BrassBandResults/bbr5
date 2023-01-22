@@ -4,14 +4,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import uk.co.bbr.services.bands.BandService;
-import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.contests.dao.ContestAdjudicatorDao;
 import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.contests.dao.ContestEventDao;
-import uk.co.bbr.services.contests.dao.ContestResultDao;
-import uk.co.bbr.services.contests.dao.ContestTestPieceDao;
-import uk.co.bbr.services.contests.types.ResultPositionType;
+import uk.co.bbr.services.contests.dao.ContestEventTestPieceDao;
 import uk.co.bbr.services.people.PersonService;
 import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.pieces.PieceService;
@@ -94,14 +90,14 @@ class CreateContestEventTests implements LoginMixin {
 
         PieceDao piece = this.pieceService.create("The Year of the Dragon");
 
-        ContestTestPieceDao testPiece = new ContestTestPieceDao();
+        ContestEventTestPieceDao testPiece = new ContestEventTestPieceDao();
         testPiece.setPiece(piece);
 
         // act
         this.contestEventService.addTestPieceToContest(event, testPiece);
 
         // assert
-        List<ContestTestPieceDao> setTests = this.contestEventService.listTestPieces(event);
+        List<ContestEventTestPieceDao> setTests = this.contestEventService.listTestPieces(event);
         assertEquals(1, setTests.size());
         assertEquals("The Year of the Dragon", setTests.get(0).getPiece().getName());
         assertNull(setTests.get(0).getAndOr());

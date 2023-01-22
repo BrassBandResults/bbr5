@@ -3,7 +3,7 @@ package uk.co.bbr.services.contests;
 import uk.co.bbr.services.contests.dao.ContestAdjudicatorDao;
 import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.contests.dao.ContestEventDao;
-import uk.co.bbr.services.contests.dao.ContestTestPieceDao;
+import uk.co.bbr.services.contests.dao.ContestEventTestPieceDao;
 import uk.co.bbr.services.people.dao.PersonDao;
 
 import java.time.LocalDate;
@@ -23,9 +23,9 @@ public interface ContestEventService {
 
     ContestEventDao fetch(ContestDao contest, LocalDate eventDate);
 
-    ContestTestPieceDao addTestPieceToContest(ContestEventDao event, ContestTestPieceDao testPiece);
+    ContestEventTestPieceDao addTestPieceToContest(ContestEventDao event, ContestEventTestPieceDao testPiece);
 
-    List<ContestTestPieceDao> listTestPieces(ContestEventDao event);
+    List<ContestEventTestPieceDao> listTestPieces(ContestEventDao event);
 
 
 }
