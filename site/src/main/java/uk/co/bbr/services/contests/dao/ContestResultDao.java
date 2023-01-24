@@ -2,6 +2,7 @@ package uk.co.bbr.services.contests.dao;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.contests.types.ResultPositionType;
@@ -26,16 +27,19 @@ public class ContestResultDao extends AbstractDao implements NameTools {
 
     @ManyToOne(fetch= FetchType.EAGER, optional=false)
     @JoinColumn(name="contest_event_id")
+    @Setter
     private ContestEventDao contestEvent;
 
     @ManyToOne(fetch=FetchType.EAGER, optional=false)
     @JoinColumn(name="band_id")
+    @Setter
     private BandDao band;
 
     @Column(name="band_name")
     private String bandName;
 
     @Column(name="result_position_type")
+    @Setter
     private ResultPositionType resultPositionType = ResultPositionType.UNKNOWN;
 
     @Column(name="result_position")
@@ -70,14 +74,17 @@ public class ContestResultDao extends AbstractDao implements NameTools {
 
     @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="conductor_id")
+    @Setter
     private PersonDao conductor;
 
     @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="conductor_two_id")
+    @Setter
     private PersonDao conductorSecond;
 
     @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="conductor_three_id")
+    @Setter
     private PersonDao conductorThird;
 
     @Column(name="conductor_name")

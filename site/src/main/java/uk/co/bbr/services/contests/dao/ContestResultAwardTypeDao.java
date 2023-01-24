@@ -14,7 +14,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Getter
-@Setter
 @Entity
 @NoArgsConstructor
 @Table(name="contest_result_award_type")

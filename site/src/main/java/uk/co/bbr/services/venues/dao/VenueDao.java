@@ -11,7 +11,6 @@ import uk.co.bbr.services.security.dao.BbrUserDao;
 import javax.persistence.*;
 
 @Getter
-@Setter
 @Entity
 @NoArgsConstructor
 @Table(name="venue")
@@ -27,6 +26,7 @@ public class VenueDao extends AbstractDao implements NameTools {
 
     @ManyToOne(fetch= FetchType.EAGER)
     @JoinColumn(name="region_id")
+    @Setter
     private RegionDao region;
 
     @Column(name="longitude")
@@ -39,19 +39,36 @@ public class VenueDao extends AbstractDao implements NameTools {
     private String notes;
 
     @Column(name="exact")
+    @Setter
     private boolean exact;
 
     @ManyToOne(fetch= FetchType.EAGER)
     @JoinColumn(name="mapper_id")
+    @Setter
     private BbrUserDao mapper;
 
     @ManyToOne(fetch= FetchType.EAGER)
     @JoinColumn(name="parent_id")
+    @Setter
     private VenueDao parent;
 
     public void setName(String name){
         String nameToSet = simplifyName(name);
         this.name = nameToSet;
+    }
+
+    public void setSlug(String value) {
+        if (value != null) {
+            value = value.trim();
+        }
+        this.slug = value;
+    }
+
+    public void setOldId(String value) {
+        if (value != null) {
+            value = value.trim();
+        }
+        this.oldId = value;
     }
 
     public void setNotes(String notes) {

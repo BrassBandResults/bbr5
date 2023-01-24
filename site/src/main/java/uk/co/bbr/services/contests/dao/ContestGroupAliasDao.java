@@ -9,7 +9,6 @@ import uk.co.bbr.services.framework.mixins.NameTools;
 import javax.persistence.*;
 
 @Getter
-@Setter
 @Entity
 @NoArgsConstructor
 @Table(name="contest_group_alias")
@@ -22,10 +21,10 @@ public class ContestGroupAliasDao extends AbstractDao implements NameTools {
 
     @ManyToOne(fetch=FetchType.EAGER, optional=false)
     @JoinColumn(name="contest_group_id")
+    @Setter
     private ContestGroupDao contestGroup;
 
-    public void setName(){
-        String nameToSet = simplifyName(name);
-        this.name = nameToSet;
+    public void setName(String value){
+        this.name = simplifyName(value);
     }
 }

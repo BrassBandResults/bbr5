@@ -15,7 +15,6 @@ import javax.persistence.Table;
 import java.time.LocalDate;
 
 @Getter
-@Setter
 @Entity
 @NoArgsConstructor
 @Table(name="band_previous_name")
@@ -23,18 +22,22 @@ public class BandPreviousNameDao extends AbstractDao implements NameTools {
 
     @ManyToOne(fetch= FetchType.EAGER, optional=false)
     @JoinColumn(name="band_id")
+    @Setter
     private BandDao band;
 
     @Column(name="old_name", nullable=false)
     private String oldName;
 
     @Column(name="start_date")
+    @Setter
     private LocalDate startDate;
 
     @Column(name="end_date")
+    @Setter
     private LocalDate endDate;
 
     @Column(name="hidden")
+    @Setter
     private boolean hidden;
 
     public void setOldName(String name) {

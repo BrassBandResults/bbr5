@@ -18,7 +18,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Getter
-@Setter
 @Entity
 @NoArgsConstructor
 @Table(name="piece")
@@ -39,14 +38,17 @@ public class PieceDao extends AbstractDao implements NameTools {
     private String year;
 
     @Column(name="category")
+    @Setter
     private PieceCategory category;
 
     @ManyToOne(fetch= FetchType.EAGER)
     @JoinColumn(name="composer_id")
+    @Setter
     private PersonDao composer;
 
     @ManyToOne(fetch= FetchType.EAGER)
     @JoinColumn(name="arranger_id")
+    @Setter
     private PersonDao arranger;
 
     @Formula("0")
@@ -60,6 +62,13 @@ public class PieceDao extends AbstractDao implements NameTools {
             notes = notes.trim();
         }
         this.notes = notes;
+    }
+
+    public void setSlug(String value) {
+        if (value != null) {
+            value = value.trim();
+        }
+        this.slug = value;
     }
 
     public void setOldId(String oldId) {

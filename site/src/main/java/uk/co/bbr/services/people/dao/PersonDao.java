@@ -13,7 +13,6 @@ import javax.persistence.Table;
 import java.time.LocalDate;
 
 @Getter
-@Setter
 @Entity
 @NoArgsConstructor
 @Table(name="person")
@@ -40,12 +39,15 @@ public class PersonDao extends AbstractDao implements NameTools {
     private String notes;
 
     @Column(name="deceased", nullable=false)
+    @Setter
     private boolean deceased;
 
     @Column(name="start_date")
+    @Setter
     private LocalDate startDate;
 
     @Column(name="end_date")
+    @Setter
     private LocalDate endDate;
 
     @Formula("0")
@@ -70,6 +72,13 @@ public class PersonDao extends AbstractDao implements NameTools {
         if (oldId != null) {
             this.oldId = oldId.trim();
         }
+    }
+
+    public void setSlug(String value) {
+        if (value != null) {
+            value = value.trim();
+        }
+        this.slug = value;
     }
 
     public void setFirstNames(String firstNames) {

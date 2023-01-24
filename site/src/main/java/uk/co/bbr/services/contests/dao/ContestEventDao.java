@@ -17,7 +17,6 @@ import javax.persistence.Table;
 import java.time.LocalDate;
 
 @Getter
-@Setter
 @Entity
 @NoArgsConstructor
 @Table(name="contest_event")
@@ -30,13 +29,16 @@ public class ContestEventDao extends AbstractDao implements NameTools {
     private String oldId;
 
     @Column(name="date_of_event", nullable=false)
+    @Setter
     private LocalDate eventDate;
 
     @Column(name="date_resolution", nullable=false)
+    @Setter
     private ContestEventDateResolution eventDateResolution;
 
     @ManyToOne(fetch= FetchType.EAGER, optional=false)
     @JoinColumn(name="contest_id")
+    @Setter
     private ContestDao contest;
 
     @Column(name="notes")
@@ -44,12 +46,15 @@ public class ContestEventDao extends AbstractDao implements NameTools {
 
     @ManyToOne(fetch= FetchType.EAGER)
     @JoinColumn(name="venue_id")
+    @Setter
     private VenueDao venue;
 
     @Column(name="complete", nullable=false)
+    @Setter
     private boolean complete;
 
     @Column(name="no_contest", nullable=false)
+    @Setter
     private boolean noContest;
 
     @Column(name="original_owner", nullable=false)
@@ -57,10 +62,32 @@ public class ContestEventDao extends AbstractDao implements NameTools {
 
     @ManyToOne(fetch= FetchType.EAGER, optional=false)
     @JoinColumn(name="contest_type_id")
+    @Setter
     private ContestTypeDao contestType;
 
     public void setName(String name){
         String nameToSet = simplifyName(name);
         this.name = nameToSet;
+    }
+
+    public void setOldId(String value) {
+        if (value != null) {
+            value = value.trim();
+        }
+        this.oldId = value;
+    }
+
+    public void setNotes(String value) {
+        if (value != null) {
+            value = value.trim();
+        }
+        this.notes = value;
+    }
+
+    public void setOriginalOwner(String value) {
+        if (value != null) {
+            value = value.trim();
+        }
+        this.originalOwner = value;
     }
 }

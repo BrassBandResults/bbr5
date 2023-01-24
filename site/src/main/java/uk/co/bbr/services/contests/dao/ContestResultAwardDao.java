@@ -14,7 +14,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Getter
-@Setter
 @Entity
 @NoArgsConstructor
 @Table(name="contest_result_award")
@@ -22,10 +21,12 @@ public class ContestResultAwardDao extends AbstractDao implements NameTools {
 
     @ManyToOne(fetch= FetchType.EAGER, optional=false)
     @JoinColumn(name="contest_result_id")
+    @Setter
     private ContestResultDao contestResult;
 
     @ManyToOne(fetch= FetchType.EAGER, optional=false)
     @JoinColumn(name="award_type_id")
+    @Setter
     private ContestResultAwardTypeDao awardType;
 
     @Column(name="description", nullable=false)

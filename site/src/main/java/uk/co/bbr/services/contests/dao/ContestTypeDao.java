@@ -11,7 +11,6 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Getter
-@Setter
 @Entity
 @NoArgsConstructor
 @Table(name="contest_type")

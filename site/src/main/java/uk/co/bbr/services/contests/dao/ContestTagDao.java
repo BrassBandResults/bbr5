@@ -10,7 +10,6 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Getter
-@Setter
 @Entity
 @NoArgsConstructor
 @Table(name="contest_tag")
@@ -30,5 +29,21 @@ public class ContestTagDao extends AbstractDao implements NameTools {
     public void setName(String name){
         String nameToSet = simplifyName(name);
         this.name = nameToSet;
+    }
+
+    public void setOldId(String oldId){
+        if (oldId == null) {
+            this.oldId = null;
+        } else {
+            this.oldId = oldId.trim();
+        }
+    }
+
+    public void setSlug(String slug){
+        if (slug == null) {
+            this.slug = null;
+        } else {
+            this.slug = slug.trim();
+        }
     }
 }

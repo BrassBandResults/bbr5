@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Set;
 
 @Getter
-@Setter
 @Entity
 @NoArgsConstructor
 @Table(name="contest_group")
@@ -30,6 +29,7 @@ public class ContestGroupDao extends AbstractDao implements NameTools {
     private String slug;
 
     @Column(name="group_type", nullable=false)
+    @Setter
     private ContestGroupType groupType;
 
     @Column(name="notes")
@@ -45,5 +45,26 @@ public class ContestGroupDao extends AbstractDao implements NameTools {
     public void setName(String name){
         String nameToSet = simplifyName(name);
         this.name = nameToSet;
+    }
+
+    public void setSlug(String value) {
+        if (value != null) {
+            value = value.trim();
+        }
+        this.slug = value;
+    }
+
+    public void setOldId(String value) {
+        if (value != null) {
+            value = value.trim();
+        }
+        this.oldId = value;
+    }
+
+    public void setNotes(String value) {
+        if (value != null) {
+            value = value.trim();
+        }
+        this.notes = value;
     }
 }

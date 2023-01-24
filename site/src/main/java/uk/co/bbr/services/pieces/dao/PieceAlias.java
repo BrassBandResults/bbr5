@@ -13,7 +13,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Getter
-@Setter
 @Entity
 @NoArgsConstructor
 @Table(name="piece_alias")
@@ -21,12 +20,14 @@ public class PieceAlias extends AbstractDao {
 
     @ManyToOne(fetch= FetchType.EAGER, optional=false)
     @JoinColumn(name="piece_id")
+    @Setter
     private PieceDao piece;
 
     @Column(name="name", nullable=false)
     private String name;
 
     @Column(name="hidden")
+    @Setter
     private boolean hidden;
 
     public void setName(String name) {

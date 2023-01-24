@@ -15,7 +15,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Getter
-@Setter
 @Entity
 @NoArgsConstructor
 @Table(name="contest_event_adjudicator")
@@ -28,14 +27,15 @@ public class ContestAdjudicatorDao extends AbstractDao implements NameTools {
 
     @ManyToOne(fetch= FetchType.EAGER, optional=false)
     @JoinColumn(name="contest_event_id")
+    @Setter
     private ContestEventDao contestEvent;
 
     @ManyToOne(fetch= FetchType.EAGER, optional=false)
     @JoinColumn(name="person_id")
+    @Setter
     private PersonDao adjudicator;
 
-    public void setName(){
-        String nameToSet = simplifyName(name);
-        this.name = nameToSet;
+    public void setName(String value){
+        this.name = simplifyName(value);
     }
 }

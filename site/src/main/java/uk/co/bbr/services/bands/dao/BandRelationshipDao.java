@@ -14,7 +14,6 @@ import javax.persistence.Table;
 import java.time.LocalDate;
 
 @Getter
-@Setter
 @Entity
 @NoArgsConstructor
 @Table(name="band_relationship")
@@ -22,6 +21,7 @@ public class BandRelationshipDao extends AbstractDao {
 
     @ManyToOne(fetch= FetchType.EAGER, optional=false)
     @JoinColumn(name="left_band_id")
+    @Setter
     private BandDao leftBand;
 
     @Column(name="left_band_name")
@@ -29,10 +29,12 @@ public class BandRelationshipDao extends AbstractDao {
 
     @ManyToOne(fetch= FetchType.EAGER, optional=false)
     @JoinColumn(name="relationship_id")
+    @Setter
     private BandRelationshipTypeDao relationship;
 
     @ManyToOne(fetch= FetchType.EAGER, optional=false)
     @JoinColumn(name="right_band_id")
+    @Setter
     private BandDao rightBand;
 
     @Column(name="right_band_name")
@@ -43,4 +45,18 @@ public class BandRelationshipDao extends AbstractDao {
 
     @Column(name="end_date")
     private LocalDate endDate;
+
+    public void setRightBandName(String value) {
+        if (value != null) {
+            value = value.trim();
+        }
+        this.rightBandName = value;
+    }
+
+    public void setLeftBandName(String value) {
+        if (value != null) {
+            value = value.trim();
+        }
+        this.leftBandName = value;
+    }
 }

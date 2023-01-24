@@ -10,7 +10,6 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Getter
-@Setter
 @Entity
 @NoArgsConstructor
 @Table(name="person_relationship_type")

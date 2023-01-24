@@ -11,7 +11,6 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Getter
-@Setter
 @Entity
 @NoArgsConstructor
 @Table(name="section")
@@ -24,6 +23,7 @@ public class SectionDao extends AbstractDao implements NameTools {
     private String slug;
 
     @Column(name="position", nullable=false)
+    @Setter
     private int position;
 
     @Column(name="map_short_code")
@@ -35,5 +35,12 @@ public class SectionDao extends AbstractDao implements NameTools {
     public void setName(String name){
         String nameToSet = simplifyName(name);
         this.name = nameToSet;
+    }
+
+    public void setTranslationKey(String value) {
+        if (value != null) {
+            value = value.trim();
+        }
+        this.translationKey = value;
     }
 }

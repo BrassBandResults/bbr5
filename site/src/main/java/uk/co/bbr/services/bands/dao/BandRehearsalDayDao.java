@@ -14,16 +14,17 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Getter
-@Setter
 @Entity
 @NoArgsConstructor
 @Table(name="band_rehearsal_day")
 public class BandRehearsalDayDao extends AbstractDao {
 
     @Column(name="day_number", nullable=false)
+    @Setter
     private RehearsalDay day;
 
     @ManyToOne(fetch=FetchType.EAGER, optional=false)
     @JoinColumn(name="band_id")
+    @Setter
     private BandDao band;
 }

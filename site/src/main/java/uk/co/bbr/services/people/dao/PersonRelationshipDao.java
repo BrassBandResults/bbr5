@@ -13,7 +13,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Getter
-@Setter
 @Entity
 @NoArgsConstructor
 @Table(name="person_relationship")
@@ -21,6 +20,7 @@ public class PersonRelationshipDao extends AbstractDao {
 
     @ManyToOne(fetch= FetchType.EAGER, optional=false)
     @JoinColumn(name="left_person_id")
+    @Setter
     private PersonDao leftPerson;
 
     @Column(name="left_person_name")
@@ -28,10 +28,12 @@ public class PersonRelationshipDao extends AbstractDao {
 
     @ManyToOne(fetch= FetchType.EAGER, optional=false)
     @JoinColumn(name="relationship_id")
+    @Setter
     private PersonRelationshipTypeDao relationship;
 
     @ManyToOne(fetch= FetchType.EAGER, optional=false)
     @JoinColumn(name="right_person_id")
+    @Setter
     private PersonDao rightPerson;
 
     @Column(name="right_person_name")

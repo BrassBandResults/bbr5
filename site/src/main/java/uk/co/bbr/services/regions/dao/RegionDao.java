@@ -12,7 +12,6 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Getter
-@Setter
 @Entity
 @NoArgsConstructor
 @Table(name="region")
@@ -25,6 +24,7 @@ public class RegionDao extends AbstractDao implements NameTools {
     private String slug;
 
     @Column(name = "container_id")
+    @Setter
     private Long containerRegionId;
 
     @Column(name = "country_code")
@@ -37,6 +37,7 @@ public class RegionDao extends AbstractDao implements NameTools {
     private String latitude;
 
     @Column(name = "default_map_zoom")
+    @Setter
     private Integer defaultMapZoom;
 
     @Formula("(SELECT COUNT(*) FROM band b WHERE b.region_id = id)")
@@ -61,5 +62,12 @@ public class RegionDao extends AbstractDao implements NameTools {
     public void setName(String name){
         String nameToSet = simplifyName(name);
         this.name = nameToSet;
+    }
+
+    public void setSlug(String value) {
+        if (value != null) {
+            value = value.trim();
+        }
+        this.slug = value;
     }
 }

@@ -14,7 +14,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Getter
-@Setter
 @Entity
 @NoArgsConstructor
 @Table(name="person_alias")
@@ -22,12 +21,14 @@ public class PersonAliasDao extends AbstractDao implements NameTools {
 
     @ManyToOne(fetch= FetchType.EAGER, optional=false)
     @JoinColumn(name="person_id")
+    @Setter
     private PersonDao person;
 
     @Column(name="name", nullable=false)
     private String oldName;
 
     @Column(name="hidden")
+    @Setter
     private boolean hidden;
 
     public void setOldName(String name) {

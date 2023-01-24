@@ -11,7 +11,6 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Getter
-@Setter
 @Entity
 @NoArgsConstructor
 @Table(name="site_user")
@@ -41,5 +40,47 @@ public class BbrUserDao extends AbstractDao {
 
     public UserRole getRole() {
         return UserRole.fromCode(this.accessLevel);
+    }
+
+    public void setUsercode(String value) {
+        if (value != null) {
+            value = value.trim();
+        }
+        this.usercode = value;
+    }
+
+    public void setPassword(String value) {
+        if (value != null) {
+            value = value.trim();
+        }
+        this.password = value;
+    }
+
+    public void setAccessLevel(String value) {
+        if (value != null) {
+            value = value.trim();
+        }
+        this.accessLevel = value;
+    }
+
+    public void setSalt(String value) {
+        if (value != null) {
+            value = value.trim();
+        }
+        this.salt = value;
+    }
+
+    public void setEmail(String value) {
+        if (value != null) {
+            value = value.trim();
+        }
+        this.email = value;
+    }
+
+    public void setPasswordVersion(String value) {
+        if (value != null) {
+            value = value.trim();
+        }
+        this.passwordVersion = value;
     }
 }

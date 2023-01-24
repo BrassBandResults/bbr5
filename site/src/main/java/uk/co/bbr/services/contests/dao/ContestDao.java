@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Set;
 
 @Getter
-@Setter
 @Entity
 @NoArgsConstructor
 @Table(name="contest")
@@ -31,21 +30,26 @@ public class ContestDao extends AbstractDao implements NameTools {
 
     @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="contest_group_id")
+    @Setter
     private ContestGroupDao contestGroup;
 
     @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="default_contest_type_id")
+    @Setter
     private ContestTypeDao defaultContestType;
 
     @ManyToOne(fetch= FetchType.EAGER)
     @JoinColumn(name="region_id")
+    @Setter
     private RegionDao region;
 
     @ManyToOne(fetch= FetchType.EAGER)
     @JoinColumn(name="section_id")
+    @Setter
     private SectionDao section;
 
     @Column(name="ordering")
+    @Setter
     private int ordering;
 
     @Column(name="description")
@@ -55,18 +59,23 @@ public class ContestDao extends AbstractDao implements NameTools {
     private String notes;
 
     @Column(name="extinct")
+    @Setter
     private boolean extinct;
 
     @Column(name="exclude_from_group_results")
+    @Setter
     private boolean excludeFromGroupResults;
 
     @Column(name="all_events_added")
+    @Setter
     private boolean allEventsAdded;
 
     @Column(name="prevent_future_bands")
+    @Setter
     private boolean preventFutureBands;
 
     @Column(name="repeat_period")
+    @Setter
     private Integer repeatPeriod;
 
     @ManyToMany(fetch= FetchType.EAGER)
@@ -79,5 +88,33 @@ public class ContestDao extends AbstractDao implements NameTools {
     public void setName(String name){
         String nameToSet = simplifyName(name);
         this.name = nameToSet;
+    }
+
+    public void setSlug(String value) {
+        if (value != null) {
+            value = value.trim();
+        }
+        this.slug = value;
+    }
+
+    public void setNotes(String value) {
+        if (value != null) {
+            value = value.trim();
+        }
+        this.notes = value;
+    }
+
+    public void setOldId(String value) {
+        if (value != null) {
+            value = value.trim();
+        }
+        this.oldId = value;
+    }
+
+    public void setDescription(String value) {
+        if (value != null) {
+            value = value.trim();
+        }
+        this.description = value;
     }
 }

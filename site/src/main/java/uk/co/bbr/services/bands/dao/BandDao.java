@@ -21,7 +21,6 @@ import javax.persistence.Table;
 import java.time.LocalDate;
 
 @Getter
-@Setter
 @Entity
 @NoArgsConstructor
 @Table(name="band")
@@ -41,6 +40,7 @@ public class BandDao extends AbstractDao implements NameTools {
 
     @ManyToOne(fetch= FetchType.EAGER, optional=false)
     @JoinColumn(name="region_id")
+    @Setter
     private RegionDao region;
 
     @Column(name="longitude")
@@ -54,19 +54,24 @@ public class BandDao extends AbstractDao implements NameTools {
 
     @ManyToOne(fetch= FetchType.EAGER)
     @JoinColumn(name="mapper_id")
+    @Setter
     private BbrUserDao mapper;
 
     @Column(name="start_date")
+    @Setter
     private LocalDate startDate;
 
     @Column(name="end_date")
+    @Setter
     private LocalDate endDate;
 
     @Column(name="status")
+    @Setter
     private BandStatus status;
 
     @ManyToOne(fetch= FetchType.EAGER)
     @JoinColumn(name="section_id")
+    @Setter
     private SectionDao section;
 
     @Column(name="twitter_name")
@@ -75,6 +80,13 @@ public class BandDao extends AbstractDao implements NameTools {
     public void setName(String sourceName) {
         String nameToSet = simplifyName(sourceName);
         this.name = nameToSet;
+    }
+
+    public void setOldId(String value) {
+        if (value != null) {
+            value = value.trim();
+        }
+        this.oldId = value;
     }
 
     public void setLatitude(String latitude) {
@@ -118,6 +130,13 @@ public class BandDao extends AbstractDao implements NameTools {
             }
         }
         this.twitterName = twitterName;
+    }
+
+    public void setSlug(String value) {
+        if (value != null) {
+            value = value.trim();
+        }
+        this.slug = value;
     }
 
     public String getDateRange() {

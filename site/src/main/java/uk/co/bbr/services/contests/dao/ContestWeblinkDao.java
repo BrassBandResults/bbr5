@@ -17,7 +17,6 @@ import javax.persistence.Table;
 import java.time.LocalDate;
 
 @Getter
-@Setter
 @Entity
 @NoArgsConstructor
 @Table(name="contest_weblink")
@@ -28,9 +27,11 @@ public class ContestWeblinkDao extends AbstractDao implements NameTools {
 
     @ManyToOne(fetch= FetchType.EAGER)
     @JoinColumn(name="contest_id")
+    @Setter
     private ContestDao contest;
 
     @ManyToOne(fetch= FetchType.EAGER)
     @JoinColumn(name="contest_group_id")
+    @Setter
     private ContestGroupDao contestGroup;
 }
