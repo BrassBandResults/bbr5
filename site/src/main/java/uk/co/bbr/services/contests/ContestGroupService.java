@@ -2,6 +2,7 @@ package uk.co.bbr.services.contests;
 
 import uk.co.bbr.services.contests.dao.ContestGroupAliasDao;
 import uk.co.bbr.services.contests.dao.ContestGroupDao;
+import uk.co.bbr.services.contests.dto.GroupListDto;
 import uk.co.bbr.services.people.dao.PersonAliasDao;
 
 import java.util.Optional;
@@ -17,6 +18,8 @@ public interface ContestGroupService {
 
     ContestGroupAliasDao migrateAlias(ContestGroupDao group, ContestGroupAliasDao alias);
     ContestGroupAliasDao createAlias(ContestGroupDao group, ContestGroupAliasDao alias);
-
+    ContestGroupAliasDao createAlias(ContestGroupDao group, String alias);
     Optional<ContestGroupDao> fetchBySlug(String groupSlug);
+    public GroupListDto listGroupsStartingWith(String prefix);
 }
+

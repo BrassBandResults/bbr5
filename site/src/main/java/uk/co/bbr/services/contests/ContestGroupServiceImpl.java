@@ -5,17 +5,20 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import uk.co.bbr.services.contests.dao.ContestGroupAliasDao;
 import uk.co.bbr.services.contests.dao.ContestGroupDao;
+import uk.co.bbr.services.contests.dto.GroupListDto;
+import uk.co.bbr.services.contests.dto.GroupListGroupDto;
 import uk.co.bbr.services.contests.repo.ContestGroupAliasRepository;
 import uk.co.bbr.services.contests.repo.ContestGroupRepository;
 import uk.co.bbr.services.contests.types.ContestGroupType;
 import uk.co.bbr.services.framework.ValidationException;
 import uk.co.bbr.services.framework.mixins.SlugTools;
-import uk.co.bbr.services.people.dao.PersonAliasDao;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.web.security.annotations.IsBbrAdmin;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -116,6 +119,13 @@ public class ContestGroupServiceImpl implements ContestGroupService, SlugTools {
         return this.createAlias(group, alias, false);
     }
 
+    @Override
+    public ContestGroupAliasDao createAlias(ContestGroupDao group, String alias) {
+        ContestGroupAliasDao newAlias = new ContestGroupAliasDao();
+        newAlias.setName(alias);
+        return this.createAlias(group, newAlias);
+    }
+
     private ContestGroupAliasDao createAlias(ContestGroupDao group, ContestGroupAliasDao previousName, boolean migrating) {
         previousName.setContestGroup(group);
         if (!migrating) {
@@ -130,6 +140,29 @@ public class ContestGroupServiceImpl implements ContestGroupService, SlugTools {
     @Override
     public Optional<ContestGroupDao> fetchBySlug(String groupSlug) {
         return this.contestGroupRepository.fetchBySlug(groupSlug);
+    }
+
+    @Override
+    public GroupListDto listGroupsStartingWith(String prefix) {
+        List<ContestGroupDao> groupsToReturn;
+
+        switch (prefix.toUpperCase()) {
+            case "ALL" -> groupsToReturn = this.contestGroupRepository.findAll();
+            default -> {
+                if (prefix.trim().length() != 1) {
+                    throw new UnsupportedOperationException("Prefix must be a single character");
+                }
+                groupsToReturn = this.contestGroupRepository.findByPrefixOrderByName(prefix.trim().toUpperCase());
+            }
+        }
+
+        long allGroupsCount = this.contestGroupRepository.count();
+
+        List<GroupListGroupDto> returnedBands = new ArrayList<>();
+        for (ContestGroupDao eachGroup : groupsToReturn) {
+            returnedBands.add(new GroupListGroupDto(eachGroup.getSlug(), eachGroup.getName(), eachGroup.getContestCount()));
+        }
+        return new GroupListDto(groupsToReturn.size(), allGroupsCount, prefix, returnedBands);
     }
 
 

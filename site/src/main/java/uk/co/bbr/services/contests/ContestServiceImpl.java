@@ -7,16 +7,26 @@ import uk.co.bbr.services.contests.dao.ContestAliasDao;
 import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.contests.dao.ContestGroupAliasDao;
 import uk.co.bbr.services.contests.dao.ContestGroupDao;
+import uk.co.bbr.services.contests.dto.ContestListContestDto;
+import uk.co.bbr.services.contests.dto.ContestListDto;
 import uk.co.bbr.services.contests.repo.ContestAliasRepository;
+import uk.co.bbr.services.contests.repo.ContestGroupAliasRepository;
+import uk.co.bbr.services.contests.repo.ContestGroupRepository;
 import uk.co.bbr.services.contests.repo.ContestRepository;
 import uk.co.bbr.services.framework.ValidationException;
 import uk.co.bbr.services.framework.mixins.SlugTools;
+import uk.co.bbr.services.regions.dao.RegionDao;
+import uk.co.bbr.services.regions.dto.LinkSectionDto;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.web.security.annotations.IsBbrAdmin;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +35,8 @@ public class ContestServiceImpl implements ContestService, SlugTools {
     private final SecurityService securityService;
     private final ContestTypeService contestTypeService;
     private final ContestAliasRepository contestAliasRepository;
+    private final ContestGroupRepository contestGroupRepository;
+    private final ContestGroupAliasRepository contestGroupAliasRepository;
 
     private final ContestRepository contestRepository;
 
@@ -48,6 +60,44 @@ public class ContestServiceImpl implements ContestService, SlugTools {
     @IsBbrAdmin
     public ContestDao migrate(ContestDao contest) {
         return this.create(contest, true);
+    }
+
+    @Override
+    public ContestDao update(ContestDao contest) {
+        // validation
+        if (contest.getId() == null) {
+            throw new ValidationException("Can't update without specific id");
+        }
+
+        if (StringUtils.isBlank(contest.getName())) {
+            throw new ValidationException("Band name must be specified");
+        }
+
+        // defaults
+        if (StringUtils.isBlank(contest.getSlug())) {
+            contest.setSlug(slugify(contest.getName()));
+        }
+
+        if (contest.getDefaultContestType() == null) {
+            contest.setDefaultContestType(this.contestTypeService.fetchDefaultContestType());
+        }
+
+        // does the slug already exist?
+        Optional<ContestDao> slugMatches = this.contestRepository.fetchBySlug(contest.getSlug());
+        if (slugMatches.isPresent() && !slugMatches.get().getId().equals(contest.getId())) {
+            throw new ValidationException("Contest with slug " + contest.getSlug() + " already exists.");
+        }
+
+        // does the name already exist?
+        Optional<ContestDao> nameMatches = this.contestRepository.fetchByName(contest.getName());
+        if (nameMatches.isPresent() && !nameMatches.get().getId().equals(contest.getId())) {
+            throw new ValidationException("Contest with name " + contest.getName() + " already exists.");
+        }
+
+        contest.setUpdated(LocalDateTime.now());
+        contest.setUpdatedBy(this.securityService.getCurrentUser());
+
+        return this.contestRepository.saveAndFlush(contest);
     }
 
     private ContestDao create(ContestDao contest, boolean migrating) {
@@ -75,7 +125,7 @@ public class ContestServiceImpl implements ContestService, SlugTools {
             throw new ValidationException("Contest with slug " + contest.getSlug() + " already exists.");
         }
 
-        // does the slug already exist?
+        // does the name already exist?
         Optional<ContestDao> nameMatches = this.contestRepository.fetchByName(contest.getName());
         if (nameMatches.isPresent()) {
             throw new ValidationException("Contest with name " + contest.getName() + " already exists.");
@@ -101,6 +151,13 @@ public class ContestServiceImpl implements ContestService, SlugTools {
         return this.createAlias(contest, alias, false);
     }
 
+    @Override
+    public ContestAliasDao createAlias(ContestDao contest, String previousName) {
+        ContestAliasDao newAlias = new ContestAliasDao();
+        newAlias.setName(previousName);
+        return this.createAlias(contest, newAlias);
+    }
+
     private ContestAliasDao createAlias(ContestDao contest, ContestAliasDao previousName, boolean migrating) {
         previousName.setContest(contest);
         if (!migrating) {
@@ -120,5 +177,49 @@ public class ContestServiceImpl implements ContestService, SlugTools {
     @Override
     public Optional<ContestDao> fetchBySlug(String slug) {
         return this.contestRepository.fetchBySlug(slug);
+    }
+
+    @Override
+    public ContestListDto listContestsStartingWith(String prefix) {
+        List<ContestDao> contestsToReturn;
+        List<ContestAliasDao> contestAliasesToReturn;
+        List<ContestGroupDao> contestGroupsToReturn;
+        List<ContestGroupAliasDao> contestGroupAliasesToReturn;
+
+        switch (prefix.toUpperCase()) {
+            case "ALL" -> {
+                contestsToReturn = this.contestRepository.findAllOutsideGroupsOrderByName();
+                contestAliasesToReturn = this.contestAliasRepository.findAllOutsideGroupsOrderByName();
+                contestGroupsToReturn = this.contestGroupRepository.findAllOrderByName();
+                contestGroupAliasesToReturn = this.contestGroupAliasRepository.findAllOrderByName();
+            }
+            default -> {
+                if (prefix.trim().length() != 1) {
+                    throw new UnsupportedOperationException("Prefix must be a single character");
+                }
+                String upperPrefix = prefix.trim().toUpperCase();
+                contestsToReturn = this.contestRepository.findByPrefixOutsideGroupsOrderByName(upperPrefix);
+                contestAliasesToReturn = this.contestAliasRepository.findByPrefixOutsideGroupsOrderByName(upperPrefix);
+                contestGroupsToReturn = this.contestGroupRepository.findByPrefixOrderByName(upperPrefix);
+                contestGroupAliasesToReturn = this.contestGroupAliasRepository.findByPrefixOrderByName(upperPrefix);
+            }
+        }
+
+        List<ContestListContestDto> returnedContests = new ArrayList<>();
+        for (ContestDao eachContest : contestsToReturn) {
+            returnedContests.add(new ContestListContestDto(eachContest.getSlug(), eachContest.getName(), eachContest.getEventsCount()));
+        }
+        for (ContestAliasDao eachContestAlias : contestAliasesToReturn) {
+            returnedContests.add(new ContestListContestDto(eachContestAlias.getContest().getSlug(), eachContestAlias.getName(), eachContestAlias.getContest().getEventsCount()));
+        }
+        for (ContestGroupDao eachContestGroup : contestGroupsToReturn) {
+            returnedContests.add(new ContestListContestDto(eachContestGroup.getSlug(), eachContestGroup.getName(), eachContestGroup.getEventsCount()));
+        }
+        for (ContestGroupAliasDao eachContestGroupAlias : contestGroupAliasesToReturn) {
+            returnedContests.add(new ContestListContestDto(eachContestGroupAlias.getContestGroup().getSlug(), eachContestGroupAlias.getName(), eachContestGroupAlias.getContestGroup().getEventsCount()));
+        }
+        List<ContestListContestDto> sortedContests = returnedContests.stream().sorted(Comparator.comparing(ContestListContestDto::getName)).collect(Collectors.toList());
+
+        return new ContestListDto(prefix, sortedContests);
     }
 }

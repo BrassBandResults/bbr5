@@ -3,12 +3,15 @@ package uk.co.bbr.services.contests.dao;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Formula;
 import uk.co.bbr.services.contests.types.ContestGroupType;
 import uk.co.bbr.services.framework.AbstractDao;
 import uk.co.bbr.services.framework.mixins.NameTools;
 import uk.co.bbr.services.people.dao.PersonDao;
+import uk.co.bbr.services.regions.dao.RegionDao;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -42,6 +45,12 @@ public class ContestGroupDao extends AbstractDao implements NameTools {
             inverseJoinColumns = @JoinColumn(name = "contest_tag_id"))
     private Set<ContestTagDao> tags = new HashSet<>();
 
+    @Formula("(SELECT COUNT(*) FROM contest c WHERE c.contest_group_id = id)")
+    private int contestCount;
+
+    @Formula("(SELECT COUNT(*) FROM contest_event e INNER JOIN contest c ON e.contest_id = c.id WHERE c.contest_group_id = id)")
+    private int eventsCount;
+
     public void setName(String name){
         String nameToSet = simplifyName(name);
         this.name = nameToSet;
@@ -52,6 +61,13 @@ public class ContestGroupDao extends AbstractDao implements NameTools {
             value = value.trim();
         }
         this.slug = value;
+    }
+
+    public String getSlug() {
+        if (this.slug == null) {
+            return null;
+        }
+        return this.slug.toUpperCase();
     }
 
     public void setOldId(String value) {

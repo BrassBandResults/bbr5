@@ -1,6 +1,8 @@
 package uk.co.bbr.services.contests;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -35,7 +37,7 @@ class CreateContestGroupTests implements LoginMixin {
 
         // assert
         assertEquals("New Contest Group", contestGroup.getName());
-        assertEquals("new-contest-group", contestGroup.getSlug());
+        assertEquals("NEW-CONTEST-GROUP", contestGroup.getSlug());
 
         logoutTestUser();
     }
@@ -51,7 +53,7 @@ class CreateContestGroupTests implements LoginMixin {
         ValidationException ex = assertThrows(ValidationException.class, ()-> {ContestGroupDao GroupDuplicate = this.contestGroupService.create("Group 1");});
 
         // assert
-        assertEquals("Contest Group with slug group-1 already exists.", ex.getMessage());
+        assertEquals("Contest Group with name Group 1 already exists.", ex.getMessage());
 
         logoutTestUser();
     }
@@ -90,7 +92,7 @@ class CreateContestGroupTests implements LoginMixin {
 
         // assert
         assertEquals("Group 3", savedGroup.getName());
-        assertEquals("group-3", savedGroup.getSlug());
+        assertEquals("GROUP-3", savedGroup.getSlug());
         assertNotNull(savedGroup.getId());
         assertEquals(1, savedGroup.getTags().size());
         assertEquals("Tag 1", savedGroup.getTags().stream().findFirst().get().getName());

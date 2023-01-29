@@ -3,6 +3,7 @@ package uk.co.bbr.services.contests.dao;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Formula;
 import uk.co.bbr.services.framework.AbstractDao;
 import uk.co.bbr.services.framework.mixins.NameTools;
 import uk.co.bbr.services.regions.dao.RegionDao;
@@ -10,7 +11,6 @@ import uk.co.bbr.services.sections.dao.SectionDao;
 
 import javax.persistence.*;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -84,6 +84,9 @@ public class ContestDao extends AbstractDao implements NameTools {
             joinColumns = @JoinColumn(name = "contest_id"),
             inverseJoinColumns = @JoinColumn(name = "contest_tag_id"))
     private Set<ContestTagDao> tags = new HashSet<>();
+
+    @Formula("(SELECT COUNT(*) FROM contest_event e WHERE e.contest_id = id)")
+    private int eventsCount;
 
     public void setName(String name){
         String nameToSet = simplifyName(name);

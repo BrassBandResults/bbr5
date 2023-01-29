@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+<head>
+    <title th:text="#{page.groups.title}">Groups - Brass Band Results</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <span th:if="${BandPrefixLetter == 'ALL'}"><h2><span th:text="#{page.groups.page-title}" th:remove="tag">All Groups</span></h2></span>
+    <span th:if="${BandPrefixLetter != 'ALL'}"><h2><span th:text="#{page.groups.groups-starting-with(${GroupPrefixLetter})}" th:remove="tag">Contests Groups starting with R</span></h2></span>
+    <p>
+        <span th:text="#{page.groups.group-counts(${Groups.returnedGroupsCount},${Groups.allGroupsCount})}" th:remove="tag">Showing 1 of 6 groups.</span>
+        <span th:text="#{page.groups.group-list-header}" th:remove="tag">This is a list of current or last known names, alternative group names can be found by search.</span>
+    </p>
+    <p>
+        {% if user.profile.enhanced_functionality %}<p>[<a href="/contest-groups/add/">{% trans "Add New Group"%}</a>]</p>{% endif %}
+    </p>
+    <p th:replace="navigation/az-picker.html :: azPicker('contest-groups', ${GroupPrefixLetter}, false, true)"></p>
+    <table id="bands" class="table table-hover sortable">
+        <thead>
+        <tr>
+            <th th:text="#{page.groups.column-header-name}">Name</th>
+            <th th:text="#{page.groups.column-header-contests}">Contests</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="group : ${Groups.returnedGroups}">
+            <td class="band">
+              <a th:href="${'/contests/' + group.slug}" th:text="${group.name}">Group Name</span></a>
+            </td>
+            <td class="group-contest-count" th:text="${group.contestCount}">0</td>
+        </tr>
+        </tbody>
+    </table>
+    <p th:replace="navigation/az-picker.html :: azPicker('contest-groups', ${GroupPrefixLetter}, false, true)"></p>
+</div>
+</body>
+</html>

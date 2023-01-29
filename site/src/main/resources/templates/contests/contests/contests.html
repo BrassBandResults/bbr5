@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+<head>
+    <title th:text="#{page.contests.title}">Contests - Brass Band Results</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <span th:if="${ContestPrefixLetter == 'ALL'}"><h2><span th:text="#{page.contests.page-title}" th:remove="tag">All Contests</span></h2></span>
+    <span th:if="${ContestPrefixLetter != 'ALL'}"><h2><span th:text="#{page.contests.contests-starting-with(${ContestPrefixLetter})}" th:remove="tag">Contests starting with R</span></h2></span>
+    <p th:replace="navigation/az-picker.html :: azPicker('contests', ${ContestPrefixLetter}, false, true)"></p>
+    <table id="bands" class="table table-hover sortable">
+        <thead>
+        <tr>
+            <th th:text="#{page.contests.column-header-name}">Name</th>
+            <th th:text="#{page.contests.column-header-events}">Events</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="contest : ${Contests.returnedContests}">
+            <td class="contest">
+              <a th:href="${'/contests/' + contest.slug}" th:text="${contest.name}">Contest Name</span></a>
+            </td>
+            <td class="contest-event-count" th:text="${contest.contestResultsCount}">0</td>
+        </tr>
+        </tbody>
+    </table>
+    <p th:replace="navigation/az-picker.html :: azPicker('contests', ${ContestPrefixLetter}, false, true)"></p>
+</div>
+</body>
+</html>
