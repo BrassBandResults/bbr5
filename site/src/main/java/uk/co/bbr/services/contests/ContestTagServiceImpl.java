@@ -3,7 +3,10 @@ package uk.co.bbr.services.contests;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import uk.co.bbr.services.contests.dao.ContestGroupDao;
 import uk.co.bbr.services.contests.dao.ContestTagDao;
+import uk.co.bbr.services.contests.dto.GroupListDto;
+import uk.co.bbr.services.contests.dto.GroupListGroupDto;
 import uk.co.bbr.services.contests.repo.ContestTagRepository;
 import uk.co.bbr.services.framework.ValidationException;
 import uk.co.bbr.services.framework.mixins.SlugTools;
@@ -11,6 +14,8 @@ import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -39,6 +44,23 @@ public class ContestTagServiceImpl implements ContestTagService, SlugTools {
     @Override
     public Optional<ContestTagDao> fetchByName(String name) {
         return this.contestTagRepository.fetchByName(name);
+    }
+
+    @Override
+    public List<ContestTagDao> listTagsStartingWith(String prefix) {
+        List<ContestTagDao> groupsToReturn;
+
+        switch (prefix.toUpperCase()) {
+            case "ALL" -> groupsToReturn = this.contestTagRepository.findAll();
+            default -> {
+                if (prefix.trim().length() != 1) {
+                    throw new UnsupportedOperationException("Prefix must be a single character");
+                }
+                groupsToReturn = this.contestTagRepository.findByPrefixOrderByName(prefix.trim().toUpperCase());
+            }
+        }
+
+        return groupsToReturn;
     }
 
     @Override

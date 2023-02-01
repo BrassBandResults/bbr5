@@ -1,8 +1,8 @@
 package uk.co.bbr.services.contests;
 
-import uk.co.bbr.services.contests.dao.ContestGroupDao;
 import uk.co.bbr.services.contests.dao.ContestTagDao;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface ContestTagService {
@@ -11,4 +11,6 @@ public interface ContestTagService {
     ContestTagDao migrate(ContestTagDao contestTag);
 
     Optional<ContestTagDao> fetchByName(String name);
+
+    List<ContestTagDao> listTagsStartingWith(String prefix);
 }

@@ -1,7 +1,9 @@
 package uk.co.bbr.services.venues;
 
+import uk.co.bbr.services.bands.dto.BandListDto;
 import uk.co.bbr.services.venues.dao.VenueAliasDao;
 import uk.co.bbr.services.venues.dao.VenueDao;
+import uk.co.bbr.services.venues.dto.VenueListDto;
 
 import java.util.Optional;
 
@@ -18,4 +20,6 @@ public interface VenueService {
     VenueAliasDao migrateAlias(VenueDao venue, VenueAliasDao previousName);
 
     Optional<VenueDao> fetchBySlug(String slug);
+
+    VenueListDto listVenuesStartingWith(String prefix);
 }

@@ -25,7 +25,7 @@ public interface BandRepository extends JpaRepository<BandDao, Long> {
             "OR b.name LIKE UPPER('7%') " +
             "OR b.name LIKE UPPER('8%') " +
             "OR b.name LIKE UPPER('9%') ORDER BY b.name")
-    List<BandDao> findWithNumberPrefix();
+    List<BandDao> findWithNumberPrefixOrderByName();
 
     @Query("SELECT b FROM BandDao b WHERE b.slug = ?1")
     Optional<BandDao> fetchBySlug(String bandSlug);

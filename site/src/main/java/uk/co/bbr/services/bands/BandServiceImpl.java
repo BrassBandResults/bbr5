@@ -17,7 +17,6 @@ import uk.co.bbr.services.bands.repo.BandRelationshipTypeRepository;
 import uk.co.bbr.services.bands.repo.BandRepository;
 import uk.co.bbr.services.bands.types.BandStatus;
 import uk.co.bbr.services.bands.types.RehearsalDay;
-import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.framework.mixins.SlugTools;
 import uk.co.bbr.services.framework.ValidationException;
 import uk.co.bbr.services.regions.RegionService;
@@ -142,7 +141,7 @@ public class BandServiceImpl implements BandService, SlugTools {
 
         switch (prefix.toUpperCase()) {
             case "ALL" -> bandsToReturn = this.bandRepository.findAll();
-            case "0" -> bandsToReturn = this.bandRepository.findWithNumberPrefix();
+            case "0" -> bandsToReturn = this.bandRepository.findWithNumberPrefixOrderByName();
             default -> {
                 if (prefix.trim().length() != 1) {
                     throw new UnsupportedOperationException("Prefix must be a single character");

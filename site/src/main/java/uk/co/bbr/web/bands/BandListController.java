@@ -19,7 +19,7 @@ public class BandListController {
         return bandListLetter(model, "A");
     }
 
-    @GetMapping("/bands/{letter:[A-Z0-9]{1}}")
+    @GetMapping("/bands/{letter:[0A-Z]}")
     public String bandListLetter(Model model, @PathVariable("letter") String letter) {
         BandListDto bands = this.bandService.listBandsStartingWith(letter);
 

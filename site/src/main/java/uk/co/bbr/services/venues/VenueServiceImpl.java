@@ -3,17 +3,24 @@ package uk.co.bbr.services.venues;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import uk.co.bbr.services.bands.dao.BandDao;
+import uk.co.bbr.services.bands.dto.BandListBandDto;
+import uk.co.bbr.services.bands.dto.BandListDto;
 import uk.co.bbr.services.framework.ValidationException;
 import uk.co.bbr.services.framework.mixins.SlugTools;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.services.venues.dao.VenueAliasDao;
 import uk.co.bbr.services.venues.dao.VenueDao;
+import uk.co.bbr.services.venues.dto.VenueListDto;
+import uk.co.bbr.services.venues.dto.VenueListVenueDto;
 import uk.co.bbr.services.venues.repo.VenueAliasRepository;
 import uk.co.bbr.services.venues.repo.VenueRepository;
 import uk.co.bbr.web.security.annotations.IsBbrAdmin;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -113,5 +120,33 @@ public class VenueServiceImpl implements VenueService, SlugTools {
         }
     }
 
+
+    @Override
+    public VenueListDto listVenuesStartingWith(String prefix) {
+        List<VenueDao> venuesToReturn;
+        String prefixDisplay = prefix;
+
+        switch (prefix.toUpperCase()) {
+            case "ALL" -> venuesToReturn = this.venueRepository.findAll();
+            case "0" -> {
+                prefixDisplay = "0-9";
+                venuesToReturn = this.venueRepository.findWithNumberPrefixOrderByName();
+            }
+            default -> {
+                if (prefix.trim().length() != 1) {
+                    throw new UnsupportedOperationException("Prefix must be a single character");
+                }
+                venuesToReturn = this.venueRepository.findByPrefixOrderByName(prefix.trim().toUpperCase());
+            }
+        }
+
+        long allVenuesCount = this.venueRepository.count();
+
+        List<VenueListVenueDto> returnedVenues = new ArrayList<>();
+        for (VenueDao eachVenue : venuesToReturn) {
+            returnedVenues.add(new VenueListVenueDto(eachVenue.getSlug(), eachVenue.getName(), eachVenue.getRegion(), eachVenue.getEventCount()));
+        }
+        return new VenueListDto(venuesToReturn.size(), allVenuesCount, prefixDisplay, returnedVenues);
+    }
 
 }

@@ -40,7 +40,8 @@
                     <a class="nav-item nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" id="contestsDropdown" aria-haspopup="true" aria-expanded="false" th:text="#{menu.contests.title}">Contests</a>
                     <div class="dropdown-menu">
                         <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/contests/" th:text="#{menu.contests.list-contests}">List Contests</a>
-                        <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/contests/groups/" sec:authorize="hasRole('BBR_SUPERUSER')" th:text="#{menu.contests.groups}">Groups</a>
+                        <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/contests-groups/" sec:authorize="hasRole('BBR_SUPERUSER')" th:text="#{menu.contests.groups}">Groups</a>
+                        <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/tags/" th:text="#{menu.contests.list-tags}">List Tags</a>
                         <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/calendar/" th:text="#{menu.contests.calendar}">Calendar</a>
                         <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/years/" th:text="#{menu.contests.years}">Years</a>
                         <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/venues/" th:text="#{menu.contests.list-venues}">List Venues</a>
@@ -74,7 +75,6 @@
                 <div class="dropdown">
                     <a class="nav-item nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" id="siteDropdown" aria-haspopup="true" aria-expanded="false" th:text="#{menu.site.title}">Site</a>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" aria-labelledby="siteDropdown" href="/tags/" th:text="#{menu.site.list-tags}">List Tags</a>
                         <a class="dropdown-item" aria-labelledby="siteDropdown" href="/leaderboard/" th:text="#{menu.site.leaderboard}">Leaderboard</a>
                         <a class="dropdown-item" aria-labelledby="siteDropdown" href="/badges/" th:text="#{menu.site.badges}">Badges</a>
                         <div class="dropdown-divider"sec:authorize="hasRole('BBR_SUPERUSER') or hasRole('BBR_ADMIN')"></div>

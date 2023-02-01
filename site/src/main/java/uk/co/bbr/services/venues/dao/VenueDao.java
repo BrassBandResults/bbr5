@@ -3,6 +3,7 @@ package uk.co.bbr.services.venues.dao;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Formula;
 import uk.co.bbr.services.framework.AbstractDao;
 import uk.co.bbr.services.framework.mixins.NameTools;
 import uk.co.bbr.services.regions.dao.RegionDao;
@@ -51,6 +52,9 @@ public class VenueDao extends AbstractDao implements NameTools {
     @JoinColumn(name="parent_id")
     @Setter
     private VenueDao parent;
+
+    @Formula("(SELECT COUNT(*) FROM contest_event e WHERE e.venue_id = id)")
+    private int eventCount;
 
     public void setName(String name){
         String nameToSet = simplifyName(name);
