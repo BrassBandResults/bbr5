@@ -5,6 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import uk.co.bbr.services.contests.dao.ContestGroupAliasDao;
 import uk.co.bbr.services.contests.dao.ContestGroupDao;
+import uk.co.bbr.services.contests.dao.ContestTagDao;
 import uk.co.bbr.services.contests.dto.GroupListDto;
 import uk.co.bbr.services.contests.dto.GroupListGroupDto;
 import uk.co.bbr.services.contests.repo.ContestGroupAliasRepository;
@@ -163,6 +164,13 @@ public class ContestGroupServiceImpl implements ContestGroupService, SlugTools {
             returnedBands.add(new GroupListGroupDto(eachGroup.getSlug(), eachGroup.getName(), eachGroup.getContestCount()));
         }
         return new GroupListDto(groupsToReturn.size(), allGroupsCount, prefix, returnedBands);
+    }
+
+    @Override
+    public ContestGroupDao addGroupTag(ContestGroupDao group, ContestTagDao tag) {
+        group.getTags().add(tag);
+        System.out.println("Linking group " + group.getId() + " [" + group.getName() + "] with tag " + tag.getId()+ " [" + tag.getName() + "]");
+        return this.update(group);
     }
 
 

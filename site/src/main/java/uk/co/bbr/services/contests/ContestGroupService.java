@@ -2,6 +2,7 @@ package uk.co.bbr.services.contests;
 
 import uk.co.bbr.services.contests.dao.ContestGroupAliasDao;
 import uk.co.bbr.services.contests.dao.ContestGroupDao;
+import uk.co.bbr.services.contests.dao.ContestTagDao;
 import uk.co.bbr.services.contests.dto.GroupListDto;
 import uk.co.bbr.services.people.dao.PersonAliasDao;
 
@@ -21,5 +22,7 @@ public interface ContestGroupService {
     ContestGroupAliasDao createAlias(ContestGroupDao group, String alias);
     Optional<ContestGroupDao> fetchBySlug(String groupSlug);
     public GroupListDto listGroupsStartingWith(String prefix);
+
+    ContestGroupDao addGroupTag(ContestGroupDao group, ContestTagDao tag);
 }
 

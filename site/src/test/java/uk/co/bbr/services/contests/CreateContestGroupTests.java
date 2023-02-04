@@ -87,8 +87,7 @@ class CreateContestGroupTests implements LoginMixin {
         ContestTagDao tag = this.contestTagService.create("Tag 1");
 
         // act
-        group.getTags().add(tag);
-        ContestGroupDao savedGroup = this.contestGroupService.update(group);
+        ContestGroupDao savedGroup = this.contestGroupService.addGroupTag(group, tag);
 
         // assert
         assertEquals("Group 3", savedGroup.getName());

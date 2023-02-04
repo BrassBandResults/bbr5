@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import uk.co.bbr.services.contests.ContestTagService;
 import uk.co.bbr.services.contests.dao.ContestTagDao;
-import uk.co.bbr.services.contests.dto.GroupListDto;
+import uk.co.bbr.services.contests.dto.ContestTagDetailsDto;
 
 import java.util.List;
 
@@ -38,6 +38,14 @@ public class ContestTagsController {
         model.addAttribute("TagPrefixLetter", "ALL");
         model.addAttribute("Tags", tags);
         return "contests/tags/tags";
+    }
+
+    @GetMapping("/tags/{slug}")
+    public String showSpecificContestTag(Model model, @PathVariable("slug") String slug) {
+        ContestTagDetailsDto tagDetails = this.contestTagService.fetchDetailsBySlug(slug);
+
+        model.addAttribute("ContestTag", tagDetails);
+        return "contests/tags/tag";
     }
 
 }

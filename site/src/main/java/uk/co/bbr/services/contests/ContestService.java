@@ -2,6 +2,8 @@ package uk.co.bbr.services.contests;
 
 import uk.co.bbr.services.contests.dao.ContestAliasDao;
 import uk.co.bbr.services.contests.dao.ContestDao;
+import uk.co.bbr.services.contests.dao.ContestGroupDao;
+import uk.co.bbr.services.contests.dao.ContestTagDao;
 import uk.co.bbr.services.contests.dto.ContestListDto;
 import uk.co.bbr.services.people.dao.PersonAliasDao;
 import uk.co.bbr.services.regions.dao.RegionDao;
@@ -25,4 +27,8 @@ public interface ContestService {
     Optional<ContestDao> fetchBySlug(String slug);
 
     ContestListDto listContestsStartingWith(String letter);
+
+    ContestDao addContestToGroup(ContestDao contest, ContestGroupDao group);
+
+    ContestDao addContestTag(ContestDao contest, ContestTagDao tag);
 }

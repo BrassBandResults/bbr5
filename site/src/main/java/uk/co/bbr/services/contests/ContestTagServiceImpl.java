@@ -3,11 +3,14 @@ package uk.co.bbr.services.contests;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.contests.dao.ContestGroupDao;
 import uk.co.bbr.services.contests.dao.ContestTagDao;
+import uk.co.bbr.services.contests.dto.ContestTagDetailsDto;
 import uk.co.bbr.services.contests.dto.GroupListDto;
 import uk.co.bbr.services.contests.dto.GroupListGroupDto;
 import uk.co.bbr.services.contests.repo.ContestTagRepository;
+import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.framework.ValidationException;
 import uk.co.bbr.services.framework.mixins.SlugTools;
 import uk.co.bbr.services.security.SecurityService;
@@ -61,6 +64,20 @@ public class ContestTagServiceImpl implements ContestTagService, SlugTools {
         }
 
         return groupsToReturn;
+    }
+
+    @Override
+    public ContestTagDetailsDto fetchDetailsBySlug(String slug) {
+        Optional<ContestTagDao> tag = this.contestTagRepository.fetchBySlug(slug);
+        if (tag.isEmpty()) {
+            throw new NotFoundException("Tag with slug " + slug + " not found");
+        }
+
+        List<ContestDao> contests = this.contestTagRepository.fetchContestsForTag(slug);
+        List<ContestGroupDao> contestGroups = this.contestTagRepository.fetchGroupsForTag(slug);
+
+        ContestTagDetailsDto tagDetails = new ContestTagDetailsDto(tag.get(), contests, contestGroups);
+        return tagDetails;
     }
 
     @Override

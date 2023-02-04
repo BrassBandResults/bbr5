@@ -24,6 +24,9 @@ public class ContestTagDao extends AbstractDao implements NameTools {
     private String slug;
 
     @ManyToMany(fetch=FetchType.EAGER, mappedBy="tags")
+    private Set<ContestDao> contests;
+
+    @ManyToMany(fetch=FetchType.EAGER, mappedBy="tags")
     private Set<ContestGroupDao> groups;
 
     public void setName(String name){

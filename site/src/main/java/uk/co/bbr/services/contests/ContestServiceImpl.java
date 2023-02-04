@@ -7,6 +7,7 @@ import uk.co.bbr.services.contests.dao.ContestAliasDao;
 import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.contests.dao.ContestGroupAliasDao;
 import uk.co.bbr.services.contests.dao.ContestGroupDao;
+import uk.co.bbr.services.contests.dao.ContestTagDao;
 import uk.co.bbr.services.contests.dto.ContestListContestDto;
 import uk.co.bbr.services.contests.dto.ContestListDto;
 import uk.co.bbr.services.contests.repo.ContestAliasRepository;
@@ -221,5 +222,17 @@ public class ContestServiceImpl implements ContestService, SlugTools {
         List<ContestListContestDto> sortedContests = returnedContests.stream().sorted(Comparator.comparing(ContestListContestDto::getName)).collect(Collectors.toList());
 
         return new ContestListDto(prefix, sortedContests);
+    }
+
+    @Override
+    public ContestDao addContestToGroup(ContestDao contest, ContestGroupDao group) {
+        contest.setContestGroup(group);
+        return this.update(contest);
+    }
+
+    @Override
+    public ContestDao addContestTag(ContestDao contest, ContestTagDao tag) {
+        contest.getTags().add(tag);
+        return this.update(contest);
     }
 }
