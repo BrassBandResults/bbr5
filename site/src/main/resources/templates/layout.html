@@ -40,7 +40,7 @@
                     <a class="nav-item nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" id="contestsDropdown" aria-haspopup="true" aria-expanded="false" th:text="#{menu.contests.title}">Contests</a>
                     <div class="dropdown-menu">
                         <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/contests/" th:text="#{menu.contests.list-contests}">List Contests</a>
-                        <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/contests-groups/" sec:authorize="hasRole('BBR_SUPERUSER')" th:text="#{menu.contests.groups}">Groups</a>
+                        <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/contest-groups/" sec:authorize="hasRole('BBR_SUPERUSER')" th:text="#{menu.contests.groups}">Groups</a>
                         <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/tags/" th:text="#{menu.contests.list-tags}">List Tags</a>
                         <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/calendar/" th:text="#{menu.contests.calendar}">Calendar</a>
                         <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/years/" th:text="#{menu.contests.years}">Years</a>

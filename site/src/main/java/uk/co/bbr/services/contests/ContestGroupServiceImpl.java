@@ -3,14 +3,17 @@ package uk.co.bbr.services.contests;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.contests.dao.ContestGroupAliasDao;
 import uk.co.bbr.services.contests.dao.ContestGroupDao;
 import uk.co.bbr.services.contests.dao.ContestTagDao;
+import uk.co.bbr.services.contests.dto.ContestGroupDetailsDto;
 import uk.co.bbr.services.contests.dto.GroupListDto;
 import uk.co.bbr.services.contests.dto.GroupListGroupDto;
 import uk.co.bbr.services.contests.repo.ContestGroupAliasRepository;
 import uk.co.bbr.services.contests.repo.ContestGroupRepository;
 import uk.co.bbr.services.contests.types.ContestGroupType;
+import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.framework.ValidationException;
 import uk.co.bbr.services.framework.mixins.SlugTools;
 import uk.co.bbr.services.security.SecurityService;
@@ -171,6 +174,20 @@ public class ContestGroupServiceImpl implements ContestGroupService, SlugTools {
         group.getTags().add(tag);
         System.out.println("Linking group " + group.getId() + " [" + group.getName() + "] with tag " + tag.getId()+ " [" + tag.getName() + "]");
         return this.update(group);
+    }
+
+    @Override
+    public ContestGroupDetailsDto fetchDetailBySlug(String groupSlug) {
+        Optional<ContestGroupDao> contestGroup = this.contestGroupRepository.fetchBySlug(groupSlug);
+        if (contestGroup.isEmpty()) {
+            throw new NotFoundException("Group with slug " + groupSlug + " not found");
+        }
+
+        List<ContestDao> activeContests = this.contestGroupRepository.fetchActiveContestsForGroup(contestGroup.get().getId());
+        List<ContestDao> oldContests = this.contestGroupRepository.fetchOldContestsForGroup(contestGroup.get().getId());
+
+        ContestGroupDetailsDto contestGroupDetails = new ContestGroupDetailsDto(contestGroup.get(), activeContests, oldContests);
+        return contestGroupDetails;
     }
 
 

@@ -3,6 +3,7 @@ package uk.co.bbr.services.contests.dao;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.Formula;
 import uk.co.bbr.services.contests.types.ContestGroupType;
 import uk.co.bbr.services.framework.AbstractDao;
@@ -82,5 +83,9 @@ public class ContestGroupDao extends AbstractDao implements NameTools {
             value = value.trim();
         }
         this.notes = value;
+    }
+
+    public boolean hasNotes() {
+        return !StringUtils.isBlank(this.notes);
     }
 }

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+<head>
+    <title th:text="#{page.group.title}">Group - Brass Band Results</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h2 th:text="${Group.contestGroup.name}">Group Name</h2>
+
+    <h3  th:text="#{page.group.active-contests}">Active Contests</h3>
+    <table id="active-contests" class="table table-hover sortable">
+        <thead>
+        <tr>
+            <th th:text="#{page.group.column-header-name}">Name</th>
+            <th th:text="#{page.group.column-header-events}">Events on Site</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="contest : ${Group.activeContests}">
+            <td class="contest"><a th:href="${'/contests/' + contest.slug}" th:text="${contest.name}">Contest Name</span></a></td>
+            <td th:text="${contest.eventsCount}">123</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h3  th:text="#{page.group.old-contests}">Old Contests</h3>
+    <table id="old-contests" class="table table-hover sortable">
+        <thead>
+        <tr>
+            <th th:text="#{page.group.column-header-name}">Name</th>
+            <th th:text="#{page.group.column-header-events}">Events on Site</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="contest : ${Group.oldContests}">
+            <td class="contest"><a th:href="${'/contests/' + contest.slug}" th:text="${contest.name}">Contest Name</span></a></td>
+            <td th:text="${contest.eventsCount}">123</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div>
+        <span th:each="tag : ${Group.contestGroup.tags}">
+          <a class="bg-info text-white p-1 rounded" th:href="@{'/tags/'+${tag.slug} }" th:text="${tag.name}">Tag Name</a>
+        </span>
+    </div>
+
+    <br/>
+    
+    <div th:if="${Group.contestGroup.hasNotes}">
+        <h3 th:text="#{page.group.notes}">Notes</h3>
+        <p th:text="${Group.contestGroup.notes}">Notes</p>
+    </div>
+</div>
+</body>
+</html>
