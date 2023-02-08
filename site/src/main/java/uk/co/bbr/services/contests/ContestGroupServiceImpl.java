@@ -4,10 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import uk.co.bbr.services.contests.dao.ContestDao;
+import uk.co.bbr.services.contests.dao.ContestEventDao;
 import uk.co.bbr.services.contests.dao.ContestGroupAliasDao;
 import uk.co.bbr.services.contests.dao.ContestGroupDao;
 import uk.co.bbr.services.contests.dao.ContestTagDao;
 import uk.co.bbr.services.contests.dto.ContestGroupDetailsDto;
+import uk.co.bbr.services.contests.dto.ContestGroupYearDetailsDto;
+import uk.co.bbr.services.contests.dto.ContestGroupYearDetailsYearDto;
 import uk.co.bbr.services.contests.dto.GroupListDto;
 import uk.co.bbr.services.contests.dto.GroupListGroupDto;
 import uk.co.bbr.services.contests.repo.ContestGroupAliasRepository;
@@ -22,8 +25,11 @@ import uk.co.bbr.web.security.annotations.IsBbrMember;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -187,6 +193,33 @@ public class ContestGroupServiceImpl implements ContestGroupService, SlugTools {
         List<ContestDao> oldContests = this.contestGroupRepository.fetchOldContestsForGroup(contestGroup.get().getId());
 
         ContestGroupDetailsDto contestGroupDetails = new ContestGroupDetailsDto(contestGroup.get(), activeContests, oldContests);
+        return contestGroupDetails;
+    }
+
+    @Override
+    public ContestGroupYearDetailsDto fetchYearsBySlug(String groupSlug) {
+        Optional<ContestGroupDao> contestGroup = this.contestGroupRepository.fetchBySlug(groupSlug);
+        if (contestGroup.isEmpty()) {
+            throw new NotFoundException("Group with slug " + groupSlug + " not found");
+        }
+
+        List<ContestEventDao> events = this.contestGroupRepository.fetchEventsForGroupOrderByEventDate(contestGroup.get().getId());
+        Hashtable<String, Integer> yearCounts = new Hashtable<>();
+        for (ContestEventDao event : events) {
+            String year = "" + event.getEventDate().getYear();
+            if (yearCounts.keySet().contains(year)) {
+                yearCounts.put(year, yearCounts.get(year) + 1);
+            } else {
+                yearCounts.put(year, 1);
+            }
+        }
+
+        List<ContestGroupYearDetailsYearDto> displayYears = new ArrayList<>();
+        for (String eachYearKey : yearCounts.keySet().stream().sorted().collect(Collectors.toList())) {
+            displayYears.add(new ContestGroupYearDetailsYearDto(eachYearKey, yearCounts.get(eachYearKey)));
+        }
+
+        ContestGroupYearDetailsDto contestGroupDetails = new ContestGroupYearDetailsDto(contestGroup.get(), displayYears);
         return contestGroupDetails;
     }
 

@@ -4,6 +4,7 @@ import uk.co.bbr.services.contests.dao.ContestGroupAliasDao;
 import uk.co.bbr.services.contests.dao.ContestGroupDao;
 import uk.co.bbr.services.contests.dao.ContestTagDao;
 import uk.co.bbr.services.contests.dto.ContestGroupDetailsDto;
+import uk.co.bbr.services.contests.dto.ContestGroupYearDetailsDto;
 import uk.co.bbr.services.contests.dto.GroupListDto;
 import uk.co.bbr.services.people.dao.PersonAliasDao;
 
@@ -26,5 +27,6 @@ public interface ContestGroupService {
 
     ContestGroupDao addGroupTag(ContestGroupDao group, ContestTagDao tag);
     ContestGroupDetailsDto fetchDetailBySlug(String groupSlug);
+    ContestGroupYearDetailsDto fetchYearsBySlug(String groupSlug);
 }
 

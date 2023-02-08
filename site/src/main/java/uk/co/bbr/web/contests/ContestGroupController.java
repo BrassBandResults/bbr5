@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import uk.co.bbr.services.contests.ContestGroupService;
 import uk.co.bbr.services.contests.dto.ContestGroupDetailsDto;
+import uk.co.bbr.services.contests.dto.ContestGroupYearDetailsDto;
 import uk.co.bbr.services.contests.dto.GroupListDto;
 
 @Controller
@@ -44,6 +45,14 @@ public class ContestGroupController {
 
         model.addAttribute("Group", contestGroupDetails);
         return "contests/groups/group";
+    }
+
+    @GetMapping("/contests/{slug:[\\-A-Z\\d]{2,}}/years")
+    public String contestGroupYearDetails(Model model, @PathVariable("slug") String groupSlug) {
+        ContestGroupYearDetailsDto contestGroupDetails = this.contestGroupService.fetchYearsBySlug(groupSlug);
+
+        model.addAttribute("Group", contestGroupDetails);
+        return "contests/groups/years";
     }
 
 }

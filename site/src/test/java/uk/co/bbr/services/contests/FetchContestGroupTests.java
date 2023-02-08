@@ -10,14 +10,14 @@ import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.contests.dao.ContestGroupDao;
 import uk.co.bbr.services.contests.dao.ContestTagDao;
 import uk.co.bbr.services.contests.dto.ContestGroupDetailsDto;
-import uk.co.bbr.services.contests.dto.ContestTagDetailsDto;
+import uk.co.bbr.services.contests.dto.ContestGroupYearDetailsDto;
 import uk.co.bbr.services.security.JwtService;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.services.security.ex.AuthenticationFailedException;
 import uk.co.bbr.web.LoginMixin;
 import uk.co.bbr.web.security.support.TestUser;
 
-import java.util.Optional;
+import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -28,6 +28,7 @@ class FetchContestGroupTests implements LoginMixin {
 
     @Autowired private ContestService contestService;
     @Autowired private ContestTagService contestTagService;
+    @Autowired private ContestEventService contestEventService;
     @Autowired private ContestGroupService contestGroupService;
     @Autowired private SecurityService securityService;
 
@@ -67,6 +68,17 @@ class FetchContestGroupTests implements LoginMixin {
         contest4 = this.contestService.addContestTag(contest4, tag1);
         contest5 = this.contestService.addContestTag(contest5, tag1);
 
+        this.contestEventService.create(contest3, LocalDate.of(2000, 3, 1));
+        this.contestEventService.create(contest3, LocalDate.of(2001, 3, 1));
+        this.contestEventService.create(contest3, LocalDate.of(2002, 3, 1));
+        this.contestEventService.create(contest3, LocalDate.of(2003, 3, 1));
+        this.contestEventService.create(contest3, LocalDate.of(2004, 3, 1));
+        this.contestEventService.create(contest3, LocalDate.of(2005, 3, 1));
+        this.contestEventService.create(contest3, LocalDate.of(2006, 3, 1));
+        this.contestEventService.create(contest3, LocalDate.of(2007, 3, 1));
+        this.contestEventService.create(contest4, LocalDate.of(2000, 3, 1));
+        this.contestEventService.create(contest5, LocalDate.of(2000, 3, 1));
+
         logoutTestUser();
     }
 
@@ -81,12 +93,48 @@ class FetchContestGroupTests implements LoginMixin {
        assertEquals(2, contestGroupDetails.getContestGroup().getTags().size());
 
        assertEquals(2, contestGroupDetails.getActiveContests().size());
-        assertEquals("Contest 3", contestGroupDetails.getActiveContests().get(0).getName());
-        assertEquals("Contest 4", contestGroupDetails.getActiveContests().get(1).getName());
-
+       assertEquals("Contest 3", contestGroupDetails.getActiveContests().get(0).getName());
+       assertEquals("Contest 4", contestGroupDetails.getActiveContests().get(1).getName());
 
        assertEquals(1, contestGroupDetails.getOldContests().size());
-        assertEquals("Contest 5", contestGroupDetails.getOldContests().get(0).getName());
+       assertEquals("Contest 5", contestGroupDetails.getOldContests().get(0).getName());
+    }
+
+    @Test
+    void testFetchingContestGroupYearsWorksAsExpected() {
+        // act
+        ContestGroupYearDetailsDto contestGroupDetails = this.contestGroupService.fetchYearsBySlug("group-2");
+
+        // assert
+        assertEquals("Group 2", contestGroupDetails.getContestGroup().getName());
+        assertEquals("GROUP-2", contestGroupDetails.getContestGroup().getSlug());
+        assertEquals(2, contestGroupDetails.getContestGroup().getTags().size());
+
+        assertEquals(8, contestGroupDetails.getYears().size());
+
+        assertEquals("2000", contestGroupDetails.getYears().get(0).getYear());
+        assertEquals(3, contestGroupDetails.getYears().get(0).getEventsCount());
+
+        assertEquals("2001", contestGroupDetails.getYears().get(1).getYear());
+        assertEquals(1, contestGroupDetails.getYears().get(1).getEventsCount());
+
+        assertEquals("2002", contestGroupDetails.getYears().get(2).getYear());
+        assertEquals(1, contestGroupDetails.getYears().get(2).getEventsCount());
+
+        assertEquals("2003", contestGroupDetails.getYears().get(3).getYear());
+        assertEquals(1, contestGroupDetails.getYears().get(3).getEventsCount());
+
+        assertEquals("2004", contestGroupDetails.getYears().get(4).getYear());
+        assertEquals(1, contestGroupDetails.getYears().get(4).getEventsCount());
+
+        assertEquals("2005", contestGroupDetails.getYears().get(5).getYear());
+        assertEquals(1, contestGroupDetails.getYears().get(5).getEventsCount());
+
+        assertEquals("2006", contestGroupDetails.getYears().get(6).getYear());
+        assertEquals(1, contestGroupDetails.getYears().get(6).getEventsCount());
+
+        assertEquals("2007", contestGroupDetails.getYears().get(7).getYear());
+        assertEquals(1, contestGroupDetails.getYears().get(7).getEventsCount());
     }
 }
 
