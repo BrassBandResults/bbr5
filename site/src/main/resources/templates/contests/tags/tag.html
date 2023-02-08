@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
 <head>
-    <title th:text="#{page.tag.title}">Tag - Brass Band Results</title>
+    <title th:text="#{page.tag.title(${ContestTag.tag.name})}">Tag - Brass Band Results</title>
 </head>
 <body>
 <div layout:fragment="content">
