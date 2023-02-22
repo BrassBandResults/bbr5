@@ -5,7 +5,16 @@
 </head>
 <body>
 <div layout:fragment="content">
-    <h2 th:text="${Group.contestGroup.name}">Group Name</h2>
+    <h2 th:text="${Group.contestGroup.name}">Group Name
+
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link active" th:href="${'/contests/' + Group.contestGroup.slug}" th:text="#{page.group.tab.contests}">Contests</span></a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" th:href="${'/contests/' + Group.contestGroup.slug + '/years'}" th:text="#{page.group.tab.years}">Years</span></a>
+        </li>
+    </ul>
 
     <h3  th:text="#{page.group.active-contests}">Active Contests</h3>
     <table id="active-contests" class="table table-hover sortable">

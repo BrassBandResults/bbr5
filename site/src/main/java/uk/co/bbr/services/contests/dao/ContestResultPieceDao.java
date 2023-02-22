@@ -33,4 +33,7 @@ public class ContestResultPieceDao extends AbstractDao implements NameTools {
     @Column(name="ordering", nullable=false)
     @Setter
     private int ordering;
+
+    @Column(name="suffix")
+    private String suffix;
 }
