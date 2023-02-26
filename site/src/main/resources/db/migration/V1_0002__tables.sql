@@ -31,6 +31,7 @@ INSERT INTO region(updated_by_id, owner_id, old_id, name, slug, country_code, co
 INSERT INTO region(updated_by_id, owner_id, old_id, name, slug, country_code, container_id, latitude, longitude, default_map_zoom) VALUES (1, 1, 8, 'West of England', 'west-england', 'england', (SELECT DISTINCT id FROM region WHERE slug='england'), '50.889174', '-3.550415', 7);
 INSERT INTO region(updated_by_id, owner_id, old_id, name, slug, country_code, container_id, latitude, longitude, default_map_zoom) VALUES (1, 1, 3, 'Wales', 'wales', 'wales', (SELECT DISTINCT id FROM region WHERE slug='great-britain'), '52.462704', '-3.231812', 7);
 INSERT INTO region(updated_by_id, owner_id, old_id, name, slug, country_code, container_id, latitude, longitude, default_map_zoom) VALUES (1, 1, 7, 'Scotland', 'scotland', 'scotland', (SELECT DISTINCT id FROM region WHERE slug='great-britain'), '57.028774', '-4.442139', 5);
+INSERT INTO region(updated_by_id, owner_id, old_id, name, slug, country_code, container_id, latitude, longitude, default_map_zoom) VALUES (1, 1, 67, 'Isle of Man', 'isle-of-man', 'manx', (SELECT DISTINCT id FROM region WHERE slug='great-britain'), '54.255569', '-4.552934', 10);
 
 INSERT INTO region(updated_by_id, owner_id, old_id, name, slug, country_code, latitude, longitude, default_map_zoom) VALUES (1, 1, 38, 'Chile', 'chile', 'cl', '-36.456636', '-71.7334', 4);
 INSERT INTO region(updated_by_id, owner_id, old_id, name, slug, country_code, latitude, longitude, default_map_zoom) VALUES (1, 1, 44, 'China', 'china', 'cn', '33.94336', '103.081053',4);
