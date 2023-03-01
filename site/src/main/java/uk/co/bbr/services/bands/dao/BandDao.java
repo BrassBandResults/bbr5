@@ -78,8 +78,7 @@ public class BandDao extends AbstractDao implements NameTools {
     private String twitterName;
 
     public void setName(String sourceName) {
-        String nameToSet = simplifyName(sourceName);
-        this.name = nameToSet;
+        this.name = simplifyName(sourceName);
     }
 
     public void setOldId(String value) {

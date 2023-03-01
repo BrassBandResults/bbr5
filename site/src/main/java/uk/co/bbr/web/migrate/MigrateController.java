@@ -12,25 +12,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import uk.co.bbr.services.migrate.BandMigrationService;
 import uk.co.bbr.services.migrate.ContestMigrationService;
-import uk.co.bbr.services.migrate.EventMigrationService;
 import uk.co.bbr.services.migrate.GroupMigrationService;
 import uk.co.bbr.services.migrate.PersonMigrationService;
 import uk.co.bbr.services.migrate.PieceMigrationService;
 import uk.co.bbr.services.migrate.TagsMigrationService;
 import uk.co.bbr.services.migrate.VenueMigrationService;
-import uk.co.bbr.services.security.SecurityService;
-import uk.co.bbr.services.security.dao.BbrUserDao;
 import uk.co.bbr.web.security.annotations.IsBbrAdmin;
 
 import java.io.File;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -38,7 +31,6 @@ public class MigrateController {
     protected static final String BASE_PATH = "/tmp/bbr";
 
     private final BandMigrationService bandMigrationService;
-    private final EventMigrationService eventMigrationService;
     private final GroupMigrationService groupMigrationService;
     private final ContestMigrationService contestMigrationService;
     private final TagsMigrationService tagsMigrationService;
@@ -131,9 +123,6 @@ public class MigrateController {
                 switch(type) {
                     case "Bands":
                         this.bandMigrationService.migrate(rootNode);
-                        break;
-                    case "Results":
-                        this.eventMigrationService.migrate(rootNode);
                         break;
                     case "Groups":
                         this.groupMigrationService.migrate(rootNode);

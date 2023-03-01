@@ -1,18 +1,17 @@
 package uk.co.bbr.web.migrate;
 
 import lombok.RequiredArgsConstructor;
-import org.jdom2.Document;
-import org.jdom2.Element;
-import org.jdom2.input.SAXBuilder;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import uk.co.bbr.services.migrate.EventMigrationService;
 import uk.co.bbr.web.security.annotations.IsBbrAdmin;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -27,7 +26,7 @@ import static uk.co.bbr.web.migrate.MigrateController.BASE_PATH;
 @RequiredArgsConstructor
 public class MigrateResultsController {
 
-    private final EventMigrationService eventMigrationService;
+    private final JdbcTemplate jdbcTemplate;
 
     @GetMapping("/migrate/Results/all/{index}/{yearIndex}")
     @IsBbrAdmin
@@ -73,15 +72,21 @@ public class MigrateResultsController {
 
             System.out.println(filename);
 
-            Document doc;
+            List<String> sqlLines = null;
             try {
-                SAXBuilder sax = new SAXBuilder();
-                doc = sax.build(new File(filename));
-            } catch (Throwable ex) {
-                throw new RuntimeException(ex);
+                sqlLines = Files.readAllLines(Paths.get(filename));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
-            Element rootNode = doc.getRootElement();
-            this.eventMigrationService.migrate(rootNode);
+
+            StringBuilder sqlBuffer = new StringBuilder();
+            for (String sql : sqlLines) {
+                sqlBuffer.append(sql);
+            }
+
+            for (String sql : sqlBuffer.toString().split(";")) {
+                this.jdbcTemplate.execute(sql);
+            }
         }
     }
 
