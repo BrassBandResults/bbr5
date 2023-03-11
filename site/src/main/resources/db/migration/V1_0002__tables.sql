@@ -623,3 +623,46 @@ CREATE TABLE contest_result_test_piece (
 
 CREATE UNIQUE INDEX idx_contest_result_test_piece ON contest_result_test_piece(contest_result_id, piece_id);
 
+-- FEEDBACK
+CREATE TABLE site_feedback (
+    id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    url VARCHAR(255) NOT NULL,
+    comment TEXT NOT NULL,
+    status VARCHAR(1) NOT NULL DEFAULT 'N',
+    browser_string VARCHAR(1024) NOT NULL,
+    ip VARCHAR(15) NOT NULL,
+    additional_comments TEXT,
+    audit_log TEXT,
+    reporter_id BIGINT CONSTRAINT fk_site_feedback_reporter REFERENCES site_user(id),
+    owner_id BIGINT CONSTRAINT fk_site_feedback_owner REFERENCES site_user(id)
+);
+
+-- USER PERFORMANCE HISTORY
+CREATE TABLE personal_contest_history (
+    id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_by_id BIGINT NOT NULL CONSTRAINT fk_personal_contest_history_updated REFERENCES site_user(id),
+    owner_id BIGINT NOT NULL CONSTRAINT fk_personal_contest_history_owner REFERENCES site_user(id),
+    result_id BIGINT NOT NULL CONSTRAINT fk_personal_contest_history_result REFERENCES contest_result(id),
+    status VARCHAR(1) NOT NULL DEFAULT 'P',
+    instrument INTEGER
+);
+
+CREATE INDEX idx_personal_history_owner ON personal_contest_history(owner_id);
+
+CREATE TABLE personal_contest_history_date_range (
+    id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_by_id BIGINT NOT NULL CONSTRAINT fk_personal_contest_history_date_range_updated REFERENCES site_user(id),
+    owner_id BIGINT NOT NULL CONSTRAINT fk_personal_contest_history_date_range_owner REFERENCES site_user(id),
+    band_id BIGINT NOT NULL CONSTRAINT fk_personal_contest_history_date_range_band REFERENCES band(id),
+    start_date DATE NOT NULL,
+    end_date DATE,
+    imported BIT not null default 0
+);
+
+CREATE INDEX idx_personal_history_date_range_owner ON personal_contest_history_date_range(owner_id);

@@ -12,7 +12,13 @@ CREATE TABLE site_user (
     email VARCHAR(100) NOT NULL,
     salt VARCHAR(10) NOT NULL,
     password_version VARCHAR(1) NOT NULL,
-    access_level VARCHAR(1) NOT NULL DEFAULT 'M'
+    access_level VARCHAR(1) NOT NULL DEFAULT 'M',
+    last_login DATETIME,
+    points BIGINT NOT NULL DEFAULT 0,
+    contest_history_visibility VARCHAR(1) NOT NULL DEFAULT 'P',
+    stripe_email VARCHAR(100),
+    stripe_token VARCHAR(30),
+    stripe_customer VARCHAR(30)
 );
 
 CREATE UNIQUE INDEX idx_siteuser_usercode ON site_user(usercode);
