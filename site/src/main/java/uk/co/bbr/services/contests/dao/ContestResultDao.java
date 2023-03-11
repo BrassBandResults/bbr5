@@ -212,6 +212,9 @@ public class ContestResultDao extends AbstractDao implements NameTools {
         if (points == null) {
             this.pointsTotal = null;
         } else {
+            if (points.trim().length() > 10) {
+                points = points.trim().substring(0, 10);
+            }
             this.pointsTotal = points.trim();
         }
     }

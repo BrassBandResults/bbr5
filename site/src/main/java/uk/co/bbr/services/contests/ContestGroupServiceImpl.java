@@ -25,6 +25,7 @@ import uk.co.bbr.web.security.annotations.IsBbrMember;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
@@ -215,7 +216,7 @@ public class ContestGroupServiceImpl implements ContestGroupService, SlugTools {
         }
 
         List<ContestGroupYearDetailsYearDto> displayYears = new ArrayList<>();
-        for (String eachYearKey : yearCounts.keySet().stream().sorted().collect(Collectors.toList())) {
+        for (String eachYearKey : yearCounts.keySet().stream().sorted(Comparator.reverseOrder()).collect(Collectors.toList())) {
             displayYears.add(new ContestGroupYearDetailsYearDto(eachYearKey, yearCounts.get(eachYearKey)));
         }
 
