@@ -22,13 +22,9 @@
         <tbody>
         <tr th:each="venue : ${Venues.returnedVenues}">
             <td class="venue">
-              <a th:href="${'/venues/' + venue.slug}" th:text="${venue.name}">Venue Name</span></a>
+            <td><span th:replace="links/venue-link.html :: venueLink(${venue}, true)"></span></td>
             </td>
-            <td class="region" th:if="${venue.region != null}">
-                <img th:src="@{${STATIC_HOST} + '/flags/' + ${venue.region.countryCode} + '.png'}"/>
-                <a th:href="${'/regions/' + venue.region.slug}" th:text="#{'region.' + ${venue.region.slug}}">Region Name</a>
-            </td>
-            <td class="region" th:if="${venue.region == null}">Unknown Region<td>
+            <td><span th:replace="links/region-link.html :: regionLink(${venue.region}, true)"></span></td>
             <td class="venue-event-count" th:text="${venue.eventCount}">0</td>
         </tr>
         </tbody>

@@ -19,7 +19,7 @@
         </thead>
         <tbody>
         <tr th:each="tag : ${Tags}">
-            <td class="tag"><a th:href="${'/tags/' + tag.slug}" th:text="${tag.name}">Tag Name</span></a></td>
+            <td class="tag"><span th:replace="links/tag-link.html :: tagLink(${tag})"></span></td>
         </tr>
         </tbody>
     </table>

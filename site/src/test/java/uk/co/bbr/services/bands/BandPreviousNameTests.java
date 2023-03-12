@@ -24,7 +24,7 @@ import java.time.LocalDate;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ActiveProfiles("test")
-@SpringBootTest(properties = { "spring.config.name=band-alt-name-tests-h2", "spring.datasource.url=jdbc:h2:mem:band-alt-name-tests-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE"})
+@SpringBootTest(properties = { "spring.config.name=band-alt-name-tests-h2", "spring.datasource.url=jdbc:h2:mem:band-alt-name-tests-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE", "spring.jpa.database-platform=org.hibernate.dialect.SQLServerDialect"})
 class BandPreviousNameTests implements LoginMixin {
     @Autowired private BandService bandService;
     @Autowired private SectionService sectionService;

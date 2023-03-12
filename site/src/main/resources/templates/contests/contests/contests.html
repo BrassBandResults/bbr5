@@ -18,7 +18,7 @@
         <tbody>
         <tr th:each="contest : ${Contests.returnedContests}">
             <td class="contest">
-              <a th:href="${'/contests/' + contest.slug}" th:text="${contest.name}">Contest Name</span></a>
+                <span th:replace="links/contest-link.html :: contestLink(${contest})"></span>
             </td>
             <td class="contest-event-count" th:text="${contest.contestResultsCount}">0</td>
         </tr>

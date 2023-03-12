@@ -10,7 +10,9 @@ import uk.co.bbr.services.contests.repo.ContestAdjudicatorRepository;
 import uk.co.bbr.services.contests.repo.ContestEventRepository;
 import uk.co.bbr.services.contests.repo.ContestEventTestPieceRepository;
 import uk.co.bbr.services.contests.types.ContestEventDateResolution;
+import uk.co.bbr.services.contests.types.TestPieceAndOr;
 import uk.co.bbr.services.people.dao.PersonDao;
+import uk.co.bbr.services.pieces.dao.PieceDao;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.web.security.annotations.IsBbrAdmin;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
@@ -116,6 +118,21 @@ public class ContestEventServiceImpl implements ContestEventService {
         testPiece.setUpdated(LocalDateTime.now());
         testPiece.setUpdatedBy(this.securityService.getCurrentUser());
         return this.contestTestPieceRepository.saveAndFlush(testPiece);
+    }
+
+    @Override
+    public ContestEventTestPieceDao addTestPieceToContest(ContestEventDao event, PieceDao testPiece) {
+        ContestEventTestPieceDao newTestPiece = new ContestEventTestPieceDao();
+        newTestPiece.setPiece(testPiece);
+        return this.addTestPieceToContest(event, newTestPiece);
+    }
+
+    @Override
+    public ContestEventTestPieceDao addTestPieceToContest(ContestEventDao event, PieceDao testPiece, TestPieceAndOr andOr) {
+        ContestEventTestPieceDao newTestPiece = new ContestEventTestPieceDao();
+        newTestPiece.setPiece(testPiece);
+        newTestPiece.setAndOr(andOr);
+        return this.addTestPieceToContest(event, newTestPiece);
     }
 
     @Override

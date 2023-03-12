@@ -24,8 +24,8 @@
         </thead>
         <tbody>
         <tr th:each="group : ${Groups.returnedGroups}">
-            <td class="band">
-              <a th:href="${'/contests/' + group.slug}" th:text="${group.name}">Group Name</span></a>
+            <td class="group">
+                <span th:replace="links/group-link.html :: groupLink(${group})"></span>
             </td>
             <td class="group-contest-count" th:text="${group.contestCount}">0</td>
         </tr>

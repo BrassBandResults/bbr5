@@ -15,6 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @Getter
 @Entity
@@ -89,5 +90,15 @@ public class ContestEventDao extends AbstractDao implements NameTools {
             value = value.trim();
         }
         this.originalOwner = value;
+    }
+
+    public String getEventDateForUrl() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        return this.eventDate.format(formatter);
+    }
+
+    public String getEventDateDisplay() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yyyy");
+        return this.eventDate.format(formatter);
     }
 }

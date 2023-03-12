@@ -2,17 +2,24 @@ package uk.co.bbr.services.contests;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.contests.dao.ContestEventDao;
+import uk.co.bbr.services.contests.dao.ContestEventTestPieceDao;
 import uk.co.bbr.services.contests.dao.ContestGroupAliasDao;
 import uk.co.bbr.services.contests.dao.ContestGroupDao;
+import uk.co.bbr.services.contests.dao.ContestResultDao;
 import uk.co.bbr.services.contests.dao.ContestTagDao;
+import uk.co.bbr.services.contests.dto.ContestEventSummaryDto;
 import uk.co.bbr.services.contests.dto.ContestGroupDetailsDto;
-import uk.co.bbr.services.contests.dto.ContestGroupYearDetailsDto;
-import uk.co.bbr.services.contests.dto.ContestGroupYearDetailsYearDto;
+import uk.co.bbr.services.contests.dto.ContestGroupYearDto;
+import uk.co.bbr.services.contests.dto.ContestGroupYearsDetailsDto;
+import uk.co.bbr.services.contests.dto.ContestGroupYearsDetailsYearDto;
 import uk.co.bbr.services.contests.dto.GroupListDto;
 import uk.co.bbr.services.contests.dto.GroupListGroupDto;
+import uk.co.bbr.services.contests.repo.ContestEventRepository;
 import uk.co.bbr.services.contests.repo.ContestGroupAliasRepository;
 import uk.co.bbr.services.contests.repo.ContestGroupRepository;
 import uk.co.bbr.services.contests.types.ContestGroupType;
@@ -23,10 +30,10 @@ import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.web.security.annotations.IsBbrAdmin;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Optional;
@@ -37,6 +44,7 @@ import java.util.stream.Collectors;
 public class ContestGroupServiceImpl implements ContestGroupService, SlugTools {
 
     private final ContestGroupRepository contestGroupRepository;
+    private final ContestEventRepository contestEventRepository;
     private final ContestGroupAliasRepository contestGroupAliasRepository;
     private final SecurityService securityService;
 
@@ -198,7 +206,7 @@ public class ContestGroupServiceImpl implements ContestGroupService, SlugTools {
     }
 
     @Override
-    public ContestGroupYearDetailsDto fetchYearsBySlug(String groupSlug) {
+    public ContestGroupYearsDetailsDto fetchYearsBySlug(String groupSlug) {
         Optional<ContestGroupDao> contestGroup = this.contestGroupRepository.fetchBySlug(groupSlug);
         if (contestGroup.isEmpty()) {
             throw new NotFoundException("Group with slug " + groupSlug + " not found");
@@ -215,13 +223,43 @@ public class ContestGroupServiceImpl implements ContestGroupService, SlugTools {
             }
         }
 
-        List<ContestGroupYearDetailsYearDto> displayYears = new ArrayList<>();
+        List<ContestGroupYearsDetailsYearDto> displayYears = new ArrayList<>();
         for (String eachYearKey : yearCounts.keySet().stream().sorted(Comparator.reverseOrder()).collect(Collectors.toList())) {
-            displayYears.add(new ContestGroupYearDetailsYearDto(eachYearKey, yearCounts.get(eachYearKey)));
+            displayYears.add(new ContestGroupYearsDetailsYearDto(eachYearKey, yearCounts.get(eachYearKey)));
         }
 
-        ContestGroupYearDetailsDto contestGroupDetails = new ContestGroupYearDetailsDto(contestGroup.get(), displayYears);
+        ContestGroupYearsDetailsDto contestGroupDetails = new ContestGroupYearsDetailsDto(contestGroup.get(), displayYears);
         return contestGroupDetails;
+    }
+
+    @Override
+    public ContestGroupYearDto fetchEventsByGroupSlugAndYear(String groupSlug, Integer year) {
+        Optional<ContestGroupDao> contestGroup = this.contestGroupRepository.fetchBySlug(groupSlug);
+        if (contestGroup.isEmpty()) {
+            throw new NotFoundException("Group with slug " + groupSlug + " not found");
+        }
+        List<ContestEventDao> eventsForYear = this.contestGroupRepository.selectByGroupSlugAndYear(contestGroup.get().getId(), year);
+
+        Integer nextYear = null;
+        List<ContestEventDao> nextEvent = this.contestGroupRepository.selectNextEventByGroupSlugAndYear(contestGroup.get().getId(), year, PageRequest.of(0, 1));
+        if (nextEvent != null && nextEvent.size() > 0) {
+            nextYear = nextEvent.get(0).getEventDate().getYear();
+        }
+
+        Integer previousYear = null;
+        List<ContestEventDao> previousEvent = this.contestGroupRepository.selectPreviousEventByGroupSlugAndYear(contestGroup.get().getId(), year, PageRequest.of(0, 1));
+        if (previousEvent != null && previousEvent.size() > 0) {
+            previousYear = previousEvent.get(0).getEventDate().getYear();
+        }
+
+        List<ContestEventSummaryDto> contestEvents = new ArrayList<>();
+        for (ContestEventDao event : eventsForYear) {
+            List<ContestResultDao> winningBands = this.contestEventRepository.fetchWinningBands(event.getId());
+            List<ContestEventTestPieceDao> testPieces = this.contestEventRepository.fetchTestPieces(event.getId());
+            contestEvents.add(new ContestEventSummaryDto(event, winningBands, testPieces));
+        }
+
+        return new ContestGroupYearDto(contestGroup.get(), year, contestEvents, nextYear, previousYear);
     }
 
 

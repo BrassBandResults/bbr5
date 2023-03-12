@@ -12,8 +12,7 @@
         <tbody>
             <tr th:each="region : ${Regions}" th:id="${region.slug}">
                 <td class="region">
-                    <img th:src="@{${STATIC_HOST} + '/flags/' + ${region.countryCode} + '.png'}"/>
-                    <a th:href="${'/regions/' + region.slug}" th:text="#{'region.' + ${region.slug}}">Region Name</span></a>
+                    <span th:replace="links/region-link.html :: regionLink(${region})"></span>
                 </td>
                 <td sec:authorize="!hasRole('BBR_PRO')" class="band-count" th:text="${region.getBandsCount()}"></td>
                 <td sec:authorize="hasRole('BBR_PRO')" class="active-band-count" th:text="${region.getActiveBandsCount()}"></td>

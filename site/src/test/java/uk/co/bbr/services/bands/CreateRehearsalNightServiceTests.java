@@ -21,7 +21,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ActiveProfiles("test")
-@SpringBootTest(properties = { "spring.config.name=rehearsal-tests-h2", "spring.datasource.url=jdbc:h2:mem:rehearsal-tests-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE"})
+@SpringBootTest(properties = { "spring.config.name=rehearsal-tests-h2", "spring.datasource.url=jdbc:h2:mem:rehearsal-tests-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE", "spring.jpa.database-platform=org.hibernate.dialect.SQLServerDialect"})
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class CreateRehearsalNightServiceTests implements LoginMixin {
     @Autowired private BandService bandService;

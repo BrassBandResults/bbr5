@@ -21,7 +21,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ActiveProfiles("test")
-@SpringBootTest(properties = { "spring.config.name=list-band-tests-h2", "spring.datasource.url=jdbc:h2:mem:list-band-tests-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE"})
+@SpringBootTest(properties = { "spring.config.name=list-band-tests-h2", "spring.datasource.url=jdbc:h2:mem:list-band-tests-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE", "spring.jpa.database-platform=org.hibernate.dialect.SQLServerDialect"})
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ListBandServiceTests implements LoginMixin {
     @Autowired private BandService bandService;
@@ -87,9 +87,9 @@ class ListBandServiceTests implements LoginMixin {
         assertEquals(1, bandsStartWithB.getReturnedBands().size());
 
         assertEquals("Black Dyke Band", bandsStartWithB.getReturnedBands().get(0).getName());
-        assertEquals("yorkshire", bandsStartWithB.getReturnedBands().get(0).getRegionSlug());
-        assertEquals("Yorkshire", bandsStartWithB.getReturnedBands().get(0).getRegionName());
-        assertEquals("england", bandsStartWithB.getReturnedBands().get(0).getRegionFlagCode());
+        assertEquals("yorkshire", bandsStartWithB.getReturnedBands().get(0).getRegion().getSlug());
+        assertEquals("Yorkshire", bandsStartWithB.getReturnedBands().get(0).getRegion().getName());
+        assertEquals("england", bandsStartWithB.getReturnedBands().get(0).getRegion().getCountryCode());
         assertEquals(0, bandsStartWithB.getReturnedBands().get(0).getContestCount());
     }
 
@@ -132,14 +132,14 @@ class ListBandServiceTests implements LoginMixin {
 
         // TODO check that results are correct order
         assertEquals("102 (Cheshire) Transport Column R.A.S.C. (T.A.)", bands.get(0).getName());
-        assertEquals("north-west", bands.get(0).getRegionSlug());
-        assertEquals("North West", bands.get(0).getRegionName());
-        assertEquals("england", bands.get(0).getRegionFlagCode());
+        assertEquals("north-west", bands.get(0).getRegion().getSlug());
+        assertEquals("North West", bands.get(0).getRegion().getName());
+        assertEquals("england", bands.get(0).getRegion().getCountryCode());
         assertEquals(0, bands.get(0).getContestCount());
         assertEquals("48th Div. R.E. T.A", bands.get(1).getName());
-        assertEquals("midlands", bands.get(1).getRegionSlug());
-        assertEquals("Midlands", bands.get(1).getRegionName());
-        assertEquals("england", bands.get(1).getRegionFlagCode());
+        assertEquals("midlands", bands.get(1).getRegion().getSlug());
+        assertEquals("Midlands", bands.get(1).getRegion().getName());
+        assertEquals("england", bands.get(1).getRegion().getCountryCode());
         assertEquals(0, bands.get(1).getContestCount());
 
     }

@@ -1,0 +1,4 @@
+<span th:fragment="venueLink(venue)">
+    <a th:if="${venue != null}" th:href="${'/venues/' + venue.slug}" th:text="${venue.name}" class="bbr-venue">Venue Name</a>
+</span>
+

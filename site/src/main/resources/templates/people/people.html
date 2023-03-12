@@ -28,8 +28,7 @@
         <tbody>
         <tr th:each="person : ${People.returnedPeople}">
             <td class="person">
-              <a th:href="${'/people/' + person.slug}" th:text="${person.nameSurnameFirst}">Sawyer, Tim</span></a>
-              <small th:if="${person.knownFor != null && person.knownFor.length > 0}"><span th:text="${person.knownFor}">Rothwell Temperance</span></small>
+                <span th:replace="links/person-link.html :: personLink(${person}, true, true)"></span>
             </td>
             <td th:text="${person.conductingCount}">0</td>
             <td th:text="${person.adjudicationsCount}">0</td>

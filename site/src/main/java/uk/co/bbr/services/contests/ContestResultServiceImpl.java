@@ -2,11 +2,13 @@ package uk.co.bbr.services.contests;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.contests.dao.ContestEventDao;
 import uk.co.bbr.services.contests.dao.ContestResultDao;
 import uk.co.bbr.services.contests.dao.ContestResultPieceDao;
 import uk.co.bbr.services.contests.repo.ContestResultPieceRepository;
 import uk.co.bbr.services.contests.repo.ContestResultRepository;
+import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
@@ -45,6 +47,17 @@ public class ContestResultServiceImpl implements ContestResultService {
         }
 
         return returnResult;
+    }
+
+    @Override
+    public ContestResultDao addResult(ContestEventDao event, String position, BandDao band, PersonDao conductor) {
+        ContestResultDao newResult = new ContestResultDao();
+        newResult.setPosition(position);
+        newResult.setBand(band);
+        newResult.setBandName(band.getName());
+        newResult.setConductor(conductor);
+
+        return this.addResult(event, newResult);
     }
 
     @Override

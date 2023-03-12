@@ -20,7 +20,7 @@
     <div class="tab-content">
 
         <div th:if="${Group.activeContests.size > 0}">
-            <h3 th:text="#{page.group.active-contests}">Active Contests</h3>
+            <h4 th:text="#{page.group.active-contests}">Active Contests</h4>
             <table id="active-contests" class="table table-hover sortable">
                 <thead>
                 <tr>
@@ -30,7 +30,7 @@
                 </thead>
                 <tbody>
                 <tr th:each="contest : ${Group.activeContests}">
-                    <td class="contest"><a th:href="${'/contests/' + contest.slug}" th:text="${contest.name}">Contest Name</span></a></td>
+                    <td class="contest"><span th:replace="links/contest-link.html :: contestLink(${contest})"></span></td>
                     <td th:text="${contest.eventsCount}">123</td>
                 </tr>
                 </tbody>
@@ -38,7 +38,7 @@
         </div>
 
         <div th:if="${Group.oldContests.size > 0}">
-            <h3 th:text="#{page.group.old-contests}">Old Contests</h3>
+            <h4 th:text="#{page.group.old-contests}">Old Contests</h4>
             <table id="old-contests" class="table table-hover sortable">
                 <thead>
                 <tr>
@@ -48,7 +48,7 @@
                 </thead>
                 <tbody>
                 <tr th:each="contest : ${Group.oldContests}">
-                    <td class="contest"><a th:href="${'/contests/' + contest.slug}" th:text="${contest.name}">Contest Name</span></a></td>
+                    <td class="contest"><span th:replace="links/contest-link.html :: contestLink(${contest})"></span></td>
                     <td th:text="${contest.eventsCount}">123</td>
                 </tr>
                 </tbody>
@@ -56,15 +56,13 @@
         </div>
 
         <div>
-            <span th:each="tag : ${Group.contestGroup.tags}">
-              <a class="bg-info text-white p-1 rounded" th:href="@{'/tags/'+${tag.slug} }" th:text="${tag.name}">Tag Name</a>
-            </span>
+            <span th:replace="links/tag-link.html :: tagCloud(${Group.contestGroup.tags})"></span>
         </div>
 
         <br/>
 
         <div th:if="${Group.contestGroup.hasNotes}">
-            <h3 th:text="#{page.group.notes}">Notes</h3>
+            <h4 th:text="#{page.group.notes}">Notes</h4>
             <p th:text="${Group.contestGroup.notes}">These are the notes</p>
         </div>
     </div>

@@ -154,7 +154,7 @@ public class BandServiceImpl implements BandService, SlugTools {
 
         List<BandListBandDto> returnedBands = new ArrayList<>();
         for (BandDao eachBand : bandsToReturn) {
-            returnedBands.add(new BandListBandDto(eachBand.getSlug(), eachBand.getName(), eachBand.getRegion().getName(), eachBand.getRegion().getSlug(), eachBand.getRegion().getCountryCode(), 0, eachBand.getDateRange()));
+            returnedBands.add(new BandListBandDto(eachBand.getSlug(), eachBand.getName(), eachBand.getRegion(),0, eachBand.getDateRange()));
         }
         return new BandListDto(bandsToReturn.size(), allBandsCount, prefix, returnedBands);
     }

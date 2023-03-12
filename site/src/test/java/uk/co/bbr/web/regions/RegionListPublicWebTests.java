@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ActiveProfiles("test")
-@SpringBootTest(properties = { "spring.config.name=region-list-public-web-tests-admin-h2", "spring.datasource.url=jdbc:h2:mem:region-list-public-web-tests-admin-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE"},
+@SpringBootTest(properties = { "spring.config.name=region-list-public-web-tests-admin-h2", "spring.datasource.url=jdbc:h2:mem:region-list-public-web-tests-admin-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE", "spring.jpa.database-platform=org.hibernate.dialect.SQLServerDialect"},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class RegionListPublicWebTests implements LoginMixin {
 

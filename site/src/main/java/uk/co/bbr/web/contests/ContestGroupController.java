@@ -7,8 +7,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import uk.co.bbr.services.contests.ContestGroupService;
 import uk.co.bbr.services.contests.dto.ContestGroupDetailsDto;
-import uk.co.bbr.services.contests.dto.ContestGroupYearDetailsDto;
+import uk.co.bbr.services.contests.dto.ContestGroupYearDto;
+import uk.co.bbr.services.contests.dto.ContestGroupYearsDetailsDto;
 import uk.co.bbr.services.contests.dto.GroupListDto;
+
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -49,10 +52,18 @@ public class ContestGroupController {
 
     @GetMapping("/contests/{slug:[\\-A-Z\\d]{2,}}/years")
     public String contestGroupYearDetails(Model model, @PathVariable("slug") String groupSlug) {
-        ContestGroupYearDetailsDto contestGroupDetails = this.contestGroupService.fetchYearsBySlug(groupSlug);
+        ContestGroupYearsDetailsDto contestGroupDetails = this.contestGroupService.fetchYearsBySlug(groupSlug);
 
         model.addAttribute("Group", contestGroupDetails);
         return "contests/groups/years";
+    }
+
+    @GetMapping("/contests/{slug:[\\-A-Z\\d]{2,}}/{year:[0-9]{4}}")
+    public String contestGroupYearDetails(Model model, @PathVariable("slug") String groupSlug, @PathVariable("year") Integer year) {
+        ContestGroupYearDto eventsForGroupAndYear = this.contestGroupService.fetchEventsByGroupSlugAndYear(groupSlug, year);
+
+        model.addAttribute("GroupYearEvents", eventsForGroupAndYear);
+        return "contests/groups/year";
     }
 
 }

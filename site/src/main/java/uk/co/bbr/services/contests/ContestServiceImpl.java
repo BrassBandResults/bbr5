@@ -52,6 +52,16 @@ public class ContestServiceImpl implements ContestService, SlugTools {
     }
 
     @Override
+    public ContestDao create(String contestName, ContestGroupDao group, int ordering) {
+        ContestDao contest = new ContestDao();
+        contest.setName(contestName);
+        contest.setContestGroup(group);
+        contest.setOrdering(ordering);
+
+        return this.create(contest);
+    }
+
+    @Override
     @IsBbrMember
     public ContestDao create(ContestDao contest) {
         return this.create(contest, false);

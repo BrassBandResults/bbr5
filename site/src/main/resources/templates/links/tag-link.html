@@ -1,0 +1,10 @@
+<span th:fragment="tagLink(tag)">
+    <a th:if="${tag != null}" th:href="${'/tags/' + tag.slug}" th:text="${tag.name}" class="bbr-tag">Tag Name</a>
+</span>
+
+<span th:fragment="tagCloud(tagList)">
+    <span th:each="tag : ${tagList}">
+        <a class="bg-info text-white p-1 rounded bbr-tag" th:href="@{'/tags/'+${tag.slug} }" th:text="${tag.name}">Tag Name</a>
+    </span>
+</span>
+

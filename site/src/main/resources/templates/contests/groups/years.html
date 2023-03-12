@@ -17,23 +17,27 @@
     </ul>
     <br/>
 
-    <div class="tab-content">
     <p th:text="#{page.group-years.events-for}">We have events for this contest in these years.</p>
-        <table id="active-contests" class="table table-hover sortable">
-            <thead>
-            <tr>
-                <th th:text="#{page.group-years.column-header-year}">Year</th>
-                <th th:text="#{page.group-years.column-header-contests}">Contests</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="year : ${Group.years}">
-                <td class="contest"><a th:href="${'/contests/' + Group.contestGroup.slug + '/' + year.year}" th:text="${year.year}">1998</span></a></td>
-                <td th:text="${year.eventsCount}">123</td>
-            </tr>
-            </tbody>
-        </table>
+    <table id="active-contests" class="table table-hover sortable">
+        <thead>
+        <tr>
+            <th th:text="#{page.group-years.column-header-year}">Year</th>
+            <th th:text="#{page.group-years.column-header-contests}">Contests</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="year : ${Group.years}">
+            <td class="contest"><a th:href="${'/contests/' + Group.contestGroup.slug + '/' + year.year}" th:text="${year.year}">1998</span></a></td>
+            <td th:text="${year.eventsCount}">123</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div>
+        <span th:replace="links/tag-link.html :: tagCloud(${Group.contestGroup.tags})"></span>
     </div>
+
+    <br/>
 </div>
 </body>
 </html>

@@ -10,7 +10,7 @@ import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.contests.dao.ContestGroupDao;
 import uk.co.bbr.services.contests.dao.ContestTagDao;
 import uk.co.bbr.services.contests.dto.ContestGroupDetailsDto;
-import uk.co.bbr.services.contests.dto.ContestGroupYearDetailsDto;
+import uk.co.bbr.services.contests.dto.ContestGroupYearsDetailsDto;
 import uk.co.bbr.services.security.JwtService;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.services.security.ex.AuthenticationFailedException;
@@ -22,7 +22,7 @@ import java.time.LocalDate;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ActiveProfiles("test")
-@SpringBootTest(properties = { "spring.config.name=contest-fetch-group-tests-h2", "spring.datasource.url=jdbc:h2:mem:contest-fetch-group-tests-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE"})
+@SpringBootTest(properties = { "spring.config.name=contest-fetch-group-tests-h2", "spring.datasource.url=jdbc:h2:mem:contest-fetch-group-tests-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE", "spring.jpa.database-platform=org.hibernate.dialect.SQLServerDialect"})
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class FetchContestGroupTests implements LoginMixin {
 
@@ -103,7 +103,7 @@ class FetchContestGroupTests implements LoginMixin {
     @Test
     void testFetchingContestGroupYearsWorksAsExpected() {
         // act
-        ContestGroupYearDetailsDto contestGroupDetails = this.contestGroupService.fetchYearsBySlug("group-2");
+        ContestGroupYearsDetailsDto contestGroupDetails = this.contestGroupService.fetchYearsBySlug("group-2");
 
         // assert
         assertEquals("Group 2", contestGroupDetails.getContestGroup().getName());
@@ -112,29 +112,29 @@ class FetchContestGroupTests implements LoginMixin {
 
         assertEquals(8, contestGroupDetails.getYears().size());
 
-        assertEquals("2000", contestGroupDetails.getYears().get(0).getYear());
-        assertEquals(3, contestGroupDetails.getYears().get(0).getEventsCount());
+        assertEquals("2007", contestGroupDetails.getYears().get(0).getYear());
+        assertEquals(1, contestGroupDetails.getYears().get(0).getEventsCount());
 
-        assertEquals("2001", contestGroupDetails.getYears().get(1).getYear());
+        assertEquals("2006", contestGroupDetails.getYears().get(1).getYear());
         assertEquals(1, contestGroupDetails.getYears().get(1).getEventsCount());
 
-        assertEquals("2002", contestGroupDetails.getYears().get(2).getYear());
+        assertEquals("2005", contestGroupDetails.getYears().get(2).getYear());
         assertEquals(1, contestGroupDetails.getYears().get(2).getEventsCount());
 
-        assertEquals("2003", contestGroupDetails.getYears().get(3).getYear());
+        assertEquals("2004", contestGroupDetails.getYears().get(3).getYear());
         assertEquals(1, contestGroupDetails.getYears().get(3).getEventsCount());
 
-        assertEquals("2004", contestGroupDetails.getYears().get(4).getYear());
+        assertEquals("2003", contestGroupDetails.getYears().get(4).getYear());
         assertEquals(1, contestGroupDetails.getYears().get(4).getEventsCount());
 
-        assertEquals("2005", contestGroupDetails.getYears().get(5).getYear());
+        assertEquals("2002", contestGroupDetails.getYears().get(5).getYear());
         assertEquals(1, contestGroupDetails.getYears().get(5).getEventsCount());
 
-        assertEquals("2006", contestGroupDetails.getYears().get(6).getYear());
+        assertEquals("2001", contestGroupDetails.getYears().get(6).getYear());
         assertEquals(1, contestGroupDetails.getYears().get(6).getEventsCount());
 
-        assertEquals("2007", contestGroupDetails.getYears().get(7).getYear());
-        assertEquals(1, contestGroupDetails.getYears().get(7).getEventsCount());
+        assertEquals("2000", contestGroupDetails.getYears().get(7).getYear());
+        assertEquals(3, contestGroupDetails.getYears().get(7).getEventsCount());
     }
 }
 

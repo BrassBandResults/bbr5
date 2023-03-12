@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+<head>
+    <title th:text="#{page.group-year.title(${GroupYearEvents.contestGroup.name})}">Group Year - Brass Band Results</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h2>
+        <span th:replace="links/group-link.html :: groupLink(${GroupYearEvents.contestGroup})"></span>
+        <span th:text="${GroupYearEvents.year}">1234</span>
+    </h2>
+
+
+    <table class="next-previous" width="100%">
+        <tr>
+            <td align="left">
+                <span th:if="${GroupYearEvents.previousYear != null}">
+                    <img th:src="@{${STATIC_HOST} + '/icons/arrow_left.png'}" th:alt="#{alt-text.arrow-previous}"/>
+                    <a th:href="${'/contests/'+GroupYearEvents.contestGroup.slug+'/'+GroupYearEvents.previousYear}" th:text="${GroupYearEvents.previousYear}">2009</a>
+                </span>
+            </td>
+            <td align="right">
+                <span th:if="${GroupYearEvents.nextYear != null}">
+                    <a th:href="${'/contests/'+GroupYearEvents.contestGroup.slug+'/'+GroupYearEvents.nextYear}" th:text="${GroupYearEvents.nextYear}">2011</a>
+                    <img th:src="@{${STATIC_HOST} + '/icons/arrow_right.png'}" th:alt="#{alt-text.arrow-next}"/>
+                </span>
+            </td>
+        </tr>
+    </table>
+
+    </span>
+
+    <table id="group-year-contest-events" class="table table-hover sortable">
+        <thead>
+        <tr>
+            <th th:text="#{page.group-year.column-header-date}">Date</th>
+            <th th:text="#{page.group-year.column-header-name}">Name</th>
+            <th th:text="#{page.group-year.column-header-winner}">Winner</th>
+            <th th:text="#{page.group-year.column-header-test-piece}">Test Piece</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="eventSummary : ${GroupYearEvents.contestEvents}">
+            <td class="contest-event">
+                <span th:replace="links/event-link.html :: eventLink(${eventSummary.contestEvent})"></span>
+            </td>
+            <td th:text="${eventSummary.contestEvent.contest.name}">Contest Name</td>
+            <td>
+                <span th:each="winnerResult : ${eventSummary.winningBands}">
+                    <span th:replace="links/band-link.html :: bandLinkWithOverride(${winnerResult.band}, true, false, ${winnerResult.bandName})"></span>
+                </span>
+            </td>
+            <td>
+                <span th:each="contestPiece : ${eventSummary.testPieces}">
+                    <span th:replace="links/piece-link.html :: pieceLink(${contestPiece.piece})"></span>
+                </span>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div>
+        <span th:replace="links/tag-link.html :: tagCloud(${GroupYearEvents.contestGroup.tags})"></span>
+    </div>
+
+</div>
+</body>
+</html>

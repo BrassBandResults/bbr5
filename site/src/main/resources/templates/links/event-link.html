@@ -1,0 +1,4 @@
+<span th:fragment="eventLink(event)">
+    <a th:if="${event != null}" th:href="${'/contests/' + event.contest.slug + '/' + event.eventDateForUrl}" th:text="${event.eventDateDisplay}" class="bbr-event">22nd May 2010</span></a></td>
+</span>
+

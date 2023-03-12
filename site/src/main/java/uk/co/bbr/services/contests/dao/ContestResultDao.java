@@ -151,8 +151,8 @@ public class ContestResultDao extends AbstractDao implements NameTools {
 
     public void setConductor(PersonDao person) {
         this.conductor = person;
-        if (StringUtils.isBlank(this.originalConductorName)) {
-            this.originalConductorName = person.getName();
+        if (person != null && StringUtils.isBlank(this.originalConductorName)) {
+            this.setOriginalConductorName(person.getName());
         }
     }
     public void setConductorSecond(PersonDao conductorTwo) {

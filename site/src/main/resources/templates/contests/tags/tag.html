@@ -16,7 +16,7 @@
         </thead>
         <tbody>
         <tr th:each="contest : ${ContestTag.sortedList}">
-            <td class="contest"><a th:href="${'/contests/' + contest.slug}" th:text="${contest.name}">Contest Name</span></a></td>
+            <td class="contest"><span th:replace="links/contest-link.html :: contestLink(${contest})"></span></td>
             <td th:text="#{${contest.type.translationKey}}">Contest</td>
         </tr>
         </tbody>

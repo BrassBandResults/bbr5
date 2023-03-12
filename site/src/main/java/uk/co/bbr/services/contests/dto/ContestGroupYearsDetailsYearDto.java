@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public class ContestGroupYearDetailsYearDto {
+public class ContestGroupYearsDetailsYearDto {
     private final String year;
     private final int eventsCount;
 }

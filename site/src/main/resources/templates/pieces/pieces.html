@@ -27,11 +27,10 @@
         <tbody>
         <tr th:each="piece : ${Pieces.returnedPieces}">
             <td class="piece">
-                <a th:href="${'/pieces/' + piece.slug}" th:text="${piece.name}">Piece Name</span></a>
-                <small th:text="${piece.year}">1990</small>
+                <span th:replace="links/piece-link.html :: pieceLink(${piece})"></span>
             </td>
-            <td class="composer person"><a th:if="${piece.composer != null}" th:href="${'/people/' + piece.composer.slug}" th:text="${piece.composer.name}">Composer Name</a></td>
-            <td class="arranger person"><a th:if="${piece.arranger != null}" th:href="${'/people/' + piece.arranger.slug}" th:text="${piece.arranger.name}">Arranger Name</a></td>
+            <td class="composer person"><span th:replace="links/person-link.html :: personLink(${piece.composer}, false, false)"></span></td>
+            <td class="arranger person"><span th:replace="links/person-link.html :: personLink(${piece.arranger}, false, false)"></span></td>
             <td th:text="${piece.setTestCount}"></td>
             <td th:text="${piece.ownChoiceCount}"></td>
         </tr>

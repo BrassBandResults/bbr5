@@ -17,8 +17,7 @@
               [
                 <a th:if="${band.twitterName != null}"  th:href="${'https://twitter.com/' + band.twitterName}" th:text="#{page.region-links.twitter-link}">twitter</a>
                 <span class="text-muted" th:if="${band.twitterName == null}" th:text="#{page.region-links.twitter-link}">txwitter</span>
-              ]
-              <a class="band" th:href="${'/bands/' + band.slug}" th:text="${band.name}">Band Name</span></a>
+              ]<span th:replace="links/band-link.html :: bandLink(${band}, false, true)"></span>
             </li>
         </ul>
     </div>

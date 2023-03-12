@@ -1,0 +1,12 @@
+<span th:fragment="personLink(person, surnameFirst, showKnownFor)">
+    <span th:if="${surnameFirst}">
+        <a th:if="${person != null}" th:href="${'/people/' + person.slug}" th:text="${person.nameSurnameFirst}" class="bbr-person">Person Name</a>
+    </span>
+    <span th:if="${!surnameFirst}">
+        <a th:if="${person != null}" th:href="${'/people/' + person.slug}" th:text="${person.name}" class="bbr-person">Person Name</a>
+    </span>
+    <span th:if="${showKnownFor}">
+        <small th:if="${person.knownFor != null && person.knownFor.length > 0}"><span th:text="${person.knownFor}">Rothwell Temperance</span></small>
+    </span>
+</span>
+

@@ -33,7 +33,7 @@
         </thead>
         <tbody>
             <tr th:each="band : ${Region.bands}">
-                <td class="band"><a th:href="${'/bands/' + band.slug}" th:text="${band.name}">Rothwell Temperance Band</a></td>
+                <td class="band"><span th:replace="links/band-link.html :: bandLink(${band}, false, true)"></span></td>
                 <td class="bandType" th:text="#{${band.sectionType}}">Extinct</td>
                 <td>0</td>
             </tr>

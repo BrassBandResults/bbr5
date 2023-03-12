@@ -4,9 +4,9 @@ import uk.co.bbr.services.contests.dao.ContestGroupAliasDao;
 import uk.co.bbr.services.contests.dao.ContestGroupDao;
 import uk.co.bbr.services.contests.dao.ContestTagDao;
 import uk.co.bbr.services.contests.dto.ContestGroupDetailsDto;
-import uk.co.bbr.services.contests.dto.ContestGroupYearDetailsDto;
+import uk.co.bbr.services.contests.dto.ContestGroupYearDto;
+import uk.co.bbr.services.contests.dto.ContestGroupYearsDetailsDto;
 import uk.co.bbr.services.contests.dto.GroupListDto;
-import uk.co.bbr.services.people.dao.PersonAliasDao;
 
 import java.util.Optional;
 
@@ -27,6 +27,8 @@ public interface ContestGroupService {
 
     ContestGroupDao addGroupTag(ContestGroupDao group, ContestTagDao tag);
     ContestGroupDetailsDto fetchDetailBySlug(String groupSlug);
-    ContestGroupYearDetailsDto fetchYearsBySlug(String groupSlug);
+    ContestGroupYearsDetailsDto fetchYearsBySlug(String groupSlug);
+
+    ContestGroupYearDto fetchEventsByGroupSlugAndYear(String groupSlug, Integer year);
 }
 

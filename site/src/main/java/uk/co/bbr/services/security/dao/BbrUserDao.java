@@ -50,10 +50,10 @@ public class BbrUserDao extends AbstractDao {
 
     @Setter
     @Column(name="points")
-    private Integer points;
+    private Integer points = 0;
 
     @Column(name="contest_history_visibility", length=1)
-    private ContestHistoryVisibility contestHistoryVisibility;
+    private ContestHistoryVisibility contestHistoryVisibility = ContestHistoryVisibility.PRIVATE;
 
     @Setter
     @Column(name="stripe_email", length=100)

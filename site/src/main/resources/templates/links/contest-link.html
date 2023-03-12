@@ -1,0 +1,4 @@
+<span th:fragment="contestLink(contest)">
+    <a th:if="${contest != null}" th:href="${'/contests/' + contest.slug}" th:text="${contest.name}" class="bbr-contest">Contest Name</a>
+</span>
+

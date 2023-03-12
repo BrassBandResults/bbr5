@@ -21,7 +21,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ActiveProfiles("test")
-@SpringBootTest(properties = { "spring.config.name=piece-create-tests-h2", "spring.datasource.url=jdbc:h2:mem:piece-create-tests-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE"})
+@SpringBootTest(properties = { "spring.config.name=piece-create-tests-h2", "spring.datasource.url=jdbc:h2:mem:piece-create-tests-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE", "spring.jpa.database-platform=org.hibernate.dialect.SQLServerDialect"})
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class CreatePieceTests implements LoginMixin {
 

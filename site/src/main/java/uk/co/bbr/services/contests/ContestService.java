@@ -12,6 +12,7 @@ import java.util.Optional;
 
 public interface ContestService {
     ContestDao create(String name);
+    ContestDao create(String contestName, ContestGroupDao group, int ordering);
 
     ContestDao create(ContestDao contest);
 
@@ -31,4 +32,6 @@ public interface ContestService {
     ContestDao addContestToGroup(ContestDao contest, ContestGroupDao group);
 
     ContestDao addContestTag(ContestDao contest, ContestTagDao tag);
+
+
 }
