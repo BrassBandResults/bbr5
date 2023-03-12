@@ -52,7 +52,7 @@
             </td>
             <td>
                 <span th:each="contestPiece : ${eventSummary.testPieces}">
-                    <span th:replace="links/piece-link.html :: pieceLink(${contestPiece.piece})"></span>
+                    <span th:replace="links/piece-link.html :: pieceLink(${contestPiece})"></span>
                 </span>
             </td>
         </tr>

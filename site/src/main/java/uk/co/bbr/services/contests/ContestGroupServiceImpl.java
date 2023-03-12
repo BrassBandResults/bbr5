@@ -11,6 +11,7 @@ import uk.co.bbr.services.contests.dao.ContestEventTestPieceDao;
 import uk.co.bbr.services.contests.dao.ContestGroupAliasDao;
 import uk.co.bbr.services.contests.dao.ContestGroupDao;
 import uk.co.bbr.services.contests.dao.ContestResultDao;
+import uk.co.bbr.services.contests.dao.ContestResultPieceDao;
 import uk.co.bbr.services.contests.dao.ContestTagDao;
 import uk.co.bbr.services.contests.dto.ContestEventSummaryDto;
 import uk.co.bbr.services.contests.dto.ContestGroupDetailsDto;
@@ -22,10 +23,13 @@ import uk.co.bbr.services.contests.dto.GroupListGroupDto;
 import uk.co.bbr.services.contests.repo.ContestEventRepository;
 import uk.co.bbr.services.contests.repo.ContestGroupAliasRepository;
 import uk.co.bbr.services.contests.repo.ContestGroupRepository;
+import uk.co.bbr.services.contests.repo.ContestResultPieceRepository;
+import uk.co.bbr.services.contests.repo.ContestResultRepository;
 import uk.co.bbr.services.contests.types.ContestGroupType;
 import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.framework.ValidationException;
 import uk.co.bbr.services.framework.mixins.SlugTools;
+import uk.co.bbr.services.pieces.dao.PieceDao;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.web.security.annotations.IsBbrAdmin;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
@@ -46,6 +50,7 @@ public class ContestGroupServiceImpl implements ContestGroupService, SlugTools {
     private final ContestGroupRepository contestGroupRepository;
     private final ContestEventRepository contestEventRepository;
     private final ContestGroupAliasRepository contestGroupAliasRepository;
+    private final ContestResultPieceRepository contestResultPieceRepository;
     private final SecurityService securityService;
 
     @Override
@@ -242,20 +247,34 @@ public class ContestGroupServiceImpl implements ContestGroupService, SlugTools {
 
         Integer nextYear = null;
         List<ContestEventDao> nextEvent = this.contestGroupRepository.selectNextEventByGroupSlugAndYear(contestGroup.get().getId(), year, PageRequest.of(0, 1));
-        if (nextEvent != null && nextEvent.size() > 0) {
+        if (nextEvent != null && !nextEvent.isEmpty()) {
             nextYear = nextEvent.get(0).getEventDate().getYear();
         }
 
         Integer previousYear = null;
         List<ContestEventDao> previousEvent = this.contestGroupRepository.selectPreviousEventByGroupSlugAndYear(contestGroup.get().getId(), year, PageRequest.of(0, 1));
-        if (previousEvent != null && previousEvent.size() > 0) {
+        if (previousEvent != null && !previousEvent.isEmpty()) {
             previousYear = previousEvent.get(0).getEventDate().getYear();
         }
 
         List<ContestEventSummaryDto> contestEvents = new ArrayList<>();
         for (ContestEventDao event : eventsForYear) {
             List<ContestResultDao> winningBands = this.contestEventRepository.fetchWinningBands(event.getId());
-            List<ContestEventTestPieceDao> testPieces = this.contestEventRepository.fetchTestPieces(event.getId());
+
+            List<ContestEventTestPieceDao> contestTestPieces = this.contestEventRepository.fetchTestPieces(event.getId());
+            List<PieceDao> testPieces = new ArrayList<>();
+            for (ContestEventTestPieceDao eachSetPiece : contestTestPieces) {
+                testPieces.add(eachSetPiece.getPiece());
+            }
+
+            if (testPieces.isEmpty()) {
+                for (ContestResultDao eachResult : winningBands) {
+                    List<ContestResultPieceDao> pieces = this.contestResultPieceRepository.fetchForResult(eachResult.getId());
+                    for (ContestResultPieceDao eachPiece : pieces) {
+                        testPieces.add(eachPiece.getPiece());
+                    }
+                }
+            }
             contestEvents.add(new ContestEventSummaryDto(event, winningBands, testPieces));
         }
 

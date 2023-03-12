@@ -9,6 +9,7 @@ import uk.co.bbr.services.contests.dao.ContestResultPieceDao;
 import uk.co.bbr.services.contests.repo.ContestResultPieceRepository;
 import uk.co.bbr.services.contests.repo.ContestResultRepository;
 import uk.co.bbr.services.people.dao.PersonDao;
+import uk.co.bbr.services.pieces.dao.PieceDao;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
@@ -68,7 +69,20 @@ public class ContestResultServiceImpl implements ContestResultService {
     @Override
     public ContestResultPieceDao addPieceToResult(ContestResultDao contestResult, ContestResultPieceDao contestResultTestPiece) {
         contestResultTestPiece.setContestResult(contestResult);
+
+        contestResultTestPiece.setCreated(LocalDateTime.now());
+        contestResultTestPiece.setCreatedBy(this.securityService.getCurrentUser());
+        contestResultTestPiece.setUpdated(LocalDateTime.now());
+        contestResultTestPiece.setUpdatedBy(this.securityService.getCurrentUser());
+
         return this.contestResultPieceRepository.saveAndFlush(contestResultTestPiece);
+    }
+
+    @Override
+    public ContestResultPieceDao addPieceToResult(ContestResultDao contestResult, PieceDao piece) {
+        ContestResultPieceDao newPiece = new ContestResultPieceDao();
+        newPiece.setPiece(piece);
+        return this.addPieceToResult(contestResult, newPiece);
     }
 
     @Override
