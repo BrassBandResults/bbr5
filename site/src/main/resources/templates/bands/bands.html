@@ -17,20 +17,20 @@
     <p th:replace="navigation/az-picker.html :: azPicker('bands', ${BandPrefixLetter}, true, true)"></p>
     <table id="bands" class="table table-hover sortable">
         <thead>
-        <tr>
-            <th th:text="#{page.bands.column-header-name}">Name</th>
-            <th th:text="#{page.bands.column-header-region}">Region</th>
-            <th th:text="#{page.bands.column-header-contest-results}">Contest Results</th>
-        </tr>
+            <tr>
+                <th th:text="#{page.bands.column-header-name}">Name</th>
+                <th th:text="#{page.bands.column-header-region}">Region</th>
+                <th th:text="#{page.bands.column-header-contest-results}">Contest Results</th>
+            </tr>
         </thead>
         <tbody>
-        <tr th:each="band : ${Bands.returnedBands}">
-            <td class="band">
-                <span th:replace="links/band-link.html :: bandLink(${band}, false, true)"></span>
-            </td>
-            <td class="region"><span th:replace="links/region-link.html :: regionLink(${band.region})"></span></td>
-            <td class="band-contest-count" th:text="${band.contestCount}">0</td>
-        </tr>
+            <tr th:each="band : ${Bands.returnedBands}">
+                <td class="band">
+                    <span th:replace="links/band-link.html :: bandLink(${band}, false, true)"></span>
+                </td>
+                <td class="region"><span th:replace="links/region-link.html :: regionLink(${band.region})"></span></td>
+                <td class="band-contest-count" th:text="${band.contestCount}">0</td>
+            </tr>
         </tbody>
     </table>
     <p th:replace="navigation/az-picker.html :: azPicker('bands', ${BandPrefixLetter}, true, true)"></p>

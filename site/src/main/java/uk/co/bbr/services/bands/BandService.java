@@ -43,11 +43,5 @@ public interface BandService {
 
     Optional<BandPreviousNameDao> aliasExists(BandDao band, String aliasName);
 
-
-
-
-
-
-
-
+    List<BandPreviousNameDao> findVisiblePreviousNames(BandDao band);
 }

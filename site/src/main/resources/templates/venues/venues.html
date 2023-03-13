@@ -24,7 +24,7 @@
             <td class="venue">
             <td><span th:replace="links/venue-link.html :: venueLink(${venue}, true)"></span></td>
             </td>
-            <td><span th:replace="links/region-link.html :: regionLink(${venue.region}, true)"></span></td>
+            <td><span th:replace="links/region-link.html :: regionLink(${venue.region})"></span></td>
             <td class="venue-event-count" th:text="${venue.eventCount}">0</td>
         </tr>
         </tbody>

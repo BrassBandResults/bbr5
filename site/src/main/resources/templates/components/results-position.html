@@ -1,0 +1,13 @@
+<span th:fragment="resultsPosition(result)">
+  <span th:if="${result.resultPositionType.code == 'R'}">
+    <span th:text="${result.position}"></span>
+  </span>
+  <span th:if="${result.resultPositionType.code == 'W'}">
+    <span>W</span>
+  </span>
+  <span th:if="${result.resultPositionType.code == 'D'}">
+    <span>D</span>
+  </span>
+  <span th:if="${result.resultPositionType.code == 'U'}">
+  </span>
+</span>

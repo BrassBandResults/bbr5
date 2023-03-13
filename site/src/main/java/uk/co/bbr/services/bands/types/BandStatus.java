@@ -36,6 +36,7 @@ public enum BandStatus {
     public boolean isNotExtinct() {
         return this.getCode() != 0;
     }
+    public boolean isNotCompeting() { return this.getCode() != 1; }
 
     public static BandStatus fromCode(int code) {
         return Stream.of(BandStatus.values())

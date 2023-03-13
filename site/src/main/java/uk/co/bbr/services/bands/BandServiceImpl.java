@@ -115,6 +115,11 @@ public class BandServiceImpl implements BandService, SlugTools {
         return this.bandPreviousNameRepository.fetchByNameForBand(band.getId(), name);
     }
 
+    @Override
+    public List<BandPreviousNameDao> findVisiblePreviousNames(BandDao band) {
+        return this.bandPreviousNameRepository.findVisibleForBandOrderByName(band.getId());
+    }
+
     private void validateMandatory(BandDao band){
         if (StringUtils.isBlank(band.getName())) {
             throw new ValidationException("Band name must be specified");
@@ -154,7 +159,7 @@ public class BandServiceImpl implements BandService, SlugTools {
 
         List<BandListBandDto> returnedBands = new ArrayList<>();
         for (BandDao eachBand : bandsToReturn) {
-            returnedBands.add(new BandListBandDto(eachBand.getSlug(), eachBand.getName(), eachBand.getRegion(),0, eachBand.getDateRange()));
+            returnedBands.add(new BandListBandDto(eachBand.getSlug(), eachBand.getName(), eachBand.getRegion(),eachBand.getResultsCount(), eachBand.getDateRange()));
         }
         return new BandListDto(bandsToReturn.size(), allBandsCount, prefix, returnedBands);
     }

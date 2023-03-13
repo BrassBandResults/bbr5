@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Formula;
 import uk.co.bbr.services.bands.types.BandStatus;
 import uk.co.bbr.services.framework.AbstractDao;
 import uk.co.bbr.services.framework.mixins.NameTools;
@@ -76,6 +77,9 @@ public class BandDao extends AbstractDao implements NameTools {
 
     @Column(name="twitter_name")
     private String twitterName;
+
+    @Formula("(SELECT COUNT(*) FROM contest_result r WHERE r.band_id = id)")
+    private int resultsCount;
 
     public void setName(String sourceName) {
         this.name = simplifyName(sourceName);

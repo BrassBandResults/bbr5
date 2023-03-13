@@ -6,3 +6,19 @@ a {
   color: #003366 !important;
   text-decoration: none;
 }
+
+a:hover {
+  text-decoration: underline;
+}
+
+tbody tr.result-1 td {
+  background-color: gold !important;
+}
+
+tbody tr.result-2 td {
+  background-color: silver !important;
+}
+
+tbody tr.result-3 td {
+  background-color: #ac9a77 !important;
+}

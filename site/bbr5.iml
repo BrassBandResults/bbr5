@@ -112,19 +112,19 @@
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.13.5" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.13.5" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: com.microsoft.sqlserver:mssql-jdbc:10.2.3.jre8" level="project" />
-    <orderEntry type="library" name="Maven: org.orbisgis:h2gis:2.2.0" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.commons:commons-compress:1.21" level="project" />
-    <orderEntry type="library" name="Maven: org.orbisgis:cts:1.7.0" level="project" />
-    <orderEntry type="library" name="Maven: org.junit.jupiter:junit-jupiter-api:5.8.2" level="project" />
-    <orderEntry type="library" name="Maven: org.opentest4j:opentest4j:1.2.0" level="project" />
-    <orderEntry type="library" name="Maven: org.junit.platform:junit-platform-commons:1.8.2" level="project" />
-    <orderEntry type="library" name="Maven: org.apiguardian:apiguardian-api:1.1.2" level="project" />
-    <orderEntry type="library" name="Maven: com.h2database:h2:2.1.214" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.orbisgis:h2gis:2.2.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.apache.commons:commons-compress:1.21" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.orbisgis:cts:1.7.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.junit.jupiter:junit-jupiter-api:5.8.2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.opentest4j:opentest4j:1.2.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.junit.platform:junit-platform-commons:1.8.2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.apiguardian:apiguardian-api:1.1.2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: com.h2database:h2:2.1.214" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-core:2.13.5" level="project" />
-    <orderEntry type="library" name="Maven: org.locationtech.jts:jts-core:1.19.0" level="project" />
-    <orderEntry type="library" name="Maven: org.orbisgis:poly2tri:0.4.0" level="project" />
-    <orderEntry type="library" name="Maven: org.orbisgis:h2gis-api:2.2.0" level="project" />
-    <orderEntry type="library" name="Maven: org.orbisgis:h2gis-utilities:2.2.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.locationtech.jts:jts-core:1.19.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.orbisgis:poly2tri:0.4.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.orbisgis:h2gis-api:2.2.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.orbisgis:h2gis-utilities:2.2.0" level="project" />
     <orderEntry type="library" name="Maven: org.eclipse.jgit:org.eclipse.jgit:6.4.0.202211300538-r" level="project" />
     <orderEntry type="library" name="Maven: com.googlecode.javaewah:JavaEWAH:1.1.13" level="project" />
     <orderEntry type="library" name="Maven: org.jdom:jdom2:2.0.6.1" level="project" />
