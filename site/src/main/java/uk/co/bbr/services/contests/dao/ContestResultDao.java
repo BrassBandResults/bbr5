@@ -15,7 +15,10 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.List;
+import java.util.Set;
 
 @Getter
 @Entity
@@ -92,6 +95,9 @@ public class ContestResultDao extends AbstractDao implements NameTools {
 
     @Column(name="notes")
     private String notes;
+
+    @OneToMany(mappedBy="contestResult", fetch=FetchType.EAGER)
+    private Set<ContestResultPieceDao> pieces;
 
     public void populateFrom(ContestResultDao result) {
         if (this.getConductor() == null && result.getConductor() != null) {

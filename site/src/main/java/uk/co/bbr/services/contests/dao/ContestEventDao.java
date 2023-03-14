@@ -13,9 +13,12 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Set;
 
 @Getter
 @Entity
@@ -65,6 +68,9 @@ public class ContestEventDao extends AbstractDao implements NameTools {
     @JoinColumn(name="contest_type_id")
     @Setter
     private ContestTypeDao contestType;
+
+    @OneToMany(mappedBy="contestEvent", fetch=FetchType.EAGER)
+    private Set<ContestEventTestPieceDao> pieces;
 
     public void setName(String name){
         String nameToSet = simplifyName(name);

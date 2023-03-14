@@ -50,11 +50,11 @@
         </thead>
         <tbody>
             <tr th:each="result : ${BandResults}" th:class="${'result-' + result.position}">
-                <td class="bbr-event"><span th:replace="links/event-link.html :: eventLink(${result.contestEvent})">9th Sep 2023</span></td>
+                <td class="bbr-event" nowrap><span th:replace="links/event-link.html :: eventLink(${result.contestEvent})">9th Sep 2023</span></td>
                 <td class="bbr-contest" th:text="${result.contestEvent.contest.name}">Yorkshire Area</td>
                 <td class="bbr-position"><span th:replace="components/results-position.html :: resultsPosition(${result})">1</span></td>
-                <td class="bbr-piece">Test Piece</td>
-                <td class="bbr-draw" th:text="${result.draw}">1</td>
+                <td class="bbr-piece"><span th:replace="links/piece-link.html :: resultPieceLink(${result})">Test Piece</span></td>
+                <td class="bbr-draw"><span th:if="${result.draw != 0}" th:text="${result.draw}">1</span></td>
                 <td class="bbr-conductor"><span th:replace="links/person-link.html :: personLink(${result.conductor}, false, false)">Bob Childs</span></td>
             </tr>
         </tbody>
