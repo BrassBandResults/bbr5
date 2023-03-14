@@ -91,6 +91,11 @@ public class ContestResultServiceImpl implements ContestResultService {
     }
 
     @Override
+    public List<ContestResultDao> findWhitResultsForBand(BandDao bandDao) {
+        return this.contestResultRepository.findWhitForBand(bandDao.getId());
+    }
+
+    @Override
     public ContestResultDao migrate(ContestEventDao event, ContestResultDao contestResult) {
         contestResult.setContestEvent(event);
         return this.contestResultRepository.saveAndFlush(contestResult);

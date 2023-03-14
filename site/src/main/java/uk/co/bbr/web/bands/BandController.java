@@ -29,6 +29,10 @@ public class BandController {
             throw new NotFoundException("Band with slug " + slug + " not found");
         }
 
+        if (band.get().getResultsNonWhitFridayCount() == 0 && band.get().getResultsWhitFridayCount() > 0) {
+            return "redirect:/bands/" + slug + "/whits";
+        }
+
         List<BandPreviousNameDao> previousNames = this.bandService.findVisiblePreviousNames(band.get());
         List<ContestResultDao> bandResults = this.contestResultService.findNonWhitResultsForBand(band.get());
 
@@ -36,6 +40,26 @@ public class BandController {
         model.addAttribute("PreviousNames", previousNames);
         model.addAttribute("BandResults", bandResults);
         return "bands/band";
+    }
+
+    @GetMapping("/bands/{slug:[\\-a-z\\d]{2,}}/whits")
+    public String bandWhitFridayDetail(Model model, @PathVariable("slug") String slug) {
+        Optional<BandDao> band = this.bandService.fetchBySlug(slug);
+        if (band.isEmpty()) {
+            throw new NotFoundException("Band with slug " + slug + " not found");
+        }
+
+        if (band.get().getResultsWhitFridayCount() == 0) {
+            return "redirect:/bands/" + slug;
+        }
+
+        List<BandPreviousNameDao> previousNames = this.bandService.findVisiblePreviousNames(band.get());
+        List<ContestResultDao> whitResults = this.contestResultService.findWhitResultsForBand(band.get());
+
+        model.addAttribute("Band", band.get());
+        model.addAttribute("PreviousNames", previousNames);
+        model.addAttribute("BandResults", whitResults);
+        return "bands/band-whits";
     }
 
 }

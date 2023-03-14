@@ -24,4 +24,10 @@ public interface ContestResultRepository extends JpaRepository<ContestResultDao,
             "AND r.contestEvent.contest.name NOT LIKE '%Whit Friday%' " +
             "ORDER BY r.contestEvent.eventDate DESC")
     List<ContestResultDao> findNonWhitForBand(Long bandId);
+
+    @Query("SELECT r FROM ContestResultDao r " +
+            "WHERE r.band.id = :bandId " +
+            "AND r.contestEvent.contest.name LIKE '%Whit Friday%' " +
+            "ORDER BY r.contestEvent.eventDate DESC")
+    List<ContestResultDao> findWhitForBand(Long bandId);
 }

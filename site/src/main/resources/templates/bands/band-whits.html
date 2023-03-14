@@ -39,10 +39,10 @@
 
     <ul class="nav nav-tabs">
         <li class="nav-item">
-            <a class="nav-link active th:href="${'/bands/' + Band.slug}" th:text="#{page.band.tab.contests(${Band.resultsNonWhitFridayCount})}">Contests</span></a>
+            <a class="nav-link" th:href="${'/bands/' + Band.slug}" th:text="#{page.band.tab.contests(${Band.resultsNonWhitFridayCount})}">Contests</span></a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" th:href="${'/bands/' + Band.slug + '/whits'}" th:text="#{page.band.tab.whits(${Band.resultsWhitFridayCount})}">Whit Friday</span></a>
+            <a class="nav-link active" th:href="${'/bands/' + Band.slug + '/whits'}" th:text="#{page.band.tab.whits(${Band.resultsWhitFridayCount})}">Whit Friday</span></a>
         </li>
     </ul>
     <br/>
@@ -53,8 +53,7 @@
                 <th th:text="#{page.band.column-header-date}">Date</th>
                 <th th:text="#{page.band.column-header-contest}">Contest</th>
                 <th th:text="#{page.band.column-header-position}">Position</th>
-                <th th:text="#{page.band.column-header-test-piece}">Test Piece</th>
-                <th th:text="#{page.band.column-header-draw}">Draw</th>
+                <th th:text="#{page.band.column-header-march}">March</th>
                 <th th:text="#{page.band.column-header-conductor}">Conductor</th>
             </tr>
         </thead>
@@ -64,7 +63,6 @@
                 <td class="bbr-contest" th:text="${result.contestEvent.contest.name}">Yorkshire Area</td>
                 <td class="bbr-position"><span th:replace="components/results-position.html :: resultsPosition(${result})">1</span></td>
                 <td class="bbr-piece"><span th:replace="links/piece-link.html :: resultPieceLink(${result})">Test Piece</span></td>
-                <td class="bbr-draw"><span th:if="${result.draw != 0}" th:text="${result.draw}">1</span></td>
                 <td class="bbr-conductor"><span th:replace="links/person-link.html :: personLink(${result.conductor}, false, false)">Bob Childs</span></td>
             </tr>
         </tbody>

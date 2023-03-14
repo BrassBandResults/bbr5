@@ -81,6 +81,18 @@ public class BandDao extends AbstractDao implements NameTools {
     @Formula("(SELECT COUNT(*) FROM contest_result r WHERE r.band_id = id)")
     private int resultsCount;
 
+    @Formula("(SELECT COUNT(*) FROM contest_result r " +
+            "INNER JOIN contest_event e ON e.id = r.contest_event_id " +
+            "INNER JOIN contest c ON c.id = e.contest_id " +
+            "WHERE r.band_id = id AND c.name LIKE '%Whit Friday%')")
+    private int resultsWhitFridayCount;
+
+    @Formula("(SELECT COUNT(*) FROM contest_result r " +
+            "INNER JOIN contest_event e ON e.id = r.contest_event_id " +
+            "INNER JOIN contest c ON c.id = e.contest_id " +
+            "WHERE r.band_id = id AND c.name NOT LIKE '%Whit Friday%')")
+    private int resultsNonWhitFridayCount;
+
     public void setName(String sourceName) {
         this.name = simplifyName(sourceName);
     }

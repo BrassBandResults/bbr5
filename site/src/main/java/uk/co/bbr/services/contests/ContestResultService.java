@@ -21,4 +21,6 @@ public interface ContestResultService {
     ContestResultPieceDao addPieceToResult(ContestResultDao contestResult, PieceDao piece);
 
     List<ContestResultDao> findNonWhitResultsForBand(BandDao bandDao);
+
+    List<ContestResultDao> findWhitResultsForBand(BandDao bandDao);
 }
