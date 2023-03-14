@@ -2,7 +2,7 @@
     <span th:if="${band != null}">
         <img th:if="${showFlag}" th:title="${band.region.name}" th:src="@{${STATIC_HOST} + '/flags/' + ${band.region.countryCode} + '.png'}"/>
         <a th:href="${'/bands/' + band.slug}" th:text="${band.name}" class="bbr-band">Band Name</a>
-        <small th:if="${showDateRange && band.dateRange.length > 0}">[<span th:text="${band.dateRange}">1950-2000</span>]</small>
+        <small><small th:if="${showDateRange && band.dateRange.length > 0}"><span th:text="${band.dateRange}">1950-2000</span></small></small>
     </span>
 </span>
 
