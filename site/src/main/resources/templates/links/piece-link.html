@@ -1,7 +1,7 @@
 <span th:fragment="pieceLink(piece)">
     <span th:if="${piece != null}">
         <a th:href="${'/pieces/' + piece.slug}" th:text="${piece.name}" class="bbr-piece">Piece Name</a>
-        <small th:text="${piece.year}">1990</small>
+        <small><small th:text="${piece.year}">1990</small></small>
     </span>
 </span>
 
