@@ -12,13 +12,13 @@ a:hover {
 }
 
 tbody tr.result-1 td {
-  background-color: gold !important;
+  background-color: #fbed90 !important;
 }
 
 tbody tr.result-2 td {
-  background-color: silver !important;
+  background-color: #cddaf6 !important;
 }
 
 tbody tr.result-3 td {
-  background-color: #ac9a77 !important;
+  background-color: #b9977f !important;
 }
