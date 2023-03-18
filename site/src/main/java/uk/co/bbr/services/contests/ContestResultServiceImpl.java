@@ -3,17 +3,26 @@ package uk.co.bbr.services.contests;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import uk.co.bbr.services.bands.dao.BandDao;
+import uk.co.bbr.services.bands.dto.BandDetailsDto;
+import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.contests.dao.ContestEventDao;
 import uk.co.bbr.services.contests.dao.ContestResultDao;
 import uk.co.bbr.services.contests.dao.ContestResultPieceDao;
 import uk.co.bbr.services.contests.repo.ContestResultPieceRepository;
 import uk.co.bbr.services.contests.repo.ContestResultRepository;
+import uk.co.bbr.services.contests.sql.ContestResultSql;
+import uk.co.bbr.services.contests.sql.dto.BandEventPiecesSqlDto;
+import uk.co.bbr.services.contests.sql.dto.BandResultSqlDto;
+import uk.co.bbr.services.contests.sql.dto.BandResultsPiecesSqlDto;
+import uk.co.bbr.services.contests.types.ResultPositionType;
 import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.pieces.dao.PieceDao;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
+import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,6 +33,7 @@ public class ContestResultServiceImpl implements ContestResultService {
     private final ContestResultRepository contestResultRepository;
     private final ContestResultPieceRepository contestResultPieceRepository;
     private final SecurityService securityService;
+    private final EntityManager entityManager;
 
     @Override
     @IsBbrMember
@@ -86,13 +96,66 @@ public class ContestResultServiceImpl implements ContestResultService {
     }
 
     @Override
-    public List<ContestResultDao> findNonWhitResultsForBand(BandDao bandDao) {
-        return this.contestResultRepository.findNonWhitForBand(bandDao.getId());
-    }
+    public BandDetailsDto findResultsForBand(BandDao band) {
 
-    @Override
-    public List<ContestResultDao> findWhitResultsForBand(BandDao bandDao) {
-        return this.contestResultRepository.findWhitForBand(bandDao.getId());
+        List<BandResultSqlDto> bandResultsSql = ContestResultSql.selectBandResults(this.entityManager, band.getId());
+        BandResultsPiecesSqlDto resultPiecesSql = ContestResultSql.selectBandResultPerformances(this.entityManager, band.getId());
+        BandEventPiecesSqlDto eventPiecesSql = ContestResultSql.selectBandEventPieces(this.entityManager, band.getId());
+
+        // combine
+        List<ContestResultDao> bandResults = new ArrayList<>();
+        List<ContestResultDao> whitResults = new ArrayList<>();
+
+        for (BandResultSqlDto eachSqlResult : bandResultsSql) {
+            ContestResultDao eachResult = new ContestResultDao();
+            eachResult.setContestEvent(new ContestEventDao());
+            eachResult.getContestEvent().setContest(new ContestDao());
+
+            eachResult.setId(eachSqlResult.getContestResultId().longValue());
+            eachResult.getContestEvent().setId(eachSqlResult.getContestEventId().longValue());
+
+            eachResult.getContestEvent().setEventDate(eachSqlResult.getEventDate());
+            eachResult.getContestEvent().getContest().setSlug(eachSqlResult.getContestSlug());
+            eachResult.getContestEvent().getContest().setName(eachSqlResult.getContestName());
+            if (eachSqlResult.getResultPosition() != null) {
+                eachResult.setPosition(eachSqlResult.getResultPosition().toString());
+            }
+            eachResult.setResultPositionType(ResultPositionType.fromCode(eachSqlResult.getResultPositionType()));
+            eachResult.setDraw(eachSqlResult.getDraw());
+
+            if (eachSqlResult.getConductor1Slug() != null) {
+                eachResult.setConductor(new PersonDao());
+                eachResult.getConductor().setSlug(eachSqlResult.getConductor1Slug());
+                eachResult.getConductor().setFirstNames(eachSqlResult.getConductor1FirstNames());
+                eachResult.getConductor().setSurname(eachSqlResult.getConductor1Surname());
+            }
+
+            if (eachSqlResult.getConductor2Slug() != null) {
+                eachResult.setConductorSecond(new PersonDao());
+                eachResult.getConductorSecond().setSlug(eachSqlResult.getConductor2Slug());
+                eachResult.getConductorSecond().setFirstNames(eachSqlResult.getConductor2FirstNames());
+                eachResult.getConductorSecond().setSurname(eachSqlResult.getConductor2Surname());
+            }
+
+            if (eachSqlResult.getConductor3Slug() != null) {
+                eachResult.setConductorThird(new PersonDao());
+                eachResult.getConductorThird().setSlug(eachSqlResult.getConductor3Slug());
+                eachResult.getConductorThird().setFirstNames(eachSqlResult.getConductor3FirstNames());
+                eachResult.getConductorThird().setSurname(eachSqlResult.getConductor3Surname());
+            }
+
+            resultPiecesSql.populateResultPieces(eachResult);
+            eventPiecesSql.populateEventPieces(eachResult.getContestEvent());
+
+            if (eachResult.getContestEvent().getContest().getName().contains("Whit Friday")) {
+                whitResults.add(eachResult);
+            } else {
+                bandResults.add(eachResult);
+            }
+        }
+
+
+        return new BandDetailsDto(bandResults, whitResults);
     }
 
     @Override

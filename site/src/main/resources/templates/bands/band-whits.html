@@ -39,10 +39,10 @@
 
     <ul class="nav nav-tabs">
         <li class="nav-item">
-            <a class="nav-link" th:href="${'/bands/' + Band.slug}" th:text="#{page.band.tab.contests(${Band.resultsNonWhitFridayCount})}">Contests</span></a>
+            <a class="nav-link" th:href="${'/bands/' + Band.slug}" th:text="#{page.band.tab.contests(${ResultsCount})}">Contests</span></a>
         </li>
         <li class="nav-item">
-            <a class="nav-link active" th:href="${'/bands/' + Band.slug + '/whits'}" th:text="#{page.band.tab.whits(${Band.resultsWhitFridayCount})}">Whit Friday</span></a>
+            <a class="nav-link active" th:href="${'/bands/' + Band.slug + '/whits'}" th:text="#{page.band.tab.whits(${WhitCount})}">Whit Friday</span></a>
         </li>
     </ul>
     <br/>

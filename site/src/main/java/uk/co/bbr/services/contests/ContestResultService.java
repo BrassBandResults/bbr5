@@ -1,6 +1,7 @@
 package uk.co.bbr.services.contests;
 
 import uk.co.bbr.services.bands.dao.BandDao;
+import uk.co.bbr.services.bands.dto.BandDetailsDto;
 import uk.co.bbr.services.contests.dao.ContestEventDao;
 import uk.co.bbr.services.contests.dao.ContestResultDao;
 import uk.co.bbr.services.contests.dao.ContestResultPieceDao;
@@ -20,7 +21,5 @@ public interface ContestResultService {
     ContestResultPieceDao addPieceToResult(ContestResultDao contestResult, ContestResultPieceDao contestResultTestPiece);
     ContestResultPieceDao addPieceToResult(ContestResultDao contestResult, PieceDao piece);
 
-    List<ContestResultDao> findNonWhitResultsForBand(BandDao bandDao);
-
-    List<ContestResultDao> findWhitResultsForBand(BandDao bandDao);
+    BandDetailsDto findResultsForBand(BandDao bandDao);
 }

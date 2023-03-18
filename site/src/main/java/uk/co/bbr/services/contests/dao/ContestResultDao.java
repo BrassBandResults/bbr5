@@ -17,6 +17,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.util.List;
 import java.util.Set;
 
@@ -30,12 +31,10 @@ public class ContestResultDao extends AbstractDao implements NameTools {
 
     @ManyToOne(fetch= FetchType.EAGER, optional=false)
     @JoinColumn(name="contest_event_id")
-    @Setter
     private ContestEventDao contestEvent;
 
     @ManyToOne(fetch=FetchType.EAGER, optional=false)
     @JoinColumn(name="band_id")
-    @Setter
     private BandDao band;
 
     @Column(name="band_name")
@@ -77,17 +76,14 @@ public class ContestResultDao extends AbstractDao implements NameTools {
 
     @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="conductor_id")
-    @Setter
     private PersonDao conductor;
 
     @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="conductor_two_id")
-    @Setter
     private PersonDao conductorSecond;
 
     @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="conductor_three_id")
-    @Setter
     private PersonDao conductorThird;
 
     @Column(name="conductor_name")
@@ -96,8 +92,9 @@ public class ContestResultDao extends AbstractDao implements NameTools {
     @Column(name="notes")
     private String notes;
 
-    @OneToMany(mappedBy="contestResult", fetch=FetchType.EAGER)
-    private Set<ContestResultPieceDao> pieces;
+    @Transient
+    @Setter
+    private List<ContestResultPieceDao> pieces;
 
     public void populateFrom(ContestResultDao result) {
         if (this.getConductor() == null && result.getConductor() != null) {

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import uk.co.bbr.services.bands.BandService;
 import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.bands.dao.BandPreviousNameDao;
+import uk.co.bbr.services.bands.dto.BandDetailsDto;
 import uk.co.bbr.services.contests.ContestResultService;
 import uk.co.bbr.services.contests.dao.ContestResultDao;
 import uk.co.bbr.services.framework.NotFoundException;
@@ -29,16 +30,18 @@ public class BandController {
             throw new NotFoundException("Band with slug " + slug + " not found");
         }
 
-        if (band.get().getResultsNonWhitFridayCount() == 0 && band.get().getResultsWhitFridayCount() > 0) {
+        List<BandPreviousNameDao> previousNames = this.bandService.findVisiblePreviousNames(band.get());
+        BandDetailsDto bandResults = this.contestResultService.findResultsForBand(band.get());
+
+        if (bandResults.getBandResults().size() == 0 && bandResults.getBandWhitResults().size() > 0) {
             return "redirect:/bands/" + slug + "/whits";
         }
 
-        List<BandPreviousNameDao> previousNames = this.bandService.findVisiblePreviousNames(band.get());
-        List<ContestResultDao> bandResults = this.contestResultService.findNonWhitResultsForBand(band.get());
-
         model.addAttribute("Band", band.get());
         model.addAttribute("PreviousNames", previousNames);
-        model.addAttribute("BandResults", bandResults);
+        model.addAttribute("BandResults", bandResults.getBandResults());
+        model.addAttribute("ResultsCount", bandResults.getBandResults().size());
+        model.addAttribute("WhitCount", bandResults.getBandWhitResults().size());
         return "bands/band";
     }
 
@@ -49,16 +52,18 @@ public class BandController {
             throw new NotFoundException("Band with slug " + slug + " not found");
         }
 
-        if (band.get().getResultsWhitFridayCount() == 0) {
+        List<BandPreviousNameDao> previousNames = this.bandService.findVisiblePreviousNames(band.get());
+        BandDetailsDto bandResults = this.contestResultService.findResultsForBand(band.get());
+
+        if (bandResults.getBandWhitResults().size() == 0) {
             return "redirect:/bands/" + slug;
         }
 
-        List<BandPreviousNameDao> previousNames = this.bandService.findVisiblePreviousNames(band.get());
-        List<ContestResultDao> whitResults = this.contestResultService.findWhitResultsForBand(band.get());
-
         model.addAttribute("Band", band.get());
         model.addAttribute("PreviousNames", previousNames);
-        model.addAttribute("BandResults", whitResults);
+        model.addAttribute("BandResults", bandResults.getBandWhitResults());
+        model.addAttribute("ResultsCount", bandResults.getBandResults().size());
+        model.addAttribute("WhitCount", bandResults.getBandWhitResults().size());
         return "bands/band-whits";
     }
 
