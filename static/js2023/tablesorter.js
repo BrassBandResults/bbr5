@@ -102,6 +102,9 @@ function sortRows(table, columnIndex, reverse) {
     if (cls === "number") {
         values.sort(sortNumberVal);
         values = values.reverse();
+    } else if (cls === "result") {
+        values.sort(sortResultVal);
+        values = values.reverse();
     } else if (cls === "date") {
         values.sort(sortDateVal);
     } else {
@@ -121,7 +124,37 @@ function sortRows(table, columnIndex, reverse) {
  * Compare two 'value objects' numerically
  */
 function sortNumberVal(a, b) {
-    return sortNumber(a.value, b.value);
+    let a1 = a.value;
+    let b1 = b.value;
+    if (a1 === "") {
+        a1 = -5;
+    }
+    if (b1 === "") {
+        b1 = -5;
+    }
+    
+    return sortNumber(a1, b1);
+}
+
+/**
+ * Compare two 'result objects' numerically, where W = -1 and D = -2
+ */
+function sortResultVal(a, b) {
+    let a1 = a.value;
+    let b1 = b.value;
+    if (a1 === "W") {
+        a1 = -1;
+    }
+    if (a1 === "D") {
+        a1 = -2;
+    }
+    if (b1 === "W") {
+        b1 = -1;
+    }
+    if (b1 === "D") {
+        b1 = -2;
+    }
+    return sortNumber(a1, b1);
 }
 
 /**
