@@ -12,6 +12,7 @@ public class BandResultSqlDto {
 
     private BigInteger contestResultId;
     private LocalDate eventDate;
+    private String eventDateResolution;
     private String contestSlug;
     private String contestName;
     private Integer resultPosition;
@@ -32,20 +33,21 @@ public class BandResultSqlDto {
         this.contestResultId = (BigInteger)columnList[0];
         Date eventDate = (Date)columnList[1];
         this.eventDate = eventDate.toLocalDate();
-        this.contestSlug = (String)columnList[2];
-        this.contestName = (String)columnList[3];
-        this.resultPosition = (Integer)columnList[4];
-        this.resultPositionType = (String)columnList[5];
-        this.draw = (Integer)columnList[6];
-        this.contestEventId = (BigInteger)columnList[7];
-        this.conductor1Slug = (String)columnList[8];
-        this.conductor1FirstNames = (String)columnList[9];
-        this.conductor1Surname = (String)columnList[10];
-        this.conductor2Slug = (String)columnList[11];
-        this.conductor2FirstNames = (String)columnList[12];
-        this.conductor2Surname = (String)columnList[13];
-        this.conductor3Slug = (String)columnList[14];
-        this.conductor3FirstNames = (String)columnList[15];
-        this.conductor3Surname = (String)columnList[16];
+        this.eventDateResolution = (String)columnList[2];
+        this.contestSlug = (String)columnList[3];
+        this.contestName = (String)columnList[4];
+        this.resultPosition = (Integer)columnList[5];
+        this.resultPositionType = (String)columnList[6];
+        this.draw = (Integer)columnList[7];
+        this.contestEventId = (BigInteger)columnList[8];
+        this.conductor1Slug = (String)columnList[9];
+        this.conductor1FirstNames = (String)columnList[10];
+        this.conductor1Surname = (String)columnList[11];
+        this.conductor2Slug = (String)columnList[12];
+        this.conductor2FirstNames = (String)columnList[13];
+        this.conductor2Surname = (String)columnList[14];
+        this.conductor3Slug = (String)columnList[15];
+        this.conductor3FirstNames = (String)columnList[16];
+        this.conductor3Surname = (String)columnList[17];
     }
 }

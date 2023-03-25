@@ -14,6 +14,7 @@ import uk.co.bbr.services.contests.sql.ContestResultSql;
 import uk.co.bbr.services.contests.sql.dto.BandEventPiecesSqlDto;
 import uk.co.bbr.services.contests.sql.dto.BandResultSqlDto;
 import uk.co.bbr.services.contests.sql.dto.BandResultsPiecesSqlDto;
+import uk.co.bbr.services.contests.types.ContestEventDateResolution;
 import uk.co.bbr.services.contests.types.ResultPositionType;
 import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.pieces.dao.PieceDao;
@@ -115,6 +116,7 @@ public class ContestResultServiceImpl implements ContestResultService {
             eachResult.getContestEvent().setId(eachSqlResult.getContestEventId().longValue());
 
             eachResult.getContestEvent().setEventDate(eachSqlResult.getEventDate());
+            eachResult.getContestEvent().setEventDateResolution(ContestEventDateResolution.fromCode(eachSqlResult.getEventDateResolution()));
             eachResult.getContestEvent().getContest().setSlug(eachSqlResult.getContestSlug());
             eachResult.getContestEvent().getContest().setName(eachSqlResult.getContestName());
             if (eachSqlResult.getResultPosition() != null) {

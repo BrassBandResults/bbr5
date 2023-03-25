@@ -13,13 +13,11 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Set;
 
 @Getter
 @Entity
@@ -75,8 +73,7 @@ public class ContestEventDao extends AbstractDao implements NameTools {
     private List<ContestEventTestPieceDao> pieces;
 
     public void setName(String name){
-        String nameToSet = simplifyName(name);
-        this.name = nameToSet;
+        this.name = simplifyName(name);
     }
 
     public void setOldId(String value) {
@@ -106,7 +103,15 @@ public class ContestEventDao extends AbstractDao implements NameTools {
     }
 
     public String getEventDateDisplay() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yyyy");
+        String dateFormat = null;
+        switch (this.eventDateResolution) {
+
+            case EXACT_DATE -> dateFormat = "dd MMM yyyy";
+            case MONTH_AND_YEAR -> dateFormat = "MMM yyyy";
+            case YEAR -> dateFormat = "yyyy";
+        }
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(dateFormat);
         return this.eventDate.format(formatter);
     }
 }
