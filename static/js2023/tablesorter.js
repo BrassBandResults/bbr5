@@ -76,11 +76,11 @@ function sortRows(table, columnIndex, reverse) {
 
     if (classList) {
         if (classList.contains("date")) {
-            cls = "date";
+            cls = "__date";
         } else if (classList.contains("number")) {
-            cls = "number";
+            cls = "__number";
         } else if (classList.contains("result")) {
-            cls = "result";
+            cls = "__result";
         }
     }
 
@@ -98,16 +98,16 @@ function sortRows(table, columnIndex, reverse) {
     }
 
     if (cls === "" && allNum) {
-        cls = "number";
+        cls = "__number";
     }
 
-    if (cls === "number") {
+    if (cls === "__number") {
         values.sort(sortNumberVal);
         values = values.reverse();
-    } else if (cls === "result") {
+    } else if (cls === "__result") {
         values.sort(sortResultVal);
         values = values.reverse();
-    } else if (cls === "date") {
+    } else if (cls === "__date") {
         values.sort(sortDateVal);
     } else {
         values.sort(sortTextVal);
@@ -123,17 +123,32 @@ function sortRows(table, columnIndex, reverse) {
 }
 
 /**
+ * Assign numerical value from non number
+ * @param {*} val value to look at
+ * @returns numerical value
+ */
+function cleanForNumberCompare(val) {
+    if (val === NaN || val == undefined) {
+        return -20;
+    }
+    if (val.trim().length == 0) {
+        return -10;
+    }
+    if (val === "W") {
+        return -1;
+    }
+    if (val === "D") {
+        return -2;
+    }
+    return parseFloat(val);
+}
+
+/**
  * Compare two 'value objects' numerically
  */
 function sortNumberVal(a, b) {
-    let a1 = a.value;
-    let b1 = b.value;
-    if (a1 === "") {
-        a1 = -5;
-    }
-    if (b1 === "") {
-        b1 = -5;
-    }
+    let a1 = cleanForNumberCompare(a.value);
+    let b1 = cleanForNumberCompare(b.value);
     
     return sortNumber(a1, b1);
 }
@@ -142,20 +157,8 @@ function sortNumberVal(a, b) {
  * Compare two 'result objects' numerically, where W = -1 and D = -2
  */
 function sortResultVal(a, b) {
-    let a1 = a.value;
-    let b1 = b.value;
-    if (a1 === "W") {
-        a1 = -1;
-    }
-    if (a1 === "D") {
-        a1 = -2;
-    }
-    if (b1 === "W") {
-        b1 = -1;
-    }
-    if (b1 === "D") {
-        b1 = -2;
-    }
+    let a1 = cleanForNumberCompare(a.value);
+    let b1 = cleanForNumberCompare(b.value);
     return sortNumber(a1, b1);
 }
 
