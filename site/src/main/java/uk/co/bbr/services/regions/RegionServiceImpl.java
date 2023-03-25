@@ -132,9 +132,9 @@ public class RegionServiceImpl implements RegionService, SlugTools {
         }
 
         region.setCreated(LocalDateTime.now());
-        region.setCreatedBy(this.securityService.getCurrentUser());
+        region.setCreatedBy(this.securityService.getCurrentUsername());
         region.setUpdated(LocalDateTime.now());
-        region.setUpdatedBy(this.securityService.getCurrentUser());
+        region.setUpdatedBy(this.securityService.getCurrentUsername());
         return this.regionRepository.saveAndFlush(region);
     }
 }

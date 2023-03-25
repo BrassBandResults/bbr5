@@ -48,13 +48,13 @@ public class ContestResultServiceImpl implements ContestResultService {
             ContestResultDao existingResultObject = existingResult.get();
             existingResultObject.populateFrom(result);
             existingResultObject.setUpdated(LocalDateTime.now());
-            existingResultObject.setUpdatedBy(this.securityService.getCurrentUser());
+            existingResultObject.setUpdatedBy(this.securityService.getCurrentUsername());
             returnResult = this.contestResultRepository.saveAndFlush(existingResultObject);
         } else {
             result.setCreated(LocalDateTime.now());
-            result.setCreatedBy(this.securityService.getCurrentUser());
+            result.setCreatedBy(this.securityService.getCurrentUsername());
             result.setUpdated(LocalDateTime.now());
-            result.setUpdatedBy(this.securityService.getCurrentUser());
+            result.setUpdatedBy(this.securityService.getCurrentUsername());
             returnResult = this.contestResultRepository.saveAndFlush(result);
         }
 
@@ -82,9 +82,9 @@ public class ContestResultServiceImpl implements ContestResultService {
         contestResultTestPiece.setContestResult(contestResult);
 
         contestResultTestPiece.setCreated(LocalDateTime.now());
-        contestResultTestPiece.setCreatedBy(this.securityService.getCurrentUser());
+        contestResultTestPiece.setCreatedBy(this.securityService.getCurrentUsername());
         contestResultTestPiece.setUpdated(LocalDateTime.now());
-        contestResultTestPiece.setUpdatedBy(this.securityService.getCurrentUser());
+        contestResultTestPiece.setUpdatedBy(this.securityService.getCurrentUsername());
 
         return this.contestResultPieceRepository.saveAndFlush(contestResultTestPiece);
     }

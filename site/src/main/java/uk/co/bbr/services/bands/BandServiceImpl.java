@@ -69,9 +69,9 @@ public class BandServiceImpl implements BandService, SlugTools {
 
         if (!migrating) {
             band.setCreated(LocalDateTime.now());
-            band.setCreatedBy(this.securityService.getCurrentUser());
+            band.setCreatedBy(this.securityService.getCurrentUsername());
             band.setUpdated(LocalDateTime.now());
-            band.setUpdatedBy(this.securityService.getCurrentUser());
+            band.setUpdatedBy(this.securityService.getCurrentUsername());
         }
         return this.bandRepository.saveAndFlush(band);
     }
@@ -105,7 +105,7 @@ public class BandServiceImpl implements BandService, SlugTools {
         this.validateMandatory(band);
 
         band.setUpdated(LocalDateTime.now());
-        band.setUpdatedBy(this.securityService.getCurrentUser());
+        band.setUpdatedBy(this.securityService.getCurrentUsername());
         return this.bandRepository.saveAndFlush(band);
     }
 
@@ -184,9 +184,9 @@ public class BandServiceImpl implements BandService, SlugTools {
 
         if (!migrating) {
             rehearsalNight.setCreated(LocalDateTime.now());
-            rehearsalNight.setCreatedBy(this.securityService.getCurrentUser());
+            rehearsalNight.setCreatedBy(this.securityService.getCurrentUsername());
             rehearsalNight.setUpdated(LocalDateTime.now());
-            rehearsalNight.setUpdatedBy(this.securityService.getCurrentUser());
+            rehearsalNight.setUpdatedBy(this.securityService.getCurrentUsername());
         } else {
             rehearsalNight.setCreated(band.getCreated());
             rehearsalNight.setCreatedBy(band.getCreatedBy());
@@ -234,9 +234,9 @@ public class BandServiceImpl implements BandService, SlugTools {
         previousName.setBand(band);
         if (!migrating) {
             previousName.setCreated(LocalDateTime.now());
-            previousName.setCreatedBy(this.securityService.getCurrentUser());
+            previousName.setCreatedBy(this.securityService.getCurrentUsername());
             previousName.setUpdated(LocalDateTime.now());
-            previousName.setUpdatedBy(this.securityService.getCurrentUser());
+            previousName.setUpdatedBy(this.securityService.getCurrentUsername());
         }
         return this.bandPreviousNameRepository.saveAndFlush(previousName);
     }
@@ -273,9 +273,9 @@ public class BandServiceImpl implements BandService, SlugTools {
 
         if (!migrating) {
             relationship.setCreated(LocalDateTime.now());
-            relationship.setCreatedBy(this.securityService.getCurrentUser());
+            relationship.setCreatedBy(this.securityService.getCurrentUsername());
             relationship.setUpdated(LocalDateTime.now());
-            relationship.setUpdatedBy(this.securityService.getCurrentUser());
+            relationship.setUpdatedBy(this.securityService.getCurrentUsername());
         }
 
         return this.bandRelationshipRepository.saveAndFlush(relationship);

@@ -93,7 +93,7 @@ class CreateBandServiceTests implements LoginMixin {
         newBand.setLongitude(" -1.7510766401965498 ");
         newBand.setStartDate(LocalDate.of(1900, 1, 1));
         newBand.setEndDate(LocalDate.of(2000, 12, 31));
-        newBand.setMapper(this.securityService.getCurrentUser());
+        newBand.setMapper(this.securityService.getCurrentUsername());
         newBand.setSection(championshipSection);
         newBand.setNotes("   Test Notes   ");
         newBand.setStatus(BandStatus.EXTINCT);
@@ -117,7 +117,7 @@ class CreateBandServiceTests implements LoginMixin {
         assertEquals("-1.751076640196", createdBand.getLongitude());
         assertEquals(LocalDate.of(1900, 1, 1), createdBand.getStartDate());
         assertEquals(LocalDate.of(2000, 12, 31), createdBand.getEndDate());
-        assertEquals(this.securityService.getCurrentUserId(), createdBand.getMapper().getId());
+        assertEquals(this.securityService.getCurrentUsername(), createdBand.getMapper());
         assertEquals("Championship", createdBand.getSection().getName());
         assertEquals("Test Notes", createdBand.getNotes());
         assertEquals(BandStatus.EXTINCT, createdBand.getStatus());

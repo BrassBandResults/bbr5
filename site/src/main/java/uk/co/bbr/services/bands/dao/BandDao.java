@@ -53,10 +53,9 @@ public class BandDao extends AbstractDao implements NameTools {
     @Column(name="notes")
     private String notes;
 
-    @ManyToOne(fetch= FetchType.EAGER)
-    @JoinColumn(name="mapper_id")
+    @Column(name="mapped_by")
     @Setter
-    private BbrUserDao mapper;
+    private String mapper;
 
     @Column(name="start_date")
     @Setter

@@ -62,9 +62,6 @@ public class MigrateUsersController {
     }
 
     private void upsertUser(String[] userLine){
-        Optional<BbrUserDao> tjsUserOptional = bbrUserRepository.fetchByUsercode("tjs");
-        BbrUserDao tjsUser = tjsUserOptional.get();
-
         System.out.println(String.join(" -- ", userLine));
         String oldUserId = userLine[0];
         String username = userLine[1];
@@ -118,8 +115,8 @@ public class MigrateUsersController {
 
             user.setSalt("DJANGO");
 
-            user.setCreatedBy(tjsUser);
-            user.setUpdatedBy(tjsUser);
+            user.setCreatedBy("tjs");
+            user.setUpdatedBy("tjs");
 
 
             this.bbrUserRepository.saveAndFlush(user);
@@ -152,8 +149,8 @@ public class MigrateUsersController {
 
             user.setSalt("DJANGO");
 
-            user.setCreatedBy(tjsUser);
-            user.setUpdatedBy(tjsUser);
+            user.setCreatedBy("tjs");
+            user.setUpdatedBy("tjs");
 
             this.bbrUserRepository.saveAndFlush(user);
         }

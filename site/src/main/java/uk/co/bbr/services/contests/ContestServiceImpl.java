@@ -106,7 +106,7 @@ public class ContestServiceImpl implements ContestService, SlugTools {
         }
 
         contest.setUpdated(LocalDateTime.now());
-        contest.setUpdatedBy(this.securityService.getCurrentUser());
+        contest.setUpdatedBy(this.securityService.getCurrentUsername());
 
         return this.contestRepository.saveAndFlush(contest);
     }
@@ -144,9 +144,9 @@ public class ContestServiceImpl implements ContestService, SlugTools {
 
         if (!migrating) {
             contest.setCreated(LocalDateTime.now());
-            contest.setCreatedBy(this.securityService.getCurrentUser());
+            contest.setCreatedBy(this.securityService.getCurrentUsername());
             contest.setUpdated(LocalDateTime.now());
-            contest.setUpdatedBy(this.securityService.getCurrentUser());
+            contest.setUpdatedBy(this.securityService.getCurrentUsername());
         }
         return this.contestRepository.saveAndFlush(contest);
     }
@@ -173,9 +173,9 @@ public class ContestServiceImpl implements ContestService, SlugTools {
         previousName.setContest(contest);
         if (!migrating) {
             previousName.setCreated(LocalDateTime.now());
-            previousName.setCreatedBy(this.securityService.getCurrentUser());
+            previousName.setCreatedBy(this.securityService.getCurrentUsername());
             previousName.setUpdated(LocalDateTime.now());
-            previousName.setUpdatedBy(this.securityService.getCurrentUser());
+            previousName.setUpdatedBy(this.securityService.getCurrentUsername());
         }
         return this.contestAliasRepository.saveAndFlush(previousName);
     }

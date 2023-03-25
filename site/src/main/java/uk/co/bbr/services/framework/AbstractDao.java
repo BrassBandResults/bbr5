@@ -29,13 +29,11 @@ public class AbstractDao {
     @Column(name="updated", nullable=false)
     private LocalDateTime updated = LocalDateTime.now();
 
-    @ManyToOne(fetch= FetchType.EAGER, optional=false)
-    @JoinColumn(name="owner_id")
-    private BbrUserDao createdBy;
+    @Column(name="created_by")
+    private String createdBy;
 
-    @ManyToOne(fetch= FetchType.EAGER, optional=false)
-    @JoinColumn(name="updated_by_id")
-    private BbrUserDao updatedBy;
+    @Column(name="updated_by")
+    private String updatedBy;
 }
 
 

@@ -11,18 +11,18 @@ import java.util.Optional;
 
 public class AbstractMigrationServiceImpl {
 
-    protected final BbrUserDao createUser(String username, SecurityService securityService) {
+    protected final String createUser(String username, SecurityService securityService) {
         if (username == null) {
             return null;
         }
 
         Optional<BbrUserDao> user = securityService.fetchUserByUsercode(username);
         if (user.isPresent()) {
-            return user.get();
+            return user.get().getUsercode();
         }
 
         BbrUserDao newUser = securityService.createUser(username, "NoPassword", "migrated@brassbandresults.co.uk");
-        return newUser;
+        return newUser.getUsercode();
     }
 
     protected final String notBlank(Element node, String childName) {

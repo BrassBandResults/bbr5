@@ -62,9 +62,9 @@ public class PersonServiceImpl implements PersonService, SlugTools {
 
         if (!migrating) {
             person.setCreated(LocalDateTime.now());
-            person.setCreatedBy(this.securityService.getCurrentUser());
+            person.setCreatedBy(this.securityService.getCurrentUsername());
             person.setUpdated(LocalDateTime.now());
-            person.setUpdatedBy(this.securityService.getCurrentUser());
+            person.setUpdatedBy(this.securityService.getCurrentUsername());
         }
         return this.personRepository.saveAndFlush(person);
     }
@@ -94,9 +94,9 @@ public class PersonServiceImpl implements PersonService, SlugTools {
         previousName.setPerson(person);
         if (!migrating) {
             previousName.setCreated(LocalDateTime.now());
-            previousName.setCreatedBy(this.securityService.getCurrentUser());
+            previousName.setCreatedBy(this.securityService.getCurrentUsername());
             previousName.setUpdated(LocalDateTime.now());
-            previousName.setUpdatedBy(this.securityService.getCurrentUser());
+            previousName.setUpdatedBy(this.securityService.getCurrentUsername());
         }
         this.personAliasRepository.saveAndFlush(previousName);
     }

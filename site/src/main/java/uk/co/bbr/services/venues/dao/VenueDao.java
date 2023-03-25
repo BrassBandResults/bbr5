@@ -43,10 +43,9 @@ public class VenueDao extends AbstractDao implements NameTools {
     @Setter
     private boolean exact;
 
-    @ManyToOne(fetch= FetchType.EAGER)
-    @JoinColumn(name="mapper_id")
+    @Column(name="mapped_by")
     @Setter
-    private BbrUserDao mapper;
+    private String mapper;
 
     @ManyToOne(fetch= FetchType.EAGER)
     @JoinColumn(name="parent_id")

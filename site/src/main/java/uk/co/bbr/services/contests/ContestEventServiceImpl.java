@@ -51,12 +51,41 @@ public class ContestEventServiceImpl implements ContestEventService {
         return this.create(contest, contestEvent, true);
     }
 
-    private ContestEventDao create(ContestDao contest, ContestEventDao event, boolean migrating) {
-        event.setContest(contest);
+    @Override
+    public ContestEventDao update(ContestEventDao event) {
+       this.validateMandatory(event.getContest(), event);
 
-        // default in contest type if not specified
-        if (event.getContestType() == null) {
-            event.setContestType(contest.getDefaultContestType());
+        event.setUpdated(LocalDateTime.now());
+        event.setUpdatedBy(this.securityService.getCurrentUsername());
+
+        return this.contestEventRepository.saveAndFlush(event);
+    }
+
+    private ContestEventDao create(ContestDao contest, ContestEventDao event, boolean migrating) {
+        this.validateMandatory(contest, event);
+
+        if (!migrating) {
+            event.setCreated(LocalDateTime.now());
+            event.setCreatedBy(this.securityService.getCurrentUsername());
+            event.setUpdated(LocalDateTime.now());
+            event.setUpdatedBy(this.securityService.getCurrentUsername());
+        }
+        return this.contestEventRepository.saveAndFlush(event);
+    }
+
+    private void validateMandatory(ContestDao contest, ContestEventDao event) {
+        if (contest != null) {
+            event.setContest(contest);
+
+            // default in contest type if not specified
+            if (event.getContestType() == null) {
+                event.setContestType(contest.getDefaultContestType());
+            }
+
+            // default in name if not specified
+            if (event.getName() == null) {
+                event.setName(contest.getName());
+            }
         }
 
         // default in date resolution if not specified
@@ -64,22 +93,9 @@ public class ContestEventServiceImpl implements ContestEventService {
             event.setEventDateResolution(ContestEventDateResolution.EXACT_DATE);
         }
 
-        // default in name if not specified
-        if (event.getName() == null) {
-            event.setName(contest.getName());
-        }
-
         if (event.getOriginalOwner() == null) {
             event.setOriginalOwner(this.securityService.getCurrentUsername());
         }
-
-        if (!migrating) {
-            event.setCreated(LocalDateTime.now());
-            event.setCreatedBy(this.securityService.getCurrentUser());
-            event.setUpdated(LocalDateTime.now());
-            event.setUpdatedBy(this.securityService.getCurrentUser());
-        }
-        return this.contestEventRepository.saveAndFlush(event);
     }
 
     @Override
@@ -91,9 +107,9 @@ public class ContestEventServiceImpl implements ContestEventService {
         newAdjudicator.setContestEvent(event);
 
         newAdjudicator.setCreated(LocalDateTime.now());
-        newAdjudicator.setCreatedBy(this.securityService.getCurrentUser());
+        newAdjudicator.setCreatedBy(this.securityService.getCurrentUsername());
         newAdjudicator.setUpdated(LocalDateTime.now());
-        newAdjudicator.setUpdatedBy(this.securityService.getCurrentUser());
+        newAdjudicator.setUpdatedBy(this.securityService.getCurrentUsername());
 
         this.contestAdjudicatorRepository.saveAndFlush(newAdjudicator);
 
@@ -114,9 +130,9 @@ public class ContestEventServiceImpl implements ContestEventService {
     public ContestEventTestPieceDao addTestPieceToContest(ContestEventDao event, ContestEventTestPieceDao testPiece) {
         testPiece.setContestEvent(event);
         testPiece.setCreated(LocalDateTime.now());
-        testPiece.setCreatedBy(this.securityService.getCurrentUser());
+        testPiece.setCreatedBy(this.securityService.getCurrentUsername());
         testPiece.setUpdated(LocalDateTime.now());
-        testPiece.setUpdatedBy(this.securityService.getCurrentUser());
+        testPiece.setUpdatedBy(this.securityService.getCurrentUsername());
         return this.contestTestPieceRepository.saveAndFlush(testPiece);
     }
 

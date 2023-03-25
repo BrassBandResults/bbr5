@@ -67,9 +67,9 @@ public class PieceServiceImpl implements PieceService, SlugTools {
 
         if (!migrating) {
             piece.setCreated(LocalDateTime.now());
-            piece.setCreatedBy(this.securityService.getCurrentUser());
+            piece.setCreatedBy(this.securityService.getCurrentUsername());
             piece.setUpdated(LocalDateTime.now());
-            piece.setUpdatedBy(this.securityService.getCurrentUser());
+            piece.setUpdatedBy(this.securityService.getCurrentUsername());
         }
         return this.pieceRepository.saveAndFlush(piece);
     }
@@ -108,9 +108,9 @@ public class PieceServiceImpl implements PieceService, SlugTools {
         alternativeName.setPiece(piece);
         if (!migrating) {
             alternativeName.setCreated(LocalDateTime.now());
-            alternativeName.setCreatedBy(this.securityService.getCurrentUser());
+            alternativeName.setCreatedBy(this.securityService.getCurrentUsername());
             alternativeName.setUpdated(LocalDateTime.now());
-            alternativeName.setUpdatedBy(this.securityService.getCurrentUser());
+            alternativeName.setUpdatedBy(this.securityService.getCurrentUsername());
         }
         this.pieceAlternativeNameRepository.saveAndFlush(alternativeName);
     }

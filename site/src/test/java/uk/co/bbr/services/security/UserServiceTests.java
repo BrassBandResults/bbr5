@@ -44,8 +44,8 @@ class UserServiceTests implements LoginMixin {
         assertNotEquals("testPassword", fetchedUser.get().getPassword());
         assertEquals("M", fetchedUser.get().getAccessLevel());
         assertEquals("test@brassbandresults.co.uk", fetchedUser.get().getEmail());
-        assertEquals(1, fetchedUser.get().getCreatedBy().getId());
-        assertEquals(1, fetchedUser.get().getUpdatedBy().getId());
+        assertEquals("owner", fetchedUser.get().getCreatedBy());
+        assertEquals("owner", fetchedUser.get().getUpdatedBy());
 
         logoutTestUser();
     }

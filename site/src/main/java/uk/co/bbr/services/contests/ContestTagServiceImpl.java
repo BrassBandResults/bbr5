@@ -115,9 +115,9 @@ public class ContestTagServiceImpl implements ContestTagService, SlugTools {
 
         if (!migrating) {
             contestTag.setCreated(LocalDateTime.now());
-            contestTag.setCreatedBy(this.securityService.getCurrentUser());
+            contestTag.setCreatedBy(this.securityService.getCurrentUsername());
             contestTag.setUpdated(LocalDateTime.now());
-            contestTag.setUpdatedBy(this.securityService.getCurrentUser());
+            contestTag.setUpdatedBy(this.securityService.getCurrentUsername());
         }
         return this.contestTagRepository.saveAndFlush(contestTag);
     }

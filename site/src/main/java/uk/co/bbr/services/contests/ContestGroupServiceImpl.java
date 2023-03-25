@@ -107,9 +107,9 @@ public class ContestGroupServiceImpl implements ContestGroupService, SlugTools {
 
         if (!migrating) {
             contestGroup.setCreated(LocalDateTime.now());
-            contestGroup.setCreatedBy(this.securityService.getCurrentUser());
+            contestGroup.setCreatedBy(this.securityService.getCurrentUsername());
             contestGroup.setUpdated(LocalDateTime.now());
-            contestGroup.setUpdatedBy(this.securityService.getCurrentUser());
+            contestGroup.setUpdatedBy(this.securityService.getCurrentUsername());
         }
         return this.contestGroupRepository.saveAndFlush(contestGroup);
     }
@@ -122,7 +122,7 @@ public class ContestGroupServiceImpl implements ContestGroupService, SlugTools {
         }
 
         group.setUpdated(LocalDateTime.now());
-        group.setUpdatedBy(this.securityService.getCurrentUser());
+        group.setUpdatedBy(this.securityService.getCurrentUsername());
         return this.contestGroupRepository.saveAndFlush(group);
     }
 
@@ -154,9 +154,9 @@ public class ContestGroupServiceImpl implements ContestGroupService, SlugTools {
         previousName.setContestGroup(group);
         if (!migrating) {
             previousName.setCreated(LocalDateTime.now());
-            previousName.setCreatedBy(this.securityService.getCurrentUser());
+            previousName.setCreatedBy(this.securityService.getCurrentUsername());
             previousName.setUpdated(LocalDateTime.now());
-            previousName.setUpdatedBy(this.securityService.getCurrentUser());
+            previousName.setUpdatedBy(this.securityService.getCurrentUsername());
         }
         return this.contestGroupAliasRepository.saveAndFlush(previousName);
     }

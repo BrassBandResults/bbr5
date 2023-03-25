@@ -67,9 +67,9 @@ public class VenueServiceImpl implements VenueService, SlugTools {
 
         if (!migrating) {
             venue.setCreated(LocalDateTime.now());
-            venue.setCreatedBy(this.securityService.getCurrentUser());
+            venue.setCreatedBy(this.securityService.getCurrentUsername());
             venue.setUpdated(LocalDateTime.now());
-            venue.setUpdatedBy(this.securityService.getCurrentUser());
+            venue.setUpdatedBy(this.securityService.getCurrentUsername());
         }
         return this.venueRepository.saveAndFlush(venue);
     }
@@ -101,9 +101,9 @@ public class VenueServiceImpl implements VenueService, SlugTools {
 
         if (!migrating) {
             previousName.setCreated(LocalDateTime.now());
-            previousName.setCreatedBy(this.securityService.getCurrentUser());
+            previousName.setCreatedBy(this.securityService.getCurrentUsername());
             previousName.setUpdated(LocalDateTime.now());
-            previousName.setUpdatedBy(this.securityService.getCurrentUser());
+            previousName.setUpdatedBy(this.securityService.getCurrentUsername());
         }
 
         return this.venueAliasRepository.saveAndFlush(previousName);

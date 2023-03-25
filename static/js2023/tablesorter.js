@@ -79,6 +79,8 @@ function sortRows(table, columnIndex, reverse) {
             cls = "date";
         } else if (classList.contains("number")) {
             cls = "number";
+        } else if (classList.contains("result")) {
+            cls = "result";
         }
     }
 

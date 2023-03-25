@@ -83,9 +83,9 @@ public class SecurityServiceImpl implements SecurityService {
         newUser.setUsercode(usercode);
 
         newUser.setCreated(LocalDateTime.now());
-        newUser.setCreatedBy(new BbrUserDao(1L));
+        newUser.setCreatedBy("owner");
         newUser.setUpdated(LocalDateTime.now());
-        newUser.setUpdatedBy(new BbrUserDao(1L));
+        newUser.setUpdatedBy("owner");
 
         newUser.setSalt("");
         newUser.setPasswordVersion("D");
@@ -105,9 +105,9 @@ public class SecurityServiceImpl implements SecurityService {
         newUser.setUsercode(usercode);
 
         newUser.setCreated(LocalDateTime.now());
-        newUser.setCreatedBy(new BbrUserDao(1L));
+        newUser.setCreatedBy("owner");
         newUser.setUpdated(LocalDateTime.now());
-        newUser.setUpdatedBy(new BbrUserDao(1L));
+        newUser.setUpdatedBy("owner");
 
         newUser.setSalt(salt);
         newUser.setPasswordVersion(passwordVersion);

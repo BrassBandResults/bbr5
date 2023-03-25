@@ -5,9 +5,10 @@ CREATE TABLE site_user (
     old_id BIGINT,
     updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_by_id BIGINT NOT NULL,
-    owner_id BIGINT NOT NULL,
+    updated_by VARCHAR(50) NOT NULL,
+    created_by VARCHAR(50) NOT NULL,
     usercode VARCHAR(50) NOT NULL,
+      CONSTRAINT cons_siteuser_usercode UNIQUE(usercode),
     password VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL,
     salt VARCHAR(10) NOT NULL,
@@ -23,4 +24,4 @@ CREATE TABLE site_user (
 
 CREATE UNIQUE INDEX idx_siteuser_usercode ON site_user(usercode);
 
-INSERT INTO site_user (updated_by_id, owner_id, usercode, password, email, salt, password_version, access_level) VALUES (1, 1, 'owner', 'password', 'owner@brassbandresults.co.uk', 'ABC123', 0, 'A');
+INSERT INTO site_user (updated_by, created_by, usercode, password, email, salt, password_version, access_level) VALUES ('owner', 'owner', 'owner', 'password', 'owner@brassbandresults.co.uk', 'ABC123', 0, 'A');
