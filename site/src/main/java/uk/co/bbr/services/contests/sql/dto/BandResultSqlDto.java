@@ -17,6 +17,8 @@ public class BandResultSqlDto {
     private String contestName;
     private Integer resultPosition;
     private String resultPositionType;
+    private String resultAward;
+    private String bandName;
     private Integer draw;
     private BigInteger contestEventId;
     private String conductor1Slug;
@@ -38,16 +40,18 @@ public class BandResultSqlDto {
         this.contestName = (String)columnList[4];
         this.resultPosition = (Integer)columnList[5];
         this.resultPositionType = (String)columnList[6];
-        this.draw = (Integer)columnList[7];
-        this.contestEventId = (BigInteger)columnList[8];
-        this.conductor1Slug = (String)columnList[9];
-        this.conductor1FirstNames = (String)columnList[10];
-        this.conductor1Surname = (String)columnList[11];
-        this.conductor2Slug = (String)columnList[12];
-        this.conductor2FirstNames = (String)columnList[13];
-        this.conductor2Surname = (String)columnList[14];
-        this.conductor3Slug = (String)columnList[15];
-        this.conductor3FirstNames = (String)columnList[16];
-        this.conductor3Surname = (String)columnList[17];
+        this.resultAward = (String)columnList[7];
+        this.bandName = (String)columnList[8];
+        this.draw = (Integer)columnList[9];
+        this.contestEventId = (BigInteger)columnList[10];
+        this.conductor1Slug = (String)columnList[11];
+        this.conductor1FirstNames = (String)columnList[12];
+        this.conductor1Surname = (String)columnList[13];
+        this.conductor2Slug = (String)columnList[14];
+        this.conductor2FirstNames = (String)columnList[15];
+        this.conductor2Surname = (String)columnList[16];
+        this.conductor3Slug = (String)columnList[17];
+        this.conductor3FirstNames = (String)columnList[18];
+        this.conductor3Surname = (String)columnList[19];
     }
 }

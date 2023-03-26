@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import uk.co.bbr.services.bands.dao.BandDao;
+import uk.co.bbr.services.contests.types.ResultAwardType;
 import uk.co.bbr.services.contests.types.ResultPositionType;
 import uk.co.bbr.services.framework.AbstractDao;
 import uk.co.bbr.services.framework.mixins.NameTools;
@@ -46,6 +47,9 @@ public class ContestResultDao extends AbstractDao implements NameTools {
 
     @Column(name="result_position")
     private Integer position;
+
+    @Column(name="result_award")
+    private ResultAwardType resultAward;
 
     @Column(name="draw")
     private Integer draw;

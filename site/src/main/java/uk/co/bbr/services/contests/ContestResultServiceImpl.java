@@ -123,6 +123,7 @@ public class ContestResultServiceImpl implements ContestResultService {
                 eachResult.setPosition(eachSqlResult.getResultPosition().toString());
             }
             eachResult.setResultPositionType(ResultPositionType.fromCode(eachSqlResult.getResultPositionType()));
+            eachResult.setBandName(eachSqlResult.getBandName());
             eachResult.setDraw(eachSqlResult.getDraw());
 
             if (eachSqlResult.getConductor1Slug() != null) {
