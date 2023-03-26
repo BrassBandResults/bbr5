@@ -14,11 +14,17 @@
     </small>
 
     <ul class="nav nav-tabs">
-        <li class="nav-item">
+        <li class="nav-item" th:if="${ResultsCount > 0}">
             <a class="nav-link active" th:href="${'/people/' + Person.slug}" th:text="#{page.person.tab.conducting(${ResultsCount})}">Conducting</span></a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" th:if="${WhitCount > 0}">
             <a class="nav-link" th:href="${'/people/' + Person.slug + '/whits'}" th:text="#{page.person.tab.whits(${WhitCount})}">Whit Friday</span></a>
+        </li>
+        <li class="nav-item" th:if="${Person.adjudicationsCount > 0}">
+            <a class="nav-link" th:href="${'/people/' + Person.slug + '/adjudicator'}" th:text="#{page.person.tab.adjudicating(${Person.adjudicationsCount})}">Adjudicating</span></a>
+        </li>
+        <li class="nav-item" th:if="${Person.pieceCount > 0}">
+            <a class="nav-link" th:href="${'/people/' + Person.slug + '/pieces'}" th:text="#{page.person.tab.compositions(${Person.pieceCount})}">Compositions</span></a>
         </li>
     </ul>
     <br/>

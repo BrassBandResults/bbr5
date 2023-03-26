@@ -11,12 +11,16 @@ import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.people.dto.PeopleListDto;
 import uk.co.bbr.services.people.repo.PersonAliasRepository;
 import uk.co.bbr.services.people.repo.PersonRepository;
+import uk.co.bbr.services.people.sql.PeopleSql;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.web.security.annotations.IsBbrAdmin;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
+import javax.persistence.EntityManager;
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -26,6 +30,7 @@ public class PersonServiceImpl implements PersonService, SlugTools {
     private final PersonRepository personRepository;
     private final PersonAliasRepository personAliasRepository;
     private final SecurityService securityService;
+    private final EntityManager entityManager;
 
     @Override
     @IsBbrMember
@@ -123,6 +128,13 @@ public class PersonServiceImpl implements PersonService, SlugTools {
 
     @Override
     public PeopleListDto listPeopleStartingWith(String prefix) {
+        Map<Long,Integer> conductingCounts = PeopleSql.selectConductorCounts(this.entityManager);
+        Map<Long,Integer> conductor2Counts = PeopleSql.selectConductorTwoCounts(this.entityManager);
+        Map<Long,Integer> conductor3Counts = PeopleSql.selectConductorThreeCounts(this.entityManager);
+        Map<Long,Integer> adjudicatorCounts = PeopleSql.selectAdjudicatorCounts(this.entityManager);
+        Map<Long,Integer> composerCounts = PeopleSql.selectComposerCounts(this.entityManager);
+        Map<Long,Integer> arrangerCounts = PeopleSql.selectArrangerCounts(this.entityManager);
+
         List<PersonDao> peopleToReturn;
 
         switch (prefix.toUpperCase()) {
@@ -133,6 +145,17 @@ public class PersonServiceImpl implements PersonService, SlugTools {
                 }
                 peopleToReturn = this.personRepository.findByPrefixOrderBySurname(prefix.trim().toUpperCase());
             }
+        }
+
+        // populate counts
+        for (PersonDao eachPerson : peopleToReturn) {
+            int conducting1 = conductingCounts.getOrDefault(eachPerson.getId(), 0);
+            int conducting2 = conductor2Counts.getOrDefault(eachPerson.getId(), 0);
+            int conducting3 = conductor3Counts.getOrDefault(eachPerson.getId(), 0);
+            eachPerson.setConductingCount(conducting1 + conducting2 + conducting3);
+            eachPerson.setAdjudicationsCount(adjudicatorCounts.getOrDefault(eachPerson.getId(), 0));
+            eachPerson.setCompositionsCount(composerCounts.getOrDefault(eachPerson.getId(), 0));
+            eachPerson.setArrangementsCount(arrangerCounts.getOrDefault(eachPerson.getId(), 0));
         }
 
         long allBandsCount = this.personRepository.count();

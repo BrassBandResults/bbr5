@@ -15,7 +15,7 @@ import java.util.List;
 
 public class ContestResultSql {
 
-    public static final String BAND_RESULT_LIST_SQL = """
+    private static final String BAND_RESULT_LIST_SQL = """
         SELECT r.id as result_id, e.date_of_event, e.date_resolution, c.slug as contest_slug, c.name, r.result_position, r.result_position_type, r.result_award, r.band_name, r.draw, e.id as event_id,
         con1.slug as c1_slug, con1.first_names as c1_first_names, con1.surname as c1_surname,
         con2.slug as c2_slug, con2.first_names as c2_first_names, con2.surname as c2_surname,
@@ -47,7 +47,7 @@ public class ContestResultSql {
         }
     }
 
-    public static final String BAND_RESULT_RESULT_PIECES_SQL = """
+    private static final String BAND_RESULT_RESULT_PIECES_SQL = """
         SELECT rp.contest_result_id, p.slug, p.name, p.piece_year
         FROM contest_result_test_piece rp
         INNER JOIN piece p ON p.id = rp.piece_id
@@ -73,7 +73,7 @@ public class ContestResultSql {
         }
     }
 
-    public static final String BAND_RESULT_EVENT_PIECES_SQL = """
+    private static final String BAND_RESULT_EVENT_PIECES_SQL = """
         SELECT ep.contest_event_id, p.slug, p.name, p.piece_year
         FROM contest_event_test_piece ep
         INNER JOIN piece p ON p.id = ep.piece_id
@@ -99,7 +99,7 @@ public class ContestResultSql {
         }
     }
 
-    public static final String PERSON_CONDUCTING_SQL = """
+    private static final String PERSON_CONDUCTING_SQL = """
         SELECT e.date_of_event, e.date_resolution, c.slug as contest_slug, c.name as contest_name, r.band_name, b.name as current_band_name, b.slug as band_slug, r.result_position, r.result_position_type, r.result_award, r.points_total, r.draw, r.id as result_id, e.id as event_id, region.name as region_name, region.country_code
         FROM contest_result r
                  INNER JOIN contest_event e ON e.id = r.contest_event_id

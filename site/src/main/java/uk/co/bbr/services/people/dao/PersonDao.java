@@ -10,6 +10,7 @@ import uk.co.bbr.services.framework.mixins.NameTools;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.time.LocalDate;
 
 @Getter
@@ -50,17 +51,22 @@ public class PersonDao extends AbstractDao implements NameTools {
     @Setter
     private LocalDate endDate;
 
-    @Formula("0")
-    private int conductingCount;
+    @Transient
+    @Setter
+    private int conductingCount = 0;
+    @Transient
+    @Setter
+    private int adjudicationsCount = 0;
+    @Transient
+    @Setter
+    private int compositionsCount = 0;
+    @Transient
+    @Setter
+    private int arrangementsCount = 0;
 
-    @Formula("0")
-    private int adjudicationsCount;
-
-    @Formula("0")
-    private int compositionsCount;
-
-    @Formula("0")
-    private int arrangementsCount;
+    public int getPieceCount() {
+        return this.compositionsCount + this.arrangementsCount;
+    }
 
     public void setNotes(String notes) {
         if (notes != null) {
