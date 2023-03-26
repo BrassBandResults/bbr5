@@ -30,7 +30,7 @@ public class PersonController {
     private final ContestResultService contestResultService;
 
     @GetMapping("/people/{slug:[\\-a-z\\d]{2,}}")
-    public String bandDetail(Model model, @PathVariable("slug") String slug) {
+    public String personConducting(Model model, @PathVariable("slug") String slug) {
         Optional<PersonDao> person = this.personService.fetchBySlug(slug);
         if (person.isEmpty()) {
             throw new NotFoundException("Person with slug " + slug + " not found");
@@ -45,12 +45,37 @@ public class PersonController {
         model.addAttribute("Person", person.get());
         model.addAttribute("PreviousNames", previousNames);
         model.addAttribute("ConductingResults", personConductingResults.getBandResults());
-        model.addAttribute("ConductingResultsWhitFriday", personConductingResults.getBandWhitResults());
+        model.addAttribute("WhitResults", personConductingResults.getBandWhitResults());
         model.addAttribute("ResultsCount", personConductingResults.getBandResults().size());
         model.addAttribute("WhitCount", personConductingResults.getBandWhitResults().size());
         model.addAttribute("AdjudicationsCount", adjudicationsCount);
         model.addAttribute("PieceCount", composerCount + arrangerCount);
 
         return "people/person";
+    }
+
+    @GetMapping("/people/{slug:[\\-a-z\\d]{2,}}/whits")
+    public String personWhitFriday(Model model, @PathVariable("slug") String slug) {
+        Optional<PersonDao> person = this.personService.fetchBySlug(slug);
+        if (person.isEmpty()) {
+            throw new NotFoundException("Person with slug " + slug + " not found");
+        }
+
+        List<PersonAliasDao> previousNames = this.personService.findVisibleAliases(person.get());
+        ConductingDetailsDto personConductingResults = this.contestResultService.findResultsForConductor(person.get());
+        int adjudicationsCount = this.personService.fetchAdjudicationCount(person.get());
+        int composerCount = this.personService.fetchComposerCount(person.get());
+        int arrangerCount = this.personService.fetchArrangerCount(person.get());
+
+        model.addAttribute("Person", person.get());
+        model.addAttribute("PreviousNames", previousNames);
+        model.addAttribute("ConductingResults", personConductingResults.getBandResults());
+        model.addAttribute("WhitResults", personConductingResults.getBandWhitResults());
+        model.addAttribute("ResultsCount", personConductingResults.getBandResults().size());
+        model.addAttribute("WhitCount", personConductingResults.getBandWhitResults().size());
+        model.addAttribute("AdjudicationsCount", adjudicationsCount);
+        model.addAttribute("PieceCount", composerCount + arrangerCount);
+
+        return "people/person-whits";
     }
 }
