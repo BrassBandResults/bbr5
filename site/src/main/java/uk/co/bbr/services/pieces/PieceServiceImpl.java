@@ -150,5 +150,10 @@ public class PieceServiceImpl implements PieceService, SlugTools {
         return new PieceListDto(piecesToReturn.size(), allBandsCount, prefix, piecesToReturn);
     }
 
+    @Override
+    public List<PieceDao> findPiecesForPerson(PersonDao person) {
+        return this.pieceRepository.findForPersonOrderByName(person.getId());
+    }
+
 
 }

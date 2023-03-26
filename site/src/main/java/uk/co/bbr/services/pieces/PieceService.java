@@ -28,7 +28,5 @@ public interface PieceService {
 
     PieceListDto listPiecesStartingWith(String letter);
 
-
-
-
+    List<PieceDao> findPiecesForPerson(PersonDao person);
 }

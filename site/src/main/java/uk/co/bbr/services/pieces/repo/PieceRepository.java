@@ -38,4 +38,7 @@ public interface PieceRepository extends JpaRepository<PieceDao, Long> {
 
     @Query("SELECT COUNT(p) FROM PieceDao p WHERE p.arranger.id = :personId")
     int fetchArrangerCountForPerson(Long personId);
+
+    @Query("SELECT p FROM PieceDao p WHERE p.arranger.id = :personId OR p.composer.id = :personId ORDER BY p.name")
+    List<PieceDao> findForPersonOrderByName(Long personId);
 }
