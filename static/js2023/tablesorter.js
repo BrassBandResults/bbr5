@@ -128,7 +128,7 @@ function sortRows(table, columnIndex, reverse) {
  * @returns numerical value
  */
 function cleanForNumberCompare(val) {
-    if (val === NaN || val == undefined) {
+    if (isNaN(val) || val == undefined) {
         return -20;
     }
     if (typeof val == "string" && val.trim().length == 0) {

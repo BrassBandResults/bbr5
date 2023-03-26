@@ -6,6 +6,7 @@ import uk.co.bbr.services.contests.dao.ContestEventDao;
 import uk.co.bbr.services.contests.dao.ContestResultDao;
 import uk.co.bbr.services.contests.dao.ContestResultPieceDao;
 import uk.co.bbr.services.people.dao.PersonDao;
+import uk.co.bbr.services.people.dto.ConductingDetailsDto;
 import uk.co.bbr.services.pieces.dao.PieceDao;
 
 import java.util.List;
@@ -22,4 +23,6 @@ public interface ContestResultService {
     ContestResultPieceDao addPieceToResult(ContestResultDao contestResult, PieceDao piece);
 
     BandDetailsDto findResultsForBand(BandDao bandDao);
+
+    ConductingDetailsDto findResultsForConductor(PersonDao person);
 }

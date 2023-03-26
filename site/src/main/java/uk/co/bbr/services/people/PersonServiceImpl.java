@@ -112,8 +112,13 @@ public class PersonServiceImpl implements PersonService, SlugTools {
     }
 
     @Override
-    public List<PersonAliasDao> findAlternateNames(PersonDao person) {
+    public List<PersonAliasDao> findAllAliases(PersonDao person) {
         return this.personAliasRepository.findForPersonId(person.getId());
+    }
+
+    @Override
+    public List<PersonAliasDao> findVisibleAliases(PersonDao person) {
+        return this.personAliasRepository.findVisibleForPersonId(person.getId());
     }
 
     @Override

@@ -51,7 +51,7 @@ class CreatePersonAliasTests implements LoginMixin {
         this.personService.createAlternativeName(person, altName);
 
         // assert
-        List<PersonAliasDao> altNames = this.personService.findAlternateNames(person);
+        List<PersonAliasDao> altNames = this.personService.findAllAliases(person);
         assertEquals(1, altNames.size());
         assertEquals("Timothy Sawyer", altNames.get(0).getOldName());
         assertEquals(person.getName(), altNames.get(0).getPerson().getName());

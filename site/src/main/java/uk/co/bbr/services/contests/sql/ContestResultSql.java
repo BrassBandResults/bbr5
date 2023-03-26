@@ -4,6 +4,8 @@ import uk.co.bbr.services.contests.sql.dto.BandEventPiecesSqlDto;
 import uk.co.bbr.services.contests.sql.dto.BandResultSqlDto;
 import uk.co.bbr.services.contests.sql.dto.BandResultsPiecesSqlDto;
 import uk.co.bbr.services.contests.sql.dto.EventPieceSqlDto;
+import uk.co.bbr.services.contests.sql.dto.PersonConductingResultSqlDto;
+import uk.co.bbr.services.contests.sql.dto.PersonConductingSqlDto;
 import uk.co.bbr.services.contests.sql.dto.ResultPieceSqlDto;
 
 import javax.persistence.EntityManager;
@@ -27,22 +29,6 @@ public class ContestResultSql {
         WHERE r.band_id = ?1
         ORDER BY e.date_of_event desc""";
 
-    public static final String BAND_RESULT_RESULT_PIECES_SQL = """
-        SELECT rp.contest_result_id, p.slug, p.name, p.piece_year
-        FROM contest_result_test_piece rp
-        INNER JOIN piece p ON p.id = rp.piece_id
-        WHERE rp.contest_result_id IN (
-                SELECT r.id FROM contest_result r WHERE r.band_id = ?1
-        )""";
-
-    public static final String BAND_RESULT_EVENT_PIECES_SQL = """
-        SELECT ep.contest_event_id, p.slug, p.name, p.piece_year
-        FROM contest_event_test_piece ep
-        INNER JOIN piece p ON p.id = ep.piece_id
-        WHERE ep.contest_event_id IN (
-                SELECT r.contest_event_id FROM contest_result r WHERE r.band_id = ?1
-        )""";
-
     public static List<BandResultSqlDto> selectBandResults(EntityManager entityManager, Long bandId) {
         List<BandResultSqlDto> returnData = new ArrayList<>();
         try {
@@ -60,6 +46,14 @@ public class ContestResultSql {
             throw new RuntimeException("SQL Failure, " + e.getMessage());
         }
     }
+
+    public static final String BAND_RESULT_RESULT_PIECES_SQL = """
+        SELECT rp.contest_result_id, p.slug, p.name, p.piece_year
+        FROM contest_result_test_piece rp
+        INNER JOIN piece p ON p.id = rp.piece_id
+        WHERE rp.contest_result_id IN (
+                SELECT r.id FROM contest_result r WHERE r.band_id = ?1
+        )""";
 
     public static BandResultsPiecesSqlDto selectBandResultPerformances(EntityManager entityManager, Long bandId) {
         BandResultsPiecesSqlDto returnData = new BandResultsPiecesSqlDto();
@@ -79,6 +73,14 @@ public class ContestResultSql {
         }
     }
 
+    public static final String BAND_RESULT_EVENT_PIECES_SQL = """
+        SELECT ep.contest_event_id, p.slug, p.name, p.piece_year
+        FROM contest_event_test_piece ep
+        INNER JOIN piece p ON p.id = ep.piece_id
+        WHERE ep.contest_event_id IN (
+                SELECT r.contest_event_id FROM contest_result r WHERE r.band_id = ?1
+        )""";
+
     public static BandEventPiecesSqlDto selectBandEventPieces(EntityManager entityManager, Long bandId) {
         BandEventPiecesSqlDto returnData = new BandEventPiecesSqlDto();
         try {
@@ -97,4 +99,32 @@ public class ContestResultSql {
         }
     }
 
+    public static final String PERSON_CONDUCTING_SQL = """
+        SELECT e.date_of_event, e.date_resolution, c.slug as contest_slug, c.name as contest_name, r.band_name, b.name as current_band_name, b.slug as band_slug, r.result_position, r.result_position_type, r.result_award, r.points_total, r.draw, r.id as result_id, e.id as event_id, region.name as region_name, region.country_code
+        FROM contest_result r
+                 INNER JOIN contest_event e ON e.id = r.contest_event_id
+                 INNER JOIN contest c ON c.id = e.contest_id
+                 INNER JOIN band b ON b.id = r.band_id
+                 LEFT OUTER JOIN region region on region.id = b.region_id
+        WHERE r.conductor_id = ?1 OR r.conductor_two_id = ?1 OR r.conductor_three_id = ?1
+        ORDER BY e.date_of_event DESC;
+        """;
+
+    public static PersonConductingSqlDto selectPersonConductingResults(EntityManager entityManager, Long personId) {
+        PersonConductingSqlDto returnData = new PersonConductingSqlDto();
+        try {
+            Query query = entityManager.createNativeQuery(PERSON_CONDUCTING_SQL);
+            query.setParameter(1, personId);
+            List<Object[]> queryResults = query.getResultList();
+
+            for (Object[] eachRowData : queryResults) {
+                PersonConductingResultSqlDto eachReturnObject = new PersonConductingResultSqlDto(eachRowData);
+                returnData.add(eachReturnObject);
+            }
+
+            return returnData;
+        } catch (Exception e) {
+            throw new RuntimeException("SQL Failure, " + e.getMessage());
+        }
+    }
 }

@@ -70,4 +70,11 @@ public class RegionDao extends AbstractDao implements NameTools {
         }
         this.slug = value;
     }
+
+    public void setCountryCode(String value) {
+        if (value != null) {
+            value = value.trim();
+        }
+        this.countryCode = value;
+    }
 }

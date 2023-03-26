@@ -19,13 +19,12 @@ public interface PersonService {
 
     Optional<PersonDao> fetchById(long personId);
 
-    List<PersonAliasDao> findAlternateNames(PersonDao person);
+    List<PersonAliasDao> findAllAliases(PersonDao person);
+    List<PersonAliasDao> findVisibleAliases(PersonDao person);
 
     PeopleListDto listPeopleStartingWith(String prefix);
 
     Optional<PersonAliasDao> aliasExists(PersonDao person, String aliasName);
-
-
 
 
 }

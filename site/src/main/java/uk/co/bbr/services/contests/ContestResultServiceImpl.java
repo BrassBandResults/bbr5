@@ -14,10 +14,14 @@ import uk.co.bbr.services.contests.sql.ContestResultSql;
 import uk.co.bbr.services.contests.sql.dto.BandEventPiecesSqlDto;
 import uk.co.bbr.services.contests.sql.dto.BandResultSqlDto;
 import uk.co.bbr.services.contests.sql.dto.BandResultsPiecesSqlDto;
+import uk.co.bbr.services.contests.sql.dto.PersonConductingResultSqlDto;
+import uk.co.bbr.services.contests.sql.dto.PersonConductingSqlDto;
 import uk.co.bbr.services.contests.types.ContestEventDateResolution;
 import uk.co.bbr.services.contests.types.ResultPositionType;
 import uk.co.bbr.services.people.dao.PersonDao;
+import uk.co.bbr.services.people.dto.ConductingDetailsDto;
 import uk.co.bbr.services.pieces.dao.PieceDao;
+import uk.co.bbr.services.regions.dao.RegionDao;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
@@ -159,6 +163,53 @@ public class ContestResultServiceImpl implements ContestResultService {
 
 
         return new BandDetailsDto(bandResults, whitResults);
+    }
+
+    @Override
+    public ConductingDetailsDto findResultsForConductor(PersonDao person) {
+        List<ContestResultDao> bandResults = new ArrayList<>();
+        List<ContestResultDao> whitResults = new ArrayList<>();
+
+        PersonConductingSqlDto conductingResultsSql = ContestResultSql.selectPersonConductingResults(this.entityManager, person.getId());
+
+        for (PersonConductingResultSqlDto eachSqlResult : conductingResultsSql.getResults()) {
+            ContestResultDao eachResult = new ContestResultDao();
+            eachResult.setContestEvent(new ContestEventDao());
+            eachResult.getContestEvent().setContest(new ContestDao());
+
+            eachResult.setId(eachSqlResult.getContestResultId().longValue());
+            eachResult.setBandName(eachSqlResult.getBandCompetedAs());
+
+            eachResult.setBand(new BandDao());
+            eachResult.getBand().setName(eachSqlResult.getBandName());
+            eachResult.getBand().setSlug(eachSqlResult.getBandSlug());
+
+            eachResult.getBand().setRegion(new RegionDao());
+            eachResult.getBand().getRegion().setName(eachSqlResult.getRegionName());
+            eachResult.getBand().getRegion().setCountryCode(eachSqlResult.getRegionCountryCode());
+
+            eachResult.getContestEvent().setId(eachSqlResult.getContestEventId().longValue());
+
+            eachResult.getContestEvent().setEventDate(eachSqlResult.getEventDate());
+            eachResult.getContestEvent().setEventDateResolution(ContestEventDateResolution.fromCode(eachSqlResult.getEventDateResolution()));
+            eachResult.getContestEvent().getContest().setSlug(eachSqlResult.getContestSlug());
+            eachResult.getContestEvent().getContest().setName(eachSqlResult.getContestName());
+            if (eachSqlResult.getResultPosition() != null) {
+                eachResult.setPosition(eachSqlResult.getResultPosition().toString());
+            }
+            eachResult.setResultPositionType(ResultPositionType.fromCode(eachSqlResult.getResultPositionType()));
+            eachResult.setPointsTotal(eachSqlResult.getPoints());
+            eachResult.setDraw(eachSqlResult.getDraw());
+
+            if (eachResult.getContestEvent().getContest().getName().contains("Whit Friday")) {
+                whitResults.add(eachResult);
+            } else {
+                bandResults.add(eachResult);
+            }
+        }
+
+
+        return new ConductingDetailsDto(bandResults, whitResults);
     }
 
     @Override
