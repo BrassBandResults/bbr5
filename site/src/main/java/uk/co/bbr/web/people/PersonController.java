@@ -38,6 +38,9 @@ public class PersonController {
 
         List<PersonAliasDao> previousNames = this.personService.findVisibleAliases(person.get());
         ConductingDetailsDto personConductingResults = this.contestResultService.findResultsForConductor(person.get());
+        int adjudicationsCount = this.personService.fetchAdjudicationCount(person.get());
+        int composerCount = this.personService.fetchComposerCount(person.get());
+        int arrangerCount = this.personService.fetchArrangerCount(person.get());
 
         model.addAttribute("Person", person.get());
         model.addAttribute("PreviousNames", previousNames);
@@ -45,6 +48,8 @@ public class PersonController {
         model.addAttribute("ConductingResultsWhitFriday", personConductingResults.getBandWhitResults());
         model.addAttribute("ResultsCount", personConductingResults.getBandResults().size());
         model.addAttribute("WhitCount", personConductingResults.getBandWhitResults().size());
+        model.addAttribute("AdjudicationsCount", adjudicationsCount);
+        model.addAttribute("PieceCount", composerCount + arrangerCount);
 
         return "people/person";
     }

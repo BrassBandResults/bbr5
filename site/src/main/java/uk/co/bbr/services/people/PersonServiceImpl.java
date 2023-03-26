@@ -3,6 +3,7 @@ package uk.co.bbr.services.people;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import uk.co.bbr.services.contests.repo.ContestAdjudicatorRepository;
 import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.framework.ValidationException;
 import uk.co.bbr.services.framework.mixins.SlugTools;
@@ -12,6 +13,7 @@ import uk.co.bbr.services.people.dto.PeopleListDto;
 import uk.co.bbr.services.people.repo.PersonAliasRepository;
 import uk.co.bbr.services.people.repo.PersonRepository;
 import uk.co.bbr.services.people.sql.PeopleSql;
+import uk.co.bbr.services.pieces.repo.PieceRepository;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.web.security.annotations.IsBbrAdmin;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
@@ -29,6 +31,8 @@ public class PersonServiceImpl implements PersonService, SlugTools {
 
     private final PersonRepository personRepository;
     private final PersonAliasRepository personAliasRepository;
+    private final ContestAdjudicatorRepository contestAdjudicatorRepository;
+    private final PieceRepository pieceRepository;
     private final SecurityService securityService;
     private final EntityManager entityManager;
 
@@ -167,6 +171,21 @@ public class PersonServiceImpl implements PersonService, SlugTools {
     public Optional<PersonAliasDao> aliasExists(PersonDao person, String aliasName) {
         String name = person.simplifyName(aliasName);
         return this.personAliasRepository.fetchByNameForPerson(person.getId(), name);
+    }
+
+    @Override
+    public int fetchAdjudicationCount(PersonDao person) {
+        return this.contestAdjudicatorRepository.fetchAdjudicationCountForPerson(person.getId());
+    }
+
+    @Override
+    public int fetchComposerCount(PersonDao person) {
+        return this.pieceRepository.fetchComposerCountForPerson(person.getId());
+    }
+
+    @Override
+    public int fetchArrangerCount(PersonDao person) {
+        return this.pieceRepository.fetchArrangerCountForPerson(person.getId());
     }
 
 

@@ -27,4 +27,9 @@ public interface PersonService {
     Optional<PersonAliasDao> aliasExists(PersonDao person, String aliasName);
 
 
+    int fetchAdjudicationCount(PersonDao person);
+
+    int fetchComposerCount(PersonDao person);
+
+    int fetchArrangerCount(PersonDao person);
 }

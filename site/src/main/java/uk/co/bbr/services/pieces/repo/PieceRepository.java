@@ -8,10 +8,10 @@ import java.util.List;
 import java.util.Optional;
 
 public interface PieceRepository extends JpaRepository<PieceDao, Long> {
-    @Query("SELECT p FROM PieceDao p WHERE p.slug = ?1")
+    @Query("SELECT p FROM PieceDao p WHERE p.slug = :pieceSlug")
     Optional<PieceDao> fetchBySlug(String pieceSlug);
 
-    @Query("SELECT p FROM PieceDao p WHERE p.id = ?1")
+    @Query("SELECT p FROM PieceDao p WHERE p.id = :pieceId")
     Optional<PieceDao> fetchById(long pieceId);
 
     @Query("SELECT p FROM PieceDao p ORDER BY p.name")
@@ -32,4 +32,10 @@ public interface PieceRepository extends JpaRepository<PieceDao, Long> {
             "OR p.name LIKE UPPER('8%') " +
             "OR p.name LIKE UPPER('9%') ORDER BY p.name")
     List<PieceDao> findWithNumberPrefixOrderByName();
+
+    @Query("SELECT COUNT(p) FROM PieceDao p WHERE p.composer.id = :personId")
+    int fetchComposerCountForPerson(Long personId);
+
+    @Query("SELECT COUNT(p) FROM PieceDao p WHERE p.arranger.id = :personId")
+    int fetchArrangerCountForPerson(Long personId);
 }
