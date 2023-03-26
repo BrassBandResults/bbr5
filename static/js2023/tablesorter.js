@@ -131,7 +131,7 @@ function cleanForNumberCompare(val) {
     if (val === NaN || val == undefined) {
         return -20;
     }
-    if (val.trim().length == 0) {
+    if (typeof val == "string" && val.trim().length == 0) {
         return -10;
     }
     if (val === "W") {
