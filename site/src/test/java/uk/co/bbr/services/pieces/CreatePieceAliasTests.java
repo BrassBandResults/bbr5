@@ -5,7 +5,7 @@ import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import uk.co.bbr.services.pieces.dao.PieceAlias;
+import uk.co.bbr.services.pieces.dao.PieceAliasDao;
 import uk.co.bbr.services.pieces.dao.PieceDao;
 import uk.co.bbr.services.security.JwtService;
 import uk.co.bbr.services.security.SecurityService;
@@ -37,14 +37,14 @@ class CreatePieceAliasTests implements LoginMixin {
         piece.setOldId(" 123 ");
         PieceDao returnedPerson = this.pieceService.create(piece);
 
-        PieceAlias altName = new PieceAlias();
+        PieceAliasDao altName = new PieceAliasDao();
         altName.setName("  Another Name  ");
 
         // act
         this.pieceService.createAlternativeName(piece, altName);
 
         // assert
-        List<PieceAlias> altNames = this.pieceService.fetchAlternateNames(piece);
+        List<PieceAliasDao> altNames = this.pieceService.fetchAlternateNames(piece);
         assertEquals(1, altNames.size());
         assertEquals("Another Name", altNames.get(0).getName());
         assertEquals(piece.getName(), altNames.get(0).getPiece().getName());

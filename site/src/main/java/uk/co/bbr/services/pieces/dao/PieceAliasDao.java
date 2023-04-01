@@ -16,7 +16,7 @@ import javax.persistence.Table;
 @Entity
 @NoArgsConstructor
 @Table(name="piece_alias")
-public class PieceAlias extends AbstractDao {
+public class PieceAliasDao extends AbstractDao {
 
     @ManyToOne(fetch= FetchType.EAGER, optional=false)
     @JoinColumn(name="piece_id")

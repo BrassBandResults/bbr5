@@ -49,6 +49,7 @@ public class ContestResultDao extends AbstractDao implements NameTools {
     private Integer position;
 
     @Column(name="result_award")
+    @Setter
     private ResultAwardType resultAward;
 
     @Column(name="draw")
@@ -182,6 +183,12 @@ public class ContestResultDao extends AbstractDao implements NameTools {
     }
 
     public void setPosition(String position) {
+        if (position == null) {
+            this.position = null;
+            this.resultPositionType = ResultPositionType.UNKNOWN;
+            return;
+        }
+
         switch (position.toUpperCase()) {
             case "W":
                 this.position = null;
@@ -191,8 +198,7 @@ public class ContestResultDao extends AbstractDao implements NameTools {
                 this.position = null;
                 this.resultPositionType = ResultPositionType.DISQUALIFIED;
                 break;
-            case "0":
-            case "":
+            case "0", "", "NULL", "NONE":
                 this.position = null;
                 this.resultPositionType = ResultPositionType.UNKNOWN;
                 break;

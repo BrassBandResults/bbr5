@@ -36,7 +36,6 @@
                 <th th:text="#{page.person.column-header-contest}">Contest</th>
                 <th th:text="#{page.person.column-header-band}">Band</th>
                 <th th:text="#{page.person.column-header-position}" class="result">Position</th>
-                <th th:text="#{page.person.column-header-points}" class="number">Points</th>
                 <th th:text="#{page.person.column-header-draw}" class="number">Draw</th>
             </tr>
         </thead>
@@ -46,9 +45,7 @@
                 <td class="bbr-contest"><span th:text="${result.contestEvent.contest.name}">Yorkshire Area</span></td>
                 <td class="bbr-band"><span th:replace="links/band-link.html :: bandLinkWithOverride(${result.band}, true, false, ${result.bandName})"></span></td>
                 <td class="bbr-position"><span th:replace="components/results-position.html :: resultsPosition(${result})">1</span></td>
-                <td class="bbr-points"><span th:text="${result.pointsTotal}">123.45</span></td>
                 <td class="bbr-draw"><span th:if="${result.draw != 0}" th:text="${result.draw}">1</span></td>
-
             </tr>
         </tbody>
     </table>

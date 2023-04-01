@@ -3,6 +3,7 @@ package uk.co.bbr.services.contests.dao;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.contests.types.TestPieceAndOr;
 import uk.co.bbr.services.framework.AbstractDao;
 import uk.co.bbr.services.framework.mixins.NameTools;
@@ -14,6 +15,9 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Entity
@@ -33,4 +37,7 @@ public class ContestEventTestPieceDao extends AbstractDao implements NameTools {
     @Column(name="and_or")
     @Setter
     private TestPieceAndOr andOr;
+
+    @Transient
+    private List<BandDao> winners = new ArrayList<>();
 }

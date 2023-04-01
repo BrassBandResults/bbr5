@@ -3,20 +3,39 @@ package uk.co.bbr.services.pieces;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import uk.co.bbr.services.bands.dao.BandDao;
+import uk.co.bbr.services.contests.dao.ContestDao;
+import uk.co.bbr.services.contests.dao.ContestEventDao;
+import uk.co.bbr.services.contests.dao.ContestEventTestPieceDao;
+import uk.co.bbr.services.contests.dao.ContestResultDao;
+import uk.co.bbr.services.contests.dao.ContestResultPieceDao;
+import uk.co.bbr.services.contests.repo.ContestEventTestPieceRepository;
+import uk.co.bbr.services.contests.repo.ContestResultPieceRepository;
+import uk.co.bbr.services.contests.types.ContestEventDateResolution;
+import uk.co.bbr.services.contests.types.ResultAwardType;
+import uk.co.bbr.services.contests.types.ResultPositionType;
 import uk.co.bbr.services.framework.ValidationException;
 import uk.co.bbr.services.framework.mixins.SlugTools;
 import uk.co.bbr.services.people.dao.PersonDao;
-import uk.co.bbr.services.pieces.dao.PieceAlias;
+import uk.co.bbr.services.pieces.dao.PieceAliasDao;
 import uk.co.bbr.services.pieces.dao.PieceDao;
 import uk.co.bbr.services.pieces.dto.PieceListDto;
 import uk.co.bbr.services.pieces.repo.PieceAliasRepository;
 import uk.co.bbr.services.pieces.repo.PieceRepository;
+import uk.co.bbr.services.pieces.sql.PieceSql;
+import uk.co.bbr.services.pieces.sql.dto.OwnChoiceUsagePieceSqlDto;
+import uk.co.bbr.services.pieces.sql.dto.OwnChoiceUsageSqlDto;
+import uk.co.bbr.services.pieces.sql.dto.SetTestUsagePieceSqlDto;
+import uk.co.bbr.services.pieces.sql.dto.SetTestUsageSqlDto;
 import uk.co.bbr.services.pieces.types.PieceCategory;
+import uk.co.bbr.services.regions.dao.RegionDao;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.web.security.annotations.IsBbrAdmin;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
+import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,7 +45,10 @@ public class PieceServiceImpl implements PieceService, SlugTools {
 
     private final PieceRepository pieceRepository;
     private final PieceAliasRepository pieceAlternativeNameRepository;
+    private final ContestResultPieceRepository contestResultPieceRepository;
+    private final ContestEventTestPieceRepository contestEventTestPieceRepository;
     private final SecurityService securityService;
+    private final EntityManager entityManager;
 
     @Override
     @IsBbrMember
@@ -95,16 +117,16 @@ public class PieceServiceImpl implements PieceService, SlugTools {
 
     @Override
     @IsBbrMember
-    public void createAlternativeName(PieceDao piece, PieceAlias alternativeName) {
+    public void createAlternativeName(PieceDao piece, PieceAliasDao alternativeName) {
         this.createAlternativeName(piece, alternativeName, false);
     }
 
     @Override
-    public void migrateAlternativeName(PieceDao piece, PieceAlias alternativeName) {
+    public void migrateAlternativeName(PieceDao piece, PieceAliasDao alternativeName) {
         this.createAlternativeName(piece, alternativeName, true);
     }
 
-    private void createAlternativeName(PieceDao piece, PieceAlias alternativeName, boolean migrating) {
+    private void createAlternativeName(PieceDao piece, PieceAliasDao alternativeName, boolean migrating) {
         alternativeName.setPiece(piece);
         if (!migrating) {
             alternativeName.setCreated(LocalDateTime.now());
@@ -126,7 +148,7 @@ public class PieceServiceImpl implements PieceService, SlugTools {
     }
 
     @Override
-    public List<PieceAlias> fetchAlternateNames(PieceDao piece) {
+    public List<PieceAliasDao> fetchAlternateNames(PieceDao piece) {
         return this.pieceAlternativeNameRepository.findForPieceId(piece.getId());
     }
 
@@ -155,5 +177,72 @@ public class PieceServiceImpl implements PieceService, SlugTools {
         return this.pieceRepository.findForPersonOrderByName(person.getId());
     }
 
+    @Override
+    public List<ContestResultPieceDao> fetchOwnChoicePieceUsage(PieceDao piece) {
+        List<ContestResultPieceDao> resultPieces = new ArrayList<>();
 
+        OwnChoiceUsageSqlDto ownChoicePieces = PieceSql.selectOwnChoicePieceUsage(this.entityManager, piece.getId());
+        for (OwnChoiceUsagePieceSqlDto eachSqlRow : ownChoicePieces.getPieceList()) {
+            ContestResultPieceDao contestResultPiece = new ContestResultPieceDao();
+            contestResultPiece.setPiece(new PieceDao());
+            contestResultPiece.setContestResult(new ContestResultDao());
+            contestResultPiece.getContestResult().setBand(new BandDao());
+            contestResultPiece.getContestResult().setContestEvent(new ContestEventDao());
+            contestResultPiece.getContestResult().getContestEvent().setContest(new ContestDao());
+
+            contestResultPiece.getContestResult().getContestEvent().setEventDate(eachSqlRow.getEventDate());
+            contestResultPiece.getContestResult().getContestEvent().setEventDateResolution(ContestEventDateResolution.fromCode(eachSqlRow.getEventDateResolution()));
+
+            contestResultPiece.getContestResult().getContestEvent().getContest().setSlug(eachSqlRow.getContestSlug());
+            contestResultPiece.getContestResult().getContestEvent().getContest().setName(eachSqlRow.getContestName());
+
+            contestResultPiece.getContestResult().setBandName(eachSqlRow.getBandCompetedAs());
+            contestResultPiece.getContestResult().getBand().setName(eachSqlRow.getBandName());
+            contestResultPiece.getContestResult().getBand().setSlug(eachSqlRow.getBandSlug());
+            contestResultPiece.getContestResult().getBand().setRegion(new RegionDao());
+            contestResultPiece.getContestResult().getBand().getRegion().setCountryCode(eachSqlRow.getBandCountryCode());
+            contestResultPiece.getContestResult().getBand().getRegion().setName(eachSqlRow.getBandRegionName());
+            contestResultPiece.getContestResult().setPosition(""+eachSqlRow.getResultPosition());
+            contestResultPiece.getContestResult().setResultPositionType(ResultPositionType.fromCode(eachSqlRow.getResultPositionType()));
+            contestResultPiece.getContestResult().setResultAward(ResultAwardType.fromCode(eachSqlRow.getResultAward()));
+            contestResultPiece.getContestResult().setId(eachSqlRow.getContestResultId().longValue());
+            contestResultPiece.getContestResult().getContestEvent().setId(eachSqlRow.getContestEventId().longValue());
+
+            resultPieces.add(contestResultPiece);
+        }
+        return resultPieces;
+    }
+
+    @Override
+    public List<ContestEventTestPieceDao> fetchSetTestPieceUsage(PieceDao piece) {
+        List<ContestEventTestPieceDao> resultPieces = new ArrayList<>();
+
+        SetTestUsageSqlDto setTestPieces = PieceSql.selectSetTestPieceUsage(this.entityManager, piece.getId());
+        for (SetTestUsagePieceSqlDto eachSqlRow : setTestPieces.getSetTests()) {
+            ContestEventTestPieceDao setTestPiece = new ContestEventTestPieceDao();
+            setTestPiece.setPiece(new PieceDao());
+            setTestPiece.setContestEvent(new ContestEventDao());
+            setTestPiece.getContestEvent().setContest(new ContestDao());
+
+            setTestPiece.getContestEvent().setEventDate(eachSqlRow.getEventDate());
+            setTestPiece.getContestEvent().setEventDateResolution(ContestEventDateResolution.fromCode(eachSqlRow.getEventDateResolution()));
+
+            setTestPiece.getContestEvent().getContest().setSlug(eachSqlRow.getContestSlug());
+            setTestPiece.getContestEvent().getContest().setName(eachSqlRow.getContestName());
+            setTestPiece.getContestEvent().setId(eachSqlRow.getContestEventId().longValue());
+
+            BandDao winningBand = new BandDao();
+            winningBand.setName(eachSqlRow.getBandCompetedAs());
+            winningBand.setSlug(eachSqlRow.getBandSlug());
+            winningBand.setRegion(new RegionDao());
+            winningBand.getRegion().setCountryCode(eachSqlRow.getBandCountryCode());
+            winningBand.getRegion().setName(eachSqlRow.getBandRegionName());
+
+            setTestPiece.getWinners().add(winningBand);
+
+            resultPieces.add(setTestPiece);
+        }
+
+        return resultPieces;
+    }
 }

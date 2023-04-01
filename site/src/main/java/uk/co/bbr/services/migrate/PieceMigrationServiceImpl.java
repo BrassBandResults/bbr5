@@ -7,7 +7,7 @@ import uk.co.bbr.services.framework.mixins.SlugTools;
 import uk.co.bbr.services.people.PersonService;
 import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.pieces.PieceService;
-import uk.co.bbr.services.pieces.dao.PieceAlias;
+import uk.co.bbr.services.pieces.dao.PieceAliasDao;
 import uk.co.bbr.services.pieces.dao.PieceDao;
 import uk.co.bbr.services.security.SecurityService;
 
@@ -71,7 +71,7 @@ public class PieceMigrationServiceImpl extends AbstractMigrationServiceImpl impl
     }
 
     private void createPreviousName(PieceDao piece, Element oldNameElement) {
-        PieceAlias previousName = new PieceAlias();
+        PieceAliasDao previousName = new PieceAliasDao();
         previousName.setCreatedBy(this.createUser(this.notBlank(oldNameElement, "owner"), this.securityService));
         previousName.setUpdatedBy(this.createUser(this.notBlank(oldNameElement, "lastChangedBy"), this.securityService));
         previousName.setCreated(this.notBlankDateTime(oldNameElement, "created"));
