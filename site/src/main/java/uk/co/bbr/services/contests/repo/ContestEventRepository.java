@@ -9,10 +9,11 @@ import uk.co.bbr.services.contests.dao.ContestResultDao;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public interface ContestEventRepository extends JpaRepository<ContestEventDao, Long> {
     @Query("SELECT e FROM ContestEventDao e WHERE e.contest.id = :contestId and e.eventDate = :eventDate")
-    ContestEventDao fetchByContestAndDate(Long contestId, LocalDate eventDate);
+    Optional<ContestEventDao> fetchByContestAndDate(Long contestId, LocalDate eventDate);
 
     @Query("SELECT r FROM ContestResultDao r " +
             "INNER JOIN BandDao b ON r.band.id = b.id " +

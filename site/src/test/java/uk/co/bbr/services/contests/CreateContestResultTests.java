@@ -107,7 +107,7 @@ class CreateContestResultTests implements LoginMixin {
         ContestResultDao result = this.contestResultService.addResult(event, replaceResult);
 
         // assert
-        ContestEventDao fetchedEvent = this.contestEventService.fetch(event.getContest(), event.getEventDate());
+        ContestEventDao fetchedEvent = this.contestEventService.fetchEvent(event.getContest().getSlug(), event.getEventDate()).get();
         List<ContestResultDao> results = this.contestResultService.fetchForEvent(fetchedEvent);
         assertEquals(1, results.size());
 
@@ -187,7 +187,7 @@ class CreateContestResultTests implements LoginMixin {
         ContestResultDao result = this.contestResultService.addResult(event, replaceResult);
 
         // assert
-        ContestEventDao fetchedEvent = this.contestEventService.fetch(event.getContest(), event.getEventDate());
+        ContestEventDao fetchedEvent = this.contestEventService.fetchEvent(event.getContest().getSlug(), event.getEventDate()).get();
         List<ContestResultDao> results = this.contestResultService.fetchForEvent(fetchedEvent);
         assertEquals(1, results.size());
 

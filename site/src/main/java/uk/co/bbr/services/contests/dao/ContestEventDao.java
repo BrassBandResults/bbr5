@@ -103,12 +103,24 @@ public class ContestEventDao extends AbstractDao implements NameTools {
     }
 
     public String getEventDateDisplay() {
-        String dateFormat = null;
-        switch (this.eventDateResolution) {
+        return this.getEventDateDisplay(false);
+    }
 
-            case EXACT_DATE -> dateFormat = "dd MMM yyyy";
-            case MONTH_AND_YEAR -> dateFormat = "MMM yyyy";
-            case YEAR -> dateFormat = "yyyy";
+    public String getEventDateDisplayWithDay() {
+        return this.getEventDateDisplay(true);
+    }
+
+    private String getEventDateDisplay(boolean showDay) {
+        String dateFormat = null;
+
+        if (this.eventDateResolution.equals(ContestEventDateResolution.EXACT_DATE) && showDay) {
+            dateFormat = "EEE dd MMM yyyy";
+        } else {
+            switch (this.eventDateResolution) {
+                case EXACT_DATE -> dateFormat = "dd MMM yyyy";
+                case MONTH_AND_YEAR -> dateFormat = "MMM yyyy";
+                case YEAR -> dateFormat = "yyyy";
+            }
         }
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(dateFormat);

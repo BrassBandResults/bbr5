@@ -10,9 +10,9 @@ import java.util.Optional;
 public interface ContestResultRepository extends JpaRepository<ContestResultDao, Long> {
     @Query("SELECT r FROM ContestResultDao r " +
             "INNER JOIN BandDao b ON b.id = r.band.id " +
-            "INNER JOIN PersonDao c1 ON c1.id = r.conductor.id " +
-            "INNER JOIN PersonDao c2 ON c2.id = r.conductorSecond.id " +
-            "INNER JOIN PersonDao c3 ON c3.id = r.conductorThird.id " +
+            "LEFT OUTER JOIN PersonDao c1 ON c1.id = r.conductor.id " +
+            "LEFT OUTER JOIN PersonDao c2 ON c2.id = r.conductorSecond.id " +
+            "LEFT OUTER JOIN PersonDao c3 ON c3.id = r.conductorThird.id " +
             "WHERE r.contestEvent.id = :eventId")
     List<ContestResultDao> findAllForEvent(Long eventId);
 

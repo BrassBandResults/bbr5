@@ -9,8 +9,10 @@ import uk.co.bbr.services.contests.dao.ContestEventTestPieceDao;
 import uk.co.bbr.services.contests.repo.ContestAdjudicatorRepository;
 import uk.co.bbr.services.contests.repo.ContestEventRepository;
 import uk.co.bbr.services.contests.repo.ContestEventTestPieceRepository;
+import uk.co.bbr.services.contests.repo.ContestRepository;
 import uk.co.bbr.services.contests.types.ContestEventDateResolution;
 import uk.co.bbr.services.contests.types.TestPieceAndOr;
+import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.pieces.dao.PieceDao;
 import uk.co.bbr.services.security.SecurityService;
@@ -20,6 +22,7 @@ import uk.co.bbr.web.security.annotations.IsBbrMember;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +30,7 @@ public class ContestEventServiceImpl implements ContestEventService {
 
     private final SecurityService securityService;
     private final ContestEventRepository contestEventRepository;
+    private final ContestRepository contestRepository;
     private final ContestEventTestPieceRepository contestTestPieceRepository;
     private final ContestAdjudicatorRepository contestAdjudicatorRepository;
 
@@ -122,11 +126,6 @@ public class ContestEventServiceImpl implements ContestEventService {
     }
 
     @Override
-    public ContestEventDao fetch(ContestDao contest, LocalDate eventDate) {
-        return this.contestEventRepository.fetchByContestAndDate(contest.getId(), eventDate);
-    }
-
-    @Override
     public ContestEventTestPieceDao addTestPieceToContest(ContestEventDao event, ContestEventTestPieceDao testPiece) {
         testPiece.setContestEvent(event);
         testPiece.setCreated(LocalDateTime.now());
@@ -154,6 +153,15 @@ public class ContestEventServiceImpl implements ContestEventService {
     @Override
     public List<ContestEventTestPieceDao> listTestPieces(ContestEventDao event) {
         return this.contestTestPieceRepository.fetchForEvent(event.getId());
+    }
+
+    @Override
+    public Optional<ContestEventDao> fetchEvent(String contestSlug, LocalDate contestEventDate) {
+        Optional<ContestDao> contest = this.contestRepository.fetchBySlug(contestSlug);
+        if (contest.isEmpty()) {
+            throw new NotFoundException("Contest with slug " + contestSlug + " not found");
+        }
+        return this.contestEventRepository.fetchByContestAndDate(contest.get().getId(), contestEventDate);
     }
 
 

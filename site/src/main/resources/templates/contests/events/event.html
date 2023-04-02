@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+<head>
+    <title th:text="#{page.contest-event.title(${ContestEvent.contest.name}, ${ContestEvent.eventDateDisplay})}">Yorkshire Area (Championship Section) - 07 Mar 2010 - Brass Band Results</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h2><span th:replace="links/contest-link.html :: contestLink(${ContestEvent.contest})"></span></h2>
+    <h3 th:text="${ContestEvent.eventDateDisplayWithDay}"></h3>
+    <table>
+        <tr>
+            <th th:text="#{page.contest-event.top-table.test-piece}">Test Piece:</th>
+            <td></td>
+        </tr>
+        <tr>
+            <th th:text="#{page.contest-event.top-table.adjudicators}">Adjudicators:</th>
+            <td></td>
+        </tr>
+        <tr>
+            <th th:text="#{page.contest-event.top-table.venue}">Venue:</th>
+            <td class="venue"><span th:replace="links/venue-link.html :: venueLink(${ContestEvent.venue})"></span></td>
+        </tr>
+    </table>
+
+    <table class="table table-hover sortable">
+        <thead>
+            <tr>
+                <th th:text="#{page.contest-event.column-header-position}" class="result">Position</th>
+                <th th:text="#{page.contest-event.column-header-band}">Band</th>
+                <th th:text="#{page.contest-event.column-header-conductor}">Conductor</th>
+                <th th:text="#{page.contest-event.column-header-test-piece}">Test Piece</th>
+                <th th:text="#{page.contest-event.column-header-draw}" class="number">Draw</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="result : ${EventResults}" th:class="${'result-' + result.position}">
+                <td class="bbr-position"><span th:replace="components/results-position.html :: resultsPosition(${result})">1</span></td>
+                <td class="bbr-band"><span th:replace="links/band-link.html :: bandLinkWithOverride(${result.band}, true, false, ${result.bandName})"></span></td>
+                <td class="bbr-conductor">
+                    <span th:replace="links/person-link.html :: personLink(${result.conductor}, false, false)">Bob Childs</span>
+                    <span th:replace="links/person-link.html :: personLink(${result.conductorSecond}, false, false)">Bob Childs</span>
+                    <span th:replace="links/person-link.html :: personLink(${result.conductorThird}, false, false)">Bob Childs</span>
+                </td>
+                <td class="bbr-piece"></td>
+                <td class="bbr-draw"><span th:if="${result.draw != 0}" th:text="${result.draw}">1</span></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

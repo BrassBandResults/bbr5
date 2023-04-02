@@ -11,6 +11,7 @@ import uk.co.bbr.services.pieces.dao.PieceDao;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public interface ContestEventService {
 
@@ -26,13 +27,11 @@ public interface ContestEventService {
 
     List<ContestAdjudicatorDao> fetchAdjudicators(ContestEventDao event);
 
-    ContestEventDao fetch(ContestDao contest, LocalDate eventDate);
-
     ContestEventTestPieceDao addTestPieceToContest(ContestEventDao event, ContestEventTestPieceDao testPiece);
     ContestEventTestPieceDao addTestPieceToContest(ContestEventDao event, PieceDao testPiece);
     ContestEventTestPieceDao addTestPieceToContest(ContestEventDao event, PieceDao testPiece, TestPieceAndOr andOr);
 
     List<ContestEventTestPieceDao> listTestPieces(ContestEventDao event);
 
-
+    Optional<ContestEventDao> fetchEvent(String contestSlug, LocalDate contestEventDate);
 }
