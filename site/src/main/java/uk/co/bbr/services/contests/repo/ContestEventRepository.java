@@ -2,7 +2,6 @@ package uk.co.bbr.services.contests.repo;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.contests.dao.ContestEventDao;
 import uk.co.bbr.services.contests.dao.ContestEventTestPieceDao;
 import uk.co.bbr.services.contests.dao.ContestResultDao;
@@ -26,4 +25,10 @@ public interface ContestEventRepository extends JpaRepository<ContestEventDao, L
             "WHERE t.contestEvent.id = :contestEventId " +
             "ORDER BY p.name")
     List<ContestEventTestPieceDao> fetchTestPieces(Long contestEventId);
+
+    @Query("SELECT e FROM ContestEventDao e WHERE e.contest.id = :contestId AND e.eventDate <= CURRENT_TIMESTAMP ORDER BY e.eventDate DESC")
+    List<ContestEventDao> fetchPastEventsByContest(Long contestId);
+
+    @Query("SELECT e FROM ContestEventDao e WHERE e.contest.id = :contestId AND e.eventDate > CURRENT_TIMESTAMP ORDER BY e.eventDate DESC")
+    List<ContestEventDao> fetchFutureEventsByContest(Long contestId);
 }

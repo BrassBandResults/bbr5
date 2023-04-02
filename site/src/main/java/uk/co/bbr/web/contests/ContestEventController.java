@@ -31,7 +31,7 @@ public class ContestEventController {
         Optional<ContestEventDao> contestEvent = this.contestEventService.fetchEvent(contestSlug, eventDate);
 
         if (contestEvent.isEmpty()) {
-            throw new NotFoundException("Event with slug " + contestEvent + " and date " + contestEventDate + " not found");
+            throw new NotFoundException("Event with slug " + contestSlug + " and date " + contestEventDate + " not found");
         }
 
         List<ContestResultDao> eventResults = this.contestResultService.fetchForEvent(contestEvent.get());

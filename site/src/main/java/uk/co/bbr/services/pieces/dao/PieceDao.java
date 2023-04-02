@@ -79,6 +79,11 @@ public class PieceDao extends AbstractDao implements NameTools {
     }
 
     public void setName(String name) {
+        if (name == null) {
+            this.name = null;
+            return;
+        }
+
         String nameToSet = simplifyName(name);
         this.name = nameToSet;
     }

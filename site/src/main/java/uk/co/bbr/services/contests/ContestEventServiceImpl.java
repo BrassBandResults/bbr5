@@ -2,25 +2,35 @@ package uk.co.bbr.services.contests;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.contests.dao.ContestAdjudicatorDao;
 import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.contests.dao.ContestEventDao;
 import uk.co.bbr.services.contests.dao.ContestEventTestPieceDao;
+import uk.co.bbr.services.contests.dao.ContestResultDao;
+import uk.co.bbr.services.contests.dao.ContestResultPieceDao;
 import uk.co.bbr.services.contests.repo.ContestAdjudicatorRepository;
 import uk.co.bbr.services.contests.repo.ContestEventRepository;
 import uk.co.bbr.services.contests.repo.ContestEventTestPieceRepository;
 import uk.co.bbr.services.contests.repo.ContestRepository;
+import uk.co.bbr.services.contests.sql.ContestResultSql;
+import uk.co.bbr.services.contests.sql.dto.BandResultSqlDto;
+import uk.co.bbr.services.contests.sql.dto.ContestEventResultSqlDto;
+import uk.co.bbr.services.contests.sql.dto.ContestEventSqlDto;
 import uk.co.bbr.services.contests.types.ContestEventDateResolution;
 import uk.co.bbr.services.contests.types.TestPieceAndOr;
 import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.pieces.dao.PieceDao;
+import uk.co.bbr.services.regions.dao.RegionDao;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.web.security.annotations.IsBbrAdmin;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
+import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,6 +43,7 @@ public class ContestEventServiceImpl implements ContestEventService {
     private final ContestRepository contestRepository;
     private final ContestEventTestPieceRepository contestTestPieceRepository;
     private final ContestAdjudicatorRepository contestAdjudicatorRepository;
+    private final EntityManager entityManager;
 
     @Override
     @IsBbrMember
@@ -162,6 +173,75 @@ public class ContestEventServiceImpl implements ContestEventService {
             throw new NotFoundException("Contest with slug " + contestSlug + " not found");
         }
         return this.contestEventRepository.fetchByContestAndDate(contest.get().getId(), contestEventDate);
+    }
+
+    @Override
+    public List<ContestResultDao> fetchPastEventsForContest(ContestDao contest) {
+        List<ContestResultDao> returnEvents = new ArrayList<>();
+
+        ContestEventSqlDto eventsSql = ContestResultSql.selectEventListForContest(this.entityManager, contest.getId());
+
+        for (ContestEventResultSqlDto eachSqlEvent : eventsSql.getEvents()) {
+            ContestResultDao eachWinner = new ContestResultDao();
+            eachWinner.setContestEvent(new ContestEventDao());
+            eachWinner.getContestEvent().setContest(new ContestDao());
+            eachWinner.getContestEvent().setPieces(new ArrayList<>());
+            eachWinner.setPieces(new ArrayList<>());
+            eachWinner.setBand(new BandDao());
+            eachWinner.getBand().setRegion(new RegionDao());
+
+            eachWinner.getContestEvent().setEventDate(eachSqlEvent.getEventDate());
+            eachWinner.getContestEvent().setEventDateResolution(ContestEventDateResolution.fromCode(eachSqlEvent.getEventDateResolution()));
+            eachWinner.getContestEvent().getContest().setSlug(eachSqlEvent.getContestSlug());
+            eachWinner.setBandName(eachSqlEvent.getBandCompetedAs());
+            eachWinner.getBand().setSlug(eachSqlEvent.getBandSlug());
+            eachWinner.getBand().setName(eachSqlEvent.getBandName());
+            eachWinner.getBand().getRegion().setCountryCode(eachSqlEvent.getBandRegionCountryCode());
+
+
+            if (eachSqlEvent.getResultPieceSlug() != null && eachSqlEvent.getResultPieceSlug().length() > 0) {
+                eachWinner.getPieces().add(new ContestResultPieceDao());
+                eachWinner.getPieces().get(0).setPiece(new PieceDao());
+                eachWinner.getPieces().get(0).getPiece().setSlug((eachSqlEvent.getResultPieceSlug()));
+                eachWinner.getPieces().get(0).getPiece().setName((eachSqlEvent.getResultPieceName()));
+            }
+
+            if (eachSqlEvent.getSetPieceSlug() != null && eachSqlEvent.getSetPieceSlug().length() > 0) {
+                eachWinner.getContestEvent().getPieces().add(new ContestEventTestPieceDao());
+                eachWinner.getContestEvent().getPieces().get(0).setPiece(new PieceDao());
+                eachWinner.getContestEvent().getPieces().get(0).getPiece().setSlug(eachSqlEvent.getSetPieceSlug());
+                eachWinner.getContestEvent().getPieces().get(0).getPiece().setName(eachSqlEvent.getSetPieceName());
+            }
+
+            if (eachSqlEvent.getConductor1Slug() != null) {
+                eachWinner.setConductor(new PersonDao());
+                eachWinner.getConductor().setSlug(eachSqlEvent.getConductor1Slug());
+                eachWinner.getConductor().setFirstNames(eachSqlEvent.getConductor1FirstNames());
+                eachWinner.getConductor().setSurname(eachSqlEvent.getConductor1Surname());
+            }
+
+            if (eachSqlEvent.getConductor2Slug() != null) {
+                eachWinner.setConductorSecond(new PersonDao());
+                eachWinner.getConductorSecond().setSlug(eachSqlEvent.getConductor2Slug());
+                eachWinner.getConductorSecond().setFirstNames(eachSqlEvent.getConductor2FirstNames());
+                eachWinner.getConductorSecond().setSurname(eachSqlEvent.getConductor2Surname());
+            }
+
+            if (eachSqlEvent.getConductor3Slug() != null) {
+                eachWinner.setConductorThird(new PersonDao());
+                eachWinner.getConductorThird().setSlug(eachSqlEvent.getConductor3Slug());
+                eachWinner.getConductorThird().setFirstNames(eachSqlEvent.getConductor3FirstNames());
+                eachWinner.getConductorThird().setSurname(eachSqlEvent.getConductor3Surname());
+            }
+            returnEvents.add(eachWinner);
+        }
+
+        return returnEvents;
+    }
+
+    @Override
+    public List<ContestEventDao> fetchFutureEventsForContest(ContestDao contest) {
+        return this.contestEventRepository.fetchFutureEventsByContest(contest.getId());
     }
 
 

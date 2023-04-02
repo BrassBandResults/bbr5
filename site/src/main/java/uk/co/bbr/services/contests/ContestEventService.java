@@ -1,10 +1,10 @@
 package uk.co.bbr.services.contests;
 
-import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.contests.dao.ContestAdjudicatorDao;
 import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.contests.dao.ContestEventDao;
 import uk.co.bbr.services.contests.dao.ContestEventTestPieceDao;
+import uk.co.bbr.services.contests.dao.ContestResultDao;
 import uk.co.bbr.services.contests.types.TestPieceAndOr;
 import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.pieces.dao.PieceDao;
@@ -34,4 +34,8 @@ public interface ContestEventService {
     List<ContestEventTestPieceDao> listTestPieces(ContestEventDao event);
 
     Optional<ContestEventDao> fetchEvent(String contestSlug, LocalDate contestEventDate);
+
+    List<ContestResultDao> fetchPastEventsForContest(ContestDao contestDao);
+
+    List<ContestEventDao> fetchFutureEventsForContest(ContestDao contestDao);
 }

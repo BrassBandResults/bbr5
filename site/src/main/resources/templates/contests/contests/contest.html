@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+<head>
+    <title th:text="#{page.contest.title(${Contest.name})}">Yorkshire Area (Championship Section) - Brass Band Results</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h2>
+        <span th:if="${Contest.contestGroup != null}" th:replace="links/group-link.html :: groupLinkFromContest(${Contest})"></span>
+        <span th:if="${Contest.contestGroup == null}" th:text="${Contest.name}">Yorkshire Area (Championship Section)</span>
+    </h2>
+
+    <div th:if="${FutureEvents.size() > 0}">
+        <h3 th:text="#{page.contest.header.future-events}">Future Events</h3>
+    </div>
+
+    <div th:if="${PastEvents.size() > 0}">
+        <h3 th:text="#{page.contest.header.past-events}">Past Results</h3>
+
+        <table class="table table-hover sortable">
+            <thead>
+            <tr>
+                <th th:text="#{page.contest.column-header-date}" class="date">Date</th>
+                <th th:text="#{page.contest.column-header-winner}">Winner</th>
+                <th th:text="#{page.contest.column-header-conductor}">Conductor</th>
+                <th th:text="#{page.contest.column-header-test-piece}">Test Piece</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="result : ${PastEvents}">
+                <td class="bbr-event" nowrap><span th:replace="links/event-link.html :: eventLink(${result.contestEvent})">9th Sep 2023</span></td>
+                <td class="bbr-band"><span th:replace="links/band-link.html :: bandLinkWithOverride(${result.band}, true, false, ${result.bandName})"></span></td>
+                <td class="bbr-conductor">
+                    <span th:replace="links/person-link.html :: personLink(${result.conductor}, false, false)">Bob Childs</span>
+                    <span th:replace="links/person-link.html :: personLink(${result.conductorSecond}, false, false)">Bob Childs</span>
+                    <span th:replace="links/person-link.html :: personLink(${result.conductorThird}, false, false)">Bob Childs</span>
+                </td>
+                <td class="bbr-piece"><span th:replace="links/piece-link.html :: resultPieceLink(${result})">Test Piece</span></td>
+            </tr>
+            </tbody>
+        </table>
+
+    </div>
+</div>
+</body>
+</html>
