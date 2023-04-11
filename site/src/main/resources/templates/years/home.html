@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+<head>
+    <title th:text="#{page.years.title}">Years - Brass Band Results</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h2 th:text="#{page.years.page-title}">Year List</h2>
+    <p th:text="#{page.years.intro-text}">The bands competing figure is the number of bands that have posted one or more results in that year. This only reflects contest results entered onto this site.</p>
+
+    <table id="bands" class="table table-hover sortable">
+        <thead>
+        <tr>
+            <th th:text="#{page.years.column-header-year}">Year</th>
+            <th th:text="#{page.years.column-header-contests}">Contests</th>
+            <th th:text="#{page.years.column-header-bands}">Bands Competing</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="year : ${Years}">
+            <td class="year"><a th:href="${'/years/' + year.year}" th:text="${year.year}">2001</a></td>
+            <td th:text="${year.eventCount}">1</td>
+            <td th:text="${year.bandCount}">2</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
