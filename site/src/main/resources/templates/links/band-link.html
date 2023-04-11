@@ -6,10 +6,14 @@
     </span>
 </span>
 
-<span th:fragment="bandLinkWithOverride(band, showFlag, showDateRange, nameOverride)">
-    <span th:if="${band != null}">
-        <img th:if="${showFlag}" th:title="${band.region.name}" th:src="@{${STATIC_HOST} + '/flags/' + ${band.region.countryCode} + '.png'}"/>
-        <a th:href="${'/bands/' + band.slug}" th:text="${nameOverride}" class="bbr-band" th:title="${band.name}">Band Name</a>
-        <small th:if="${showDateRange && band.dateRange.length > 0}">[<span th:text="${band.dateRange}">1950-2000</span>]</small>
+<span th:fragment="bandLinkWithOverride(result)">
+    <span th:if="${result != null}">
+        <span th:if="${result.contestEvent != null && result.contestEvent.noContest}">
+            <span class="text-primary" th:text="#{no-contest-took-place}">No Contest Took Place</span>
+        </span>
+        <span th:if="${result.band != null}">
+            <img th:title="${result.band.region.name}" th:src="@{${STATIC_HOST} + '/flags/' + ${result.band.region.countryCode} + '.png'}"/>
+            <a th:href="${'/bands/' + result.band.slug}" th:text="${result.bandName}" class="bbr-band" th:title="${result.band.name}">Band Name</a>
+        </span>
     </span>
 </span>

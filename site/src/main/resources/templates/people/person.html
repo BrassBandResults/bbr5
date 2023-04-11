@@ -43,7 +43,7 @@
             <tr th:each="result : ${ConductingResults}" th:class="${'result-' + result.position}">
                 <td class="bbr-event" nowrap><span th:replace="links/event-link.html :: eventLink(${result.contestEvent})">9th Sep 2023</span></td>
                 <td class="bbr-contest"><span th:text="${result.contestEvent.contest.name}">Yorkshire Area</span></td>
-                <td class="bbr-band"><span th:replace="links/band-link.html :: bandLinkWithOverride(${result.band}, true, false, ${result.bandName})"></span></td>
+                <td class="bbr-band"><span th:replace="links/band-link.html :: bandLinkWithOverride(${result})"></span></td>
                 <td class="bbr-position"><span th:replace="components/results-position.html :: resultsPosition(${result})">1</span></td>
                 <td class="bbr-draw"><span th:if="${result.draw != 0}" th:text="${result.draw}">1</span></td>
             </tr>

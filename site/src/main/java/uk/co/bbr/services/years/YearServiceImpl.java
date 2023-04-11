@@ -2,10 +2,24 @@ package uk.co.bbr.services.years;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import uk.co.bbr.services.bands.dao.BandDao;
+import uk.co.bbr.services.contests.dao.ContestDao;
+import uk.co.bbr.services.contests.dao.ContestEventDao;
+import uk.co.bbr.services.contests.dao.ContestEventTestPieceDao;
+import uk.co.bbr.services.contests.dao.ContestResultDao;
+import uk.co.bbr.services.contests.dao.ContestResultPieceDao;
+import uk.co.bbr.services.contests.sql.dto.ContestEventResultSqlDto;
+import uk.co.bbr.services.contests.types.ContestEventDateResolution;
+import uk.co.bbr.services.people.dao.PersonDao;
+import uk.co.bbr.services.pieces.dao.PieceDao;
+import uk.co.bbr.services.regions.dao.RegionDao;
 import uk.co.bbr.services.years.sql.YearSql;
+import uk.co.bbr.services.years.sql.dto.ContestsForYearEventSqlDto;
+import uk.co.bbr.services.years.sql.dto.ContestsForYearSqlDto;
 import uk.co.bbr.services.years.sql.dto.YearListEntrySqlDto;
 
 import javax.persistence.EntityManager;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -16,5 +30,73 @@ public class YearServiceImpl implements YearService {
     @Override
     public List<YearListEntrySqlDto> fetchFullYearList() {
         return YearSql.selectSetTestPieceUsage(this.entityManager);
+    }
+
+    @Override
+    public List<ContestResultDao> fetchEventsForYear(String year) {
+        List<ContestResultDao> returnData = new ArrayList<>();
+
+        ContestsForYearSqlDto thisYearData = YearSql.selectEventsForYear(this.entityManager, year);
+
+        for (ContestsForYearEventSqlDto eachSqlEvent : thisYearData.getEvents()) {
+            ContestResultDao eachWinner = new ContestResultDao();
+            eachWinner.setContestEvent(new ContestEventDao());
+            eachWinner.getContestEvent().setContest(new ContestDao());
+            eachWinner.getContestEvent().setPieces(new ArrayList<>());
+            eachWinner.setPieces(new ArrayList<>());
+
+            eachWinner.getContestEvent().setEventDate(eachSqlEvent.getEventDate());
+            eachWinner.getContestEvent().setEventDateResolution(ContestEventDateResolution.fromCode(eachSqlEvent.getEventDateResolution()));
+            eachWinner.getContestEvent().getContest().setSlug(eachSqlEvent.getContestSlug());
+            eachWinner.getContestEvent().getContest().setName(eachSqlEvent.getContestName());
+            eachWinner.getContestEvent().setNoContest(eachSqlEvent.getNoContest());
+            eachWinner.setBandName(eachSqlEvent.getBandCompetedAs());
+
+            if (eachSqlEvent.getBandSlug() != null) {
+                eachWinner.setBand(new BandDao());
+                eachWinner.getBand().setSlug(eachSqlEvent.getBandSlug());
+                eachWinner.getBand().setName(eachSqlEvent.getBandName());
+                eachWinner.getBand().setRegion(new RegionDao());
+                eachWinner.getBand().getRegion().setCountryCode(eachSqlEvent.getBandRegionCountryCode());
+            }
+
+            if (eachSqlEvent.getResultPieceSlug() != null && eachSqlEvent.getResultPieceSlug().length() > 0) {
+                eachWinner.getPieces().add(new ContestResultPieceDao());
+                eachWinner.getPieces().get(0).setPiece(new PieceDao());
+                eachWinner.getPieces().get(0).getPiece().setSlug((eachSqlEvent.getResultPieceSlug()));
+                eachWinner.getPieces().get(0).getPiece().setName((eachSqlEvent.getResultPieceName()));
+            }
+
+            if (eachSqlEvent.getSetPieceSlug() != null && eachSqlEvent.getSetPieceSlug().length() > 0) {
+                eachWinner.getContestEvent().getPieces().add(new ContestEventTestPieceDao());
+                eachWinner.getContestEvent().getPieces().get(0).setPiece(new PieceDao());
+                eachWinner.getContestEvent().getPieces().get(0).getPiece().setSlug(eachSqlEvent.getSetPieceSlug());
+                eachWinner.getContestEvent().getPieces().get(0).getPiece().setName(eachSqlEvent.getSetPieceName());
+            }
+
+            if (eachSqlEvent.getConductor1Slug() != null) {
+                eachWinner.setConductor(new PersonDao());
+                eachWinner.getConductor().setSlug(eachSqlEvent.getConductor1Slug());
+                eachWinner.getConductor().setFirstNames(eachSqlEvent.getConductor1FirstNames());
+                eachWinner.getConductor().setSurname(eachSqlEvent.getConductor1Surname());
+            }
+
+            if (eachSqlEvent.getConductor2Slug() != null) {
+                eachWinner.setConductorSecond(new PersonDao());
+                eachWinner.getConductorSecond().setSlug(eachSqlEvent.getConductor2Slug());
+                eachWinner.getConductorSecond().setFirstNames(eachSqlEvent.getConductor2FirstNames());
+                eachWinner.getConductorSecond().setSurname(eachSqlEvent.getConductor2Surname());
+            }
+
+            if (eachSqlEvent.getConductor3Slug() != null) {
+                eachWinner.setConductorThird(new PersonDao());
+                eachWinner.getConductorThird().setSlug(eachSqlEvent.getConductor3Slug());
+                eachWinner.getConductorThird().setFirstNames(eachSqlEvent.getConductor3FirstNames());
+                eachWinner.getConductorThird().setSurname(eachSqlEvent.getConductor3Surname());
+            }
+            returnData.add(eachWinner);
+        }
+
+        return returnData;
     }
 }

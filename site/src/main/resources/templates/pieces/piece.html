@@ -58,7 +58,7 @@
             <tr th:each="resultPiece : ${OwnChoiceResults}" th:class="${'result-' + resultPiece.contestResult.position}">
                 <td class="bbr-event" nowrap><span th:replace="links/event-link.html :: eventLink(${resultPiece.contestResult.contestEvent})">9th Sep 2023</span></td>
                 <td class="bbr-contest"><span th:title="${'Competed as ' + resultPiece.contestResult.bandName}" th:text="${resultPiece.contestResult.contestEvent.contest.name}">Yorkshire Area</span></td>
-                <td class="bbr-band"><span th:replace="links/band-link.html :: bandLinkWithOverride(${resultPiece.contestResult.band}, true, false, ${resultPiece.contestResult.bandName})"></span></td>
+                <td class="bbr-band"><span th:replace="links/band-link.html :: bandLinkWithOverride(${resultPiece.contestResult})"></span></td>
                 <td class="bbr-position"><span th:replace="components/results-position.html :: resultsPosition(${resultPiece.contestResult})">1</span></td>
             </tr>
             </tbody>

@@ -154,6 +154,10 @@ public class ContestResultDao extends AbstractDao implements NameTools {
     }
 
     public void setBandName(String name) {
+        if (name == null) {
+            this.bandName = null;
+            return;
+        }
         this.bandName = simplifyName(name);
     }
 

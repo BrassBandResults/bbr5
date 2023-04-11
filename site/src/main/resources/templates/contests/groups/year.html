@@ -47,7 +47,7 @@
             <td th:text="${eventSummary.contestEvent.contest.name}">Contest Name</td>
             <td>
                 <span th:each="winnerResult : ${eventSummary.winningBands}">
-                    <span th:replace="links/band-link.html :: bandLinkWithOverride(${winnerResult.band}, true, false, ${winnerResult.bandName})"></span>
+                    <span th:replace="links/band-link.html :: bandLinkWithOverride(${winnerResult})"></span>
                 </span>
             </td>
             <td>

@@ -81,6 +81,11 @@ public class BandDao extends AbstractDao implements NameTools {
     private int resultsCount;
 
     public void setName(String sourceName) {
+
+        if (sourceName == null) {
+            this.name = null;
+            return;
+        }
         this.name = simplifyName(sourceName);
     }
 
