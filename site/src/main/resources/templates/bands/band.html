@@ -21,7 +21,7 @@
         </tr>
         <tr>
             <th th:text="#{page.band.details.website}">Website:</th>
-            <td th:text="${Band.website}"></td>
+            <td><a th:if="${Band.website != null && Band.website.length > 0}" th:href="${Band.website}" th:text="${Band.website}">link</a></td>
         </tr>
         <tr>
             <th th:text="#{page.band.details.region}">Region:</th>
@@ -41,7 +41,7 @@
         <li class="nav-item">
             <a class="nav-link active" th:href="${'/bands/' + Band.slug}" th:text="#{page.band.tab.contests(${ResultsCount})}">Contests</span></a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" th:if="${WhitCount > 0}">
             <a class="nav-link" th:href="${'/bands/' + Band.slug + '/whits'}" th:text="#{page.band.tab.whits(${WhitCount})}">Whit Friday</span></a>
         </li>
     </ul>
