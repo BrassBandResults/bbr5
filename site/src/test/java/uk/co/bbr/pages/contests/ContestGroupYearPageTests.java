@@ -1,4 +1,4 @@
-package uk.co.bbr.services.contests.page;
+package uk.co.bbr.pages.contests;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

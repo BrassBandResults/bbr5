@@ -1,4 +1,4 @@
-package uk.co.bbr.services.venues.pages;
+package uk.co.bbr.pages.venues;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

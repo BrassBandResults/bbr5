@@ -1,4 +1,4 @@
-package uk.co.bbr.services.contests.page;
+package uk.co.bbr.pages.contests;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -11,18 +11,22 @@ import uk.co.bbr.services.contests.ContestService;
 import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.contests.dao.ContestGroupDao;
 import uk.co.bbr.services.contests.dto.ContestListDto;
+import uk.co.bbr.services.regions.RegionService;
+import uk.co.bbr.services.regions.dao.RegionDao;
 import uk.co.bbr.services.security.JwtService;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.services.security.ex.AuthenticationFailedException;
 import uk.co.bbr.web.LoginMixin;
 import uk.co.bbr.web.security.support.TestUser;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ActiveProfiles("test")
-@SpringBootTest(properties = { "spring.config.name=contest-list-page-service-group-alias-tests-h2", "spring.datasource.url=jdbc:h2:mem:contest-list-page-service-group-alias-tests-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE", "spring.jpa.database-platform=org.hibernate.dialect.SQLServerDialect"})
+@SpringBootTest(properties = { "spring.config.name=contest-list-page-service-group-tests-h2", "spring.datasource.url=jdbc:h2:mem:contest-list-page-service-group-tests-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE", "spring.jpa.database-platform=org.hibernate.dialect.SQLServerDialect"})
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class ContestListPageContestGroupAliasTests implements LoginMixin {
+class ContestListPageContestGroupTests implements LoginMixin {
 
     @Autowired private ContestGroupService contestGroupService;
     @Autowired private ContestService contestService;
@@ -56,20 +60,18 @@ class ContestListPageContestGroupAliasTests implements LoginMixin {
         contest1.setContestGroup(group1);
         this.contestService.update(contest1);
 
-        this.contestGroupService.createAlias(group1, "Ah Group Alias 1");
-
         logoutTestUser();
     }
 
 
     @Test
-    void testFetchContestListWithPrefixWorksSuccessfullyForGroupAliases() {
+    void testFetchContestListWithPrefixWorksSuccessfullyForGroups() {
         // act
         ContestListDto pageData = this.contestService.listContestsStartingWith("A");
 
         // assert
         assertEquals("A", pageData.getSearchPrefix());
-        assertEquals(6, pageData.getReturnedContests().size());
+        assertEquals(5, pageData.getReturnedContests().size());
 
         assertEquals("Aa Alias 7", pageData.getReturnedContests().get(0).getName());
         assertEquals("aa-contest-6", pageData.getReturnedContests().get(0).getSlug());
@@ -87,23 +89,19 @@ class ContestListPageContestGroupAliasTests implements LoginMixin {
         assertEquals("AF-GROUP-1", pageData.getReturnedContests().get(3).getSlug());
         assertEquals(0, pageData.getReturnedContests().get(3).getContestResultsCount());
 
-        assertEquals("Ah Group Alias 1", pageData.getReturnedContests().get(4).getName());
-        assertEquals("AF-GROUP-1", pageData.getReturnedContests().get(4).getSlug());
+        assertEquals("Az Alias 8", pageData.getReturnedContests().get(4).getName());
+        assertEquals("aa-contest-6", pageData.getReturnedContests().get(4).getSlug());
         assertEquals(0, pageData.getReturnedContests().get(4).getContestResultsCount());
-
-        assertEquals("Az Alias 8", pageData.getReturnedContests().get(5).getName());
-        assertEquals("aa-contest-6", pageData.getReturnedContests().get(5).getSlug());
-        assertEquals(0, pageData.getReturnedContests().get(5).getContestResultsCount());
     }
 
     @Test
-    void testFetchContestListLAllWorksSuccessfullyForGroupAliases() {
+    void testFetchContestListLAllWorksSuccessfullyForGroups() {
         // act
         ContestListDto pageData = this.contestService.listContestsStartingWith("ALL");
 
         // assert
         assertEquals("ALL", pageData.getSearchPrefix());
-        assertEquals(10, pageData.getReturnedContests().size());
+        assertEquals(9, pageData.getReturnedContests().size());
 
         assertEquals("Aa Alias 7", pageData.getReturnedContests().get(0).getName());
         assertEquals("aa-contest-6", pageData.getReturnedContests().get(0).getSlug());
@@ -121,29 +119,25 @@ class ContestListPageContestGroupAliasTests implements LoginMixin {
         assertEquals("AF-GROUP-1", pageData.getReturnedContests().get(3).getSlug());
         assertEquals(0, pageData.getReturnedContests().get(3).getContestResultsCount());
 
-        assertEquals("Ah Group Alias 1", pageData.getReturnedContests().get(4).getName());
-        assertEquals("AF-GROUP-1", pageData.getReturnedContests().get(4).getSlug());
+        assertEquals("Az Alias 8", pageData.getReturnedContests().get(4).getName());
+        assertEquals("aa-contest-6", pageData.getReturnedContests().get(4).getSlug());
         assertEquals(0, pageData.getReturnedContests().get(4).getContestResultsCount());
 
-        assertEquals("Az Alias 8", pageData.getReturnedContests().get(5).getName());
-        assertEquals("aa-contest-6", pageData.getReturnedContests().get(5).getSlug());
+        assertEquals("Bx Alias 5", pageData.getReturnedContests().get(5).getName());
+        assertEquals("cx-contest-5", pageData.getReturnedContests().get(5).getSlug());
         assertEquals(0, pageData.getReturnedContests().get(5).getContestResultsCount());
 
-        assertEquals("Bx Alias 5", pageData.getReturnedContests().get(6).getName());
-        assertEquals("cx-contest-5", pageData.getReturnedContests().get(6).getSlug());
+        assertEquals("Bx Group 2", pageData.getReturnedContests().get(6).getName());
+        assertEquals("BX-GROUP-2", pageData.getReturnedContests().get(6).getSlug());
         assertEquals(0, pageData.getReturnedContests().get(6).getContestResultsCount());
 
-        assertEquals("Bx Group 2", pageData.getReturnedContests().get(7).getName());
-        assertEquals("BX-GROUP-2", pageData.getReturnedContests().get(7).getSlug());
+        assertEquals("Cx Alias 6", pageData.getReturnedContests().get(7).getName());
+        assertEquals("aa-contest-6", pageData.getReturnedContests().get(7).getSlug());
         assertEquals(0, pageData.getReturnedContests().get(7).getContestResultsCount());
 
-        assertEquals("Cx Alias 6", pageData.getReturnedContests().get(8).getName());
-        assertEquals("aa-contest-6", pageData.getReturnedContests().get(8).getSlug());
+        assertEquals("Cx Contest 5", pageData.getReturnedContests().get(8).getName());
+        assertEquals("cx-contest-5", pageData.getReturnedContests().get(8).getSlug());
         assertEquals(0, pageData.getReturnedContests().get(8).getContestResultsCount());
-
-        assertEquals("Cx Contest 5", pageData.getReturnedContests().get(9).getName());
-        assertEquals("cx-contest-5", pageData.getReturnedContests().get(9).getSlug());
-        assertEquals(0, pageData.getReturnedContests().get(9).getContestResultsCount());
     }
 }
 

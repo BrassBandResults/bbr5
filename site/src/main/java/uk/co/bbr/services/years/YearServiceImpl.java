@@ -8,7 +8,6 @@ import uk.co.bbr.services.contests.dao.ContestEventDao;
 import uk.co.bbr.services.contests.dao.ContestEventTestPieceDao;
 import uk.co.bbr.services.contests.dao.ContestResultDao;
 import uk.co.bbr.services.contests.dao.ContestResultPieceDao;
-import uk.co.bbr.services.contests.sql.dto.ContestEventResultSqlDto;
 import uk.co.bbr.services.contests.types.ContestEventDateResolution;
 import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.pieces.dao.PieceDao;
@@ -29,7 +28,7 @@ public class YearServiceImpl implements YearService {
 
     @Override
     public List<YearListEntrySqlDto> fetchFullYearList() {
-        return YearSql.selectSetTestPieceUsage(this.entityManager);
+        return YearSql.selectYearsPageData(this.entityManager);
     }
 
     @Override
