@@ -8,6 +8,7 @@ import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.contests.dao.ContestEventDao;
 import uk.co.bbr.services.contests.dao.ContestResultDao;
 import uk.co.bbr.services.contests.dao.ContestResultPieceDao;
+import uk.co.bbr.services.contests.dto.ContestWinsDto;
 import uk.co.bbr.services.contests.repo.ContestResultPieceRepository;
 import uk.co.bbr.services.contests.repo.ContestResultRepository;
 import uk.co.bbr.services.contests.sql.ContestResultSql;
@@ -251,6 +252,11 @@ public class ContestResultServiceImpl implements ContestResultService {
     @Override
     public int fetchCountOfOwnChoiceForContest(ContestDao contest) {
         return this.contestResultPieceRepository.fetchCountOfOwnChoiceForContest(contest.getId());
+    }
+
+    @Override
+    public List<ContestWinsDto> fetchWinsCounts(ContestDao contest) {
+        return ContestResultSql.selectWinsForContest(this.entityManager, contest.getId());
     }
 
     @Override

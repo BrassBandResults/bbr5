@@ -6,6 +6,7 @@ import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.contests.dao.ContestEventDao;
 import uk.co.bbr.services.contests.dao.ContestResultDao;
 import uk.co.bbr.services.contests.dao.ContestResultPieceDao;
+import uk.co.bbr.services.contests.dto.ContestWinsDto;
 import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.people.dto.ConductingDetailsDto;
 import uk.co.bbr.services.pieces.dao.PieceDao;
@@ -30,4 +31,6 @@ public interface ContestResultService {
     List<ContestResultPieceDao> fetchResultsWithOwnChoicePieces(ContestDao contest);
 
     int fetchCountOfOwnChoiceForContest(ContestDao contest);
+
+    List<ContestWinsDto> fetchWinsCounts(ContestDao contest);
 }

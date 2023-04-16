@@ -1,6 +1,7 @@
 package uk.co.bbr.services.contests.sql;
 
 import uk.co.bbr.services.contests.dao.ContestResultPieceDao;
+import uk.co.bbr.services.contests.dto.ContestWinsDto;
 import uk.co.bbr.services.contests.sql.dto.BandEventPiecesSqlDto;
 import uk.co.bbr.services.contests.sql.dto.BandResultSqlDto;
 import uk.co.bbr.services.contests.sql.dto.BandResultsPiecesSqlDto;
@@ -173,16 +174,16 @@ public class ContestResultSql {
     }
 
     private static final String OWN_CHOICE_FOR_CONTEST = """
-    SELECT e.date_of_event, e.date_resolution, c.slug as contest_slug, r.band_name as competed_as, b.slug as band_slug, b.name as band_name, p.name as piece_name, p.slug as piece_slug, p.piece_year, r.result_position, r.result_position_type, reg.name, reg.country_code
-    FROM contest_result_test_piece rt
-    INNER JOIN contest_result r ON r.id = rt.contest_result_id
-    INNER JOIN contest_event e ON e.id = r.contest_event_id
-    INNER JOIN contest c ON c.id = e.contest_id
-    INNER JOIN band b ON b.id = r.band_id
-    INNER JOIN region reg ON reg.id = b.region_id
-    INNER JOIN piece p ON p.id = rt.piece_id
-    WHERE c.id = ?1
-    ORDER BY e.date_of_event, r.result_position DESC""";
+        SELECT e.date_of_event, e.date_resolution, c.slug as contest_slug, r.band_name as competed_as, b.slug as band_slug, b.name as band_name, p.name as piece_name, p.slug as piece_slug, p.piece_year, r.result_position, r.result_position_type, reg.name, reg.country_code
+        FROM contest_result_test_piece rt
+        INNER JOIN contest_result r ON r.id = rt.contest_result_id
+        INNER JOIN contest_event e ON e.id = r.contest_event_id
+        INNER JOIN contest c ON c.id = e.contest_id
+        INNER JOIN band b ON b.id = r.band_id
+        INNER JOIN region reg ON reg.id = b.region_id
+        INNER JOIN piece p ON p.id = rt.piece_id
+        WHERE c.id = ?1
+        ORDER BY e.date_of_event, r.result_position DESC""";
 
     public static List<ContestResultPieceSqlDto> selectOwnChoiceUsedForContest(EntityManager entityManager, Long contestId) {
         List<ContestResultPieceSqlDto> returnData = new ArrayList<>();
@@ -193,6 +194,36 @@ public class ContestResultSql {
 
             for (Object[] eachRowData : queryResults) {
                 ContestResultPieceSqlDto eachReturnObject = new ContestResultPieceSqlDto(eachRowData);
+                returnData.add(eachReturnObject);
+            }
+
+            return returnData;
+        } catch (Exception e) {
+            throw new RuntimeException("SQL Failure, " + e.getMessage());
+        }
+    }
+
+    private static final String BAND_WINS_FOR_CONTEST_SQL = """
+                    SELECT b.slug, b.name, COUNT(*)
+                    FROM contest_result r
+                             INNER JOIN band b ON b.id = r.band_id
+                             INNER JOIN contest_event e ON e.id = r.contest_event_id
+                             INNER JOIN contest c ON c.id = e.contest_id
+                    WHERE c.id = ?1
+                      AND r.result_position_type = 'R'
+                      AND r.result_position = 1
+                    GROUP BY b.slug, b.name
+                    ORDER BY 3 DESC""";
+
+    public static List<ContestWinsDto> selectWinsForContest(EntityManager entityManager, Long contestId) {
+        List<ContestWinsDto> returnData = new ArrayList<>();
+        try {
+            Query query = entityManager.createNativeQuery(BAND_WINS_FOR_CONTEST_SQL);
+            query.setParameter(1, contestId);
+            List<Object[]> queryResults = query.getResultList();
+
+            for (Object[] eachRowData : queryResults) {
+                ContestWinsDto eachReturnObject = new ContestWinsDto(eachRowData);
                 returnData.add(eachReturnObject);
             }
 

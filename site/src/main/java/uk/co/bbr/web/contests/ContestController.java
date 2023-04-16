@@ -13,6 +13,7 @@ import uk.co.bbr.services.contests.dao.ContestEventDao;
 import uk.co.bbr.services.contests.dao.ContestResultDao;
 import uk.co.bbr.services.contests.dao.ContestResultPieceDao;
 import uk.co.bbr.services.contests.dto.ContestListDto;
+import uk.co.bbr.services.contests.dto.ContestWinsDto;
 import uk.co.bbr.services.framework.NotFoundException;
 
 import java.util.List;
@@ -86,5 +87,26 @@ public class ContestController {
         model.addAttribute("PastEventsCount", pastEventsCount);
 
         return "contests/contests/contest-own-choice";
+    }
+
+    @GetMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}/wins")
+    public String contestWins(Model model, @PathVariable String contestSlug) {
+        Optional<ContestDao> contest = this.contestService.fetchBySlug(contestSlug);
+
+        if (contest.isEmpty()) {
+            throw new NotFoundException("Contest with slug " + contestSlug + " not found");
+        }
+
+        List<ContestWinsDto> wins = this.contestResultService.fetchWinsCounts(contest.get());
+
+        int pastEventsCount = this.contestEventService.fetchCountOfEvents(contest.get());
+        int ownChoicePieceCount = this.contestResultService.fetchCountOfOwnChoiceForContest(contest.get());
+
+        model.addAttribute("Contest", contest.get());
+        model.addAttribute("Wins", wins);
+        model.addAttribute("PastEventsCount", pastEventsCount);
+        model.addAttribute("OwnChoicePieceCount", ownChoicePieceCount);
+
+        return "contests/contests/contest-wins";
     }
 }
