@@ -56,7 +56,7 @@ public class ContestController {
         }
 
         List<ContestEventDao> futureEventsForContest = this.contestEventService.fetchFutureEventsForContest(contest.get());
-        List<ContestResultDao> pastEventsForContest = this.contestEventService.fetchPastEventsForContest(contest.get());
+        List<ContestEventDao> pastEventsForContest = this.contestEventService.fetchPastEventsForContest(contest.get());
 
         model.addAttribute("Contest", contest.get());
         model.addAttribute("FutureEvents", futureEventsForContest);

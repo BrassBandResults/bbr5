@@ -176,28 +176,34 @@ public class ContestEventServiceImpl implements ContestEventService {
     }
 
     @Override
-    public List<ContestResultDao> fetchPastEventsForContest(ContestDao contest) {
-        List<ContestResultDao> returnEvents = new ArrayList<>();
+    public List<ContestEventDao> fetchPastEventsForContest(ContestDao contest) {
+        List<ContestEventDao> returnEvents = new ArrayList<>();
 
         ContestEventSqlDto eventsSql = ContestResultSql.selectEventListForContest(this.entityManager, contest.getId());
 
         for (ContestEventResultSqlDto eachSqlEvent : eventsSql.getEvents()) {
+            ContestEventDao currentEvent = new ContestEventDao();
+            currentEvent.setContest(new ContestDao());
+            currentEvent.setEventDate(eachSqlEvent.getEventDate());
+            currentEvent.setEventDateResolution(ContestEventDateResolution.fromCode(eachSqlEvent.getEventDateResolution()));
+            currentEvent.getContest().setSlug(eachSqlEvent.getContestSlug());
+            if (!returnEvents.isEmpty()) {
+                ContestEventDao previousEvent = returnEvents.get(returnEvents.size() - 1);
+                if (previousEvent.getEventDate().equals(eachSqlEvent.getEventDate()) && previousEvent.getEventDateResolution().getCode().equals(eachSqlEvent.getEventDateResolution())) {
+                    // it's the same event, we want to add winners to it
+                    currentEvent = previousEvent;
+                }
+            }
+
             ContestResultDao eachWinner = new ContestResultDao();
-            eachWinner.setContestEvent(new ContestEventDao());
-            eachWinner.getContestEvent().setContest(new ContestDao());
-            eachWinner.getContestEvent().setPieces(new ArrayList<>());
+            eachWinner.setContestEvent(currentEvent);
             eachWinner.setPieces(new ArrayList<>());
             eachWinner.setBand(new BandDao());
             eachWinner.getBand().setRegion(new RegionDao());
-
-            eachWinner.getContestEvent().setEventDate(eachSqlEvent.getEventDate());
-            eachWinner.getContestEvent().setEventDateResolution(ContestEventDateResolution.fromCode(eachSqlEvent.getEventDateResolution()));
-            eachWinner.getContestEvent().getContest().setSlug(eachSqlEvent.getContestSlug());
             eachWinner.setBandName(eachSqlEvent.getBandCompetedAs());
             eachWinner.getBand().setSlug(eachSqlEvent.getBandSlug());
             eachWinner.getBand().setName(eachSqlEvent.getBandName());
             eachWinner.getBand().getRegion().setCountryCode(eachSqlEvent.getBandRegionCountryCode());
-
 
             if (eachSqlEvent.getResultPieceSlug() != null && eachSqlEvent.getResultPieceSlug().length() > 0) {
                 eachWinner.getPieces().add(new ContestResultPieceDao());
@@ -233,7 +239,8 @@ public class ContestEventServiceImpl implements ContestEventService {
                 eachWinner.getConductorThird().setFirstNames(eachSqlEvent.getConductor3FirstNames());
                 eachWinner.getConductorThird().setSurname(eachSqlEvent.getConductor3Surname());
             }
-            returnEvents.add(eachWinner);
+            currentEvent.getWinners().add(eachWinner);
+            returnEvents.add(currentEvent);
         }
 
         return returnEvents;

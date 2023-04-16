@@ -17,6 +17,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -70,7 +71,11 @@ public class ContestEventDao extends AbstractDao implements NameTools {
 
     @Transient
     @Setter
-    private List<ContestEventTestPieceDao> pieces;
+    private List<ContestEventTestPieceDao> pieces = new ArrayList<>();
+
+    @Transient
+    @Setter
+    private List<ContestResultDao> winners = new ArrayList<>();
 
     public void setName(String name){
         this.name = simplifyName(name);

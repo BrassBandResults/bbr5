@@ -3,5 +3,5 @@
 </span>
 
 <span th:fragment="groupLinkFromContest(contest)">
-    <a th:if="${contest != null}" th:href="${'/contests/' + contest.contestGroup.slug}" th:text="${contest.name}" class="bbr-group">Group Name</a>
+    <a th:if="${contest != null && contest.contestGroup != null}" th:href="${'/contests/' + contest.contestGroup.slug}" th:text="${contest.name}" class="bbr-group">Group Name</a>
 </span>
