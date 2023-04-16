@@ -96,7 +96,7 @@ class BandDetailsWebTests implements LoginMixin {
         assertTrue(response.contains("<h2>Rothwell Temperance Band</h2>"));
 
         assertTrue(response.contains(">Contests (4)<"));
-        assertTrue(response.contains(">Whit Friday (0)<"));
+        assertFalse(response.contains(">Whit Friday (0)<"));
 
         assertTrue(response.contains(">Yorkshire Area<"));
 
