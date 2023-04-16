@@ -28,7 +28,9 @@ public interface ContestEventService {
     List<ContestAdjudicatorDao> fetchAdjudicators(ContestEventDao event);
 
     ContestEventTestPieceDao addTestPieceToContest(ContestEventDao event, ContestEventTestPieceDao testPiece);
+
     ContestEventTestPieceDao addTestPieceToContest(ContestEventDao event, PieceDao testPiece);
+
     ContestEventTestPieceDao addTestPieceToContest(ContestEventDao event, PieceDao testPiece, TestPieceAndOr andOr);
 
     List<ContestEventTestPieceDao> listTestPieces(ContestEventDao event);

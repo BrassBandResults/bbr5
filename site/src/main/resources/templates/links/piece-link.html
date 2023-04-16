@@ -22,3 +22,8 @@
     </span>
 </span>
 
+<span th:fragment="resultOwnChoicePieceLink(resultPiece)">
+    <span th:replace="links/piece-link.html :: pieceLink(${resultPiece.piece})"></span><br/>
+</span>
+
+

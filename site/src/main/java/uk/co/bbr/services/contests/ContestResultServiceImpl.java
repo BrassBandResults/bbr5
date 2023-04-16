@@ -14,6 +14,7 @@ import uk.co.bbr.services.contests.sql.ContestResultSql;
 import uk.co.bbr.services.contests.sql.dto.BandEventPiecesSqlDto;
 import uk.co.bbr.services.contests.sql.dto.BandResultSqlDto;
 import uk.co.bbr.services.contests.sql.dto.BandResultsPiecesSqlDto;
+import uk.co.bbr.services.contests.sql.dto.ContestResultPieceSqlDto;
 import uk.co.bbr.services.contests.sql.dto.PersonConductingResultSqlDto;
 import uk.co.bbr.services.contests.sql.dto.PersonConductingSqlDto;
 import uk.co.bbr.services.contests.types.ContestEventDateResolution;
@@ -26,6 +27,7 @@ import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
 import javax.persistence.EntityManager;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -210,6 +212,40 @@ public class ContestResultServiceImpl implements ContestResultService {
 
 
         return new ConductingDetailsDto(bandResults, whitResults);
+    }
+
+    @Override
+    public List<ContestResultPieceDao> fetchResultsWithOwnChoicePieces(ContestDao contest) {
+        List<ContestResultPieceDao> returnData = new ArrayList<>();
+
+        List<ContestResultPieceSqlDto> pieceResults = ContestResultSql.selectOwnChoiceUsedForContest(this.entityManager, contest.getId());
+        for (ContestResultPieceSqlDto eachResult : pieceResults) {
+            ContestResultPieceDao eachReturnPiece = new ContestResultPieceDao();
+            eachReturnPiece.setPiece(new PieceDao());
+            eachReturnPiece.setContestResult(new ContestResultDao());
+            eachReturnPiece.getContestResult().setBand(new BandDao());
+            eachReturnPiece.getContestResult().getBand().setRegion(new RegionDao());
+            eachReturnPiece.getContestResult().setContestEvent(new ContestEventDao());
+            eachReturnPiece.getContestResult().getContestEvent().setContest(new ContestDao());
+
+            eachReturnPiece.getContestResult().getContestEvent().setEventDate(eachResult.getEventDate());
+            eachReturnPiece.getContestResult().getContestEvent().setEventDateResolution(ContestEventDateResolution.fromCode(eachResult.getDateResolution()));
+            eachReturnPiece.getContestResult().getContestEvent().getContest().setSlug(eachResult.getContestSlug());
+            eachReturnPiece.getContestResult().setBandName(eachResult.getBandCompetedAs());
+            eachReturnPiece.getContestResult().getBand().setSlug(eachResult.getBandSlug());
+            eachReturnPiece.getContestResult().getBand().setName(eachResult.getBandName());
+            eachReturnPiece.getPiece().setName(eachResult.getPieceName());
+            eachReturnPiece.getPiece().setSlug(eachResult.getPieceSlug());
+            eachReturnPiece.getPiece().setYear(eachResult.getPieceYear());
+            eachReturnPiece.getContestResult().setPosition(eachResult.getPosition());
+            eachReturnPiece.getContestResult().setResultPositionType(ResultPositionType.fromCode(eachResult.getPositionType()));
+            eachReturnPiece.getContestResult().getBand().getRegion().setName(eachResult.getRegionName());
+            eachReturnPiece.getContestResult().getBand().getRegion().setCountryCode(eachResult.getRegionCountryCode());
+
+            returnData.add(eachReturnPiece);
+        }
+
+        return returnData;
     }
 
     @Override

@@ -12,6 +12,16 @@
 
     <p th:text="${Contest.notes}">Contest Notes</p>
 
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link active" th:href="${'/contests/' + Contest.slug}" th:text="#{page.contest.tab.results}">Results</span></a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" th:href="${'/contests/' + Contest.slug + '/own-choice'}" th:text="#{page.contest.tab.own-choice}">Own Choice Pieces Used</span></a>
+        </li>
+    </ul>
+    <br/>
+
     <div th:if="${FutureEvents.size() > 0}">
         <h3 th:text="#{page.contest.header.future-events}">Future Events</h3>
     </div>
