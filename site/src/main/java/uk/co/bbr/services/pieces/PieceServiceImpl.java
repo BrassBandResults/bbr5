@@ -25,6 +25,7 @@ import uk.co.bbr.services.pieces.repo.PieceRepository;
 import uk.co.bbr.services.pieces.sql.PieceSql;
 import uk.co.bbr.services.pieces.sql.dto.OwnChoiceUsagePieceSqlDto;
 import uk.co.bbr.services.pieces.sql.dto.OwnChoiceUsageSqlDto;
+import uk.co.bbr.services.pieces.sql.dto.PieceUsageCountSqlDto;
 import uk.co.bbr.services.pieces.sql.dto.SetTestUsagePieceSqlDto;
 import uk.co.bbr.services.pieces.sql.dto.SetTestUsageSqlDto;
 import uk.co.bbr.services.pieces.types.PieceCategory;
@@ -155,15 +156,32 @@ public class PieceServiceImpl implements PieceService, SlugTools {
     @Override
     public PieceListDto listPiecesStartingWith(String prefix) {
         List<PieceDao> piecesToReturn;
+        List<PieceUsageCountSqlDto> pieceUsageCounts;
 
         switch (prefix.toUpperCase()) {
-            case "ALL" -> piecesToReturn = this.pieceRepository.findAllOrderByName();
-            case "0" -> piecesToReturn = this.pieceRepository.findWithNumberPrefixOrderByName();
-            default -> {
+            case "ALL":
+                piecesToReturn = this.pieceRepository.findAllOrderByName();
+                pieceUsageCounts =  PieceSql.selectAllPieceUsageCounts(this.entityManager);
+                break;
+            case "0":
+                piecesToReturn = this.pieceRepository.findWithNumberPrefixOrderByName();
+                pieceUsageCounts =  PieceSql.selectNumbersPieceUsageCounts(this.entityManager);
+                break;
+            default:
                 if (prefix.trim().length() != 1) {
                     throw new UnsupportedOperationException("Prefix must be a single character");
                 }
                 piecesToReturn = this.pieceRepository.findByPrefixOrderByName(prefix.trim().toUpperCase());
+                pieceUsageCounts =  PieceSql.selectPieceUsageCounts(this.entityManager, prefix.toUpperCase());
+                break;
+        }
+
+        for (PieceDao eachPiece : piecesToReturn) {
+            for (PieceUsageCountSqlDto eachCount : pieceUsageCounts) {
+                if (eachPiece.getId().intValue() == eachCount.getPieceId().intValue()){
+                    eachPiece.setOwnChoiceCount(eachCount.getOwnChoiceCount());
+                    eachPiece.setSetTestCount(eachCount.getSetTestCount());
+                }
             }
         }
 

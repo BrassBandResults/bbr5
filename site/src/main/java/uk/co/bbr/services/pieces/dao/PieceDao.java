@@ -16,6 +16,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Getter
 @Entity
@@ -51,10 +52,12 @@ public class PieceDao extends AbstractDao implements NameTools {
     @Setter
     private PersonDao arranger;
 
-    @Formula("0")
+    @Transient
+    @Setter
     private int setTestCount;
 
-    @Formula("0")
+    @Transient
+    @Setter
     private int ownChoiceCount;
 
     public void setNotes(String notes) {

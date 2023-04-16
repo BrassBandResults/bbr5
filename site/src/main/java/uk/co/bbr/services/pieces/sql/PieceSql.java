@@ -2,11 +2,14 @@ package uk.co.bbr.services.pieces.sql;
 
 import uk.co.bbr.services.pieces.sql.dto.OwnChoiceUsagePieceSqlDto;
 import uk.co.bbr.services.pieces.sql.dto.OwnChoiceUsageSqlDto;
+import uk.co.bbr.services.pieces.sql.dto.PieceUsageCountSqlDto;
 import uk.co.bbr.services.pieces.sql.dto.SetTestUsagePieceSqlDto;
 import uk.co.bbr.services.pieces.sql.dto.SetTestUsageSqlDto;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import java.sql.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PieceSql {
@@ -60,6 +63,90 @@ public class PieceSql {
 
             for (Object[] eachRowData : queryResults) {
                 SetTestUsagePieceSqlDto eachReturnObject = new SetTestUsagePieceSqlDto(eachRowData);
+                returnData.add(eachReturnObject);
+            }
+
+            return returnData;
+        } catch (Exception e) {
+            throw new RuntimeException("SQL Failure, " + e.getMessage());
+        }
+    }
+
+                private static final String PIECES_USAGE_COUNT_BY_PREFIX_SQL = """
+            SELECT p.id,
+                   (SELECT count(*) FROM contest_event_test_piece e WHERE e.piece_id = p.id) as set_test_count,
+                   (SELECT count(*) FROM contest_result_test_piece r WHERE r.piece_id = p.id) as own_choice_count
+            FROM piece p
+            WHERE UPPER(p.name) LIKE ?1
+            ORDER BY p.id""";
+
+    public static List<PieceUsageCountSqlDto> selectPieceUsageCounts(EntityManager entityManager, String prefix) {
+        List<PieceUsageCountSqlDto> returnData = new ArrayList<>();
+        try {
+            Query query = entityManager.createNativeQuery(PIECES_USAGE_COUNT_BY_PREFIX_SQL);
+            query.setParameter(1, prefix + "%");
+            List<Object[]> queryResults = query.getResultList();
+
+            for (Object[] eachRowData : queryResults) {
+                PieceUsageCountSqlDto eachReturnObject = new PieceUsageCountSqlDto(eachRowData);
+                returnData.add(eachReturnObject);
+            }
+
+            return returnData;
+        } catch (Exception e) {
+            throw new RuntimeException("SQL Failure, " + e.getMessage());
+        }
+    }
+
+    private static final String ALL_PIECES_USAGE_COUNT_SQL = """
+            SELECT p.id,
+                    (SELECT count(*) FROM contest_event_test_piece e WHERE e.piece_id = p.id) as set_test_count,
+                   (SELECT count(*) FROM contest_result_test_piece r WHERE r.piece_id = p.id) as own_choice_count
+            FROM piece p
+            ORDER BY p.id""";
+
+    public static List<PieceUsageCountSqlDto> selectAllPieceUsageCounts(EntityManager entityManager) {
+        List<PieceUsageCountSqlDto> returnData = new ArrayList<>();
+        try {
+            Query query = entityManager.createNativeQuery(ALL_PIECES_USAGE_COUNT_SQL);
+            List<Object[]> queryResults = query.getResultList();
+
+            for (Object[] eachRowData : queryResults) {
+                PieceUsageCountSqlDto eachReturnObject = new PieceUsageCountSqlDto(eachRowData);
+                returnData.add(eachReturnObject);
+            }
+
+            return returnData;
+        } catch (Exception e) {
+            throw new RuntimeException("SQL Failure, " + e.getMessage());
+        }
+    }
+
+    private static final String PIECES_USAGE_COUNT_FOR_NUMBERS_SQL = """
+            SELECT p.id,
+                   (SELECT count(*) FROM contest_event_test_piece e WHERE e.piece_id = p.id) as set_test_count,
+                   (SELECT count(*) FROM contest_result_test_piece r WHERE r.piece_id = p.id) as own_choice_count
+            FROM piece p
+            WHERE p.name LIKE '0%'
+            OR p.name LIKE '1%'
+            OR p.name LIKE '2%'
+            OR p.name LIKE '3%'
+            OR p.name LIKE '4%'
+            OR p.name LIKE '5%'
+            OR p.name LIKE '6%'
+            OR p.name LIKE '7%'
+            OR p.name LIKE '8%'
+            OR p.name LIKE '9%'
+            ORDER BY p.id""";
+
+    public static List<PieceUsageCountSqlDto> selectNumbersPieceUsageCounts(EntityManager entityManager) {
+        List<PieceUsageCountSqlDto> returnData = new ArrayList<>();
+        try {
+            Query query = entityManager.createNativeQuery(PIECES_USAGE_COUNT_FOR_NUMBERS_SQL);
+            List<Object[]> queryResults = query.getResultList();
+
+            for (Object[] eachRowData : queryResults) {
+                PieceUsageCountSqlDto eachReturnObject = new PieceUsageCountSqlDto(eachRowData);
                 returnData.add(eachReturnObject);
             }
 
