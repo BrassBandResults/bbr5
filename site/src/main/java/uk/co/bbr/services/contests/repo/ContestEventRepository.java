@@ -31,4 +31,7 @@ public interface ContestEventRepository extends JpaRepository<ContestEventDao, L
 
     @Query("SELECT e FROM ContestEventDao e WHERE e.contest.id = :contestId AND e.eventDate > CURRENT_TIMESTAMP ORDER BY e.eventDate DESC")
     List<ContestEventDao> fetchFutureEventsByContest(Long contestId);
+
+    @Query("SELECT COUNT(e) FROM ContestEventDao e WHERE e.contest.id = :contestId AND e.eventDate < CURRENT_TIMESTAMP")
+    int countEventsForContest(Long contestId);
 }

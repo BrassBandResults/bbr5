@@ -16,4 +16,8 @@ public interface ContestResultPieceRepository extends JpaRepository<ContestResul
             "WHERE p.piece.id = :pieceId " +
             "ORDER BY p.contestResult.contestEvent.eventDate DESC")
     List<ContestResultPieceDao> fetchForPiece(Long pieceId);
+
+    @Query("SELECT COUNT(p) FROM ContestResultPieceDao p " +
+            "WHERE p.contestResult.contestEvent.contest.id = :contestId")
+    int fetchCountOfOwnChoiceForContest(Long contestId);
 }

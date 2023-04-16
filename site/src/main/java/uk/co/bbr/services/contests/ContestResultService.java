@@ -23,9 +23,11 @@ public interface ContestResultService {
     ContestResultPieceDao addPieceToResult(ContestResultDao contestResult, ContestResultPieceDao contestResultTestPiece);
     ContestResultPieceDao addPieceToResult(ContestResultDao contestResult, PieceDao piece);
 
-    BandDetailsDto findResultsForBand(BandDao bandDao);
+    BandDetailsDto findResultsForBand(BandDao band);
 
     ConductingDetailsDto findResultsForConductor(PersonDao person);
 
     List<ContestResultPieceDao> fetchResultsWithOwnChoicePieces(ContestDao contest);
+
+    int fetchCountOfOwnChoiceForContest(ContestDao contest);
 }

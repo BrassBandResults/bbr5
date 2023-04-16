@@ -192,7 +192,11 @@ public class ContestEventServiceImpl implements ContestEventService {
                 if (previousEvent.getEventDate().equals(eachSqlEvent.getEventDate()) && previousEvent.getEventDateResolution().getCode().equals(eachSqlEvent.getEventDateResolution())) {
                     // it's the same event, we want to add winners to it
                     currentEvent = previousEvent;
+                } else {
+                    returnEvents.add(currentEvent);
                 }
+            } else {
+                returnEvents.add(currentEvent);
             }
 
             ContestResultDao eachWinner = new ContestResultDao();
@@ -240,7 +244,6 @@ public class ContestEventServiceImpl implements ContestEventService {
                 eachWinner.getConductorThird().setSurname(eachSqlEvent.getConductor3Surname());
             }
             currentEvent.getWinners().add(eachWinner);
-            returnEvents.add(currentEvent);
         }
 
         return returnEvents;
@@ -249,6 +252,11 @@ public class ContestEventServiceImpl implements ContestEventService {
     @Override
     public List<ContestEventDao> fetchFutureEventsForContest(ContestDao contest) {
         return this.contestEventRepository.fetchFutureEventsByContest(contest.getId());
+    }
+
+    @Override
+    public int fetchCountOfEvents(ContestDao contest) {
+        return this.contestEventRepository.countEventsForContest(contest.getId());
     }
 
 

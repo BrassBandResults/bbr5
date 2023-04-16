@@ -60,10 +60,12 @@ public class ContestController {
 
         List<ContestEventDao> futureEventsForContest = this.contestEventService.fetchFutureEventsForContest(contest.get());
         List<ContestEventDao> pastEventsForContest = this.contestEventService.fetchPastEventsForContest(contest.get());
+        int ownChoicePieceCount = this.contestResultService.fetchCountOfOwnChoiceForContest(contest.get());
 
         model.addAttribute("Contest", contest.get());
         model.addAttribute("FutureEvents", futureEventsForContest);
         model.addAttribute("PastEvents", pastEventsForContest);
+        model.addAttribute("OwnChoicePieceCount", ownChoicePieceCount);
 
         return "contests/contests/contest";
     }
@@ -77,9 +79,11 @@ public class ContestController {
         }
 
         List<ContestResultPieceDao> resultsWithOwnChoicePieces = this.contestResultService.fetchResultsWithOwnChoicePieces(contest.get());
+        int pastEventsCount = this.contestEventService.fetchCountOfEvents(contest.get());
 
         model.addAttribute("Contest", contest.get());
         model.addAttribute("OwnChoiceResults", resultsWithOwnChoicePieces);
+        model.addAttribute("PastEventsCount", pastEventsCount);
 
         return "contests/contests/contest-own-choice";
     }
