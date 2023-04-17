@@ -68,7 +68,7 @@ public class ContestTagServiceImpl implements ContestTagService, SlugTools {
 
     @Override
     public ContestTagDetailsDto fetchDetailsBySlug(String slug) {
-        Optional<ContestTagDao> tag = this.contestTagRepository.fetchBySlug(slug);
+        Optional<ContestTagDao> tag = this.fetchBySlug(slug);
         if (tag.isEmpty()) {
             throw new NotFoundException("Tag with slug " + slug + " not found");
         }
@@ -78,6 +78,11 @@ public class ContestTagServiceImpl implements ContestTagService, SlugTools {
 
         ContestTagDetailsDto tagDetails = new ContestTagDetailsDto(tag.get(), contests, contestGroups);
         return tagDetails;
+    }
+
+    @Override
+    public Optional<ContestTagDao> fetchBySlug(String slug) {
+        return this.contestTagRepository.fetchBySlug(slug);
     }
 
     @Override

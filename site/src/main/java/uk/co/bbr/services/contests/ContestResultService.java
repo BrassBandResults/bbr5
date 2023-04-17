@@ -4,8 +4,10 @@ import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.bands.dto.BandDetailsDto;
 import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.contests.dao.ContestEventDao;
+import uk.co.bbr.services.contests.dao.ContestGroupDao;
 import uk.co.bbr.services.contests.dao.ContestResultDao;
 import uk.co.bbr.services.contests.dao.ContestResultPieceDao;
+import uk.co.bbr.services.contests.dao.ContestTagDao;
 import uk.co.bbr.services.contests.dto.ContestWinsDto;
 import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.people.dto.ConductingDetailsDto;
@@ -25,6 +27,12 @@ public interface ContestResultService {
     ContestResultPieceDao addPieceToResult(ContestResultDao contestResult, PieceDao piece);
 
     BandDetailsDto findResultsForBand(BandDao band);
+
+    BandDetailsDto findResultsForBand(BandDao band, ContestDao contest);
+
+    BandDetailsDto findResultsForBand(BandDao band, ContestGroupDao contestGroup);
+
+    BandDetailsDto findResultsForBand(BandDao band, ContestTagDao contestTag);
 
     ConductingDetailsDto findResultsForConductor(PersonDao person);
 

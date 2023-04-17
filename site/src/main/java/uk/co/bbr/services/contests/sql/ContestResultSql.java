@@ -21,13 +21,14 @@ import java.util.List;
 public class ContestResultSql {
 
     private static final String BAND_RESULT_LIST_SQL = """
-        SELECT r.id as result_id, e.date_of_event, e.date_resolution, c.slug as contest_slug, c.name, r.result_position, r.result_position_type, r.result_award, r.band_name, r.draw, e.id as event_id,
+        SELECT r.id as result_id, e.date_of_event, e.date_resolution, c.slug as contest_slug, c.name, r.result_position, r.result_position_type, r.result_award, r.band_name, r.draw, e.id as event_id, g.slug as group_slug, g.name as group_name,
         con1.slug as c1_slug, con1.first_names as c1_first_names, con1.surname as c1_surname,
         con2.slug as c2_slug, con2.first_names as c2_first_names, con2.surname as c2_surname,
         con3.slug as c3_slug, con3.first_names as c3_first_names, con3.surname as c3_surname
         FROM contest_result r
         INNER JOIN contest_event e ON e.id = r.contest_event_id
         INNER JOIN contest c ON c.id = e.contest_id
+        LEFT OUTER JOIN contest_group g ON g.id = c.contest_group_id
         LEFT OUTER JOIN person con1 ON con1.id = r.conductor_id
         LEFT OUTER JOIN person con2 ON con2.id = r.conductor_two_id
         LEFT OUTER JOIN person con3 ON con3.id = r.conductor_three_id

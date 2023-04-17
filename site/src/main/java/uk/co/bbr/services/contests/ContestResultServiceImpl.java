@@ -6,11 +6,14 @@ import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.bands.dto.BandDetailsDto;
 import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.contests.dao.ContestEventDao;
+import uk.co.bbr.services.contests.dao.ContestGroupDao;
 import uk.co.bbr.services.contests.dao.ContestResultDao;
 import uk.co.bbr.services.contests.dao.ContestResultPieceDao;
+import uk.co.bbr.services.contests.dao.ContestTagDao;
 import uk.co.bbr.services.contests.dto.ContestWinsDto;
 import uk.co.bbr.services.contests.repo.ContestResultPieceRepository;
 import uk.co.bbr.services.contests.repo.ContestResultRepository;
+import uk.co.bbr.services.contests.repo.ContestTagRepository;
 import uk.co.bbr.services.contests.sql.ContestResultSql;
 import uk.co.bbr.services.contests.sql.dto.BandEventPiecesSqlDto;
 import uk.co.bbr.services.contests.sql.dto.BandResultSqlDto;
@@ -40,6 +43,7 @@ public class ContestResultServiceImpl implements ContestResultService {
 
     private final ContestResultRepository contestResultRepository;
     private final ContestResultPieceRepository contestResultPieceRepository;
+    private final ContestTagRepository contestTagRepository;
     private final SecurityService securityService;
     private final EntityManager entityManager;
 
@@ -105,7 +109,6 @@ public class ContestResultServiceImpl implements ContestResultService {
 
     @Override
     public BandDetailsDto findResultsForBand(BandDao band) {
-
         List<BandResultSqlDto> bandResultsSql = ContestResultSql.selectBandResults(this.entityManager, band.getId());
         BandResultsPiecesSqlDto resultPiecesSql = ContestResultSql.selectBandResultPerformances(this.entityManager, band.getId());
         BandEventPiecesSqlDto eventPiecesSql = ContestResultSql.selectBandEventPieces(this.entityManager, band.getId());
@@ -126,6 +129,13 @@ public class ContestResultServiceImpl implements ContestResultService {
             eachResult.getContestEvent().setEventDateResolution(ContestEventDateResolution.fromCode(eachSqlResult.getEventDateResolution()));
             eachResult.getContestEvent().getContest().setSlug(eachSqlResult.getContestSlug());
             eachResult.getContestEvent().getContest().setName(eachSqlResult.getContestName());
+
+            if (eachSqlResult.getGroupSlug() != null) {
+                eachResult.getContestEvent().getContest().setContestGroup(new ContestGroupDao());
+                eachResult.getContestEvent().getContest().getContestGroup().setName(eachSqlResult.getGroupName());
+                eachResult.getContestEvent().getContest().getContestGroup().setSlug(eachSqlResult.getGroupSlug());
+            }
+
             if (eachSqlResult.getResultPosition() != null) {
                 eachResult.setPosition(eachSqlResult.getResultPosition().toString());
             }
@@ -166,6 +176,60 @@ public class ContestResultServiceImpl implements ContestResultService {
 
 
         return new BandDetailsDto(bandResults, whitResults);
+    }
+
+    @Override
+    public BandDetailsDto findResultsForBand(BandDao band, ContestDao contest) {
+        BandDetailsDto returnData = this.findResultsForBand(band);
+
+        List<ContestResultDao> filteredList = new ArrayList<>();
+        for (ContestResultDao eachResult : returnData.getBandResults()) {
+            if (eachResult.getContestEvent().getContest().getSlug().equals(contest.getSlug())) {
+                filteredList.add(eachResult);
+            }
+        }
+
+        return new BandDetailsDto(filteredList, returnData.getBandWhitResults());
+    }
+
+    @Override
+    public BandDetailsDto findResultsForBand(BandDao band, ContestGroupDao contestGroup) {
+        BandDetailsDto returnData = this.findResultsForBand(band);
+
+        List<ContestResultDao> filteredList = new ArrayList<>();
+        for (ContestResultDao eachResult : returnData.getBandResults()) {
+            if (eachResult.getContestEvent().getContest().getContestGroup() != null && eachResult.getContestEvent().getContest().getContestGroup().getSlug().equals(contestGroup.getSlug())) {
+                filteredList.add(eachResult);
+            }
+        }
+
+        return new BandDetailsDto(filteredList, returnData.getBandWhitResults());
+    }
+
+    @Override
+    public BandDetailsDto findResultsForBand(BandDao band, ContestTagDao contestTag) {
+        List<ContestDao> contests = this.contestTagRepository.fetchContestsForTag(contestTag.getSlug());
+        List<ContestGroupDao> groups = this.contestTagRepository.fetchGroupsForTag(contestTag.getSlug());
+
+        BandDetailsDto returnData = this.findResultsForBand(band);
+
+        List<ContestResultDao> filteredList = new ArrayList<>();
+        for (ContestResultDao eachResult : returnData.getBandResults()) {
+            for (ContestDao tagContest : contests) {
+                if (eachResult.getContestEvent().getContest().getSlug().equals(tagContest.getSlug())) {
+                    filteredList.add(eachResult);
+                    break;
+                }
+            }
+
+            for (ContestGroupDao tagGroup : groups) {
+                if (eachResult.getContestEvent().getContest().getContestGroup() != null && eachResult.getContestEvent().getContest().getContestGroup().getSlug().equals(tagGroup.getSlug())) {
+                    filteredList.add(eachResult);
+                }
+            }
+        }
+
+        return new BandDetailsDto(filteredList, returnData.getBandWhitResults());
     }
 
     @Override

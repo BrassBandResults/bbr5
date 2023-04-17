@@ -9,8 +9,14 @@ import uk.co.bbr.services.bands.BandService;
 import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.bands.dao.BandPreviousNameDao;
 import uk.co.bbr.services.bands.dto.BandDetailsDto;
+import uk.co.bbr.services.contests.ContestGroupService;
 import uk.co.bbr.services.contests.ContestResultService;
+import uk.co.bbr.services.contests.ContestService;
+import uk.co.bbr.services.contests.ContestTagService;
+import uk.co.bbr.services.contests.dao.ContestDao;
+import uk.co.bbr.services.contests.dao.ContestGroupDao;
 import uk.co.bbr.services.contests.dao.ContestResultDao;
+import uk.co.bbr.services.contests.dao.ContestTagDao;
 import uk.co.bbr.services.framework.NotFoundException;
 
 import java.util.List;
@@ -21,20 +27,23 @@ import java.util.Optional;
 public class BandController {
 
     private final BandService bandService;
+    private final ContestService contestService;
+    private final ContestTagService contestTagService;
+    private final ContestGroupService contestGroupService;
     private final ContestResultService contestResultService;
 
-    @GetMapping("/bands/{slug:[\\-a-z\\d]{2,}}")
-    public String bandDetail(Model model, @PathVariable("slug") String slug) {
-        Optional<BandDao> band = this.bandService.fetchBySlug(slug);
+    @GetMapping("/bands/{bandSlug:[\\-a-z\\d]{2,}}")
+    public String bandDetail(Model model, @PathVariable("bandSlug") String bandSlug) {
+        Optional<BandDao> band = this.bandService.fetchBySlug(bandSlug);
         if (band.isEmpty()) {
-            throw new NotFoundException("Band with slug " + slug + " not found");
+            throw new NotFoundException("Band with slug " + bandSlug + " not found");
         }
 
         List<BandPreviousNameDao> previousNames = this.bandService.findVisiblePreviousNames(band.get());
         BandDetailsDto bandResults = this.contestResultService.findResultsForBand(band.get());
 
-        if (bandResults.getBandResults().size() == 0 && bandResults.getBandWhitResults().size() > 0) {
-            return "redirect:/bands/" + slug + "/whits";
+        if (bandResults.getBandResults().isEmpty() && bandResults.getBandWhitResults().size() > 0) {
+            return "redirect:/bands/" + bandSlug + "/whits";
         }
 
         model.addAttribute("Band", band.get());
@@ -45,18 +54,18 @@ public class BandController {
         return "bands/band";
     }
 
-    @GetMapping("/bands/{slug:[\\-a-z\\d]{2,}}/whits")
-    public String bandWhitFridayDetail(Model model, @PathVariable("slug") String slug) {
-        Optional<BandDao> band = this.bandService.fetchBySlug(slug);
+    @GetMapping("/bands/{bandSlug:[\\-a-z\\d]{2,}}/whits")
+    public String bandWhitFridayDetail(Model model, @PathVariable("bandSlug") String bandSlug) {
+        Optional<BandDao> band = this.bandService.fetchBySlug(bandSlug);
         if (band.isEmpty()) {
-            throw new NotFoundException("Band with slug " + slug + " not found");
+            throw new NotFoundException("Band with slug " + bandSlug + " not found");
         }
 
         List<BandPreviousNameDao> previousNames = this.bandService.findVisiblePreviousNames(band.get());
         BandDetailsDto bandResults = this.contestResultService.findResultsForBand(band.get());
 
-        if (bandResults.getBandWhitResults().size() == 0) {
-            return "redirect:/bands/" + slug;
+        if (bandResults.getBandWhitResults().isEmpty()) {
+            return "redirect:/bands/" + bandSlug;
         }
 
         model.addAttribute("Band", band.get());
@@ -67,4 +76,61 @@ public class BandController {
         return "bands/band-whits";
     }
 
+    @GetMapping("/bands/{bandSlug:[\\-a-z\\d]{2,}}/{contestSlug:[\\-a-z\\d]{2,}}")
+    public String bandFilterToContest(Model model, @PathVariable("bandSlug") String bandSlug, @PathVariable("contestSlug") String contestSlug) {
+        Optional<BandDao> band = this.bandService.fetchBySlug(bandSlug);
+        if (band.isEmpty()) {
+            throw new NotFoundException("Band with slug " + bandSlug + " not found");
+        }
+        Optional<ContestDao> contest = this.contestService.fetchBySlug(contestSlug);
+
+        List<BandPreviousNameDao> previousNames = this.bandService.findVisiblePreviousNames(band.get());
+        BandDetailsDto bandResults = this.contestResultService.findResultsForBand(band.get(), contest.get());
+
+        model.addAttribute("Band", band.get());
+        model.addAttribute("PreviousNames", previousNames);
+        model.addAttribute("BandResults", bandResults.getBandResults());
+        model.addAttribute("ResultsCount", bandResults.getBandResults().size());
+        model.addAttribute("WhitCount", bandResults.getBandWhitResults().size());
+        return "bands/band";
+    }
+
+    @GetMapping("/bands/{bandSlug:[\\-a-z\\d]{2,}}/{groupSlug:[\\-A-Z\\d]{2,}}")
+    public String bandFilterToContestGroup(Model model, @PathVariable("bandSlug") String bandSlug, @PathVariable("groupSlug") String groupSlug) {
+        Optional<BandDao> band = this.bandService.fetchBySlug(bandSlug);
+        if (band.isEmpty()) {
+            throw new NotFoundException("Band with slug " + bandSlug + " not found");
+        }
+        Optional<ContestGroupDao> group = this.contestGroupService.fetchBySlug(groupSlug);
+
+        List<BandPreviousNameDao> previousNames = this.bandService.findVisiblePreviousNames(band.get());
+        BandDetailsDto bandResults = this.contestResultService.findResultsForBand(band.get(), group.get());
+
+        model.addAttribute("Band", band.get());
+        model.addAttribute("PreviousNames", previousNames);
+        model.addAttribute("BandResults", bandResults.getBandResults());
+        model.addAttribute("ResultsCount", bandResults.getBandResults().size());
+        model.addAttribute("WhitCount", bandResults.getBandWhitResults().size());
+        return "bands/band";
+    }
+
+    @GetMapping("/bands/{bandSlug:[\\-a-z\\d]{2,}}/tag/{tagSlug:[\\-a-z\\d]{2,}}")
+    public String bandFilterToTag(Model model, @PathVariable("bandSlug") String bandSlug, @PathVariable("tagSlug") String tagSlug) {
+        Optional<BandDao> band = this.bandService.fetchBySlug(bandSlug);
+        if (band.isEmpty()) {
+            throw new NotFoundException("Band with slug " + bandSlug + " not found");
+        }
+        Optional<ContestTagDao> tag = this.contestTagService.fetchBySlug(tagSlug);
+
+        List<BandPreviousNameDao> previousNames = this.bandService.findVisiblePreviousNames(band.get());
+        BandDetailsDto bandResults = this.contestResultService.findResultsForBand(band.get(), tag.get());
+
+        model.addAttribute("Band", band.get());
+        model.addAttribute("PreviousNames", previousNames);
+        model.addAttribute("BandResults", bandResults.getBandResults());
+        model.addAttribute("ResultsCount", bandResults.getBandResults().size());
+        model.addAttribute("WhitCount", bandResults.getBandWhitResults().size());
+        return "bands/band";
+    }
 }
+

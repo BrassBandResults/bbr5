@@ -16,4 +16,6 @@ public interface ContestTagService {
     List<ContestTagDao> listTagsStartingWith(String prefix);
 
     ContestTagDetailsDto fetchDetailsBySlug(String slug);
+
+    Optional<ContestTagDao> fetchBySlug(String tagSlug);
 }
