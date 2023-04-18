@@ -22,3 +22,10 @@ tbody tr.result-2 td {
 tbody tr.result-3 td {
   background-color: #b1a399 !important;
 }
+
+.toggle-filter-links {
+  display: none;
+  margin-bottom: 1px;
+  margin-top: 6px;
+  text-align: left;
+}
