@@ -22,7 +22,7 @@ public interface BandService {
 
     BandListDto listBandsStartingWith(String prefix);
 
-    void createRehearsalNight(BandDao band, RehearsalDay day);
+    void createRehearsalDay(BandDao band, RehearsalDay day);
     void migrateRehearsalNight(BandDao band, RehearsalDay day);
 
     List<RehearsalDay> findRehearsalNights(BandDao band);

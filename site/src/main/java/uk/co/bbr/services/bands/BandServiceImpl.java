@@ -167,7 +167,7 @@ public class BandServiceImpl implements BandService, SlugTools {
 
     @Override
     @IsBbrMember
-    public void createRehearsalNight(BandDao band, RehearsalDay day) {
+    public void createRehearsalDay(BandDao band, RehearsalDay day) {
         this.createRehearsalNight(band, day, false);
     }
 
@@ -203,7 +203,9 @@ public class BandServiceImpl implements BandService, SlugTools {
 
         List<RehearsalDay> returnDays = new ArrayList<>();
         for (BandRehearsalDayDao bandDay : rehearsalDays) {
-            returnDays.add(bandDay.getDay());
+            if (bandDay.getBand().getId().equals(band.getId())) {
+                returnDays.add(bandDay.getDay());
+            }
         }
         return returnDays;
     }
@@ -232,6 +234,11 @@ public class BandServiceImpl implements BandService, SlugTools {
 
     private BandPreviousNameDao createPreviousName(BandDao band, BandPreviousNameDao previousName, boolean migrating) {
         previousName.setBand(band);
+
+        if (previousName.getStartDate() != null && previousName.getEndDate() != null && previousName.getStartDate().isAfter(previousName.getEndDate())) {
+            throw new ValidationException("Start date can't be after end date");
+        }
+
         if (!migrating) {
             previousName.setCreated(LocalDateTime.now());
             previousName.setCreatedBy(this.securityService.getCurrentUsername());
@@ -249,6 +256,10 @@ public class BandServiceImpl implements BandService, SlugTools {
     @Override
     @IsBbrMember
     public BandRelationshipDao saveRelationship(BandRelationshipDao relationship) {
+        if (relationship.getStartDate() != null && relationship.getEndDate() != null && relationship.getStartDate().isAfter(relationship.getEndDate())) {
+            throw new ValidationException("Start date can't be after end date");
+        }
+
         return this.saveRelationship(relationship, false);
     }
 

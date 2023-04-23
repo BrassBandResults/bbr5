@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @ActiveProfiles("test")
 @SpringBootTest(properties = { "spring.config.name=rehearsal-tests-h2", "spring.datasource.url=jdbc:h2:mem:rehearsal-tests-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE", "spring.jpa.database-platform=org.hibernate.dialect.SQLServerDialect"})
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class CreateRehearsalNightServiceTests implements LoginMixin {
+class CreateRehearsalDayServiceTests implements LoginMixin {
     @Autowired private BandService bandService;
     @Autowired private RegionService regionService;
     @Autowired private SecurityService securityService;
@@ -47,8 +47,8 @@ class CreateRehearsalNightServiceTests implements LoginMixin {
         BandDao band = this.bandService.fetchBySlug("black-dyke-band").get();
 
         // act
-        this.bandService.createRehearsalNight(band, RehearsalDay.FRIDAY);
-        this.bandService.createRehearsalNight(band, RehearsalDay.MONDAY);
+        this.bandService.createRehearsalDay(band, RehearsalDay.FRIDAY);
+        this.bandService.createRehearsalDay(band, RehearsalDay.MONDAY);
 
         // assert
         List<RehearsalDay> bandRehearsalDays = this.bandService.findRehearsalNights(band);

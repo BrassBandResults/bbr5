@@ -1,6 +1,7 @@
 package uk.co.bbr.services.bands;
 
 import org.junit.jupiter.api.Test;
+import org.locationtech.jts.geom.GeometryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -18,6 +19,7 @@ import uk.co.bbr.web.LoginMixin;
 import uk.co.bbr.web.security.support.TestUser;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -156,6 +158,92 @@ class CreateBandServiceTests implements LoginMixin {
 
         // assert
         assertEquals("Can't create band with specific id", ex.getMessage());
+    }
+
+    @Test
+    void testSetNameWorksCorrectly() {
+        // arrange
+        BandDao band = new BandDao();
+
+        // act
+        band.setName("  This is a  name   ");
+
+        // assert
+        assertEquals("This is a name", band.getName());
+    }
+
+    @Test
+    void testSetNameToNullWorksCorrectly() {
+        // arrange
+        BandDao band = new BandDao();
+
+        // act
+        band.setName(null);
+
+        // assert
+        assertNull(band.getName());
+    }
+
+    @Test
+    void testSetNameToEmptyStringWorksCorrectly() {
+        // arrange
+        BandDao band = new BandDao();
+
+        // act
+        band.setName("  ");
+
+        // assert
+        assertEquals("", band.getName());
+    }
+
+    @Test
+    void testGetSectionTypeWorksSuccessfully() {
+        // arrange
+        Optional<SectionDao> firstSection = this.sectionService.fetchBySlug("first");
+
+        BandDao band = new BandDao();
+        band.setSection(firstSection.get());
+        band.setStatus(BandStatus.COMPETING);
+
+        // assert
+        assertEquals("section.first", band.getSectionType());
+    }
+
+    @Test
+    void testGetSectionTypeWhereNoSectionWorksSuccessfully() {
+        // arrange
+        BandDao band = new BandDao();
+        band.setSection(null);
+        band.setStatus(BandStatus.COMPETING);
+
+        // assert
+        assertEquals("status.competing", band.getSectionType());
+    }
+
+    @Test
+    void testGetSectionTypeWhereYouthBandCompetingWorksSuccessfully() {
+        // arrange
+        Optional<SectionDao> youthSection = this.sectionService.fetchBySlug("youth");
+
+        BandDao band = new BandDao();
+        band.setSection(youthSection.get());
+        band.setStatus(BandStatus.COMPETING);
+
+        // assert
+        assertEquals("status.youth", band.getSectionType());
+    }
+
+    @Test
+    void testGetSectionTypeWhereYouthBandYouthSectionWorksSuccessfully() {
+        // arrange
+        Optional<SectionDao> youthSection = this.sectionService.fetchBySlug("youth");
+
+        BandDao band = new BandDao();
+        band.setSection(youthSection.get());
+        band.setStatus(BandStatus.YOUTH);
+
+        // assert
+        assertEquals("status.youth", band.getSectionType());
     }
 }
 

@@ -40,9 +40,11 @@ public class BandRelationshipDao extends AbstractDao {
     @Column(name="right_band_name")
     private String rightBandName;
 
+    @Setter
     @Column(name="start_date")
     private LocalDate startDate;
 
+    @Setter
     @Column(name="end_date")
     private LocalDate endDate;
 

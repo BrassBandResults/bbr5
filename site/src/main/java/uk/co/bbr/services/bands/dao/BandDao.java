@@ -11,7 +11,6 @@ import uk.co.bbr.services.framework.AbstractDao;
 import uk.co.bbr.services.framework.mixins.NameTools;
 import uk.co.bbr.services.regions.dao.RegionDao;
 import uk.co.bbr.services.sections.dao.SectionDao;
-import uk.co.bbr.services.security.dao.BbrUserDao;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

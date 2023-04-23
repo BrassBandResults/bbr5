@@ -9,6 +9,7 @@ import org.springframework.test.context.ActiveProfiles;
 import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.bands.dao.BandRelationshipDao;
 import uk.co.bbr.services.bands.types.BandStatus;
+import uk.co.bbr.services.framework.ValidationException;
 import uk.co.bbr.services.regions.RegionService;
 import uk.co.bbr.services.regions.dao.RegionDao;
 import uk.co.bbr.services.sections.SectionService;
@@ -26,11 +27,16 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest(properties = { "spring.config.name=band-relationship-tests-h2", "spring.datasource.url=jdbc:h2:mem:band-relationship-tests-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE", "spring.jpa.database-platform=org.hibernate.dialect.SQLServerDialect"})
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class BandRelationshipTests implements LoginMixin {
-    @Autowired private BandService bandService;
-    @Autowired private SectionService sectionService;
-    @Autowired private RegionService regionService;
-    @Autowired private SecurityService securityService;
-    @Autowired private JwtService jwtService;
+    @Autowired
+    private BandService bandService;
+    @Autowired
+    private SectionService sectionService;
+    @Autowired
+    private RegionService regionService;
+    @Autowired
+    private SecurityService securityService;
+    @Autowired
+    private JwtService jwtService;
 
     @BeforeAll
     void setupBands() throws AuthenticationFailedException {
@@ -88,6 +94,60 @@ class BandRelationshipTests implements LoginMixin {
 
         logoutTestUser();
     }
-}
 
+    @Test
+    void testCreateBandRelationshipWithDatesWorksSuccessfully() throws AuthenticationFailedException {
+        // arrange
+        loginTestUser(this.securityService, this.jwtService, TestUser.TEST_MEMBER);
+
+        BandDao rothwellTemperance = this.bandService.fetchBySlug("rothwell-temperance").get();
+        BandDao wallaceArnold = this.bandService.fetchBySlug("wallace-arnold-rothwell-band").get();
+
+        BandRelationshipDao newRelationship = new BandRelationshipDao();
+        newRelationship.setLeftBand(wallaceArnold);
+        newRelationship.setRightBand(rothwellTemperance);
+        newRelationship.setRelationship(this.bandService.fetchIsParentOfRelationship());
+        newRelationship.setStartDate(LocalDate.of(2020, 1, 1));
+        newRelationship.setEndDate(LocalDate.of(2022, 12, 31));
+
+        // act
+        BandRelationshipDao relationship = this.bandService.saveRelationship(newRelationship);
+
+        // assert
+        assertEquals("Rothwell Temperance", relationship.getRightBandName());
+        assertEquals("Wallace Arnold (Rothwell) Band", relationship.getLeftBandName());
+        assertEquals("Rothwell Temperance", relationship.getRightBand().getName());
+        assertEquals("Wallace Arnold (Rothwell) Band", relationship.getLeftBand().getName());
+        assertEquals("Is Parent Of", relationship.getRelationship().getName());
+        assertEquals("Has Parent Of", relationship.getRelationship().getReverseName());
+        assertEquals(LocalDate.of(2020, 1, 1), newRelationship.getStartDate());
+        assertEquals(LocalDate.of(2022, 12, 31), newRelationship.getEndDate());
+
+        logoutTestUser();
+    }
+
+    @Test
+    void testCreateBandRelationshipWithStartDateAfterEndDateFails() throws AuthenticationFailedException {
+        // arrange
+        loginTestUser(this.securityService, this.jwtService, TestUser.TEST_MEMBER);
+
+        BandDao rothwellTemperance = this.bandService.fetchBySlug("rothwell-temperance").get();
+        BandDao wallaceArnold = this.bandService.fetchBySlug("wallace-arnold-rothwell-band").get();
+
+        BandRelationshipDao newRelationship = new BandRelationshipDao();
+        newRelationship.setLeftBand(wallaceArnold);
+        newRelationship.setRightBand(rothwellTemperance);
+        newRelationship.setRelationship(this.bandService.fetchIsParentOfRelationship());
+        newRelationship.setStartDate(LocalDate.of(2020, 1, 2));
+        newRelationship.setEndDate(LocalDate.of(2020, 1, 1));
+
+        // act
+        ValidationException ex = assertThrows(ValidationException.class, () -> this.bandService.saveRelationship(newRelationship));
+
+        // assert
+        assertEquals("Start date can't be after end date", ex.getMessage());
+
+        logoutTestUser();
+    }
+}
 

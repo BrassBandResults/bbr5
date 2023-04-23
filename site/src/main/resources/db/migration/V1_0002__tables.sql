@@ -229,6 +229,7 @@ CREATE TABLE person (
 );
 
 CREATE UNIQUE INDEX idx_person_slug ON person(slug);
+CREATE INDEX idx_person_surname ON person(surname);
 
 CREATE TABLE person_alias (
     id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
@@ -559,6 +560,7 @@ CREATE TABLE contest_result (
     band_name VARCHAR(100) NOT NULL,
     result_position_type VARCHAR(1) NOT NULL,
     result_position INT,
+    result_award VARCHAR(1),
     draw INT,
     draw_second INT,
     draw_third INT,
