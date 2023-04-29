@@ -85,7 +85,7 @@ public class BandDao extends AbstractDao implements NameTools {
             this.name = null;
             return;
         }
-        this.name = simplifyName(sourceName);
+        this.name = simplifyBandName(sourceName);
     }
 
     public void setOldId(String value) {

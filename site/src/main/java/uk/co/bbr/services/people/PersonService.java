@@ -4,6 +4,7 @@ import uk.co.bbr.services.people.dao.PersonAliasDao;
 import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.people.dto.PeopleListDto;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,4 +33,6 @@ public interface PersonService {
     int fetchComposerCount(PersonDao person);
 
     int fetchArrangerCount(PersonDao person);
+
+    PersonDao findMatchingPersonByName(String personName, LocalDate dateContext);
 }

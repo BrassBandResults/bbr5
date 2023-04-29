@@ -24,7 +24,7 @@ public class ContestTagDao extends AbstractDao implements NameTools {
     private String slug;
 
     public void setName(String name){
-        String nameToSet = simplifyName(name);
+        String nameToSet = simplifyContestName(name);
         this.name = nameToSet;
     }
 

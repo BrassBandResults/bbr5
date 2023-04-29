@@ -33,7 +33,7 @@ public class SectionDao extends AbstractDao implements NameTools {
     private String translationKey;
 
     public void setName(String name){
-        String nameToSet = simplifyName(name);
+        String nameToSet = simplifySectionName(name);
         this.name = nameToSet;
     }
 

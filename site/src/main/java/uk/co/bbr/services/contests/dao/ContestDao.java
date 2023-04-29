@@ -89,7 +89,7 @@ public class ContestDao extends AbstractDao implements NameTools {
     private int eventsCount;
 
     public void setName(String name){
-        String nameToSet = simplifyName(name);
+        String nameToSet = simplifyContestName(name);
         this.name = nameToSet;
     }
 

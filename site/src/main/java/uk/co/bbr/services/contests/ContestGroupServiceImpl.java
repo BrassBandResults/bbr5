@@ -128,7 +128,7 @@ public class ContestGroupServiceImpl implements ContestGroupService, SlugTools {
 
     @Override
     public Optional<ContestGroupAliasDao> aliasExists(ContestGroupDao group, String name) {
-        String searchName = group.simplifyName(name);
+        String searchName = group.simplifyContestName(name);
         return this.contestGroupAliasRepository.fetchByName(group.getId(), searchName);
     }
 

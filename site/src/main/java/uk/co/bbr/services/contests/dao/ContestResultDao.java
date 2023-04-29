@@ -158,7 +158,7 @@ public class ContestResultDao extends AbstractDao implements NameTools {
             this.bandName = null;
             return;
         }
-        this.bandName = simplifyName(name);
+        this.bandName = simplifyBandName(name);
     }
 
     public void setConductor(PersonDao person) {
@@ -175,7 +175,7 @@ public class ContestResultDao extends AbstractDao implements NameTools {
     }
 
     public void setOriginalConductorName(String name) {
-        this.originalConductorName = simplifyName(name);
+        this.originalConductorName = simplifyPersonFullName(name);
     }
 
     public void setOldId(String id) {

@@ -39,6 +39,6 @@ public class VenueAliasDao extends AbstractDao implements NameTools {
     private LocalDate endDate;
 
     public void setName(String value){
-        this.name = simplifyName(value);
+        this.name = simplifyVenueName(value);
     }
 }

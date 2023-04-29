@@ -56,7 +56,7 @@ public class VenueDao extends AbstractDao implements NameTools {
     private int eventCount;
 
     public void setName(String name){
-        String nameToSet = simplifyName(name);
+        String nameToSet = simplifyVenueName(name);
         this.name = nameToSet;
     }
 

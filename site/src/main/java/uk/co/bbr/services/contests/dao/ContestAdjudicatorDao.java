@@ -36,6 +36,6 @@ public class ContestAdjudicatorDao extends AbstractDao implements NameTools {
     private PersonDao adjudicator;
 
     public void setName(String value){
-        this.name = simplifyName(value);
+        this.name = simplifyPersonFullName(value);
     }
 }

@@ -20,6 +20,7 @@ import uk.co.bbr.web.security.annotations.IsBbrMember;
 
 import javax.persistence.EntityManager;
 import java.math.BigInteger;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -169,7 +170,7 @@ public class PersonServiceImpl implements PersonService, SlugTools {
 
     @Override
     public Optional<PersonAliasDao> aliasExists(PersonDao person, String aliasName) {
-        String name = person.simplifyName(aliasName);
+        String name = person.simplifyPersonFullName(aliasName);
         return this.personAliasRepository.fetchByNameForPerson(person.getId(), name);
     }
 
@@ -186,6 +187,11 @@ public class PersonServiceImpl implements PersonService, SlugTools {
     @Override
     public int fetchArrangerCount(PersonDao person) {
         return this.pieceRepository.fetchArrangerCountForPerson(person.getId());
+    }
+
+    @Override
+    public PersonDao findMatchingPersonByName(String personName, LocalDate dateContext) {
+        return null;
     }
 
 

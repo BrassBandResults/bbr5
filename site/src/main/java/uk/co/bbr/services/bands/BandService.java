@@ -8,6 +8,7 @@ import uk.co.bbr.services.bands.dto.BandListDto;
 import uk.co.bbr.services.bands.types.RehearsalDay;
 import uk.co.bbr.services.regions.dao.RegionDao;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,4 +45,6 @@ public interface BandService {
     Optional<BandPreviousNameDao> aliasExists(BandDao band, String aliasName);
 
     List<BandPreviousNameDao> findVisiblePreviousNames(BandDao band);
+
+    BandDao findMatchingBandByName(String bandName, LocalDate dateContext);
 }

@@ -25,6 +25,7 @@ import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.web.security.annotations.IsBbrAdmin;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -111,13 +112,18 @@ public class BandServiceImpl implements BandService, SlugTools {
 
     @Override
     public Optional<BandPreviousNameDao> aliasExists(BandDao band, String aliasName) {
-        String name = band.simplifyName(aliasName);
+        String name = band.simplifyBandName(aliasName);
         return this.bandPreviousNameRepository.fetchByNameForBand(band.getId(), name);
     }
 
     @Override
     public List<BandPreviousNameDao> findVisiblePreviousNames(BandDao band) {
         return this.bandPreviousNameRepository.findVisibleForBandOrderByName(band.getId());
+    }
+
+    @Override
+    public BandDao findMatchingBandByName(String bandName, LocalDate dateContext) {
+        return null;
     }
 
     private void validateMandatory(BandDao band){

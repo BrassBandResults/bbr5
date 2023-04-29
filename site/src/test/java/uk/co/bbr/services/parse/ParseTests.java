@@ -21,7 +21,11 @@ import uk.co.bbr.services.security.ex.AuthenticationFailedException;
 import uk.co.bbr.web.LoginMixin;
 import uk.co.bbr.web.security.support.TestUser;
 
+import java.time.LocalDate;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ActiveProfiles("test")
@@ -55,6 +59,8 @@ class ParseTests implements LoginMixin {
         PersonDao davidChilds = this.personService.create("Childs", "David");
         PersonDao davidRoberts = this.personService.create("Roberts", "David");
         PersonDao johnRoberts = this.personService.create("Roberts", "John");
+        PersonDao TheoQWhigley = this.personService.create("Whigley", "Theo Q.");
+        PersonDao TheoQPWhigley = this.personService.create("Whigley", "Theo Q. P.");
 
         PersonAliasDao bobChilds = new PersonAliasDao();
         bobChilds.setOldName("Bob Childs");
@@ -69,9 +75,177 @@ class ParseTests implements LoginMixin {
         String testEntry = "Gibberish";
 
         // act
-        ParseResultDto parseResult = this.parseService.parseLine(testEntry);
+        ParseResultDto parseResult = this.parseService.parseLine(testEntry, LocalDate.now());
 
         // assert
-        assertFalse(parseResult.isSuccess());
+        assertFalse(parseResult.isParseSuccess());
+
+        assertNull(parseResult.getRawPosition());
+        assertNull(parseResult.getRawBandName());
+        assertNull(parseResult.getRawConductorName());
+        assertNull(parseResult.getRawDraw());
+        assertNull(parseResult.getRawPoints());
    }
+
+    @Test
+    void testParseContestResultLineWithOldStyleCorrectInputWorks() {
+        // arrange
+        String testEntry = "1. Black Dyke Band, Robert Childs, 5, 123";
+
+        // act
+        ParseResultDto parseResult = this.parseService.parseLine(testEntry, LocalDate.now());
+
+        // assert
+        assertTrue(parseResult.isParseSuccess());
+
+        assertEquals("1", parseResult.getRawPosition());
+        assertEquals("Black Dyke Band", parseResult.getRawBandName());
+        assertEquals("Robert Childs", parseResult.getRawConductorName());
+        assertEquals("5", parseResult.getRawDraw());
+        assertEquals("123", parseResult.getRawPoints());
+    }
+
+    @Test
+    void testParseContestResultLinePointsAreOptionalWorks() {
+        // arrange
+        String testEntry = "5. Rothwell Temperance, David Roberts, 26";
+
+        // act
+        ParseResultDto parseResult = this.parseService.parseLine(testEntry, LocalDate.now());
+
+        // assert
+        assertTrue(parseResult.isParseSuccess());
+
+        assertEquals("5", parseResult.getRawPosition());
+        assertEquals("Rothwell Temperance", parseResult.getRawBandName());
+        assertEquals("David Roberts", parseResult.getRawConductorName());
+        assertEquals("26", parseResult.getRawDraw());
+        assertEquals("", parseResult.getRawPoints());
+    }
+
+    @Test
+    void testParseContestResultLineZeroPositionWorks() {
+        // arrange
+        String testEntry = "0. Rothwell Temperance, David Roberts, 111";
+
+        // act
+        ParseResultDto parseResult = this.parseService.parseLine(testEntry, LocalDate.now());
+
+        // assert
+        assertTrue(parseResult.isParseSuccess());
+
+        assertEquals("0", parseResult.getRawPosition());
+        assertEquals("Rothwell Temperance", parseResult.getRawBandName());
+        assertEquals("David Roberts", parseResult.getRawConductorName());
+        assertEquals("111", parseResult.getRawDraw());
+        assertEquals("", parseResult.getRawPoints());
+    }
+
+    @Test
+    void testParseContestResultLineMultipleSpacesAreRemovedSuccessfully() {
+        // arrange
+        String testEntry = "  1.     Black     Dyke     Band    ,     Robert     Childs    ,     5    ,    321  ";
+
+        // act
+        ParseResultDto parseResult = this.parseService.parseLine(testEntry, LocalDate.now());
+
+        // assert
+        assertTrue(parseResult.isParseSuccess());
+
+        assertEquals("1", parseResult.getRawPosition());
+        assertEquals("Black Dyke Band", parseResult.getRawBandName());
+        assertEquals("Robert Childs", parseResult.getRawConductorName());
+        assertEquals("5", parseResult.getRawDraw());
+        assertEquals("321", parseResult.getRawPoints());
+    }
+
+    @Test
+    void testParseContestResultLinePersonWithInitialNormalisedSuccessfully() {
+        // arrange
+        String testEntry = "  1.     Black     Dyke     Band    ,     Theo    Q   Whigley    ,     5    ,    321  ";
+
+        // act
+        ParseResultDto parseResult = this.parseService.parseLine(testEntry, LocalDate.now());
+
+        // assert
+        assertTrue(parseResult.isParseSuccess());
+
+        assertEquals("1", parseResult.getRawPosition());
+        assertEquals("Black Dyke Band", parseResult.getRawBandName());
+        assertEquals("Theo Q. Whigley", parseResult.getRawConductorName());
+        assertEquals("5", parseResult.getRawDraw());
+        assertEquals("321", parseResult.getRawPoints());
+    }
+
+    @Test
+    void testParseContestResultLinePersonWithDoubleInitialNormalisedSuccessfully() {
+        // arrange
+        String testEntry = "  1.     Black     Dyke     Band    ,     Theo    Q    P  Whigley    ,     5    ,    321  ";
+
+        // act
+        ParseResultDto parseResult = this.parseService.parseLine(testEntry, LocalDate.now());
+
+        // assert
+        assertTrue(parseResult.isParseSuccess());
+
+        assertEquals("1", parseResult.getRawPosition());
+        assertEquals("Black Dyke Band", parseResult.getRawBandName());
+        assertEquals("Theo Q. P. Whigley", parseResult.getRawConductorName());
+        assertEquals("5", parseResult.getRawDraw());
+        assertEquals("321", parseResult.getRawPoints());
+    }
+
+    @Test
+    void testParseContestResultWithdrawalResultWorks() {
+        // arrange
+        String testEntry = "W. Wallace Arnold (Rothwell) Band, John Roberts, 13";
+
+        // act
+        ParseResultDto parseResult = this.parseService.parseLine(testEntry, LocalDate.now());
+
+        // assert
+        assertTrue(parseResult.isParseSuccess());
+
+        assertEquals("W", parseResult.getRawPosition());
+        assertEquals("Wallace Arnold (Rothwell) Band", parseResult.getRawBandName());
+        assertEquals("John Roberts", parseResult.getRawConductorName());
+        assertEquals("13", parseResult.getRawDraw());
+        assertEquals("", parseResult.getRawPoints());
+    }
+
+    @Test
+    void testParseContestResultDisqualifiedResultWorks() {
+        // arrange
+        String testEntry = "D. Wallace Arnold (Rothwell) Band, John Roberts, 11";
+
+        // act
+        ParseResultDto parseResult = this.parseService.parseLine(testEntry, LocalDate.now());
+
+        // assert
+        assertTrue(parseResult.isParseSuccess());
+
+        assertEquals("D", parseResult.getRawPosition());
+        assertEquals("Wallace Arnold (Rothwell) Band", parseResult.getRawBandName());
+        assertEquals("John Roberts", parseResult.getRawConductorName());
+        assertEquals("11", parseResult.getRawDraw());
+        assertEquals("", parseResult.getRawPoints());
+    }
+
+    @Test
+    void testParseContestResultInvalidResultLetterFails() {
+        // arrange
+        String testEntry = "Q. Wallace Arnold (Rothwell) Band, John Roberts, 11";
+
+        // act
+        ParseResultDto parseResult = this.parseService.parseLine(testEntry, LocalDate.now());
+
+        // assert
+        assertFalse(parseResult.isParseSuccess());
+
+        assertNull(parseResult.getRawPosition());
+        assertNull(parseResult.getRawBandName());
+        assertNull(parseResult.getRawConductorName());
+        assertNull(parseResult.getRawDraw());
+        assertNull(parseResult.getRawPoints());
+    }
 }

@@ -88,12 +88,12 @@ public class PersonDao extends AbstractDao implements NameTools {
     }
 
     public void setFirstNames(String firstNames) {
-        String nameToSet = simplifyName(firstNames);
+        String nameToSet = simplifyFirstName(firstNames);
         this.firstNames = nameToSet;
     }
 
     public void setSurname(String surname) {
-        String nameToSet = simplifyName(surname);
+        String nameToSet = simplifySurname(surname);
         this.surname = nameToSet;
     }
 

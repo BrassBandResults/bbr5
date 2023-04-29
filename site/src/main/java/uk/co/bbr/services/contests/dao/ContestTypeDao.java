@@ -67,7 +67,7 @@ public class ContestTypeDao extends AbstractDao implements NameTools {
     private int statisticsLimit;
 
     public void setName(String name){
-        String nameToSet = simplifyName(name);
+        String nameToSet = simplifyContestName(name);
         this.name = nameToSet;
     }
 }

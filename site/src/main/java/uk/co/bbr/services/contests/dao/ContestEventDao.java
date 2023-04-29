@@ -78,7 +78,7 @@ public class ContestEventDao extends AbstractDao implements NameTools {
     private List<ContestResultDao> winners = new ArrayList<>();
 
     public void setName(String name){
-        this.name = simplifyName(name);
+        this.name = simplifyContestName(name);
     }
 
     public void setOldId(String value) {

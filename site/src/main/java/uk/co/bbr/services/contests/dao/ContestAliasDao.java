@@ -25,6 +25,6 @@ public class ContestAliasDao extends AbstractDao implements NameTools {
     private ContestDao contest;
 
     public void setName(String value){
-        this.name = simplifyName(value);
+        this.name = simplifyContestName(value);
     }
 }
