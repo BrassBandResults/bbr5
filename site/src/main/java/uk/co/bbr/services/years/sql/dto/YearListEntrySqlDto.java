@@ -1,11 +1,12 @@
 package uk.co.bbr.services.years.sql.dto;
 
 import lombok.Getter;
+import uk.co.bbr.services.framework.sql.AbstractSqlDto;
 
 import java.math.BigInteger;
 
 @Getter
-public class YearListEntrySqlDto {
+public class YearListEntrySqlDto extends AbstractSqlDto {
     private final Integer year;
     private final Integer bandCount;
     private final Integer eventCount;

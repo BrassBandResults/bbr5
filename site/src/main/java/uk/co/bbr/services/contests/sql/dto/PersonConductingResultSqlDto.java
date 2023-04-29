@@ -1,13 +1,14 @@
 package uk.co.bbr.services.contests.sql.dto;
 
 import lombok.Getter;
+import uk.co.bbr.services.framework.sql.AbstractSqlDto;
 
 import java.math.BigInteger;
 import java.sql.Date;
 import java.time.LocalDate;
 
 @Getter
-public class PersonConductingResultSqlDto {
+public class PersonConductingResultSqlDto extends AbstractSqlDto {
     private final LocalDate eventDate;
     private final String eventDateResolution;
     private final String contestSlug;
