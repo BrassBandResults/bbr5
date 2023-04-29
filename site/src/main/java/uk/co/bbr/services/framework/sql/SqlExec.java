@@ -7,22 +7,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SqlExec {
-    public static <T extends AbstractSqlDto> List<T> execute(EntityManager entityManager, String sql, Long id, Class<T> clazz) {
+    public static <T extends AbstractSqlDto> List<T> execute(EntityManager entityManager, String sql, Object param1, Class<T> clazz) {
         List<T> returnData = new ArrayList<>();
         try {
             Query query = entityManager.createNativeQuery(sql);
-            query.setParameter(1, id);
+            if (param1 != null) {
+                query.setParameter(1, param1);
+            }
             List<Object[]> queryResults = query.getResultList();
 
             for (Object[] eachRowData : queryResults) {
-                Constructor<T> ctor = clazz.getConstructor(List.class);
-                T eachReturnObject = ctor.newInstance(queryResults);
+                Constructor<T> ctor = clazz.getConstructor(Object[].class);
+                Object[] constructorParams = new Object[1];
+                constructorParams[0] = eachRowData;
+                T eachReturnObject = ctor.newInstance(constructorParams);
                 returnData.add(eachReturnObject);
             }
 
             return returnData;
         } catch (Exception e) {
-            throw new RuntimeException("SQL Failure, " + e.getMessage());
+            throw new RuntimeException("SQL Failure, " + e.getMessage(), e);
         }
+    }
+
+    public static <T extends AbstractSqlDto> List<T> execute(EntityManager entityManager, String sql, Class<T> clazz) {
+        return execute(entityManager, sql, null, clazz);
     }
 }

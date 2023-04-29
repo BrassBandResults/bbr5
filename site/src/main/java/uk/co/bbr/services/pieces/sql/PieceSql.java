@@ -1,12 +1,11 @@
 package uk.co.bbr.services.pieces.sql;
 
+import uk.co.bbr.services.framework.sql.SqlExec;
 import uk.co.bbr.services.pieces.sql.dto.OwnChoiceUsagePieceSqlDto;
 import uk.co.bbr.services.pieces.sql.dto.PieceUsageCountSqlDto;
 import uk.co.bbr.services.pieces.sql.dto.SetTestUsagePieceSqlDto;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
-import java.util.ArrayList;
 import java.util.List;
 
 public class PieceSql {
@@ -23,21 +22,7 @@ public class PieceSql {
             ORDER BY e.date_of_event, c.name DESC""";
 
     public static List<OwnChoiceUsagePieceSqlDto> selectOwnChoicePieceUsage(EntityManager entityManager, Long pieceId) {
-        List<OwnChoiceUsagePieceSqlDto> returnData = new ArrayList<>();
-        try {
-            Query query = entityManager.createNativeQuery(PIECE_OWN_CHOICE_SQL);
-            query.setParameter(1, pieceId);
-            List<Object[]> queryResults = query.getResultList();
-
-            for (Object[] eachRowData : queryResults) {
-                OwnChoiceUsagePieceSqlDto eachReturnObject = new OwnChoiceUsagePieceSqlDto(eachRowData);
-                returnData.add(eachReturnObject);
-            }
-
-            return returnData;
-        } catch (Exception e) {
-            throw new RuntimeException("SQL Failure, " + e.getMessage());
-        }
+        return SqlExec.execute(entityManager, PIECE_OWN_CHOICE_SQL, pieceId, OwnChoiceUsagePieceSqlDto.class);
     }
 
     private static final String PIECE_SET_TEST_SQL = """
@@ -52,21 +37,7 @@ public class PieceSql {
             ORDER BY e.date_of_event, c.name DESC""";
 
     public static List<SetTestUsagePieceSqlDto> selectSetTestPieceUsage(EntityManager entityManager, Long pieceId) {
-        List<SetTestUsagePieceSqlDto> returnData = new ArrayList<>();
-        try {
-            Query query = entityManager.createNativeQuery(PIECE_SET_TEST_SQL);
-            query.setParameter(1, pieceId);
-            List<Object[]> queryResults = query.getResultList();
-
-            for (Object[] eachRowData : queryResults) {
-                SetTestUsagePieceSqlDto eachReturnObject = new SetTestUsagePieceSqlDto(eachRowData);
-                returnData.add(eachReturnObject);
-            }
-
-            return returnData;
-        } catch (Exception e) {
-            throw new RuntimeException("SQL Failure, " + e.getMessage());
-        }
+        return SqlExec.execute(entityManager, PIECE_SET_TEST_SQL, pieceId, SetTestUsagePieceSqlDto.class);
     }
 
                 private static final String PIECES_USAGE_COUNT_BY_PREFIX_SQL = """
@@ -78,21 +49,7 @@ public class PieceSql {
             ORDER BY p.id""";
 
     public static List<PieceUsageCountSqlDto> selectPieceUsageCounts(EntityManager entityManager, String prefix) {
-        List<PieceUsageCountSqlDto> returnData = new ArrayList<>();
-        try {
-            Query query = entityManager.createNativeQuery(PIECES_USAGE_COUNT_BY_PREFIX_SQL);
-            query.setParameter(1, prefix + "%");
-            List<Object[]> queryResults = query.getResultList();
-
-            for (Object[] eachRowData : queryResults) {
-                PieceUsageCountSqlDto eachReturnObject = new PieceUsageCountSqlDto(eachRowData);
-                returnData.add(eachReturnObject);
-            }
-
-            return returnData;
-        } catch (Exception e) {
-            throw new RuntimeException("SQL Failure, " + e.getMessage());
-        }
+        return SqlExec.execute(entityManager, PIECES_USAGE_COUNT_BY_PREFIX_SQL, prefix, PieceUsageCountSqlDto.class);
     }
 
     private static final String ALL_PIECES_USAGE_COUNT_SQL = """
@@ -103,20 +60,7 @@ public class PieceSql {
             ORDER BY p.id""";
 
     public static List<PieceUsageCountSqlDto> selectAllPieceUsageCounts(EntityManager entityManager) {
-        List<PieceUsageCountSqlDto> returnData = new ArrayList<>();
-        try {
-            Query query = entityManager.createNativeQuery(ALL_PIECES_USAGE_COUNT_SQL);
-            List<Object[]> queryResults = query.getResultList();
-
-            for (Object[] eachRowData : queryResults) {
-                PieceUsageCountSqlDto eachReturnObject = new PieceUsageCountSqlDto(eachRowData);
-                returnData.add(eachReturnObject);
-            }
-
-            return returnData;
-        } catch (Exception e) {
-            throw new RuntimeException("SQL Failure, " + e.getMessage());
-        }
+        return SqlExec.execute(entityManager, ALL_PIECES_USAGE_COUNT_SQL, PieceUsageCountSqlDto.class);
     }
 
     private static final String PIECES_USAGE_COUNT_FOR_NUMBERS_SQL = """
@@ -137,19 +81,6 @@ public class PieceSql {
             ORDER BY p.id""";
 
     public static List<PieceUsageCountSqlDto> selectNumbersPieceUsageCounts(EntityManager entityManager) {
-        List<PieceUsageCountSqlDto> returnData = new ArrayList<>();
-        try {
-            Query query = entityManager.createNativeQuery(PIECES_USAGE_COUNT_FOR_NUMBERS_SQL);
-            List<Object[]> queryResults = query.getResultList();
-
-            for (Object[] eachRowData : queryResults) {
-                PieceUsageCountSqlDto eachReturnObject = new PieceUsageCountSqlDto(eachRowData);
-                returnData.add(eachReturnObject);
-            }
-
-            return returnData;
-        } catch (Exception e) {
-            throw new RuntimeException("SQL Failure, " + e.getMessage());
-        }
+        return SqlExec.execute(entityManager, PIECES_USAGE_COUNT_FOR_NUMBERS_SQL, PieceUsageCountSqlDto.class);
     }
 }

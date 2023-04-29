@@ -1,16 +1,15 @@
 package uk.co.bbr.services.contests.sql;
 
-import uk.co.bbr.services.contests.dto.ContestWinsDto;
+import uk.co.bbr.services.contests.sql.dto.ContestWinsSqlDto;
 import uk.co.bbr.services.contests.sql.dto.BandResultSqlDto;
 import uk.co.bbr.services.contests.sql.dto.ContestEventResultSqlDto;
 import uk.co.bbr.services.contests.sql.dto.ContestResultPieceSqlDto;
 import uk.co.bbr.services.contests.sql.dto.EventPieceSqlDto;
 import uk.co.bbr.services.contests.sql.dto.PersonConductingResultSqlDto;
 import uk.co.bbr.services.contests.sql.dto.ResultPieceSqlDto;
+import uk.co.bbr.services.framework.sql.SqlExec;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ContestResultSql {
@@ -31,21 +30,7 @@ public class ContestResultSql {
         ORDER BY e.date_of_event desc""";
 
     public static List<BandResultSqlDto> selectBandResults(EntityManager entityManager, Long bandId) {
-        List<BandResultSqlDto> returnData = new ArrayList<>();
-        try {
-            Query query = entityManager.createNativeQuery(BAND_RESULT_LIST_SQL);
-            query.setParameter(1, bandId);
-            List<Object[]> queryResults = query.getResultList();
-
-            for (Object[] eachRowData : queryResults) {
-                BandResultSqlDto eachReturnObject = new BandResultSqlDto(eachRowData);
-                returnData.add(eachReturnObject);
-            }
-
-            return returnData;
-        } catch (Exception e) {
-            throw new RuntimeException("SQL Failure, " + e.getMessage());
-        }
+        return SqlExec.execute(entityManager, BAND_RESULT_LIST_SQL, bandId, BandResultSqlDto.class);
     }
 
     private static final String BAND_RESULT_RESULT_PIECES_SQL = """
@@ -57,21 +42,7 @@ public class ContestResultSql {
         )""";
 
     public static List<ResultPieceSqlDto> selectBandResultPerformances(EntityManager entityManager, Long bandId) {
-        List<ResultPieceSqlDto> returnData = new ArrayList<>();
-        try {
-            Query query = entityManager.createNativeQuery(BAND_RESULT_RESULT_PIECES_SQL);
-            query.setParameter(1, bandId);
-            List<Object[]> queryResults = query.getResultList();
-
-            for (Object[] eachRowData : queryResults) {
-                ResultPieceSqlDto eachReturnObject = new ResultPieceSqlDto(eachRowData);
-                returnData.add(eachReturnObject);
-            }
-
-            return returnData;
-        } catch (Exception e) {
-            throw new RuntimeException("SQL Failure, " + e.getMessage());
-        }
+        return SqlExec.execute(entityManager, BAND_RESULT_RESULT_PIECES_SQL, bandId, ResultPieceSqlDto.class);
     }
 
     private static final String BAND_RESULT_EVENT_PIECES_SQL = """
@@ -83,21 +54,7 @@ public class ContestResultSql {
         )""";
 
     public static List<EventPieceSqlDto> selectBandEventPieces(EntityManager entityManager, Long bandId) {
-        List<EventPieceSqlDto> returnData = new ArrayList<>();
-        try {
-            Query query = entityManager.createNativeQuery(BAND_RESULT_EVENT_PIECES_SQL);
-            query.setParameter(1, bandId);
-            List<Object[]> queryResults = query.getResultList();
-
-            for (Object[] eachRowData : queryResults) {
-                EventPieceSqlDto eachReturnObject = new EventPieceSqlDto(eachRowData);
-                returnData.add(eachReturnObject);
-            }
-
-            return returnData;
-        } catch (Exception e) {
-            throw new RuntimeException("SQL Failure, " + e.getMessage());
-        }
+        return SqlExec.execute(entityManager, BAND_RESULT_EVENT_PIECES_SQL, bandId, EventPieceSqlDto.class);
     }
 
     private static final String PERSON_CONDUCTING_SQL = """
@@ -112,21 +69,7 @@ public class ContestResultSql {
         """;
 
     public static List<PersonConductingResultSqlDto> selectPersonConductingResults(EntityManager entityManager, Long personId) {
-        List<PersonConductingResultSqlDto> returnData = new ArrayList<>();
-        try {
-            Query query = entityManager.createNativeQuery(PERSON_CONDUCTING_SQL);
-            query.setParameter(1, personId);
-            List<Object[]> queryResults = query.getResultList();
-
-            for (Object[] eachRowData : queryResults) {
-                PersonConductingResultSqlDto eachReturnObject = new PersonConductingResultSqlDto(eachRowData);
-                returnData.add(eachReturnObject);
-            }
-
-            return returnData;
-        } catch (Exception e) {
-            throw new RuntimeException("SQL Failure, " + e.getMessage());
-        }
+        return SqlExec.execute(entityManager, PERSON_CONDUCTING_SQL, personId, PersonConductingResultSqlDto.class);
     }
 
     private static final String CONTEST_EVENTS_LIST_SQL = """
@@ -152,21 +95,7 @@ public class ContestResultSql {
             ORDER BY e.date_of_event DESC""";
 
     public static List<ContestEventResultSqlDto> selectEventListForContest(EntityManager entityManager, Long contestId) {
-        List<ContestEventResultSqlDto> returnData = new ArrayList<>();
-        try {
-            Query query = entityManager.createNativeQuery(CONTEST_EVENTS_LIST_SQL);
-            query.setParameter(1, contestId);
-            List<Object[]> queryResults = query.getResultList();
-
-            for (Object[] eachRowData : queryResults) {
-                ContestEventResultSqlDto eachReturnObject = new ContestEventResultSqlDto(eachRowData);
-                returnData.add(eachReturnObject);
-            }
-
-            return returnData;
-        } catch (Exception e) {
-            throw new RuntimeException("SQL Failure, " + e.getMessage());
-        }
+        return SqlExec.execute(entityManager, CONTEST_EVENTS_LIST_SQL, contestId, ContestEventResultSqlDto.class);
     }
 
     private static final String OWN_CHOICE_FOR_CONTEST = """
@@ -182,21 +111,7 @@ public class ContestResultSql {
         ORDER BY e.date_of_event, r.result_position DESC""";
 
     public static List<ContestResultPieceSqlDto> selectOwnChoiceUsedForContest(EntityManager entityManager, Long contestId) {
-        List<ContestResultPieceSqlDto> returnData = new ArrayList<>();
-        try {
-            Query query = entityManager.createNativeQuery(OWN_CHOICE_FOR_CONTEST);
-            query.setParameter(1, contestId);
-            List<Object[]> queryResults = query.getResultList();
-
-            for (Object[] eachRowData : queryResults) {
-                ContestResultPieceSqlDto eachReturnObject = new ContestResultPieceSqlDto(eachRowData);
-                returnData.add(eachReturnObject);
-            }
-
-            return returnData;
-        } catch (Exception e) {
-            throw new RuntimeException("SQL Failure, " + e.getMessage());
-        }
+        return SqlExec.execute(entityManager, OWN_CHOICE_FOR_CONTEST, contestId, ContestResultPieceSqlDto.class);
     }
 
     private static final String BAND_WINS_FOR_CONTEST_SQL = """
@@ -211,21 +126,7 @@ public class ContestResultSql {
                     GROUP BY b.slug, b.name
                     ORDER BY 3 DESC""";
 
-    public static List<ContestWinsDto> selectWinsForContest(EntityManager entityManager, Long contestId) {
-        List<ContestWinsDto> returnData = new ArrayList<>();
-        try {
-            Query query = entityManager.createNativeQuery(BAND_WINS_FOR_CONTEST_SQL);
-            query.setParameter(1, contestId);
-            List<Object[]> queryResults = query.getResultList();
-
-            for (Object[] eachRowData : queryResults) {
-                ContestWinsDto eachReturnObject = new ContestWinsDto(eachRowData);
-                returnData.add(eachReturnObject);
-            }
-
-            return returnData;
-        } catch (Exception e) {
-            throw new RuntimeException("SQL Failure, " + e.getMessage());
-        }
+    public static List<ContestWinsSqlDto> selectWinsForContest(EntityManager entityManager, Long contestId) {
+        return SqlExec.execute(entityManager, BAND_WINS_FOR_CONTEST_SQL, contestId, ContestWinsSqlDto.class);
     }
 }

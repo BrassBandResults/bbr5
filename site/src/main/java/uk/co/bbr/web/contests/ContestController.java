@@ -10,10 +10,9 @@ import uk.co.bbr.services.contests.ContestResultService;
 import uk.co.bbr.services.contests.ContestService;
 import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.contests.dao.ContestEventDao;
-import uk.co.bbr.services.contests.dao.ContestResultDao;
 import uk.co.bbr.services.contests.dao.ContestResultPieceDao;
 import uk.co.bbr.services.contests.dto.ContestListDto;
-import uk.co.bbr.services.contests.dto.ContestWinsDto;
+import uk.co.bbr.services.contests.sql.dto.ContestWinsSqlDto;
 import uk.co.bbr.services.framework.NotFoundException;
 
 import java.util.List;
@@ -97,7 +96,7 @@ public class ContestController {
             throw new NotFoundException("Contest with slug " + contestSlug + " not found");
         }
 
-        List<ContestWinsDto> wins = this.contestResultService.fetchWinsCounts(contest.get());
+        List<ContestWinsSqlDto> wins = this.contestResultService.fetchWinsCounts(contest.get());
 
         int pastEventsCount = this.contestEventService.fetchCountOfEvents(contest.get());
         int ownChoicePieceCount = this.contestResultService.fetchCountOfOwnChoiceForContest(contest.get());
