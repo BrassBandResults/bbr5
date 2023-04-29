@@ -1,7 +1,6 @@
 package uk.co.bbr.services.years.sql;
 
 import uk.co.bbr.services.years.sql.dto.ContestsForYearEventSqlDto;
-import uk.co.bbr.services.years.sql.dto.ContestsForYearSqlDto;
 import uk.co.bbr.services.years.sql.dto.YearListEntrySqlDto;
 
 import javax.persistence.EntityManager;
@@ -58,8 +57,8 @@ public class YearSql {
             WHERE YEAR(e.date_of_event) = ?1
             ORDER BY e.date_of_event ASC""";
 
-    public static ContestsForYearSqlDto selectEventsForYear(EntityManager entityManager, String year) {
-        ContestsForYearSqlDto returnData = new ContestsForYearSqlDto();
+    public static List<ContestsForYearEventSqlDto> selectEventsForYear(EntityManager entityManager, String year) {
+        List<ContestsForYearEventSqlDto> returnData = new ArrayList<>();
         try {
             Query query = entityManager.createNativeQuery(CONTEST_EVENTS_LIST_FOR_YEAR_SQL);
             query.setParameter(1, Integer.parseInt(year));

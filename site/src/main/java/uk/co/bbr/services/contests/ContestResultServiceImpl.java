@@ -6,6 +6,7 @@ import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.bands.dto.BandDetailsDto;
 import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.contests.dao.ContestEventDao;
+import uk.co.bbr.services.contests.dao.ContestEventTestPieceDao;
 import uk.co.bbr.services.contests.dao.ContestGroupDao;
 import uk.co.bbr.services.contests.dao.ContestResultDao;
 import uk.co.bbr.services.contests.dao.ContestResultPieceDao;
@@ -15,12 +16,11 @@ import uk.co.bbr.services.contests.repo.ContestResultPieceRepository;
 import uk.co.bbr.services.contests.repo.ContestResultRepository;
 import uk.co.bbr.services.contests.repo.ContestTagRepository;
 import uk.co.bbr.services.contests.sql.ContestResultSql;
-import uk.co.bbr.services.contests.sql.dto.BandEventPiecesSqlDto;
 import uk.co.bbr.services.contests.sql.dto.BandResultSqlDto;
-import uk.co.bbr.services.contests.sql.dto.BandResultsPiecesSqlDto;
 import uk.co.bbr.services.contests.sql.dto.ContestResultPieceSqlDto;
+import uk.co.bbr.services.contests.sql.dto.EventPieceSqlDto;
 import uk.co.bbr.services.contests.sql.dto.PersonConductingResultSqlDto;
-import uk.co.bbr.services.contests.sql.dto.PersonConductingSqlDto;
+import uk.co.bbr.services.contests.sql.dto.ResultPieceSqlDto;
 import uk.co.bbr.services.contests.types.ContestEventDateResolution;
 import uk.co.bbr.services.contests.types.ResultPositionType;
 import uk.co.bbr.services.people.dao.PersonDao;
@@ -31,7 +31,6 @@ import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
 import javax.persistence.EntityManager;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -110,8 +109,8 @@ public class ContestResultServiceImpl implements ContestResultService {
     @Override
     public BandDetailsDto findResultsForBand(BandDao band) {
         List<BandResultSqlDto> bandResultsSql = ContestResultSql.selectBandResults(this.entityManager, band.getId());
-        BandResultsPiecesSqlDto resultPiecesSql = ContestResultSql.selectBandResultPerformances(this.entityManager, band.getId());
-        BandEventPiecesSqlDto eventPiecesSql = ContestResultSql.selectBandEventPieces(this.entityManager, band.getId());
+        List<ResultPieceSqlDto> resultPiecesSql = ContestResultSql.selectBandResultPerformances(this.entityManager, band.getId());
+        List<EventPieceSqlDto> eventPiecesSql = ContestResultSql.selectBandEventPieces(this.entityManager, band.getId());
 
         // combine
         List<ContestResultDao> bandResults = new ArrayList<>();
@@ -164,8 +163,8 @@ public class ContestResultServiceImpl implements ContestResultService {
                 eachResult.getConductorThird().setSurname(eachSqlResult.getConductor3Surname());
             }
 
-            resultPiecesSql.populateResultPieces(eachResult);
-            eventPiecesSql.populateEventPieces(eachResult.getContestEvent());
+            this.populateResultPieces(resultPiecesSql, eachResult);
+            this.populateEventPieces(eventPiecesSql, eachResult.getContestEvent());
 
             if (eachResult.getContestEvent().getContest().getName().contains("Whit Friday")) {
                 whitResults.add(eachResult);
@@ -176,6 +175,44 @@ public class ContestResultServiceImpl implements ContestResultService {
 
 
         return new BandDetailsDto(bandResults, whitResults);
+    }
+
+    private void populateResultPieces(List<ResultPieceSqlDto> resultPieces, ContestResultDao result) {
+        result.setPieces(new ArrayList<>());
+        for (ResultPieceSqlDto eachResultPiece : resultPieces) {
+            if (eachResultPiece.getContestResultId().longValue() == result.getId()) {
+
+                PieceDao piece = new PieceDao();
+                piece.setSlug(eachResultPiece.getPieceSlug());
+                piece.setName(eachResultPiece.getPieceName());
+                piece.setYear(eachResultPiece.getPieceYear());
+
+                ContestResultPieceDao resultPiece = new ContestResultPieceDao();
+                resultPiece.setPiece(piece);
+                resultPiece.setContestResult(result);
+
+                result.getPieces().add(resultPiece);
+            }
+        }
+    }
+
+    private void populateEventPieces(List<EventPieceSqlDto> eventPieces, ContestEventDao event) {
+        event.setPieces(new ArrayList<>());
+        for (EventPieceSqlDto eachResultPiece : eventPieces) {
+            if (eachResultPiece.getContestEventId().longValue() == event.getId()) {
+
+                PieceDao piece = new PieceDao();
+                piece.setSlug(eachResultPiece.getPieceSlug());
+                piece.setName(eachResultPiece.getPieceName());
+                piece.setYear(eachResultPiece.getPieceYear());
+
+                ContestEventTestPieceDao eventPiece = new ContestEventTestPieceDao();
+                eventPiece.setPiece(piece);
+                eventPiece.setContestEvent(event);
+
+                event.getPieces().add(eventPiece);
+            }
+        }
     }
 
     @Override
@@ -237,9 +274,9 @@ public class ContestResultServiceImpl implements ContestResultService {
         List<ContestResultDao> bandResults = new ArrayList<>();
         List<ContestResultDao> whitResults = new ArrayList<>();
 
-        PersonConductingSqlDto conductingResultsSql = ContestResultSql.selectPersonConductingResults(this.entityManager, person.getId());
+        List<PersonConductingResultSqlDto> conductingResultsSql = ContestResultSql.selectPersonConductingResults(this.entityManager, person.getId());
 
-        for (PersonConductingResultSqlDto eachSqlResult : conductingResultsSql.getResults()) {
+        for (PersonConductingResultSqlDto eachSqlResult : conductingResultsSql) {
             ContestResultDao eachResult = new ContestResultDao();
             eachResult.setContestEvent(new ContestEventDao());
             eachResult.getContestEvent().setContest(new ContestDao());

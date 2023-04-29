@@ -5,13 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import uk.co.bbr.services.bands.BandService;
-import uk.co.bbr.services.bands.dao.BandDao;
-import uk.co.bbr.services.bands.dao.BandPreviousNameDao;
-import uk.co.bbr.services.bands.dto.BandDetailsDto;
 import uk.co.bbr.services.contests.ContestResultService;
-import uk.co.bbr.services.contests.dao.ContestResultDao;
-import uk.co.bbr.services.contests.sql.dto.PersonConductingSqlDto;
 import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.people.PersonService;
 import uk.co.bbr.services.people.dao.PersonAliasDao;
@@ -20,7 +14,6 @@ import uk.co.bbr.services.people.dto.ConductingDetailsDto;
 import uk.co.bbr.services.pieces.PieceService;
 import uk.co.bbr.services.pieces.dao.PieceDao;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 

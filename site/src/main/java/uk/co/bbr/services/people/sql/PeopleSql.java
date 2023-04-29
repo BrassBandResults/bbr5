@@ -1,17 +1,8 @@
 package uk.co.bbr.services.people.sql;
 
-import uk.co.bbr.services.contests.sql.dto.BandEventPiecesSqlDto;
-import uk.co.bbr.services.contests.sql.dto.BandResultSqlDto;
-import uk.co.bbr.services.contests.sql.dto.BandResultsPiecesSqlDto;
-import uk.co.bbr.services.contests.sql.dto.EventPieceSqlDto;
-import uk.co.bbr.services.contests.sql.dto.PersonConductingResultSqlDto;
-import uk.co.bbr.services.contests.sql.dto.PersonConductingSqlDto;
-import uk.co.bbr.services.contests.sql.dto.ResultPieceSqlDto;
-
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

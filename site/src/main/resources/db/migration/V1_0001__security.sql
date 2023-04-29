@@ -19,7 +19,8 @@ CREATE TABLE site_user (
     contest_history_visibility VARCHAR(1) NOT NULL DEFAULT 'P',
     stripe_email VARCHAR(100),
     stripe_token VARCHAR(30),
-    stripe_customer VARCHAR(30)
+    stripe_customer VARCHAR(30),
+    new_email_required BIT DEFAULT 0
 );
 
 CREATE UNIQUE INDEX idx_siteuser_usercode ON site_user(usercode);

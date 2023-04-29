@@ -14,7 +14,6 @@ import uk.co.bbr.services.pieces.dao.PieceDao;
 import uk.co.bbr.services.regions.dao.RegionDao;
 import uk.co.bbr.services.years.sql.YearSql;
 import uk.co.bbr.services.years.sql.dto.ContestsForYearEventSqlDto;
-import uk.co.bbr.services.years.sql.dto.ContestsForYearSqlDto;
 import uk.co.bbr.services.years.sql.dto.YearListEntrySqlDto;
 
 import javax.persistence.EntityManager;
@@ -35,9 +34,9 @@ public class YearServiceImpl implements YearService {
     public List<ContestResultDao> fetchEventsForYear(String year) {
         List<ContestResultDao> returnData = new ArrayList<>();
 
-        ContestsForYearSqlDto thisYearData = YearSql.selectEventsForYear(this.entityManager, year);
+        List<ContestsForYearEventSqlDto> thisYearData = YearSql.selectEventsForYear(this.entityManager, year);
 
-        for (ContestsForYearEventSqlDto eachSqlEvent : thisYearData.getEvents()) {
+        for (ContestsForYearEventSqlDto eachSqlEvent : thisYearData) {
             ContestResultDao eachWinner = new ContestResultDao();
             eachWinner.setContestEvent(new ContestEventDao());
             eachWinner.getContestEvent().setContest(new ContestDao());

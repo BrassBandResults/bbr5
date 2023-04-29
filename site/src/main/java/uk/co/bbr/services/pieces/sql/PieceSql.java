@@ -1,14 +1,11 @@
 package uk.co.bbr.services.pieces.sql;
 
 import uk.co.bbr.services.pieces.sql.dto.OwnChoiceUsagePieceSqlDto;
-import uk.co.bbr.services.pieces.sql.dto.OwnChoiceUsageSqlDto;
 import uk.co.bbr.services.pieces.sql.dto.PieceUsageCountSqlDto;
 import uk.co.bbr.services.pieces.sql.dto.SetTestUsagePieceSqlDto;
-import uk.co.bbr.services.pieces.sql.dto.SetTestUsageSqlDto;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,8 +22,8 @@ public class PieceSql {
             WHERE rt.piece_id = ?1
             ORDER BY e.date_of_event, c.name DESC""";
 
-    public static OwnChoiceUsageSqlDto selectOwnChoicePieceUsage(EntityManager entityManager, Long pieceId) {
-        OwnChoiceUsageSqlDto returnData = new OwnChoiceUsageSqlDto();
+    public static List<OwnChoiceUsagePieceSqlDto> selectOwnChoicePieceUsage(EntityManager entityManager, Long pieceId) {
+        List<OwnChoiceUsagePieceSqlDto> returnData = new ArrayList<>();
         try {
             Query query = entityManager.createNativeQuery(PIECE_OWN_CHOICE_SQL);
             query.setParameter(1, pieceId);
@@ -54,8 +51,8 @@ public class PieceSql {
             WHERE et.piece_id = ?1
             ORDER BY e.date_of_event, c.name DESC""";
 
-    public static SetTestUsageSqlDto selectSetTestPieceUsage(EntityManager entityManager, Long pieceId) {
-        SetTestUsageSqlDto returnData = new SetTestUsageSqlDto();
+    public static List<SetTestUsagePieceSqlDto> selectSetTestPieceUsage(EntityManager entityManager, Long pieceId) {
+        List<SetTestUsagePieceSqlDto> returnData = new ArrayList<>();
         try {
             Query query = entityManager.createNativeQuery(PIECE_SET_TEST_SQL);
             query.setParameter(1, pieceId);

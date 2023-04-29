@@ -1,16 +1,11 @@
 package uk.co.bbr.services.contests.sql;
 
-import uk.co.bbr.services.contests.dao.ContestResultPieceDao;
 import uk.co.bbr.services.contests.dto.ContestWinsDto;
-import uk.co.bbr.services.contests.sql.dto.BandEventPiecesSqlDto;
 import uk.co.bbr.services.contests.sql.dto.BandResultSqlDto;
-import uk.co.bbr.services.contests.sql.dto.BandResultsPiecesSqlDto;
 import uk.co.bbr.services.contests.sql.dto.ContestEventResultSqlDto;
-import uk.co.bbr.services.contests.sql.dto.ContestEventSqlDto;
 import uk.co.bbr.services.contests.sql.dto.ContestResultPieceSqlDto;
 import uk.co.bbr.services.contests.sql.dto.EventPieceSqlDto;
 import uk.co.bbr.services.contests.sql.dto.PersonConductingResultSqlDto;
-import uk.co.bbr.services.contests.sql.dto.PersonConductingSqlDto;
 import uk.co.bbr.services.contests.sql.dto.ResultPieceSqlDto;
 
 import javax.persistence.EntityManager;
@@ -61,8 +56,8 @@ public class ContestResultSql {
                 SELECT r.id FROM contest_result r WHERE r.band_id = ?1
         )""";
 
-    public static BandResultsPiecesSqlDto selectBandResultPerformances(EntityManager entityManager, Long bandId) {
-        BandResultsPiecesSqlDto returnData = new BandResultsPiecesSqlDto();
+    public static List<ResultPieceSqlDto> selectBandResultPerformances(EntityManager entityManager, Long bandId) {
+        List<ResultPieceSqlDto> returnData = new ArrayList<>();
         try {
             Query query = entityManager.createNativeQuery(BAND_RESULT_RESULT_PIECES_SQL);
             query.setParameter(1, bandId);
@@ -87,8 +82,8 @@ public class ContestResultSql {
                 SELECT r.contest_event_id FROM contest_result r WHERE r.band_id = ?1
         )""";
 
-    public static BandEventPiecesSqlDto selectBandEventPieces(EntityManager entityManager, Long bandId) {
-        BandEventPiecesSqlDto returnData = new BandEventPiecesSqlDto();
+    public static List<EventPieceSqlDto> selectBandEventPieces(EntityManager entityManager, Long bandId) {
+        List<EventPieceSqlDto> returnData = new ArrayList<>();
         try {
             Query query = entityManager.createNativeQuery(BAND_RESULT_EVENT_PIECES_SQL);
             query.setParameter(1, bandId);
@@ -116,8 +111,8 @@ public class ContestResultSql {
         ORDER BY e.date_of_event DESC;
         """;
 
-    public static PersonConductingSqlDto selectPersonConductingResults(EntityManager entityManager, Long personId) {
-        PersonConductingSqlDto returnData = new PersonConductingSqlDto();
+    public static List<PersonConductingResultSqlDto> selectPersonConductingResults(EntityManager entityManager, Long personId) {
+        List<PersonConductingResultSqlDto> returnData = new ArrayList<>();
         try {
             Query query = entityManager.createNativeQuery(PERSON_CONDUCTING_SQL);
             query.setParameter(1, personId);
@@ -156,8 +151,8 @@ public class ContestResultSql {
             WHERE c.id = ?1
             ORDER BY e.date_of_event DESC""";
 
-    public static ContestEventSqlDto selectEventListForContest(EntityManager entityManager, Long contestId) {
-        ContestEventSqlDto returnData = new ContestEventSqlDto();
+    public static List<ContestEventResultSqlDto> selectEventListForContest(EntityManager entityManager, Long contestId) {
+        List<ContestEventResultSqlDto> returnData = new ArrayList<>();
         try {
             Query query = entityManager.createNativeQuery(CONTEST_EVENTS_LIST_SQL);
             query.setParameter(1, contestId);

@@ -24,10 +24,8 @@ import uk.co.bbr.services.pieces.repo.PieceAliasRepository;
 import uk.co.bbr.services.pieces.repo.PieceRepository;
 import uk.co.bbr.services.pieces.sql.PieceSql;
 import uk.co.bbr.services.pieces.sql.dto.OwnChoiceUsagePieceSqlDto;
-import uk.co.bbr.services.pieces.sql.dto.OwnChoiceUsageSqlDto;
 import uk.co.bbr.services.pieces.sql.dto.PieceUsageCountSqlDto;
 import uk.co.bbr.services.pieces.sql.dto.SetTestUsagePieceSqlDto;
-import uk.co.bbr.services.pieces.sql.dto.SetTestUsageSqlDto;
 import uk.co.bbr.services.pieces.types.PieceCategory;
 import uk.co.bbr.services.regions.dao.RegionDao;
 import uk.co.bbr.services.security.SecurityService;
@@ -199,8 +197,8 @@ public class PieceServiceImpl implements PieceService, SlugTools {
     public List<ContestResultPieceDao> fetchOwnChoicePieceUsage(PieceDao piece) {
         List<ContestResultPieceDao> resultPieces = new ArrayList<>();
 
-        OwnChoiceUsageSqlDto ownChoicePieces = PieceSql.selectOwnChoicePieceUsage(this.entityManager, piece.getId());
-        for (OwnChoiceUsagePieceSqlDto eachSqlRow : ownChoicePieces.getPieceList()) {
+        List<OwnChoiceUsagePieceSqlDto>  ownChoicePieces = PieceSql.selectOwnChoicePieceUsage(this.entityManager, piece.getId());
+        for (OwnChoiceUsagePieceSqlDto eachSqlRow : ownChoicePieces) {
             ContestResultPieceDao contestResultPiece = new ContestResultPieceDao();
             contestResultPiece.setPiece(new PieceDao());
             contestResultPiece.setContestResult(new ContestResultDao());
@@ -235,8 +233,8 @@ public class PieceServiceImpl implements PieceService, SlugTools {
     public List<ContestEventTestPieceDao> fetchSetTestPieceUsage(PieceDao piece) {
         List<ContestEventTestPieceDao> resultPieces = new ArrayList<>();
 
-        SetTestUsageSqlDto setTestPieces = PieceSql.selectSetTestPieceUsage(this.entityManager, piece.getId());
-        for (SetTestUsagePieceSqlDto eachSqlRow : setTestPieces.getSetTests()) {
+        List<SetTestUsagePieceSqlDto> setTestPieces = PieceSql.selectSetTestPieceUsage(this.entityManager, piece.getId());
+        for (SetTestUsagePieceSqlDto eachSqlRow : setTestPieces) {
             ContestEventTestPieceDao setTestPiece = new ContestEventTestPieceDao();
             setTestPiece.setPiece(new PieceDao());
             setTestPiece.setContestEvent(new ContestEventDao());

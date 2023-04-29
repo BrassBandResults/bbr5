@@ -14,9 +14,7 @@ import uk.co.bbr.services.contests.repo.ContestEventRepository;
 import uk.co.bbr.services.contests.repo.ContestEventTestPieceRepository;
 import uk.co.bbr.services.contests.repo.ContestRepository;
 import uk.co.bbr.services.contests.sql.ContestResultSql;
-import uk.co.bbr.services.contests.sql.dto.BandResultSqlDto;
 import uk.co.bbr.services.contests.sql.dto.ContestEventResultSqlDto;
-import uk.co.bbr.services.contests.sql.dto.ContestEventSqlDto;
 import uk.co.bbr.services.contests.types.ContestEventDateResolution;
 import uk.co.bbr.services.contests.types.TestPieceAndOr;
 import uk.co.bbr.services.framework.NotFoundException;
@@ -179,9 +177,9 @@ public class ContestEventServiceImpl implements ContestEventService {
     public List<ContestEventDao> fetchPastEventsForContest(ContestDao contest) {
         List<ContestEventDao> returnEvents = new ArrayList<>();
 
-        ContestEventSqlDto eventsSql = ContestResultSql.selectEventListForContest(this.entityManager, contest.getId());
+        List<ContestEventResultSqlDto> eventsSql = ContestResultSql.selectEventListForContest(this.entityManager, contest.getId());
 
-        for (ContestEventResultSqlDto eachSqlEvent : eventsSql.getEvents()) {
+        for (ContestEventResultSqlDto eachSqlEvent : eventsSql) {
             ContestEventDao currentEvent = new ContestEventDao();
             currentEvent.setContest(new ContestDao());
             currentEvent.setEventDate(eachSqlEvent.getEventDate());
