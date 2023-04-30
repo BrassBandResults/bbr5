@@ -62,7 +62,6 @@ public class MigrateUsersController {
     }
 
     private void upsertUser(String[] userLine){
-        System.out.println(String.join(" -- ", userLine));
         String oldUserId = userLine[0];
         String username = userLine[1];
         String email = userLine[2];
