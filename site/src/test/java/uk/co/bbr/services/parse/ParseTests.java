@@ -339,4 +339,29 @@ class ParseTests implements LoginMixin {
         assertEquals("Childs", parseResult.getMatchedConductor().getSurname());
         assertEquals("Robert", parseResult.getMatchedConductor().getFirstNames());
     }
+
+    @Test
+    void testParseContestResultBandCanBeFoundByPreviousName() {
+        // arrange
+        String testEntry = "D. Rothwell Temperance Junior Band, John Roberts, 11";
+
+        // act
+        ParseResultDto parseResult = this.parseService.parseLine(testEntry, LocalDate.now());
+
+        // assert
+        assertTrue(parseResult.isParseSuccess());
+
+        assertEquals("D", parseResult.getRawPosition());
+        assertEquals("Rothwell Temperance Junior Band", parseResult.getRawBandName());
+        assertEquals("John Roberts", parseResult.getRawConductorName());
+        assertEquals("11", parseResult.getRawDraw());
+        assertEquals("", parseResult.getRawPoints());
+
+        assertTrue(parseResult.isMatchSuccess());
+
+        assertEquals("rothwell-temperance-b", parseResult.getMatchedBand().getSlug());
+        assertEquals("john-roberts", parseResult.getMatchedConductor().getSlug());
+        assertEquals("Roberts", parseResult.getMatchedConductor().getSurname());
+        assertEquals("John", parseResult.getMatchedConductor().getFirstNames());
+    }
 }
