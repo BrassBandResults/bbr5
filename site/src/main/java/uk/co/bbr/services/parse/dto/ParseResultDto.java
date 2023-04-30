@@ -22,20 +22,10 @@ public class ParseResultDto implements NameTools {
     private PersonDao matchedConductor;
 
     public void setRawBandName(String value) {
-
-        if (value == null) {
-            this.rawBandName = null;
-            return;
-        }
         this.rawBandName = simplifyBandName(value);
     }
 
     public void setRawConductorName(String value) {
-
-        if (value == null) {
-            this.rawConductorName = null;
-            return;
-        }
         this.rawConductorName = simplifyPersonFullName(value);
     }
 

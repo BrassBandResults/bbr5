@@ -128,15 +128,8 @@ public class BandServiceImpl implements BandService, SlugTools {
         if (bandName.toLowerCase().endsWith("band")) {
             bandNameLessBand = bandName.substring(0, bandName.length() - "band".length()).trim();
         }
-        String bandNameLessBrassBand = null;
-        if (bandName.toLowerCase().endsWith("brassband")) {
-            bandNameLessBrassBand = bandName.substring(0, bandName.length() - "brassband".length()).trim();
-        }
 
-        List<BandDao> bandMatches = new ArrayList<>();
-
-
-        bandMatches = this.bandRepository.findExactNameMatch(bandName);
+        List<BandDao> bandMatches = this.bandRepository.findExactNameMatch(bandName);
 
         if (bandMatches.isEmpty()) {
             bandMatches = this.bandPreviousNameRepository.findAliasExactNameMatch(bandName);
@@ -173,16 +166,6 @@ public class BandServiceImpl implements BandService, SlugTools {
 
             if (bandMatches.isEmpty()) {
                 bandMatches = this.bandPreviousNameRepository.findContainsNameMatch("%" + bandNameLessBand + "%");
-            }
-        }
-
-        if (bandNameLessBrassBand != null) {
-            if (bandMatches.isEmpty()) {
-                bandMatches = this.bandRepository.findContainsNameMatch("%" + bandNameLessBrassBand + "%");
-            }
-
-            if (bandMatches.isEmpty()) {
-                bandMatches = this.bandPreviousNameRepository.findContainsNameMatch("%" + bandNameLessBrassBand + "%");
             }
         }
 
