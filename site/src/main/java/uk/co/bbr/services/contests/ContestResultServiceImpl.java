@@ -364,17 +364,21 @@ public class ContestResultServiceImpl implements ContestResultService {
 
     @Override
     public Set<PersonDao> fetchBandConductors(BandDao band) {
-        List<ContestResultDao> bandResults = this.contestResultRepository.findAllForBand(band.getId());
         Set<PersonDao> conductors = new HashSet<>();
-        for (ContestResultDao eachResult : bandResults) {
-            if (eachResult.getConductor() != null) {
-                conductors.add(eachResult.getConductor());
-            }
-            if (eachResult.getConductorSecond() != null) {
-                conductors.add(eachResult.getConductorSecond());
-            }
-            if (eachResult.getConductorThird() != null) {
-                conductors.add(eachResult.getConductorThird());
+
+        if (band != null) {
+            List<ContestResultDao> bandResults = this.contestResultRepository.findAllForBand(band.getId());
+
+            for (ContestResultDao eachResult : bandResults) {
+                if (eachResult.getConductor() != null) {
+                    conductors.add(eachResult.getConductor());
+                }
+                if (eachResult.getConductorSecond() != null) {
+                    conductors.add(eachResult.getConductorSecond());
+                }
+                if (eachResult.getConductorThird() != null) {
+                    conductors.add(eachResult.getConductorThird());
+                }
             }
         }
 
