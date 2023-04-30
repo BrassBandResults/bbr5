@@ -27,6 +27,9 @@ public class PersonDao extends AbstractDao implements NameTools {
     @Column(name="surname", nullable=false)
     private String surname;
 
+    @Column(name="combined_name", nullable=false)
+    private String combinedName;
+
     @Column(name="slug", nullable=false)
     private String slug;
 
@@ -90,11 +93,33 @@ public class PersonDao extends AbstractDao implements NameTools {
     public void setFirstNames(String firstNames) {
         String nameToSet = simplifyFirstName(firstNames);
         this.firstNames = nameToSet;
+
+        this.setCombinedName();
+    }
+
+    private void setCombinedName() {
+        StringBuilder combinedName = new StringBuilder();
+        if (this.firstNames != null) {
+            combinedName.append(this.firstNames.trim());
+            combinedName.append(" ");
+        }
+        if (this.surname != null) {
+            combinedName.append(this.surname.trim());
+            combinedName.append(" ");
+        }
+        if (this.suffix != null) {
+            combinedName.append(this.suffix.trim());
+            combinedName.append(" ");
+        }
+
+        this.combinedName = combinedName.toString().trim();
     }
 
     public void setSurname(String surname) {
         String nameToSet = simplifySurname(surname);
         this.surname = nameToSet;
+
+        this.setCombinedName();
     }
 
     public void setSuffix(String suffix) {
@@ -102,6 +127,8 @@ public class PersonDao extends AbstractDao implements NameTools {
             suffix = suffix.trim();
         }
         this.suffix = suffix;
+
+        this.setCombinedName();
     }
 
     public void setKnownFor(String knownFor) {
@@ -144,5 +171,9 @@ public class PersonDao extends AbstractDao implements NameTools {
         }
 
         return returnValue.toString();
+    }
+
+    public boolean matchesName(String personName) {
+        return personName != null && personName.equalsIgnoreCase(this.combinedName);
     }
 }

@@ -36,7 +36,7 @@ public interface NameTools {
 
     default String simplifyFirstName(String name) {
         // normalise to one space
-        String singleSpaces = simplifyCommon(name);
+        String singleSpaces = simplifyCommon(name + " ");
 
         // add a dot after any single initials
         String singleInitialNotAtEnd = singleSpaces.replaceAll("\\s([A-Za-z])\\s", " $1. ");

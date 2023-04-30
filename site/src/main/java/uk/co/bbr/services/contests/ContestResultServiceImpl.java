@@ -33,8 +33,10 @@ import uk.co.bbr.web.security.annotations.IsBbrMember;
 import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -358,6 +360,25 @@ public class ContestResultServiceImpl implements ContestResultService {
     @Override
     public List<ContestWinsSqlDto> fetchWinsCounts(ContestDao contest) {
         return ContestResultSql.selectWinsForContest(this.entityManager, contest.getId());
+    }
+
+    @Override
+    public Set<PersonDao> fetchBandConductors(BandDao band) {
+        List<ContestResultDao> bandResults = this.contestResultRepository.findAllForBand(band.getId());
+        Set<PersonDao> conductors = new HashSet<>();
+        for (ContestResultDao eachResult : bandResults) {
+            if (eachResult.getConductor() != null) {
+                conductors.add(eachResult.getConductor());
+            }
+            if (eachResult.getConductorSecond() != null) {
+                conductors.add(eachResult.getConductorSecond());
+            }
+            if (eachResult.getConductorThird() != null) {
+                conductors.add(eachResult.getConductorThird());
+            }
+        }
+
+        return conductors;
     }
 
     @Override

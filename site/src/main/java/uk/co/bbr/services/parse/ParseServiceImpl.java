@@ -41,7 +41,7 @@ public class ParseServiceImpl implements ParseService {
             BandDao matchedBand = this.bandService.findMatchingBandByName(parsedResult.getRawBandName(), dateContext);
             parsedResult.setMatchedBand(matchedBand);
 
-            PersonDao matchedConductor = this.personService.findMatchingPersonByName(parsedResult.getRawConductorName(), dateContext);
+            PersonDao matchedConductor = this.personService.findMatchingPersonByName(parsedResult.getRawConductorName(), matchedBand, dateContext);
             parsedResult.setMatchedConductor(matchedConductor);
         }
 

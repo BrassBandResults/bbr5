@@ -14,6 +14,7 @@ import uk.co.bbr.services.people.dto.ConductingDetailsDto;
 import uk.co.bbr.services.pieces.dao.PieceDao;
 
 import java.util.List;
+import java.util.Set;
 
 public interface ContestResultService {
 
@@ -41,4 +42,6 @@ public interface ContestResultService {
     int fetchCountOfOwnChoiceForContest(ContestDao contest);
 
     List<ContestWinsSqlDto> fetchWinsCounts(ContestDao contest);
+
+    Set<PersonDao> fetchBandConductors(BandDao band);
 }

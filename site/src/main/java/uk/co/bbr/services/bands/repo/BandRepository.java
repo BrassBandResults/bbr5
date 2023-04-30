@@ -32,4 +32,10 @@ public interface BandRepository extends JpaRepository<BandDao, Long> {
 
     @Query("SELECT b FROM BandDao b WHERE b.oldId = ?1")
     Optional<BandDao> fetchByOldId(String bandOldId);
+
+    @Query("SELECT b FROM BandDao b WHERE UPPER(b.name) = :bandNameUpper")
+    List<BandDao> findExactNameMatch(String bandNameUpper);
+
+    @Query("SELECT b FROM BandDao b WHERE UPPER(b.name) LIKE :bandNameUpper")
+    List<BandDao> findContainsNameMatch(String bandNameUpper);
 }

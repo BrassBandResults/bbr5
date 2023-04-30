@@ -3,6 +3,8 @@ package uk.co.bbr.services.people;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import uk.co.bbr.services.bands.dao.BandDao;
+import uk.co.bbr.services.contests.ContestResultService;
 import uk.co.bbr.services.contests.repo.ContestAdjudicatorRepository;
 import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.framework.ValidationException;
@@ -25,11 +27,13 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
 public class PersonServiceImpl implements PersonService, SlugTools {
 
+    private final ContestResultService contestResultService;
     private final PersonRepository personRepository;
     private final PersonAliasRepository personAliasRepository;
     private final ContestAdjudicatorRepository contestAdjudicatorRepository;
@@ -190,7 +194,21 @@ public class PersonServiceImpl implements PersonService, SlugTools {
     }
 
     @Override
-    public PersonDao findMatchingPersonByName(String personName, LocalDate dateContext) {
+    public PersonDao findMatchingPersonByName(String personName, BandDao band, LocalDate dateContext) {
+        Set<PersonDao> previousConductorsForThisBand = this.contestResultService.fetchBandConductors(band);
+
+        for (PersonDao eachExistingConductor : previousConductorsForThisBand) {
+            if (eachExistingConductor.matchesName(personName)) {
+                return eachExistingConductor;
+            }
+        }
+
+        Optional<PersonDao> matchingPerson = this.personRepository.fetchByCombinedName(personName.toUpperCase());
+
+        if (matchingPerson.isPresent()) {
+            return matchingPerson.get();
+        }
+
         return null;
     }
 

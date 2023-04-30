@@ -31,4 +31,9 @@ public interface ContestResultRepository extends JpaRepository<ContestResultDao,
             "AND r.contestEvent.contest.name LIKE '%Whit Friday%' " +
             "ORDER BY r.contestEvent.eventDate DESC")
     List<ContestResultDao> findWhitForBand(Long bandId);
+
+
+    @Query("SELECT r FROM ContestResultDao r " +
+            "WHERE r.band.id = :bandId")
+    List<ContestResultDao> findAllForBand(Long bandId);
 }

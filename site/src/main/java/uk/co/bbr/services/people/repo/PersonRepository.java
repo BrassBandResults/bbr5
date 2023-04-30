@@ -19,4 +19,7 @@ public interface PersonRepository extends JpaRepository<PersonDao, Long> {
 
     @Query("SELECT p FROM PersonDao p WHERE UPPER(p.surname) LIKE UPPER(CONCAT(:prefix, '%'))  ORDER BY p.surname, p.firstNames")
     List<PersonDao> findByPrefixOrderBySurname(String prefix);
+
+    @Query("SELECT p FROM PersonDao p WHERE UPPER(p.combinedName) = :personNameUpper")
+    Optional<PersonDao> fetchByCombinedName(String personNameUpper);
 }

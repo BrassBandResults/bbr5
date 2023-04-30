@@ -218,6 +218,7 @@ CREATE TABLE person (
     updated_by VARCHAR(50) NOT NULL CONSTRAINT fk_person_updated REFERENCES site_user(usercode),
     created_by VARCHAR(50) NOT NULL CONSTRAINT fk_person_owner REFERENCES site_user(usercode),
     first_names VARCHAR(100),
+    combined_name VARCHAR(200),
     surname VARCHAR(100) NOT NULL,
     suffix VARCHAR(10),
     slug VARCHAR(60) NOT NULL,

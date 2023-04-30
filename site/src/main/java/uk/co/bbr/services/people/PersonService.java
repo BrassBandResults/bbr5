@@ -1,5 +1,6 @@
 package uk.co.bbr.services.people;
 
+import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.people.dao.PersonAliasDao;
 import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.people.dto.PeopleListDto;
@@ -34,5 +35,5 @@ public interface PersonService {
 
     int fetchArrangerCount(PersonDao person);
 
-    PersonDao findMatchingPersonByName(String personName, LocalDate dateContext);
+    PersonDao findMatchingPersonByName(String personName, BandDao band, LocalDate dateContext);
 }

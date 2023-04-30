@@ -122,8 +122,94 @@ public class BandServiceImpl implements BandService, SlugTools {
     }
 
     @Override
-    public BandDao findMatchingBandByName(String bandName, LocalDate dateContext) {
-        return null;
+    public BandDao findMatchingBandByName(String searchBandName, LocalDate dateContext) {
+        String bandName = searchBandName.toUpperCase().trim();
+        String bandNameLessBand = null;
+        if (bandName.toLowerCase().endsWith("band")) {
+            bandNameLessBand = bandName.substring(0, bandName.length() - "band".length()).trim();
+        }
+        String bandNameLessBrassBand = null;
+        if (bandName.toLowerCase().endsWith("brassband")) {
+            bandNameLessBrassBand = bandName.substring(0, bandName.length() - "brassband".length()).trim();
+        }
+
+        List<BandDao> bandMatches = new ArrayList<>();
+
+
+        bandMatches = this.bandRepository.findExactNameMatch(bandName);
+
+        if (bandMatches.isEmpty()) {
+            bandMatches = this.bandPreviousNameRepository.findAliasExactNameMatch(bandName);
+        }
+
+        if (bandMatches.isEmpty()) {
+            bandMatches = this.bandRepository.findExactNameMatch(bandName + " Band");
+        }
+
+        if (bandMatches.isEmpty()) {
+            bandMatches = this.bandPreviousNameRepository.findAliasExactNameMatch(bandName + " Band");
+        }
+
+        if (bandMatches.isEmpty()) {
+            bandMatches = this.bandRepository.findContainsNameMatch("%" + bandName + "% ");
+        }
+
+        if (bandMatches.isEmpty()) {
+            bandMatches = this.bandPreviousNameRepository.findContainsNameMatch("%" + bandName + "% ");
+        }
+
+        if (bandMatches.isEmpty()) {
+            bandMatches = this.bandRepository.findContainsNameMatch("%" + bandName + "%") ;
+        }
+
+        if (bandMatches.isEmpty()) {
+            bandMatches = this.bandPreviousNameRepository.findContainsNameMatch("%" + bandName + "%");
+        }
+
+        if (bandNameLessBand != null) {
+            if (bandMatches.isEmpty()) {
+                bandMatches = this.bandRepository.findContainsNameMatch("%" + bandNameLessBand + "%");
+            }
+
+            if (bandMatches.isEmpty()) {
+                bandMatches = this.bandPreviousNameRepository.findContainsNameMatch("%" + bandNameLessBand + "%");
+            }
+        }
+
+        if (bandNameLessBrassBand != null) {
+            if (bandMatches.isEmpty()) {
+                bandMatches = this.bandRepository.findContainsNameMatch("%" + bandNameLessBrassBand + "%");
+            }
+
+            if (bandMatches.isEmpty()) {
+                bandMatches = this.bandPreviousNameRepository.findContainsNameMatch("%" + bandNameLessBrassBand + "%");
+            }
+        }
+
+        List<BandDao> returnList = new ArrayList<>();
+
+        // remove any matches that fall outside the date context
+        for (BandDao match : bandMatches) {
+            if (match.getStartDate() != null) {
+                if (match.getStartDate().isAfter(dateContext)) {
+                    continue;
+                }
+            }
+
+            if (match.getEndDate() != null) {
+                if (match.getEndDate().isBefore(dateContext)) {
+                    continue;
+                }
+            }
+
+            returnList.add(match);
+        }
+
+        if (returnList.isEmpty()) {
+            return null;
+        }
+
+        return returnList.get(0);
     }
 
     private void validateMandatory(BandDao band){
