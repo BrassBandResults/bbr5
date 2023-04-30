@@ -209,6 +209,11 @@ public class PersonServiceImpl implements PersonService, SlugTools {
             return matchingPerson.get();
         }
 
+        Optional<PersonAliasDao> matchingAlias = this.personAliasRepository.fetchByUpperName(personName.toUpperCase());
+        if (matchingAlias.isPresent()) {
+            return matchingAlias.get().getPerson();
+        }
+
         return null;
     }
 
