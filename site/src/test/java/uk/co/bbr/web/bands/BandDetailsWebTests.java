@@ -6,7 +6,10 @@ import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import uk.co.bbr.services.bands.BandService;
 import uk.co.bbr.services.bands.dao.BandDao;
@@ -28,7 +31,9 @@ import uk.co.bbr.web.security.support.TestUser;
 
 import java.time.LocalDate;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ActiveProfiles("test")
@@ -117,6 +122,12 @@ class BandDetailsWebTests implements LoginMixin {
     }
 
     @Test
+    void testGetBandResultsForInvalidSlugFailsAsExpected() {
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/not-a-real-band", String.class));
+        assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
+    }
+
+    @Test
     void testGetBandNoWhitFridayResultsShowsNoWhitTab() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/not-rtb", String.class);
         assertTrue(response.contains("<h2>Not RTB</h2>"));
@@ -132,6 +143,12 @@ class BandDetailsWebTests implements LoginMixin {
 
         assertTrue(response.contains("Contests"));
         assertFalse(response.contains(">Whit Friday"));
+    }
+
+    @Test
+    void testGetBandWhitResultsForInvalidSlugFailsAsExpected() {
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/not-a-real-band/whits", String.class));
+        assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
     }
 
     @Test

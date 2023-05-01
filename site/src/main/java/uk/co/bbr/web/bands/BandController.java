@@ -83,6 +83,9 @@ public class BandController {
             throw new NotFoundException("Band with slug " + bandSlug + " not found");
         }
         Optional<ContestDao> contest = this.contestService.fetchBySlug(contestSlug);
+        if (contest.isEmpty()) {
+            throw new NotFoundException("Contest with slug " + bandSlug + " not found");
+        }
 
         List<BandPreviousNameDao> previousNames = this.bandService.findVisiblePreviousNames(band.get());
         BandDetailsDto bandResults = this.contestResultService.findResultsForBand(band.get(), contest.get());
@@ -124,6 +127,9 @@ public class BandController {
             throw new NotFoundException("Band with slug " + bandSlug + " not found");
         }
         Optional<ContestTagDao> tag = this.contestTagService.fetchBySlug(tagSlug);
+        if (tag.isEmpty()) {
+            throw new NotFoundException("Tag with slug " + bandSlug + " not found");
+        }
 
         List<BandPreviousNameDao> previousNames = this.bandService.findVisiblePreviousNames(band.get());
         BandDetailsDto bandResults = this.contestResultService.findResultsForBand(band.get(), tag.get());

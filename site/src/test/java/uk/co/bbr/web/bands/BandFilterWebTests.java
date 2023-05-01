@@ -6,7 +6,9 @@ import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import uk.co.bbr.services.bands.BandService;
 import uk.co.bbr.services.bands.dao.BandDao;
@@ -34,6 +36,7 @@ import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ActiveProfiles("test")
@@ -130,6 +133,18 @@ class BandFilterWebTests implements LoginMixin {
     }
 
     @Test
+    void testGetBandResultsFilteredToContestFailsWithInvalidBandSlug() {
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/not-a-real-band/yorkshire-area", String.class));
+        assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
+    }
+
+    @Test
+    void testGetBandResultsFilteredToContestFailsWithInvalidContestSlug() {
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/rothwell-temperance-band/not-a-real-contest-slug", String.class));
+        assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
+    }
+
+    @Test
     void testGetBandResultsFilteredToGroupWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/rothwell-temperance-band/UK-NATIONAL-CHAMPIONSHIPS", String.class);
 
@@ -142,6 +157,18 @@ class BandFilterWebTests implements LoginMixin {
     }
 
     @Test
+    void testGetBandResultsFilteredToGroupFailsWithInvalidBandSlug() {
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/not-a-real-band/UK-NATIONAL-CHAMPIONSHIPS", String.class));
+        assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
+    }
+
+    @Test
+    void testGetBandResultsFilteredToGroupFailsWithInvalidGroupSlug() {
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/rothwell-temperance-band/NOT-A-REAL-GROUP-SLUG", String.class));
+        assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
+    }
+
+    @Test
     void testGetBandResultsFilteredToTagWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/rothwell-temperance-band/tag/yorkshire-quality", String.class);
 
@@ -151,6 +178,18 @@ class BandFilterWebTests implements LoginMixin {
         assertTrue(response.contains(">Hardraw Scar Contest<"));
         assertFalse(response.contains(">National Finals<"));
         assertFalse(response.contains(">Broadoak (Whit Friday)<"));
+    }
+
+    @Test
+    void testGetBandResultsFilteredToTagFailsWithInvalidBandSlug() {
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/not-a-real-band/tag/yorkshire-quality", String.class));
+        assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
+    }
+
+    @Test
+    void testGetBandResultsFilteredToTagFailsWithInvalidTagSlug() {
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/rothwell-temperance-band/tag/not-a-real-tag-slug", String.class));
+        assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
     }
 }
 
