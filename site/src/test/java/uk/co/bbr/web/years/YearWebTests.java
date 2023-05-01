@@ -107,5 +107,13 @@ class YearWebTests implements LoginMixin {
         assertTrue(response.contains(">2004<"));
         assertFalse(response.contains(">2005<"));
     }
+
+    @Test
+    void testSingleYearPageReturnsSuccessfully() {
+        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/years/2000", String.class);
+        assertTrue(response.contains("<title>Contests in 2000 - Brass Band Results</title>"));
+
+        assertTrue(response.contains(">Yorkshire Area<"));
+    }
 }
 

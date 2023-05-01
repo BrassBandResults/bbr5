@@ -168,7 +168,7 @@ public class ContestEventServiceImpl implements ContestEventService {
     public Optional<ContestEventDao> fetchEvent(String contestSlug, LocalDate contestEventDate) {
         Optional<ContestDao> contest = this.contestRepository.fetchBySlug(contestSlug);
         if (contest.isEmpty()) {
-            throw new NotFoundException("Contest with slug " + contestSlug + " not found");
+            return Optional.empty();
         }
         return this.contestEventRepository.fetchByContestAndDate(contest.get().getId(), contestEventDate);
     }
