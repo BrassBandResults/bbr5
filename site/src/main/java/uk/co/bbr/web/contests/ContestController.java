@@ -26,30 +26,6 @@ public class ContestController {
     private final ContestEventService contestEventService;
     private final ContestResultService contestResultService;
 
-    @GetMapping("/contests")
-    public String contestListHome(Model model) {
-        return contestListLetter(model, "A");
-    }
-
-    @GetMapping("/contests/{letter:[A-Z0-9]{1}}")
-    public String contestListLetter(Model model, @PathVariable("letter") String letter) {
-        ContestListDto contests = this.contestService.listContestsStartingWith(letter);
-
-        model.addAttribute("ContestPrefixLetter", letter);
-        model.addAttribute("Contests", contests);
-        return "contests/contests/contests";
-    }
-
-    @GetMapping("/contests/ALL")
-    public String contestListAll(Model model) {
-        ContestListDto contests = this.contestService.listContestsStartingWith("ALL");
-
-        model.addAttribute("ContestPrefixLetter", "ALL");
-        model.addAttribute("Contests", contests);
-        return "contests/contests/contests";
-    }
-
-
     @GetMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}")
     public String contestDetails(Model model, @PathVariable String contestSlug) {
         Optional<ContestDao> contest = this.contestService.fetchBySlug(contestSlug);
