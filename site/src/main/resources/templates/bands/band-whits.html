@@ -38,7 +38,7 @@
     </table>
 
     <ul class="nav nav-tabs">
-        <li class="nav-item">
+        <li class="nav-item" th:if="${ResultsCount > 0}">
             <a class="nav-link" th:href="${'/bands/' + Band.slug}" th:text="#{page.band.tab.contests(${ResultsCount})}">Contests</span></a>
         </li>
         <li class="nav-item">

@@ -61,6 +61,7 @@ class BandDetailsWebTests implements LoginMixin {
 
         BandDao rtb = this.bandService.create("Rothwell Temperance Band", yorkshire);
         BandDao notRtb = this.bandService.create("Not RTB", yorkshire);
+        BandDao whitOnlyBand = this.bandService.create("Whit Band", yorkshire);
 
         PersonDao davidRoberts = this.personService.create("Roberts", "David");
         PersonDao johnRoberts = this.personService.create("Roberts", "John");
@@ -96,6 +97,7 @@ class BandDetailsWebTests implements LoginMixin {
         this.contestResultService.addResult(yorkshireArea2004, "1", notRtb, duncanBeckley);
 
         this.contestResultService.addResult(broadoakWhitFriday2010, "3", rtb, davidRoberts);
+        this.contestResultService.addResult(broadoakWhitFriday2010, "4", whitOnlyBand, duncanBeckley);
 
         logoutTestUser();
     }
@@ -141,8 +143,17 @@ class BandDetailsWebTests implements LoginMixin {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/not-rtb/whits", String.class);
         assertTrue(response.contains("<h2>Not RTB</h2>"));
 
-        assertTrue(response.contains("Contests"));
-        assertFalse(response.contains(">Whit Friday"));
+        assertTrue(response.contains(">Contests ("));
+        assertFalse(response.contains(">Whit Friday ("));
+    }
+
+    @Test
+    void testGetBandResultsTabRedirectsToWhitListWhenOnlyWhitResults() {
+        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/whit-band", String.class);
+        assertTrue(response.contains("<h2>Whit Band</h2>"));
+
+        assertFalse(response.contains(">Contests ("));
+        assertTrue(response.contains(">Whit Friday ("));
     }
 
     @Test
