@@ -5,8 +5,8 @@
 </head>
 <body>
 <div layout:fragment="content">
-    <span th:if="${BandPrefixLetter == 'ALL'}"><h2><span th:text="#{page.groups.page-title}" th:remove="tag">All Groups</span></h2></span>
-    <span th:if="${BandPrefixLetter != 'ALL'}"><h2><span th:text="#{page.groups.groups-starting-with(${GroupPrefixLetter})}" th:remove="tag">Contests Groups starting with R</span></h2></span>
+    <h2 th:if="${GroupPrefixLetter == 'ALL'}"><span th:text="#{page.groups.page-title}" th:remove="tag">All Groups</span></h2>
+    <h2 th:if="${GroupPrefixLetter != 'ALL'}"><span th:text="#{page.groups.groups-starting-with(${GroupPrefixLetter})}" th:remove="tag">Contest Groups starting with R</span></h2>
     <p>
         <span th:text="#{page.groups.group-counts(${Groups.returnedGroupsCount},${Groups.allGroupsCount})}" th:remove="tag">Showing 1 of 6 groups.</span>
         <span th:text="#{page.groups.group-list-header}" th:remove="tag">This is a list of current or last known names, alternative group names can be found by search.</span>
