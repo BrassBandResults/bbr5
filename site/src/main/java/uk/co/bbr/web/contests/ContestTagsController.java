@@ -40,7 +40,7 @@ public class ContestTagsController {
         return "contests/tags/tags";
     }
 
-    @GetMapping("/tags/{slug}")
+    @GetMapping("/tags/{slug:[\\-a-z\\d]{2,}}")
     public String showSpecificContestTag(Model model, @PathVariable("slug") String slug) {
         ContestTagDetailsDto tagDetails = this.contestTagService.fetchDetailsBySlug(slug);
 
