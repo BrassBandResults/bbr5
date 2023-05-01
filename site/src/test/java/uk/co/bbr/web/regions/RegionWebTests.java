@@ -8,7 +8,9 @@ import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import uk.co.bbr.services.bands.BandService;
 import uk.co.bbr.services.bands.dao.BandDao;
@@ -23,6 +25,7 @@ import uk.co.bbr.web.security.support.TestUser;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ActiveProfiles("test")
@@ -95,9 +98,21 @@ class RegionWebTests implements LoginMixin {
     }
 
     @Test
+    void testGetYorkshireRegionLinksPageWithInvalidSlugFails() {
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/regions/not-a-region-slug/links", String.class));
+        assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
+    }
+
+    @Test
     void testGetYorkshireExtinctBandsGeoJsonWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/regions/yorkshire/status.extinct/bands.json", String.class);
         DocumentContext parsedJson = JsonPath.parse(response);
         assertEquals("FeatureCollection", parsedJson.read("$['type']"));
+    }
+
+    @Test
+    void testGetYorkshireExtinctBandsGeoJsonWithInvalidSlugFails() {
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/regions/not-a-region-slug/status.extinct/bands.json", String.class));
+        assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
     }
 }

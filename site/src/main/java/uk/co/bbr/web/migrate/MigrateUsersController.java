@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import uk.co.bbr.services.framework.annotations.IgnoreCoverage;
 import uk.co.bbr.services.security.dao.BbrUserDao;
 import uk.co.bbr.services.security.dao.UserRole;
 import uk.co.bbr.services.security.repo.BbrUserRepository;
@@ -31,6 +32,7 @@ import static uk.co.bbr.web.migrate.MigrateController.BASE_PATH;
 
 @Controller
 @RequiredArgsConstructor
+@IgnoreCoverage
 public class MigrateUsersController {
 
     private final BbrUserRepository bbrUserRepository;

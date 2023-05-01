@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import uk.co.bbr.services.framework.annotations.IgnoreCoverage;
 import uk.co.bbr.services.migrate.BandMigrationService;
 import uk.co.bbr.services.migrate.ContestMigrationService;
 import uk.co.bbr.services.migrate.GroupMigrationService;
@@ -27,6 +28,7 @@ import java.util.Objects;
 
 @Controller
 @RequiredArgsConstructor
+@IgnoreCoverage
 public class MigrateController {
     protected static final String BASE_PATH = "/tmp/bbr";
 

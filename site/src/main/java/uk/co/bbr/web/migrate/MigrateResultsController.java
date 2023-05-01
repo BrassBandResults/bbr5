@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import uk.co.bbr.services.framework.annotations.IgnoreCoverage;
 import uk.co.bbr.web.security.annotations.IsBbrAdmin;
 
 import java.io.File;
@@ -24,6 +25,7 @@ import static uk.co.bbr.web.migrate.MigrateController.BASE_PATH;
 
 @Controller
 @RequiredArgsConstructor
+@IgnoreCoverage
 public class MigrateResultsController {
 
     private final JdbcTemplate jdbcTemplate;

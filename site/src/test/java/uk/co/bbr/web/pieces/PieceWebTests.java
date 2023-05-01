@@ -6,7 +6,9 @@ import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import uk.co.bbr.services.people.PersonService;
 import uk.co.bbr.services.people.dao.PersonDao;
@@ -18,11 +20,13 @@ import uk.co.bbr.services.security.ex.AuthenticationFailedException;
 import uk.co.bbr.web.LoginMixin;
 import uk.co.bbr.web.security.support.TestUser;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ActiveProfiles("test")
-@SpringBootTest(properties = { "spring.config.name=piece-list-web-tests-admin-h2", "spring.datasource.url=jdbc:h2:mem:piece-list-web-tests-admin-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE", "spring.jpa.database-platform=org.hibernate.dialect.SQLServerDialect"},
+@SpringBootTest(properties = { "spring.config.name=piece-single-web-tests-admin-h2", "spring.datasource.url=jdbc:h2:mem:piece-single-web-tests-admin-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE", "spring.jpa.database-platform=org.hibernate.dialect.SQLServerDialect"},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class PieceWebTests implements LoginMixin {
@@ -57,6 +61,12 @@ class PieceWebTests implements LoginMixin {
     void testSinglePiecePageWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/pieces/hootenanny", String.class);
         assertTrue(response.contains("<h2>Hootenanny</h2>"));
+    }
+
+    @Test
+    void testGetPersonDetailsPageFailsWithInvalidSlug() {
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/pieces/not-a-real-piece", String.class));
+        assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
     }
 
 }
