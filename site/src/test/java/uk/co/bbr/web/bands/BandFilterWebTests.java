@@ -11,10 +11,14 @@ import org.springframework.web.client.RestTemplate;
 import uk.co.bbr.services.bands.BandService;
 import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.contests.ContestEventService;
+import uk.co.bbr.services.contests.ContestGroupService;
 import uk.co.bbr.services.contests.ContestResultService;
 import uk.co.bbr.services.contests.ContestService;
+import uk.co.bbr.services.contests.ContestTagService;
 import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.contests.dao.ContestEventDao;
+import uk.co.bbr.services.contests.dao.ContestGroupDao;
+import uk.co.bbr.services.contests.dao.ContestTagDao;
 import uk.co.bbr.services.contests.types.ContestEventDateResolution;
 import uk.co.bbr.services.people.PersonService;
 import uk.co.bbr.services.people.dao.PersonDao;
@@ -28,14 +32,15 @@ import uk.co.bbr.web.security.support.TestUser;
 
 import java.time.LocalDate;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ActiveProfiles("test")
-@SpringBootTest(properties = { "spring.config.name=band-details-web-tests-admin-h2", "spring.datasource.url=jdbc:h2:mem:band-details-web-tests-admin-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE", "spring.jpa.database-platform=org.hibernate.dialect.SQLServerDialect"},
+@SpringBootTest(properties = { "spring.config.name=band-filter-web-tests-admin-h2", "spring.datasource.url=jdbc:h2:mem:band-filter-web-tests-admin-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE", "spring.jpa.database-platform=org.hibernate.dialect.SQLServerDialect"},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class BandDetailsWebTests implements LoginMixin {
+class BandFilterWebTests implements LoginMixin {
 
     @Autowired private SecurityService securityService;
     @Autowired private JwtService jwtService;
@@ -43,6 +48,8 @@ class BandDetailsWebTests implements LoginMixin {
     @Autowired private BandService bandService;
     @Autowired private ContestService contestService;
     @Autowired private ContestEventService contestEventService;
+    @Autowired private ContestGroupService contestGroupService;
+    @Autowired private ContestTagService contestTagService;
     @Autowired private ContestResultService contestResultService;
     @Autowired private PersonService personService;
     @Autowired private RestTemplate restTemplate;
@@ -61,16 +68,28 @@ class BandDetailsWebTests implements LoginMixin {
         PersonDao johnRoberts = this.personService.create("Roberts", "John");
         PersonDao duncanBeckley = this.personService.create("Beckley", "Duncan");
 
+        ContestGroupDao ukNationalChamps = this.contestGroupService.create("UK National Championships");
+        ContestTagDao yorkshireTag = this.contestTagService.create("Yorkshire Quality");
+
         ContestDao yorkshireArea = this.contestService.create("Yorkshire Area");
+        yorkshireArea = this.contestService.addContestToGroup(yorkshireArea, ukNationalChamps);
+        yorkshireArea = this.contestService.addContestTag(yorkshireArea, yorkshireTag);
+        ContestDao hardrawScar = this.contestService.create("Hardraw Scar Contest");
+        hardrawScar = this.contestService.addContestTag(hardrawScar, yorkshireTag);
+        ContestDao nationalFinals = this.contestService.create("National Finals");
+        nationalFinals = this.contestService.addContestToGroup(nationalFinals, ukNationalChamps);
         ContestDao broadoakWhitFriday = this.contestService.create("Broadoak (Whit Friday)");
 
         ContestEventDao yorkshireArea2000 = this.contestEventService.create(yorkshireArea, LocalDate.of(2000, 3, 1));
         yorkshireArea2000.setEventDateResolution(ContestEventDateResolution.MONTH_AND_YEAR);
         yorkshireArea2000 = this.contestEventService.update(yorkshireArea2000);
         ContestEventDao yorkshireArea2001 = this.contestEventService.create(yorkshireArea, LocalDate.of(2001, 3, 5));
+        ContestEventDao hardrawScar2001 = this.contestEventService.create(hardrawScar, LocalDate.of(2001, 6, 5));
         ContestEventDao yorkshireArea2002 = this.contestEventService.create(yorkshireArea, LocalDate.of(2002, 3, 7));
         ContestEventDao yorkshireArea2003 = this.contestEventService.create(yorkshireArea, LocalDate.of(2003, 3, 10));
+        ContestEventDao nationalFinals2003 = this.contestEventService.create(nationalFinals, LocalDate.of(2003, 9, 10));
         ContestEventDao yorkshireArea2004 = this.contestEventService.create(yorkshireArea, LocalDate.of(2004, 3, 1));
+        ContestEventDao nationalFinals2004 = this.contestEventService.create(nationalFinals, LocalDate.of(2004, 9, 1));
         yorkshireArea2004.setEventDateResolution(ContestEventDateResolution.YEAR);
         yorkshireArea2004 = this.contestEventService.update(yorkshireArea2004);
 
@@ -81,14 +100,17 @@ class BandDetailsWebTests implements LoginMixin {
 
         this.contestResultService.addResult(yorkshireArea2001, "2", rtb, davidRoberts);
         this.contestResultService.addResult(yorkshireArea2001, "1", notRtb, johnRoberts);
+        this.contestResultService.addResult(hardrawScar2001, "5", rtb, johnRoberts);
 
         this.contestResultService.addResult(yorkshireArea2002, "5", rtb, johnRoberts);
         this.contestResultService.addResult(yorkshireArea2002, "2", notRtb, davidRoberts);
 
         this.contestResultService.addResult(yorkshireArea2003, "3", notRtb, davidRoberts);
+        this.contestResultService.addResult(nationalFinals2003, "10", rtb, davidRoberts);
 
         this.contestResultService.addResult(yorkshireArea2004, "1", rtb, davidRoberts);
         this.contestResultService.addResult(yorkshireArea2004, "1", notRtb, duncanBeckley);
+        this.contestResultService.addResult(nationalFinals2004, "12", rtb, duncanBeckley);
 
         this.contestResultService.addResult(broadoakWhitFriday2010, "3", rtb, davidRoberts);
 
@@ -96,60 +118,39 @@ class BandDetailsWebTests implements LoginMixin {
     }
 
     @Test
-    void testGetBandResultsWorksSuccessfully() {
-        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/rothwell-temperance-band", String.class);
-        assertTrue(response.contains("<h2>Rothwell Temperance Band</h2>"));
+    void testGetBandResultsFilteredToContestWorksSuccessfully() {
+        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/rothwell-temperance-band/yorkshire-area", String.class);
 
-        assertTrue(response.contains(">Contests (4)<"));
-        assertTrue(response.contains(">Whit Friday (1)<"));
+        assertTrue(response.contains("<h2>Rothwell Temperance Band</h2>"));
 
         assertTrue(response.contains(">Yorkshire Area<"));
-
-        assertTrue(response.contains(">2004<"));
-        assertFalse(response.contains(">10 Mar 2003<"));
-        assertTrue(response.contains(">07 Mar 2002<"));
-        assertTrue(response.contains(">05 Mar 2001<"));
-        assertTrue(response.contains(">Mar 2000<"));
-
-        assertTrue(response.contains(">David Roberts<"));
-        assertTrue(response.contains(">John Roberts<"));
-        assertFalse(response.contains(">Duncan Beckley<"));
+        assertFalse(response.contains(">Hardraw Scar Contest<"));
+        assertFalse(response.contains(">National Finals<"));
+        assertFalse(response.contains(">Broadoak (Whit Friday)<"));
     }
 
     @Test
-    void testGetBandNoWhitFridayResultsShowsNoWhitTab() {
-        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/not-rtb", String.class);
-        assertTrue(response.contains("<h2>Not RTB</h2>"));
+    void testGetBandResultsFilteredToGroupWorksSuccessfully() {
+        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/rothwell-temperance-band/UK-NATIONAL-CHAMPIONSHIPS", String.class);
 
-        assertTrue(response.contains("Contests"));
-        assertFalse(response.contains(">Whit Friday"));
-    }
-
-    @Test
-    void testGetBandWhitsTabRedirectsToResultsListWhenNoWhitResults() {
-        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/not-rtb/whits", String.class);
-        assertTrue(response.contains("<h2>Not RTB</h2>"));
-
-        assertTrue(response.contains("Contests"));
-        assertFalse(response.contains(">Whit Friday"));
-    }
-
-    @Test
-    void testGetBandWhitResultsWorksSuccessfully() {
-        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/rothwell-temperance-band/whits", String.class);
         assertTrue(response.contains("<h2>Rothwell Temperance Band</h2>"));
 
-        assertTrue(response.contains(">Contests (4)<"));
-        assertTrue(response.contains(">Whit Friday (1)<"));
-
-        assertTrue(response.contains(">Broadoak (Whit Friday)<"));
-
-        assertFalse(response.contains(">5 Nay 2010<"));
-
-        assertTrue(response.contains(">David Roberts<"));
-        assertFalse(response.contains(">John Roberts<"));
-        assertFalse(response.contains(">Duncan Beckley<"));
+        assertTrue(response.contains(">Yorkshire Area<"));
+        assertFalse(response.contains(">Hardraw Scar Contest<"));
+        assertTrue(response.contains(">National Finals<"));
+        assertFalse(response.contains(">Broadoak (Whit Friday)<"));
     }
 
+    @Test
+    void testGetBandResultsFilteredToTagWorksSuccessfully() {
+        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/rothwell-temperance-band/tag/yorkshire-quality", String.class);
+
+        assertTrue(response.contains("<h2>Rothwell Temperance Band</h2>"));
+
+        assertTrue(response.contains(">Yorkshire Area<"));
+        assertTrue(response.contains(">Hardraw Scar Contest<"));
+        assertFalse(response.contains(">National Finals<"));
+        assertFalse(response.contains(">Broadoak (Whit Friday)<"));
+    }
 }
 

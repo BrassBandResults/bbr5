@@ -59,9 +59,10 @@ public class ContestGroupDao extends AbstractDao implements NameTools {
 
     public void setSlug(String value) {
         if (value != null) {
-            value = value.trim();
+            this.slug = value.trim().toUpperCase();
+        } else {
+            this.slug = null;
         }
-        this.slug = value;
     }
 
     public String getSlug() {

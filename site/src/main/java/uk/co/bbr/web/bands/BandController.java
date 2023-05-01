@@ -102,6 +102,9 @@ public class BandController {
             throw new NotFoundException("Band with slug " + bandSlug + " not found");
         }
         Optional<ContestGroupDao> group = this.contestGroupService.fetchBySlug(groupSlug);
+        if (group.isEmpty()) {
+            throw new NotFoundException("Group with slug " + groupSlug + " not found");
+        }
 
         List<BandPreviousNameDao> previousNames = this.bandService.findVisiblePreviousNames(band.get());
         BandDetailsDto bandResults = this.contestResultService.findResultsForBand(band.get(), group.get());

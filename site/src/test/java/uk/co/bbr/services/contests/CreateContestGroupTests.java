@@ -53,7 +53,7 @@ class CreateContestGroupTests implements LoginMixin {
         ValidationException ex = assertThrows(ValidationException.class, ()-> {ContestGroupDao GroupDuplicate = this.contestGroupService.create("Group 1");});
 
         // assert
-        assertEquals("Contest Group with name Group 1 already exists.", ex.getMessage());
+        assertEquals("Contest Group with slug GROUP-1 already exists.", ex.getMessage());
 
         logoutTestUser();
     }

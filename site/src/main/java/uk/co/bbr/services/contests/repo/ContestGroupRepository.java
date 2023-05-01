@@ -13,8 +13,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ContestGroupRepository extends JpaRepository<ContestGroupDao, Long> {
-    @Query("SELECT g FROM ContestGroupDao g WHERE g.slug = :slug")
-    Optional<ContestGroupDao> fetchBySlug(String slug);
+    @Query("SELECT g FROM ContestGroupDao g WHERE UPPER(g.slug) = :slugUpper")
+    Optional<ContestGroupDao> fetchBySlug(String slugUpper);
     @Query("SELECT g FROM ContestGroupDao g WHERE g.name = :name")
     Optional<ContestGroupDao> fetchByName(String name);
 

@@ -163,7 +163,7 @@ public class ContestGroupServiceImpl implements ContestGroupService, SlugTools {
 
     @Override
     public Optional<ContestGroupDao> fetchBySlug(String groupSlug) {
-        return this.contestGroupRepository.fetchBySlug(groupSlug);
+        return this.contestGroupRepository.fetchBySlug(groupSlug.toUpperCase());
     }
 
     @Override
@@ -198,7 +198,7 @@ public class ContestGroupServiceImpl implements ContestGroupService, SlugTools {
 
     @Override
     public ContestGroupDetailsDto fetchDetailBySlug(String groupSlug) {
-        Optional<ContestGroupDao> contestGroup = this.contestGroupRepository.fetchBySlug(groupSlug);
+        Optional<ContestGroupDao> contestGroup = this.contestGroupRepository.fetchBySlug(groupSlug.toUpperCase());
         if (contestGroup.isEmpty()) {
             throw new NotFoundException("Group with slug " + groupSlug + " not found");
         }
@@ -212,7 +212,7 @@ public class ContestGroupServiceImpl implements ContestGroupService, SlugTools {
 
     @Override
     public ContestGroupYearsDetailsDto fetchYearsBySlug(String groupSlug) {
-        Optional<ContestGroupDao> contestGroup = this.contestGroupRepository.fetchBySlug(groupSlug);
+        Optional<ContestGroupDao> contestGroup = this.contestGroupRepository.fetchBySlug(groupSlug.toUpperCase());
         if (contestGroup.isEmpty()) {
             throw new NotFoundException("Group with slug " + groupSlug + " not found");
         }
@@ -239,7 +239,7 @@ public class ContestGroupServiceImpl implements ContestGroupService, SlugTools {
 
     @Override
     public ContestGroupYearDto fetchEventsByGroupSlugAndYear(String groupSlug, Integer year) {
-        Optional<ContestGroupDao> contestGroup = this.contestGroupRepository.fetchBySlug(groupSlug);
+        Optional<ContestGroupDao> contestGroup = this.contestGroupRepository.fetchBySlug(groupSlug.toUpperCase());
         if (contestGroup.isEmpty()) {
             throw new NotFoundException("Group with slug " + groupSlug + " not found");
         }

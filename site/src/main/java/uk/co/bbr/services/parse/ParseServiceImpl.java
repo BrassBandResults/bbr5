@@ -9,6 +9,7 @@ import uk.co.bbr.services.people.PersonService;
 import uk.co.bbr.services.people.dao.PersonDao;
 
 import java.time.LocalDate;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -32,7 +33,7 @@ public class ParseServiceImpl implements ParseService {
         if (matcher.matches()) {
             parsedResult.setParseSuccess(true);
 
-            parsedResult.setRawPosition(matcher.group(1));
+            parsedResult.setRawPosition(matcher.group(1).toUpperCase());
             parsedResult.setRawBandName(matcher.group(2));
             parsedResult.setRawConductorName(matcher.group(3));
             parsedResult.setRawDraw(matcher.group(4));

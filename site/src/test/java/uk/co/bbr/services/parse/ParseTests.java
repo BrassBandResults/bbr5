@@ -268,6 +268,31 @@ class ParseTests implements LoginMixin {
     }
 
     @Test
+    void testParseContestResultWithdrawalLowerCaseResultWorks() {
+        // arrange
+        String testEntry = "w. Black Dyke Band, John Roberts, 11";
+
+        // act
+        ParseResultDto parseResult = this.parseService.parseLine(testEntry, LocalDate.now());
+
+        // assert
+        assertTrue(parseResult.isParseSuccess());
+
+        assertEquals("W", parseResult.getRawPosition());
+        assertEquals("Black Dyke Band", parseResult.getRawBandName());
+        assertEquals("John Roberts", parseResult.getRawConductorName());
+        assertEquals("11", parseResult.getRawDraw());
+        assertEquals("", parseResult.getRawPoints());
+
+        assertTrue(parseResult.isMatchSuccess());
+
+        assertEquals("black-dyke-band", parseResult.getMatchedBand().getSlug());
+        assertEquals("john-roberts", parseResult.getMatchedConductor().getSlug());
+        assertEquals("Roberts", parseResult.getMatchedConductor().getSurname());
+        assertEquals("John", parseResult.getMatchedConductor().getFirstNames());
+    }
+
+    @Test
     void testParseContestResultDisqualifiedResultWorks() {
         // arrange
         String testEntry = "D. Wallace Arnold (Rothwell) Band, John Roberts, 11";
@@ -290,6 +315,31 @@ class ParseTests implements LoginMixin {
         assertEquals("john-roberts", parseResult.getMatchedConductor().getSlug());
         assertEquals("Roberts", parseResult.getMatchedConductor().getSurname());
         assertEquals("John", parseResult.getMatchedConductor().getFirstNames());
+    }
+
+    @Test
+    void testParseContestResultDisqualifiedLowerCaseResultWorks() {
+        // arrange
+        String testEntry = "d. Rothwell Temperance B, David Roberts, 2";
+
+        // act
+        ParseResultDto parseResult = this.parseService.parseLine(testEntry, LocalDate.now());
+
+        // assert
+        assertTrue(parseResult.isParseSuccess());
+
+        assertEquals("D", parseResult.getRawPosition());
+        assertEquals("Rothwell Temperance B", parseResult.getRawBandName());
+        assertEquals("David Roberts", parseResult.getRawConductorName());
+        assertEquals("2", parseResult.getRawDraw());
+        assertEquals("", parseResult.getRawPoints());
+
+        assertTrue(parseResult.isMatchSuccess());
+
+        assertEquals("rothwell-temperance-b", parseResult.getMatchedBand().getSlug());
+        assertEquals("david-roberts", parseResult.getMatchedConductor().getSlug());
+        assertEquals("Roberts", parseResult.getMatchedConductor().getSurname());
+        assertEquals("David", parseResult.getMatchedConductor().getFirstNames());
     }
 
     @Test
@@ -417,31 +467,6 @@ class ParseTests implements LoginMixin {
     void testParseContestResultBandCanBeFoundByRemovingBandSuffixSuccessfully() {
         // arrange
         String testEntry = "D. Rothwell Temperance B Band, John Roberts, 11";
-
-        // act
-        ParseResultDto parseResult = this.parseService.parseLine(testEntry, LocalDate.now());
-
-        // assert
-        assertTrue(parseResult.isParseSuccess());
-
-        assertEquals("D", parseResult.getRawPosition());
-        assertEquals("Rothwell Temperance B Band", parseResult.getRawBandName());
-        assertEquals("John Roberts", parseResult.getRawConductorName());
-        assertEquals("11", parseResult.getRawDraw());
-        assertEquals("", parseResult.getRawPoints());
-
-        assertTrue(parseResult.isMatchSuccess());
-
-        assertEquals("rothwell-temperance-b", parseResult.getMatchedBand().getSlug());
-        assertEquals("john-roberts", parseResult.getMatchedConductor().getSlug());
-        assertEquals("Roberts", parseResult.getMatchedConductor().getSurname());
-        assertEquals("John", parseResult.getMatchedConductor().getFirstNames());
-    }
-
-    @Test
-    void testParseContestResultBandCanBeFoundByRemovingBrassBandPrefixSuccessfully() {
-        // arrange
-        String testEntry = "D. BrassBand Rothwell Temperance B, John Roberts, 11";
 
         // act
         ParseResultDto parseResult = this.parseService.parseLine(testEntry, LocalDate.now());
