@@ -1,6 +1,7 @@
 package uk.co.bbr.services.migrate;
 
 import org.jdom2.Element;
+import uk.co.bbr.services.framework.annotations.IgnoreCoverage;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.services.security.dao.BbrUserDao;
 
@@ -9,6 +10,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
+@IgnoreCoverage
 public class AbstractMigrationServiceImpl {
 
     protected final String createUser(String username, SecurityService securityService) {

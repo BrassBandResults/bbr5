@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.jdom2.Element;
 import org.springframework.stereotype.Service;
 import uk.co.bbr.services.framework.NotFoundException;
+import uk.co.bbr.services.framework.annotations.IgnoreCoverage;
 import uk.co.bbr.services.framework.mixins.SlugTools;
 import uk.co.bbr.services.regions.RegionService;
 import uk.co.bbr.services.regions.dao.RegionDao;
@@ -17,6 +18,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@IgnoreCoverage
 public class VenueMigrationServiceImpl extends AbstractMigrationServiceImpl implements VenueMigrationService, SlugTools {
 
     private final SecurityService securityService;

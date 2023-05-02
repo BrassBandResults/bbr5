@@ -10,6 +10,7 @@ import uk.co.bbr.services.contests.dao.ContestGroupDao;
 import uk.co.bbr.services.contests.dao.ContestTagDao;
 import uk.co.bbr.services.contests.types.ContestGroupType;
 import uk.co.bbr.services.framework.NotFoundException;
+import uk.co.bbr.services.framework.annotations.IgnoreCoverage;
 import uk.co.bbr.services.framework.mixins.SlugTools;
 import uk.co.bbr.services.security.SecurityService;
 
@@ -18,6 +19,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@IgnoreCoverage
 public class GroupMigrationServiceImpl extends AbstractMigrationServiceImpl implements GroupMigrationService, SlugTools {
     private final SecurityService securityService;
     private final ContestGroupService contestGroupService;

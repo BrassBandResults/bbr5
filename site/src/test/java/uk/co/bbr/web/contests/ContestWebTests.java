@@ -5,22 +5,19 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import uk.co.bbr.services.bands.BandService;
-import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.contests.ContestEventService;
 import uk.co.bbr.services.contests.ContestResultService;
 import uk.co.bbr.services.contests.ContestService;
 import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.contests.dao.ContestEventDao;
 import uk.co.bbr.services.people.PersonService;
-import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.regions.RegionService;
-import uk.co.bbr.services.regions.dao.RegionDao;
 import uk.co.bbr.services.security.JwtService;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.services.security.ex.AuthenticationFailedException;
@@ -65,7 +62,6 @@ class ContestWebTests implements LoginMixin {
     void testGetContestPageWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/contests/yorkshire-area", String.class);
         assertTrue(response.contains(">Yorkshire Area<"));
-
     }
 
     @Test
@@ -78,7 +74,6 @@ class ContestWebTests implements LoginMixin {
     void testGetContestOwnChoicePageWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/contests/yorkshire-area/own-choice", String.class);
         assertTrue(response.contains(">Yorkshire Area<"));
-
     }
 
     @Test
@@ -91,7 +86,6 @@ class ContestWebTests implements LoginMixin {
     void testGetContestWinsPageWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/contests/yorkshire-area/wins", String.class);
         assertTrue(response.contains(">Yorkshire Area<"));
-
     }
 
     @Test

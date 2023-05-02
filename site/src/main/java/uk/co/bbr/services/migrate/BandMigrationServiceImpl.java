@@ -21,6 +21,7 @@ import uk.co.bbr.services.contests.repo.ContestAliasRepository;
 import uk.co.bbr.services.contests.repo.ContestRepository;
 import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.framework.ValidationException;
+import uk.co.bbr.services.framework.annotations.IgnoreCoverage;
 import uk.co.bbr.services.framework.mixins.SlugTools;
 import uk.co.bbr.services.regions.RegionService;
 import uk.co.bbr.services.regions.dao.RegionDao;
@@ -39,6 +40,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@IgnoreCoverage
 public class BandMigrationServiceImpl extends AbstractMigrationServiceImpl implements BandMigrationService, SlugTools {
 
     private final RegionService regionService;

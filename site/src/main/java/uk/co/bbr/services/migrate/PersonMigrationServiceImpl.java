@@ -3,6 +3,7 @@ package uk.co.bbr.services.migrate;
 import lombok.RequiredArgsConstructor;
 import org.jdom2.Element;
 import org.springframework.stereotype.Service;
+import uk.co.bbr.services.framework.annotations.IgnoreCoverage;
 import uk.co.bbr.services.framework.mixins.SlugTools;
 import uk.co.bbr.services.people.PersonService;
 import uk.co.bbr.services.people.dao.PersonAliasDao;
@@ -14,6 +15,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@IgnoreCoverage
 public class PersonMigrationServiceImpl extends AbstractMigrationServiceImpl implements PersonMigrationService, SlugTools {
 
     private final PersonService personService;

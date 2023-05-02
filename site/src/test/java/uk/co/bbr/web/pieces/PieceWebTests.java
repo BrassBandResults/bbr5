@@ -5,20 +5,31 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
+import uk.co.bbr.services.bands.BandService;
+import uk.co.bbr.services.bands.dao.BandDao;
+import uk.co.bbr.services.contests.ContestEventService;
+import uk.co.bbr.services.contests.ContestResultService;
+import uk.co.bbr.services.contests.ContestService;
+import uk.co.bbr.services.contests.dao.ContestDao;
+import uk.co.bbr.services.contests.dao.ContestEventDao;
+import uk.co.bbr.services.contests.dao.ContestResultDao;
 import uk.co.bbr.services.people.PersonService;
 import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.pieces.PieceService;
+import uk.co.bbr.services.pieces.dao.PieceDao;
 import uk.co.bbr.services.pieces.types.PieceCategory;
 import uk.co.bbr.services.security.JwtService;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.services.security.ex.AuthenticationFailedException;
 import uk.co.bbr.web.LoginMixin;
 import uk.co.bbr.web.security.support.TestUser;
+
+import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -33,8 +44,12 @@ class PieceWebTests implements LoginMixin {
 
     @Autowired private SecurityService securityService;
     @Autowired private JwtService jwtService;
-    @Autowired private PieceService pieceService;
+    @Autowired private BandService bandService;
     @Autowired private PersonService personService;
+    @Autowired private PieceService pieceService;
+    @Autowired private ContestService contestService;
+    @Autowired private ContestEventService contestEventService;
+    @Autowired private ContestResultService contestResultService;
     @Autowired private RestTemplate restTemplate;
     @LocalServerPort private int port;
 
@@ -48,19 +63,44 @@ class PieceWebTests implements LoginMixin {
         PersonDao composer4 = this.personService.create("Composer", "4");
 
         this.pieceService.create("Journey To The Centre Of The Earth", PieceCategory.TEST_PIECE, composer2);
-        this.pieceService.create("Contest Music", PieceCategory.TEST_PIECE, composer1);
+        PieceDao contestMusic = this.pieceService.create("Contest Music", PieceCategory.TEST_PIECE, composer1);
         this.pieceService.create("Contest Test Piece", PieceCategory.TEST_PIECE, composer1);
-        this.pieceService.create("Hootenanny", PieceCategory.ENTERTAINMENT, composer3);
+        PieceDao hootenanny = this.pieceService.create("Hootenanny", PieceCategory.ENTERTAINMENT, composer3);
         this.pieceService.create("T'Wizard", PieceCategory.MARCH, composer4);
         this.pieceService.create("Aardvark", PieceCategory.ENTERTAINMENT, composer2);
+
+        BandDao rtb = this.bandService.create("Rothwell Temperance");
+        PersonDao davidRoberts = this.personService.create("Roberts", "David");
+
+        ContestDao yorkshireArea = this.contestService.create("Yorkshire Area");
+        ContestEventDao yorkshireArea2011 = this.contestEventService.create(yorkshireArea, LocalDate.of(2011, 3, 1));
+        ContestResultDao yorkshireResult = this.contestResultService.addResult(yorkshireArea2011, "1", rtb, davidRoberts);
+
+        ContestDao midlandsArea = this.contestService.create("Midlands Area");
+        ContestEventDao midlandsArea2011 = this.contestEventService.create(midlandsArea, LocalDate.of(2011, 3, 1));
+        ContestResultDao midlandsResult = this.contestResultService.addResult(midlandsArea2011, "1", rtb, davidRoberts);
+
+
+        this.contestResultService.addPieceToResult(midlandsResult, contestMusic);
+        this.contestEventService.addTestPieceToContest(yorkshireArea2011, hootenanny);
 
         logoutTestUser();
     }
 
     @Test
-    void testSinglePiecePageWorksSuccessfully() {
+    void testSinglePiecePageWorksWithTestPieceSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/pieces/hootenanny", String.class);
         assertTrue(response.contains("<h2>Hootenanny</h2>"));
+
+        assertTrue(response.contains(">Yorkshire Area<"));
+    }
+
+    @Test
+    void testSinglePiecePageWorksWithResultPieceSuccessfully() {
+        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/pieces/contest-music", String.class);
+        assertTrue(response.contains("<h2>Contest Music</h2>"));
+
+        assertTrue(response.contains(">Midlands Area<"));
     }
 
     @Test

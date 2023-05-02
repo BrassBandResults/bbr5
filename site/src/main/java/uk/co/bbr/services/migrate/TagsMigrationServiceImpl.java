@@ -5,11 +5,13 @@ import org.jdom2.Element;
 import org.springframework.stereotype.Service;
 import uk.co.bbr.services.contests.ContestTagService;
 import uk.co.bbr.services.contests.dao.ContestTagDao;
+import uk.co.bbr.services.framework.annotations.IgnoreCoverage;
 import uk.co.bbr.services.framework.mixins.SlugTools;
 import uk.co.bbr.services.security.SecurityService;
 
 @Service
 @RequiredArgsConstructor
+@IgnoreCoverage
 public class TagsMigrationServiceImpl extends AbstractMigrationServiceImpl implements TagsMigrationService, SlugTools {
 
     private final SecurityService securityService;
