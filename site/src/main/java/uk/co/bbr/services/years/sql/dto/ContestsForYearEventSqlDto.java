@@ -33,8 +33,8 @@ public class ContestsForYearEventSqlDto extends AbstractSqlDto {
     private final Boolean noContest;
 
     public ContestsForYearEventSqlDto(Object[] columnList) {
-        Date eventDate = (Date)columnList[0];
-        this.eventDate = eventDate.toLocalDate();
+        Date localEventDate = (Date)columnList[0];
+        this.eventDate = localEventDate.toLocalDate();
         this.eventDateResolution = (String)columnList[1];
         this.contestSlug = (String)columnList[2];
         this.contestName = (String)columnList[3];

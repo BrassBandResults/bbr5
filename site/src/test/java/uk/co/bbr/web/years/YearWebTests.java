@@ -18,9 +18,12 @@ import uk.co.bbr.services.contests.ContestResultService;
 import uk.co.bbr.services.contests.ContestService;
 import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.contests.dao.ContestEventDao;
+import uk.co.bbr.services.contests.dao.ContestResultDao;
 import uk.co.bbr.services.contests.types.ContestEventDateResolution;
 import uk.co.bbr.services.people.PersonService;
 import uk.co.bbr.services.people.dao.PersonDao;
+import uk.co.bbr.services.pieces.PieceService;
+import uk.co.bbr.services.pieces.dao.PieceDao;
 import uk.co.bbr.services.regions.RegionService;
 import uk.co.bbr.services.regions.dao.RegionDao;
 import uk.co.bbr.services.security.JwtService;
@@ -49,6 +52,7 @@ class YearWebTests implements LoginMixin {
     @Autowired private BandService bandService;
     @Autowired private ContestService contestService;
     @Autowired private PersonService personService;
+    @Autowired private PieceService pieceService;
     @Autowired private ContestEventService contestEventService;
     @Autowired private ContestResultService contestResultService;
 
@@ -67,15 +71,19 @@ class YearWebTests implements LoginMixin {
 
         ContestDao yorkshireArea = this.contestService.create("Yorkshire Area");
 
-        ContestEventDao yorkshireArea2000 = this.contestEventService.create(yorkshireArea, LocalDate.of(2000, 03, 01));
+        PieceDao contestMusic = this.pieceService.create("Contest Music");
+        PieceDao fraternity = this.pieceService.create("Fraternity");
+
+        ContestEventDao yorkshireArea2000 = this.contestEventService.create(yorkshireArea, LocalDate.of(2000, 3, 1));
         yorkshireArea2000.setEventDateResolution(ContestEventDateResolution.MONTH_AND_YEAR);
         yorkshireArea2000 = this.contestEventService.update(yorkshireArea2000);
-        ContestEventDao yorkshireArea2001 = this.contestEventService.create(yorkshireArea, LocalDate.of(2001, 03, 05));
-        ContestEventDao yorkshireArea2002 = this.contestEventService.create(yorkshireArea, LocalDate.of(2002, 03, 07));
-        ContestEventDao yorkshireArea2003 = this.contestEventService.create(yorkshireArea, LocalDate.of(2003, 03, 10));
-        ContestEventDao yorkshireArea2004 = this.contestEventService.create(yorkshireArea, LocalDate.of(2004, 03, 1));
+        ContestEventDao yorkshireArea2001 = this.contestEventService.create(yorkshireArea, LocalDate.of(2001, 3, 5));
+        ContestEventDao yorkshireArea2002 = this.contestEventService.create(yorkshireArea, LocalDate.of(2002, 3, 7));
+        ContestEventDao yorkshireArea2003 = this.contestEventService.create(yorkshireArea, LocalDate.of(2003, 3, 10));
+        ContestEventDao yorkshireArea2004 = this.contestEventService.create(yorkshireArea, LocalDate.of(2004, 3, 1));
         yorkshireArea2004.setEventDateResolution(ContestEventDateResolution.YEAR);
         yorkshireArea2004 = this.contestEventService.update(yorkshireArea2004);
+        this.contestEventService.addTestPieceToContest(yorkshireArea2004, contestMusic);
 
         this.contestResultService.addResult(yorkshireArea2000, "1", rtb, davidRoberts);
         this.contestResultService.addResult(yorkshireArea2000, "2", notRtb, johnRoberts);
@@ -88,7 +96,18 @@ class YearWebTests implements LoginMixin {
 
         this.contestResultService.addResult(yorkshireArea2003, "3", notRtb, davidRoberts);
 
-        this.contestResultService.addResult(yorkshireArea2004, "1", rtb, davidRoberts);
+        ContestResultDao result = new ContestResultDao();
+        result.setDraw(1);
+        result.setPosition("1");
+        result.setBand(rtb);
+        result.setBandName("Rothwell Temps");
+        result.setConductor(davidRoberts);
+        result.setConductorSecond(johnRoberts);
+        result.setConductorThird(duncanBeckley);
+
+        result = this.contestResultService.addResult(yorkshireArea2004, result);
+        this.contestResultService.addPieceToResult(result, fraternity);
+
         this.contestResultService.addResult(yorkshireArea2004, "1", notRtb, duncanBeckley);
 
         logoutTestUser();
@@ -114,6 +133,17 @@ class YearWebTests implements LoginMixin {
         assertTrue(response.contains("<title>Contests in 2000 - Brass Band Results</title>"));
 
         assertTrue(response.contains(">Yorkshire Area<"));
+    }
+
+    @Test
+    void testSingleYearPageWithMultipleConductorsReturnsSuccessfully() {
+        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/years/2004", String.class);
+        assertTrue(response.contains("<title>Contests in 2004 - Brass Band Results</title>"));
+
+        assertTrue(response.contains(">Yorkshire Area<"));
+        assertTrue(response.contains(">David Roberts<"));
+        assertTrue(response.contains(">John Roberts<"));
+        assertTrue(response.contains(">Duncan Beckley<"));
     }
 }
 

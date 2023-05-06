@@ -21,7 +21,7 @@
             <td class="bbr-event" nowrap><span th:replace="links/event-link.html :: eventLink(${result.contestEvent})">9th Sep 2023</span></td>
             <td class="bbr-contest"><span th:text="${result.contestEvent.contest.name}">Yorkshire Area</span></td>
             <td class="bbr-band"><span th:replace="links/band-link.html :: bandLinkWithOverride(${result})"></span></td>
-            <td class="bbr-conductor"><span th:replace="links/person-link.html :: personLink(${result.conductor}, false, false)">Bob Childs</span></td>
+            <td class="bbr-conductor"><span th:replace="links/person-link.html :: conductorsLink(${result})">Bob Childs</span></td>
         </tr>
         </tbody>
     </table>

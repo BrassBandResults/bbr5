@@ -17,3 +17,15 @@
     </span>
 </span>
 
+<span th:fragment="conductorsLink(result)">
+    <span th:if="${result != null}">
+        <span th:replace="links/person-link.html :: personLink(${result.conductor}, false, false)">Bob Childs</span>
+        <span th:if="${result.conductorSecond != null}">
+          <br/><span th:replace="links/person-link.html :: personLink(${result.conductorSecond}, false, false)">Bob Childs</span>
+        </span>
+        <span th:if="${result.conductorThird != null}">
+            <br/><span th:replace="links/person-link.html :: personLink(${result.conductorThird}, false, false)">Bob Childs</span>
+        </span>
+    </span>
+</span>
+

@@ -54,13 +54,7 @@
                 <td class="bbr-conductor">
                     <span th:each="result, iStat : ${event.winners}">
                         <span th:if="${iStat.index > 0}"><br/></span>
-                        <span th:replace="links/person-link.html :: personLink(${result.conductor}, false, false)">Bob Childs</span>
-                        <span th:if="${result.conductorSecond != null}">
-                            <br/><span th:replace="links/person-link.html :: personLink(${result.conductorSecond}, false, false)">Bob Childs</span>
-                        </span>
-                        <span th:if="${result.conductorThird != null}">
-                            <br/>><span th:replace="links/person-link.html :: personLink(${result.conductorThird}, false, false)">Bob Childs</span>
-                        </span>
+                        <span th:replace="links/person-link.html :: conductorsLink(${result})">Bob Childs</span>
                     </span>
                 </td>
                 <td class="bbr-piece">

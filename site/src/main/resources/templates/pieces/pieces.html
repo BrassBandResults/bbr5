@@ -5,8 +5,9 @@
 </head>
 <body>
 <div layout:fragment="content">
-    <span th:if="${PiecePrefixLetter == 'ALL'}"><h2><span th:text="#{page.pieces.page-title}" th:remove="tag">All Bands</span></h2></span>
-    <span th:if="${PiecePrefixLetter != 'ALL'}"><h2><span th:text="#{page.pieces.pieces-starting-with(${PiecePrefixLetter})}" th:remove="tag">Pieces starting with R</span></h2></span>
+    <span th:if="${PiecePrefixLetter == 'ALL'}"><h2><span th:text="#{page.pieces.page-title-all}" th:remove="tag">All Bands</span></h2></span>
+    <span th:if="${PiecePrefixLetter == '0'}"><h2><span th:text="#{page.pieces.page-title-numbers}" th:remove="tag">Pieces starting with numbers</span></h2></span>
+    <span th:if="${PiecePrefixLetter != 'ALL' && PiecePrefixLetter != '0'}"><h2><span th:text="#{page.pieces.pieces-starting-with(${PiecePrefixLetter})}" th:remove="tag">Pieces starting with R</span></h2></span>
     <p>
         <span th:text="#{page.pieces.piece-counts(${Pieces.returnedPiecesCount},${Pieces.allPiecesCount})}" th:remove="tag">Showing 1 of 6 pieces.</span>
     </p>

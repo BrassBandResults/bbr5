@@ -49,6 +49,7 @@ class PieceListWebTests implements LoginMixin {
         this.pieceService.create("Hootenanny", PieceCategory.ENTERTAINMENT, composer3);
         this.pieceService.create("T'Wizard", PieceCategory.MARCH, composer4);
         this.pieceService.create("Aardvark", PieceCategory.ENTERTAINMENT, composer2);
+        this.pieceService.create("1st Class", PieceCategory.ENTERTAINMENT, composer2);
 
         logoutTestUser();
     }
@@ -57,50 +58,68 @@ class PieceListWebTests implements LoginMixin {
     void testGetPiecesListForMultiplePeopleWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/pieces", String.class);
         assertTrue(response.contains("<h2>Pieces starting with A</h2>"));
-        assertTrue(response.contains("Showing 1 of 6 pieces."));
+        assertTrue(response.contains("Showing 1 of 7 pieces."));
 
         assertTrue(response.contains("Aardvark"));
         assertFalse(response.contains("Hootenanny"));
         assertFalse(response.contains("Contest Music"));
         assertFalse(response.contains("Journey To The Centre Of The Earth"));
+        assertFalse(response.contains("1st Class"));
     }
 
     @Test
     void testGetPiecesListForOnePersonWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/pieces/C", String.class);
         assertTrue(response.contains("<h2>Pieces starting with C</h2>"));
-        assertTrue(response.contains("Showing 2 of 6 pieces."));
+        assertTrue(response.contains("Showing 2 of 7 pieces."));
 
         assertFalse(response.contains("Aardvark"));
         assertTrue(response.contains("Contest Music"));
         assertTrue(response.contains("Contest Test Piece"));
         assertFalse(response.contains("Journey To The Centre Of The Earth"));
+        assertFalse(response.contains("1st Class"));
     }
 
     @Test
     void testGetPiecesListForSpecificLetterWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/pieces/J", String.class);
         assertTrue(response.contains("<h2>Pieces starting with J</h2>"));
-        assertTrue(response.contains("Showing 1 of 6 pieces."));
+        assertTrue(response.contains("Showing 1 of 7 pieces."));
 
         assertFalse(response.contains("Aardvark"));
         assertFalse(response.contains("Hootenanny"));
         assertFalse(response.contains("Contest Music"));
         assertFalse(response.contains("Contest Test Piece"));
         assertTrue(response.contains("Journey To The Centre Of The Earth"));
+        assertFalse(response.contains("1st Class"));
+    }
+
+    @Test
+    void testGetPiecesListForNumbersWorksSuccessfully() {
+        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/pieces/0", String.class);
+        assertTrue(response.contains("<h2>Pieces starting with numbers</h2>"));
+        assertTrue(response.contains("Showing 1 of 7 pieces."));
+
+        assertFalse(response.contains("Aardvark"));
+        assertFalse(response.contains("Hootenanny"));
+        assertFalse(response.contains("Contest Music"));
+        assertFalse(response.contains("Contest Test Piece"));
+        assertFalse(response.contains("Journey To The Centre Of The Earth"));
+        assertTrue(response.contains("1st Class"));
     }
 
     @Test
     void testGetAllPiecesListWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/pieces/ALL", String.class);
         assertTrue(response.contains("<h2>All Pieces</h2>"));
-        assertTrue(response.contains("Showing 6 of 6 pieces."));
+        assertTrue(response.contains("Showing 7 of 7 pieces."));
 
         assertTrue(response.contains("Aardvark"));
         assertTrue(response.contains("Contest Music"));
         assertTrue(response.contains("Contest Test Piece"));
         assertTrue(response.contains("Journey To The Centre Of The Earth"));
         assertTrue(response.contains("T&#39;Wizard"));
+        assertTrue(response.contains("1st Class"));
     }
 }
 
