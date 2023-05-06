@@ -36,6 +36,7 @@ import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ActiveProfiles("test")
@@ -116,6 +117,7 @@ class YearWebTests implements LoginMixin {
     @Test
     void testGetYearsPageReturnsSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/years", String.class);
+        assertNotNull(response);
         assertTrue(response.contains("<title>Years - Brass Band Results</title>"));
 
         assertFalse(response.contains(">1999<"));
@@ -130,6 +132,7 @@ class YearWebTests implements LoginMixin {
     @Test
     void testSingleYearPageReturnsSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/years/2000", String.class);
+        assertNotNull(response);
         assertTrue(response.contains("<title>Contests in 2000 - Brass Band Results</title>"));
 
         assertTrue(response.contains(">Yorkshire Area<"));
@@ -138,6 +141,7 @@ class YearWebTests implements LoginMixin {
     @Test
     void testSingleYearPageWithMultipleConductorsReturnsSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/years/2004", String.class);
+        assertNotNull(response);
         assertTrue(response.contains("<title>Contests in 2004 - Brass Band Results</title>"));
 
         assertTrue(response.contains(">Yorkshire Area<"));

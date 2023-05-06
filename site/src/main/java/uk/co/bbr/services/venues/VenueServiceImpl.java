@@ -80,7 +80,7 @@ public class VenueServiceImpl implements VenueService, SlugTools {
     }
 
     @Override
-    @IsBbrAdmin
+    @IsBbrMember
     public VenueAliasDao createAlias(VenueDao venue, VenueAliasDao previousName) {
         return this.createAlias(venue, previousName, false);
     }
@@ -148,5 +148,4 @@ public class VenueServiceImpl implements VenueService, SlugTools {
         }
         return new VenueListDto(venuesToReturn.size(), allVenuesCount, prefixDisplay, returnedVenues);
     }
-
 }

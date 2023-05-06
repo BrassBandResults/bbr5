@@ -19,6 +19,7 @@ import uk.co.bbr.web.security.support.TestUser;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ActiveProfiles("test")
@@ -63,6 +64,7 @@ class BandListWebTests implements LoginMixin {
     @Test
     void testGetBandListWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/bands", String.class);
+        assertNotNull(response);
         assertTrue(response.contains("<h2>Bands starting with A</h2>"));
         assertTrue(response.contains("Showing 7 of 11 bands."));
 
@@ -77,6 +79,7 @@ class BandListWebTests implements LoginMixin {
     @Test
     void testGetBandListForSpecificLetterWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/R", String.class);
+        assertNotNull(response);
         assertTrue(response.contains("<h2>Bands starting with R</h2>"));
         assertTrue(response.contains("Showing 1 of 11 bands."));
 
@@ -90,6 +93,7 @@ class BandListWebTests implements LoginMixin {
     @Test
     void testGetAllBandListWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/ALL", String.class);
+        assertNotNull(response);
         assertTrue(response.contains("<h2>All Bands</h2>"));
         assertTrue(response.contains("Showing 11 of 11 bands."));
 

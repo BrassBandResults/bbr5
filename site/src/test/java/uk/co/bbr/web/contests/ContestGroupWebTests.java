@@ -24,6 +24,7 @@ import uk.co.bbr.web.security.support.TestUser;
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ActiveProfiles("test")
@@ -76,6 +77,7 @@ class ContestGroupWebTests implements LoginMixin {
     @Test
     void testGetGroupListWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/contest-groups", String.class);
+        assertNotNull(response);
         assertTrue(response.contains("<h2>Contest Groups starting with A</h2>"));
 
         assertTrue(response.contains("AA Group"));
@@ -87,6 +89,7 @@ class ContestGroupWebTests implements LoginMixin {
     @Test
     void testGetGroupListForSpecificLetterWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/contest-groups/Y", String.class);
+        assertNotNull(response);
         assertTrue(response.contains("<h2>Contest Groups starting with Y</h2>"));
 
         assertFalse(response.contains("AA Group"));
@@ -99,6 +102,7 @@ class ContestGroupWebTests implements LoginMixin {
     @Test
     void testGetGroupListForSpecificLetterWithNoResultsWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/contest-groups/W", String.class);
+        assertNotNull(response);
         assertTrue(response.contains("<h2>Contest Groups starting with W</h2>"));
 
         assertFalse(response.contains("AA Group"));
@@ -110,6 +114,7 @@ class ContestGroupWebTests implements LoginMixin {
     @Test
     void testGetAllGroupsListWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/contest-groups/ALL", String.class);
+        assertNotNull(response);
         assertTrue(response.contains("<h2>All Contest Groups</h2>"));
 
         assertTrue(response.contains("AA Group"));
@@ -121,6 +126,7 @@ class ContestGroupWebTests implements LoginMixin {
     @Test
     void testFetchGroupDetailsPageWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/contests/YORKSHIRE-GROUP", String.class);
+        assertNotNull(response);
         assertTrue(response.contains("<h2>Yorkshire Group</h2>"));
 
         assertTrue(response.contains("Yorkshire Area (Championship Section"));
@@ -133,6 +139,7 @@ class ContestGroupWebTests implements LoginMixin {
     @Test
     void testFetchGroupYearsListPageWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/contests/YORKSHIRE-GROUP/years", String.class);
+        assertNotNull(response);
         assertTrue(response.contains("<h2>Yorkshire Group</h2>"));
 
         assertTrue(response.contains(">2010<"));
@@ -143,6 +150,7 @@ class ContestGroupWebTests implements LoginMixin {
     @Test
     void testFetchGroupYearPageWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/contests/YORKSHIRE-GROUP/2010", String.class);
+        assertNotNull(response);
         assertTrue(response.contains(">Yorkshire Group<"));
         assertTrue(response.contains("<span>2010</span>"));
 

@@ -9,6 +9,7 @@ import org.springframework.web.client.RestTemplate;
 import uk.co.bbr.web.LoginMixin;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ActiveProfiles("test")
@@ -22,8 +23,9 @@ class RegionListPublicWebTests implements LoginMixin {
      @Test
     void testGetRegionListWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/regions", String.class);
+         assertNotNull(response);
          assertTrue(response.contains("<title>Regions - Brass Band Results</title>"));
-        assertTrue(response.contains("<h2>Regions</h2>"));
+         assertTrue(response.contains("<h2>Regions</h2>"));
 
          assertTrue(response.contains("Angola"));
          assertTrue(response.contains("Yorkshire"));

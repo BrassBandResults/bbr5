@@ -32,6 +32,7 @@ import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -93,6 +94,7 @@ class PeopleDetailsWebTests implements LoginMixin {
     @Test
     void testGetPersonDetailsPageWorksCorrectly() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/people/david-roberts", String.class);
+        assertNotNull(response);
         assertTrue(response.contains("<h2>David Roberts</h2>"));
 
         assertTrue(response.contains(">Yorkshire Area<"));
@@ -111,6 +113,7 @@ class PeopleDetailsWebTests implements LoginMixin {
     @Test
     void testGetPersonWhitsPageWorksCorrectly() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/people/david-roberts/whits", String.class);
+        assertNotNull(response);
         assertTrue(response.contains("<h2>David Roberts</h2>"));
 
         assertFalse(response.contains(">Yorkshire Area<"));
@@ -129,6 +132,7 @@ class PeopleDetailsWebTests implements LoginMixin {
     @Test
     void testGetPersonPiecesPageWorksCorrectly() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/people/david-roberts/pieces", String.class);
+        assertNotNull(response);
         assertTrue(response.contains("<h2>David Roberts</h2>"));
 
         assertFalse(response.contains(">Yorkshire Area<"));

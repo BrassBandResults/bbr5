@@ -14,6 +14,7 @@ import uk.co.bbr.web.LoginMixin;
 import uk.co.bbr.web.security.support.TestUser;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ActiveProfiles("test")
@@ -38,6 +39,7 @@ class RegionListProWebTests implements LoginMixin {
         loginTestUserByWeb(TestUser.TEST_PRO, this.restTemplate, this.csrfTokenRepository, this.port);
 
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/regions", String.class);
+        assertNotNull(response);
         assertTrue(response.contains("<h2>Regions</h2>"));
 
         assertTrue(response.contains("Angola"));

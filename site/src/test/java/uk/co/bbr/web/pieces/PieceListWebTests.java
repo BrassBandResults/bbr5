@@ -19,6 +19,7 @@ import uk.co.bbr.web.LoginMixin;
 import uk.co.bbr.web.security.support.TestUser;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ActiveProfiles("test")
@@ -57,6 +58,7 @@ class PieceListWebTests implements LoginMixin {
     @Test
     void testGetPiecesListForMultiplePeopleWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/pieces", String.class);
+        assertNotNull(response);
         assertTrue(response.contains("<h2>Pieces starting with A</h2>"));
         assertTrue(response.contains("Showing 1 of 7 pieces."));
 
@@ -70,6 +72,7 @@ class PieceListWebTests implements LoginMixin {
     @Test
     void testGetPiecesListForOnePersonWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/pieces/C", String.class);
+        assertNotNull(response);
         assertTrue(response.contains("<h2>Pieces starting with C</h2>"));
         assertTrue(response.contains("Showing 2 of 7 pieces."));
 
@@ -83,6 +86,7 @@ class PieceListWebTests implements LoginMixin {
     @Test
     void testGetPiecesListForSpecificLetterWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/pieces/J", String.class);
+        assertNotNull(response);
         assertTrue(response.contains("<h2>Pieces starting with J</h2>"));
         assertTrue(response.contains("Showing 1 of 7 pieces."));
 
@@ -97,6 +101,7 @@ class PieceListWebTests implements LoginMixin {
     @Test
     void testGetPiecesListForNumbersWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/pieces/0", String.class);
+        assertNotNull(response);
         assertTrue(response.contains("<h2>Pieces starting with numbers</h2>"));
         assertTrue(response.contains("Showing 1 of 7 pieces."));
 
@@ -111,6 +116,7 @@ class PieceListWebTests implements LoginMixin {
     @Test
     void testGetAllPiecesListWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/pieces/ALL", String.class);
+        assertNotNull(response);
         assertTrue(response.contains("<h2>All Pieces</h2>"));
         assertTrue(response.contains("Showing 7 of 7 pieces."));
 

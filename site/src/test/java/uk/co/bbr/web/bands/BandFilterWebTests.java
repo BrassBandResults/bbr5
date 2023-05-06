@@ -36,6 +36,7 @@ import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -124,6 +125,7 @@ class BandFilterWebTests implements LoginMixin {
     void testGetBandResultsFilteredToContestWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/rothwell-temperance-band/yorkshire-area", String.class);
 
+        assertNotNull(response);
         assertTrue(response.contains("<h2>Rothwell Temperance Band</h2>"));
 
         assertTrue(response.contains(">Yorkshire Area<"));
@@ -148,6 +150,7 @@ class BandFilterWebTests implements LoginMixin {
     void testGetBandResultsFilteredToGroupWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/rothwell-temperance-band/UK-NATIONAL-CHAMPIONSHIPS", String.class);
 
+        assertNotNull(response);
         assertTrue(response.contains("<h2>Rothwell Temperance Band</h2>"));
 
         assertTrue(response.contains(">Yorkshire Area<"));
@@ -172,6 +175,7 @@ class BandFilterWebTests implements LoginMixin {
     void testGetBandResultsFilteredToTagWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/rothwell-temperance-band/tag/yorkshire-quality", String.class);
 
+        assertNotNull(response);
         assertTrue(response.contains("<h2>Rothwell Temperance Band</h2>"));
 
         assertTrue(response.contains(">Yorkshire Area<"));

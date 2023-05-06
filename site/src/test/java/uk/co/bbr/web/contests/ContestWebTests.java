@@ -28,6 +28,7 @@ import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -61,6 +62,7 @@ class ContestWebTests implements LoginMixin {
     @Test
     void testGetContestPageWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/contests/yorkshire-area", String.class);
+        assertNotNull(response);
         assertTrue(response.contains(">Yorkshire Area<"));
     }
 
@@ -73,6 +75,7 @@ class ContestWebTests implements LoginMixin {
     @Test
     void testGetContestOwnChoicePageWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/contests/yorkshire-area/own-choice", String.class);
+        assertNotNull(response);
         assertTrue(response.contains(">Yorkshire Area<"));
     }
 
@@ -85,6 +88,7 @@ class ContestWebTests implements LoginMixin {
     @Test
     void testGetContestWinsPageWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/contests/yorkshire-area/wins", String.class);
+        assertNotNull(response);
         assertTrue(response.contains(">Yorkshire Area<"));
     }
 

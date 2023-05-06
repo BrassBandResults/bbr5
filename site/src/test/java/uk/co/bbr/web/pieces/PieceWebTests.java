@@ -33,6 +33,7 @@ import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -90,6 +91,7 @@ class PieceWebTests implements LoginMixin {
     @Test
     void testSinglePiecePageWorksWithTestPieceSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/pieces/hootenanny", String.class);
+        assertNotNull(response);
         assertTrue(response.contains("<h2>Hootenanny</h2>"));
 
         assertTrue(response.contains(">Yorkshire Area<"));
@@ -98,6 +100,7 @@ class PieceWebTests implements LoginMixin {
     @Test
     void testSinglePiecePageWorksWithResultPieceSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/pieces/contest-music", String.class);
+        assertNotNull(response);
         assertTrue(response.contains("<h2>Contest Music</h2>"));
 
         assertTrue(response.contains(">Midlands Area<"));

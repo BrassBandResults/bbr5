@@ -25,6 +25,7 @@ import uk.co.bbr.web.security.support.TestUser;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -76,6 +77,7 @@ class RegionWebTests implements LoginMixin {
     @Test
     void testGetYorkshireRegionPageWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/regions/yorkshire", String.class);
+        assertNotNull(response);
         assertTrue(response.contains("<title>Yorkshire - Region - Brass Band Results</title>"));
 
         assertTrue(response.contains("<h2>Yorkshire</h2>"));
@@ -89,6 +91,7 @@ class RegionWebTests implements LoginMixin {
     @Test
     void testGetYorkshireRegionLinksPageWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/regions/yorkshire/links", String.class);
+        assertNotNull(response);
         assertTrue(response.contains("<title>Yorkshire - Region Links - Brass Band Results</title>"));
 
         assertTrue(response.contains("<h2>Yorkshire</h2>"));

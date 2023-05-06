@@ -21,6 +21,7 @@ import uk.co.bbr.web.LoginMixin;
 import uk.co.bbr.web.security.support.TestUser;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ActiveProfiles("test")
@@ -73,6 +74,7 @@ class ContestTagWebTests implements LoginMixin {
     @Test
     void testGetTagListWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/tags", String.class);
+        assertNotNull(response);
         assertTrue(response.contains("<h2>Tags starting with A</h2>"));
 
         assertTrue(response.contains("AA Tag"));
@@ -84,6 +86,7 @@ class ContestTagWebTests implements LoginMixin {
     @Test
     void testGetTagListForSpecificLetterWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/tags/Y", String.class);
+        assertNotNull(response);
         assertTrue(response.contains("<h2>Tags starting with Y</h2>"));
 
         assertFalse(response.contains("AA Tag"));
@@ -96,6 +99,7 @@ class ContestTagWebTests implements LoginMixin {
     @Test
     void testGetTagListForSpecificLetterWithNoResultsWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/tags/W", String.class);
+        assertNotNull(response);
         assertTrue(response.contains("<h2>Tags starting with W</h2>"));
 
         assertFalse(response.contains("AA Tag"));
@@ -107,6 +111,7 @@ class ContestTagWebTests implements LoginMixin {
     @Test
     void testGetAllTagsListWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/tags/ALL", String.class);
+        assertNotNull(response);
         assertTrue(response.contains("<h2>All Tags</h2>"));
 
         assertTrue(response.contains("AA Tag"));
@@ -118,6 +123,7 @@ class ContestTagWebTests implements LoginMixin {
     @Test
     void testFetchTagDetailsPageWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/tags/yorkshire-tag", String.class);
+        assertNotNull(response);
         assertTrue(response.contains("<h2>Yorkshire Tag</h2>"));
 
         assertTrue(response.contains("Yorkshire Area"));
