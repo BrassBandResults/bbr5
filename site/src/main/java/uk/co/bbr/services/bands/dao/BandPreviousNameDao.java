@@ -44,4 +44,23 @@ public class BandPreviousNameDao extends AbstractDao implements NameTools {
         String nameToSet = simplifyBandName(name);
         this.oldName = nameToSet;
     }
+
+    public String getDisplayName() {
+        StringBuilder returnString = new StringBuilder();
+
+        returnString.append(this.oldName);
+        if (this.startDate != null || this.endDate != null) {
+          returnString.append(" (");
+          if (this.startDate != null) {
+              returnString.append(this.startDate.getYear());
+          }
+          returnString.append("-");
+          if (this.endDate != null) {
+              returnString.append(this.endDate.getYear());
+          }
+          returnString.append(")");
+        }
+
+        return returnString.toString();
+    }
 }

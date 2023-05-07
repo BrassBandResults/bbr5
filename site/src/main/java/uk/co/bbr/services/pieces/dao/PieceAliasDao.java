@@ -35,4 +35,8 @@ public class PieceAliasDao extends AbstractDao {
             this.name = name.trim();
         }
     }
+
+    public String getDisplayName() {
+        return this.name;
+    }
 }

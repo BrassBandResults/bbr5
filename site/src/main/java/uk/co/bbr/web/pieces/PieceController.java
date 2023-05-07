@@ -40,6 +40,7 @@ public class PieceController {
         model.addAttribute("SetTestContests", setTestContests);
         model.addAttribute("SetTestCount", setTestContests.size());
         model.addAttribute("OwnChoiceCount", ownChoiceResults.size());
+        model.addAttribute("PreviousNames", pieceAliases);
 
         return "pieces/piece";
     }

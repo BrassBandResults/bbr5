@@ -19,6 +19,8 @@
 
     <div class="tab-content">
 
+        <span th:replace="components/aliases.html :: previousNames(${PreviousNames})"></span>
+
         <div th:if="${Group.activeContests.size > 0}">
             <h4 th:text="#{page.group.active-contests}">Active Contests</h4>
             <table id="active-contests" class="table table-hover sortable">

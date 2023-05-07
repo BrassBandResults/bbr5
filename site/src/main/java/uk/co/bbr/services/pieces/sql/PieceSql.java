@@ -49,7 +49,7 @@ public class PieceSql {
             ORDER BY p.id""";
 
     public static List<PieceUsageCountSqlDto> selectPieceUsageCounts(EntityManager entityManager, String prefix) {
-        return SqlExec.execute(entityManager, PIECES_USAGE_COUNT_BY_PREFIX_SQL, prefix, PieceUsageCountSqlDto.class);
+        return SqlExec.execute(entityManager, PIECES_USAGE_COUNT_BY_PREFIX_SQL, prefix + "%", PieceUsageCountSqlDto.class);
     }
 
     private static final String ALL_PIECES_USAGE_COUNT_SQL = """

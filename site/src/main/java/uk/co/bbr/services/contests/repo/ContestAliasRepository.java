@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ContestAliasRepository extends JpaRepository<ContestAliasDao, Long> {
-    @Query("SELECT a FROM ContestAliasDao a WHERE a.contest.id = ?1 AND a.name = ?2")
+    @Query("SELECT a FROM ContestAliasDao a WHERE a.contest.id = :contestId AND a.name = :aliasName")
     Optional<ContestAliasDao> fetchByNameAndContest(Long contestId, String aliasName);
 
     @Query("SELECT a FROM ContestAliasDao a " +
@@ -23,4 +23,9 @@ public interface ContestAliasRepository extends JpaRepository<ContestAliasDao, L
             "AND c.contestGroup IS NULL " +
             "ORDER BY a.name")
     List<ContestAliasDao> findByPrefixOutsideGroupsOrderByName(String prefix);
+
+    @Query("SELECT a FROM ContestAliasDao a " +
+            "WHERE a.contest.id = :contestId " +
+            "ORDER BY a.name")
+    List<ContestAliasDao> findForContest(Long contestId);
 }

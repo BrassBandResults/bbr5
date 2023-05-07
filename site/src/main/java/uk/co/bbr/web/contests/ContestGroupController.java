@@ -6,12 +6,17 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import uk.co.bbr.services.contests.ContestGroupService;
+import uk.co.bbr.services.contests.dao.ContestGroupAliasDao;
+import uk.co.bbr.services.contests.dao.ContestGroupDao;
 import uk.co.bbr.services.contests.dto.ContestGroupDetailsDto;
 import uk.co.bbr.services.contests.dto.ContestGroupYearDto;
 import uk.co.bbr.services.contests.dto.ContestGroupYearsDetailsDto;
 import uk.co.bbr.services.contests.dto.GroupListDto;
+import uk.co.bbr.services.framework.NotFoundException;
 
+import java.awt.geom.NoninvertibleTransformException;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -44,9 +49,16 @@ public class ContestGroupController {
 
     @GetMapping("/contests/{slug:[\\-A-Z\\d]{2,}}")
     public String contestGroupDetails(Model model, @PathVariable("slug") String groupSlug) {
-        ContestGroupDetailsDto contestGroupDetails = this.contestGroupService.fetchDetailBySlug(groupSlug);
+        Optional<ContestGroupDao> contestGroup = this.contestGroupService.fetchBySlug(groupSlug);
+        if (contestGroup.isEmpty()) {
+            throw new NotFoundException("Group with slug " + groupSlug + " not found");
+        }
+
+        ContestGroupDetailsDto contestGroupDetails = this.contestGroupService.fetchDetail(contestGroup.get());
+        List<ContestGroupAliasDao> contestGroupAliases = this.contestGroupService.fetchAliases(contestGroup.get());
 
         model.addAttribute("Group", contestGroupDetails);
+        model.addAttribute("PreviousNames", contestGroupAliases);
         return "contests/groups/group";
     }
 

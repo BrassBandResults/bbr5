@@ -4,9 +4,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import uk.co.bbr.services.venues.dao.VenueAliasDao;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface VenueAliasRepository extends JpaRepository<VenueAliasDao, Long> {
-    @Query("SELECT a FROM VenueAliasDao a WHERE a.venue.id = ?1 AND a.name = ?2")
-    Optional<VenueAliasDao> findByVenueAndName(Long venueId, String name);
+    @Query("SELECT a FROM VenueAliasDao a WHERE a.venue.id = :venueId AND a.name = :aliasName")
+    Optional<VenueAliasDao> findByVenueAndAliasName(Long venueId, String aliasName);
+
+    @Query("SELECT a FROM VenueAliasDao a WHERE a.venue.id = :venueId")
+    List<VenueAliasDao> findByVenue(Long venueId);
 }

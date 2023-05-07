@@ -39,4 +39,8 @@ public class PersonAliasDao extends AbstractDao implements NameTools {
     public boolean matchesName(String personName) {
         return personName != null && personName.equalsIgnoreCase(this.oldName);
     }
+
+    public String getDisplayName() {
+        return this.oldName;
+    }
 }

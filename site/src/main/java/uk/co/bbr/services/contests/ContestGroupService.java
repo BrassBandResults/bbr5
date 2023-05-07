@@ -8,6 +8,7 @@ import uk.co.bbr.services.contests.dto.ContestGroupYearDto;
 import uk.co.bbr.services.contests.dto.ContestGroupYearsDetailsDto;
 import uk.co.bbr.services.contests.dto.GroupListDto;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface ContestGroupService {
@@ -26,9 +27,11 @@ public interface ContestGroupService {
     public GroupListDto listGroupsStartingWith(String prefix);
 
     ContestGroupDao addGroupTag(ContestGroupDao group, ContestTagDao tag);
-    ContestGroupDetailsDto fetchDetailBySlug(String groupSlug);
+    ContestGroupDetailsDto fetchDetail(ContestGroupDao groupGroup);
     ContestGroupYearsDetailsDto fetchYearsBySlug(String groupSlug);
 
     ContestGroupYearDto fetchEventsByGroupSlugAndYear(String groupSlug, Integer year);
+
+    List<ContestGroupAliasDao> fetchAliases(ContestGroupDao contestGroup);
 }
 

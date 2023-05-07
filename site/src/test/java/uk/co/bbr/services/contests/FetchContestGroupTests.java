@@ -18,8 +18,10 @@ import uk.co.bbr.web.LoginMixin;
 import uk.co.bbr.web.security.support.TestUser;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ActiveProfiles("test")
 @SpringBootTest(properties = { "spring.config.name=contest-fetch-group-tests-h2", "spring.datasource.url=jdbc:h2:mem:contest-fetch-group-tests-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE", "spring.jpa.database-platform=org.hibernate.dialect.SQLServerDialect"})
@@ -84,8 +86,12 @@ class FetchContestGroupTests implements LoginMixin {
 
     @Test
     void testFetchingContestGroupDetailsWorksAsExpected() {
+        // arrange
+        Optional<ContestGroupDao> contestGroup = this.contestGroupService.fetchBySlug("group-2");
+        assertTrue(contestGroup.isPresent());
+
         // act
-        ContestGroupDetailsDto contestGroupDetails = this.contestGroupService.fetchDetailBySlug("group-2");
+        ContestGroupDetailsDto contestGroupDetails = this.contestGroupService.fetchDetail(contestGroup.get());
 
         // assert
        assertEquals("Group 2", contestGroupDetails.getContestGroup().getName());

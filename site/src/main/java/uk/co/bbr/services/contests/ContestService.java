@@ -8,6 +8,7 @@ import uk.co.bbr.services.contests.dto.ContestListDto;
 import uk.co.bbr.services.people.dao.PersonAliasDao;
 import uk.co.bbr.services.regions.dao.RegionDao;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface ContestService {
@@ -33,5 +34,5 @@ public interface ContestService {
 
     ContestDao addContestTag(ContestDao contest, ContestTagDao tag);
 
-
+    List<ContestAliasDao> fetchAliases(ContestDao contest);
 }

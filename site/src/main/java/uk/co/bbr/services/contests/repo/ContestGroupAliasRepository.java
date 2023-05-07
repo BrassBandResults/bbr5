@@ -21,4 +21,10 @@ public interface ContestGroupAliasRepository extends JpaRepository<ContestGroupA
             "INNER JOIN ContestGroupDao g ON g.id = a.contestGroup.id " +
             "WHERE UPPER(a.name) LIKE UPPER(CONCAT(:prefix, '%')) ORDER BY a.name")
     List<ContestGroupAliasDao> findByPrefixOrderByName(String prefix);
+
+    @Query("SELECT a FROM ContestGroupAliasDao a " +
+            "INNER JOIN ContestGroupDao g ON g.id = a.contestGroup.id " +
+            "WHERE a.contestGroup.id = :contestGroupId " +
+            "ORDER BY a.name")
+    List<ContestGroupAliasDao> findByGroup(Long contestGroupId);
 }

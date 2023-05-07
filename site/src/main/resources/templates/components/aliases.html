@@ -1,0 +1,8 @@
+<span th:fragment="previousNames(PreviousNames)">
+      <small th:if="${PreviousNames != null && PreviousNames.size > 0}">
+        <b><span th:text="#{also-known-as}"></span>:</b>
+        <span th:each="previousName, iterStat : ${PreviousNames}">
+            <span th:text="${!iterStat.last} ? ${previousName.displayName} + ', ': ${previousName.displayName}">previous name</span>
+        </span>
+    </small>
+</span>

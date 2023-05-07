@@ -245,4 +245,9 @@ public class ContestServiceImpl implements ContestService, SlugTools {
         contest.getTags().add(tag);
         return this.update(contest);
     }
+
+    @Override
+    public List<ContestAliasDao> fetchAliases(ContestDao contest) {
+        return this.contestAliasRepository.findForContest(contest.getId());
+    }
 }

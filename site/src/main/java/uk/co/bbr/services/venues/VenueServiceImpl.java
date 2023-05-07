@@ -3,9 +3,6 @@ package uk.co.bbr.services.venues;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
-import uk.co.bbr.services.bands.dao.BandDao;
-import uk.co.bbr.services.bands.dto.BandListBandDto;
-import uk.co.bbr.services.bands.dto.BandListDto;
 import uk.co.bbr.services.framework.ValidationException;
 import uk.co.bbr.services.framework.mixins.SlugTools;
 import uk.co.bbr.services.security.SecurityService;
@@ -76,7 +73,7 @@ public class VenueServiceImpl implements VenueService, SlugTools {
 
     @Override
     public Optional<VenueAliasDao> aliasExists(VenueDao venue, String name) {
-        return this.venueAliasRepository.findByVenueAndName(venue.getId(), name);
+        return this.venueAliasRepository.findByVenueAndAliasName(venue.getId(), name);
     }
 
     @Override
@@ -147,5 +144,10 @@ public class VenueServiceImpl implements VenueService, SlugTools {
             returnedVenues.add(new VenueListVenueDto(eachVenue.getSlug(), eachVenue.getName(), eachVenue.getRegion(), eachVenue.getEventCount()));
         }
         return new VenueListDto(venuesToReturn.size(), allVenuesCount, prefixDisplay, returnedVenues);
+    }
+
+    @Override
+    public List<VenueAliasDao> fetchAliases(VenueDao venue) {
+        return this.venueAliasRepository.findByVenue(venue.getId());
     }
 }

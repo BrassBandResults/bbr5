@@ -17,6 +17,8 @@ import uk.co.bbr.services.venues.dao.VenueDao;
 import uk.co.bbr.web.LoginMixin;
 import uk.co.bbr.web.security.support.TestUser;
 
+import java.time.LocalDate;
+
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -37,19 +39,40 @@ class VenueWebTests implements LoginMixin {
     void setupContests() throws AuthenticationFailedException {
         loginTestUser(this.securityService, this.jwtService, TestUser.TEST_ADMIN);
 
+        this.venueService.create("Royal Albert Hall");
+
         VenueDao venue = this.venueService.create("Symfony Hall");
-        VenueAliasDao venueAlias = new VenueAliasDao();
-        venueAlias.setName("Blackburn Hall");
-        this.venueService.createAlias(venue, venueAlias);
+        VenueAliasDao venueAliasWithDates = new VenueAliasDao();
+        venueAliasWithDates.setName("Blackburn Hall");
+        venueAliasWithDates.setStartDate(LocalDate.of(1980,5, 4));
+        venueAliasWithDates.setEndDate(LocalDate.of(1981, 3, 1));
+        this.venueService.createAlias(venue, venueAliasWithDates);
+
+        VenueAliasDao venueAliasNoDates = new VenueAliasDao();
+        venueAliasNoDates.setName("Spanish Hall");
+        this.venueService.createAlias(venue, venueAliasNoDates);
 
         logoutTestUser();
     }
 
     @Test
-    void testGetContestListWorksSuccessfully() {
+    void testSinglePageWithAliasesWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/venues/symfony-hall", String.class);
         assertNotNull(response);
         assertTrue(response.contains("<h2>Symfony Hall</h2>"));
+
+        assertTrue(response.contains("Also/previously known as"));
+        assertTrue(response.contains("Blackburn Hall (1980-1981)"));
+        assertTrue(response.contains("Spanish Hall"));
+    }
+
+    @Test
+    void testSinglPageWithoutAliasesWorksSuccessfully() {
+        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/venues/royal-albert-hall", String.class);
+        assertNotNull(response);
+        assertTrue(response.contains("<h2>Royal Albert Hall</h2>"));
+
+        assertFalse(response.contains("Also/previously known as"));
     }
 
 }

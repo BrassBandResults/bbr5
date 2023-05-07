@@ -9,6 +9,7 @@
         <span th:if="${Contest.contestGroup != null}" th:replace="links/group-link.html :: groupLinkFromContest(${Contest})"></span>
         <span th:if="${Contest.contestGroup == null}" th:text="${Contest.name}">Yorkshire Area (Championship Section)</span>
     </h2>
+    <span th:replace="components/aliases.html :: previousNames(${PreviousNames})"></span>
 
     <p th:text="${Contest.notes}">Contest Notes</p>
 

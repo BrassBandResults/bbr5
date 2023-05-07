@@ -197,17 +197,16 @@ public class ContestGroupServiceImpl implements ContestGroupService, SlugTools {
     }
 
     @Override
-    public ContestGroupDetailsDto fetchDetailBySlug(String groupSlug) {
-        Optional<ContestGroupDao> contestGroup = this.contestGroupRepository.fetchBySlug(groupSlug.toUpperCase());
-        if (contestGroup.isEmpty()) {
-            throw new NotFoundException("Group with slug " + groupSlug + " not found");
+    public ContestGroupDetailsDto fetchDetail(ContestGroupDao contestGroup) {
+        Optional<ContestGroupDao> matchingContestGroup = this.contestGroupRepository.fetchBySlug(contestGroup.getSlug().toUpperCase());
+        if (matchingContestGroup.isEmpty()) {
+            throw new NotFoundException("Group with slug " + contestGroup.getSlug() + " not found");
         }
 
-        List<ContestDao> activeContests = this.contestGroupRepository.fetchActiveContestsForGroup(contestGroup.get().getId());
-        List<ContestDao> oldContests = this.contestGroupRepository.fetchOldContestsForGroup(contestGroup.get().getId());
+        List<ContestDao> activeContests = this.contestGroupRepository.fetchActiveContestsForGroup(matchingContestGroup.get().getId());
+        List<ContestDao> oldContests = this.contestGroupRepository.fetchOldContestsForGroup(matchingContestGroup.get().getId());
 
-        ContestGroupDetailsDto contestGroupDetails = new ContestGroupDetailsDto(contestGroup.get(), activeContests, oldContests);
-        return contestGroupDetails;
+        return new ContestGroupDetailsDto(matchingContestGroup.get(), activeContests, oldContests);
     }
 
     @Override
@@ -279,6 +278,11 @@ public class ContestGroupServiceImpl implements ContestGroupService, SlugTools {
         }
 
         return new ContestGroupYearDto(contestGroup.get(), year, contestEvents, nextYear, previousYear);
+    }
+
+    @Override
+    public List<ContestGroupAliasDao> fetchAliases(ContestGroupDao contestGroup) {
+        return this.contestGroupAliasRepository.findByGroup(contestGroup.getId());
     }
 
 

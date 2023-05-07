@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import uk.co.bbr.services.contests.ContestEventService;
 import uk.co.bbr.services.contests.ContestResultService;
 import uk.co.bbr.services.contests.ContestService;
+import uk.co.bbr.services.contests.dao.ContestAliasDao;
 import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.contests.dao.ContestEventDao;
 import uk.co.bbr.services.contests.dao.ContestResultPieceDao;
@@ -37,11 +38,13 @@ public class ContestController {
         List<ContestEventDao> futureEventsForContest = this.contestEventService.fetchFutureEventsForContest(contest.get());
         List<ContestEventDao> pastEventsForContest = this.contestEventService.fetchPastEventsForContest(contest.get());
         int ownChoicePieceCount = this.contestResultService.fetchCountOfOwnChoiceForContest(contest.get());
+        List<ContestAliasDao> contestAliases = this.contestService.fetchAliases(contest.get());
 
         model.addAttribute("Contest", contest.get());
         model.addAttribute("FutureEvents", futureEventsForContest);
         model.addAttribute("PastEvents", pastEventsForContest);
         model.addAttribute("OwnChoicePieceCount", ownChoicePieceCount);
+        model.addAttribute("PreviousNames", contestAliases);
 
         return "contests/contests/contest";
     }

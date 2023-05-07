@@ -5,6 +5,7 @@ import uk.co.bbr.services.venues.dao.VenueAliasDao;
 import uk.co.bbr.services.venues.dao.VenueDao;
 import uk.co.bbr.services.venues.dto.VenueListDto;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface VenueService {
@@ -22,4 +23,6 @@ public interface VenueService {
     Optional<VenueDao> fetchBySlug(String slug);
 
     VenueListDto listVenuesStartingWith(String prefix);
+
+    List<VenueAliasDao> fetchAliases(VenueDao venue);
 }

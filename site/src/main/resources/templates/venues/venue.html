@@ -6,6 +6,7 @@
 <body>
 <div layout:fragment="content">
     <h2 th:text="${Venue.name}"></h2>
+    <span th:replace="components/aliases.html :: previousNames(${PreviousNames})"></span>
 </div>
 </body>
 </html>
