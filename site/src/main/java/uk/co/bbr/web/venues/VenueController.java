@@ -34,4 +34,17 @@ public class VenueController {
         return "venues/venue";
     }
 
+    @GetMapping("/venues/{venueSlug:[\\-a-z\\d]{2,}}/years")
+    public String venueYears(Model model, @PathVariable("venueSlug") String venueSlug) {
+        Optional<VenueDao> venue = this.venueService.fetchBySlug(venueSlug);
+        if (venue.isEmpty()) {
+            throw new NotFoundException("Venue with slug " + venueSlug + " not found");
+        }
+        List<VenueAliasDao> previousNames = this.venueService.fetchAliases(venue.get());
+
+        model.addAttribute("Venue", venue.get());
+        model.addAttribute("PreviousNames", previousNames);
+
+        return "venues/years";
+    }
 }

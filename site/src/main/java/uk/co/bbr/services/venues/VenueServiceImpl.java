@@ -150,4 +150,9 @@ public class VenueServiceImpl implements VenueService, SlugTools {
     public List<VenueAliasDao> fetchAliases(VenueDao venue) {
         return this.venueAliasRepository.findByVenue(venue.getId());
     }
+
+    @Override
+    public VenueDao update(VenueDao venue) {
+        return this.venueRepository.saveAndFlush(venue);
+    }
 }

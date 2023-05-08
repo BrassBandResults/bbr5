@@ -41,7 +41,11 @@ class VenueWebTests implements LoginMixin {
 
         this.venueService.create("Royal Albert Hall");
 
+        VenueDao birmingham = this.venueService.create("Birmingham");
+
         VenueDao venue = this.venueService.create("Symfony Hall");
+        venue.setParent(birmingham);
+        venue = this.venueService.update(venue);
         VenueAliasDao venueAliasWithDates = new VenueAliasDao();
         venueAliasWithDates.setName("Blackburn Hall");
         venueAliasWithDates.setStartDate(LocalDate.of(1980,5, 4));
@@ -64,15 +68,45 @@ class VenueWebTests implements LoginMixin {
         assertTrue(response.contains("Also/previously known as"));
         assertTrue(response.contains("Blackburn Hall (1980-1981)"));
         assertTrue(response.contains("Spanish Hall"));
+
+        assertTrue(response.contains(">In <"));
+        assertTrue(response.contains(">Birmingham<"));
     }
 
     @Test
-    void testSinglPageWithoutAliasesWorksSuccessfully() {
+    void testSingleYearsPageWithAliasesWorksSuccessfully() {
+        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/venues/symfony-hall/years", String.class);
+        assertNotNull(response);
+        assertTrue(response.contains("<h2>Symfony Hall</h2>"));
+
+        assertTrue(response.contains("Also/previously known as"));
+        assertTrue(response.contains("Blackburn Hall (1980-1981)"));
+        assertTrue(response.contains("Spanish Hall"));
+
+        assertTrue(response.contains(">In <"));
+        assertTrue(response.contains(">Birmingham<"));
+    }
+
+    @Test
+    void testSinglePageWithoutAliasesWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/venues/royal-albert-hall", String.class);
         assertNotNull(response);
         assertTrue(response.contains("<h2>Royal Albert Hall</h2>"));
 
         assertFalse(response.contains("Also/previously known as"));
+        assertFalse(response.contains(">In <"));
+        assertFalse(response.contains(">Birmingham<"));
+    }
+
+    @Test
+    void testSingleYearsPageWithoutAliasesWorksSuccessfully() {
+        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/venues/royal-albert-hall/years", String.class);
+        assertNotNull(response);
+        assertTrue(response.contains("<h2>Royal Albert Hall</h2>"));
+
+        assertFalse(response.contains("Also/previously known as"));
+        assertFalse(response.contains(">In <"));
+        assertFalse(response.contains(">Birmingham<"));
     }
 
 }

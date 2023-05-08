@@ -26,42 +26,69 @@ public class VenueMigrationServiceImpl extends AbstractMigrationServiceImpl impl
     private final RegionService regionService;
 
     @Override
-    public void migrate(Element rootNode) {
-        VenueDao venue = new VenueDao();
-        venue.setOldId(rootNode.getAttributeValue("id"));
-        venue.setSlug(rootNode.getChildText("slug"));
-        venue.setName(rootNode.getChildText("name"));
-        venue.setNotes(rootNode.getChildText("notes"));
+    public void migrate(Element rootNode, int pass) {
 
-        String regionSlug = rootNode.getChild("country").getAttributeValue("slug");
-        if (regionSlug != null && regionSlug.trim().length() > 0) {
-            Optional<RegionDao> region = this.regionService.fetchBySlug(regionSlug);
-            if (region.isEmpty()) {
-                throw new NotFoundException("Region not found " + regionSlug);
+        if (pass == 1) {
+            VenueDao venue = new VenueDao();
+            venue.setOldId(rootNode.getAttributeValue("id"));
+            venue.setSlug(rootNode.getChildText("slug"));
+            venue.setName(rootNode.getChildText("name"));
+            venue.setNotes(rootNode.getChildText("notes"));
+
+            String regionSlug = rootNode.getChild("country").getAttributeValue("slug");
+            if (regionSlug != null && regionSlug.trim().length() > 0) {
+                Optional<RegionDao> region = this.regionService.fetchBySlug(regionSlug);
+                if (region.isEmpty()) {
+                    throw new NotFoundException("Region not found " + regionSlug);
+                }
+                venue.setRegion(region.get());
             }
-            venue.setRegion(region.get());
+            venue.setLatitude(this.notBlank(rootNode, "latitude"));
+            venue.setLongitude(this.notBlank(rootNode, "longitude"));
+            venue.setExact(this.notBlankBoolean(rootNode, "exact"));
+            venue.setMapper(this.createUser(this.notBlank(rootNode, "mapper"), this.securityService));
+
+            venue.setCreatedBy(this.createUser(this.notBlank(rootNode, "owner"), this.securityService));
+            venue.setUpdatedBy(this.createUser(this.notBlank(rootNode, "lastChangedBy"), this.securityService));
+
+            venue.setCreated(this.notBlankDateTime(rootNode, "created"));
+            venue.setUpdated(this.notBlankDateTime(rootNode, "lastModified"));
+
+            venue = this.venueService.migrate(venue);
+
+            // aliases
+            Element previousNames = rootNode.getChild("previous_names");
+            List<Element> previousNameNodes = previousNames.getChildren();
+            for (Element eachOldName : previousNameNodes) {
+                this.createPreviousName(venue, eachOldName);
+            }
+
+            System.out.println(venue.getName());
+        } else {
+            // second pass - sort out the parents
+            Element parentNode = rootNode.getChild("parent");
+            if (parentNode != null) {
+                String parentSlug = parentNode.getAttributeValue("slug");
+                if (parentSlug != null && parentSlug.length() > 0) {
+                    Optional<VenueDao> parentVenue = this.venueService.fetchBySlug(parentSlug);
+                    if (parentVenue.isEmpty()) {
+                        System.out.println("*** Parent not found " + parentSlug);
+                        throw new NotFoundException("Parent not found " + parentSlug);
+                    }
+
+                    Optional<VenueDao> thisVenue = this.venueService.fetchBySlug(rootNode.getChildText("slug"));
+                    if (thisVenue.isEmpty()) {
+                        System.out.println("*** Venue to update with parent not found " + parentSlug);
+                        throw new NotFoundException("Venue to update with parent not found " + parentSlug);
+                    }
+
+                    thisVenue.get().setParent(parentVenue.get());
+                    VenueDao venue = this.venueService.update(thisVenue.get());
+
+                    System.out.println(venue.getName());
+                }
+            }
         }
-        venue.setLatitude(this.notBlank(rootNode, "latitude"));
-        venue.setLongitude(this.notBlank(rootNode, "longitude"));
-        venue.setExact(this.notBlankBoolean(rootNode, "exact"));
-        venue.setMapper(this.createUser(this.notBlank(rootNode, "mapper"), this.securityService));
-
-        venue.setCreatedBy(this.createUser(this.notBlank(rootNode, "owner"), this.securityService));
-        venue.setUpdatedBy(this.createUser(this.notBlank(rootNode, "lastChangedBy"), this.securityService));
-
-        venue.setCreated(this.notBlankDateTime(rootNode, "created"));
-        venue.setUpdated(this.notBlankDateTime(rootNode, "lastModified"));
-
-        venue = this.venueService.migrate(venue);
-
-        // aliases
-        Element previousNames = rootNode.getChild("previous_names");
-        List<Element> previousNameNodes = previousNames.getChildren();
-        for (Element eachOldName : previousNameNodes) {
-            this.createPreviousName(venue, eachOldName);
-        }
-
-        System.out.println(venue.getName());
     }
 
     private void createPreviousName(VenueDao venue, Element oldNameElement) {

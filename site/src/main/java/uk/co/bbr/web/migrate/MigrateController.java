@@ -66,7 +66,7 @@ public class MigrateController {
         List<String> messages = new ArrayList<>();
         messages.add("Repository clone complete...");
 
-        String next = "/migrate/" + type + "/0";
+        String next = "/migrate/" + type + "/1/0";
 
         if (type.startsWith("Results")) {
             next = "/migrate/Results/all/0/0";
@@ -78,9 +78,11 @@ public class MigrateController {
         return "migrate/migrate";
     }
 
-    @GetMapping("/migrate/{type}/{index}")
+    @GetMapping("/migrate/{type}/{pass}/{index}")
     @IsBbrAdmin
-    public String process(Model model, @PathVariable("index") int index, @PathVariable("type") String type) {
+    public String process(Model model, @PathVariable("index") int index, @PathVariable("type") String type, @PathVariable("pass") int pass) {
+
+        boolean twoPasses = pass == 1 && (type.equals("Venues") || type.equals("Bands"));
 
         List<String> messages = new ArrayList<>();
 
@@ -88,24 +90,27 @@ public class MigrateController {
         String[] directories = Arrays.stream(Objects.requireNonNull(topLevel.list((current, name) -> new File(current, name).isDirectory()))).sorted().toArray(String[]::new);
         try {
             String indexLetter = directories[index];
-            this.importType(type, indexLetter);
+            this.importType(type, indexLetter, pass);
             messages.add("Processing letter " + indexLetter + "...");
         }
         catch (IndexOutOfBoundsException ex) {
+            if (twoPasses) {
+                return "redirect:/migrate/" + type + "/2/0";
+            }
             return "redirect:/";
         }
 
         int nextIndex = index + 1;
 
         model.addAttribute("Messages", messages);
-        model.addAttribute("Next", "/migrate/" + type + "/" + nextIndex);
+        model.addAttribute("Next", "/migrate/" + type + "/" + pass + "/" + nextIndex);
 
         return "migrate/migrate";
     }
 
-    private void importType(String type, String indexLetter) {
+    private void importType(String type, String indexLetter, int pass) {
         File letterLevel = new File(BASE_PATH + "/"+ type +"/" + indexLetter);
-        System.out.println("Looking at " + letterLevel.toString());
+        System.out.println("Looking at " + letterLevel);
         if (letterLevel.exists()) {
             String[] files = Arrays.stream(letterLevel.list((current, name) -> new File(current, name).isFile())).sorted().toArray(String[]::new);
 
@@ -142,7 +147,7 @@ public class MigrateController {
                         this.pieceMigrationService.migrate(rootNode);
                         break;
                     case "Venues":
-                        this.venueMigrationService.migrate(rootNode);
+                        this.venueMigrationService.migrate(rootNode, pass);
                         break;
                     default:
                         throw new UnsupportedOperationException("No support for " + type);

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
 <head>
-    <title th:text="#{page.venue.title(${Venue.name})}">{0} - Venue - Brass Band Results</title>
+    <title th:text="#{page.venue-years.title(${Venue.name})}">{0} - Venue - Brass Band Results</title>
 </head>
 <body>
 <div layout:fragment="content">
@@ -11,10 +11,10 @@
 
     <ul class="nav nav-tabs">
         <li class="nav-item">
-            <a class="nav-link" th:href="${'/venues/' + Venue.slug}" th:text="#{page.venue.tab.contests}">Contests</a>
+            <a class="nav-link active" th:href="${'/venues/' + Venue.slug}" th:text="#{page.venue-years.tab.contests}">Contests</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link active" th:href="${'/venues/' + Venue.slug + '/years'}" th:text="#{page.venue.tab.years}">Years</a>
+            <a class="nav-link" th:href="${'/venues/' + Venue.slug + '/years'}" th:text="#{page.venue-years.tab.years}">Years</a>
         </li>
     </ul>
     <br/>
