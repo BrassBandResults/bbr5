@@ -40,7 +40,7 @@ public class ContestEventDao extends AbstractDao implements NameTools {
     @Setter
     private ContestEventDateResolution eventDateResolution;
 
-    @ManyToOne(fetch= FetchType.EAGER, optional=false)
+    @ManyToOne(fetch=FetchType.EAGER, optional=false)
     @JoinColumn(name="contest_id")
     @Setter
     private ContestDao contest;
@@ -48,7 +48,7 @@ public class ContestEventDao extends AbstractDao implements NameTools {
     @Column(name="notes")
     private String notes;
 
-    @ManyToOne(fetch= FetchType.EAGER)
+    @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="venue_id")
     @Setter
     private VenueDao venue;
@@ -64,7 +64,7 @@ public class ContestEventDao extends AbstractDao implements NameTools {
     @Column(name="original_owner", nullable=false)
     private String originalOwner;
 
-    @ManyToOne(fetch= FetchType.EAGER, optional=false)
+    @ManyToOne(fetch=FetchType.EAGER, optional=false)
     @JoinColumn(name="contest_type_id")
     @Setter
     private ContestTypeDao contestType;

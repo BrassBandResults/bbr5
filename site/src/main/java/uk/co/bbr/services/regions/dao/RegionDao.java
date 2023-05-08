@@ -60,8 +60,12 @@ public class RegionDao extends AbstractDao implements NameTools {
     private int subRegionActiveBandsCount;
 
     public void setName(String name){
-        String nameToSet = simplifyRegionName(name);
-        this.name = nameToSet;
+        if (name == null) {
+            this.name = null;
+        } else {
+            String nameToSet = simplifyRegionName(name);
+            this.name = nameToSet;
+        }
     }
 
     public void setSlug(String value) {

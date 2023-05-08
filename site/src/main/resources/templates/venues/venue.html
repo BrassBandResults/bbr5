@@ -7,19 +7,34 @@
 <div layout:fragment="content">
     <h2 th:text="${Venue.name}"></h2>
     <span th:replace="components/aliases.html :: previousNames(${PreviousNames})"></span>
-    <span th:if="${Venue.parent}">In <span th:replace="links/venue-link.html :: venueLink(${Venue.parent})">Venue Parent</span></span>
+    <p th:if="${Venue.parent}"><span th:text="#{page.venue.inside}">Part of </span> <span th:replace="links/venue-link.html :: venueLink(${Venue.parent})">Venue Parent</span></p>
+    <p th:text="${Venue.notes}">Notes</p>
 
     <ul class="nav nav-tabs">
         <li class="nav-item">
-            <a class="nav-link" th:href="${'/venues/' + Venue.slug}" th:text="#{page.venue.tab.contests}">Contests</a>
+            <a class="nav-link active" th:href="${'/venues/' + Venue.slug}" th:text="#{page.venue.tab.contests}">Contests</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link active" th:href="${'/venues/' + Venue.slug + '/years'}" th:text="#{page.venue.tab.years}">Years</a>
+            <a class="nav-link" th:href="${'/venues/' + Venue.slug + '/years'}" th:text="#{page.venue.tab.years}">Years</a>
         </li>
     </ul>
     <br/>
 
     <div class="tab-content">
+        <table id="events" class="table table-hover sortable">
+            <thead>
+            <tr>
+                <th th:text="#{page.venues.column-header-contest}">Contest</th>
+                <th th:text="#{page.venues.column-header-event-count}">Events at Venue</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="venueContest : ${VenueContests}">
+                <td><a th:href="${'/venues/' + Venue.slug + '/' + venueContest.contest.slug}" th:text="${venueContest.contest.name}"></a></td>
+                <td th:text="${venueContest.eventCount}">0</td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 </div>
 </body>

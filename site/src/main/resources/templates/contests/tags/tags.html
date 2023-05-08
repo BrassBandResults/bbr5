@@ -7,9 +7,6 @@
 <div layout:fragment="content">
     <span th:if="${TagPrefixLetter == 'ALL'}"><h2><span th:text="#{page.tags.page-title}" th:remove="tag">All Tags</span></h2></span>
     <span th:if="${TagPrefixLetter != 'ALL'}"><h2><span th:text="#{page.tags.tags-starting-with(${TagPrefixLetter})}" th:remove="tag">Contests Tags starting with R</span></h2></span>
-    <p>
-        {% if user.profile.enhanced_functionality %}<p>[<a href="/contest-groups/add/">{% trans "Add New Group"%}</a>]</p>{% endif %}
-    </p>
     <p th:replace="navigation/az-picker.html :: azPicker('tags', ${GroupPrefixLetter}, false, true)"></p>
     <table id="bands" class="table table-hover sortable">
         <thead>

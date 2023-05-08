@@ -30,7 +30,7 @@ public class ContestResultDao extends AbstractDao implements NameTools {
     @Column(name="old_id")
     private String oldId;
 
-    @ManyToOne(fetch= FetchType.EAGER, optional=false)
+    @ManyToOne(fetch=FetchType.EAGER, optional=false)
     @JoinColumn(name="contest_event_id")
     private ContestEventDao contestEvent;
 

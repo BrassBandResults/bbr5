@@ -42,12 +42,12 @@ public class PieceDao extends AbstractDao implements NameTools {
     @Setter
     private PieceCategory category;
 
-    @ManyToOne(fetch= FetchType.EAGER)
+    @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="composer_id")
     @Setter
     private PersonDao composer;
 
-    @ManyToOne(fetch= FetchType.EAGER)
+    @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="arranger_id")
     @Setter
     private PersonDao arranger;

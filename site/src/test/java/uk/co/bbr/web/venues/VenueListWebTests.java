@@ -17,6 +17,7 @@ import uk.co.bbr.web.LoginMixin;
 import uk.co.bbr.web.security.support.TestUser;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ActiveProfiles("test")
@@ -47,6 +48,7 @@ class VenueListWebTests implements LoginMixin {
     @Test
     void testGetContestListWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/venues", String.class);
+        assertNotNull(response);
         assertTrue(response.contains("<h2>Venues starting with A</h2>"));
 
         assertTrue(response.contains(">Auckland<"));
@@ -59,6 +61,7 @@ class VenueListWebTests implements LoginMixin {
     @Test
     void testGetContestListForSpecificLetterWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/venues/B", String.class);
+        assertNotNull(response);
         assertTrue(response.contains("<h2>Venues starting with B</h2>"));
 
         assertFalse(response.contains(">Auckland<"));
@@ -71,6 +74,7 @@ class VenueListWebTests implements LoginMixin {
     @Test
     void testGetAllContestsListWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/venues/ALL", String.class);
+        assertNotNull(response);
         assertTrue(response.contains("<h2>All Venues</h2>"));
 
         assertTrue(response.contains(">Auckland<"));

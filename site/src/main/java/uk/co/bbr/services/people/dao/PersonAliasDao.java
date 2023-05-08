@@ -19,7 +19,7 @@ import javax.persistence.Table;
 @Table(name="person_alias")
 public class PersonAliasDao extends AbstractDao implements NameTools {
 
-    @ManyToOne(fetch= FetchType.EAGER, optional=false)
+    @ManyToOne(fetch=FetchType.EAGER, optional=false)
     @JoinColumn(name="person_id")
     @Setter
     private PersonDao person;

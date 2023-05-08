@@ -20,7 +20,7 @@ import java.time.LocalDate;
 @Table(name="band_previous_name")
 public class BandPreviousNameDao extends AbstractDao implements NameTools {
 
-    @ManyToOne(fetch= FetchType.EAGER, optional=false)
+    @ManyToOne(fetch=FetchType.EAGER, optional=false)
     @JoinColumn(name="band_id")
     @Setter
     private BandDao band;

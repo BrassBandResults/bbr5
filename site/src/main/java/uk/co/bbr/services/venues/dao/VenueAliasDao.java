@@ -25,7 +25,7 @@ public class VenueAliasDao extends AbstractDao implements NameTools {
     @Column(name="old_id")
     private String oldId;
 
-    @ManyToOne(fetch= FetchType.EAGER, optional=false)
+    @ManyToOne(fetch=FetchType.EAGER, optional=false)
     @JoinColumn(name="venue_id")
     @Setter
     private VenueDao venue;

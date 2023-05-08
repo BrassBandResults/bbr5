@@ -25,12 +25,12 @@ public class ContestAdjudicatorDao extends AbstractDao implements NameTools {
     @Column(name="old_id")
     private String oldId;
 
-    @ManyToOne(fetch= FetchType.EAGER, optional=false)
+    @ManyToOne(fetch=FetchType.EAGER, optional=false)
     @JoinColumn(name="contest_event_id")
     @Setter
     private ContestEventDao contestEvent;
 
-    @ManyToOne(fetch= FetchType.EAGER, optional=false)
+    @ManyToOne(fetch=FetchType.EAGER, optional=false)
     @JoinColumn(name="person_id")
     @Setter
     private PersonDao adjudicator;

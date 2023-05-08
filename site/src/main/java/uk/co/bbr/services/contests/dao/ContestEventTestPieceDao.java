@@ -24,12 +24,12 @@ import java.util.List;
 @NoArgsConstructor
 @Table(name="contest_event_test_piece")
 public class ContestEventTestPieceDao extends AbstractDao implements NameTools {
-    @ManyToOne(fetch= FetchType.EAGER, optional=false)
+    @ManyToOne(fetch=FetchType.EAGER, optional=false)
     @JoinColumn(name="contest_event_id")
     @Setter
     private ContestEventDao contestEvent;
 
-    @ManyToOne(fetch= FetchType.EAGER, optional=false)
+    @ManyToOne(fetch=FetchType.EAGER, optional=false)
     @JoinColumn(name="piece_id")
     @Setter
     private PieceDao piece;

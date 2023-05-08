@@ -10,9 +10,6 @@
     <p>
         <span th:text="#{page.people.people-counts(${People.returnedPeopleCount},${People.allPeopleCount})}" th:remove="tag">Showing 1 of 6 people.</span>
     </p>
-    <p>
-        {% if user.profile.enhanced_functionality %}<p>[<a href="/people/add/">{% trans "Add New Person"%}</a>]</p>{% endif %}
-    </p>
     <p th:replace="navigation/az-picker.html :: azPicker('people', ${PeoplePrefixLetter}, false, false)"></p>
     <table id="people" class="table table-hover sortable">
         <thead>

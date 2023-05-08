@@ -39,7 +39,7 @@ public class ContestGroupDao extends AbstractDao implements NameTools {
     @Column(name="notes")
     private String notes;
 
-    @ManyToMany(fetch= FetchType.EAGER)
+    @ManyToMany(fetch=FetchType.EAGER)
     @JoinTable(
             name = "contest_group_tag_link",
             joinColumns = @JoinColumn(name = "contest_group_id"),

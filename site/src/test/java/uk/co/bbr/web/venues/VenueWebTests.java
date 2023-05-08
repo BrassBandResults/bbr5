@@ -69,7 +69,7 @@ class VenueWebTests implements LoginMixin {
         assertTrue(response.contains("Blackburn Hall (1980-1981)"));
         assertTrue(response.contains("Spanish Hall"));
 
-        assertTrue(response.contains(">In <"));
+        assertTrue(response.contains(">Inside<"));
         assertTrue(response.contains(">Birmingham<"));
     }
 
@@ -83,7 +83,7 @@ class VenueWebTests implements LoginMixin {
         assertTrue(response.contains("Blackburn Hall (1980-1981)"));
         assertTrue(response.contains("Spanish Hall"));
 
-        assertTrue(response.contains(">In <"));
+        assertTrue(response.contains(">Inside<"));
         assertTrue(response.contains(">Birmingham<"));
     }
 
@@ -94,7 +94,7 @@ class VenueWebTests implements LoginMixin {
         assertTrue(response.contains("<h2>Royal Albert Hall</h2>"));
 
         assertFalse(response.contains("Also/previously known as"));
-        assertFalse(response.contains(">In <"));
+        assertFalse(response.contains(">Inside<"));
         assertFalse(response.contains(">Birmingham<"));
     }
 
@@ -105,7 +105,7 @@ class VenueWebTests implements LoginMixin {
         assertTrue(response.contains("<h2>Royal Albert Hall</h2>"));
 
         assertFalse(response.contains("Also/previously known as"));
-        assertFalse(response.contains(">In <"));
+        assertFalse(response.contains(">Inside<"));
         assertFalse(response.contains(">Birmingham<"));
     }
 

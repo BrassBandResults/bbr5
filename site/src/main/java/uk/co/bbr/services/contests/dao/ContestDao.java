@@ -38,12 +38,12 @@ public class ContestDao extends AbstractDao implements NameTools {
     @Setter
     private ContestTypeDao defaultContestType;
 
-    @ManyToOne(fetch= FetchType.EAGER)
+    @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="region_id")
     @Setter
     private RegionDao region;
 
-    @ManyToOne(fetch= FetchType.EAGER)
+    @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="section_id")
     @Setter
     private SectionDao section;
@@ -78,7 +78,7 @@ public class ContestDao extends AbstractDao implements NameTools {
     @Setter
     private Integer repeatPeriod;
 
-    @ManyToMany(fetch= FetchType.EAGER)
+    @ManyToMany(fetch=FetchType.EAGER)
     @JoinTable(
             name = "contest_tag_link",
             joinColumns = @JoinColumn(name = "contest_id"),

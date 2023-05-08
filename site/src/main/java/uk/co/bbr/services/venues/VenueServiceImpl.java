@@ -3,22 +3,33 @@ package uk.co.bbr.services.venues;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import uk.co.bbr.services.contests.dao.ContestDao;
+import uk.co.bbr.services.contests.dao.ContestEventDao;
+import uk.co.bbr.services.contests.dao.ContestResultDao;
+import uk.co.bbr.services.contests.repo.ContestEventRepository;
 import uk.co.bbr.services.framework.ValidationException;
 import uk.co.bbr.services.framework.mixins.SlugTools;
+import uk.co.bbr.services.regions.dao.RegionDao;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.services.venues.dao.VenueAliasDao;
 import uk.co.bbr.services.venues.dao.VenueDao;
+import uk.co.bbr.services.venues.dto.VenueContestDto;
+import uk.co.bbr.services.venues.dto.VenueContestYearDto;
 import uk.co.bbr.services.venues.dto.VenueListDto;
-import uk.co.bbr.services.venues.dto.VenueListVenueDto;
 import uk.co.bbr.services.venues.repo.VenueAliasRepository;
 import uk.co.bbr.services.venues.repo.VenueRepository;
+import uk.co.bbr.services.venues.sql.VenueSql;
+import uk.co.bbr.services.venues.sql.dto.VenueListSqlDto;
 import uk.co.bbr.web.security.annotations.IsBbrAdmin;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
+import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -26,7 +37,9 @@ public class VenueServiceImpl implements VenueService, SlugTools {
 
     private final VenueRepository venueRepository;
     private final VenueAliasRepository venueAliasRepository;
+    private final ContestEventRepository contestEventRepository;
     private final SecurityService securityService;
+    private final EntityManager entityManager;
 
     @Override
     public VenueDao create(String name) {
@@ -120,28 +133,41 @@ public class VenueServiceImpl implements VenueService, SlugTools {
 
     @Override
     public VenueListDto listVenuesStartingWith(String prefix) {
-        List<VenueDao> venuesToReturn;
+        List<VenueListSqlDto> venuesToReturn;
         String prefixDisplay = prefix;
 
         switch (prefix.toUpperCase()) {
-            case "ALL" -> venuesToReturn = this.venueRepository.findAll();
+            case "ALL" -> venuesToReturn = VenueSql.venueListAll(this.entityManager);
             case "0" -> {
                 prefixDisplay = "0-9";
-                venuesToReturn = this.venueRepository.findWithNumberPrefixOrderByName();
+                venuesToReturn = VenueSql.venueListNumber(this.entityManager);
             }
             default -> {
                 if (prefix.trim().length() != 1) {
                     throw new UnsupportedOperationException("Prefix must be a single character");
                 }
-                venuesToReturn = this.venueRepository.findByPrefixOrderByName(prefix.trim().toUpperCase());
+                venuesToReturn = VenueSql.venueListPrefix(this.entityManager, prefix.trim().toUpperCase());
             }
         }
 
         long allVenuesCount = this.venueRepository.count();
 
-        List<VenueListVenueDto> returnedVenues = new ArrayList<>();
-        for (VenueDao eachVenue : venuesToReturn) {
-            returnedVenues.add(new VenueListVenueDto(eachVenue.getSlug(), eachVenue.getName(), eachVenue.getRegion(), eachVenue.getEventCount()));
+        List<VenueDao> returnedVenues = new ArrayList<>();
+        for (VenueListSqlDto eachVenue : venuesToReturn) {
+            VenueDao venue = new VenueDao();
+            venue.setName(eachVenue.getVenueName());
+            venue.setSlug(eachVenue.getVenueSlug());
+            venue.setEventCount(eachVenue.getEventCount());
+
+            if (eachVenue.getRegionSlug() != null && eachVenue.getRegionSlug().length() > 0) {
+                RegionDao region = new RegionDao();
+                region.setSlug(eachVenue.getRegionSlug());
+                region.setName(eachVenue.getRegionName());
+                region.setCountryCode(eachVenue.getCountryCode());
+                venue.setRegion(region);
+            }
+
+            returnedVenues.add(venue);
         }
         return new VenueListDto(venuesToReturn.size(), allVenuesCount, prefixDisplay, returnedVenues);
     }
@@ -154,5 +180,61 @@ public class VenueServiceImpl implements VenueService, SlugTools {
     @Override
     public VenueDao update(VenueDao venue) {
         return this.venueRepository.saveAndFlush(venue);
+    }
+
+    private List<ContestEventDao> contestEventsForVenue(VenueDao venue) {
+        return this.contestEventRepository.fetchEventsForVenue(venue.getId());
+    }
+
+    @Override
+    public List<VenueContestDto> fetchVenueContests(VenueDao venue) {
+        List<VenueContestDto> returnList = new ArrayList<>();
+
+        List<ContestEventDao> eventsForVenue = this.contestEventsForVenue(venue);
+        for (ContestEventDao eachEvent : eventsForVenue) {
+            boolean found = false;
+            for (VenueContestDto eachReturnResult : returnList) {
+                if (eachReturnResult.getContest().getSlug().equals(eachEvent.getContest().getSlug())) {
+                    eachReturnResult.incrementEventCount();
+                    found = true;
+                }
+            }
+            if (!found) {
+                VenueContestDto newReturnResult = new VenueContestDto(eachEvent.getContest());
+                returnList.add(newReturnResult);
+            }
+        }
+        return returnList;
+    }
+
+    @Override
+    public List<ContestResultDao> fetchVenueContestEvents(VenueDao venue, ContestDao contest) {
+        return null;
+    }
+
+    @Override
+    public List<VenueContestYearDto> fetchVenueContestYears(VenueDao venue) {
+        List<VenueContestYearDto> returnList = new ArrayList<>();
+
+        List<ContestEventDao> eventsForVenue = this.contestEventsForVenue(venue);
+        for (ContestEventDao eachEvent : eventsForVenue) {
+            boolean found = false;
+            for (VenueContestYearDto eachReturnResult : returnList) {
+                if (eachReturnResult.getYear() == eachEvent.getEventDate().getYear()) {
+                    eachReturnResult.incrementEventCount();
+                    found = true;
+                }
+            }
+            if (!found) {
+                VenueContestYearDto newReturnResult = new VenueContestYearDto(eachEvent.getEventDate().getYear());
+                returnList.add(newReturnResult);
+            }
+        }
+        return returnList.stream().sorted(Comparator.comparing(VenueContestYearDto::getYear).reversed()).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ContestEventDao> fetchVenueContestYear(VenueDao venue, int year) {
+        return this.contestEventRepository.fetchEventsForVenueInYear(venue.getId(), year);
     }
 }

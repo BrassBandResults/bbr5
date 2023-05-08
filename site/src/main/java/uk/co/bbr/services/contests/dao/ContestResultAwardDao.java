@@ -19,12 +19,12 @@ import javax.persistence.Table;
 @Table(name="contest_result_award")
 public class ContestResultAwardDao extends AbstractDao implements NameTools {
 
-    @ManyToOne(fetch= FetchType.EAGER, optional=false)
+    @ManyToOne(fetch=FetchType.EAGER, optional=false)
     @JoinColumn(name="contest_result_id")
     @Setter
     private ContestResultDao contestResult;
 
-    @ManyToOne(fetch= FetchType.EAGER, optional=false)
+    @ManyToOne(fetch=FetchType.EAGER, optional=false)
     @JoinColumn(name="award_type_id")
     @Setter
     private ContestResultAwardTypeDao awardType;

@@ -19,7 +19,7 @@ import java.time.LocalDate;
 @Table(name="band_relationship")
 public class BandRelationshipDao extends AbstractDao {
 
-    @ManyToOne(fetch= FetchType.EAGER, optional=false)
+    @ManyToOne(fetch=FetchType.EAGER, optional=false)
     @JoinColumn(name="left_band_id")
     @Setter
     private BandDao leftBand;
@@ -27,12 +27,12 @@ public class BandRelationshipDao extends AbstractDao {
     @Column(name="left_band_name")
     private String leftBandName;
 
-    @ManyToOne(fetch= FetchType.EAGER, optional=false)
+    @ManyToOne(fetch=FetchType.EAGER, optional=false)
     @JoinColumn(name="relationship_id")
     @Setter
     private BandRelationshipTypeDao relationship;
 
-    @ManyToOne(fetch= FetchType.EAGER, optional=false)
+    @ManyToOne(fetch=FetchType.EAGER, optional=false)
     @JoinColumn(name="right_band_id")
     @Setter
     private BandDao rightBand;

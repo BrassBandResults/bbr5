@@ -38,7 +38,7 @@ public class BandDao extends AbstractDao implements NameTools {
     @Column(name="website")
     private String website;
 
-    @ManyToOne(fetch= FetchType.EAGER, optional=false)
+    @ManyToOne(fetch=FetchType.EAGER, optional=false)
     @JoinColumn(name="region_id")
     @Setter
     private RegionDao region;
@@ -68,7 +68,7 @@ public class BandDao extends AbstractDao implements NameTools {
     @Setter
     private BandStatus status;
 
-    @ManyToOne(fetch= FetchType.EAGER)
+    @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="section_id")
     @Setter
     private SectionDao section;

@@ -7,11 +7,8 @@
 <div layout:fragment="content">
     <span th:if="${VenuePrefixLetter == 'ALL'}"><h2><span th:text="#{page.venues.page-title}" th:remove="tag">All Venues</span></h2></span>
     <span th:if="${VenuePrefixLetter != 'ALL'}"><h2><span th:text="#{page.venues.venues-starting-with(${VenuePrefixLetter})}" th:remove="tag">Venues starting with R</span></h2></span>
-    <p>
-        {% if user.profile.enhanced_functionality %}<p>[<a href="/bands/add/">{% trans "Add New Venue"%}</a>]</p>{% endif %}
-    </p>
     <p th:replace="navigation/az-picker.html :: azPicker('venues', ${RegionPrefixLetter}, true, true)"></p>
-    <table id="bands" class="table table-hover sortable">
+    <table id="venues" class="table table-hover sortable">
         <thead>
         <tr>
             <th th:text="#{page.venues.column-header-name}">Name</th>

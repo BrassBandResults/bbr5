@@ -18,7 +18,7 @@ import javax.persistence.Table;
 @Table(name="person_profile")
 public class PersonProfileDao extends AbstractDao {
 
-    @ManyToOne(fetch= FetchType.EAGER)
+    @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="person_id")
     @Setter
     private PersonDao person;

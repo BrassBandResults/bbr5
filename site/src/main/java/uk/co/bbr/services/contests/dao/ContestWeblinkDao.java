@@ -25,12 +25,12 @@ public class ContestWeblinkDao extends AbstractDao implements NameTools {
     @Column(name="url", nullable=false)
     private String url;
 
-    @ManyToOne(fetch= FetchType.EAGER)
+    @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="contest_id")
     @Setter
     private ContestDao contest;
 
-    @ManyToOne(fetch= FetchType.EAGER)
+    @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="contest_group_id")
     @Setter
     private ContestGroupDao contestGroup;

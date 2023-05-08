@@ -1,8 +1,12 @@
 package uk.co.bbr.services.venues;
 
-import uk.co.bbr.services.bands.dto.BandListDto;
+import uk.co.bbr.services.contests.dao.ContestDao;
+import uk.co.bbr.services.contests.dao.ContestEventDao;
+import uk.co.bbr.services.contests.dao.ContestResultDao;
 import uk.co.bbr.services.venues.dao.VenueAliasDao;
 import uk.co.bbr.services.venues.dao.VenueDao;
+import uk.co.bbr.services.venues.dto.VenueContestDto;
+import uk.co.bbr.services.venues.dto.VenueContestYearDto;
 import uk.co.bbr.services.venues.dto.VenueListDto;
 
 import java.util.List;
@@ -27,4 +31,12 @@ public interface VenueService {
     List<VenueAliasDao> fetchAliases(VenueDao venue);
 
     VenueDao update(VenueDao venue);
+
+    List<VenueContestDto> fetchVenueContests(VenueDao venue);
+
+    List<ContestResultDao> fetchVenueContestEvents(VenueDao venue, ContestDao contest);
+
+    List<VenueContestYearDto> fetchVenueContestYears(VenueDao venue);
+
+    List<ContestEventDao> fetchVenueContestYear(VenueDao venue, int year);
 }

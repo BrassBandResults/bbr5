@@ -11,9 +11,6 @@
         <span th:text="#{page.groups.group-counts(${Groups.returnedGroupsCount},${Groups.allGroupsCount})}" th:remove="tag">Showing 1 of 6 groups.</span>
         <span th:text="#{page.groups.group-list-header}" th:remove="tag">This is a list of current or last known names, alternative group names can be found by search.</span>
     </p>
-    <p>
-        {% if user.profile.enhanced_functionality %}<p>[<a href="/contest-groups/add/">{% trans "Add New Group"%}</a>]</p>{% endif %}
-    </p>
     <p th:replace="navigation/az-picker.html :: azPicker('contest-groups', ${GroupPrefixLetter}, false, true)"></p>
     <table id="bands" class="table table-hover sortable">
         <thead>

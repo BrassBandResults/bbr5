@@ -25,7 +25,7 @@ public class VenueDao extends AbstractDao implements NameTools {
     @Column(name="slug", nullable=false)
     private String slug;
 
-    @ManyToOne(fetch= FetchType.EAGER)
+    @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="region_id")
     @Setter
     private RegionDao region;
@@ -47,12 +47,13 @@ public class VenueDao extends AbstractDao implements NameTools {
     @Setter
     private String mapper;
 
-    @ManyToOne(fetch= FetchType.EAGER)
+    @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="parent_id")
     @Setter
     private VenueDao parent;
 
-    @Formula("(SELECT COUNT(*) FROM contest_event e WHERE e.venue_id = id)")
+    @Transient
+    @Setter
     private int eventCount;
 
     public void setName(String name){

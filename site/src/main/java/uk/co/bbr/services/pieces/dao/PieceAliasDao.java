@@ -18,7 +18,7 @@ import javax.persistence.Table;
 @Table(name="piece_alias")
 public class PieceAliasDao extends AbstractDao {
 
-    @ManyToOne(fetch= FetchType.EAGER, optional=false)
+    @ManyToOne(fetch=FetchType.EAGER, optional=false)
     @JoinColumn(name="piece_id")
     @Setter
     private PieceDao piece;
