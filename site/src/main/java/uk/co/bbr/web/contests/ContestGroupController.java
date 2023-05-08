@@ -64,9 +64,16 @@ public class ContestGroupController {
 
     @GetMapping("/contests/{slug:[\\-A-Z\\d]{2,}}/years")
     public String contestGroupYearDetails(Model model, @PathVariable("slug") String groupSlug) {
+        Optional<ContestGroupDao> contestGroup = this.contestGroupService.fetchBySlug(groupSlug);
+        if (contestGroup.isEmpty()) {
+            throw new NotFoundException("Group with slug " + groupSlug + " not found");
+        }
+
         ContestGroupYearsDetailsDto contestGroupDetails = this.contestGroupService.fetchYearsBySlug(groupSlug);
+        List<ContestGroupAliasDao> contestGroupAliases = this.contestGroupService.fetchAliases(contestGroup.get());
 
         model.addAttribute("Group", contestGroupDetails);
+        model.addAttribute("PreviousNames", contestGroupAliases);
         return "contests/groups/years";
     }
 
