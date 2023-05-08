@@ -65,6 +65,7 @@ public class ContestEventServiceImpl implements ContestEventService {
     }
 
     @Override
+    @IsBbrMember
     public ContestEventDao update(ContestEventDao event) {
        this.validateMandatory(event.getContest(), event);
 
@@ -112,6 +113,7 @@ public class ContestEventServiceImpl implements ContestEventService {
     }
 
     @Override
+    @IsBbrMember
     public List<ContestAdjudicatorDao> addAdjudicator(ContestEventDao event, PersonDao adjudicator) {
 
         ContestAdjudicatorDao newAdjudicator = new ContestAdjudicatorDao();
@@ -135,6 +137,7 @@ public class ContestEventServiceImpl implements ContestEventService {
     }
 
     @Override
+    @IsBbrMember
     public ContestEventTestPieceDao addTestPieceToContest(ContestEventDao event, ContestEventTestPieceDao testPiece) {
         testPiece.setContestEvent(event);
         testPiece.setCreated(LocalDateTime.now());
@@ -145,6 +148,7 @@ public class ContestEventServiceImpl implements ContestEventService {
     }
 
     @Override
+    @IsBbrMember
     public ContestEventTestPieceDao addTestPieceToContest(ContestEventDao event, PieceDao testPiece) {
         ContestEventTestPieceDao newTestPiece = new ContestEventTestPieceDao();
         newTestPiece.setPiece(testPiece);
@@ -152,6 +156,7 @@ public class ContestEventServiceImpl implements ContestEventService {
     }
 
     @Override
+    @IsBbrMember
     public ContestEventTestPieceDao addTestPieceToContest(ContestEventDao event, PieceDao testPiece, TestPieceAndOr andOr) {
         ContestEventTestPieceDao newTestPiece = new ContestEventTestPieceDao();
         newTestPiece.setPiece(testPiece);

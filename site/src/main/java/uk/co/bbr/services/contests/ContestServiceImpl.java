@@ -52,6 +52,7 @@ public class ContestServiceImpl implements ContestService, SlugTools {
     }
 
     @Override
+    @IsBbrMember
     public ContestDao create(String contestName, ContestGroupDao group, int ordering) {
         ContestDao contest = new ContestDao();
         contest.setName(contestName);
@@ -74,6 +75,7 @@ public class ContestServiceImpl implements ContestService, SlugTools {
     }
 
     @Override
+    @IsBbrMember
     public ContestDao update(ContestDao contest) {
         // validation
         if (contest.getId() == null) {
@@ -163,6 +165,7 @@ public class ContestServiceImpl implements ContestService, SlugTools {
     }
 
     @Override
+    @IsBbrMember
     public ContestAliasDao createAlias(ContestDao contest, String previousName) {
         ContestAliasDao newAlias = new ContestAliasDao();
         newAlias.setName(previousName);
@@ -235,12 +238,14 @@ public class ContestServiceImpl implements ContestService, SlugTools {
     }
 
     @Override
+    @IsBbrMember
     public ContestDao addContestToGroup(ContestDao contest, ContestGroupDao group) {
         contest.setContestGroup(group);
         return this.update(contest);
     }
 
     @Override
+    @IsBbrMember
     public ContestDao addContestTag(ContestDao contest, ContestTagDao tag) {
         contest.getTags().add(tag);
         return this.update(contest);

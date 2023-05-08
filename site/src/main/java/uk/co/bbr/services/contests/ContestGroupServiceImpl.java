@@ -144,6 +144,7 @@ public class ContestGroupServiceImpl implements ContestGroupService, SlugTools {
     }
 
     @Override
+    @IsBbrMember
     public ContestGroupAliasDao createAlias(ContestGroupDao group, String alias) {
         ContestGroupAliasDao newAlias = new ContestGroupAliasDao();
         newAlias.setName(alias);
@@ -190,6 +191,7 @@ public class ContestGroupServiceImpl implements ContestGroupService, SlugTools {
     }
 
     @Override
+    @IsBbrMember
     public ContestGroupDao addGroupTag(ContestGroupDao group, ContestTagDao tag) {
         group.getTags().add(tag);
         System.out.println("Linking group " + group.getId() + " [" + group.getName() + "] with tag " + tag.getId()+ " [" + tag.getName() + "]");

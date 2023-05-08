@@ -121,6 +121,7 @@ public class PieceServiceImpl implements PieceService, SlugTools {
     }
 
     @Override
+    @IsBbrAdmin
     public void migrateAlternativeName(PieceDao piece, PieceAliasDao alternativeName) {
         this.createAlternativeName(piece, alternativeName, true);
     }

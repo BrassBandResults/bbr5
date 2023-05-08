@@ -74,6 +74,7 @@ public class ContestResultServiceImpl implements ContestResultService {
     }
 
     @Override
+    @IsBbrMember
     public ContestResultDao addResult(ContestEventDao event, String position, BandDao band, PersonDao conductor) {
         ContestResultDao newResult = new ContestResultDao();
         newResult.setPosition(position);
@@ -90,6 +91,7 @@ public class ContestResultServiceImpl implements ContestResultService {
     }
 
     @Override
+    @IsBbrMember
     public ContestResultPieceDao addPieceToResult(ContestResultDao contestResult, ContestResultPieceDao contestResultTestPiece) {
         contestResultTestPiece.setContestResult(contestResult);
 
@@ -102,6 +104,7 @@ public class ContestResultServiceImpl implements ContestResultService {
     }
 
     @Override
+    @IsBbrMember
     public ContestResultPieceDao addPieceToResult(ContestResultDao contestResult, PieceDao piece) {
         ContestResultPieceDao newPiece = new ContestResultPieceDao();
         newPiece.setPiece(piece);
@@ -386,6 +389,7 @@ public class ContestResultServiceImpl implements ContestResultService {
     }
 
     @Override
+    @IsBbrMember
     public ContestResultDao migrate(ContestEventDao event, ContestResultDao contestResult) {
         contestResult.setContestEvent(event);
         return this.contestResultRepository.saveAndFlush(contestResult);

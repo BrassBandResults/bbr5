@@ -42,6 +42,7 @@ public class VenueServiceImpl implements VenueService, SlugTools {
     private final EntityManager entityManager;
 
     @Override
+    @IsBbrMember
     public VenueDao create(String name) {
         VenueDao newVenue = new VenueDao();
         newVenue.setName(name);
@@ -101,11 +102,6 @@ public class VenueServiceImpl implements VenueService, SlugTools {
         return this.createAlias(venue, previousName, true);
     }
 
-    @Override
-    public Optional<VenueDao> fetchBySlug(String slug) {
-        return this.venueRepository.fetchBySlug(slug);
-    }
-
     private VenueAliasDao createAlias(VenueDao venue, VenueAliasDao previousName, boolean migrating) {
         previousName.setVenue(venue);
 
@@ -117,6 +113,11 @@ public class VenueServiceImpl implements VenueService, SlugTools {
         }
 
         return this.venueAliasRepository.saveAndFlush(previousName);
+    }
+
+    @Override
+    public Optional<VenueDao> fetchBySlug(String slug) {
+        return this.venueRepository.fetchBySlug(slug);
     }
 
     private void validateMandatory(VenueDao venue){
@@ -178,6 +179,7 @@ public class VenueServiceImpl implements VenueService, SlugTools {
     }
 
     @Override
+    @IsBbrMember
     public VenueDao update(VenueDao venue) {
         return this.venueRepository.saveAndFlush(venue);
     }
