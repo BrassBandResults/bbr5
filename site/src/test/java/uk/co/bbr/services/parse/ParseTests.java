@@ -10,6 +10,7 @@ import uk.co.bbr.services.bands.BandService;
 import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.bands.dao.BandPreviousNameDao;
 import uk.co.bbr.services.parse.dto.ParseResultDto;
+import uk.co.bbr.services.parse.types.ParseOutcome;
 import uk.co.bbr.services.people.PersonService;
 import uk.co.bbr.services.people.dao.PersonAliasDao;
 import uk.co.bbr.services.people.dao.PersonDao;
@@ -78,7 +79,7 @@ class ParseTests implements LoginMixin {
         ParseResultDto parseResult = this.parseService.parseLine(testEntry, LocalDate.now());
 
         // assert
-        assertFalse(parseResult.isParseSuccess());
+        assertEquals(ParseOutcome.RED, parseResult.getOutcome());
 
         assertNull(parseResult.getRawPosition());
         assertNull(parseResult.getRawBandName());
@@ -89,7 +90,7 @@ class ParseTests implements LoginMixin {
         assertNull(parseResult.getMatchedBand());
         assertNull(parseResult.getMatchedConductor());
 
-        assertFalse(parseResult.isMatchSuccess());
+        assertEquals(ParseOutcome.RED, parseResult.getOutcome());
    }
 
     @Test
@@ -101,7 +102,7 @@ class ParseTests implements LoginMixin {
         ParseResultDto parseResult = this.parseService.parseLine(testEntry, LocalDate.now());
 
         // assert
-        assertTrue(parseResult.isParseSuccess());
+        assertEquals(ParseOutcome.AMBER, parseResult.getOutcome());
 
         assertEquals("1", parseResult.getRawPosition());
         assertEquals("Black Dyke Band", parseResult.getRawBandName());
@@ -109,7 +110,7 @@ class ParseTests implements LoginMixin {
         assertEquals("5", parseResult.getRawDraw());
         assertEquals("123", parseResult.getRawPoints());
 
-        assertTrue(parseResult.isMatchSuccess());
+        assertEquals(ParseOutcome.AMBER, parseResult.getOutcome());
 
         assertEquals("black-dyke-band", parseResult.getMatchedBand().getSlug());
         assertEquals("robert-childs", parseResult.getMatchedConductor().getSlug());
@@ -126,7 +127,7 @@ class ParseTests implements LoginMixin {
         ParseResultDto parseResult = this.parseService.parseLine(testEntry, LocalDate.now());
 
         // assert
-        assertTrue(parseResult.isParseSuccess());
+        assertEquals(ParseOutcome.AMBER, parseResult.getOutcome());
 
         assertEquals("5", parseResult.getRawPosition());
         assertEquals("Rothwell Temperance", parseResult.getRawBandName());
@@ -134,7 +135,7 @@ class ParseTests implements LoginMixin {
         assertEquals("26", parseResult.getRawDraw());
         assertEquals("", parseResult.getRawPoints());
 
-        assertTrue(parseResult.isMatchSuccess());
+        assertEquals(ParseOutcome.AMBER, parseResult.getOutcome());
 
         assertEquals("rothwell-temperance-b", parseResult.getMatchedBand().getSlug());
         assertEquals("david-roberts", parseResult.getMatchedConductor().getSlug());
@@ -151,7 +152,7 @@ class ParseTests implements LoginMixin {
         ParseResultDto parseResult = this.parseService.parseLine(testEntry, LocalDate.now());
 
         // assert
-        assertTrue(parseResult.isParseSuccess());
+        assertEquals(ParseOutcome.AMBER, parseResult.getOutcome());
 
         assertEquals("0", parseResult.getRawPosition());
         assertEquals("Rothwell Temperance", parseResult.getRawBandName());
@@ -159,7 +160,7 @@ class ParseTests implements LoginMixin {
         assertEquals("111", parseResult.getRawDraw());
         assertEquals("", parseResult.getRawPoints());
 
-        assertTrue(parseResult.isMatchSuccess());
+        assertEquals(ParseOutcome.AMBER, parseResult.getOutcome());
 
         assertEquals("rothwell-temperance-b", parseResult.getMatchedBand().getSlug());
         assertEquals("david-roberts", parseResult.getMatchedConductor().getSlug());
@@ -176,7 +177,7 @@ class ParseTests implements LoginMixin {
         ParseResultDto parseResult = this.parseService.parseLine(testEntry, LocalDate.now());
 
         // assert
-        assertTrue(parseResult.isParseSuccess());
+        assertEquals(ParseOutcome.AMBER, parseResult.getOutcome());
 
         assertEquals("1", parseResult.getRawPosition());
         assertEquals("Black Dyke Band", parseResult.getRawBandName());
@@ -184,7 +185,7 @@ class ParseTests implements LoginMixin {
         assertEquals("5", parseResult.getRawDraw());
         assertEquals("321", parseResult.getRawPoints());
 
-        assertTrue(parseResult.isMatchSuccess());
+        assertEquals(ParseOutcome.AMBER, parseResult.getOutcome());
 
         assertEquals("black-dyke-band", parseResult.getMatchedBand().getSlug());
         assertEquals("robert-childs", parseResult.getMatchedConductor().getSlug());
@@ -201,7 +202,7 @@ class ParseTests implements LoginMixin {
         ParseResultDto parseResult = this.parseService.parseLine(testEntry, LocalDate.now());
 
         // assert
-        assertTrue(parseResult.isParseSuccess());
+        assertEquals(ParseOutcome.AMBER, parseResult.getOutcome());
 
         assertEquals("1", parseResult.getRawPosition());
         assertEquals("Black Dyke Band", parseResult.getRawBandName());
@@ -209,7 +210,7 @@ class ParseTests implements LoginMixin {
         assertEquals("5", parseResult.getRawDraw());
         assertEquals("321", parseResult.getRawPoints());
 
-        assertTrue(parseResult.isMatchSuccess());
+        assertEquals(ParseOutcome.AMBER, parseResult.getOutcome());
 
         assertEquals("black-dyke-band", parseResult.getMatchedBand().getSlug());
         assertEquals("theo-q-whigley", parseResult.getMatchedConductor().getSlug());
@@ -226,7 +227,7 @@ class ParseTests implements LoginMixin {
         ParseResultDto parseResult = this.parseService.parseLine(testEntry, LocalDate.now());
 
         // assert
-        assertTrue(parseResult.isParseSuccess());
+        assertEquals(ParseOutcome.AMBER, parseResult.getOutcome());
 
         assertEquals("1", parseResult.getRawPosition());
         assertEquals("Black Dyke Band", parseResult.getRawBandName());
@@ -234,7 +235,7 @@ class ParseTests implements LoginMixin {
         assertEquals("5", parseResult.getRawDraw());
         assertEquals("321", parseResult.getRawPoints());
 
-        assertTrue(parseResult.isMatchSuccess());
+        assertEquals(ParseOutcome.AMBER, parseResult.getOutcome());
 
         assertEquals("black-dyke-band", parseResult.getMatchedBand().getSlug());
         assertEquals("theo-q-p-whigley", parseResult.getMatchedConductor().getSlug());
@@ -251,7 +252,7 @@ class ParseTests implements LoginMixin {
         ParseResultDto parseResult = this.parseService.parseLine(testEntry, LocalDate.now());
 
         // assert
-        assertTrue(parseResult.isParseSuccess());
+        assertEquals(ParseOutcome.AMBER, parseResult.getOutcome());
 
         assertEquals("W", parseResult.getRawPosition());
         assertEquals("Wallace Arnold (Rothwell) Band", parseResult.getRawBandName());
@@ -259,7 +260,7 @@ class ParseTests implements LoginMixin {
         assertEquals("13", parseResult.getRawDraw());
         assertEquals("", parseResult.getRawPoints());
 
-        assertTrue(parseResult.isMatchSuccess());
+        assertEquals(ParseOutcome.AMBER, parseResult.getOutcome());
 
         assertEquals("wallace-arnold-rothwell-band", parseResult.getMatchedBand().getSlug());
         assertEquals("john-roberts", parseResult.getMatchedConductor().getSlug());
@@ -276,7 +277,7 @@ class ParseTests implements LoginMixin {
         ParseResultDto parseResult = this.parseService.parseLine(testEntry, LocalDate.now());
 
         // assert
-        assertTrue(parseResult.isParseSuccess());
+        assertEquals(ParseOutcome.AMBER, parseResult.getOutcome());
 
         assertEquals("W", parseResult.getRawPosition());
         assertEquals("Black Dyke Band", parseResult.getRawBandName());
@@ -284,7 +285,7 @@ class ParseTests implements LoginMixin {
         assertEquals("11", parseResult.getRawDraw());
         assertEquals("", parseResult.getRawPoints());
 
-        assertTrue(parseResult.isMatchSuccess());
+        assertEquals(ParseOutcome.AMBER, parseResult.getOutcome());
 
         assertEquals("black-dyke-band", parseResult.getMatchedBand().getSlug());
         assertEquals("john-roberts", parseResult.getMatchedConductor().getSlug());
@@ -301,7 +302,7 @@ class ParseTests implements LoginMixin {
         ParseResultDto parseResult = this.parseService.parseLine(testEntry, LocalDate.now());
 
         // assert
-        assertTrue(parseResult.isParseSuccess());
+        assertEquals(ParseOutcome.AMBER, parseResult.getOutcome());
 
         assertEquals("D", parseResult.getRawPosition());
         assertEquals("Wallace Arnold (Rothwell) Band", parseResult.getRawBandName());
@@ -309,7 +310,7 @@ class ParseTests implements LoginMixin {
         assertEquals("11", parseResult.getRawDraw());
         assertEquals("", parseResult.getRawPoints());
 
-        assertTrue(parseResult.isMatchSuccess());
+        assertEquals(ParseOutcome.AMBER, parseResult.getOutcome());
 
         assertEquals("wallace-arnold-rothwell-band", parseResult.getMatchedBand().getSlug());
         assertEquals("john-roberts", parseResult.getMatchedConductor().getSlug());
@@ -326,7 +327,7 @@ class ParseTests implements LoginMixin {
         ParseResultDto parseResult = this.parseService.parseLine(testEntry, LocalDate.now());
 
         // assert
-        assertTrue(parseResult.isParseSuccess());
+        assertEquals(ParseOutcome.AMBER, parseResult.getOutcome());
 
         assertEquals("D", parseResult.getRawPosition());
         assertEquals("Rothwell Temperance B", parseResult.getRawBandName());
@@ -334,7 +335,7 @@ class ParseTests implements LoginMixin {
         assertEquals("2", parseResult.getRawDraw());
         assertEquals("", parseResult.getRawPoints());
 
-        assertTrue(parseResult.isMatchSuccess());
+        assertEquals(ParseOutcome.AMBER, parseResult.getOutcome());
 
         assertEquals("rothwell-temperance-b", parseResult.getMatchedBand().getSlug());
         assertEquals("david-roberts", parseResult.getMatchedConductor().getSlug());
@@ -351,7 +352,7 @@ class ParseTests implements LoginMixin {
         ParseResultDto parseResult = this.parseService.parseLine(testEntry, LocalDate.now());
 
         // assert
-        assertFalse(parseResult.isParseSuccess());
+        assertEquals(ParseOutcome.RED, parseResult.getOutcome());
 
         assertNull(parseResult.getRawPosition());
         assertNull(parseResult.getRawBandName());
@@ -359,7 +360,7 @@ class ParseTests implements LoginMixin {
         assertNull(parseResult.getRawDraw());
         assertNull(parseResult.getRawPoints());
 
-        assertFalse(parseResult.isMatchSuccess());
+        assertEquals(ParseOutcome.RED, parseResult.getOutcome());
 
         assertNull(parseResult.getMatchedBand());
         assertNull(parseResult.getMatchedConductor());
@@ -374,7 +375,7 @@ class ParseTests implements LoginMixin {
         ParseResultDto parseResult = this.parseService.parseLine(testEntry, LocalDate.now());
 
         // assert
-        assertTrue(parseResult.isParseSuccess());
+        assertEquals(ParseOutcome.AMBER, parseResult.getOutcome());
 
         assertEquals("11", parseResult.getRawPosition());
         assertEquals("Wallace Arnold (Rothwell) Band", parseResult.getRawBandName());
@@ -382,7 +383,7 @@ class ParseTests implements LoginMixin {
         assertEquals("321", parseResult.getRawDraw());
         assertEquals("", parseResult.getRawPoints());
 
-        assertTrue(parseResult.isMatchSuccess());
+        assertEquals(ParseOutcome.AMBER, parseResult.getOutcome());
 
         assertEquals("wallace-arnold-rothwell-band", parseResult.getMatchedBand().getSlug());
         assertEquals("robert-childs", parseResult.getMatchedConductor().getSlug());
@@ -399,7 +400,7 @@ class ParseTests implements LoginMixin {
         ParseResultDto parseResult = this.parseService.parseLine(testEntry, LocalDate.now());
 
         // assert
-        assertTrue(parseResult.isParseSuccess());
+        assertEquals(ParseOutcome.AMBER, parseResult.getOutcome());
 
         assertEquals("D", parseResult.getRawPosition());
         assertEquals("Rothwell Temperance Junior Band", parseResult.getRawBandName());
@@ -407,7 +408,7 @@ class ParseTests implements LoginMixin {
         assertEquals("11", parseResult.getRawDraw());
         assertEquals("", parseResult.getRawPoints());
 
-        assertTrue(parseResult.isMatchSuccess());
+        assertEquals(ParseOutcome.AMBER, parseResult.getOutcome());
 
         assertEquals("rothwell-temperance-b", parseResult.getMatchedBand().getSlug());
         assertEquals("john-roberts", parseResult.getMatchedConductor().getSlug());
@@ -424,7 +425,7 @@ class ParseTests implements LoginMixin {
         ParseResultDto parseResult = this.parseService.parseLine(testEntry, LocalDate.now());
 
         // assert
-        assertTrue(parseResult.isParseSuccess());
+        assertEquals(ParseOutcome.AMBER, parseResult.getOutcome());
 
         assertEquals("5", parseResult.getRawPosition());
         assertEquals("Rothwell Temperance B", parseResult.getRawBandName());
@@ -432,7 +433,7 @@ class ParseTests implements LoginMixin {
         assertEquals("2", parseResult.getRawDraw());
         assertEquals("", parseResult.getRawPoints());
 
-        assertFalse(parseResult.isMatchSuccess());
+        assertEquals(ParseOutcome.AMBER, parseResult.getOutcome());
 
         assertEquals("rothwell-temperance-b", parseResult.getMatchedBand().getSlug());
         assertNull(parseResult.getMatchedConductor());
@@ -447,7 +448,7 @@ class ParseTests implements LoginMixin {
         ParseResultDto parseResult = this.parseService.parseLine(testEntry, LocalDate.now());
 
         // assert
-        assertTrue(parseResult.isParseSuccess());
+        assertEquals(ParseOutcome.AMBER, parseResult.getOutcome());
 
         assertEquals("7", parseResult.getRawPosition());
         assertEquals("White Rose Concert Band", parseResult.getRawBandName());
@@ -455,7 +456,7 @@ class ParseTests implements LoginMixin {
         assertEquals("7", parseResult.getRawDraw());
         assertEquals("642", parseResult.getRawPoints());
 
-        assertFalse(parseResult.isMatchSuccess());
+        assertEquals(ParseOutcome.AMBER, parseResult.getOutcome());
 
         assertNull(parseResult.getMatchedBand());
         assertEquals("john-roberts", parseResult.getMatchedConductor().getSlug());
@@ -472,7 +473,7 @@ class ParseTests implements LoginMixin {
         ParseResultDto parseResult = this.parseService.parseLine(testEntry, LocalDate.now());
 
         // assert
-        assertTrue(parseResult.isParseSuccess());
+        assertEquals(ParseOutcome.AMBER, parseResult.getOutcome());
 
         assertEquals("D", parseResult.getRawPosition());
         assertEquals("Rothwell Temperance B Band", parseResult.getRawBandName());
@@ -480,7 +481,7 @@ class ParseTests implements LoginMixin {
         assertEquals("11", parseResult.getRawDraw());
         assertEquals("", parseResult.getRawPoints());
 
-        assertTrue(parseResult.isMatchSuccess());
+        assertEquals(ParseOutcome.AMBER, parseResult.getOutcome());
 
         assertEquals("rothwell-temperance-b", parseResult.getMatchedBand().getSlug());
         assertEquals("john-roberts", parseResult.getMatchedConductor().getSlug());

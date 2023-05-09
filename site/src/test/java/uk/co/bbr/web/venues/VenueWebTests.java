@@ -8,6 +8,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.client.RestTemplate;
+import uk.co.bbr.services.contests.ContestEventService;
+import uk.co.bbr.services.contests.ContestService;
+import uk.co.bbr.services.contests.dao.ContestDao;
+import uk.co.bbr.services.contests.dao.ContestEventDao;
 import uk.co.bbr.services.security.JwtService;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.services.security.ex.AuthenticationFailedException;
@@ -32,6 +36,8 @@ class VenueWebTests implements LoginMixin {
     @Autowired private SecurityService securityService;
     @Autowired private JwtService jwtService;
     @Autowired private VenueService venueService;
+    @Autowired private ContestService contestService;
+    @Autowired private ContestEventService contestEventService;
     @Autowired private RestTemplate restTemplate;
     @LocalServerPort private int port;
 
@@ -39,22 +45,33 @@ class VenueWebTests implements LoginMixin {
     void setupContests() throws AuthenticationFailedException {
         loginTestUser(this.securityService, this.jwtService, TestUser.TEST_ADMIN);
 
-        this.venueService.create("Royal Albert Hall");
+        VenueDao rah = this.venueService.create("Royal Albert Hall");
 
         VenueDao birmingham = this.venueService.create("Birmingham");
 
-        VenueDao venue = this.venueService.create("Symfony Hall");
-        venue.setParent(birmingham);
-        venue = this.venueService.update(venue);
+        VenueDao symfonyHall = this.venueService.create("Symfony Hall");
+        symfonyHall.setParent(birmingham);
+        symfonyHall = this.venueService.update(symfonyHall);
         VenueAliasDao venueAliasWithDates = new VenueAliasDao();
         venueAliasWithDates.setName("Blackburn Hall");
         venueAliasWithDates.setStartDate(LocalDate.of(1980,5, 4));
         venueAliasWithDates.setEndDate(LocalDate.of(1981, 3, 1));
-        this.venueService.createAlias(venue, venueAliasWithDates);
+        this.venueService.createAlias(symfonyHall, venueAliasWithDates);
 
         VenueAliasDao venueAliasNoDates = new VenueAliasDao();
         venueAliasNoDates.setName("Spanish Hall");
-        this.venueService.createAlias(venue, venueAliasNoDates);
+        this.venueService.createAlias(symfonyHall, venueAliasNoDates);
+
+        ContestDao firstSectionFinals = this.contestService.create("National Finals (First Section)");
+        ContestDao champSectionFinals = this.contestService.create("National Finals (Championship Section)");
+
+        ContestEventDao firstSection2010 = this.contestEventService.create(firstSectionFinals, LocalDate.of(2010, 8, 1));
+        firstSection2010.setVenue(symfonyHall);
+        this.contestEventService.update(firstSection2010);
+
+        ContestEventDao champSection2011 = this.contestEventService.create(champSectionFinals, LocalDate.of(2011, 9, 5));
+        champSection2011.setVenue(rah);
+        this.contestEventService.update(champSection2011);
 
         logoutTestUser();
     }
@@ -71,6 +88,8 @@ class VenueWebTests implements LoginMixin {
 
         assertTrue(response.contains(">Inside<"));
         assertTrue(response.contains(">Birmingham<"));
+
+        assertTrue(response.contains("National Finals (First Section)"));
     }
 
     @Test
@@ -85,6 +104,41 @@ class VenueWebTests implements LoginMixin {
 
         assertTrue(response.contains(">Inside<"));
         assertTrue(response.contains(">Birmingham<"));
+
+        assertTrue(response.contains("2010"));
+    }
+
+    @Test
+    void testSingleYearPageWithEventsWorksSuccessfully() {
+        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/venues/symfony-hall/years/2010", String.class);
+        assertNotNull(response);
+        assertTrue(response.contains("<h2>Symfony Hall 2010</h2>"));
+
+        assertFalse(response.contains("Also/previously known as"));
+        assertFalse(response.contains("Blackburn Hall (1980-1981)"));
+        assertFalse(response.contains("Spanish Hall"));
+
+        assertFalse(response.contains(">Inside<"));
+        assertFalse(response.contains(">Birmingham<"));
+
+        assertTrue(response.contains("National Finals (First Section)"));
+        assertTrue(response.contains("1 Aug 2010"));
+    }
+
+    @Test
+    void testSingleYearPageWithoutEventsWorksSuccessfully() {
+        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/venues/symfony-hall/years/2011", String.class);
+        assertNotNull(response);
+        assertTrue(response.contains("<h2>Symfony Hall 2011</h2>"));
+
+        assertFalse(response.contains("Also/previously known as"));
+        assertFalse(response.contains("Blackburn Hall (1980-1981)"));
+        assertFalse(response.contains("Spanish Hall"));
+
+        assertFalse(response.contains(">Inside<"));
+        assertFalse(response.contains(">Birmingham<"));
+
+        assertFalse(response.contains("National Finals"));
     }
 
     @Test
@@ -96,6 +150,8 @@ class VenueWebTests implements LoginMixin {
         assertFalse(response.contains("Also/previously known as"));
         assertFalse(response.contains(">Inside<"));
         assertFalse(response.contains(">Birmingham<"));
+
+        assertTrue(response.contains("National Finals (Championship Section)"));
     }
 
     @Test
@@ -107,6 +163,25 @@ class VenueWebTests implements LoginMixin {
         assertFalse(response.contains("Also/previously known as"));
         assertFalse(response.contains(">Inside<"));
         assertFalse(response.contains(">Birmingham<"));
+
+        assertTrue(response.contains("2011"));
+    }
+
+    @Test
+    void testContestFilterOnVenueWorksSuccessfully() {
+        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/venues/symfony-hall/national-finals-first-section", String.class);
+        assertNotNull(response);
+        assertTrue(response.contains("<h2>Symfony Hall</h2>"));
+
+        assertTrue(response.contains("Also/previously known as"));
+        assertTrue(response.contains("Blackburn Hall (1980-1981)"));
+        assertTrue(response.contains("Spanish Hall"));
+
+        assertTrue(response.contains(">Inside<"));
+        assertTrue(response.contains(">Birmingham<"));
+
+        assertTrue(response.contains("2010"));
+        assertFalse(response.contains("2011"));
     }
 
 }

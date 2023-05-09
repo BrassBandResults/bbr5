@@ -89,13 +89,12 @@ public class VenueController {
         if (venue.isEmpty()) {
             throw new NotFoundException("Venue with slug " + venueSlug + " not found");
         }
-        List<VenueAliasDao> previousNames = this.venueService.fetchAliases(venue.get());
 
-        List<ContestEventDao> venueYears = this.venueService.fetchVenueContestYear(venue.get(), year);
+        List<ContestEventDao> events = this.venueService.fetchVenueContestYear(venue.get(), year);
 
         model.addAttribute("Venue", venue.get());
-        model.addAttribute("PreviousNames", previousNames);
-        model.addAttribute("VenueYears", venueYears);
+        model.addAttribute("Year", year);
+        model.addAttribute("Events", events);
 
         return "venues/year";
     }

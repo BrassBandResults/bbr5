@@ -31,8 +31,6 @@ public class ParseServiceImpl implements ParseService {
         Matcher matcher = pattern.matcher(resultLine);
 
         if (matcher.matches()) {
-            parsedResult.setParseSuccess(true);
-
             parsedResult.setRawPosition(matcher.group(1).toUpperCase());
             parsedResult.setRawBandName(matcher.group(2));
             parsedResult.setRawConductorName(matcher.group(3));

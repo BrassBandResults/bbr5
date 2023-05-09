@@ -4,13 +4,14 @@ import lombok.Getter;
 import lombok.Setter;
 import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.framework.mixins.NameTools;
+import uk.co.bbr.services.parse.types.ParseOutcome;
 import uk.co.bbr.services.people.dao.PersonDao;
 
 @Getter
 @Setter
 public class ParseResultDto implements NameTools {
 
-    private boolean parseSuccess;
+    private ParseOutcome outcome = ParseOutcome.RED;
 
     private String rawPosition;
     private String rawBandName;
@@ -23,13 +24,17 @@ public class ParseResultDto implements NameTools {
 
     public void setRawBandName(String value) {
         this.rawBandName = simplifyBandName(value);
+        this.outcome = ParseOutcome.AMBER;
     }
 
     public void setRawConductorName(String value) {
         this.rawConductorName = simplifyPersonFullName(value);
     }
 
-    public boolean isMatchSuccess() {
-        return this.matchedBand != null && this.matchedConductor != null;
+    public void setMatchedBand(BandDao matchedBand) {
+        this.matchedBand = matchedBand;
+        if (this.matchedBand != null && this.matchedConductor != null) {
+            this.outcome = ParseOutcome.GREEN;
+        }
     }
 }
