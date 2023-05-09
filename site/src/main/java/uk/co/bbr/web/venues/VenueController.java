@@ -93,7 +93,7 @@ public class VenueController {
         List<ContestEventDao> events = this.venueService.fetchVenueContestYear(venue.get(), year);
 
         model.addAttribute("Venue", venue.get());
-        model.addAttribute("Year", year);
+        model.addAttribute("Year", Integer.toString(year));
         model.addAttribute("Events", events);
 
         return "venues/year";

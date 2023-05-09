@@ -121,8 +121,8 @@ class VenueWebTests implements LoginMixin {
         assertFalse(response.contains(">Inside<"));
         assertFalse(response.contains(">Birmingham<"));
 
-        assertTrue(response.contains("National Finals (First Section)"));
-        assertTrue(response.contains("1 Aug 2010"));
+        assertTrue(response.contains(">National Finals (First Section)<"));
+        assertTrue(response.contains(">01 Aug 2010<"));
     }
 
     @Test
