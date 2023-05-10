@@ -112,7 +112,8 @@ class VenueWebTests implements LoginMixin {
     void testSingleYearPageWithEventsWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/venues/symfony-hall/years/2010", String.class);
         assertNotNull(response);
-        assertTrue(response.contains("<h2>Symfony Hall 2010</h2>"));
+        assertTrue(response.contains("<h2>Symfony Hall</h2>"));
+        assertTrue(response.contains("2010<"));
 
         assertFalse(response.contains("Also/previously known as"));
         assertFalse(response.contains("Blackburn Hall (1980-1981)"));
@@ -129,7 +130,8 @@ class VenueWebTests implements LoginMixin {
     void testSingleYearPageWithoutEventsWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/venues/symfony-hall/years/2011", String.class);
         assertNotNull(response);
-        assertTrue(response.contains("<h2>Symfony Hall 2011</h2>"));
+        assertTrue(response.contains("<h2>Symfony Hall</h2>"));
+        assertTrue(response.contains("2011<"));
 
         assertFalse(response.contains("Also/previously known as"));
         assertFalse(response.contains("Blackburn Hall (1980-1981)"));
@@ -173,14 +175,11 @@ class VenueWebTests implements LoginMixin {
         assertNotNull(response);
         assertTrue(response.contains("<h2>Symfony Hall</h2>"));
 
-        assertTrue(response.contains("Also/previously known as"));
-        assertTrue(response.contains("Blackburn Hall (1980-1981)"));
-        assertTrue(response.contains("Spanish Hall"));
+        assertFalse(response.contains("Also/previously known as"));
+        assertFalse(response.contains(">Inside<"));
+        assertFalse(response.contains(">Birmingham<"));
 
-        assertTrue(response.contains(">Inside<"));
-        assertTrue(response.contains(">Birmingham<"));
-
-        assertTrue(response.contains("2010"));
+        assertTrue(response.contains("01 Aug 2010"));
         assertFalse(response.contains("2011"));
     }
 

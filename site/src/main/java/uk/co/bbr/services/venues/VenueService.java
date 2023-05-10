@@ -34,7 +34,7 @@ public interface VenueService {
 
     List<VenueContestDto> fetchVenueContests(VenueDao venue);
 
-    List<ContestResultDao> fetchVenueContestEvents(VenueDao venue, ContestDao contest);
+    List<ContestEventDao> fetchVenueContestEvents(VenueDao venue, ContestDao contest);
 
     List<VenueContestYearDto> fetchVenueContestYears(VenueDao venue);
 

@@ -55,12 +55,9 @@ public class VenueController {
             throw new NotFoundException("Contest with slug " + contestSlug + " not found");
         }
 
-        List<VenueAliasDao> previousNames = this.venueService.fetchAliases(venue.get());
-
-        List<ContestResultDao> venueContests = this.venueService.fetchVenueContestEvents(venue.get(), contest.get());
+        List<ContestEventDao> venueContests = this.venueService.fetchVenueContestEvents(venue.get(), contest.get());
 
         model.addAttribute("Venue", venue.get());
-        model.addAttribute("PreviousNames", previousNames);
         model.addAttribute("VenueContests", venueContests);
 
         return "venues/contest";

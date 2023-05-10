@@ -210,8 +210,8 @@ public class VenueServiceImpl implements VenueService, SlugTools {
     }
 
     @Override
-    public List<ContestResultDao> fetchVenueContestEvents(VenueDao venue, ContestDao contest) {
-        return null;
+    public List<ContestEventDao> fetchVenueContestEvents(VenueDao venue, ContestDao contest) {
+        return this.contestEventRepository.fetchEventsForVenueForSpecificContest(venue.getId(), contest.getId());
     }
 
     @Override

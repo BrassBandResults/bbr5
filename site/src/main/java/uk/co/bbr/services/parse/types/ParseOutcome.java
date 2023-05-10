@@ -1,7 +1,7 @@
 package uk.co.bbr.services.parse.types;
 
 public enum ParseOutcome {
-    RED, // Unable to parse
-    AMBER, // Parsed but couldn't find matches
-    GREEN, // Parsed and found matches
+    RED_FAILED_PARSE, // Unable to parse
+    AMBER_PARSE_SUCCEEDED, // Parsed but couldn't find matches
+    GREEN_MATCHES_FOUND_IN_DATABASE, // Parsed and found matches
 }

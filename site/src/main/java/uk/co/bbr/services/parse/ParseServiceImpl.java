@@ -34,7 +34,7 @@ public class ParseServiceImpl implements ParseService {
             parsedResult.setRawPosition(matcher.group(1).toUpperCase());
             parsedResult.setRawBandName(matcher.group(2));
             parsedResult.setRawConductorName(matcher.group(3));
-            parsedResult.setRawDraw(matcher.group(4));
+            parsedResult.setRawDraw(Integer.parseInt(matcher.group(4)));
             parsedResult.setRawPoints(matcher.group(5));
 
             BandDao matchedBand = this.bandService.findMatchingBandByName(parsedResult.getRawBandName(), dateContext);

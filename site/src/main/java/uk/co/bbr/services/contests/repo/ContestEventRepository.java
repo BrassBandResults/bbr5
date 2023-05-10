@@ -45,4 +45,10 @@ public interface ContestEventRepository extends JpaRepository<ContestEventDao, L
             "AND YEAR(e.eventDate) = :year " +
             "ORDER BY e.contest.name DESC")
     List<ContestEventDao> fetchEventsForVenueInYear(Long venueId, int year);
+
+    @Query("SELECT e FROM ContestEventDao e " +
+            "WHERE e.venue.id = :venueId " +
+            "AND e.contest.id = :contestId " +
+            "ORDER BY e.contest.name DESC")
+    List<ContestEventDao> fetchEventsForVenueForSpecificContest(Long venueId, Long contestId);
 }
