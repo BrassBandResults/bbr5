@@ -75,13 +75,7 @@ public class SecurityFilter extends GenericFilterBean {
                 }
             } else {
                 // no token, pass request on
-                try {
-                    chain.doFilter(request, response);
-                }
-                catch (Exception ex) {
-                    ex.printStackTrace();
-                    throw ex;
-                }
+                chain.doFilter(request, response);
             }
         }
         else {

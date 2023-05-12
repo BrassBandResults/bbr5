@@ -6,7 +6,9 @@ import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import uk.co.bbr.services.contests.ContestEventService;
 import uk.co.bbr.services.contests.ContestService;
@@ -23,8 +25,10 @@ import uk.co.bbr.web.security.support.TestUser;
 
 import java.time.LocalDate;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ActiveProfiles("test")
@@ -93,6 +97,12 @@ class VenueWebTests implements LoginMixin {
     }
 
     @Test
+    void testSinglePageWithNoSlugMatchFailsAsExpected() {
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/venues/invalid-slug", String.class));
+        assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
+    }
+
+    @Test
     void testSingleYearsPageWithAliasesWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/venues/symfony-hall/years", String.class);
         assertNotNull(response);
@@ -106,6 +116,12 @@ class VenueWebTests implements LoginMixin {
         assertTrue(response.contains(">Birmingham<"));
 
         assertTrue(response.contains("2010"));
+    }
+
+    @Test
+    void testSingleYearsPageWithNoSlugMatchFailsAsExpected() {
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/venues/invalid-slug/years", String.class));
+        assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
     }
 
     @Test
@@ -124,6 +140,12 @@ class VenueWebTests implements LoginMixin {
 
         assertTrue(response.contains(">National Finals (First Section)<"));
         assertTrue(response.contains(">01 Aug 2010<"));
+    }
+
+    @Test
+    void testSingleYearPageWithNoSlugMatchFailsAsExpected() {
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/venues/invalid-slug/years/2010", String.class));
+        assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
     }
 
     @Test
@@ -181,6 +203,18 @@ class VenueWebTests implements LoginMixin {
 
         assertTrue(response.contains("01 Aug 2010"));
         assertFalse(response.contains("2011"));
+    }
+
+    @Test
+    void testContestFilterOnVenueWithInvalidVenueSlugFailsAsExpected() {
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/venues/invalid-slug/national-finals-first-section", String.class));
+        assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
+    }
+
+    @Test
+    void testContestFilterOnVenueWithInvalidContestSlugFailsAsExpected() {
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/venues/symfony-hall/invalid-slug", String.class));
+        assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
     }
 
 }

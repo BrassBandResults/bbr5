@@ -6,7 +6,9 @@ import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import uk.co.bbr.services.contests.ContestEventService;
 import uk.co.bbr.services.contests.ContestGroupService;
@@ -23,8 +25,10 @@ import uk.co.bbr.web.security.support.TestUser;
 
 import java.time.LocalDate;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ActiveProfiles("test")
@@ -137,6 +141,12 @@ class ContestGroupWebTests implements LoginMixin {
     }
 
     @Test
+    void testFetchGroupWithNoSlugMatchFailsAsExpected() {
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/contests/INVALID-GROUP", String.class));
+        assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
+    }
+
+    @Test
     void testFetchGroupYearsListPageWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/contests/YORKSHIRE-GROUP/years", String.class);
         assertNotNull(response);
@@ -145,6 +155,12 @@ class ContestGroupWebTests implements LoginMixin {
         assertTrue(response.contains(">2010<"));
         assertTrue(response.contains(">2011<"));
         assertFalse(response.contains(">2012<"));
+    }
+
+    @Test
+    void testFetchGroupYearsListWithNoSlugMatchFailsAsExpected() {
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/contests/INVALID-GROUP/years", String.class));
+        assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
     }
 
     @Test
@@ -159,5 +175,11 @@ class ContestGroupWebTests implements LoginMixin {
         assertTrue(response.contains("Yorkshire Area (Second Section"));
         assertFalse(response.contains("Yorkshire Area (Third Section"));
         assertFalse(response.contains("Yorkshire Area (Fourth Section"));
+    }
+
+    @Test
+    void testFetchGroupYearWithNoSlugMatchFailsAsExpected() {
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/contests/INVALID-GROUP/2010", String.class));
+        assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
     }
 }
