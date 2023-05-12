@@ -9,6 +9,8 @@ import uk.co.bbr.services.people.PersonService;
 import uk.co.bbr.services.people.dao.PersonDao;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -30,6 +32,19 @@ public class ParseServiceImpl implements ParseService {
         this.searchMatches(result, dateContext);
 
         return result;
+    }
+
+    @Override
+    public List<ParseResultDto> parseBlock(String resultBlock, LocalDate dateContext) {
+        List<ParseResultDto> parsedResults = new ArrayList<>();
+
+        String[] lines = resultBlock.split("\n");
+
+        for (String line : lines) {
+            parsedResults.add(this.parseLine(line, dateContext));
+        }
+
+        return parsedResults;
     }
 
     private ParseResultDto parseLine(String resultLine) {
