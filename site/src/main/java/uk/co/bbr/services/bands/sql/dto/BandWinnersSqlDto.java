@@ -1,0 +1,35 @@
+package uk.co.bbr.services.bands.sql.dto;
+
+import lombok.Getter;
+import uk.co.bbr.services.bands.dao.BandDao;
+import uk.co.bbr.services.framework.sql.AbstractSqlDto;
+
+import java.math.BigInteger;
+
+@Getter
+public class BandWinnersSqlDto extends AbstractSqlDto {
+
+    private final String bandSlug;
+    private final String bandName;
+    private final Integer wins;
+    private final Integer contests;
+
+    public BandWinnersSqlDto(Object[] columnList) {
+        this.bandSlug = (String)columnList[0];
+        this.bandName = (String)columnList[1];
+        this.wins = columnList[2] instanceof BigInteger ? ((BigInteger)columnList[2]).intValue() : (Integer)columnList[2];
+        this.contests = columnList[3] instanceof BigInteger ? ((BigInteger)columnList[3]).intValue() : (Integer)columnList[3];
+    }
+
+    public BandDao getBand() {
+        BandDao returnBand = new BandDao();
+        returnBand.setName(this.bandName);
+        returnBand.setSlug(this.bandSlug);
+
+        return returnBand;
+    }
+
+    public Integer getPercentage() {
+        return (this.wins * 100) / this.contests;
+    }
+}

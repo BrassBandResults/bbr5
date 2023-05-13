@@ -5,6 +5,7 @@ import uk.co.bbr.services.bands.dao.BandPreviousNameDao;
 import uk.co.bbr.services.bands.dao.BandRelationshipDao;
 import uk.co.bbr.services.bands.dao.BandRelationshipTypeDao;
 import uk.co.bbr.services.bands.dto.BandListDto;
+import uk.co.bbr.services.bands.sql.dto.BandWinnersSqlDto;
 import uk.co.bbr.services.bands.types.RehearsalDay;
 import uk.co.bbr.services.regions.dao.RegionDao;
 
@@ -47,4 +48,6 @@ public interface BandService {
     List<BandPreviousNameDao> findVisiblePreviousNames(BandDao band);
 
     BandDao findMatchingBandByName(String bandName, LocalDate dateContext);
+
+    List<BandWinnersSqlDto> fetchContestWinningBands();
 }

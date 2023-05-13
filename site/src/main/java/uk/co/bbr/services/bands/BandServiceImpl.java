@@ -15,6 +15,8 @@ import uk.co.bbr.services.bands.repo.BandRehearsalNightRepository;
 import uk.co.bbr.services.bands.repo.BandRelationshipRepository;
 import uk.co.bbr.services.bands.repo.BandRelationshipTypeRepository;
 import uk.co.bbr.services.bands.repo.BandRepository;
+import uk.co.bbr.services.bands.sql.BandSql;
+import uk.co.bbr.services.bands.sql.dto.BandWinnersSqlDto;
 import uk.co.bbr.services.bands.types.BandStatus;
 import uk.co.bbr.services.bands.types.RehearsalDay;
 import uk.co.bbr.services.framework.mixins.SlugTools;
@@ -25,6 +27,7 @@ import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.web.security.annotations.IsBbrAdmin;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
+import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -37,10 +40,13 @@ public class BandServiceImpl implements BandService, SlugTools {
     private final RegionService regionService;
     private final BandRepository bandRepository;
     private final SecurityService securityService;
+
     private final BandPreviousNameRepository bandPreviousNameRepository;
     private final BandRehearsalNightRepository bandRehearsalNightRepository;
     private final BandRelationshipRepository bandRelationshipRepository;
     private final BandRelationshipTypeRepository bandRelationshipTypeRepository;
+
+    private final EntityManager entityManager;
 
     @Override
     @IsBbrMember
@@ -365,5 +371,10 @@ public class BandServiceImpl implements BandService, SlugTools {
         }
 
         return this.bandRelationshipRepository.saveAndFlush(relationship);
+    }
+
+    @Override
+    public List<BandWinnersSqlDto> fetchContestWinningBands() {
+        return BandSql.selectWinningBands(this.entityManager);
     }
 }
