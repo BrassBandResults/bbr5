@@ -81,8 +81,8 @@ class RegionWebTests implements LoginMixin {
         assertTrue(response.contains("<title>Yorkshire - Region - Brass Band Results</title>"));
 
         assertTrue(response.contains("<h2>Yorkshire</h2>"));
-        assertTrue(response.contains("<h3>Contests</h3>"));
-        assertTrue(response.contains("<h3>Bands"));
+        assertTrue(response.contains(">Contests<"));
+        assertTrue(response.contains(">Bands<"));
 
         assertTrue(response.contains("Rothwell Temperance"));
         assertFalse(response.contains("Accrington Borough"));
@@ -92,12 +92,24 @@ class RegionWebTests implements LoginMixin {
     void testGetYorkshireRegionLinksPageWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/regions/yorkshire/links", String.class);
         assertNotNull(response);
-        assertTrue(response.contains("<title>Yorkshire - Region Links - Brass Band Results</title>"));
+        assertTrue(response.contains("<title>Yorkshire - Region - Brass Band Results</title>"));
 
         assertTrue(response.contains("<h2>Yorkshire</h2>"));
 
         assertTrue(response.contains("Rothwell Temperance"));
         assertFalse(response.contains("Accrington Borough"));
+    }
+
+    @Test
+    void testGetYorkshireRegionWinnersPageWorksSuccessfully() {
+        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/regions/yorkshire/winners", String.class);
+        assertNotNull(response);
+        assertTrue(response.contains("<title>Yorkshire - Region - Brass Band Results</title>"));
+
+        assertTrue(response.contains("<h2>Yorkshire</h2>"));
+
+        assertFalse(response.contains("Rothwell Temperance")); // no results
+        assertFalse(response.contains("Accrington Borough")); // wrong region, still no results
     }
 
     @Test
