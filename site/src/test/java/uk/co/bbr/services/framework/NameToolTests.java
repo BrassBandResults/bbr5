@@ -44,5 +44,13 @@ class NameToolTests implements NameTools {
         assertEquals("Bathgate West Lothian", simplifyPersonFullName("Bathgate West Lothian"));
     }
 
+    @Test
+    void testSimplifyPersonNameAddsSpaceAfterDots() {
+        assertEquals("Bob T. St. Childs", simplifyPersonFullName("Bob T.St.Childs  "));
+        assertEquals("St. David Q. T. P. Simpson", simplifyPersonFullName("St David Q.T.P Simpson"));
+        assertEquals("St. Bathurst Town", simplifyPersonFullName("St.Bathurst Town"));
+        assertEquals("Bathgate West Lothian", simplifyPersonFullName("Bathgate West Lothian"));
+    }
+
 
 }
