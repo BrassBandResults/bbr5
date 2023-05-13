@@ -29,10 +29,11 @@ public class BandSql {
                 AND c.name NOT LIKE '%Whit Friday%'
                 AND r.result_position_type = 'R'
                 GROUP BY band_id)
-            SELECT b.slug, b.name, w.winners, t.contests
+            SELECT b.slug as band_slug, b.name as band_name, w.winners, t.contests, r.slug as region_slug, r.name as region_name, r.country_code
             FROM band b
             INNER JOIN winners w ON b.id = w.band_id
             INNER JOIN total t ON b.id = t.band_id
+            LEFT OUTER JOIN region r ON r.id = b.region_id
             ORDER BY 3 desc""";
 
     public static List<BandWinnersSqlDto> selectWinningBands(EntityManager entityManager) {
