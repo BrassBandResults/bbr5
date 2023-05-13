@@ -8,39 +8,53 @@
 <div layout:fragment="content">
     <h2 th:text="#{'region.' + ${Region.slug}}">Region Name</h2>
 
-    <span th:if="${SubRegions.size > 0}">
-        <h3 th:text="#{page.region.section.sub-regions}">Sub Regions</h3>
-        <p th:replace="regions/regionList.fragment.html :: regionList(${SubRegions})"></p>
-    </span>
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link active" th:href="${'/regions/' + Region.slug}" th:text="#{page.region.tab.bands}">Bands</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" th:href="${'/regions/' + Region.slug + '/contests'}" th:text="#{page.region.tab.contests}">Contests</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" th:href="${'/regions/' + Region.slug + '/links'}" th:text="#{page.region.tab.links}">Links</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" th:href="${'/regions/' + Region.slug + '/winners'}" th:text="#{page.region.tab.winning-bands}">Winning Bands</a>
+        </li>
+    </ul>
+    <br/>
 
-    <h3 th:text="#{page.region.section.bands}">Bands</h3>
-    <div  th:if="${Region.slug != 'unknown'}" id="map" style="width: 100%; height: 600px"></div>
+    <div class="tab-content">
+        <span th:if="${SubRegions.size > 0}">
+            <h3 th:text="#{page.region.section.sub-regions}">Sub Regions</h3>
+            <p th:replace="regions/regionList.fragment.html :: regionList(${SubRegions})"></p>
+        </span>
 
-    <p th:text="#{page.region.section.bands.count(${Region.activeBandsCount}, ${Region.extinctBandsCount})}">This region has {0} active bands, and {1} extinct.</p>
-    <p th:if="${Region.bands.size > 0}"><span th:text="#{page.region.section.bands.links-page-start}">There is also a page listing</span> <a th:href="${'/regions/' + Region.slug + '/links/'}" th:text="#{page.region.section.bands.links-page-link}">Band Links</a> <span th:text="#{page.region.section.bands.links-page-end}">for this region.</p>
+        <div  th:if="${Region.slug != 'unknown'}" id="map" style="width: 100%; height: 600px"></div>
 
-    <span sec:authorize="hasRole('BBR_PRO')">
-        <button class="bandTypeButton btn btn-sm btn-success" type="button" th:each="type : ${Region.sectionTypes}" th:id="${type.key}"><span class="typeDescription" th:text="#{${type.key}}">Type</span> (<span th:text="${type.value}">123</span>)</button>
-    </span>
+        <p th:text="#{page.region.section.bands.count(${Region.activeBandsCount}, ${Region.extinctBandsCount})}">This region has {0} active bands, and {1} extinct.</p>
 
-    <table id="bands" class="table table-hover sortable" th:if="${Region.bands.size > 0}">
-        <thead>
-            <tr>
-                <th th:text="#{page.region.section.bands.column-band-name}">Band</th>
-                <th th:text="#{page.region.section.bands.column-band-type}">Type</th>
-                <th th:text="#{page.region.section.bands.column-band-results-count}">Results</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="band : ${Region.bands}">
-                <td class="band"><span th:replace="links/band-link.html :: bandLink(${band}, false, true)"></span></td>
-                <td class="bandType" th:text="#{${band.sectionType}}">Extinct</td>
-                <td>0</td>
-            </tr>
-        </tbody>
-    </table>
+        <span sec:authorize="hasRole('BBR_PRO')">
+            <button class="bandTypeButton btn btn-sm btn-success" type="button" th:each="type : ${Region.sectionTypes}" th:id="${type.key}"><span class="typeDescription" th:text="#{${type.key}}">Type</span> (<span th:text="${type.value}">123</span>)</button>
+        </span>
 
-    <h3 th:text="#{page.region.section.contests}">Contests</h3>
+        <table id="bands" class="table table-hover sortable" th:if="${Region.bands.size > 0}">
+            <thead>
+                <tr>
+                    <th th:text="#{page.region.section.bands.column-band-name}">Band</th>
+                    <th th:text="#{page.region.section.bands.column-band-type}">Type</th>
+                    <th th:text="#{page.region.section.bands.column-band-results-count}">Results</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="band : ${Region.bands}">
+                    <td class="band"><span th:replace="links/band-link.html :: bandLink(${band}, false, true)"></span></td>
+                    <td class="bandType" th:text="#{${band.sectionType}}">Extinct</td>
+                    <td>0</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <div layout:fragment="scriptfooter">

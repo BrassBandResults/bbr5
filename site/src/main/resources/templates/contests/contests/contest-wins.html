@@ -26,23 +26,25 @@
     </ul>
     <br/>
 
-    <table class="table table-hover sortable">
-        <thead>
-        <tr>
-            <th th:text="#{page.contest-wins.column-header-band}">Band</th>
-            <th th:text="#{page.contest-wins.column-header-wins}" class="number">Win Count</th>
+    <div class="tab-content">
+        <table class="table table-hover sortable">
+            <thead>
+            <tr>
+                <th th:text="#{page.contest-wins.column-header-band}">Band</th>
+                <th th:text="#{page.contest-wins.column-header-wins}" class="number">Win Count</th>
 
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="win : ${Wins}">
-            <td class="bbr-band">
-                <a th:href="${'/bands/' + win.bandSlug + '/' + Contest.slug}" th:text="${win.bandName}">Band Name</a>
-            </td>
-            <td th:text="${win.winCount}"></td>
-        </tr>
-        </tbody>
-    </table>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="win : ${Wins}">
+                <td class="bbr-band">
+                    <a th:href="${'/bands/' + win.bandSlug + '/' + Contest.slug}" th:text="${win.bandName}">Band Name</a>
+                </td>
+                <td th:text="${win.winCount}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 </body>
 </html>

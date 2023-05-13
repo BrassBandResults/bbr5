@@ -25,25 +25,27 @@
     </ul>
     <br/>
 
-    <table class="table table-hover sortable">
-        <thead>
-        <tr>
-            <th th:text="#{page.contest-own-choice.column-header-date}" class="date">Date</th>
-            <th th:text="#{page.contest-own-choice.column-header-band}">Band</th>
-            <th th:text="#{page.contest-own-choice.column-header-piece}">Piece</th>
-            <th th:text="#{page.contest-own-choice.column-header-position}" class="number">Position</th>
+    <div class="tab-content">
+        <table class="table table-hover sortable">
+            <thead>
+            <tr>
+                <th th:text="#{page.contest-own-choice.column-header-date}" class="date">Date</th>
+                <th th:text="#{page.contest-own-choice.column-header-band}">Band</th>
+                <th th:text="#{page.contest-own-choice.column-header-piece}">Piece</th>
+                <th th:text="#{page.contest-own-choice.column-header-position}" class="number">Position</th>
 
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="resultPiece : ${OwnChoiceResults}">
-            <td class="bbr-event" nowrap><span th:replace="links/event-link.html :: eventLink(${resultPiece.contestResult.contestEvent})">9th Sep 2023</span></td>
-            <td class="bbr-band"><span th:replace="links/band-link.html :: bandLinkWithOverride(${resultPiece.contestResult})"></span></td>
-            <td class="bbr-piece"><span th:replace="links/piece-link.html :: resultOwnChoicePieceLink(${resultPiece})">Test Piece</span></td>
-            <td class="bbr-position"><span th:replace="components/results-position.html :: resultsPosition(${resultPiece.contestResult})">1</span></td>
-        </tr>
-        </tbody>
-    </table>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="resultPiece : ${OwnChoiceResults}">
+                <td class="bbr-event" nowrap><span th:replace="links/event-link.html :: eventLink(${resultPiece.contestResult.contestEvent})">9th Sep 2023</span></td>
+                <td class="bbr-band"><span th:replace="links/band-link.html :: bandLinkWithOverride(${resultPiece.contestResult})"></span></td>
+                <td class="bbr-piece"><span th:replace="links/piece-link.html :: resultOwnChoicePieceLink(${resultPiece})">Test Piece</span></td>
+                <td class="bbr-position"><span th:replace="components/results-position.html :: resultsPosition(${resultPiece.contestResult})">1</span></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 </body>
 </html>

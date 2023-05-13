@@ -47,26 +47,28 @@
     </ul>
     <br/>
 
-    <table class="table table-hover sortable">
-        <thead>
-            <tr>
-                <th th:text="#{page.band.column-header-date}">Date</th>
-                <th th:text="#{page.band.column-header-contest}">Contest</th>
-                <th th:text="#{page.band.column-header-position}">Position</th>
-                <th th:text="#{page.band.column-header-march}">March</th>
-                <th th:text="#{page.band.column-header-conductor}">Conductor</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="result : ${BandResults}" th:class="${'result-' + result.position}">
-                <td class="bbr-event" nowrap><span th:replace="links/event-link.html :: eventLink(${result.contestEvent})">9th Sep 2023</span></td>
-                <td class="bbr-contest" th:text="${result.contestEvent.contest.name}">Yorkshire Area</td>
-                <td class="bbr-position"><span th:replace="components/results-position.html :: resultsPosition(${result})">1</span></td>
-                <td class="bbr-piece"><span th:replace="links/piece-link.html :: resultPieceLink(${result})">Test Piece</span></td>
-                <td class="bbr-conductor"><span th:replace="links/person-link.html :: conductorsLink(${result})">Bob Childs</span></td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="tab-content">
+        <table class="table table-hover sortable">
+            <thead>
+                <tr>
+                    <th th:text="#{page.band.column-header-date}">Date</th>
+                    <th th:text="#{page.band.column-header-contest}">Contest</th>
+                    <th th:text="#{page.band.column-header-position}">Position</th>
+                    <th th:text="#{page.band.column-header-march}">March</th>
+                    <th th:text="#{page.band.column-header-conductor}">Conductor</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="result : ${BandResults}" th:class="${'result-' + result.position}">
+                    <td class="bbr-event" nowrap><span th:replace="links/event-link.html :: eventLink(${result.contestEvent})">9th Sep 2023</span></td>
+                    <td class="bbr-contest" th:text="${result.contestEvent.contest.name}">Yorkshire Area</td>
+                    <td class="bbr-position"><span th:replace="components/results-position.html :: resultsPosition(${result})">1</span></td>
+                    <td class="bbr-piece"><span th:replace="links/piece-link.html :: resultPieceLink(${result})">Test Piece</span></td>
+                    <td class="bbr-conductor"><span th:replace="links/person-link.html :: conductorsLink(${result})">Bob Childs</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 </body>
 </html>

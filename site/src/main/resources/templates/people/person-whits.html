@@ -29,29 +29,31 @@
     </ul>
     <br/>
 
-    <table class="table table-hover sortable">
-        <thead>
-            <tr>
-                <th th:text="#{page.person.column-header-date}" class="date">Date</th>
-                <th th:text="#{page.person.column-header-contest}">Contest</th>
-                <th th:text="#{page.person.column-header-band}">Band</th>
-                <th th:text="#{page.person.column-header-position}" class="result">Position</th>
-                <th th:text="#{page.person.column-header-points}" class="number">Points</th>
-                <th th:text="#{page.person.column-header-draw}" class="number">Draw</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="result : ${WhitResults}" th:class="${'result-' + result.position}">
-                <td class="bbr-event" nowrap><span th:replace="links/event-link.html :: eventLink(${result.contestEvent})">9th Sep 2023</span></td>
-                <td class="bbr-contest"><span th:text="${result.contestEvent.contest.name}">Yorkshire Area</span></td>
-                <td class="bbr-band"><span th:replace="links/band-link.html :: bandLinkWithOverride(${result})"></span></td>
-                <td class="bbr-position"><span th:replace="components/results-position.html :: resultsPosition(${result})">1</span></td>
-                <td class="bbr-points"><span th:text="${result.pointsTotal}">123.45</span></td>
-                <td class="bbr-draw"><span th:if="${result.draw != 0}" th:text="${result.draw}">1</span></td>
+    <div class="tab-content">
+        <table class="table table-hover sortable">
+            <thead>
+                <tr>
+                    <th th:text="#{page.person.column-header-date}" class="date">Date</th>
+                    <th th:text="#{page.person.column-header-contest}">Contest</th>
+                    <th th:text="#{page.person.column-header-band}">Band</th>
+                    <th th:text="#{page.person.column-header-position}" class="result">Position</th>
+                    <th th:text="#{page.person.column-header-points}" class="number">Points</th>
+                    <th th:text="#{page.person.column-header-draw}" class="number">Draw</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="result : ${WhitResults}" th:class="${'result-' + result.position}">
+                    <td class="bbr-event" nowrap><span th:replace="links/event-link.html :: eventLink(${result.contestEvent})">9th Sep 2023</span></td>
+                    <td class="bbr-contest"><span th:text="${result.contestEvent.contest.name}">Yorkshire Area</span></td>
+                    <td class="bbr-band"><span th:replace="links/band-link.html :: bandLinkWithOverride(${result})"></span></td>
+                    <td class="bbr-position"><span th:replace="components/results-position.html :: resultsPosition(${result})">1</span></td>
+                    <td class="bbr-points"><span th:text="${result.pointsTotal}">123.45</span></td>
+                    <td class="bbr-draw"><span th:if="${result.draw != 0}" th:text="${result.draw}">1</span></td>
 
-            </tr>
-        </tbody>
-    </table>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 </body>
 </html>

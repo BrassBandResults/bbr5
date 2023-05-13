@@ -29,24 +29,26 @@
     </ul>
     <br/>
 
-    <table class="table table-hover sortable">
-        <thead>
-            <tr>
-                <th th:text="#{page.person-pieces.column-header-date}">Name</th>
-                <th th:text="#{page.person-pieces.column-header-contest}">Composer</th>
-                <th th:text="#{page.person-pieces.column-header-band}">Arranger</th>
-                <th th:text="#{page.person-pieces.column-header-position}" class="number">Year</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="piece : ${Pieces}">
-                <td class="bbr-piece"><span th:replace="links/piece-link.html :: pieceLinkNoYear(${piece})">Test Piece</span></td>
-                <td class="bbr-composer"><span th:replace="links/person-link.html :: personLink(${piece.composer}, false, false)">Bob Childs</span></td>
-                <td class="bbr-arranger"><span th:replace="links/person-link.html :: personLink(${piece.arranger}, false, false)">Bob Childs</span></td>
-                <td class="bbr-year"><span th:text="${piece.year}">2001</span></td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="tab-content">
+        <table class="table table-hover sortable">
+            <thead>
+                <tr>
+                    <th th:text="#{page.person-pieces.column-header-date}">Name</th>
+                    <th th:text="#{page.person-pieces.column-header-contest}">Composer</th>
+                    <th th:text="#{page.person-pieces.column-header-band}">Arranger</th>
+                    <th th:text="#{page.person-pieces.column-header-position}" class="number">Year</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="piece : ${Pieces}">
+                    <td class="bbr-piece"><span th:replace="links/piece-link.html :: pieceLinkNoYear(${piece})">Test Piece</span></td>
+                    <td class="bbr-composer"><span th:replace="links/person-link.html :: personLink(${piece.composer}, false, false)">Bob Childs</span></td>
+                    <td class="bbr-arranger"><span th:replace="links/person-link.html :: personLink(${piece.arranger}, false, false)">Bob Childs</span></td>
+                    <td class="bbr-year"><span th:text="${piece.year}">2001</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 </body>
 </html>
