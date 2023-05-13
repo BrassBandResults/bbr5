@@ -28,8 +28,7 @@
                         <a class="dropdown-item" aria-labelledby="bandsDropdown" href="/bands/" th:text="#{menu.bands.list-bands}">List Bands</a>
                         <a class="dropdown-item" aria-labelledby="bandsDropdown" href="/regions/" th:text="#{menu.bands.regions}">Regions</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" aria-labelledby="bandsDropdown" href="/map" th:text="#{menu.bands.map}">Band Map</a>
-                        <a class="dropdown-item" aria-labelledby="bandsDropdown" href="/map/search/" th:text="#{manu_bands-map-search}">Search Map</a>
+                        <a class="dropdown-item" aria-labelledby="bandsDropdown" href="/map/bands/" th:text="#{menu.bands.map}">Band Map</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" aria-labelledby="bandsDropdown" href="/compare/bands/" th:text="#{manu_bands-compare-bands}">Compare Bands</a>
                         <a class="dropdown-item" aria-labelledby="bandsDropdown" href="/bands/winners/" th:text="#{menu.bands.winning-bands}">Winning Bands</a>
@@ -41,14 +40,14 @@
                     <div class="dropdown-menu">
                         <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/contests/" th:text="#{menu.contests.list-contests}">List Contests</a>
                         <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/contest-groups/" sec:authorize="hasRole('BBR_SUPERUSER')" th:text="#{menu.contests.groups}">Groups</a>
-                        <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/tags/ALL" th:text="#{menu.contests.list-tags}">List Tags</a>
+                        <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/tags/" th:text="#{menu.contests.list-tags}">List Tags</a>
                         <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/calendar/" th:text="#{menu.contests.calendar}">Calendar</a>
                         <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/years/" th:text="#{menu.contests.years}">Years</a>
                         <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/venues/" th:text="#{menu.contests.list-venues}">List Venues</a>
+                        <div class="dropdown-divider"></div>
                         <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/map/venues/" th:text="#{menu.contests.venue-map}">Venue Map</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/addresults/" th:text="#{menu.contests.add-results}">Add Results</a>
-                        <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/addwhitfriday/" th:text="#{menu.contests.add-whit-friday}">Add Whit Friday</a>
                     </div>
                 </div>
 
@@ -67,6 +66,7 @@
                     <a class="nav-item nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" id="piecesDropdown" aria-haspopup="true" aria-expanded="false" th:text="#{menu.pieces.title}">Pieces</a>
                     <div class="dropdown-menu">
                         <a class="dropdown-item" aria-labelledby="piecesDropdown" href="/pieces/" th:text="#{menu.pieces.list-pieces}">List Pieces</a>
+                        <div class="dropdown-divider"></div>
                         <a class="dropdown-item" aria-labelledby="piecesDropdown" href="/pieces/BySection/" th:text="#{menu.pieces.by-section}">By Section</a>
                         <a class="dropdown-item" aria-labelledby="piecesDropdown" href="/pieces/BestOwnChoice/" th:text="#{menu.pieces.successful}">Successful</a>
                     </div>
@@ -77,7 +77,7 @@
                     <div class="dropdown-menu">
                         <a class="dropdown-item" aria-labelledby="siteDropdown" href="/leaderboard/" th:text="#{menu.site.leaderboard}">Leaderboard</a>
                         <a class="dropdown-item" aria-labelledby="siteDropdown" href="/badges/" th:text="#{menu.site.badges}">Badges</a>
-                        <div class="dropdown-divider"sec:authorize="hasRole('BBR_SUPERUSER') or hasRole('BBR_ADMIN')"></div>
+                        <div class="dropdown-divider" sec:authorize="hasRole('BBR_SUPERUSER') or hasRole('BBR_ADMIN')"></div>
                         <a class="dropdown-item" aria-labelledby="siteDropdown" href="/feedback/queue/" th:text="#{menu.site.feedback-queue}" sec:authorize="hasRole('BBR_SUPERUSER')">Feedback Queue</a>
                         <a class="dropdown-item" aria-labelledby="siteDropdown" href="/feedback/admin/" th:text="#{menu.site.owner-queue}" sec:authorize="hasRole('BBR_ADMIN')">Owner Queue</a>
                         <div class="dropdown-divider"></div>
