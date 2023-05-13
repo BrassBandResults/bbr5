@@ -2,12 +2,12 @@ package uk.co.bbr.services.contests.dao;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import uk.co.bbr.services.framework.AbstractDao;
 import uk.co.bbr.services.framework.mixins.NameTools;
 
-import javax.persistence.*;
-import java.util.Set;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Getter
 @Entity
@@ -24,8 +24,7 @@ public class ContestTagDao extends AbstractDao implements NameTools {
     private String slug;
 
     public void setName(String name){
-        String nameToSet = simplifyContestName(name);
-        this.name = nameToSet;
+        this.name = simplifyContestName(name);
     }
 
     public void setOldId(String oldId){

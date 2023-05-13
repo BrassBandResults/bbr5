@@ -9,8 +9,6 @@ import uk.co.bbr.services.contests.dao.ContestEventDao;
 import uk.co.bbr.services.contests.dao.ContestEventTestPieceDao;
 import uk.co.bbr.services.contests.dao.ContestResultDao;
 import uk.co.bbr.services.contests.dao.ContestResultPieceDao;
-import uk.co.bbr.services.contests.repo.ContestEventTestPieceRepository;
-import uk.co.bbr.services.contests.repo.ContestResultPieceRepository;
 import uk.co.bbr.services.contests.types.ContestEventDateResolution;
 import uk.co.bbr.services.contests.types.ResultAwardType;
 import uk.co.bbr.services.contests.types.ResultPositionType;
@@ -44,8 +42,6 @@ public class PieceServiceImpl implements PieceService, SlugTools {
 
     private final PieceRepository pieceRepository;
     private final PieceAliasRepository pieceAlternativeNameRepository;
-    private final ContestResultPieceRepository contestResultPieceRepository;
-    private final ContestEventTestPieceRepository contestEventTestPieceRepository;
     private final SecurityService securityService;
     private final EntityManager entityManager;
 
@@ -158,21 +154,21 @@ public class PieceServiceImpl implements PieceService, SlugTools {
         List<PieceUsageCountSqlDto> pieceUsageCounts;
 
         switch (prefix.toUpperCase()) {
-            case "ALL":
+            case "ALL" -> {
                 piecesToReturn = this.pieceRepository.findAllOrderByName();
-                pieceUsageCounts =  PieceSql.selectAllPieceUsageCounts(this.entityManager);
-                break;
-            case "0":
+                pieceUsageCounts = PieceSql.selectAllPieceUsageCounts(this.entityManager);
+            }
+            case "0" -> {
                 piecesToReturn = this.pieceRepository.findWithNumberPrefixOrderByName();
-                pieceUsageCounts =  PieceSql.selectNumbersPieceUsageCounts(this.entityManager);
-                break;
-            default:
+                pieceUsageCounts = PieceSql.selectNumbersPieceUsageCounts(this.entityManager);
+            }
+            default -> {
                 if (prefix.trim().length() != 1) {
                     throw new UnsupportedOperationException("Prefix must be a single character");
                 }
                 piecesToReturn = this.pieceRepository.findByPrefixOrderByName(prefix.trim().toUpperCase());
-                pieceUsageCounts =  PieceSql.selectPieceUsageCounts(this.entityManager, prefix.toUpperCase());
-                break;
+                pieceUsageCounts = PieceSql.selectPieceUsageCounts(this.entityManager, prefix.toUpperCase());
+            }
         }
 
         for (PieceDao eachPiece : piecesToReturn) {
@@ -219,7 +215,7 @@ public class PieceServiceImpl implements PieceService, SlugTools {
             contestResultPiece.getContestResult().getBand().setRegion(new RegionDao());
             contestResultPiece.getContestResult().getBand().getRegion().setCountryCode(eachSqlRow.getBandCountryCode());
             contestResultPiece.getContestResult().getBand().getRegion().setName(eachSqlRow.getBandRegionName());
-            contestResultPiece.getContestResult().setPosition(""+eachSqlRow.getResultPosition());
+            contestResultPiece.getContestResult().setPosition(String.valueOf(eachSqlRow.getResultPosition()));
             contestResultPiece.getContestResult().setResultPositionType(ResultPositionType.fromCode(eachSqlRow.getResultPositionType()));
             contestResultPiece.getContestResult().setResultAward(ResultAwardType.fromCode(eachSqlRow.getResultAward()));
             contestResultPiece.getContestResult().setId(eachSqlRow.getContestResultId().longValue());

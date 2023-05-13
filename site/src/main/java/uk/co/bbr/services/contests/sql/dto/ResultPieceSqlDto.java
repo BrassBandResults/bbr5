@@ -9,10 +9,10 @@ import java.math.BigInteger;
 public class ResultPieceSqlDto extends AbstractSqlDto {
 
 
-    private BigInteger contestResultId;
-    private String pieceSlug;
-    private String pieceName;
-    private String pieceYear;
+    private final BigInteger contestResultId;
+    private final String pieceSlug;
+    private final String pieceName;
+    private final String pieceYear;
 
 
 

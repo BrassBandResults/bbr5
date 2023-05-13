@@ -41,8 +41,7 @@ public class BandPreviousNameDao extends AbstractDao implements NameTools {
     private boolean hidden;
 
     public void setOldName(String name) {
-        String nameToSet = simplifyBandName(name);
-        this.oldName = nameToSet;
+        this.oldName = simplifyBandName(name);
     }
 
     public String getDisplayName() {

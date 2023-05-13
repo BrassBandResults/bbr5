@@ -3,19 +3,17 @@ package uk.co.bbr.services.contests.types;
 import java.util.stream.Stream;
 
 public enum ResultPositionType {
-    RESULT("R", "Result Known", "result.known"),
-    UNKNOWN("U", "Result Unknown", "result.unknown"),
-    WITHDRAWN("W", "Withdrawn", "result.withdrawn"),
-    DISQUALIFIED("D", "Disqualified", "result.disqualified"),
+    RESULT("R", "result.known"),
+    UNKNOWN("U", "result.unknown"),
+    WITHDRAWN("W", "result.withdrawn"),
+    DISQUALIFIED("D", "result.disqualified"),
     ;
 
     private final String code;
-    private final String displayName;
     private final String translationKey;
 
-    ResultPositionType(String code, String displayName, String translationKey) {
+    ResultPositionType(String code, String translationKey) {
         this.code = code;
-        this.displayName = displayName;
         this.translationKey = translationKey;
     }
 

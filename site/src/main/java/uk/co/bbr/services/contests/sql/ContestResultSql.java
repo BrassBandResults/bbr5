@@ -1,5 +1,6 @@
 package uk.co.bbr.services.contests.sql;
 
+import lombok.experimental.UtilityClass;
 import uk.co.bbr.services.contests.sql.dto.ContestWinsSqlDto;
 import uk.co.bbr.services.contests.sql.dto.BandResultSqlDto;
 import uk.co.bbr.services.contests.sql.dto.ContestEventResultSqlDto;
@@ -12,6 +13,7 @@ import uk.co.bbr.services.framework.sql.SqlExec;
 import javax.persistence.EntityManager;
 import java.util.List;
 
+@UtilityClass
 public class ContestResultSql {
 
     private static final String BAND_RESULT_LIST_SQL = """

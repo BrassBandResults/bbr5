@@ -5,8 +5,6 @@ import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.contests.dao.ContestGroupDao;
 import uk.co.bbr.services.contests.dao.ContestTagDao;
 import uk.co.bbr.services.contests.dto.ContestListDto;
-import uk.co.bbr.services.people.dao.PersonAliasDao;
-import uk.co.bbr.services.regions.dao.RegionDao;
 
 import java.util.List;
 import java.util.Optional;

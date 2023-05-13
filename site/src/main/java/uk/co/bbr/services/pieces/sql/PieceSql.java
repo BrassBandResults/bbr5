@@ -1,5 +1,6 @@
 package uk.co.bbr.services.pieces.sql;
 
+import lombok.experimental.UtilityClass;
 import uk.co.bbr.services.framework.sql.SqlExec;
 import uk.co.bbr.services.pieces.sql.dto.OwnChoiceUsagePieceSqlDto;
 import uk.co.bbr.services.pieces.sql.dto.PieceUsageCountSqlDto;
@@ -8,6 +9,7 @@ import uk.co.bbr.services.pieces.sql.dto.SetTestUsagePieceSqlDto;
 import javax.persistence.EntityManager;
 import java.util.List;
 
+@UtilityClass
 public class PieceSql {
 
     private static final String PIECE_OWN_CHOICE_SQL = """

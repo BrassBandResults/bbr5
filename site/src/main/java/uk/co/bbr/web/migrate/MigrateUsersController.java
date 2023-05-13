@@ -1,12 +1,9 @@
 package uk.co.bbr.web.migrate;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import uk.co.bbr.services.framework.annotations.IgnoreCoverage;
 import uk.co.bbr.services.security.dao.BbrUserDao;
 import uk.co.bbr.services.security.dao.UserRole;
@@ -20,15 +17,8 @@ import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
-
-import static uk.co.bbr.web.migrate.MigrateController.BASE_PATH;
 
 @Controller
 @RequiredArgsConstructor

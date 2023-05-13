@@ -1,11 +1,14 @@
 package uk.co.bbr.services.framework.sql;
 
+import lombok.experimental.UtilityClass;
+
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
 
+@UtilityClass
 public class SqlExec {
     public static <T extends AbstractSqlDto> List<T> execute(EntityManager entityManager, String sql, Object param1, Class<T> clazz) {
         List<T> returnData = new ArrayList<>();

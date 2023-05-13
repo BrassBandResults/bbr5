@@ -16,11 +16,9 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.util.List;
-import java.util.Set;
 
 @Getter
 @Entity
@@ -194,22 +192,22 @@ public class ContestResultDao extends AbstractDao implements NameTools {
         }
 
         switch (position.toUpperCase()) {
-            case "W":
+            case "W" -> {
                 this.position = null;
                 this.resultPositionType = ResultPositionType.WITHDRAWN;
-                break;
-            case "D":
+            }
+            case "D" -> {
                 this.position = null;
                 this.resultPositionType = ResultPositionType.DISQUALIFIED;
-                break;
-            case "0", "", "NULL", "NONE":
+            }
+            case "0", "", "NULL", "NONE" -> {
                 this.position = null;
                 this.resultPositionType = ResultPositionType.UNKNOWN;
-                break;
-            default:
+            }
+            default -> {
                 this.position = Integer.parseInt(position);
                 this.resultPositionType = ResultPositionType.RESULT;
-                break;
+            }
         }
     }
 

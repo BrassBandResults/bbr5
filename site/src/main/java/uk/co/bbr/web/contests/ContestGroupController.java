@@ -14,7 +14,6 @@ import uk.co.bbr.services.contests.dto.ContestGroupYearsDetailsDto;
 import uk.co.bbr.services.contests.dto.GroupListDto;
 import uk.co.bbr.services.framework.NotFoundException;
 
-import java.awt.geom.NoninvertibleTransformException;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,7 +28,7 @@ public class ContestGroupController {
         return contestGroupsListLetter(model, "A");
     }
 
-    @GetMapping("/contest-groups/{letter:[A-Z0-9]{1}}")
+    @GetMapping("/contest-groups/{letter:[A-Z0-9]}")
     public String contestGroupsListLetter(Model model, @PathVariable("letter") String letter) {
         GroupListDto groups = this.contestGroupService.listGroupsStartingWith(letter);
 

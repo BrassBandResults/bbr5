@@ -8,10 +8,10 @@ import java.math.BigInteger;
 @Getter
 public class EventPieceSqlDto extends AbstractSqlDto {
 
-    private BigInteger contestEventId;
-    private String pieceSlug;
-    private String pieceName;
-    private String pieceYear;
+    private final BigInteger contestEventId;
+    private final String pieceSlug;
+    private final String pieceName;
+    private final String pieceYear;
 
 
     public EventPieceSqlDto(Object[] eachRowData) {

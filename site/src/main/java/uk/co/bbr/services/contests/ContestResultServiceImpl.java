@@ -53,7 +53,7 @@ public class ContestResultServiceImpl implements ContestResultService {
     public ContestResultDao addResult(ContestEventDao event, ContestResultDao result) {
         result.setContestEvent(event);
 
-        ContestResultDao returnResult = null;
+        ContestResultDao returnResult;
         // is there an existing result for the same band?
         Optional<ContestResultDao> existingResult = this.contestResultRepository.fetchForEventAndBand(event.getId(), result.getBand().getId());
         if (existingResult.isPresent()) {

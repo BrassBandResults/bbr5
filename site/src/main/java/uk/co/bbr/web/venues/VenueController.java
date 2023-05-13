@@ -8,14 +8,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import uk.co.bbr.services.contests.ContestService;
 import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.contests.dao.ContestEventDao;
-import uk.co.bbr.services.contests.dao.ContestResultDao;
 import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.venues.VenueService;
 import uk.co.bbr.services.venues.dao.VenueAliasDao;
 import uk.co.bbr.services.venues.dao.VenueDao;
 import uk.co.bbr.services.venues.dto.VenueContestDto;
 import uk.co.bbr.services.venues.dto.VenueContestYearDto;
-import uk.co.bbr.services.venues.dto.VenueListDto;
 
 import java.util.List;
 import java.util.Optional;

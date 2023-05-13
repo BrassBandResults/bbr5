@@ -63,8 +63,7 @@ public class RegionDao extends AbstractDao implements NameTools {
         if (name == null) {
             this.name = null;
         } else {
-            String nameToSet = simplifyRegionName(name);
-            this.name = nameToSet;
+            this.name = simplifyRegionName(name);
         }
     }
 

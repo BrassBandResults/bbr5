@@ -3,18 +3,16 @@ package uk.co.bbr.services.contests.types;
 import java.util.stream.Stream;
 
 public enum ContestEventDateResolution {
-    EXACT_DATE("D", "Exact Date", "date-resolution.exact"),
-    MONTH_AND_YEAR("M", "Month and Year", "date-resolution.month-year"),
-    YEAR("Y", "Year", "date-resolution.year"),
+    EXACT_DATE("D", "date-resolution.exact"),
+    MONTH_AND_YEAR("M",  "date-resolution.month-year"),
+    YEAR("Y",  "date-resolution.year"),
     ;
 
     private final String code;
-    private final String displayName;
     private final String translationKey;
 
-    ContestEventDateResolution(String code, String displayName, String translationKey) {
+    ContestEventDateResolution(String code, String translationKey) {
         this.code = code;
-        this.displayName = displayName;
         this.translationKey = translationKey;
     }
 

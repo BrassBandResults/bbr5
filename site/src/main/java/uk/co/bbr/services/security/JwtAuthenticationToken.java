@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import uk.co.bbr.services.security.dao.BbrUserDao;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -38,24 +37,22 @@ public class JwtAuthenticationToken implements Authentication {
         String role = this.jwt.getClaim(CLAIM_ROLE).asString();
         if (role != null && !role.isEmpty()) {
             switch (role) {
-                case ROLE_TEXT_ADMIN:
+                case ROLE_TEXT_ADMIN -> {
                     authorities.add(new SimpleGrantedAuthority(GRANTED_AUTH_ADMIN));
                     authorities.add(new SimpleGrantedAuthority(GRANTED_AUTH_SUPERUSER));
                     authorities.add(new SimpleGrantedAuthority(GRANTED_AUTH_PRO));
                     authorities.add(new SimpleGrantedAuthority(GRANTED_AUTH_MEMBER));
-                    break;
-                case ROLE_TEXT_SUPERUSER:
+                }
+                case ROLE_TEXT_SUPERUSER -> {
                     authorities.add(new SimpleGrantedAuthority(GRANTED_AUTH_SUPERUSER));
                     authorities.add(new SimpleGrantedAuthority(GRANTED_AUTH_PRO));
                     authorities.add(new SimpleGrantedAuthority(GRANTED_AUTH_MEMBER));
-                    break;
-                case ROLE_TEXT_PRO:
+                }
+                case ROLE_TEXT_PRO -> {
                     authorities.add(new SimpleGrantedAuthority(GRANTED_AUTH_PRO));
                     authorities.add(new SimpleGrantedAuthority(GRANTED_AUTH_MEMBER));
-                    break;
-                case ROLE_TEXT_MEMBER:
-                    authorities.add(new SimpleGrantedAuthority(GRANTED_AUTH_MEMBER));
-                    break;
+                }
+                case ROLE_TEXT_MEMBER -> authorities.add(new SimpleGrantedAuthority(GRANTED_AUTH_MEMBER));
             }
         }
 

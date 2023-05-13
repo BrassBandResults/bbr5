@@ -18,7 +18,6 @@ import uk.co.bbr.services.regions.dto.LinkSectionDto;
 import uk.co.bbr.services.regions.dto.RegionPageDto;
 
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -48,7 +47,7 @@ public class RegionController {
     }
 
     @GetMapping("/regions/{regionSlug}/links")
-    public String regionLinks(Model model, Locale locale, @PathVariable("regionSlug") String regionSlug) {
+    public String regionLinks(Model model, @PathVariable("regionSlug") String regionSlug) {
         Optional<RegionDao> region = this.regionService.fetchBySlug(regionSlug);
         if (region.isEmpty()) {
             throw new NotFoundException("Region not found");

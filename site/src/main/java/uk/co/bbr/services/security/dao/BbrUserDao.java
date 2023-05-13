@@ -2,7 +2,6 @@ package uk.co.bbr.services.security.dao;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import uk.co.bbr.services.framework.AbstractDao;
 import uk.co.bbr.services.security.types.ContestHistoryVisibility;
@@ -129,19 +128,10 @@ public class BbrUserDao extends AbstractDao {
             return;
         }
         switch (value) {
-            case "public":
-                this.contestHistoryVisibility = ContestHistoryVisibility.PUBLIC;
-                break;
-            case "private":
-                this.contestHistoryVisibility = ContestHistoryVisibility.PRIVATE;
-                break;
-            case "site":
-                this.contestHistoryVisibility = ContestHistoryVisibility.SITE_ONLY;
-                break;
-            default:
-                System.out.println("Setting contest history visibility from [" + value + "]");
-                this.contestHistoryVisibility = ContestHistoryVisibility.fromCode(value);
-                break;
+            case "public" -> this.contestHistoryVisibility = ContestHistoryVisibility.PUBLIC;
+            case "private" -> this.contestHistoryVisibility = ContestHistoryVisibility.PRIVATE;
+            case "site" -> this.contestHistoryVisibility = ContestHistoryVisibility.SITE_ONLY;
+            default -> this.contestHistoryVisibility = ContestHistoryVisibility.fromCode(value);
         }
     }
 }

@@ -16,8 +16,6 @@ import uk.co.bbr.services.contests.repo.ContestGroupRepository;
 import uk.co.bbr.services.contests.repo.ContestRepository;
 import uk.co.bbr.services.framework.ValidationException;
 import uk.co.bbr.services.framework.mixins.SlugTools;
-import uk.co.bbr.services.regions.dao.RegionDao;
-import uk.co.bbr.services.regions.dto.LinkSectionDto;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.web.security.annotations.IsBbrAdmin;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
@@ -200,23 +198,20 @@ public class ContestServiceImpl implements ContestService, SlugTools {
         List<ContestGroupDao> contestGroupsToReturn;
         List<ContestGroupAliasDao> contestGroupAliasesToReturn;
 
-        switch (prefix.toUpperCase()) {
-            case "ALL" -> {
-                contestsToReturn = this.contestRepository.findAllOutsideGroupsOrderByName();
-                contestAliasesToReturn = this.contestAliasRepository.findAllOutsideGroupsOrderByName();
-                contestGroupsToReturn = this.contestGroupRepository.findAllOrderByName();
-                contestGroupAliasesToReturn = this.contestGroupAliasRepository.findAllOrderByName();
+        if (prefix.equalsIgnoreCase("ALL")) {
+            contestsToReturn = this.contestRepository.findAllOutsideGroupsOrderByName();
+            contestAliasesToReturn = this.contestAliasRepository.findAllOutsideGroupsOrderByName();
+            contestGroupsToReturn = this.contestGroupRepository.findAllOrderByName();
+            contestGroupAliasesToReturn = this.contestGroupAliasRepository.findAllOrderByName();
+        } else {
+            if (prefix.trim().length() != 1) {
+                throw new UnsupportedOperationException("Prefix must be a single character");
             }
-            default -> {
-                if (prefix.trim().length() != 1) {
-                    throw new UnsupportedOperationException("Prefix must be a single character");
-                }
-                String upperPrefix = prefix.trim().toUpperCase();
-                contestsToReturn = this.contestRepository.findByPrefixOutsideGroupsOrderByName(upperPrefix);
-                contestAliasesToReturn = this.contestAliasRepository.findByPrefixOutsideGroupsOrderByName(upperPrefix);
-                contestGroupsToReturn = this.contestGroupRepository.findByPrefixOrderByName(upperPrefix);
-                contestGroupAliasesToReturn = this.contestGroupAliasRepository.findByPrefixOrderByName(upperPrefix);
-            }
+            String upperPrefix = prefix.trim().toUpperCase();
+            contestsToReturn = this.contestRepository.findByPrefixOutsideGroupsOrderByName(upperPrefix);
+            contestAliasesToReturn = this.contestAliasRepository.findByPrefixOutsideGroupsOrderByName(upperPrefix);
+            contestGroupsToReturn = this.contestGroupRepository.findByPrefixOrderByName(upperPrefix);
+            contestGroupAliasesToReturn = this.contestGroupAliasRepository.findByPrefixOrderByName(upperPrefix);
         }
 
         List<ContestListContestDto> returnedContests = new ArrayList<>();

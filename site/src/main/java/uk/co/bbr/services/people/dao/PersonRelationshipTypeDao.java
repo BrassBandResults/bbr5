@@ -2,7 +2,6 @@ package uk.co.bbr.services.people.dao;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import uk.co.bbr.services.framework.AbstractDao;
 
 import javax.persistence.Column;

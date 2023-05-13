@@ -32,8 +32,7 @@ public class PersonAliasDao extends AbstractDao implements NameTools {
     private boolean hidden;
 
     public void setOldName(String name) {
-        String nameToSet = simplifyPersonFullName(name);
-        this.oldName = nameToSet;
+        this.oldName = simplifyPersonFullName(name);
     }
 
     public boolean matchesName(String personName) {

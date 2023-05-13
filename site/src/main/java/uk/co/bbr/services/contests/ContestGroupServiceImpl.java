@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.contests.dao.ContestEventDao;
 import uk.co.bbr.services.contests.dao.ContestEventTestPieceDao;
@@ -24,7 +23,6 @@ import uk.co.bbr.services.contests.repo.ContestEventRepository;
 import uk.co.bbr.services.contests.repo.ContestGroupAliasRepository;
 import uk.co.bbr.services.contests.repo.ContestGroupRepository;
 import uk.co.bbr.services.contests.repo.ContestResultPieceRepository;
-import uk.co.bbr.services.contests.repo.ContestResultRepository;
 import uk.co.bbr.services.contests.types.ContestGroupType;
 import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.framework.ValidationException;
@@ -34,12 +32,12 @@ import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.web.security.annotations.IsBbrAdmin;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -171,14 +169,13 @@ public class ContestGroupServiceImpl implements ContestGroupService, SlugTools {
     public GroupListDto listGroupsStartingWith(String prefix) {
         List<ContestGroupDao> groupsToReturn;
 
-        switch (prefix.toUpperCase()) {
-            case "ALL" -> groupsToReturn = this.contestGroupRepository.findAll();
-            default -> {
-                if (prefix.trim().length() != 1) {
-                    throw new UnsupportedOperationException("Prefix must be a single character");
-                }
-                groupsToReturn = this.contestGroupRepository.findByPrefixOrderByName(prefix.trim().toUpperCase());
+        if (prefix.equalsIgnoreCase("ALL")) {
+            groupsToReturn = this.contestGroupRepository.findAll();
+        } else {
+            if (prefix.trim().length() != 1) {
+                throw new UnsupportedOperationException("Prefix must be a single character");
             }
+            groupsToReturn = this.contestGroupRepository.findByPrefixOrderByName(prefix.trim().toUpperCase());
         }
 
         long allGroupsCount = this.contestGroupRepository.count();
@@ -194,7 +191,6 @@ public class ContestGroupServiceImpl implements ContestGroupService, SlugTools {
     @IsBbrMember
     public ContestGroupDao addGroupTag(ContestGroupDao group, ContestTagDao tag) {
         group.getTags().add(tag);
-        System.out.println("Linking group " + group.getId() + " [" + group.getName() + "] with tag " + tag.getId()+ " [" + tag.getName() + "]");
         return this.update(group);
     }
 
@@ -219,10 +215,10 @@ public class ContestGroupServiceImpl implements ContestGroupService, SlugTools {
         }
 
         List<ContestEventDao> events = this.contestGroupRepository.fetchEventsForGroupOrderByEventDate(contestGroup.get().getId());
-        Hashtable<String, Integer> yearCounts = new Hashtable<>();
+        Map<String, Integer> yearCounts = new HashMap<>();
         for (ContestEventDao event : events) {
-            String year = "" + event.getEventDate().getYear();
-            if (yearCounts.keySet().contains(year)) {
+            String year = String.valueOf(event.getEventDate().getYear());
+            if (yearCounts.containsKey(year)) {
                 yearCounts.put(year, yearCounts.get(year) + 1);
             } else {
                 yearCounts.put(year, 1);
@@ -234,8 +230,7 @@ public class ContestGroupServiceImpl implements ContestGroupService, SlugTools {
             displayYears.add(new ContestGroupYearsDetailsYearDto(eachYearKey, yearCounts.get(eachYearKey)));
         }
 
-        ContestGroupYearsDetailsDto contestGroupDetails = new ContestGroupYearsDetailsDto(contestGroup.get(), displayYears);
-        return contestGroupDetails;
+        return new ContestGroupYearsDetailsDto(contestGroup.get(), displayYears);
     }
 
     @Override

@@ -8,13 +8,15 @@ import org.hibernate.annotations.Formula;
 import uk.co.bbr.services.contests.types.ContestGroupType;
 import uk.co.bbr.services.framework.AbstractDao;
 import uk.co.bbr.services.framework.mixins.NameTools;
-import uk.co.bbr.services.people.dao.PersonDao;
-import uk.co.bbr.services.regions.dao.RegionDao;
 
-import javax.persistence.*;
-import java.util.ArrayList;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -53,8 +55,7 @@ public class ContestGroupDao extends AbstractDao implements NameTools {
     private int eventsCount;
 
     public void setName(String name){
-        String nameToSet = simplifyContestName(name);
-        this.name = nameToSet;
+        this.name = simplifyContestName(name);
     }
 
     public void setSlug(String value) {

@@ -24,7 +24,7 @@ public class VenueListSqlDto  extends AbstractSqlDto {
         if (columnList[5] instanceof BigInteger) {
             this.eventCount = ((BigInteger)columnList[5]).intValue();
         } else {
-            this.eventCount = ((Integer)columnList[5]).intValue();
+            this.eventCount = (Integer) columnList[5];
         }
 
     }

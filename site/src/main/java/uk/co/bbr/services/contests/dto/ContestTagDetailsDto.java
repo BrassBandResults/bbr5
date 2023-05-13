@@ -8,7 +8,6 @@ import uk.co.bbr.services.contests.dao.ContestTagDao;
 import uk.co.bbr.services.framework.types.EntityType;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 @Getter

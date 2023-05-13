@@ -31,8 +31,8 @@ public class ContestEventResultSqlDto extends AbstractSqlDto {
 
 
     public ContestEventResultSqlDto(Object[] columnList) {
-        Date eventDate = (Date)columnList[0];
-        this.eventDate = eventDate.toLocalDate();
+        Date tempEventDate = (Date)columnList[0];
+        this.eventDate = tempEventDate.toLocalDate();
         this.eventDateResolution = (String)columnList[1];
         this.contestSlug = (String)columnList[2];
         this.bandCompetedAs = (String)columnList[3];
@@ -52,6 +52,5 @@ public class ContestEventResultSqlDto extends AbstractSqlDto {
         this.conductor3Slug = (String)columnList[17];
         this.conductor3FirstNames = (String)columnList[18];
         this.conductor3Surname = (String)columnList[19];
-
     }
 }

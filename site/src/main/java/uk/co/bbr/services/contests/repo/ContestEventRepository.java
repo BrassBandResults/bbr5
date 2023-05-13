@@ -26,9 +26,6 @@ public interface ContestEventRepository extends JpaRepository<ContestEventDao, L
             "ORDER BY p.name")
     List<ContestEventTestPieceDao> fetchTestPieces(Long contestEventId);
 
-    @Query("SELECT e FROM ContestEventDao e WHERE e.contest.id = :contestId AND e.eventDate <= CURRENT_TIMESTAMP ORDER BY e.eventDate DESC")
-    List<ContestEventDao> fetchPastEventsByContest(Long contestId);
-
     @Query("SELECT e FROM ContestEventDao e WHERE e.contest.id = :contestId AND e.eventDate > CURRENT_TIMESTAMP ORDER BY e.eventDate DESC")
     List<ContestEventDao> fetchFutureEventsByContest(Long contestId);
 

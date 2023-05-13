@@ -42,9 +42,9 @@ public class VenueSql {
     }
 
     private static final String VENUE_LIST_ALL_SQL = """
-        SELECT v.slug as venue_slug, v.name as venue_name, r.slug as region_slug, r.name as region_name, r.country_code, (SELECT count(*) FROM contest_event e WHERE e.venue_id = v.id) as event_count 
-        FROM venue v 
-        LEFT OUTER JOIN region r ON r.id = v.region_id 
+        SELECT v.slug as venue_slug, v.name as venue_name, r.slug as region_slug, r.name as region_name, r.country_code, (SELECT count(*) FROM contest_event e WHERE e.venue_id = v.id) as event_count
+        FROM venue v
+        LEFT OUTER JOIN region r ON r.id = v.region_id
         ORDER BY v.name""";
 
     public static List<VenueListSqlDto> venueListAll(EntityManager entityManager) {

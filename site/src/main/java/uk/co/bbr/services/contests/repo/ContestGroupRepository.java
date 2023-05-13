@@ -1,6 +1,5 @@
 package uk.co.bbr.services.contests.repo;
 
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -8,7 +7,6 @@ import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.contests.dao.ContestEventDao;
 import uk.co.bbr.services.contests.dao.ContestGroupDao;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 

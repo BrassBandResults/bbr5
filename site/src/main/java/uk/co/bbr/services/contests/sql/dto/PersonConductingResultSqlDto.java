@@ -23,12 +23,12 @@ public class PersonConductingResultSqlDto extends AbstractSqlDto {
     private final Integer draw;
     private final BigInteger contestResultId;
     private final BigInteger contestEventId;
-    private String regionName;
-    private String regionCountryCode;
+    private final String regionName;
+    private final String regionCountryCode;
 
     public PersonConductingResultSqlDto(Object[] columnList) {
-        Date eventDate = (Date)columnList[0];
-        this.eventDate = eventDate.toLocalDate();
+        Date tempEventDate = (Date)columnList[0];
+        this.eventDate = tempEventDate.toLocalDate();
         this.eventDateResolution = (String)columnList[1];
         this.contestSlug = (String)columnList[2];
         this.contestName = (String)columnList[3];

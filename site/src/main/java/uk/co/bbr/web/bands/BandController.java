@@ -15,7 +15,6 @@ import uk.co.bbr.services.contests.ContestService;
 import uk.co.bbr.services.contests.ContestTagService;
 import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.contests.dao.ContestGroupDao;
-import uk.co.bbr.services.contests.dao.ContestResultDao;
 import uk.co.bbr.services.contests.dao.ContestTagDao;
 import uk.co.bbr.services.framework.NotFoundException;
 
@@ -42,7 +41,7 @@ public class BandController {
         List<BandPreviousNameDao> previousNames = this.bandService.findVisiblePreviousNames(band.get());
         BandDetailsDto bandResults = this.contestResultService.findResultsForBand(band.get());
 
-        if (bandResults.getBandResults().isEmpty() && bandResults.getBandWhitResults().size() > 0) {
+        if (bandResults.getBandResults().isEmpty() && !bandResults.getBandWhitResults().isEmpty()) {
             return "redirect:/bands/" + bandSlug + "/whits";
         }
 

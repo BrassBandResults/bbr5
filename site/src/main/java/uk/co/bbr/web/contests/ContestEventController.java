@@ -7,10 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import uk.co.bbr.services.contests.ContestEventService;
 import uk.co.bbr.services.contests.ContestResultService;
-import uk.co.bbr.services.contests.ContestService;
 import uk.co.bbr.services.contests.dao.ContestEventDao;
 import uk.co.bbr.services.contests.dao.ContestResultDao;
-import uk.co.bbr.services.contests.dto.ContestListDto;
 import uk.co.bbr.services.framework.NotFoundException;
 
 import java.time.LocalDate;

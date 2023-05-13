@@ -2,7 +2,6 @@ package uk.co.bbr.services.contests.dto;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import uk.co.bbr.services.regions.dao.RegionDao;
 
 @Getter
 @RequiredArgsConstructor

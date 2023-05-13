@@ -7,8 +7,6 @@ import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.contests.dao.ContestGroupDao;
 import uk.co.bbr.services.contests.dao.ContestTagDao;
 import uk.co.bbr.services.contests.dto.ContestTagDetailsDto;
-import uk.co.bbr.services.contests.dto.GroupListDto;
-import uk.co.bbr.services.contests.dto.GroupListGroupDto;
 import uk.co.bbr.services.contests.repo.ContestTagRepository;
 import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.framework.ValidationException;
@@ -17,7 +15,6 @@ import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -53,14 +50,13 @@ public class ContestTagServiceImpl implements ContestTagService, SlugTools {
     public List<ContestTagDao> listTagsStartingWith(String prefix) {
         List<ContestTagDao> groupsToReturn;
 
-        switch (prefix.toUpperCase()) {
-            case "ALL" -> groupsToReturn = this.contestTagRepository.findAll();
-            default -> {
-                if (prefix.trim().length() != 1) {
-                    throw new UnsupportedOperationException("Prefix must be a single character");
-                }
-                groupsToReturn = this.contestTagRepository.findByPrefixOrderByName(prefix.trim().toUpperCase());
+        if (prefix.equalsIgnoreCase("ALL")) {
+            groupsToReturn = this.contestTagRepository.findAll();
+        } else {
+            if (prefix.trim().length() != 1) {
+                throw new UnsupportedOperationException("Prefix must be a single character");
             }
+            groupsToReturn = this.contestTagRepository.findByPrefixOrderByName(prefix.trim().toUpperCase());
         }
 
         return groupsToReturn;
@@ -76,8 +72,7 @@ public class ContestTagServiceImpl implements ContestTagService, SlugTools {
         List<ContestDao> contests = this.contestTagRepository.fetchContestsForTag(slug);
         List<ContestGroupDao> contestGroups = this.contestTagRepository.fetchGroupsForTag(slug);
 
-        ContestTagDetailsDto tagDetails = new ContestTagDetailsDto(tag.get(), contests, contestGroups);
-        return tagDetails;
+        return new ContestTagDetailsDto(tag.get(), contests, contestGroups);
     }
 
     @Override

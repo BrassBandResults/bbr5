@@ -19,7 +19,7 @@ public class PeopleListController {
         return peopleListLetter(model, "A");
     }
 
-    @GetMapping("/people/{letter:[A-Z]{1}}")
+    @GetMapping("/people/{letter:[A-Z]}")
     public String peopleListLetter(Model model, @PathVariable("letter") String letter) {
         PeopleListDto people = this.personService.listPeopleStartingWith(letter);
 

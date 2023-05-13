@@ -34,7 +34,7 @@ public class SecurityController {
 
         model.addAttribute("Next", nextUrl);
 
-        return "security/signin";
+        return "security/sign-in";
     }
 
     @PostMapping(SecurityFilter.URL_SIGN_IN)
@@ -42,13 +42,12 @@ public class SecurityController {
         try {
             BbrUserDao user = this.securityService.authenticate(username, plaintextPassword);
 
-            Cookie securityCookie = buildLoginCookie(-1, user);
+            Cookie securityCookie = buildLoginCookie(user);
             response.addCookie(securityCookie);
 
             String nextUrl = (String)request.getSession().getAttribute(SessionKeys.LOGIN_NEXT_PAGE);
 
             if (nextUrl != null && nextUrl.trim().length() > 0 && nextUrl.startsWith("/")) {
-                System.out.println("Redirecting to " + nextUrl);
                 return "redirect:" + nextUrl;
             }
 
@@ -59,14 +58,14 @@ public class SecurityController {
         }
     }
 
-    private Cookie buildLoginCookie(int age, BbrUserDao user) {
+    private Cookie buildLoginCookie(BbrUserDao user) {
         String jwt = "";
         if (user != null) {
             jwt = this.jwtService.createJwt(user);
         }
 
         Cookie securityCookie = new Cookie(SecurityFilter.COOKIE_NAME, jwt);
-        securityCookie.setMaxAge(age);
+        securityCookie.setMaxAge(-1);
         securityCookie.setPath("/");
         securityCookie.setHttpOnly(true);
 

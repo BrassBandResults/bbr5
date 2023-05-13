@@ -2,16 +2,10 @@ package uk.co.bbr.services.contests;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import uk.co.bbr.services.contests.dao.ContestTagDao;
 import uk.co.bbr.services.contests.dao.ContestTypeDao;
-import uk.co.bbr.services.contests.repo.ContestTagRepository;
 import uk.co.bbr.services.contests.repo.ContestTypeRepository;
-import uk.co.bbr.services.framework.ValidationException;
 import uk.co.bbr.services.framework.mixins.SlugTools;
-import uk.co.bbr.services.security.SecurityService;
-import uk.co.bbr.web.security.annotations.IsBbrMember;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service

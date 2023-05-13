@@ -27,8 +27,8 @@ import java.util.Optional;
 public class SecurityFilter extends GenericFilterBean {
     public static final String COOKIE_NAME = "BrassBandResultsUser";
 
-    public static final String URL_SIGN_IN = "/acc/signin";
-    public static final String URL_SIGN_OUT = "/acc/signout";
+    public static final String URL_SIGN_IN = "/acc/sign-in";
+    public static final String URL_SIGN_OUT = "/acc/sign-out";
 
     public static final String CSRF_HEADER_NAME = "X-XSRF-TOKEN";
 

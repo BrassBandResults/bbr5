@@ -3,12 +3,10 @@ package uk.co.bbr.services.pieces.dao;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.Formula;
 import uk.co.bbr.services.framework.AbstractDao;
 import uk.co.bbr.services.framework.mixins.NameTools;
 import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.pieces.types.PieceCategory;
-import uk.co.bbr.services.sections.dao.SectionDao;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -87,8 +85,7 @@ public class PieceDao extends AbstractDao implements NameTools {
             return;
         }
 
-        String nameToSet = simplifyPieceName(name);
-        this.name = nameToSet;
+        this.name = simplifyPieceName(name);
     }
 
     public void setYear(String year) {

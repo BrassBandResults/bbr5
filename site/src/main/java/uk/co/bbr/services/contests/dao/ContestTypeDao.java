@@ -2,7 +2,6 @@ package uk.co.bbr.services.contests.dao;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import uk.co.bbr.services.framework.AbstractDao;
 import uk.co.bbr.services.framework.mixins.NameTools;
 
@@ -67,7 +66,6 @@ public class ContestTypeDao extends AbstractDao implements NameTools {
     private int statisticsLimit;
 
     public void setName(String name){
-        String nameToSet = simplifyContestName(name);
-        this.name = nameToSet;
+        this.name = simplifyContestName(name);
     }
 }

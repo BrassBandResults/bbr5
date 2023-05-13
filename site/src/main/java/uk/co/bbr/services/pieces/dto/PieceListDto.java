@@ -2,7 +2,6 @@ package uk.co.bbr.services.pieces.dto;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.pieces.dao.PieceDao;
 
 import java.util.List;

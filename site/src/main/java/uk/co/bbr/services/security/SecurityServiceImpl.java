@@ -1,7 +1,6 @@
 package uk.co.bbr.services.security;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -18,19 +17,12 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class SecurityServiceImpl implements SecurityService {
 
-    @Autowired
-    private BbrUserRepository bbrUserRepository;
+    private final BbrUserRepository bbrUserRepository;
 
     @Override
     public String getCurrentUsername() {
         SecurityContext securityContext = SecurityContextHolder.getContext();
         return securityContext.getAuthentication().getName();
-    }
-
-    @Override
-    public Long getCurrentUserId() {
-        SecurityContext securityContext = SecurityContextHolder.getContext();
-        return (Long)securityContext.getAuthentication().getPrincipal();
     }
 
     @Override
@@ -51,25 +43,20 @@ public class SecurityServiceImpl implements SecurityService {
         BbrUserDao fetchedUser = fetchedUserOptional.get();
         BbrUserDao loggedInUser;
 
-        switch (fetchedUser.getPasswordVersion()) {
-            case "D":
-                // django password
-                DjangoHasher djangoHash = new DjangoHasher();
-                boolean success = djangoHash.checkPassword(plaintextPassword, fetchedUser.getPassword());
-                if (!success) {
-                    throw new AuthenticationFailedException();
-                }
-                loggedInUser = fetchedUser;
-                break;
-            case "1":
-            default:
-                // java password
-                String hashedPassword = PasswordTools.hashPassword(fetchedUser.getPasswordVersion(), fetchedUser.getSalt(), usercode, plaintextPassword);
-                Optional<BbrUserDao> userOptional = this.bbrUserRepository.loginCheck(usercode, hashedPassword);
-                if (userOptional.isEmpty()) {
-                    throw new AuthenticationFailedException();
-                }
-                loggedInUser = userOptional.get();
+        if (fetchedUser.getPasswordVersion().equals("D")) { // django password
+            DjangoHasher djangoHash = new DjangoHasher();
+            boolean success = djangoHash.checkPassword(plaintextPassword, fetchedUser.getPassword());
+            if (!success) {
+                throw new AuthenticationFailedException();
+            }
+            loggedInUser = fetchedUser;
+        } else { // java password
+            String hashedPassword = PasswordTools.hashPassword(fetchedUser.getPasswordVersion(), fetchedUser.getSalt(), usercode, plaintextPassword);
+            Optional<BbrUserDao> userOptional = this.bbrUserRepository.loginCheck(usercode, hashedPassword);
+            if (userOptional.isEmpty()) {
+                throw new AuthenticationFailedException();
+            }
+            loggedInUser = userOptional.get();
         }
 
         return loggedInUser;

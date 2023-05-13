@@ -1,5 +1,6 @@
 package uk.co.bbr.services.years.sql;
 
+import lombok.experimental.UtilityClass;
 import uk.co.bbr.services.framework.sql.SqlExec;
 import uk.co.bbr.services.years.sql.dto.ContestsForYearEventSqlDto;
 import uk.co.bbr.services.years.sql.dto.YearListEntrySqlDto;
@@ -7,6 +8,7 @@ import uk.co.bbr.services.years.sql.dto.YearListEntrySqlDto;
 import javax.persistence.EntityManager;
 import java.util.List;
 
+@UtilityClass
 public class YearSql {
 
     private static final String YEAR_LIST_SQL = """

@@ -1,8 +1,5 @@
 package uk.co.bbr.services.security;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.security.dao.BbrUserDao;
 import uk.co.bbr.services.security.ex.AuthenticationFailedException;
 
@@ -10,8 +7,6 @@ import java.util.Optional;
 
 public interface SecurityService {
     String getCurrentUsername();
-
-    Long getCurrentUserId();
 
     BbrUserDao getCurrentUser();
 

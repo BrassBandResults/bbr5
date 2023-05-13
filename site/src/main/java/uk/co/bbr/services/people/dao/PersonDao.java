@@ -3,7 +3,6 @@ package uk.co.bbr.services.people.dao;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.Formula;
 import uk.co.bbr.services.framework.AbstractDao;
 import uk.co.bbr.services.framework.mixins.NameTools;
 
@@ -91,33 +90,31 @@ public class PersonDao extends AbstractDao implements NameTools {
     }
 
     public void setFirstNames(String firstNames) {
-        String nameToSet = simplifyFirstName(firstNames);
-        this.firstNames = nameToSet;
+        this.firstNames = simplifyFirstName(firstNames);
 
         this.setCombinedName();
     }
 
     private void setCombinedName() {
-        StringBuilder combinedName = new StringBuilder();
+        StringBuilder tempCombinedName = new StringBuilder();
         if (this.firstNames != null) {
-            combinedName.append(this.firstNames.trim());
-            combinedName.append(" ");
+            tempCombinedName.append(this.firstNames.trim());
+            tempCombinedName.append(" ");
         }
         if (this.surname != null) {
-            combinedName.append(this.surname.trim());
-            combinedName.append(" ");
+            tempCombinedName.append(this.surname.trim());
+            tempCombinedName.append(" ");
         }
         if (this.suffix != null) {
-            combinedName.append(this.suffix.trim());
-            combinedName.append(" ");
+            tempCombinedName.append(this.suffix.trim());
+            tempCombinedName.append(" ");
         }
 
-        this.combinedName = combinedName.toString().trim();
+        this.combinedName = tempCombinedName.toString().trim();
     }
 
     public void setSurname(String surname) {
-        String nameToSet = simplifySurname(surname);
-        this.surname = nameToSet;
+        this.surname = simplifySurname(surname);
 
         this.setCombinedName();
     }

@@ -1,5 +1,7 @@
 package uk.co.bbr.services.people.sql;
 
+import lombok.experimental.UtilityClass;
+
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.math.BigInteger;
@@ -7,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@UtilityClass
 public class PeopleSql {
 
     private static final String PERSON_CONDUCTOR_COUNT_SQL = "SELECT conductor_id, count(*) FROM contest_result WHERE conductor_id IS NOT NULL AND result_position_type <> 'D' AND result_position_type <> 'W' GROUP BY conductor_id";

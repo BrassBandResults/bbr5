@@ -3,7 +3,6 @@ package uk.co.bbr.services.contests.repo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import uk.co.bbr.services.contests.dao.ContestResultDao;
-import uk.co.bbr.services.contests.dao.ContestResultPieceDao;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,19 +18,6 @@ public interface ContestResultRepository extends JpaRepository<ContestResultDao,
 
     @Query("SELECT r FROM ContestResultDao r WHERE r.contestEvent.id = :eventId AND r.band.id = :bandId")
     Optional<ContestResultDao> fetchForEventAndBand(Long eventId, Long bandId);
-
-    @Query("SELECT r FROM ContestResultDao r " +
-            "WHERE r.band.id = :bandId " +
-            "AND r.contestEvent.contest.name NOT LIKE '%Whit Friday%' " +
-            "ORDER BY r.contestEvent.eventDate DESC")
-    List<ContestResultDao> findNonWhitForBand(Long bandId);
-
-    @Query("SELECT r FROM ContestResultDao r " +
-            "WHERE r.band.id = :bandId " +
-            "AND r.contestEvent.contest.name LIKE '%Whit Friday%' " +
-            "ORDER BY r.contestEvent.eventDate DESC")
-    List<ContestResultDao> findWhitForBand(Long bandId);
-
 
     @Query("SELECT r FROM ContestResultDao r " +
             "WHERE r.band.id = :bandId")

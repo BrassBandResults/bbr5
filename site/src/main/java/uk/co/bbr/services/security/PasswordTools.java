@@ -11,12 +11,14 @@ import java.security.spec.KeySpec;
 
 @UtilityClass
 public class PasswordTools {
+    private static final String LATEST_PASSWORD_VERSION = "1";
+
     public static String createSalt() {
         return RandomStringUtils.randomAlphanumeric(8);
     }
 
     public static String latestVersion() {
-        return "1";
+        return LATEST_PASSWORD_VERSION;
     }
 
     public static String hashPassword(String passwordVersion, String salt, String usercode, String plaintextPassword) {

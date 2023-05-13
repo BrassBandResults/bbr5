@@ -14,7 +14,7 @@ import uk.co.bbr.services.security.dao.BbrUserDao;
 public class JwtServiceImpl implements JwtService {
 
     private static final String JWT_ISSUER = "brassbandresults.co.uk";
-    private static String DEFAULT_PRIVATE_KEY = "ThisIsAPrivateKeyHorseBoltBatteryStaple";
+    private static final String DEFAULT_PRIVATE_KEY = "ThisIsAPrivateKeyHorseBoltBatteryStaple";
 
 
     private String getPrivateKey() {
@@ -28,13 +28,11 @@ public class JwtServiceImpl implements JwtService {
     @Override
     public String createJwt(BbrUserDao irisUser) {
         Algorithm algorithmHS = Algorithm.HMAC256(this.getPrivateKey());
-        String token = JWT.create().withIssuer(JWT_ISSUER)
+        return JWT.create().withIssuer(JWT_ISSUER)
                 .withClaim(JwtAuthenticationToken.CLAIM_USER_ID, irisUser.getId())
                 .withClaim(JwtAuthenticationToken.CLAIM_USER_NAME, irisUser.getUsercode())
                 .withClaim(JwtAuthenticationToken.CLAIM_ROLE, irisUser.getRole().asString())
                 .sign(algorithmHS);
-        System.out.println("+++ JWT Created " + token);
-        return token;
     }
 
     @Override

@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.contests.ContestResultService;
 import uk.co.bbr.services.contests.repo.ContestAdjudicatorRepository;
-import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.framework.ValidationException;
 import uk.co.bbr.services.framework.mixins.SlugTools;
 import uk.co.bbr.services.people.dao.PersonAliasDao;
@@ -21,7 +20,6 @@ import uk.co.bbr.web.security.annotations.IsBbrAdmin;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
 import javax.persistence.EntityManager;
-import java.math.BigInteger;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -146,14 +144,13 @@ public class PersonServiceImpl implements PersonService, SlugTools {
 
         List<PersonDao> peopleToReturn;
 
-        switch (prefix.toUpperCase()) {
-            case "ALL" -> peopleToReturn = this.personRepository.findAllOrderBySurname();
-            default -> {
-                if (prefix.trim().length() != 1) {
-                    throw new UnsupportedOperationException("Prefix must be a single character");
-                }
-                peopleToReturn = this.personRepository.findByPrefixOrderBySurname(prefix.trim().toUpperCase());
+        if (prefix.equalsIgnoreCase("ALL")) {
+            peopleToReturn = this.personRepository.findAllOrderBySurname();
+        } else {
+            if (prefix.trim().length() != 1) {
+                throw new UnsupportedOperationException("Prefix must be a single character");
             }
+            peopleToReturn = this.personRepository.findByPrefixOrderBySurname(prefix.trim().toUpperCase());
         }
 
         // populate counts
@@ -210,11 +207,8 @@ public class PersonServiceImpl implements PersonService, SlugTools {
         }
 
         Optional<PersonAliasDao> matchingAlias = this.personAliasRepository.fetchByUpperName(personName.toUpperCase());
-        if (matchingAlias.isPresent()) {
-            return matchingAlias.get().getPerson();
-        }
+        return matchingAlias.map(PersonAliasDao::getPerson).orElse(null);
 
-        return null;
     }
 
 

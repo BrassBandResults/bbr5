@@ -18,40 +18,36 @@ public class TestSecurityController {
 
     @GetMapping("/test/public")
     public String testPublic(Model model) {
-        model.addAttribute("CurrentUsername", this.securityService.getCurrentUsername());
-        return "test/userOnly";
+        return this.returnTest(model);
     }
 
     @GetMapping("/test/member")
     @IsBbrMember
     public String testMember(Model model) {
-        model.addAttribute("CurrentUsername", this.securityService.getCurrentUsername());
-        return "test/userOnly";
-
+        return this.returnTest(model);
     }
 
     @GetMapping("/test/pro")
     @IsBbrPro
     public String testPro(Model model) {
-        model.addAttribute("CurrentUsername", this.securityService.getCurrentUsername());
-        return "test/userOnly";
-
+        return this.returnTest(model);
     }
 
     @GetMapping("/test/superuser")
     @IsBbrSuperuser
     public String testSuperuser(Model model) {
-        model.addAttribute("CurrentUsername", this.securityService.getCurrentUsername());
-        return "test/userOnly";
-
+        return this.returnTest(model);
     }
 
     @GetMapping("/test/admin")
     @IsBbrAdmin
     public String testAdmin(Model model) {
+        return this.returnTest(model);
+    }
+
+    private String returnTest(Model model) {
         model.addAttribute("CurrentUsername", this.securityService.getCurrentUsername());
         return "test/userOnly";
-
     }
 
 }

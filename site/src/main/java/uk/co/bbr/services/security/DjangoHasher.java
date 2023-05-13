@@ -1,6 +1,6 @@
 package uk.co.bbr.services.security;
 
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
@@ -13,27 +13,23 @@ import javax.crypto.spec.PBEKeySpec;
  * https://gist.github.com/lukaszb/1af1bd4233326e37a8a0
  */
 public class DjangoHasher {
-    public final Integer DEFAULT_ITERATIONS = 33000;
-    public final String algorithm = "pbkdf2_sha256";
-
-    public DjangoHasher() {}
+    public static final Integer DEFAULT_ITERATIONS = 33000;
+    public static final String ALGORITHM = "pbkdf2_sha256";
 
     public String getEncodedHash(String password, String salt, int iterations) {
         // Returns only the last part of whole encoded password
-        SecretKeyFactory keyFactory = null;
+        SecretKeyFactory keyFactory;
         try {
             keyFactory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
         } catch (NoSuchAlgorithmException e) {
-            System.err.println("Could NOT retrieve PBKDF2WithHmacSHA256 algorithm");
-            System.exit(1);
+            throw new RuntimeException("Could NOT retrieve PBKDF2WithHmacSHA256 algorithm", e);
         }
-        KeySpec keySpec = new PBEKeySpec(password.toCharArray(), salt.getBytes(Charset.forName("UTF-8")), iterations, 256);
-        SecretKey secret = null;
+        KeySpec keySpec = new PBEKeySpec(password.toCharArray(), salt.getBytes(StandardCharsets.UTF_8), iterations, 256);
+        SecretKey secret;
         try {
             secret = keyFactory.generateSecret(keySpec);
         } catch (InvalidKeySpecException e) {
-            System.out.println("Could NOT generate secret key");
-            e.printStackTrace();
+            throw new RuntimeException("Could NOT generate secret key", e);
         }
 
         byte[] rawHash = secret.getEncoded();
@@ -45,11 +41,11 @@ public class DjangoHasher {
     public String encode(String password, String salt, int iterations) {
         // returns hashed password, along with algorithm, number of iterations and salt
         String hash = getEncodedHash(password, salt, iterations);
-        return String.format("%s$%d$%s$%s", algorithm, iterations, salt, hash);
+        return String.format("%s$%d$%s$%s", ALGORITHM, iterations, salt, hash);
     }
 
     public String encode(String password, String salt) {
-        return this.encode(password, salt, this.DEFAULT_ITERATIONS);
+        return this.encode(password, salt, DEFAULT_ITERATIONS);
     }
 
     public boolean checkPassword(String password, String hashedPassword) {
@@ -60,7 +56,7 @@ public class DjangoHasher {
             // wrong hash format
             return false;
         }
-        Integer iterations = Integer.parseInt(parts[1]);
+        int iterations = Integer.parseInt(parts[1]);
         String salt = parts[2];
         String hash = encode(password, salt, iterations);
 

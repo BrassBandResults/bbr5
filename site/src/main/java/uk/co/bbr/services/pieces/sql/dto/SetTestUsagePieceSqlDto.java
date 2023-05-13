@@ -25,8 +25,8 @@ public class SetTestUsagePieceSqlDto extends AbstractSqlDto {
     private final String bandRegionName;
 
     public SetTestUsagePieceSqlDto(Object[] columnList) {
-        Date eventDate = (Date)columnList[0];
-        this.eventDate = eventDate.toLocalDate();
+        Date tempEventDate = (Date)columnList[0];
+        this.eventDate = tempEventDate.toLocalDate();
         this.eventDateResolution = (String)columnList[1];
         this.contestSlug = (String)columnList[2];
         this.contestName = (String)columnList[3];

@@ -22,7 +22,7 @@ public class ParseServiceImpl implements ParseService {
     private final BandService bandService;
     private final PersonService personService;
 
-    private static final String REGEX_RESULT_BAND_CONDUCTOR_DRAW_POINTS = "\\s*([\\d\\-WwDd]+)[.,]?\\s+([\\w()&'\\-. /]+)\\s*,\\s*\\(?\\s*([\\w.'\\- ]+)\\)?\\s*[,]?\\s*([\\d\\-]*)[\\s,]*([\\d.]*)\\s*\\w*";
+    private static final String REGEX_RESULT_BAND_CONDUCTOR_DRAW_POINTS = "\\s*([\\d\\-WwDd]+)[.,]?\\s+([\\w()&'\\-. /]+)\\s*,\\s*\\(?\\s*([\\w.'\\- ]+)\\)?\\s*,?\\s*([\\d\\-]*)[\\s,]*([\\d.]*)\\s*\\w*";
     private static final String REGEX_BAND_CONDUCTOR = "\\s*([\\w()&'\\-. /]+)\\s*,\\s*\\(?\\s*([\\w.'\\- ]+)\\)?\\s*";
 
     @Override

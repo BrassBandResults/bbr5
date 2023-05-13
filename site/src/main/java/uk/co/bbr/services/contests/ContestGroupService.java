@@ -24,7 +24,7 @@ public interface ContestGroupService {
     ContestGroupAliasDao createAlias(ContestGroupDao group, ContestGroupAliasDao alias);
     ContestGroupAliasDao createAlias(ContestGroupDao group, String alias);
     Optional<ContestGroupDao> fetchBySlug(String groupSlug);
-    public GroupListDto listGroupsStartingWith(String prefix);
+    GroupListDto listGroupsStartingWith(String prefix);
 
     ContestGroupDao addGroupTag(ContestGroupDao group, ContestTagDao tag);
     ContestGroupDetailsDto fetchDetail(ContestGroupDao groupGroup);

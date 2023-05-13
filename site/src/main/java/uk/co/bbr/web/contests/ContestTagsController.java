@@ -22,7 +22,7 @@ public class ContestTagsController {
         return contestTagsListLetter(model, "A");
     }
 
-    @GetMapping("/tags/{letter:[A-Z0-9]{1}}")
+    @GetMapping("/tags/{letter:[A-Z0-9]}")
     public String contestTagsListLetter(Model model, @PathVariable("letter") String letter) {
         List<ContestTagDao> tags = this.contestTagService.listTagsStartingWith(letter);
 

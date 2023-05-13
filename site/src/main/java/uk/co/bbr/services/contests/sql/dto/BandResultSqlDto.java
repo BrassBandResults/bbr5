@@ -6,38 +6,37 @@ import uk.co.bbr.services.framework.sql.AbstractSqlDto;
 import java.math.BigInteger;
 import java.sql.Date;
 import java.time.LocalDate;
-import java.util.List;
 
 @Getter
 public class BandResultSqlDto extends AbstractSqlDto {
 
-    private BigInteger contestResultId;
-    private LocalDate eventDate;
-    private String eventDateResolution;
-    private String contestSlug;
-    private String contestName;
-    private Integer resultPosition;
-    private String resultPositionType;
-    private String resultAward;
-    private String bandName;
-    private Integer draw;
-    private BigInteger contestEventId;
+    private final BigInteger contestResultId;
+    private final LocalDate eventDate;
+    private final String eventDateResolution;
+    private final String contestSlug;
+    private final String contestName;
+    private final Integer resultPosition;
+    private final String resultPositionType;
+    private final String resultAward;
+    private final String bandName;
+    private final Integer draw;
+    private final BigInteger contestEventId;
     private final String groupSlug;
     private final String groupName;
-    private String conductor1Slug;
-    private String conductor1FirstNames;
-    private String conductor1Surname;
-    private String conductor2Slug;
-    private String conductor2FirstNames;
-    private String conductor2Surname;
-    private String conductor3Slug;
-    private String conductor3FirstNames;
-    private String conductor3Surname;
+    private final String conductor1Slug;
+    private final String conductor1FirstNames;
+    private final String conductor1Surname;
+    private final String conductor2Slug;
+    private final String conductor2FirstNames;
+    private final String conductor2Surname;
+    private final String conductor3Slug;
+    private final String conductor3FirstNames;
+    private final String conductor3Surname;
 
     public BandResultSqlDto(Object[] columnList) {
         this.contestResultId = (BigInteger)columnList[0];
-        Date eventDate = (Date)columnList[1];
-        this.eventDate = eventDate.toLocalDate();
+        Date tempEventDate = (Date)columnList[1];
+        this.eventDate = tempEventDate.toLocalDate();
         this.eventDateResolution = (String)columnList[2];
         this.contestSlug = (String)columnList[3];
         this.contestName = (String)columnList[4];
