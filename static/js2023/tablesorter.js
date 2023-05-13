@@ -82,6 +82,9 @@ function sortRows(table, columnIndex, reverse) {
         } else if (classList.contains("result")) {
             cls = "__result";
         }
+        else if (classList.contains("percent")) {
+            cls = "__percent";
+        }
     }
 
     for (let index = 0; index < rows.length; index++) {
@@ -109,6 +112,8 @@ function sortRows(table, columnIndex, reverse) {
         values = values.reverse();
     } else if (cls === "__date") {
         values.sort(sortDateVal);
+    } else if (cls === "__percent") {
+        values.sort(sortPercentVal);
     } else {
         values.sort(sortTextVal);
     }
@@ -149,6 +154,16 @@ function cleanForNumberCompare(val) {
 function sortNumberVal(a, b) {
     let a1 = cleanForNumberCompare(a.value);
     let b1 = cleanForNumberCompare(b.value);
+    
+    return sortNumber(a1, b1);
+}
+
+/**
+ * Compare two 'value objects' numerically, after taking off a trailing % symbol
+ */
+function sortPercentVal(a, b) {
+    let a1 = cleanForNumberCompare(a.value.slice(0, -1));
+    let b1 = cleanForNumberCompare(b.value.slice(0, -1));
     
     return sortNumber(a1, b1);
 }
