@@ -1,6 +1,7 @@
 package uk.co.bbr.web.security.filter;
 
 import com.auth0.jwt.exceptions.InvalidClaimException;
+import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.SignatureVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import lombok.RequiredArgsConstructor;
@@ -68,7 +69,7 @@ public class SecurityFilter extends GenericFilterBean {
 
                     // proceed to next filter in chain
                     chain.doFilter(request, response);
-                } catch (final SignatureVerificationException | InvalidClaimException ex) {
+                } catch (final SignatureVerificationException | InvalidClaimException | JWTDecodeException ex ) {
                     // Token failed validation
                     ((HttpServletResponse) response).setStatus(HttpStatus.FORBIDDEN.value());
                     response.getWriter().write("Invalid user session");
