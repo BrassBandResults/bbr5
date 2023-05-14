@@ -1,16 +1,19 @@
 package uk.co.bbr.services.people.sql;
 
 import lombok.experimental.UtilityClass;
+import uk.co.bbr.services.framework.sql.SqlExec;
+import uk.co.bbr.services.people.sql.dto.PeopleWinnersSqlDto;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.math.BigInteger;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @UtilityClass
-public class PeopleSql {
+public class PeopleCountSql {
 
     private static final String PERSON_CONDUCTOR_COUNT_SQL = "SELECT conductor_id, count(*) FROM contest_result WHERE conductor_id IS NOT NULL AND result_position_type <> 'D' AND result_position_type <> 'W' GROUP BY conductor_id";
     private static final String PERSON_CONDUCTOR_2_COUNT_SQL = "SELECT conductor_two_id, count(*) FROM contest_result WHERE conductor_two_id IS NOT NULL AND result_position_type <> 'D' AND result_position_type <> 'W' GROUP BY conductor_two_id";
@@ -20,23 +23,23 @@ public class PeopleSql {
     private static final String PERSON_ARRANGER_COUNT_SQL = "SELECT arranger_id, count(*) FROM piece WHERE arranger_id IS NOT NULL GROUP BY arranger_id";
 
     public static Map<Long, Integer> selectConductorCounts(EntityManager entityManager) {
-        return PeopleSql.selectCounts(entityManager, PERSON_CONDUCTOR_COUNT_SQL);
+        return PeopleCountSql.selectCounts(entityManager, PERSON_CONDUCTOR_COUNT_SQL);
     }
     public static Map<Long, Integer> selectConductorTwoCounts(EntityManager entityManager) {
-        return PeopleSql.selectCounts(entityManager, PERSON_CONDUCTOR_2_COUNT_SQL);
+        return PeopleCountSql.selectCounts(entityManager, PERSON_CONDUCTOR_2_COUNT_SQL);
     }
     public static Map<Long, Integer> selectConductorThreeCounts(EntityManager entityManager) {
-        return PeopleSql.selectCounts(entityManager, PERSON_CONDUCTOR_3_COUNT_SQL);
+        return PeopleCountSql.selectCounts(entityManager, PERSON_CONDUCTOR_3_COUNT_SQL);
     }
 
     public static Map<Long, Integer> selectAdjudicatorCounts(EntityManager entityManager) {
-        return PeopleSql.selectCounts(entityManager, PERSON_ADJUDICATOR_COUNT_SQL);
+        return PeopleCountSql.selectCounts(entityManager, PERSON_ADJUDICATOR_COUNT_SQL);
     }
     public static Map<Long, Integer> selectComposerCounts(EntityManager entityManager) {
-        return PeopleSql.selectCounts(entityManager, PERSON_COMPOSER_COUNT_SQL);
+        return PeopleCountSql.selectCounts(entityManager, PERSON_COMPOSER_COUNT_SQL);
     }
     public static Map<Long, Integer> selectArrangerCounts(EntityManager entityManager) {
-        return PeopleSql.selectCounts(entityManager, PERSON_ARRANGER_COUNT_SQL);
+        return PeopleCountSql.selectCounts(entityManager, PERSON_ARRANGER_COUNT_SQL);
     }
 
     private static Map<Long, Integer> selectCounts(EntityManager entityManager, String sql) {
@@ -54,6 +57,5 @@ public class PeopleSql {
             throw new RuntimeException("SQL Failure, " + e.getMessage());
         }
     }
-
 }
 

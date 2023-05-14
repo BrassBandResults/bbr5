@@ -13,7 +13,9 @@ import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.people.dto.PeopleListDto;
 import uk.co.bbr.services.people.repo.PersonAliasRepository;
 import uk.co.bbr.services.people.repo.PersonRepository;
-import uk.co.bbr.services.people.sql.PeopleSql;
+import uk.co.bbr.services.people.sql.PeopleCountSql;
+import uk.co.bbr.services.people.sql.PeopleWinnersSql;
+import uk.co.bbr.services.people.sql.dto.PeopleWinnersSqlDto;
 import uk.co.bbr.services.pieces.repo.PieceRepository;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.web.security.annotations.IsBbrAdmin;
@@ -135,12 +137,12 @@ public class PersonServiceImpl implements PersonService, SlugTools {
 
     @Override
     public PeopleListDto listPeopleStartingWith(String prefix) {
-        Map<Long,Integer> conductingCounts = PeopleSql.selectConductorCounts(this.entityManager);
-        Map<Long,Integer> conductor2Counts = PeopleSql.selectConductorTwoCounts(this.entityManager);
-        Map<Long,Integer> conductor3Counts = PeopleSql.selectConductorThreeCounts(this.entityManager);
-        Map<Long,Integer> adjudicatorCounts = PeopleSql.selectAdjudicatorCounts(this.entityManager);
-        Map<Long,Integer> composerCounts = PeopleSql.selectComposerCounts(this.entityManager);
-        Map<Long,Integer> arrangerCounts = PeopleSql.selectArrangerCounts(this.entityManager);
+        Map<Long,Integer> conductingCounts = PeopleCountSql.selectConductorCounts(this.entityManager);
+        Map<Long,Integer> conductor2Counts = PeopleCountSql.selectConductorTwoCounts(this.entityManager);
+        Map<Long,Integer> conductor3Counts = PeopleCountSql.selectConductorThreeCounts(this.entityManager);
+        Map<Long,Integer> adjudicatorCounts = PeopleCountSql.selectAdjudicatorCounts(this.entityManager);
+        Map<Long,Integer> composerCounts = PeopleCountSql.selectComposerCounts(this.entityManager);
+        Map<Long,Integer> arrangerCounts = PeopleCountSql.selectArrangerCounts(this.entityManager);
 
         List<PersonDao> peopleToReturn;
 
@@ -209,6 +211,21 @@ public class PersonServiceImpl implements PersonService, SlugTools {
         Optional<PersonAliasDao> matchingAlias = this.personAliasRepository.fetchByUpperName(personName.toUpperCase());
         return matchingAlias.map(PersonAliasDao::getPerson).orElse(null);
 
+    }
+
+    @Override
+    public List<PeopleWinnersSqlDto> fetchContestWinningPeople() {
+        return PeopleWinnersSql.selectWinningPeople(this.entityManager);
+    }
+
+    @Override
+    public List<PeopleWinnersSqlDto> fetchContestWinningPeopleBefore(int year) {
+        return PeopleWinnersSql.selectWinningPeopleBefore(this.entityManager, year);
+    }
+
+    @Override
+    public List<PeopleWinnersSqlDto> fetchContestWinningPeopleAfter(int year) {
+        return PeopleWinnersSql.selectWinningPeopleAfter(this.entityManager, year);
     }
 
 

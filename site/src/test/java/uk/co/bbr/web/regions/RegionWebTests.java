@@ -108,7 +108,7 @@ class RegionWebTests implements LoginMixin {
 
         assertTrue(response.contains("<h2>Yorkshire</h2>"));
 
-        assertFalse(response.contains("Rothwell Temperance")); // no results
+        assertFalse(response.contains("Rothwell Temperance")); // no results TODO - add some and test for it
         assertFalse(response.contains("Accrington Borough")); // wrong region, still no results
     }
 

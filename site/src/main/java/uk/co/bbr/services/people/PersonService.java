@@ -4,6 +4,7 @@ import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.people.dao.PersonAliasDao;
 import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.people.dto.PeopleListDto;
+import uk.co.bbr.services.people.sql.dto.PeopleWinnersSqlDto;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -36,4 +37,10 @@ public interface PersonService {
     int fetchArrangerCount(PersonDao person);
 
     PersonDao findMatchingPersonByName(String personName, BandDao band, LocalDate dateContext);
+
+    List<PeopleWinnersSqlDto> fetchContestWinningPeople();
+
+    List<PeopleWinnersSqlDto> fetchContestWinningPeopleBefore(int year);
+
+    List<PeopleWinnersSqlDto> fetchContestWinningPeopleAfter(int year);
 }
