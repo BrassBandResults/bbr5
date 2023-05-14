@@ -92,6 +92,7 @@ class PieceWebTests implements LoginMixin {
     void testSinglePiecePageWorksWithTestPieceSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/pieces/hootenanny", String.class);
         assertNotNull(response);
+        assertTrue(response.contains("<title>Hootenanny - Piece - Brass Band Results</title>"));
         assertTrue(response.contains("<h2>Hootenanny</h2>"));
 
         assertTrue(response.contains(">Yorkshire Area<"));
@@ -101,6 +102,8 @@ class PieceWebTests implements LoginMixin {
     void testSinglePiecePageWorksWithResultPieceSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/pieces/contest-music", String.class);
         assertNotNull(response);
+
+        assertTrue(response.contains("<title>Contest Music - Piece - Brass Band Results</title>"));
         assertTrue(response.contains("<h2>Contest Music</h2>"));
 
         assertTrue(response.contains(">Midlands Area<"));

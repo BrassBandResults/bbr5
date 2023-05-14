@@ -84,6 +84,7 @@ class VenueWebTests implements LoginMixin {
     void testSinglePageWithAliasesWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/venues/symfony-hall", String.class);
         assertNotNull(response);
+        assertTrue(response.contains("<title>Symfony Hall - Venue - Brass Band Results</title>"));
         assertTrue(response.contains("<h2>Symfony Hall</h2>"));
 
         assertTrue(response.contains("Also/previously known as"));
@@ -106,6 +107,7 @@ class VenueWebTests implements LoginMixin {
     void testSingleYearsPageWithAliasesWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/venues/symfony-hall/years", String.class);
         assertNotNull(response);
+        assertTrue(response.contains("<title>Symfony Hall - Venue - Brass Band Results</title>"));
         assertTrue(response.contains("<h2>Symfony Hall</h2>"));
 
         assertTrue(response.contains("Also/previously known as"));
@@ -128,6 +130,7 @@ class VenueWebTests implements LoginMixin {
     void testSingleYearPageWithEventsWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/venues/symfony-hall/years/2010", String.class);
         assertNotNull(response);
+        assertTrue(response.contains("<title>Symfony Hall in 2010 - Venue - Brass Band Results</title>"));
         assertTrue(response.contains("<h2>Symfony Hall</h2>"));
         assertTrue(response.contains("2010<"));
 
@@ -152,6 +155,7 @@ class VenueWebTests implements LoginMixin {
     void testSingleYearPageWithoutEventsWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/venues/symfony-hall/years/2011", String.class);
         assertNotNull(response);
+        assertTrue(response.contains("<title>Symfony Hall in 2011 - Venue - Brass Band Results</title>"));
         assertTrue(response.contains("<h2>Symfony Hall</h2>"));
         assertTrue(response.contains("2011<"));
 
@@ -169,6 +173,7 @@ class VenueWebTests implements LoginMixin {
     void testSinglePageWithoutAliasesWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/venues/royal-albert-hall", String.class);
         assertNotNull(response);
+        assertTrue(response.contains("<title>Royal Albert Hall - Venue - Brass Band Results</title>"));
         assertTrue(response.contains("<h2>Royal Albert Hall</h2>"));
 
         assertFalse(response.contains("Also/previously known as"));
@@ -182,6 +187,7 @@ class VenueWebTests implements LoginMixin {
     void testSingleYearsPageWithoutAliasesWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/venues/royal-albert-hall/years", String.class);
         assertNotNull(response);
+        assertTrue(response.contains("<title>Royal Albert Hall - Venue - Brass Band Results</title>"));
         assertTrue(response.contains("<h2>Royal Albert Hall</h2>"));
 
         assertFalse(response.contains("Also/previously known as"));
@@ -195,6 +201,7 @@ class VenueWebTests implements LoginMixin {
     void testContestFilterOnVenueWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/venues/symfony-hall/national-finals-first-section", String.class);
         assertNotNull(response);
+        assertTrue(response.contains("<title>Symfony Hall - Venue - Brass Band Results</title>"));
         assertTrue(response.contains("<h2>Symfony Hall</h2>"));
 
         assertFalse(response.contains("Also/previously known as"));

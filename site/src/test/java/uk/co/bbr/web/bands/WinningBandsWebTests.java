@@ -106,7 +106,7 @@ class WinningBandsWebTests implements LoginMixin {
     void testGetWinningBandsPageReturnsSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/WINNERS", String.class);
         assertNotNull(response);
-
+        assertTrue(response.contains("<title>Winning Bands - Brass Band Results</title>"));
         assertTrue(response.contains(">Rothwell Temperance Band"));
         assertTrue(response.contains("Not RTB"));
         assertFalse(response.contains("Whit Band"));

@@ -1,25 +1,21 @@
 <!DOCTYPE html>
 <html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
 <head>
-    <title th:text="#{page.winning-people.title}">Winning People - Brass Band Results</title>
+    <title th:text="@{#{page.multiple-bands.title} + ' - Brass Band Results'}">Conductors of Multiple Bands - Brass Band Results</title>
 </head>
 <body>
 <div layout:fragment="content">
-    <h2 th:text="#{page.winning-people.page-title}">Contest Winning Conductors</h2>
-    <p th:text="#{page.winning-people.header-1}"></p>
-    <p th:text="#{page.winning-people.header-2}"></p>
-    <p th:text="#{page.winning-people.header-3}"></p>
-
+    <h2 th:text="#{page.multiple-bands.page-title}">Conductors of Multiple Bands</h2>
 
     <ul class="nav nav-tabs">
         <li class="nav-item">
-            <a class="nav-link" href="/people/WINNERS/" th:text="#{page.winning-people.tab.all}">All</a>
+            <a class="nav-link" href="/people/BANDS/" th:text="#{page.multiple-bands.tab.all}">All</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="/people/WINNERS/before/1950" th:text="#{page.winning-people.tab.before-1950}">Before 1950</a>
+            <a class="nav-link" href="/people/BANDS/before/1950" th:text="#{page.multiple-bands.tab.before-1950}">Before 1950</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link active" href="/people/WINNERS/after/1950" th:text="#{page.winning-people.tab.after-1950}">After 1950</a>
+            <a class="nav-link active" href="/people/BANDS/after/1950" th:text="#{page.multiple-bands.tab.after-1950}">After 1950</a>
         </li>
     </ul>
     <br/>
@@ -27,22 +23,18 @@
     <div class="tab-content">
         <table id="bands" class="table table-hover sortable">
             <thead>
-                <tr>
-                    <th th:text="#{page.winning-people.column-header-name}">Name</th>
-                    <th th:text="#{page.winning-people.column-header-wins}">Wins</th>
-                    <th th:text="#{page.winning-people.column-header-percentage}" class="percent">Percentage</th>
-                    <th th:text="#{page.winning-people.column-header-contests}">Contests</th>
-                </tr>
+            <tr>
+                <th th:text="#{page.multiple-bands.column-header-name}">Name</th>
+                <th th:text="#{page.multiple-bands.column-header-bands}">Bands</th>
+            </tr>
             </thead>
             <tbody>
-                <tr th:each="winningPerson : ${WinningPeople}">
-                    <td class="person">
-                        <span th:replace="links/person-link.html :: personLink(${winningPerson.person}, false, true)"></span>
-                    </td>
-                    <td th:text="${winningPerson.wins}">250</td>
-                    <td><span th:text="${winningPerson.percentage}">41</span>%</td>
-                    <td th:text="${winningPerson.contests}">597</td>
-                </tr>
+            <tr th:each="bandPerson : ${BandsConducted}">
+                <td class="person">
+                    <span th:replace="links/person-link.html :: personLink(${bandPerson.person}, false, true)"></span>
+                </td>
+                <td th:text="${bandPerson.bands}">250</td>
+            </tr>
             </tbody>
         </table>
     </div>

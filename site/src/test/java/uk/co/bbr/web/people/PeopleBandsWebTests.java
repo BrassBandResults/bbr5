@@ -15,15 +15,14 @@ import uk.co.bbr.services.security.ex.AuthenticationFailedException;
 import uk.co.bbr.web.LoginMixin;
 import uk.co.bbr.web.security.support.TestUser;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ActiveProfiles("test")
-@SpringBootTest(properties = { "spring.config.name=people-winners-web-tests-admin-h2", "spring.datasource.url=jdbc:h2:mem:people-winners-web-tests-admin-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE", "spring.jpa.database-platform=org.hibernate.dialect.SQLServerDialect"},
+@SpringBootTest(properties = { "spring.config.name=people-bands-web-tests-admin-h2", "spring.datasource.url=jdbc:h2:mem:people-bands-web-tests-admin-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE", "spring.jpa.database-platform=org.hibernate.dialect.SQLServerDialect"},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class PeopleWinnersWebTests implements LoginMixin {
+class PeopleBandsWebTests implements LoginMixin {
 
     @Autowired private SecurityService securityService;
     @Autowired private JwtService jwtService;
@@ -45,24 +44,27 @@ class PeopleWinnersWebTests implements LoginMixin {
 
     @Test
     void testGetFullWinnersListWorksSuccessfully() {
-        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/people/WINNERS", String.class);
+        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/people/BANDS", String.class);
         assertNotNull(response);
+        assertTrue(response.contains("<title>Conductors of Multiple Bands - Brass Band Results</title>"));
 
         // TODO add some data and test for it
     }
 
     @Test
     void testGetWinnersListBefore1950WorksSuccessfully() {
-        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/people/WINNERS/before/1950", String.class);
+        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/people/BANDS/before/1950", String.class);
         assertNotNull(response);
+        assertTrue(response.contains("<title>Conductors of Multiple Bands - Brass Band Results</title>"));
 
         // TODO add some data and test for it
     }
 
     @Test
     void testGetWinnersListAfter1950WorksSuccessfully() {
-        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/people/WINNERS/after/1950", String.class);
+        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/people/BANDS/after/1950", String.class);
         assertNotNull(response);
+        assertTrue(response.contains("<title>Conductors of Multiple Bands - Brass Band Results</title>"));
 
         // TODO add some data and test for it
     }

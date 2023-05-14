@@ -4,6 +4,7 @@ import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.people.dao.PersonAliasDao;
 import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.people.dto.PeopleListDto;
+import uk.co.bbr.services.people.sql.dto.PeopleBandsSqlDto;
 import uk.co.bbr.services.people.sql.dto.PeopleWinnersSqlDto;
 
 import java.time.LocalDate;
@@ -43,4 +44,10 @@ public interface PersonService {
     List<PeopleWinnersSqlDto> fetchContestWinningPeopleBefore(int year);
 
     List<PeopleWinnersSqlDto> fetchContestWinningPeopleAfter(int year);
+
+    List<PeopleBandsSqlDto> fetchBandsConductedList();
+
+    List<PeopleBandsSqlDto> fetchBandsConductedListBefore(int year);
+
+    List<PeopleBandsSqlDto> fetchBandsConductedListAfter(int year);
 }

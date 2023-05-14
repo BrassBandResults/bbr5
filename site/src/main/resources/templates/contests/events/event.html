@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
 <head>
-    <title th:text="#{page.contest-event.title(${ContestEvent.contest.name}, ${ContestEvent.eventDateDisplay})}">Yorkshire Area (Championship Section) - 07 Mar 2010 - Brass Band Results</title>
+    <title th:text="@{#{page.contest-event.title(${ContestEvent.contest.name}, ${ContestEvent.eventDateDisplay})} + ' - Brass Band Results'}">Yorkshire Area (Championship Section) - 07 Mar 2010 - Brass Band Results</title>
 </head>
 <body>
 <div layout:fragment="content">

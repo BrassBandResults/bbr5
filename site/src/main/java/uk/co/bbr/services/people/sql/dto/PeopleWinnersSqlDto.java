@@ -32,6 +32,7 @@ public class PeopleWinnersSqlDto extends AbstractSqlDto {
         returnPerson.setSurname(this.personSurname);
         returnPerson.setFirstNames(this.personFirstNames);
         returnPerson.setSlug(this.personSlug);
+        returnPerson.setKnownFor(this.personKnownFor);
 
         return returnPerson;
     }

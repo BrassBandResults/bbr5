@@ -124,8 +124,8 @@ class ContestGroupYearPageTests implements LoginMixin {
 
         // assert
         assertEquals("Test Group", eventsForGroupAndYear.getContestGroup().getName());
-        assertEquals(1990, eventsForGroupAndYear.getYear());
-        assertEquals(1995, eventsForGroupAndYear.getNextYear());
+        assertEquals("1990", eventsForGroupAndYear.getYear());
+        assertEquals("1995", eventsForGroupAndYear.getNextYear());
         assertNull(eventsForGroupAndYear.getPreviousYear());
 
         assertEquals(1, eventsForGroupAndYear.getContestEvents().size());
@@ -142,9 +142,9 @@ class ContestGroupYearPageTests implements LoginMixin {
 
         // assert
         assertEquals("Test Group", eventsForGroupAndYear.getContestGroup().getName());
-        assertEquals(1999, eventsForGroupAndYear.getYear());
-        assertEquals(2000, eventsForGroupAndYear.getNextYear());
-        assertEquals(1995, eventsForGroupAndYear.getPreviousYear());
+        assertEquals("1999", eventsForGroupAndYear.getYear());
+        assertEquals("2000", eventsForGroupAndYear.getNextYear());
+        assertEquals("1995", eventsForGroupAndYear.getPreviousYear());
 
         assertEquals(3, eventsForGroupAndYear.getContestEvents().size());
 
@@ -182,9 +182,9 @@ class ContestGroupYearPageTests implements LoginMixin {
 
         // assert
         assertEquals("Test Group", eventsForGroupAndYear.getContestGroup().getName());
-        assertEquals(2000, eventsForGroupAndYear.getYear());
+        assertEquals("2000", eventsForGroupAndYear.getYear());
         assertNull(eventsForGroupAndYear.getNextYear());
-        assertEquals(1999, eventsForGroupAndYear.getPreviousYear());
+        assertEquals("1999", eventsForGroupAndYear.getPreviousYear());
 
         assertEquals(4, eventsForGroupAndYear.getContestEvents().size());
 

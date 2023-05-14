@@ -47,6 +47,7 @@ class PeopleWinnersWebTests implements LoginMixin {
     void testGetFullWinnersListWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/people/WINNERS", String.class);
         assertNotNull(response);
+        assertTrue(response.contains("<title>Winning People - Brass Band Results</title>"));
 
         // TODO add some data and test for it
     }
@@ -55,6 +56,7 @@ class PeopleWinnersWebTests implements LoginMixin {
     void testGetWinnersListBefore1950WorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/people/WINNERS/before/1950", String.class);
         assertNotNull(response);
+        assertTrue(response.contains("<title>Winning People - Brass Band Results</title>"));
 
         // TODO add some data and test for it
     }
@@ -63,6 +65,7 @@ class PeopleWinnersWebTests implements LoginMixin {
     void testGetWinnersListAfter1950WorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/people/WINNERS/after/1950", String.class);
         assertNotNull(response);
+        assertTrue(response.contains("<title>Winning People - Brass Band Results</title>"));
 
         // TODO add some data and test for it
     }

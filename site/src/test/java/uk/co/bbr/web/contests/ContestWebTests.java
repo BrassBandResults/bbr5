@@ -63,6 +63,7 @@ class ContestWebTests implements LoginMixin {
     void testGetContestPageWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/contests/yorkshire-area", String.class);
         assertNotNull(response);
+        assertTrue(response.contains("<title>Yorkshire Area - Contest - Brass Band Results</title>"));
         assertTrue(response.contains(">Yorkshire Area<"));
     }
 
@@ -76,6 +77,7 @@ class ContestWebTests implements LoginMixin {
     void testGetContestOwnChoicePageWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/contests/yorkshire-area/own-choice", String.class);
         assertNotNull(response);
+        assertTrue(response.contains("<title>Yorkshire Area - Contest - Brass Band Results</title>"));
         assertTrue(response.contains(">Yorkshire Area<"));
     }
 
@@ -89,6 +91,7 @@ class ContestWebTests implements LoginMixin {
     void testGetContestWinsPageWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/contests/yorkshire-area/wins", String.class);
         assertNotNull(response);
+        assertTrue(response.contains("<title>Yorkshire Area - Contest - Brass Band Results</title>"));
         assertTrue(response.contains(">Yorkshire Area<"));
     }
 

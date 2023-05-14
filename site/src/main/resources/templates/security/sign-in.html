@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-    <title th:text="#{page.security.sign-in.title}">Sign In - Brass Band Results</title>
+    <title th:text="@{#{page.security.sign-in.title} + ' - Brass Band Results'}">Sign In - Brass Band Results</title>
 </head>
 <body>
 <div layout:fragment="content">

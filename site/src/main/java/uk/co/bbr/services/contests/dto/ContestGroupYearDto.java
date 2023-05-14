@@ -10,8 +10,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ContestGroupYearDto {
     private final ContestGroupDao contestGroup;
-    private final Integer year;
+    private final String year;
     private final List<ContestEventSummaryDto> contestEvents;
-    private final Integer nextYear;
-    private final Integer previousYear;
+    private final String nextYear;
+    private final String previousYear;
 }

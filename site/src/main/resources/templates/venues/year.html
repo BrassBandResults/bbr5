@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
 <head>
-    <title th:text="#{page.venue-year.title(${Venue.name}, ${Year})}">{0} in {1} - Venue - Brass Band Results</title>
+    <title th:text="@{#{page.venue-year.title(${Venue.name}, ${Year})} + ' - Brass Band Results'}">{0} in {1} - Venue - Brass Band Results</title>
 </head>
 <body>
 <div layout:fragment="content">

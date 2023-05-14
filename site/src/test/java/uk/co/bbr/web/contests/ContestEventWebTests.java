@@ -86,6 +86,7 @@ class ContestEventWebTests implements LoginMixin {
     void testGetContestEventWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/contests/yorkshire-area/2010-03-01", String.class);
         assertNotNull(response);
+        assertTrue(response.contains("<title>Yorkshire Area - 01 Mar 2010 - Brass Band Results</title>"));
         assertTrue(response.contains(">Yorkshire Area<"));
         assertTrue(response.contains("<h3>Mon 01 Mar 2010</h3>"));
 

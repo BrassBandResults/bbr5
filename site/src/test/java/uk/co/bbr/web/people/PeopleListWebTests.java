@@ -47,6 +47,7 @@ class PeopleListWebTests implements LoginMixin {
     void testGetPeopleListForMultiplePeopleWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/people", String.class);
         assertNotNull(response);
+        assertTrue(response.contains("<title>People - Brass Band Results</title>"));
         assertTrue(response.contains("<h2>People with surnames starting with A</h2>"));
         assertTrue(response.contains("Showing 0 of 4 people."));
 
@@ -60,6 +61,7 @@ class PeopleListWebTests implements LoginMixin {
     void testGetPeopleListForOnePersonWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/people/R", String.class);
         assertNotNull(response);
+        assertTrue(response.contains("<title>People - Brass Band Results</title>"));
         assertTrue(response.contains("<h2>People with surnames starting with R</h2>"));
         assertTrue(response.contains("Showing 1 of 4 people."));
 
@@ -73,6 +75,7 @@ class PeopleListWebTests implements LoginMixin {
     void testGetPeopleListForSpecificLetterWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/people/C", String.class);
         assertNotNull(response);
+        assertTrue(response.contains("<title>People - Brass Band Results</title>"));
         assertTrue(response.contains("<h2>People with surnames starting with C</h2>"));
         assertTrue(response.contains("Showing 3 of 4 people."));
 

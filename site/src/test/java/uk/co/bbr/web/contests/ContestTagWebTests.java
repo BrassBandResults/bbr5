@@ -75,6 +75,7 @@ class ContestTagWebTests implements LoginMixin {
     void testGetTagListWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/tags", String.class);
         assertNotNull(response);
+        assertTrue(response.contains("<title>Tags - Brass Band Results</title>"));
         assertTrue(response.contains("<h2>Tags starting with A</h2>"));
 
         assertTrue(response.contains("AA Tag"));
@@ -87,6 +88,7 @@ class ContestTagWebTests implements LoginMixin {
     void testGetTagListForSpecificLetterWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/tags/Y", String.class);
         assertNotNull(response);
+        assertTrue(response.contains("<title>Tags - Brass Band Results</title>"));
         assertTrue(response.contains("<h2>Tags starting with Y</h2>"));
 
         assertFalse(response.contains("AA Tag"));
@@ -100,6 +102,7 @@ class ContestTagWebTests implements LoginMixin {
     void testGetTagListForSpecificLetterWithNoResultsWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/tags/W", String.class);
         assertNotNull(response);
+        assertTrue(response.contains("<title>Tags - Brass Band Results</title>"));
         assertTrue(response.contains("<h2>Tags starting with W</h2>"));
 
         assertFalse(response.contains("AA Tag"));
@@ -112,6 +115,7 @@ class ContestTagWebTests implements LoginMixin {
     void testGetAllTagsListWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/tags/ALL", String.class);
         assertNotNull(response);
+        assertTrue(response.contains("<title>Tags - Brass Band Results</title>"));
         assertTrue(response.contains("<h2>All Tags</h2>"));
 
         assertTrue(response.contains("AA Tag"));
@@ -124,6 +128,7 @@ class ContestTagWebTests implements LoginMixin {
     void testFetchTagDetailsPageWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/tags/yorkshire-tag", String.class);
         assertNotNull(response);
+        assertTrue(response.contains("<title>Yorkshire Tag - Tag - Brass Band Results</title>"));
         assertTrue(response.contains("<h2>Yorkshire Tag</h2>"));
 
         assertTrue(response.contains("Yorkshire Area"));

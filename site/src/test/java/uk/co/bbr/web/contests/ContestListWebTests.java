@@ -51,6 +51,7 @@ class ContestListWebTests implements LoginMixin {
     void testGetContestListWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/contests", String.class);
         assertNotNull(response);
+        assertTrue(response.contains("<title>Contests - Brass Band Results</title>"));
         assertTrue(response.contains("<h2>Contests starting with A</h2>"));
 
         assertFalse(response.contains("Yorkshire Area"));
@@ -64,6 +65,7 @@ class ContestListWebTests implements LoginMixin {
     void testGetContestListForSpecificLetterWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/contests/Y", String.class);
         assertNotNull(response);
+        assertTrue(response.contains("<title>Contests - Brass Band Results</title>"));
         assertTrue(response.contains("<h2>Contests starting with Y</h2>"));
 
         assertTrue(response.contains("Yorkshire Area"));
@@ -77,6 +79,7 @@ class ContestListWebTests implements LoginMixin {
     void testGetAllContestsListWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/contests/ALL", String.class);
         assertNotNull(response);
+        assertTrue(response.contains("<title>Contests - Brass Band Results</title>"));
         assertTrue(response.contains("<h2>All Contests</h2>"));
 
         assertTrue(response.contains("Yorkshire Area"));

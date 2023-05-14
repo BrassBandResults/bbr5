@@ -274,7 +274,10 @@ public class ContestGroupServiceImpl implements ContestGroupService, SlugTools {
             contestEvents.add(new ContestEventSummaryDto(event, winningBands, testPieces));
         }
 
-        return new ContestGroupYearDto(contestGroup.get(), year, contestEvents, nextYear, previousYear);
+        String stringYear = year == null ? null : String.valueOf(year);
+        String stringNextYear = nextYear == null ? null : String.valueOf(nextYear);
+        String stringPreviousYear = previousYear == null ? null : String.valueOf(previousYear);
+        return new ContestGroupYearDto(contestGroup.get(), stringYear, contestEvents, stringNextYear, stringPreviousYear);
     }
 
     @Override

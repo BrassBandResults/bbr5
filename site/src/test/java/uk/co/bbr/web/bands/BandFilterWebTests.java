@@ -126,6 +126,7 @@ class BandFilterWebTests implements LoginMixin {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/rothwell-temperance-band/yorkshire-area", String.class);
 
         assertNotNull(response);
+        assertTrue(response.contains("<title>Rothwell Temperance Band - Band - Brass Band Results</title>"));
         assertTrue(response.contains("<h2>Rothwell Temperance Band</h2>"));
 
         assertTrue(response.contains(">Yorkshire Area<"));
@@ -151,6 +152,7 @@ class BandFilterWebTests implements LoginMixin {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/rothwell-temperance-band/UK-NATIONAL-CHAMPIONSHIPS", String.class);
 
         assertNotNull(response);
+        assertTrue(response.contains("<title>Rothwell Temperance Band - Band - Brass Band Results</title>"));
         assertTrue(response.contains("<h2>Rothwell Temperance Band</h2>"));
 
         assertTrue(response.contains(">Yorkshire Area<"));
@@ -176,6 +178,7 @@ class BandFilterWebTests implements LoginMixin {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/rothwell-temperance-band/tag/yorkshire-quality", String.class);
 
         assertNotNull(response);
+        assertTrue(response.contains("<title>Rothwell Temperance Band - Band - Brass Band Results</title>"));
         assertTrue(response.contains("<h2>Rothwell Temperance Band</h2>"));
 
         assertTrue(response.contains(">Yorkshire Area<"));

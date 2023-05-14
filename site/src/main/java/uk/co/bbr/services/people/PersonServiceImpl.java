@@ -13,8 +13,10 @@ import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.people.dto.PeopleListDto;
 import uk.co.bbr.services.people.repo.PersonAliasRepository;
 import uk.co.bbr.services.people.repo.PersonRepository;
+import uk.co.bbr.services.people.sql.PeopleBandsSql;
 import uk.co.bbr.services.people.sql.PeopleCountSql;
 import uk.co.bbr.services.people.sql.PeopleWinnersSql;
+import uk.co.bbr.services.people.sql.dto.PeopleBandsSqlDto;
 import uk.co.bbr.services.people.sql.dto.PeopleWinnersSqlDto;
 import uk.co.bbr.services.pieces.repo.PieceRepository;
 import uk.co.bbr.services.security.SecurityService;
@@ -226,6 +228,21 @@ public class PersonServiceImpl implements PersonService, SlugTools {
     @Override
     public List<PeopleWinnersSqlDto> fetchContestWinningPeopleAfter(int year) {
         return PeopleWinnersSql.selectWinningPeopleAfter(this.entityManager, year);
+    }
+
+    @Override
+    public List<PeopleBandsSqlDto> fetchBandsConductedList() {
+        return PeopleBandsSql.selectWinningPeople(this.entityManager);
+    }
+
+    @Override
+    public List<PeopleBandsSqlDto> fetchBandsConductedListBefore(int year) {
+        return PeopleBandsSql.selectWinningPeopleBefore(this.entityManager, year);
+    }
+
+    @Override
+    public List<PeopleBandsSqlDto> fetchBandsConductedListAfter(int year) {
+        return PeopleBandsSql.selectWinningPeopleAfter(this.entityManager, year);
     }
 
 

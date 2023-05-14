@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
 <head>
-    <title th:text="#{page.group.title(${Group.contestGroup.name})}">Group - Brass Band Results</title>
+    <title th:text="@{#{page.group.title(${Group.contestGroup.name})} + ' - Brass Band Results'}">Group - Brass Band Results</title>
 </head>
 <body>
 <div layout:fragment="content">

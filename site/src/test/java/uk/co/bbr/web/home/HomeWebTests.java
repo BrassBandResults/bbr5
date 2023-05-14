@@ -81,6 +81,7 @@ class HomeWebTests implements LoginMixin {
     void testGetHomepageReturnsSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/", String.class);
         assertNotNull(response);
+        assertTrue(response.contains("<title>Brass Band Results</title>"));
         assertTrue(response.contains(">Brass Band Results<"));
     }
 }

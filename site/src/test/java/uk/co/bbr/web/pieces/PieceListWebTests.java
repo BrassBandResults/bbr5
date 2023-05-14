@@ -89,6 +89,7 @@ class PieceListWebTests implements LoginMixin {
     void testGetPiecesListForMultiplePeopleWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/pieces", String.class);
         assertNotNull(response);
+        assertTrue(response.contains("<title>Pieces - Brass Band Results</title>"));
         assertTrue(response.contains("<h2>Pieces starting with A</h2>"));
         assertTrue(response.contains("Showing 1 of 7 pieces."));
 
@@ -105,6 +106,7 @@ class PieceListWebTests implements LoginMixin {
     void testGetPiecesListForOnePersonWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/pieces/C", String.class);
         assertNotNull(response);
+        assertTrue(response.contains("<title>Pieces - Brass Band Results</title>"));
         assertTrue(response.contains("<h2>Pieces starting with C</h2>"));
         assertTrue(response.contains("Showing 2 of 7 pieces."));
 
@@ -121,6 +123,7 @@ class PieceListWebTests implements LoginMixin {
     void testGetPiecesListForSpecificLetterWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/pieces/J", String.class);
         assertNotNull(response);
+        assertTrue(response.contains("<title>Pieces - Brass Band Results</title>"));
         assertTrue(response.contains("<h2>Pieces starting with J</h2>"));
         assertTrue(response.contains("Showing 1 of 7 pieces."));
 
@@ -139,6 +142,7 @@ class PieceListWebTests implements LoginMixin {
     void testGetPiecesListForSpecificLetterWithOwnChoiceWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/pieces/H", String.class);
         assertNotNull(response);
+        assertTrue(response.contains("<title>Pieces - Brass Band Results</title>"));
         assertTrue(response.contains("<h2>Pieces starting with H</h2>"));
         assertTrue(response.contains("Showing 1 of 7 pieces."));
 
@@ -157,6 +161,7 @@ class PieceListWebTests implements LoginMixin {
     void testGetPiecesListForNumbersWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/pieces/0", String.class);
         assertNotNull(response);
+        assertTrue(response.contains("<title>Pieces - Brass Band Results</title>"));
         assertTrue(response.contains("<h2>Pieces starting with numbers</h2>"));
         assertTrue(response.contains("Showing 1 of 7 pieces."));
 
@@ -174,6 +179,7 @@ class PieceListWebTests implements LoginMixin {
     void testGetAllPiecesListWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/pieces/ALL", String.class);
         assertNotNull(response);
+        assertTrue(response.contains("<title>Pieces - Brass Band Results</title>"));
         assertTrue(response.contains("<h2>All Pieces</h2>"));
         assertTrue(response.contains("Showing 7 of 7 pieces."));
 
