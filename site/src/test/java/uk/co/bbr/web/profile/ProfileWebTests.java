@@ -1,4 +1,4 @@
-package uk.co.bbr.web.home;
+package uk.co.bbr.web.profile;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -39,7 +39,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @SpringBootTest(properties = { "spring.config.name=home-web-tests-admin-h2", "spring.datasource.url=jdbc:h2:mem:home-web-tests-admin-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE", "spring.jpa.database-platform=org.hibernate.dialect.SQLServerDialect"},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class HomeWebTests implements LoginMixin {
+class ProfileWebTests implements LoginMixin {
 
     @Autowired private SecurityService securityService;
     @Autowired private JwtService jwtService;
@@ -56,60 +56,13 @@ class HomeWebTests implements LoginMixin {
     void setupContests() throws AuthenticationFailedException {
         loginTestUser(this.securityService, this.jwtService, TestUser.TEST_MEMBER);
 
-        RegionDao yorkshire = this.regionService.fetchBySlug("yorkshire").get();
-
-        BandDao rtb = this.bandService.create("Rothwell Temperance Band", yorkshire);
-        BandDao blackDyke = this.bandService.create("Black Dyke", yorkshire);
-        BandDao grimethorpe = this.bandService.create("Grimethorpe", yorkshire);
-        this.bandService.create("YBS Band", yorkshire);
-
-        PersonDao davidRoberts = this.personService.create("Roberts", "David");
-        PersonDao johnRoberts = this.personService.create("Roberts", "John");
-        PersonDao duncanBeckley = this.personService.create("Beckley", "Duncan");
-        this.personService.create("Childs", "David");
-
-        ContestDao yorkshireArea = this.contestService.create("Yorkshire Area");
-        ContestEventDao yorkshireArea2010 = this.contestEventService.create(yorkshireArea, LocalDate.of(2010, 3, 1));
-        this.contestResultService.addResult(yorkshireArea2010, "1", blackDyke, davidRoberts);
-        this.contestResultService.addResult(yorkshireArea2010, "2", rtb, johnRoberts);
-        this.contestResultService.addResult(yorkshireArea2010, "3", grimethorpe, duncanBeckley);
-
         logoutTestUser();
     }
 
     @Test
     void testGetHomepageReturnsSuccessfully() {
-        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/", String.class);
+        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/users/tjs", String.class);
         assertNotNull(response);
-        assertTrue(response.contains("<title>Brass Band Results</title>"));
-        assertTrue(response.contains(">Brass Band Results<"));
-    }
-
-    @Test
-    void testGetStatisticsPageReturnsSuccessfully() {
-        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/statistics", String.class);
-        assertNotNull(response);
-        assertTrue(response.contains("<title>Statistics - Brass Band Results</title>"));
-    }
-
-    @Test
-    void testGetFaqPageReturnsSuccessfully() {
-        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/faq", String.class);
-        assertNotNull(response);
-        assertTrue(response.contains("<title>FAQ - Brass Band Results</title>"));
-    }
-
-    @Test
-    void testGetAboutUsPageReturnsSuccessfully() {
-        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/about-us", String.class);
-        assertNotNull(response);
-        assertTrue(response.contains("<title>Who We Are - Brass Band Results</title>"));
-    }
-
-    @Test
-    void testGetPrivacyPageReturnsSuccessfully() {
-        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/privacy", String.class);
-        assertNotNull(response);
-        assertTrue(response.contains("<title>Privacy - Brass Band Results</title>"));
+        assertTrue(response.contains("<title>tjs - User Profile - Brass Band Results</title>"));
     }
 }
