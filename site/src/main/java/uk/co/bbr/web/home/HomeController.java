@@ -13,4 +13,24 @@ public class HomeController {
     public String home(Model model) {
         return "home/home";
     }
+
+    @GetMapping("/statistics")
+    public String statistics() {
+        return "home/statistics";
+    }
+
+    @GetMapping("/faq")
+    public String faq() {
+        return "home/faq";
+    }
+
+    @GetMapping("/about-us")
+    public String aboutUs() {
+        return "home/about-us";
+    }
+
+    @GetMapping("/privacy")
+    public String privacy() {
+        return "home/privacy";
+    }
 }
