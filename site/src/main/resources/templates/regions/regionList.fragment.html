@@ -2,11 +2,10 @@
     <table id="regions" class="table table-hover sortable">
         <thead>
             <tr>
-                <th th:text="#{page.regions.column-header-name}">Name</th>
-                <th sec:authorize="!hasRole('BBR_PRO')" th:text="#{page.regions.column-header-bands}">Bands</th>
-                <th sec:authorize="hasRole('BBR_PRO')" th:text="#{page.regions.column-header-bands-active}">Active Bands</th>
-                <th sec:authorize="hasRole('BBR_PRO')" th:text="#{page.regions.column-header-bands-extinct}">Extinct Bands</th>
-                <th></th>
+                <th th:text="#{page.column-header.name}">Name</th>
+                <th sec:authorize="!hasRole('BBR_PRO')" th:text="#{page.column-header.bands}">Bands</th>
+                <th sec:authorize="hasRole('BBR_PRO')" th:text="#{page.column-header.bands-active}">Active Bands</th>
+                <th sec:authorize="hasRole('BBR_PRO')" th:text="#{page.column-header.bands-extinct}">Extinct Bands</th>
             </tr>
         </thead>
         <tbody>
@@ -17,7 +16,6 @@
                 <td sec:authorize="!hasRole('BBR_PRO')" class="band-count" th:text="${region.getBandsCount()}"></td>
                 <td sec:authorize="hasRole('BBR_PRO')" class="active-band-count" th:text="${region.getActiveBandsCount()}"></td>
                 <td sec:authorize="hasRole('BBR_PRO')" class="extinct-band-count" th:text="${region.getExtinctBandsCount()}"></td>
-                <td class="band-links"><a th:href="${'/regions/' + region.slug + '/links'}" th:text="#{page.regions.column-links}">Links</a></td>
             </tr>
         </tbody>
     </table>
