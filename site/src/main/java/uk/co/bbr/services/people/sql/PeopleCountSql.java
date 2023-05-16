@@ -48,8 +48,8 @@ public class PeopleCountSql {
             Query query = entityManager.createNativeQuery(sql);
             List<Object[]> queryResults = query.getResultList();
 
-            for (Object[] eachRowData : queryResults) {
-                returnData.put(((BigInteger)eachRowData[0]).longValue(), (Integer)eachRowData[1]);
+            for (Object[] columnList : queryResults) {
+                returnData.put(((BigInteger)columnList[0]).longValue(), (Integer)columnList[1]);
             }
 
             return returnData;

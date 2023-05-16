@@ -16,10 +16,10 @@ public class ResultPieceSqlDto extends AbstractSqlDto {
 
 
 
-    public ResultPieceSqlDto(Object[] eachRowData) {
-        this.contestResultId = (BigInteger)eachRowData[0];
-        this.pieceSlug = (String)eachRowData[1];
-        this.pieceName = (String)eachRowData[2];
-        this.pieceYear = (String)eachRowData[3];
+    public ResultPieceSqlDto(Object[] columnList) {
+        this.contestResultId = (BigInteger)columnList[0];
+        this.pieceSlug = (String)columnList[1];
+        this.pieceName = (String)columnList[2];
+        this.pieceYear = (String)columnList[3];
     }
 }

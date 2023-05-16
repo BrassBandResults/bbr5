@@ -1,10 +1,8 @@
 package uk.co.bbr.services.people.sql.dto;
 
 import lombok.Getter;
-import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.framework.sql.AbstractSqlDto;
 import uk.co.bbr.services.people.dao.PersonDao;
-import uk.co.bbr.services.regions.dao.RegionDao;
 
 import java.math.BigInteger;
 

@@ -9,9 +9,9 @@ public class ContestWinsSqlDto extends AbstractSqlDto {
     private final String bandName;
     private final int winCount;
 
-    public ContestWinsSqlDto(Object[] eachRowData) {
-        this.bandSlug = (String)eachRowData[0];
-        this.bandName = (String)eachRowData[1];
-        this.winCount = (Integer)eachRowData[2];
+    public ContestWinsSqlDto(Object[] columnList) {
+        this.bandSlug = (String)columnList[0];
+        this.bandName = (String)columnList[1];
+        this.winCount = (Integer)columnList[2];
     }
 }

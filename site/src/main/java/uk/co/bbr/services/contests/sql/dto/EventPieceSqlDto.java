@@ -14,10 +14,10 @@ public class EventPieceSqlDto extends AbstractSqlDto {
     private final String pieceYear;
 
 
-    public EventPieceSqlDto(Object[] eachRowData) {
-        this.contestEventId = (BigInteger)eachRowData[0];
-        this.pieceSlug = (String)eachRowData[1];
-        this.pieceName = (String)eachRowData[2];
-        this.pieceYear = (String)eachRowData[3];
+    public EventPieceSqlDto(Object[] columnList) {
+        this.contestEventId = (BigInteger)columnList[0];
+        this.pieceSlug = (String)columnList[1];
+        this.pieceName = (String)columnList[2];
+        this.pieceYear = (String)columnList[3];
     }
 }

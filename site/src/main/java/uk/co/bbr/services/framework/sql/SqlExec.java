@@ -19,10 +19,10 @@ public class SqlExec {
             }
             List<Object[]> queryResults = query.getResultList();
 
-            for (Object[] eachRowData : queryResults) {
+            for (Object[] columnList : queryResults) {
                 Constructor<T> ctor = clazz.getConstructor(Object[].class);
                 Object[] constructorParams = new Object[1];
-                constructorParams[0] = eachRowData;
+                constructorParams[0] = columnList;
                 T eachReturnObject = ctor.newInstance(constructorParams);
                 returnData.add(eachReturnObject);
             }

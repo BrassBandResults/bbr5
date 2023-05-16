@@ -22,20 +22,20 @@ public class ContestResultPieceSqlDto extends AbstractSqlDto {
     private final String regionName;
     private final String regionCountryCode;
 
-    public ContestResultPieceSqlDto(Object[] eachRowData) {
-        Date tempEventDate = (Date)eachRowData[0];
+    public ContestResultPieceSqlDto(Object[] columnList) {
+        Date tempEventDate = (Date)columnList[0];
         this.eventDate = tempEventDate.toLocalDate();
-        this.dateResolution = (String)eachRowData[1];
-        this.contestSlug = (String)eachRowData[2];
-        this.bandCompetedAs = (String)eachRowData[3];
-        this.bandSlug = (String)eachRowData[4];
-        this.bandName = (String)eachRowData[5];
-        this.pieceName = (String)eachRowData[6];
-        this.pieceSlug = (String)eachRowData[7];
-        this.pieceYear = (String)eachRowData[8];
-        this.position = String.valueOf(eachRowData[9]);
-        this.positionType = (String)eachRowData[10];
-        this.regionName = (String)eachRowData[11];
-        this.regionCountryCode = (String)eachRowData[12];
+        this.dateResolution = (String)columnList[1];
+        this.contestSlug = (String)columnList[2];
+        this.bandCompetedAs = (String)columnList[3];
+        this.bandSlug = (String)columnList[4];
+        this.bandName = (String)columnList[5];
+        this.pieceName = (String)columnList[6];
+        this.pieceSlug = (String)columnList[7];
+        this.pieceYear = (String)columnList[8];
+        this.position = String.valueOf(columnList[9]);
+        this.positionType = (String)columnList[10];
+        this.regionName = (String)columnList[11];
+        this.regionCountryCode = (String)columnList[12];
     }
 }
