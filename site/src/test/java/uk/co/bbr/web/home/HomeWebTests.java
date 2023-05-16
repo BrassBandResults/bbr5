@@ -110,6 +110,6 @@ class HomeWebTests implements LoginMixin {
     void testGetPrivacyPageReturnsSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/privacy", String.class);
         assertNotNull(response);
-        assertTrue(response.contains("<title>Privacy - Brass Band Results</title>"));
+        assertTrue(response.contains("<title>Privacy Policy - Brass Band Results</title>"));
     }
 }

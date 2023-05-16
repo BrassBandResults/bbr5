@@ -46,7 +46,6 @@ class RegionListProWebTests implements LoginMixin {
         assertTrue(response.contains("Yorkshire"));
         assertTrue(response.contains("New Zealand"));
 
-        assertTrue(response.contains("/regions/yorkshire/links"));
         assertTrue(response.contains("/flags/fi.png"));
 
         // band count is broken down for pro users

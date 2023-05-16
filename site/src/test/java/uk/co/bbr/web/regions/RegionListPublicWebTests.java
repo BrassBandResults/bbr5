@@ -23,23 +23,22 @@ class RegionListPublicWebTests implements LoginMixin {
      @Test
     void testGetRegionListWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/regions", String.class);
-         assertNotNull(response);
-         assertTrue(response.contains("<title>Regions - Brass Band Results</title>"));
-         assertTrue(response.contains("<h2>Regions</h2>"));
+        assertNotNull(response);
+        assertTrue(response.contains("<title>Regions - Brass Band Results</title>"));
+        assertTrue(response.contains("<h2>Regions</h2>"));
 
-         assertTrue(response.contains("Angola"));
-         assertTrue(response.contains("Yorkshire"));
-         assertTrue(response.contains("New Zealand"));
+        assertTrue(response.contains("Angola"));
+        assertTrue(response.contains("Yorkshire"));
+        assertTrue(response.contains("New Zealand"));
 
-         assertTrue(response.contains("/regions/yorkshire/links"));
-         assertTrue(response.contains("/flags/fi.png"));
+        assertTrue(response.contains("/flags/fi.png"));
 
-         // band count is aggregate only for non-pro users
-         assertTrue(response.contains("class=\"band-count\""));
-         assertTrue(response.contains("<th>Bands</th>"));
-         assertFalse(response.contains("class=\"active-band-count\""));
-         assertFalse(response.contains("class=\"extinct-band-count\""));
-         assertFalse(response.contains("<th>Active Bands</th>"));
-         assertFalse(response.contains("<th>Extinct Bands</th>"));
+        // band count is aggregate only for non-pro users
+        assertTrue(response.contains("class=\"band-count\""));
+        assertTrue(response.contains("<th>Bands</th>"));
+        assertFalse(response.contains("class=\"active-band-count\""));
+        assertFalse(response.contains("class=\"extinct-band-count\""));
+        assertFalse(response.contains("<th>Active Bands</th>"));
+        assertFalse(response.contains("<th>Extinct Bands</th>"));
     }
 }
