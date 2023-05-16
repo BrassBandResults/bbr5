@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title th:text="@{#{page.region.page-title(#{'region.' + ${Region.slug}})} + ' - Brass Band Results'}">Yorkshire Region - Brass Band Results</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin=""/>
+</head>
+<body>
+<div layout:fragment="content">
+    <h2 th:text="#{'region.' + ${Region.slug}}">Region Name</h2>
+
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link" th:href="${'/regions/' + Region.slug}" th:text="#{page.region.tab.bands}">Bands</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" th:href="${'/regions/' + Region.slug + '/contests'}" th:text="#{page.region.tab.contests}">Contests</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" th:href="${'/regions/' + Region.slug + '/links'}" th:text="#{page.region.tab.links}">Links</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" th:href="${'/regions/' + Region.slug + '/winners'}" th:text="#{page.region.tab.winning-bands}">Winning Bands</a>
+        </li>
+    </ul>
+    <br/>
+
+    <div class="tab-content">
+    </div>
+</div>
+</body>
+</html>
