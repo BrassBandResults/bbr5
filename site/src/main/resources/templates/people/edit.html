@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+<head>
+    <title th:text="@{#{page.person-edit.title(${Person.name})} + ' - Brass Band Results'}">Person - Brass Band Results</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h2><span th:text="#{page.person-edit.header-prefix}">Edit</span> <span th:text="${Person.name}">Person Name</span></h2>
+
+    <form th:object="${Person}"
+          th:action = "."
+          method="post">
+    <table>
+        <tr>
+            <th>
+                <label for="firstNames" th:text="#{page.person-edit.first-names}">First names:</label>
+            </th>
+            <td>
+                <input id="firstNames" type="text" th:field="*{firstNames}"/>
+                <p th:if="${#fields.hasErrors('firstNames')}" th:text="${#strings.listJoin(#fields.errors('firstNames'), ', ')}"></p>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                <label for="surname" th:text="#{page.person-edit.surname}">Surname:</label>
+            </th>
+            <td>
+                <input id="surname" type="text" th:field="*{surname}"/>
+                <p th:if="${#fields.hasErrors('surname')}" th:text="${#strings.listJoin(#fields.errors('surname'), ', ')}"></p>
+            </td>
+        </tr>
+
+        <tr>
+            <td></td>
+            <td><input type="submit" th:value="#{page.buttons.save-changes}" /> <a th:href="${'/people/' + Person.slug}" th:text="#{page.buttons.cancel-without-saving}">Cancel without saving</a></td>
+        </tr>
+    </table>
+    </form>
+</div>
+</body>
+</html>

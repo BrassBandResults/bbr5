@@ -82,7 +82,7 @@ class RegionContestsWebTests implements LoginMixin {
         ContestDao yorkshireArea = this.contestService.create("Yorkshire Area");
         yorkshireArea.setRegion(yorkshire);
         yorkshireArea = this.contestService.update(yorkshireArea);
-        ContestEventDao yorkshireArea2001 = this.contestEventService.create(yorkshireArea, LocalDate.of(2001, 3, 3));
+        this.contestEventService.create(yorkshireArea, LocalDate.of(2001, 3, 3));
 
         logoutTestUser();
     }
