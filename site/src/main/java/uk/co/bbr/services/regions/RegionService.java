@@ -1,6 +1,7 @@
 package uk.co.bbr.services.regions;
 
 import uk.co.bbr.services.bands.dao.BandDao;
+import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.regions.dao.RegionDao;
 import uk.co.bbr.services.regions.dto.LinkSectionDto;
 import uk.co.bbr.services.regions.dto.RegionPageDto;
@@ -28,4 +29,6 @@ public interface RegionService {
     RegionDao create(String regionName);
 
     RegionDao create(String regionName, RegionDao parent);
+
+    List<ContestDao> findContestsForRegion(RegionDao region);
 }

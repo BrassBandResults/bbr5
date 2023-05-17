@@ -15,6 +15,10 @@ import org.springframework.web.client.RestTemplate;
 import uk.co.bbr.services.bands.BandService;
 import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.bands.types.BandStatus;
+import uk.co.bbr.services.contests.ContestEventService;
+import uk.co.bbr.services.contests.ContestService;
+import uk.co.bbr.services.contests.dao.ContestDao;
+import uk.co.bbr.services.contests.dao.ContestEventDao;
 import uk.co.bbr.services.regions.RegionService;
 import uk.co.bbr.services.regions.dao.RegionDao;
 import uk.co.bbr.services.security.JwtService;
@@ -22,6 +26,8 @@ import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.services.security.ex.AuthenticationFailedException;
 import uk.co.bbr.web.LoginMixin;
 import uk.co.bbr.web.security.support.TestUser;
+
+import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -39,6 +45,8 @@ class RegionContestsWebTests implements LoginMixin {
     @Autowired private JwtService jwtService;
     @Autowired private RegionService regionService;
     @Autowired private BandService bandService;
+    @Autowired private ContestService contestService;
+    @Autowired private ContestEventService contestEventService;
     @Autowired private RestTemplate restTemplate;
     @LocalServerPort private int port;
 
@@ -71,11 +79,16 @@ class RegionContestsWebTests implements LoginMixin {
         extinct.setLongitude("0.00");
         this.bandService.update(extinct);
 
+        ContestDao yorkshireArea = this.contestService.create("Yorkshire Area");
+        yorkshireArea.setRegion(yorkshire);
+        yorkshireArea = this.contestService.update(yorkshireArea);
+        ContestEventDao yorkshireArea2001 = this.contestEventService.create(yorkshireArea, LocalDate.of(2001, 3, 3));
+
         logoutTestUser();
     }
 
     @Test
-    void testGetYorkshireRegionPageWorksSuccessfully() {
+    void testGetYorkshireRegionContestsPageWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/regions/yorkshire/contests", String.class);
         assertNotNull(response);
         assertTrue(response.contains("<title>Yorkshire - Region - Brass Band Results</title>"));
@@ -84,6 +97,7 @@ class RegionContestsWebTests implements LoginMixin {
         assertTrue(response.contains(">Links<"));
         assertTrue(response.contains(">Bands<"));
 
-        // TODO setup some data and do some asserts
+        assertTrue(response.contains(">Yorkshire Area<"));
+        assertTrue(response.contains(">1<"));
     }
 }

@@ -15,6 +15,14 @@ import org.springframework.web.client.RestTemplate;
 import uk.co.bbr.services.bands.BandService;
 import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.bands.types.BandStatus;
+import uk.co.bbr.services.contests.ContestEventService;
+import uk.co.bbr.services.contests.ContestResultService;
+import uk.co.bbr.services.contests.ContestService;
+import uk.co.bbr.services.contests.dao.ContestDao;
+import uk.co.bbr.services.contests.dao.ContestEventDao;
+import uk.co.bbr.services.contests.dao.ContestResultDao;
+import uk.co.bbr.services.people.PersonService;
+import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.regions.RegionService;
 import uk.co.bbr.services.regions.dao.RegionDao;
 import uk.co.bbr.services.security.JwtService;
@@ -22,6 +30,8 @@ import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.services.security.ex.AuthenticationFailedException;
 import uk.co.bbr.web.LoginMixin;
 import uk.co.bbr.web.security.support.TestUser;
+
+import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -39,6 +49,10 @@ class RegionWebTests implements LoginMixin {
     @Autowired private JwtService jwtService;
     @Autowired private RegionService regionService;
     @Autowired private BandService bandService;
+    @Autowired private ContestService contestService;
+    @Autowired private PersonService personService;
+    @Autowired private ContestEventService contestEventService;
+    @Autowired private ContestResultService contestResultService;
     @Autowired private RestTemplate restTemplate;
     @LocalServerPort private int port;
 
@@ -56,7 +70,7 @@ class RegionWebTests implements LoginMixin {
         this.bandService.create("Abercrombie Primary School Community", midlands);
         this.bandService.create("Black Dyke Band", yorkshire);
         this.bandService.create("Accrington Borough", northWest);
-        this.bandService.create("Rothwell Temperance", yorkshire);
+        BandDao rtb = this.bandService.create("Rothwell Temperance", yorkshire);
         this.bandService.create("48th Div. R.E. T.A", midlands);
         this.bandService.create("Aalesunds Ungdomsmusikkorps", norway);
         this.bandService.create("Abb Kettleby", midlands);
@@ -65,11 +79,22 @@ class RegionWebTests implements LoginMixin {
         this.bandService.create("Aalborg Brass Band", denmark);
         this.bandService.create("102 (Cheshire) Transport Column R.A.S.C. (T.A.)", northWest);
 
+        PersonDao davidChilds = this.personService.create("Childs", "David");
+
         BandDao extinct = this.bandService.create("Extinct Yorkshire", yorkshire);
         extinct.setStatus(BandStatus.EXTINCT);
         extinct.setLatitude("0.00");
         extinct.setLongitude("0.00");
         this.bandService.update(extinct);
+
+        ContestDao yorkshireArea = this.contestService.create("Yorkshire Area");
+        ContestEventDao yorkshireArea2001 = this.contestEventService.create(yorkshireArea, LocalDate.of(2001, 3, 3));
+        ContestResultDao result = new ContestResultDao();
+        result.setBand(rtb);
+        result.setBandName("Rodill Temps");
+        result.setPosition("1");
+        result.setConductor(davidChilds);
+        this.contestResultService.addResult(yorkshireArea2001, result);
 
         logoutTestUser();
     }
@@ -108,8 +133,8 @@ class RegionWebTests implements LoginMixin {
 
         assertTrue(response.contains("<h2>Yorkshire</h2>"));
 
-        assertFalse(response.contains("Rothwell Temperance")); // no results TODO - add some and test for it
-        assertFalse(response.contains("Accrington Borough")); // wrong region, still no results
+        assertTrue(response.contains(">Rothwell Temperance<"));
+        assertTrue(response.contains(">1<"));
     }
 
     @Test

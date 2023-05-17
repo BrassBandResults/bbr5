@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import uk.co.bbr.services.bands.BandService;
 import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.bands.sql.dto.BandWinnersSqlDto;
+import uk.co.bbr.services.contests.ContestService;
+import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.regions.RegionService;
 import uk.co.bbr.services.regions.dao.RegionDao;
@@ -54,7 +56,10 @@ public class RegionController {
     public String regionContests(Model model, @PathVariable("regionSlug") String regionSlug) {
         RegionPageDto region = this.regionService.fetchBySlugForPage(regionSlug);
 
+        List<ContestDao> contests = this.regionService.findContestsForRegion(region.getRegion());
+
         model.addAttribute("Region", region);
+        model.addAttribute("Contests", contests);
         return "regions/region-contests";
     }
 

@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import uk.co.bbr.services.bands.dao.BandDao;
+import uk.co.bbr.services.contests.dao.ContestDao;
+import uk.co.bbr.services.contests.repo.ContestRepository;
 import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.framework.ValidationException;
 import uk.co.bbr.services.framework.mixins.SlugTools;
@@ -27,6 +29,7 @@ import java.util.stream.Collectors;
 public class RegionServiceImpl implements RegionService, SlugTools {
 
     private final RegionRepository regionRepository;
+    private final ContestRepository contestRepository;
     private final SecurityService securityService;
 
     @Override
@@ -136,5 +139,10 @@ public class RegionServiceImpl implements RegionService, SlugTools {
         region.setUpdated(LocalDateTime.now());
         region.setUpdatedBy(this.securityService.getCurrentUsername());
         return this.regionRepository.saveAndFlush(region);
+    }
+
+    @Override
+    public List<ContestDao> findContestsForRegion(RegionDao region) {
+        return this.contestRepository.findContestsForRegion(region.getId());
     }
 }
