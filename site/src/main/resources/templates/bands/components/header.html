@@ -1,0 +1,38 @@
+<div th:fragment="header(Band, PreviousNames)" xmlns:sec="http://www.thymeleaf.org">
+    <h2 th:text="${Band.name}"></h2>
+    <div sec:authorize="hasRole('BBR_SUPERUSER')">
+        <span th:replace="buttons/edit.html :: editBand(${Band})"></span>
+        <span th:replace="buttons/edit.html :: editBandAliases(${Band})"></span>
+        <span th:replace="buttons/edit.html :: editBandRelationships(${Band})"></span>
+        <span th:replace="buttons/edit.html :: editRehearsalDays(${Band})"></span>
+    </div>
+    <span th:replace="components/aliases.html :: previousNames(${PreviousNames})"></span>
+    <br/>
+    <table>
+        <tr><td colspan="2" th:if="${Band.status.notCompeting}" th:text="#{${Band.status.translationKey} +'.long'}">Band Status</td></tr>
+        <tr th:if="${Band.section}">
+            <th th:text="#{page.band.details.section}">Section:</th>
+            <td th:text="#{${Band.section.translationKey}}"></td>
+        </tr>
+        <tr>
+            <th th:text="#{page.band.details.website}">Website:</th>
+            <td><a th:if="${Band.website != null && Band.website.length > 0}" th:href="${Band.website}" th:text="${Band.website}">link</a></td>
+        </tr>
+        <tr>
+            <th th:text="#{page.band.details.region}">Region:</th>
+            <td><span th:replace="links/region-link.html :: regionLink(${Band.region})"></span></td>
+        </tr>
+        <tr th:if="${Band.dateRange.length > 0}">
+            <th th:text="#{page.band.details.years}">Years active:</th>
+            <td th:text="${Band.dateRange}"></td>
+        </tr>
+        <tr>
+            <th th:text="#{page.band.details.rehearsals}">Rehearsals:</th>
+            <td></td>
+        </tr>
+    </table>
+
+    <div style="white-space: pre-line" th:text="${#strings.escapeXml(Band.notes)}">Notes</div>
+    <br/>
+
+</div>

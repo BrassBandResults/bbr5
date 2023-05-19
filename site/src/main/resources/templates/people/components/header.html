@@ -1,12 +1,12 @@
-<div th:fragment="header(person, previousNames)" xmlns:sec="http://www.thymeleaf.org">
-    <h2 th:text="${person.name}"></h2>
+<div th:fragment="header(Person, PreviousNames)" xmlns:sec="http://www.thymeleaf.org">
+    <h2 th:text="${Person.name}"></h2>
     <div sec:authorize="hasRole('BBR_SUPERUSER')">
-        <span th:replace="buttons/edit.html :: editPerson(${person})"></span>
-        <span th:replace="buttons/edit.html :: editPersonAliases(${person})"></span>
-        <span th:replace="buttons/edit.html :: editPersonRelationships(${person})"></span>
+        <span th:replace="buttons/edit.html :: editPerson(${Person})"></span>
+        <span th:replace="buttons/edit.html :: editPersonAliases(${Person})"></span>
+        <span th:replace="buttons/edit.html :: editPersonRelationships(${Person})"></span>
     </div>
-    <span th:replace="components/aliases.html :: previousNames(${previousNames})"></span>
+    <span th:replace="components/aliases.html :: previousNames(${PreviousNames})"></span>
     <br/>
-    <div style="white-space: pre-line" th:text="${#strings.escapeXml(person.notes)}">Notes</div>
+    <div style="white-space: pre-line" th:text="${#strings.escapeXml(Person.notes)}">Notes</div>
     <br/>
 </div>
