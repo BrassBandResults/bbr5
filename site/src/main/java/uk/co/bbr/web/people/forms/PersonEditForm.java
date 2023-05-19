@@ -44,10 +44,10 @@ public class PersonEditForm {
 
     public void validate(BindingResult bindingResult) {
         if (this.surname == null || this.surname.trim().length() == 0) {
-            bindingResult.addError(new ObjectError("surname", "A person must have a surname"));
+            bindingResult.addError(new ObjectError("surname", "page.person-edit.errors.surname-required"));
         }
         if (this.startDate != null && this.endDate != null && this.endDate.isBefore(this.startDate)) {
-            bindingResult.addError(new ObjectError("startDate", "The end date must be after the start date, if both are specified"));
+            bindingResult.addError(new ObjectError("startDate", "page.person-edit.errors.surname-dates-valid"));
         }
     }
 }

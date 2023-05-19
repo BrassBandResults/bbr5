@@ -10,9 +10,9 @@
     <form th:object="${PersonForm}"
           th:action = "${'/people/' + Person.slug + '/edit'}"
           method="post">
-        <div class="alert alert-danger">
-            <ul th:if="${#fields.hasErrors('*')}">
-                <li th:each="err : ${#fields.errors('*')}" th:text="${err}"></li>
+        <div class="alert alert-danger" th:if="${#fields.hasErrors('*')}">
+            <ul>
+                <li th:each="err : ${#fields.errors('*')}" th:text="@{#{${err}}}"></li>
             </ul>
         </div>
     <table>
@@ -45,7 +45,7 @@
                     <option value="II" th:text="#{page.person-edit.suffix-ii}">II</option>
                     <option value="III" th:text="#{page.person-edit.suffix-iii}">III</option>
                 </select>
-                <br/><small>Text shown after a surname, like Junior, Senior, III etc.</small>
+                <br/><small th:text="#{page.person-edit.hint.suffix}">Text shown after a surname, like Junior, Senior, III etc.</small>
             </td>
         </tr>
         <tr>
@@ -54,7 +54,7 @@
             </th>
             <td>
                 <input id="knownFor" type="text" th:field="*{knownFor}" maxlength="100" size="80"/>
-                <br/><small>Band(s) this person is most associated with.</small>
+                <br/><small th:text="#{page.person-edit.hint.known-for}">Band(s) this person is most associated with.</small>
             </td>
         </tr>
         <tr>
@@ -63,7 +63,7 @@
             </th>
             <td>
                 <input id="startDate" type="date" th:field="*{startDate}"/>
-                <br/><small>Person won't be matched with results before this date.</small>
+                <br/><small th:text="#{page.person-edit.hint.start-date}">Person won't be matched with results before this date.</small>
             </td>
         </tr>
         <tr>
@@ -72,7 +72,7 @@
             </th>
             <td>
                 <input id="endDate" type="date" th:field="*{endDate}"/>
-                <br/><small>Person won't be matched with results after this date.</small>
+                <br/><small th:text="#{page.person-edit.hint.end-date}">Person won't be matched with results after this date.</small>
             </td>
         </tr>
         <tr>
@@ -89,7 +89,7 @@
             <td></td>
             <td>
                 <input type="submit" th:value="#{page.buttons.save-changes}" class="btn btn-success"/>
-                <a th:href="${'/people/' + Person.slug}" th:text="#{page.buttons.cancel-without-saving}" class="btn btn-light">Cancel without saving</a>
+                <a th:href="${'/people/' + Person.slug}" th:text="#{page.buttons.cancel-without-saving}" class="btn btn-light">Cancel wout saving</a>
             </td>
         </tr>
     </table>
