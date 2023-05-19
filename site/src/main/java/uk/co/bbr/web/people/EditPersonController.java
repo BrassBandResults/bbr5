@@ -24,7 +24,6 @@ import java.util.Optional;
 public class EditPersonController {
 
     private final PersonService personService;
-    private final PieceService pieceService;
 
     @GetMapping("/people/{personSlug:[\\-a-z\\d]{2,}}/edit")
     public String editPersonForm(Model model, @PathVariable("personSlug") String personSlug) {

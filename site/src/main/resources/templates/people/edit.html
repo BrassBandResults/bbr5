@@ -5,7 +5,7 @@
 </head>
 <body>
 <div layout:fragment="content">
-    <h2><span th:text="#{page.person-edit.header-prefix}">Edit</span> <span th:text="${Person.name}">Person Name</span></h2>
+    <h2><span th:text="#{page.edit-header-prefix}">Edit</span> <span th:text="${Person.name}">Person Name</span></h2>
 
     <form th:object="${PersonForm}"
           th:action = "${'/people/' + Person.slug + '/edit'}"
@@ -81,7 +81,6 @@
             </th>
             <td>
                 <textarea id="notes"  th:field="*{notes}" cols="80" rows="10"></textarea>
-                <p th:if="${#fields.hasErrors('notes')}" th:text="${#strings.listJoin(#fields.errors('notes'), ', ')}"></p>
             </td>
         </tr>
 

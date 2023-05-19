@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+<head>
+    <title th:text="@{#{page.band-edit.title(${Band.name})} + ' - Brass Band Results'}">Band - Brass Band Results</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h2><span th:text="#{page.edit-header-prefix}">Edit</span> <span th:text="${Band.name}">Band Name</span></h2>
+
+    <form th:object="${BandForm}"
+          th:action = "${'/bands/' + Band.slug + '/edit'}"
+          method="post">
+        <div class="alert alert-danger" th:if="${#fields.hasErrors('*')}">
+            <ul>
+                <li th:each="err : ${#fields.errors('*')}" th:text="@{#{${err}}}"></li>
+            </ul>
+        </div>
+    <table>
+        <tr>
+            <th class="align-top">
+                <label for="name" th:text="#{page.band-edit.name}">Name:</label>
+            </th>
+            <td>
+                <input id="name" type="text" th:field="*{name}" maxlength="100" size="80"/>
+            </td>
+        </tr>
+        <tr>
+            <th class="align-top">
+                <label for="region" th:text="#{page.band-edit.region}">Region:</label>
+            </th>
+            <td>
+                <input id="region" type="text" th:field="*{region}" maxlength="100" size="80"/>
+            </td>
+        </tr>
+        <tr>
+            <th class="align-top">
+                <label for="latitude" th:text="#{page.band-edit.latitude}">Latitude:</label>
+            </th>
+            <td>
+                <input id="latitude" type="text" th:field="*{latitude}" maxlength="15" size="30"/>
+            </td>
+        </tr>
+        <tr>
+            <th class="align-top">
+                <label for="longitude" th:text="#{page.band-edit.longitude}">Longitude:</label>
+            </th>
+            <td>
+                <input id="longitude" type="text" th:field="*{longitude}" maxlength="15" size="30"/>
+            </td>
+        </tr>
+        <tr>
+            <th class="align-top">
+                <label for="website" th:text="#{page.band-edit.website}">Website:</label>
+            </th>
+            <td>
+                <input id="website" type="text" th:field="*{website}" maxlength="100" size="80"/>
+            </td>
+        </tr>
+        <tr>
+            <th class="align-top">
+                <label for="twitter" th:text="#{page.band-edit.twitter}">Twitter:</label>
+            </th>
+            <td>
+                <input id="twitter" type="text" th:field="*{twitter}" maxlength="100" size="80"/>
+            </td>
+        </tr>
+        <tr>
+            <th class="align-top">
+                <label for="status" th:text="#{page.band-edit.status}">Status:</label>
+            </th>
+            <td>
+                <input id="status" type="text" th:field="*{status}" maxlength="15" size="30"/>
+            </td>
+        </tr>
+        <tr>
+            <th class="align-top">
+                <label for="startDate" th:text="#{page.band-edit.start-date}">Start date:</label>
+            </th>
+            <td>
+                <input id="startDate" type="date" th:field="*{startDate}"/>
+                <br/><small th:text="#{page.band-edit.hint.start-date}">Band won't be matched with results before this date.</small>
+            </td>
+        </tr>
+        <tr>
+            <th class="align-top">
+                <label for="endDate" th:text="#{page.band-edit.end-date}">End date:</label>
+            </th>
+            <td>
+                <input id="endDate" type="date" th:field="*{endDate}"/>
+                <br/><small th:text="#{page.band-edit.hint.end-date}">Band won't be matched with results after this date.</small>
+            </td>
+        </tr>
+        <tr>
+            <th class="align-top">
+                <label for="notes" th:text="#{page.band-edit.notes}">Notes:</label>
+            </th>
+            <td>
+                <textarea id="notes"  th:field="*{notes}" cols="80" rows="10"></textarea>
+            </td>
+        </tr>
+
+        <tr>
+            <td></td>
+            <td>
+                <input type="submit" th:value="#{page.buttons.save-changes}" class="btn btn-success"/>
+                <a th:href="${'/bands/' + Band.slug}" th:text="#{page.buttons.cancel-without-saving}" class="btn btn-light">Cancel wout saving</a>
+            </td>
+        </tr>
+    </table>
+    </form>
+</div>
+</body>
+</html>

@@ -47,7 +47,7 @@ public class PersonEditForm {
             bindingResult.addError(new ObjectError("surname", "page.person-edit.errors.surname-required"));
         }
         if (this.startDate != null && this.endDate != null && this.endDate.isBefore(this.startDate)) {
-            bindingResult.addError(new ObjectError("startDate", "page.person-edit.errors.surname-dates-valid"));
+            bindingResult.addError(new ObjectError("startDate", "page.person-edit.errors.dates-valid"));
         }
     }
 }
