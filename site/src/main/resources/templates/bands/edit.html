@@ -29,7 +29,12 @@
                 <label for="region" th:text="#{page.band-edit.region}">Region:</label>
             </th>
             <td>
-                <input id="region" type="text" th:field="*{region}" maxlength="100" size="80"/>
+                <select id="region" th:field="*{region}">
+                    <option th:each="region : ${Regions}"
+                            th:value="${region.id}"
+                            th:text="#{'region.' + ${region.slug}}">
+                    </option>
+                </select>
             </td>
         </tr>
         <tr>
@@ -69,7 +74,12 @@
                 <label for="status" th:text="#{page.band-edit.status}">Status:</label>
             </th>
             <td>
-                <input id="status" type="text" th:field="*{status}" maxlength="15" size="30"/>
+                <select id="status" th:field="*{status}">
+                    <option th:each="state : ${T(uk.co.bbr.services.bands.types.BandStatus).values()}"
+                            th:value="${state.code}"
+                            th:text="#{${state.translationKey}}">
+                    </option>
+                </select>
             </td>
         </tr>
         <tr>

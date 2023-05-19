@@ -11,9 +11,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import uk.co.bbr.services.bands.BandService;
 import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.framework.NotFoundException;
+import uk.co.bbr.services.regions.RegionService;
+import uk.co.bbr.services.regions.dao.RegionDao;
 import uk.co.bbr.web.bands.forms.BandEditForm;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -21,6 +24,7 @@ import java.util.Optional;
 public class EditBandController {
 
     private final BandService bandService;
+    private final RegionService regionService;
 
     @GetMapping("/bands/{bandSlug:[\\-a-z\\d]{2,}}/edit")
     public String editBandForm(Model model, @PathVariable("bandSlug") String bandSlug) {
@@ -31,8 +35,11 @@ public class EditBandController {
 
         BandEditForm bandEditDto = new BandEditForm(band.get());
 
+        List<RegionDao> regions = this.regionService.findAll();
+
         model.addAttribute("Band", band.get());
         model.addAttribute("BandForm", bandEditDto);
+        model.addAttribute("Regions", regions);
 
         return "bands/edit";
     }
@@ -47,7 +54,10 @@ public class EditBandController {
         submittedBand.validate(bindingResult);
 
         if (bindingResult.hasErrors()) {
+            List<RegionDao> regions = this.regionService.findAll();
+
             model.addAttribute("Band", existingBandOptional.get());
+            model.addAttribute("Regions", regions);
 
             return "/bands/edit";
         }
