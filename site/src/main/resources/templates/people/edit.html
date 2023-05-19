@@ -7,32 +7,90 @@
 <div layout:fragment="content">
     <h2><span th:text="#{page.person-edit.header-prefix}">Edit</span> <span th:text="${Person.name}">Person Name</span></h2>
 
-    <form th:object="${Person}"
-          th:action = "."
+    <form th:object="${PersonForm}"
+          th:action = "${'/people/' + Person.slug + '/edit'}"
           method="post">
+        <div class="alert alert-danger">
+            <ul th:if="${#fields.hasErrors('*')}">
+                <li th:each="err : ${#fields.errors('*')}" th:text="${err}"></li>
+            </ul>
+        </div>
     <table>
         <tr>
-            <th>
+            <th class="align-top">
                 <label for="firstNames" th:text="#{page.person-edit.first-names}">First names:</label>
             </th>
             <td>
-                <input id="firstNames" type="text" th:field="*{firstNames}"/>
-                <p th:if="${#fields.hasErrors('firstNames')}" th:text="${#strings.listJoin(#fields.errors('firstNames'), ', ')}"></p>
+                <input id="firstNames" type="text" th:field="*{firstNames}" maxlength="100" size="80"/>
             </td>
         </tr>
         <tr>
-            <th>
+            <th class="align-top">
                 <label for="surname" th:text="#{page.person-edit.surname}">Surname:</label>
             </th>
             <td>
-                <input id="surname" type="text" th:field="*{surname}"/>
-                <p th:if="${#fields.hasErrors('surname')}" th:text="${#strings.listJoin(#fields.errors('surname'), ', ')}"></p>
+                <input id="surname" type="text" th:field="*{surname}" maxlength="100" size="80"/>
+            </td>
+        </tr>
+        <tr>
+            <th class="align-top">
+                <label for="suffix" th:text="#{page.person-edit.suffix}">Suffix:</label>
+            </th>
+            <td>
+                <select id="suffix" name="suffix" th:field="*{suffix}">
+                    <option value="" selected></option>
+                    <option value="Jnr" th:text="#{page.person-edit.suffix-jnr}">Jnr</option>
+                    <option value="Snr" th:text="#{page.person-edit.suffix-snr}">Snr</option>
+                    <option value="I" th:text="#{page.person-edit.suffix-i}">I</option>
+                    <option value="II" th:text="#{page.person-edit.suffix-ii}">II</option>
+                    <option value="III" th:text="#{page.person-edit.suffix-iii}">III</option>
+                </select>
+                <br/><small>Text shown after a surname, like Junior, Senior, III etc.</small>
+            </td>
+        </tr>
+        <tr>
+            <th class="align-top">
+                <label for="knownFor" th:text="#{page.person-edit.known-for}">Known for:</label>
+            </th>
+            <td>
+                <input id="knownFor" type="text" th:field="*{knownFor}" maxlength="100" size="80"/>
+                <br/><small>Band(s) this person is most associated with.</small>
+            </td>
+        </tr>
+        <tr>
+            <th class="align-top">
+                <label for="startDate" th:text="#{page.person-edit.start-date}">Start date:</label>
+            </th>
+            <td>
+                <input id="startDate" type="date" th:field="*{startDate}"/>
+                <br/><small>Person won't be matched with results before this date.</small>
+            </td>
+        </tr>
+        <tr>
+            <th class="align-top">
+                <label for="endDate" th:text="#{page.person-edit.end-date}">End date:</label>
+            </th>
+            <td>
+                <input id="endDate" type="date" th:field="*{endDate}"/>
+                <br/><small>Person won't be matched with results after this date.</small>
+            </td>
+        </tr>
+        <tr>
+            <th class="align-top">
+                <label for="notes" th:text="#{page.person-edit.notes}">Notes:</label>
+            </th>
+            <td>
+                <textarea id="notes"  th:field="*{notes}" cols="80" rows="10"></textarea>
+                <p th:if="${#fields.hasErrors('notes')}" th:text="${#strings.listJoin(#fields.errors('notes'), ', ')}"></p>
             </td>
         </tr>
 
         <tr>
             <td></td>
-            <td><input type="submit" th:value="#{page.buttons.save-changes}" /> <a th:href="${'/people/' + Person.slug}" th:text="#{page.buttons.cancel-without-saving}">Cancel without saving</a></td>
+            <td>
+                <input type="submit" th:value="#{page.buttons.save-changes}" class="btn btn-success"/>
+                <a th:href="${'/people/' + Person.slug}" th:text="#{page.buttons.cancel-without-saving}" class="btn btn-light">Cancel without saving</a>
+            </td>
         </tr>
     </table>
     </form>

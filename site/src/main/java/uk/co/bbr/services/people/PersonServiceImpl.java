@@ -56,18 +56,11 @@ public class PersonServiceImpl implements PersonService, SlugTools {
     }
 
     private PersonDao create(PersonDao person, boolean migrating) {
+        this.validateMandatory(person);
+
         // validation
         if (person.getId() != null) {
             throw new ValidationException("Can't create with specific id");
-        }
-
-        if (StringUtils.isBlank(person.getSurname())) {
-            throw new ValidationException("Person surname must be specified");
-        }
-
-        // defaults
-        if (StringUtils.isBlank(person.getSlug())) {
-            person.setSlug(slugify(person.getName()));
         }
 
         // does the slug already exist?
@@ -85,6 +78,17 @@ public class PersonServiceImpl implements PersonService, SlugTools {
         return this.personRepository.saveAndFlush(person);
     }
 
+    private void validateMandatory(PersonDao person) {
+        if (StringUtils.isBlank(person.getSurname())) {
+            throw new ValidationException("Person surname must be specified");
+        }
+
+        // defaults
+        if (StringUtils.isBlank(person.getSlug())) {
+            person.setSlug(slugify(person.getName()));
+        }
+    }
+
     @Override
     @IsBbrMember
     public PersonDao create(String surname, String firstNames) {
@@ -92,6 +96,26 @@ public class PersonServiceImpl implements PersonService, SlugTools {
         person.setSurname(surname);
         person.setFirstNames(firstNames);
         return this.create(person);
+    }
+
+    @Override
+    public PersonDao update(PersonDao person) {
+        this.validateMandatory(person);
+
+        // validation
+        if (person.getId() == null) {
+            throw new ValidationException("Can't update without an id");
+        }
+
+        // does the slug already exist?
+        Optional<PersonDao> slugMatches = this.personRepository.fetchBySlug(person.getSlug());
+        if (slugMatches.isPresent() && !slugMatches.get().getId().equals(person.getId())) {
+            throw new ValidationException("Person with slug " + person.getSlug() + " already exists.");
+        }
+
+        person.setUpdated(LocalDateTime.now());
+        person.setUpdatedBy(this.securityService.getCurrentUsername());
+        return this.personRepository.saveAndFlush(person);
     }
 
     @Override

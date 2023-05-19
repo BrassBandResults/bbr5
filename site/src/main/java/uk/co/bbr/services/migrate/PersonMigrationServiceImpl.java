@@ -27,6 +27,7 @@ public class PersonMigrationServiceImpl extends AbstractMigrationServiceImpl imp
         newPerson.setOldId(rootNode.getAttributeValue("id"));
         newPerson.setSlug(rootNode.getChildText("slug"));
         newPerson.setFirstNames(rootNode.getChildText("first_names"));
+        newPerson.setSuffix(rootNode.getChildText("suffix"));
         newPerson.setSurname(rootNode.getChildText("surname"));
         newPerson.setKnownFor(this.notBlank(rootNode, "bandname"));
         newPerson.setNotes(this.notBlank(rootNode, "notes"));

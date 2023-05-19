@@ -15,6 +15,7 @@ public interface PersonService {
     PersonDao create(PersonDao person);
     PersonDao migrate(PersonDao person);
     PersonDao create(String surname, String firstNames);
+    PersonDao update(PersonDao person);
 
     void createAlternativeName(PersonDao person, PersonAliasDao previousName);
     void migrateAlternativeName(PersonDao person, PersonAliasDao previousName);

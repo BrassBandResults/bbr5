@@ -1,0 +1,11 @@
+<span th:fragment="editPerson(person)">
+    <a role="button" class="btn btn-sm btn-info" th:text="#{page.buttons.edit}" th:href="${'/people/' + person.slug + '/edit'}">Edit</a>
+</span>
+
+<span th:fragment="editPersonAliases(person)">
+    <a role="button" class="btn btn-sm btn-info" th:text="#{page.buttons.edit-aliases}" th:href="${'/people/' + person.slug + '/edit-aliases'}">Edit</a>
+</span>
+
+<span th:fragment="editPersonRelationships(person)">
+    <a role="button" class="btn btn-sm btn-info" th:text="#{page.buttons.edit-relationships}" th:href="${'/people/' + person.slug + '/edit-relationships'}">Edit</a>
+</span>

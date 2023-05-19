@@ -5,13 +5,7 @@
 </head>
 <body>
 <div layout:fragment="content">
-    <h2 th:text="${Person.name}"></h2>
-    <small th:if="${PreviousNames.size > 0}">
-        <b><span th:text="#{page.person.aka}"></span>:</b>
-        <span th:each="previousName, iterStat : ${PreviousNames}">
-            <span th:text="${!iterStat.last} ? ${previousName.oldName} + ', ': ${previousName.oldName}">previous name</span>
-        </span>
-    </small>
+    <span th:replace="people/components/header.html :: header(${Person},${PreviousNames})"></span>
 
     <ul class="nav nav-tabs">
         <li class="nav-item" th:if="${ResultsCount > 0}">
