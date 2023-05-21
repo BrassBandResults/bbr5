@@ -5,7 +5,7 @@
 </head>
 <body>
 <div layout:fragment="content">
-    <h2><span th:text="#{page.edit-header-prefix}">Edit</span> <span th:text="${Band.name}">Band Name</span></h2>
+    <h2><span th:text="#{page.edit-header-prefix}" th:remove="tag">Edit</span> <span th:text="${Band.name}" th:remove="tag">Band Name</span></h2>
 
     <form th:object="${BandForm}"
           th:action = "${'/bands/' + Band.slug + '/edit'}"

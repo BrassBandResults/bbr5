@@ -145,4 +145,9 @@ public class RegionServiceImpl implements RegionService, SlugTools {
     public List<ContestDao> findContestsForRegion(RegionDao region) {
         return this.contestRepository.findContestsForRegion(region.getId());
     }
+
+    @Override
+    public Optional<RegionDao> fetchById(Long regionId) {
+        return this.regionRepository.findById(regionId);
+    }
 }

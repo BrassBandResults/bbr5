@@ -31,4 +31,6 @@ public interface RegionService {
     RegionDao create(String regionName, RegionDao parent);
 
     List<ContestDao> findContestsForRegion(RegionDao region);
+
+    Optional<RegionDao> fetchById(Long regionId);
 }

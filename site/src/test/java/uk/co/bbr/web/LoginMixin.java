@@ -33,6 +33,12 @@ public interface LoginMixin {
         assertTrue(response.getHeaders().get("Location").get(0).startsWith("http://localhost:" + port + "/"));
     }
 
+    default void logoutTestUserByWeb(RestTemplate restTemplate, int port) {
+        String response = restTemplate.getForObject("http://localhost:" + port + SecurityFilter.URL_SIGN_OUT, String.class);
+        assertNotNull(response);
+        assertTrue(response.contains(">Sign In<"));
+    }
+
     default void loginTestUser(SecurityService securityService, JwtService jwtService, TestUser testUser) throws AuthenticationFailedException {
         if (!securityService.userExists(testUser.getUsername())) {
             securityService.createUser(testUser.getUsername(), testUser.getPassword(), testUser.getEmail());
