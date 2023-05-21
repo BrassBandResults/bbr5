@@ -1,27 +1,31 @@
-<span th:fragment="editPerson(person)">
-    <a role="button" class="btn btn-sm btn-info" th:text="#{page.buttons.edit}" th:href="${'/people/' + person.slug + '/edit'}">Edit</a>
+<span th:fragment="button(text, link)" th:remove="tag">
+    <a role="button" class="btn btn-sm btn-warning rounded" th:text="${text}" th:href="${link}">Edit</a>
 </span>
 
-<span th:fragment="editPersonAliases(person)">
-    <a role="button" class="btn btn-sm btn-info" th:text="#{page.buttons.edit-aliases}" th:href="${'/people/' + person.slug + '/edit-aliases'}">Edit</a>
+<span th:fragment="editPerson(person)" th:remove="tag">
+    <span th:replace="buttons/edit.html :: button(#{page.buttons.edit}, ${'/people/' + person.slug + '/edit'})"></span>
 </span>
 
-<span th:fragment="editPersonRelationships(person)">
-    <a role="button" class="btn btn-sm btn-info" th:text="#{page.buttons.edit-relationships}" th:href="${'/people/' + person.slug + '/edit-relationships'}">Edit</a>
+<span th:fragment="editPersonAliases(person)" th:remove="tag">
+    <span th:replace="buttons/edit.html :: button(#{page.buttons.edit-aliases}, ${'/people/' + person.slug + '/edit-aliases'})"></span>
 </span>
 
-<span th:fragment="editBand(band)">
-    <a role="button" class="btn btn-sm btn-info" th:text="#{page.buttons.edit}" th:href="${'/bands/' + band.slug + '/edit'}">Edit</a>
+<span th:fragment="editPersonRelationships(person)" th:remove="tag">
+    <span th:replace="buttons/edit.html :: button(#{page.buttons.edit-relationships}, ${'/people/' + person.slug + '/edit-relationships'})"></span>
 </span>
 
-<span th:fragment="editBandAliases(band)">
-    <a role="button" class="btn btn-sm btn-info" th:text="#{page.buttons.edit-aliases}" th:href="${'/bands/' + band.slug + '/edit-aliases'}">Edit</a>
+<span th:fragment="editBand(band)" th:remove="tag">
+    <span th:replace="buttons/edit.html :: button(#{page.buttons.edit}, ${'/bands/' + band.slug + '/edit'})"></span>
 </span>
 
-<span th:fragment="editBandRelationships(band)">
-    <a role="button" class="btn btn-sm btn-info" th:text="#{page.buttons.edit-relationships}" th:href="${'/bands/' + band.slug + '/edit-relationships'}">Edit</a>
+<span th:fragment="editBandAliases(band)" th:remove="tag">
+    <span th:replace="buttons/edit.html :: button(#{page.buttons.edit-aliases}, ${'/bands/' + band.slug + '/edit-aliases'})"></span>
 </span>
 
-<span th:fragment="editRehearsalDays(band)">
-    <a role="button" class="btn btn-sm btn-info" th:text="#{page.buttons.edit-rehearsals}" th:href="${'/bands/' + band.slug + '/edit-rehearsals'}">Edit</a>
+<span th:fragment="editBandRelationships(band)" th:remove="tag">
+    <span th:replace="buttons/edit.html :: button(#{page.buttons.edit-relationships}, ${'/bands/' + band.slug + '/edit-relationships'})"></span>
+</span>
+
+<span th:fragment="editRehearsalDays(band)" th:remove="tag">
+    <span th:replace="buttons/edit.html :: button(#{page.buttons.edit-rehearsals}, ${'/bands/' + band.slug + '/edit-rehearsals'})"></span>
 </span>
