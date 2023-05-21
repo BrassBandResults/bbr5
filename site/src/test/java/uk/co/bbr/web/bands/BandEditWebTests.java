@@ -38,6 +38,7 @@ import uk.co.bbr.web.security.filter.SecurityFilter;
 import uk.co.bbr.web.security.support.TestUser;
 
 import java.time.LocalDate;
+import java.util.Objects;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -140,12 +141,12 @@ class BandEditWebTests implements LoginMixin {
         // assert
         assertEquals(HttpStatus.FOUND, response.getStatusCode());
 
-        assertNotNull(response.getHeaders().get("Location"));
-        assertTrue(response.getHeaders().get("Location").get(0).endsWith("/bands/grimethorpe"));
+        assertTrue(Objects.requireNonNull(response.getHeaders().get("Location")).get(0).endsWith("/bands/grimethorpe"));
 
         logoutTestUserByWeb(this.restTemplate, this.port);
 
         Optional<BandDao> fetchedBand = this.bandService.fetchBySlug("grimethorpe");
+        assertTrue(fetchedBand.isPresent());
         assertEquals("Rothwell Temperance Band", fetchedBand.get().getName());
         assertEquals("North West", fetchedBand.get().getRegion().getName());
         assertEquals("1.23", fetchedBand.get().getLatitude());
@@ -185,6 +186,7 @@ class BandEditWebTests implements LoginMixin {
         // assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
 
+        assertNotNull(response.getBody());
         assertTrue(response.getBody().contains("A band must have a name"));
 
         logoutTestUserByWeb(this.restTemplate, this.port);
@@ -219,6 +221,7 @@ class BandEditWebTests implements LoginMixin {
         // assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
 
+        assertNotNull(response.getBody());
         assertTrue(response.getBody().contains("The end date must be after the start date, if both are specified"));
 
         logoutTestUserByWeb(this.restTemplate, this.port);
