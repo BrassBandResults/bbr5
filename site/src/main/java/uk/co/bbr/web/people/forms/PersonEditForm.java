@@ -7,8 +7,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import uk.co.bbr.services.people.dao.PersonDao;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;

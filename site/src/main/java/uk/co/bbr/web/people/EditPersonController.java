@@ -15,6 +15,7 @@ import uk.co.bbr.services.people.PersonService;
 import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.pieces.PieceService;
 import uk.co.bbr.web.people.forms.PersonEditForm;
+import uk.co.bbr.web.security.annotations.IsBbrMember;
 
 import javax.validation.Valid;
 import java.util.Optional;
@@ -25,6 +26,7 @@ public class EditPersonController {
 
     private final PersonService personService;
 
+    @IsBbrMember
     @GetMapping("/people/{personSlug:[\\-a-z\\d]{2,}}/edit")
     public String editPersonForm(Model model, @PathVariable("personSlug") String personSlug) {
         Optional<PersonDao> person = this.personService.fetchBySlug(personSlug);
@@ -40,6 +42,7 @@ public class EditPersonController {
         return "people/edit";
     }
 
+    @IsBbrMember
     @PostMapping("/people/{personSlug:[\\-a-z\\d]{2,}}/edit")
     public String editPersonSave(Model model, @Valid @ModelAttribute("PersonForm") PersonEditForm submittedPerson, BindingResult bindingResult, @PathVariable("personSlug") String personSlug) {
         Optional<PersonDao> existingPersonOptional = this.personService.fetchBySlug(personSlug);
