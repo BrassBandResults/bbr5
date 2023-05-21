@@ -68,8 +68,6 @@ public class EditBandController {
 
         BandDao existingBand = existingBandOptional.get();
 
-
-
         existingBand.setName(submittedBand.getName());
         existingBand.setLatitude(submittedBand.getLatitude());
         existingBand.setLongitude(submittedBand.getLongitude());

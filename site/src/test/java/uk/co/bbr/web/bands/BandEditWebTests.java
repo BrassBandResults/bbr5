@@ -66,22 +66,10 @@ class BandEditWebTests implements LoginMixin {
 
         RegionDao yorkshire = this.regionService.fetchBySlug("yorkshire").get();
 
-        this.bandService.create("Rothwell Temperance Band", yorkshire);
         this.bandService.create("Grimethorpe", yorkshire);
         this.bandService.create("Grimley", yorkshire);
 
         logoutTestUser();
-    }
-
-    @Test
-    void testEditBandPageFailsForAnonymousUser() {
-        // act
-        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/grimley/edit", String.class);
-
-        // assert
-        assertNotNull(response);
-        assertFalse(response.contains("Grimley"));
-        assertTrue(response.contains("<form action=\"/acc/sign-in\" method=\"post\">"));
     }
 
     @Test
@@ -104,41 +92,16 @@ class BandEditWebTests implements LoginMixin {
     }
 
     @Test
-    void testSubmitEditBandPageFailsForAnonymousUser() {
+    void testEditBandPageGetFailsWhereSlugIsNotFound() {
         // arrange
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
-
-        CsrfToken csrfToken = csrfTokenRepository.generateToken(null);
-        headers.add(csrfToken.getHeaderName(), csrfToken.getToken());
-        headers.add("Cookie", SecurityFilter.CSRF_HEADER_NAME + "=" + csrfToken.getToken());
-
-        Optional<RegionDao> northWest = this.regionService.fetchBySlug("north-west");
-        assertTrue(northWest.isPresent());
-
-        MultiValueMap<String, String> map= new LinkedMultiValueMap<>();
-        map.add("name", "Rothwell Temperance Band");
-        map.add("region", String.valueOf(northWest.get().getId()));
-        map.add("latitude", "1.23");
-        map.add("longitude", "4.56");
-        map.add("website", "http://BrassBandResults.co.uk");
-        map.add("status", "3");
-        map.add("startDate", "01/01/1990");
-        map.add("endDate", "01/01/2000");
-        map.add("notes", "These are the notes");
-        map.add("_csrf", csrfToken.getToken());
-        map.add("_csrf_header", SecurityFilter.CSRF_HEADER_NAME);
-
-        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
+        loginTestUserByWeb(TestUser.TEST_MEMBER, this.restTemplate, this.csrfTokenRepository, this.port);
 
         // act
-        ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/bands/grimethorpe/edit", request, String.class);
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/black-dyke/edit", String.class));
 
         // assert
-        assertEquals(HttpStatus.FOUND, response.getStatusCode());
-
-        assertNotNull(response.getHeaders().get("Location"));
-        assertTrue(response.getHeaders().get("Location").get(0).endsWith("/acc/sign-in"));
+        assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
+        logoutTestUserByWeb(this.restTemplate, this.port);
     }
 
     @Test
@@ -179,6 +142,7 @@ class BandEditWebTests implements LoginMixin {
 
         assertNotNull(response.getHeaders().get("Location"));
         assertTrue(response.getHeaders().get("Location").get(0).endsWith("/bands/grimethorpe"));
+
         logoutTestUserByWeb(this.restTemplate, this.port);
 
         Optional<BandDao> fetchedBand = this.bandService.fetchBySlug("grimethorpe");
@@ -191,6 +155,99 @@ class BandEditWebTests implements LoginMixin {
         assertEquals(LocalDate.of(1990, 1, 1), fetchedBand.get().getStartDate());
         assertEquals(LocalDate.of(2000, 2, 2), fetchedBand.get().getEndDate());
         assertEquals("These are the notes", fetchedBand.get().getNotes());
+    }
+
+    @Test
+    void testSubmitEditBandPageFailsBecauseNameIsRequired() {
+        // arrange
+        loginTestUserByWeb(TestUser.TEST_MEMBER, this.restTemplate, this.csrfTokenRepository, this.port);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+        CsrfToken csrfToken = csrfTokenRepository.generateToken(null);
+        headers.add(csrfToken.getHeaderName(), csrfToken.getToken());
+        headers.add("Cookie", SecurityFilter.CSRF_HEADER_NAME + "=" + csrfToken.getToken());
+
+        Optional<RegionDao> northWest = this.regionService.fetchBySlug("north-west");
+        assertTrue(northWest.isPresent());
+
+        MultiValueMap<String, String> map= new LinkedMultiValueMap<>();
+        map.add("name", "");
+        map.add("_csrf", csrfToken.getToken());
+        map.add("_csrf_header", SecurityFilter.CSRF_HEADER_NAME);
+
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
+
+        // act
+        ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/bands/grimethorpe/edit", request, String.class);
+
+        // assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+
+        assertTrue(response.getBody().contains("A band must have a name"));
+
+        logoutTestUserByWeb(this.restTemplate, this.port);
+    }
+
+    @Test
+    void testSubmitEditBandPageFailsWhereDatesAreNonsenseIsRequired() {
+        // arrange
+        loginTestUserByWeb(TestUser.TEST_MEMBER, this.restTemplate, this.csrfTokenRepository, this.port);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+        CsrfToken csrfToken = csrfTokenRepository.generateToken(null);
+        headers.add(csrfToken.getHeaderName(), csrfToken.getToken());
+        headers.add("Cookie", SecurityFilter.CSRF_HEADER_NAME + "=" + csrfToken.getToken());
+
+        Optional<RegionDao> northWest = this.regionService.fetchBySlug("north-west");
+        assertTrue(northWest.isPresent());
+
+        MultiValueMap<String, String> map= new LinkedMultiValueMap<>();
+        map.add("startDate", "2001-01-01");
+        map.add("endDate", "2000-01-01");
+        map.add("_csrf", csrfToken.getToken());
+        map.add("_csrf_header", SecurityFilter.CSRF_HEADER_NAME);
+
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
+
+        // act
+        ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/bands/grimethorpe/edit", request, String.class);
+
+        // assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+
+        assertTrue(response.getBody().contains("The end date must be after the start date, if both are specified"));
+
+        logoutTestUserByWeb(this.restTemplate, this.port);
+    }
+
+    @Test
+    void testSubmitEditBandPageFailsWhereSlugIsNotFound() {
+        // arrange
+        loginTestUserByWeb(TestUser.TEST_MEMBER, this.restTemplate, this.csrfTokenRepository, this.port);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+        CsrfToken csrfToken = csrfTokenRepository.generateToken(null);
+        headers.add(csrfToken.getHeaderName(), csrfToken.getToken());
+        headers.add("Cookie", SecurityFilter.CSRF_HEADER_NAME + "=" + csrfToken.getToken());
+
+        MultiValueMap<String, String> map= new LinkedMultiValueMap<>();
+        map.add("name", "Rothwell   Temperance   Band");
+
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
+
+        // act
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.postForEntity("http://localhost:" + port + "/bands/black-dyke/edit", request, String.class));
+
+        // assert
+        assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
+
+        logoutTestUserByWeb(this.restTemplate, this.port);
     }
 
 }
