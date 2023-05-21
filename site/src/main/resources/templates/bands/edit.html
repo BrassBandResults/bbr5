@@ -15,108 +15,61 @@
                 <li th:each="err : ${#fields.errors('*')}" th:text="@{#{${err}}}"></li>
             </ul>
         </div>
-    <table>
-        <tr>
-            <th class="align-top">
-                <label for="name" th:text="#{page.band-edit.name}">Name:</label>
-            </th>
-            <td>
-                <input id="name" type="text" th:field="*{name}" maxlength="100" size="80"/>
-            </td>
-        </tr>
-        <tr>
-            <th class="align-top">
-                <label for="region" th:text="#{page.band-edit.region}">Region:</label>
-            </th>
-            <td>
-                <select id="region" th:field="*{region}">
-                    <option th:each="region : ${Regions}"
-                            th:value="${region.id}"
-                            th:text="#{'region.' + ${region.slug}}">
-                    </option>
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <th class="align-top">
-                <label for="latitude" th:text="#{page.band-edit.latitude}">Latitude:</label>
-            </th>
-            <td>
-                <input id="latitude" type="text" th:field="*{latitude}" maxlength="15" size="30"/>
-            </td>
-        </tr>
-        <tr>
-            <th class="align-top">
-                <label for="longitude" th:text="#{page.band-edit.longitude}">Longitude:</label>
-            </th>
-            <td>
-                <input id="longitude" type="text" th:field="*{longitude}" maxlength="15" size="30"/>
-            </td>
-        </tr>
-        <tr>
-            <th class="align-top">
-                <label for="website" th:text="#{page.band-edit.website}">Website:</label>
-            </th>
-            <td>
-                <input id="website" type="text" th:field="*{website}" maxlength="100" size="80"/>
-            </td>
-        </tr>
-        <tr>
-            <th class="align-top">
-                <label for="twitter" th:text="#{page.band-edit.twitter}">Twitter:</label>
-            </th>
-            <td>
-                <input id="twitter" type="text" th:field="*{twitter}" maxlength="100" size="80"/>
-            </td>
-        </tr>
-        <tr>
-            <th class="align-top">
-                <label for="status" th:text="#{page.band-edit.status}">Status:</label>
-            </th>
-            <td>
-                <select id="status" th:field="*{status}">
-                    <option th:each="state : ${T(uk.co.bbr.services.bands.types.BandStatus).values()}"
-                            th:value="${state.code}"
-                            th:text="#{${state.translationKey}}">
-                    </option>
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <th class="align-top">
-                <label for="startDate" th:text="#{page.band-edit.start-date}">Start date:</label>
-            </th>
-            <td>
-                <input id="startDate" type="date" th:field="*{startDate}"/>
-                <br/><small th:text="#{page.band-edit.hint.start-date}">Band won't be matched with results before this date.</small>
-            </td>
-        </tr>
-        <tr>
-            <th class="align-top">
-                <label for="endDate" th:text="#{page.band-edit.end-date}">End date:</label>
-            </th>
-            <td>
-                <input id="endDate" type="date" th:field="*{endDate}"/>
-                <br/><small th:text="#{page.band-edit.hint.end-date}">Band won't be matched with results after this date.</small>
-            </td>
-        </tr>
-        <tr>
-            <th class="align-top">
-                <label for="notes" th:text="#{page.band-edit.notes}">Notes:</label>
-            </th>
-            <td>
-                <textarea id="notes"  th:field="*{notes}" cols="80" rows="10"></textarea>
-            </td>
-        </tr>
+        <div class="mb-3">
+            <label class="form-label" for="name" th:text="#{page.band-edit.name}">Name:</label>
+            <input id="name" class="form-control" type="text" th:field="*{name}" maxlength="100" size="80"/>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="region" th:text="#{page.band-edit.region}">Region:</label>
+            <select id="region" class="form-control" th:field="*{region}">
+                <option th:each="region : ${Regions}"
+                        th:value="${region.id}"
+                        th:text="#{'region.' + ${region.slug}}">
+                </option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="latitude" th:text="#{page.band-edit.latitude}">Latitude:</label>
+            <input id="latitude" class="form-control" type="text" th:field="*{latitude}" maxlength="15" size="30"/>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="longitude" th:text="#{page.band-edit.longitude}">Longitude:</label>
+            <input id="longitude" class="form-control" type="text" th:field="*{longitude}" maxlength="15" size="30"/>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="website" th:text="#{page.band-edit.website}">Website:</label>
+            <input id="website" class="form-control" type="text" th:field="*{website}" maxlength="100" size="80"/>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="twitter" th:text="#{page.band-edit.twitter}">Twitter:</label>
+            <input id="twitter" class="form-control" type="text" th:field="*{twitter}" maxlength="100" size="80"/>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="status" th:text="#{page.band-edit.status}">Status:</label>
+            <select id="status" class="form-control" th:field="*{status}">
+                <option th:each="state : ${T(uk.co.bbr.services.bands.types.BandStatus).values()}"
+                        th:value="${state.code}"
+                        th:text="#{${state.translationKey}}">
+                </option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="startDate" th:text="#{page.band-edit.start-date}">Start date:</label>
+            <input id="startDate" class="form-control" type="date" th:field="*{startDate}"/>
+            <small class="form-text" th:text="#{page.band-edit.hint.start-date}">Band won't be matched with results before this date.</small>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="endDate" th:text="#{page.band-edit.end-date}">End date:</label>
+            <input id="endDate" class="form-control" type="date" th:field="*{endDate}"/>
+            <small class="form-text" th:text="#{page.band-edit.hint.end-date}">Band won't be matched with results after this date.</small>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="notes" th:text="#{page.band-edit.notes}">Notes:</label>
+            <textarea id="notes" class="form-control" th:field="*{notes}" cols="80" rows="10"></textarea>
+        </div>
 
-        <tr>
-            <td></td>
-            <td>
-                <input type="submit" th:value="#{page.buttons.save-changes}" class="btn btn-success"/>
-                <a th:href="${'/bands/' + Band.slug}" th:text="#{page.buttons.cancel-without-saving}" class="btn btn-light">Cancel wout saving</a>
-            </td>
-        </tr>
-    </table>
+        <input type="submit" th:value="#{page.buttons.save-changes}" class="btn btn-success"/>
+        <a th:href="${'/bands/' + Band.slug}" th:text="#{page.buttons.cancel-without-saving}" class="btn btn-light">Cancel wout saving</a>
     </form>
 </div>
 </body>
