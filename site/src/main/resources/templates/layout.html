@@ -117,12 +117,12 @@
 <div class="clear"></div>
 <br/>
 
-<div class="container pt-1">
+<main class="container pt-1">
 <div layout:fragment="content">
 <h2>Content</h2>
 <p>You'll be wanting to override block content</p>
 </div>
-</div>
+</main>
 
 <br/><br/>
 <footer class="bg-dark text-white pt-2 pb-2" role="contentinfo">
@@ -130,11 +130,12 @@
         <div class="footer-bottom">
             <div id="commentbox" class="container">
                 <br/>
-                <h2>Comments or Corrections?</h2>
-                <p>Is something on this page incorrect?  Tell us what's wrong in the box below and click send.  Include your email address if you like.  If you're including contest results please remember to include the date, and as much detail about the contest as you can (conductor, adjudicators, set test piece etc.).  Don't forget you can always register and add missing results yourself!</p>
+                <h2 th:text="#{page.feedback.header}">Comments and/or Corrections?</h2>
+                <p th:text="#{page.feedback.message}">Is something on this page incorrect?</p>
                 <form action="/feedback/" method="post">
                     <p><textarea class="form-control" name="feedback" rows="4"></textarea>
                         <script>
+                            let ownerUsername = "[[${OwnerUserName}]]";
                             document.write('<input ');
                             document.write('   type="hidden" ');
                             document.write('   name="x_url" ');
@@ -142,7 +143,7 @@
                             document.write('<input ');
                             document.write('   type="hidden" ');
                             document.write('   name="x_owner" ');
-                            document.write('   value="{{OwnerId}}">');
+                            document.write('   value="' + ownerUsername + '">');
                         </script>
                     <noscript> <!-- for non-JavaScript browsers -->
                         Copy the URL in your browser's address bar and paste it here.<br>
@@ -154,7 +155,7 @@
             </div>
         </div>
     </div>
-    <p class="text-center bg-inverse">Copyright © 2023 Brass Band Results &amp; Tim Sawyer, All Rights Reserved</p>
+    <p class="text-center bg-inverse">Copyright © 2023 Brass Band Results &amp;amp; Tim Sawyer, All Rights Reserved</p>
 </footer>
 
 <p class="printonly"><br/><br/>Printed from https://brassbandresults.co.uk/</p>
