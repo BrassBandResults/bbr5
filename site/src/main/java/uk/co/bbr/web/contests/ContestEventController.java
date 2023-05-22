@@ -36,6 +36,7 @@ public class ContestEventController {
 
         model.addAttribute("ContestEvent", contestEvent.get());
         model.addAttribute("EventResults", eventResults);
+        model.addAttribute("OwnerUserName", contestEvent.get().getCreatedBy());
 
         return "contests/events/event";
     }
