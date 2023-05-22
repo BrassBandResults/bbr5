@@ -128,6 +128,11 @@ public class BandServiceImpl implements BandService, SlugTools {
     }
 
     @Override
+    public List<BandPreviousNameDao> findAllPreviousNames(BandDao band) {
+        return this.bandPreviousNameRepository.findAllForBandOrderByName(band.getId());
+    }
+
+    @Override
     public BandDao findMatchingBandByName(String searchBandName, LocalDate dateContext) {
         String bandName = searchBandName.toUpperCase().trim();
         String bandNameLessBand = null;
@@ -376,5 +381,26 @@ public class BandServiceImpl implements BandService, SlugTools {
     @Override
     public List<BandWinnersSqlDto> fetchContestWinningBands() {
         return BandSql.selectWinningBands(this.entityManager);
+    }
+
+    @Override
+    public void showPreviousBandName(BandDao band, Long aliasId) {
+        BandPreviousNameDao previousName = this.bandPreviousNameRepository.fetchByIdForBand(band.getId(), aliasId);
+        previousName.setHidden(false);
+        this.bandPreviousNameRepository.saveAndFlush(previousName);
+    }
+
+    @Override
+    public void hidePreviousBandName(BandDao band, Long aliasId) {
+        BandPreviousNameDao previousName = this.bandPreviousNameRepository.fetchByIdForBand(band.getId(), aliasId);
+        previousName.setHidden(true);
+        this.bandPreviousNameRepository.saveAndFlush(previousName);
+    }
+
+    @Override
+    public void deletePreviousBandName(BandDao band, Long aliasId) {
+        BandPreviousNameDao previousName = this.bandPreviousNameRepository.fetchByIdForBand(band.getId(), aliasId);
+        this.bandPreviousNameRepository.delete(previousName);
+
     }
 }

@@ -46,8 +46,15 @@ public interface BandService {
     Optional<BandPreviousNameDao> aliasExists(BandDao band, String aliasName);
 
     List<BandPreviousNameDao> findVisiblePreviousNames(BandDao band);
+    List<BandPreviousNameDao> findAllPreviousNames(BandDao band);
 
     BandDao findMatchingBandByName(String bandName, LocalDate dateContext);
 
     List<BandWinnersSqlDto> fetchContestWinningBands();
+
+    void showPreviousBandName(BandDao band, Long aliasId);
+
+    void hidePreviousBandName(BandDao band, Long aliasId);
+
+    void deletePreviousBandName(BandDao band, Long aliasId);
 }

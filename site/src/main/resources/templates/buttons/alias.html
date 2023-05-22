@@ -1,0 +1,11 @@
+<span th:fragment="deleteAlias(band, bandAlias)" th:remove="tag">
+    <span th:replace="buttons/button.html :: button(#{page.buttons.delete}, ${'/bands/' + band.slug + '/edit-aliases/' + bandAlias.id + '/delete'})"></span>
+</span>
+
+<span th:fragment="hideAlias(band, bandAlias)" th:remove="tag">
+    <span th:replace="buttons/button.html :: button(#{page.buttons.hide}, ${'/bands/' + band.slug + '/edit-aliases/' + bandAlias.id + '/hide'})"></span>
+</span>
+
+<span th:fragment="showAlias(band, bandAlias)" th:remove="tag">
+    <span th:replace="buttons/button.html :: button(#{page.buttons.show}, ${'/bands/' + band.slug + '/edit-aliases/' + bandAlias.id + '/show'})"></span>
+</span>
