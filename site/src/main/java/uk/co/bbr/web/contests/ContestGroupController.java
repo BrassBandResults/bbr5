@@ -50,7 +50,7 @@ public class ContestGroupController {
     public String contestGroupDetails(Model model, @PathVariable("slug") String groupSlug) {
         Optional<ContestGroupDao> contestGroup = this.contestGroupService.fetchBySlug(groupSlug);
         if (contestGroup.isEmpty()) {
-            throw new NotFoundException("Group with slug " + groupSlug + " not found");
+            throw NotFoundException.groupNotFoundBySlug(groupSlug);
         }
 
         ContestGroupDetailsDto contestGroupDetails = this.contestGroupService.fetchDetail(contestGroup.get());
@@ -65,7 +65,7 @@ public class ContestGroupController {
     public String contestGroupYearDetails(Model model, @PathVariable("slug") String groupSlug) {
         Optional<ContestGroupDao> contestGroup = this.contestGroupService.fetchBySlug(groupSlug);
         if (contestGroup.isEmpty()) {
-            throw new NotFoundException("Group with slug " + groupSlug + " not found");
+            throw NotFoundException.groupNotFoundBySlug(groupSlug);
         }
 
         ContestGroupYearsDetailsDto contestGroupDetails = this.contestGroupService.fetchYearsBySlug(groupSlug);

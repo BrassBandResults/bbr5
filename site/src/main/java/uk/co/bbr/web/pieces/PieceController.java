@@ -26,7 +26,7 @@ public class PieceController {
     public String pieceDetails(Model model, @PathVariable("slug") String slug) {
         Optional<PieceDao> piece = this.pieceService.fetchBySlug(slug);
         if (piece.isEmpty()) {
-            throw new NotFoundException("Piece with slug " + slug + " not found");
+            throw NotFoundException.pieceNotFoundBySlug(slug);
         }
 
         List<PieceAliasDao> pieceAliases = this.pieceService.fetchAlternateNames(piece.get());

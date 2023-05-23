@@ -1,29 +1,29 @@
 <span th:fragment="personLink(person, surnameFirst, showKnownFor)">
-    <span th:if="${person != null}">
+    <span th:if="${person != null}" th:remove="tag">
         <span th:if="${person.slug == 'unknown'}">
             <span class="text-danger">Unknown</span>
         </span>
         <span th:if="${person.slug != 'unknown'}">
-            <span th:if="${surnameFirst}">
+            <span th:if="${surnameFirst}" th:remove="tag">
                 <a th:if="${person != null}" th:href="${'/people/' + person.slug}" th:text="${person.nameSurnameFirst}" class="bbr-person">Childs, Bob</a>
             </span>
-            <span th:if="${!surnameFirst}">
+            <span th:if="${!surnameFirst}" th:remove="tag">
                 <a th:if="${person != null}" th:href="${'/people/' + person.slug}" th:text="${person.name}" class="bbr-person">Bob Childs</a>
             </span>
-            <span th:if="${showKnownFor}">
-                <small th:if="${person.knownFor != null && person.knownFor.length > 0}"><span th:text="${person.knownFor}">Rothwell Temperance</span></small>
+            <span th:if="${showKnownFor}" th:remove="tag">
+                <small th:if="${person.knownFor != null && person.knownFor.length > 0}"><span th:text="${person.knownFor}" th:remove="tag">Rothwell Temperance</span></small>
             </span>
         </span>
     </span>
 </span>
 
 <span th:fragment="conductorsLink(result)">
-    <span th:if="${result != null}">
+    <span th:if="${result != null}" th:remove="tag">
         <span th:replace="links/person-link.html :: personLink(${result.conductor}, false, false)">Bob Childs</span>
-        <span th:if="${result.conductorSecond != null}">
+        <span th:if="${result.conductorSecond != null}" th:remove="tag">
           <br/><span th:replace="links/person-link.html :: personLink(${result.conductorSecond}, false, false)">Bob Childs</span>
         </span>
-        <span th:if="${result.conductorThird != null}">
+        <span th:if="${result.conductorThird != null}" th:remove="tag">
             <br/><span th:replace="links/person-link.html :: personLink(${result.conductorThird}, false, false)">Bob Childs</span>
         </span>
     </span>

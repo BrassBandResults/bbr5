@@ -33,7 +33,7 @@ public class EditBandController {
     public String editBandForm(Model model, @PathVariable("bandSlug") String bandSlug) {
         Optional<BandDao> band = this.bandService.fetchBySlug(bandSlug);
         if (band.isEmpty()) {
-            throw new NotFoundException("Band with slug " + bandSlug + " not found");
+            throw NotFoundException.bandNotFoundBySlug(bandSlug);
         }
 
         BandEditForm bandEditDto = new BandEditForm(band.get());
@@ -52,7 +52,7 @@ public class EditBandController {
     public String editBandSave(Model model, @Valid @ModelAttribute("BandForm") BandEditForm submittedBand, BindingResult bindingResult, @PathVariable("bandSlug") String bandSlug) {
         Optional<BandDao> existingBandOptional = this.bandService.fetchBySlug(bandSlug);
         if (existingBandOptional.isEmpty()) {
-            throw new NotFoundException("Band with slug " + bandSlug + " not found");
+            throw NotFoundException.bandNotFoundBySlug(bandSlug);
         }
 
         submittedBand.validate(bindingResult);
@@ -89,6 +89,6 @@ public class EditBandController {
 
         this.bandService.update(existingBand);
 
-        return "redirect:/bands/" + bandSlug;
+        return "redirect:/bands/{bandSlug}";
     }
 }

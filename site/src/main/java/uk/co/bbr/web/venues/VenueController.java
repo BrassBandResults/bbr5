@@ -29,7 +29,7 @@ public class VenueController {
     public String venue(Model model, @PathVariable("venueSlug") String venueSlug) {
         Optional<VenueDao> venue = this.venueService.fetchBySlug(venueSlug);
         if (venue.isEmpty()) {
-            throw new NotFoundException("Venue with slug " + venueSlug + " not found");
+            throw NotFoundException.venueNotFoundBySlug(venueSlug);
         }
         List<VenueAliasDao> previousNames = this.venueService.fetchAliases(venue.get());
 
@@ -46,11 +46,11 @@ public class VenueController {
     public String venueContest(Model model, @PathVariable("venueSlug") String venueSlug, @PathVariable("contestSlug") String contestSlug) {
         Optional<VenueDao> venue = this.venueService.fetchBySlug(venueSlug);
         if (venue.isEmpty()) {
-            throw new NotFoundException("Venue with slug " + venueSlug + " not found");
+            throw NotFoundException.venueNotFoundBySlug(venueSlug);
         }
         Optional<ContestDao> contest = this.contestService.fetchBySlug(contestSlug);
         if (contest.isEmpty()) {
-            throw new NotFoundException("Contest with slug " + contestSlug + " not found");
+            throw NotFoundException.contestNotFoundBySlug(contestSlug);
         }
 
         List<ContestEventDao> venueContests = this.venueService.fetchVenueContestEvents(venue.get(), contest.get());
@@ -65,7 +65,7 @@ public class VenueController {
     public String venueYears(Model model, @PathVariable("venueSlug") String venueSlug) {
         Optional<VenueDao> venue = this.venueService.fetchBySlug(venueSlug);
         if (venue.isEmpty()) {
-            throw new NotFoundException("Venue with slug " + venueSlug + " not found");
+            throw NotFoundException.venueNotFoundBySlug(venueSlug);
         }
         List<VenueAliasDao> previousNames = this.venueService.fetchAliases(venue.get());
 
@@ -82,7 +82,7 @@ public class VenueController {
     public String venueYearEvents(Model model, @PathVariable("venueSlug") String venueSlug, @PathVariable("year") int year) {
         Optional<VenueDao> venue = this.venueService.fetchBySlug(venueSlug);
         if (venue.isEmpty()) {
-            throw new NotFoundException("Venue with slug " + venueSlug + " not found");
+            throw NotFoundException.venueNotFoundBySlug(venueSlug);
         }
 
         List<ContestEventDao> events = this.venueService.fetchVenueContestYear(venue.get(), year);

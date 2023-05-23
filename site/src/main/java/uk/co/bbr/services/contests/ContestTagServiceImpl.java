@@ -66,7 +66,7 @@ public class ContestTagServiceImpl implements ContestTagService, SlugTools {
     public ContestTagDetailsDto fetchDetailsBySlug(String slug) {
         Optional<ContestTagDao> tag = this.fetchBySlug(slug);
         if (tag.isEmpty()) {
-            throw new NotFoundException("Tag with slug " + slug + " not found");
+            throw NotFoundException.tagNotFoundBySlug(slug);
         }
 
         List<ContestDao> contests = this.contestTagRepository.fetchContestsForTag(slug);

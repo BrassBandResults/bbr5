@@ -39,7 +39,7 @@ public class VenueMigrationServiceImpl extends AbstractMigrationServiceImpl impl
             if (regionSlug != null && regionSlug.trim().length() > 0) {
                 Optional<RegionDao> region = this.regionService.fetchBySlug(regionSlug);
                 if (region.isEmpty()) {
-                    throw new NotFoundException("Region not found " + regionSlug);
+                    throw NotFoundException.regionNotFoundBySlug(regionSlug);
                 }
                 venue.setRegion(region.get());
             }

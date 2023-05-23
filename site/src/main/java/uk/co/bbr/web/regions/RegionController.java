@@ -67,7 +67,7 @@ public class RegionController {
     public String regionLinks(Model model, @PathVariable("regionSlug") String regionSlug) {
         Optional<RegionDao> region = this.regionService.fetchBySlug(regionSlug);
         if (region.isEmpty()) {
-            throw new NotFoundException("Region not found");
+            throw NotFoundException.regionNotFoundBySlug(regionSlug);
         }
 
         List<LinkSectionDto> bandsBySection = this.regionService.findBandsBySection(region.get(), "section.ungraded");
@@ -98,7 +98,7 @@ public class RegionController {
     public ResponseEntity<JsonNode> regionBandsJson(@PathVariable("regionSlug") String regionSlug, @PathVariable("sectionType") String sectionType) {
         Optional<RegionDao> region = this.regionService.fetchBySlug(regionSlug);
         if (region.isEmpty()) {
-            throw new NotFoundException("Region not found");
+            throw NotFoundException.regionNotFoundBySlug(regionSlug);
         }
 
         List<BandDao> bandsForMap = this.regionService.findBandsWithMapLocation(region.get()).stream().filter(t -> t.getSectionType().equals(sectionType)).collect(Collectors.toList());

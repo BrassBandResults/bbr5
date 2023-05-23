@@ -1,10 +1,10 @@
 <span th:fragment="regionLink(region)">
-    <span th:if="${region != null}">
+    <span th:if="${region != null}" th:remove="tag">
         <img th:title="${region.name}" th:src="@{${STATIC_HOST} + '/flags/' + ${region.countryCode} + '.png'}"/>
         <a th:href="${'/regions/' + region.slug}" th:text="${region.name}" class="bbr-region">Region Name</a>
     </span>
 
-    <span th:if="${region == null}">
+    <span th:if="${region == null}" th:remove="tag">
         <img th:src="@{${STATIC_HOST} + '/flags/unknown.png'}"/> Unknown Region
     </span>
 </span>

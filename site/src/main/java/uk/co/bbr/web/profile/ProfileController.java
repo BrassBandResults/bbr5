@@ -22,7 +22,7 @@ public class ProfileController {
 
         Optional<BbrUserDao> user = this.securityService.fetchUserByUsercode(usercode);
         if (user.isEmpty()) {
-            throw new NotFoundException("No user with username " + usercode);
+            throw NotFoundException.userNotFoundByUsercode(usercode);
         }
 
         model.addAttribute("User", user.get());

@@ -29,7 +29,7 @@ public class PersonController {
     public String personConducting(Model model, @PathVariable("slug") String slug) {
         Optional<PersonDao> person = this.personService.fetchBySlug(slug);
         if (person.isEmpty()) {
-            throw new NotFoundException("Person with slug " + slug + " not found");
+            throw NotFoundException.personNotFoundBySlug(slug);
         }
 
         List<PersonAliasDao> previousNames = this.personService.findVisibleAliases(person.get());
@@ -54,7 +54,7 @@ public class PersonController {
     public String personWhitFriday(Model model, @PathVariable("slug") String slug) {
         Optional<PersonDao> person = this.personService.fetchBySlug(slug);
         if (person.isEmpty()) {
-            throw new NotFoundException("Person with slug " + slug + " not found");
+            throw NotFoundException.personNotFoundBySlug(slug);
         }
 
         List<PersonAliasDao> previousNames = this.personService.findVisibleAliases(person.get());
@@ -79,7 +79,7 @@ public class PersonController {
     public String personPieces(Model model, @PathVariable("slug") String slug) {
         Optional<PersonDao> person = this.personService.fetchBySlug(slug);
         if (person.isEmpty()) {
-            throw new NotFoundException("Person with slug " + slug + " not found");
+            throw NotFoundException.personNotFoundBySlug(slug);
         }
 
         List<PersonAliasDao> previousNames = this.personService.findVisibleAliases(person.get());

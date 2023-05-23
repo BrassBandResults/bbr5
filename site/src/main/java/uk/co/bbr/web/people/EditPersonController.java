@@ -31,7 +31,7 @@ public class EditPersonController {
     public String editPersonForm(Model model, @PathVariable("personSlug") String personSlug) {
         Optional<PersonDao> person = this.personService.fetchBySlug(personSlug);
         if (person.isEmpty()) {
-            throw new NotFoundException("Person with slug " + personSlug + " not found");
+            throw NotFoundException.personNotFoundBySlug(personSlug);
         }
 
         PersonEditForm personEditDto = new PersonEditForm(person.get());
@@ -47,7 +47,7 @@ public class EditPersonController {
     public String editPersonSave(Model model, @Valid @ModelAttribute("PersonForm") PersonEditForm submittedPerson, BindingResult bindingResult, @PathVariable("personSlug") String personSlug) {
         Optional<PersonDao> existingPersonOptional = this.personService.fetchBySlug(personSlug);
         if (existingPersonOptional.isEmpty()) {
-            throw new NotFoundException("Person with slug " + personSlug + " not found");
+            throw NotFoundException.personNotFoundBySlug(personSlug);
         }
 
         submittedPerson.validate(bindingResult);
@@ -70,6 +70,6 @@ public class EditPersonController {
 
         this.personService.update(existingPerson);
 
-        return "redirect:/people/" + personSlug;
+        return "redirect:/people/{personSlug}";
     }
 }

@@ -50,7 +50,7 @@ public class ContestMigrationServiceImpl extends AbstractMigrationServiceImpl im
             String groupSlug = groupNode.getAttributeValue("slug");
             Optional<ContestGroupDao> group = this.contestGroupService.fetchBySlug(groupSlug);
             if (group.isEmpty()) {
-                throw new NotFoundException("Group with slug " + groupSlug + " not found");
+                throw NotFoundException.groupNotFoundBySlug(groupSlug);
             }
             contest.setContestGroup(group.get());
         }

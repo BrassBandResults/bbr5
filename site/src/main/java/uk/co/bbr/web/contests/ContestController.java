@@ -31,7 +31,7 @@ public class ContestController {
         Optional<ContestDao> contest = this.contestService.fetchBySlug(contestSlug);
 
         if (contest.isEmpty()) {
-            throw new NotFoundException("Contest with slug " + contestSlug + " not found");
+            throw NotFoundException.contestNotFoundBySlug(contestSlug);
         }
 
         List<ContestEventDao> futureEventsForContest = this.contestEventService.fetchFutureEventsForContest(contest.get());
@@ -53,7 +53,7 @@ public class ContestController {
         Optional<ContestDao> contest = this.contestService.fetchBySlug(contestSlug);
 
         if (contest.isEmpty()) {
-            throw new NotFoundException("Contest with slug " + contestSlug + " not found");
+            throw NotFoundException.contestNotFoundBySlug(contestSlug);
         }
 
         List<ContestResultPieceDao> resultsWithOwnChoicePieces = this.contestResultService.fetchResultsWithOwnChoicePieces(contest.get());
@@ -71,7 +71,7 @@ public class ContestController {
         Optional<ContestDao> contest = this.contestService.fetchBySlug(contestSlug);
 
         if (contest.isEmpty()) {
-            throw new NotFoundException("Contest with slug " + contestSlug + " not found");
+            throw NotFoundException.contestNotFoundBySlug(contestSlug);
         }
 
         List<ContestWinsSqlDto> wins = this.contestResultService.fetchWinsCounts(contest.get());

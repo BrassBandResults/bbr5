@@ -1,12 +1,12 @@
 <span th:fragment="pieceLink(piece)">
-   <span th:if="${piece != null}">
+   <span th:if="${piece != null}" th:remove="tag">
         <a th:href="${'/pieces/' + piece.slug}" th:text="${piece.name}" class="bbr-piece">Piece Name</a>
         <small><small th:text="${piece.year}">1990</small></small>
     </span>
 </span>
 
 <span th:fragment="pieceLinkNoYear(piece)">
-    <span th:if="${piece != null}">
+    <span th:if="${piece != null}" th:remove="tag">
         <a th:href="${'/pieces/' + piece.slug}" th:text="${piece.name}" class="bbr-piece">Piece Name</a>
     </span>
 </span>
@@ -15,7 +15,7 @@
     <span th:if="${result.pieces.size > 0}" th:each="resultPiece : ${result.pieces}">
         <span th:replace="links/piece-link.html :: pieceLink(${resultPiece.piece})"></span><br/>
     </span>
-    <span th:if="${result.pieces.size == 0}">
+    <span th:if="${result.pieces.size == 0}" th:remove="tag">
         <span th:each="contestEventPiece : ${result.contestEvent.pieces}">
             <span th:replace="links/piece-link.html :: pieceLink(${contestEventPiece.piece})"></span>
         </span>

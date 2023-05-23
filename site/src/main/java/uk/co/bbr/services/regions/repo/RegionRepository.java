@@ -25,7 +25,6 @@ public interface RegionRepository  extends JpaRepository<RegionDao, Long> {
     List<BandDao> findActiveBandsBySection(Long regionId);
 
     @Query("SELECT b FROM BandDao b " +
-            "LEFT OUTER JOIN b.section s " +
             "INNER JOIN b.region r " +
             "WHERE r.slug = ?1 ORDER BY b.name")
     List<BandDao> findBandsForRegion(String regionSlug);

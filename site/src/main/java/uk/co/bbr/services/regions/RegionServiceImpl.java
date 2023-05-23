@@ -51,7 +51,7 @@ public class RegionServiceImpl implements RegionService, SlugTools {
     public RegionPageDto fetchBySlugForPage(String regionSlug) {
         Optional<RegionDao> region = this.regionRepository.fetchBySlug(regionSlug);
         if (region.isEmpty()) {
-            throw new NotFoundException("Region with slug " + regionSlug + " not found");
+            throw NotFoundException.regionNotFoundBySlug(regionSlug);
         }
 
         List<BandDao> bandsForThisRegion = this.regionRepository.findBandsForRegion(regionSlug);

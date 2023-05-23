@@ -1,17 +1,17 @@
 <span th:fragment="bandLink(band, showFlag, showDateRange)">
-    <span th:if="${band != null}">
+    <span th:if="${band != null}" th:remove="tag">
         <img th:if="${showFlag}" th:title="${band.region.name}" th:src="@{${STATIC_HOST} + '/flags/' + ${band.region.countryCode} + '.png'}"/>
         <a th:href="${'/bands/' + band.slug}" th:text="${band.name}" class="bbr-band">Band Name</a>
-        <small><small th:if="${showDateRange && band.dateRange.length > 0}"><span th:text="${band.dateRange}">1950-2000</span></small></small>
+        <small th:if="${showDateRange && band.dateRange.length > 0}"><small><span th:text="${band.dateRange}" th:remove="tag">1950-2000</span></small></small>
     </span>
 </span>
 
 <span th:fragment="bandLinkWithOverride(result)">
-    <span th:if="${result != null}">
-        <span th:if="${result.contestEvent != null && result.contestEvent.noContest}">
+    <span th:if="${result != null}" th:remove="tag">
+        <span th:if="${result.contestEvent != null && result.contestEvent.noContest}" th:remove="tag">
             <span class="text-primary" th:text="#{no-contest-took-place}">No Contest Took Place</span>
         </span>
-        <span th:if="${result.band != null && result.band.slug != null }">
+        <span th:if="${result.band != null && result.band.slug != null }" th:remove="tag">
             <img th:if="${result.band.region != null}" th:title="${result.band.region.name}" th:src="@{${STATIC_HOST} + '/flags/' + ${result.band.region.countryCode} + '.png'}"/>
             <a th:href="${'/bands/' + result.band.slug}" th:text="${result.bandName}" class="bbr-band" th:title="${result.band.name}">Band Name</a>
         </span>

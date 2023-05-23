@@ -198,7 +198,7 @@ public class ContestGroupServiceImpl implements ContestGroupService, SlugTools {
     public ContestGroupDetailsDto fetchDetail(ContestGroupDao contestGroup) {
         Optional<ContestGroupDao> matchingContestGroup = this.contestGroupRepository.fetchBySlug(contestGroup.getSlug().toUpperCase());
         if (matchingContestGroup.isEmpty()) {
-            throw new NotFoundException("Group with slug " + contestGroup.getSlug() + " not found");
+            throw NotFoundException.groupNotFoundBySlug(contestGroup.getSlug());
         }
 
         List<ContestDao> activeContests = this.contestGroupRepository.fetchActiveContestsForGroup(matchingContestGroup.get().getId());
@@ -211,7 +211,7 @@ public class ContestGroupServiceImpl implements ContestGroupService, SlugTools {
     public ContestGroupYearsDetailsDto fetchYearsBySlug(String groupSlug) {
         Optional<ContestGroupDao> contestGroup = this.contestGroupRepository.fetchBySlug(groupSlug.toUpperCase());
         if (contestGroup.isEmpty()) {
-            throw new NotFoundException("Group with slug " + groupSlug + " not found");
+            throw NotFoundException.groupNotFoundBySlug(groupSlug);
         }
 
         List<ContestEventDao> events = this.contestGroupRepository.fetchEventsForGroupOrderByEventDate(contestGroup.get().getId());
@@ -237,7 +237,7 @@ public class ContestGroupServiceImpl implements ContestGroupService, SlugTools {
     public ContestGroupYearDto fetchEventsByGroupSlugAndYear(String groupSlug, Integer year) {
         Optional<ContestGroupDao> contestGroup = this.contestGroupRepository.fetchBySlug(groupSlug.toUpperCase());
         if (contestGroup.isEmpty()) {
-            throw new NotFoundException("Group with slug " + groupSlug + " not found");
+            throw NotFoundException.groupNotFoundBySlug(groupSlug);
         }
         List<ContestEventDao> eventsForYear = this.contestGroupRepository.selectByGroupSlugAndYear(contestGroup.get().getId(), year);
 

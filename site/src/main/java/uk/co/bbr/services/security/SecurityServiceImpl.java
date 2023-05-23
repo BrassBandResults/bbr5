@@ -107,7 +107,7 @@ public class SecurityServiceImpl implements SecurityService {
     public void makeUserAdmin(String usercode) {
         Optional<BbrUserDao> matchingUserOptional = this.bbrUserRepository.fetchByUsercode(usercode);
         if (matchingUserOptional.isEmpty()){
-            throw new NotFoundException("User " + usercode + " not found");
+            throw NotFoundException.userNotFoundByUsercode(usercode);
         }
 
         BbrUserDao matchingUser = matchingUserOptional.get();
@@ -120,7 +120,7 @@ public class SecurityServiceImpl implements SecurityService {
     public void makeUserPro(String usercode) {
         Optional<BbrUserDao> matchingUserOptional = this.bbrUserRepository.fetchByUsercode(usercode);
         if (matchingUserOptional.isEmpty()){
-            throw new NotFoundException("User " + usercode + " not found");
+            throw NotFoundException.userNotFoundByUsercode(usercode);
         }
 
         BbrUserDao matchingUser = matchingUserOptional.get();
@@ -133,7 +133,7 @@ public class SecurityServiceImpl implements SecurityService {
     public void makeUserSuperuser(String usercode) {
         Optional<BbrUserDao> matchingUserOptional = this.bbrUserRepository.fetchByUsercode(usercode);
         if (matchingUserOptional.isEmpty()){
-            throw new NotFoundException("User " + usercode + " not found");
+            throw NotFoundException.userNotFoundByUsercode(usercode);
         }
 
         BbrUserDao matchingUser = matchingUserOptional.get();
