@@ -19,6 +19,7 @@ import uk.co.bbr.services.bands.sql.BandSql;
 import uk.co.bbr.services.bands.sql.dto.BandWinnersSqlDto;
 import uk.co.bbr.services.bands.types.BandStatus;
 import uk.co.bbr.services.bands.types.RehearsalDay;
+import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.framework.mixins.SlugTools;
 import uk.co.bbr.services.framework.ValidationException;
 import uk.co.bbr.services.regions.RegionService;
@@ -386,6 +387,9 @@ public class BandServiceImpl implements BandService, SlugTools {
     @Override
     public void showPreviousBandName(BandDao band, Long aliasId) {
         BandPreviousNameDao previousName = this.bandPreviousNameRepository.fetchByIdForBand(band.getId(), aliasId);
+        if (previousName == null) {
+            throw NotFoundException.bandAliasNotFoundByIds(band.getSlug(), aliasId);
+        }
         previousName.setHidden(false);
         this.bandPreviousNameRepository.saveAndFlush(previousName);
     }
@@ -393,6 +397,9 @@ public class BandServiceImpl implements BandService, SlugTools {
     @Override
     public void hidePreviousBandName(BandDao band, Long aliasId) {
         BandPreviousNameDao previousName = this.bandPreviousNameRepository.fetchByIdForBand(band.getId(), aliasId);
+        if (previousName == null) {
+            throw NotFoundException.bandAliasNotFoundByIds(band.getSlug(), aliasId);
+        }
         previousName.setHidden(true);
         this.bandPreviousNameRepository.saveAndFlush(previousName);
     }
@@ -400,6 +407,9 @@ public class BandServiceImpl implements BandService, SlugTools {
     @Override
     public void deletePreviousBandName(BandDao band, Long aliasId) {
         BandPreviousNameDao previousName = this.bandPreviousNameRepository.fetchByIdForBand(band.getId(), aliasId);
+        if (previousName == null) {
+            throw NotFoundException.bandAliasNotFoundByIds(band.getSlug(), aliasId);
+        }
         this.bandPreviousNameRepository.delete(previousName);
 
     }

@@ -54,4 +54,8 @@ public class NotFoundException extends RuntimeException {
     public static NotFoundException eventNotFound(String contestSlug, String contestEventDate) {
         return new NotFoundException("Event with slug " + contestSlug + " and date " + contestEventDate + " not found");
     }
+
+    public static NotFoundException bandAliasNotFoundByIds(String bandSlug, long aliasId) {
+        return new NotFoundException("Alias with id " + aliasId + " not found for band with slug " + bandSlug);
+    }
 }

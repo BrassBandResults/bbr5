@@ -62,6 +62,7 @@ class BandAliasWebTests implements LoginMixin {
 
         RegionDao yorkshire = this.regionService.fetchBySlug("yorkshire").get();
 
+        // band with two aliases
         BandDao rtb = this.bandService.create("Rothwell Temperance Band", yorkshire);
         BandPreviousNameDao bandPreviousName1 = new BandPreviousNameDao();
         bandPreviousName1.setOldName("Visible");
@@ -72,6 +73,9 @@ class BandAliasWebTests implements LoginMixin {
         bandPreviousName2.setOldName("Hidden");
         bandPreviousName2.setHidden(true);
         this.bandService.createPreviousName(rtb, bandPreviousName2);
+
+        // band with no aliases
+        this.bandService.create("Black Dyke", yorkshire);
 
         logoutTestUser();
     }
@@ -129,6 +133,12 @@ class BandAliasWebTests implements LoginMixin {
     }
 
     @Test
+    void testHideAliasesWithInvalidAliasIdFailsAsExpected() {
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/rothwell-temperance-band/edit-aliases/999/hide", String.class));
+        assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
+    }
+
+    @Test
     void testShowAliasWorksSuccessfully() {
         Optional<BandDao> rtb = this.bandService.fetchBySlug("rothwell-temperance-band");
 
@@ -159,6 +169,50 @@ class BandAliasWebTests implements LoginMixin {
     @Test
     void testShowAliasesWithInvalidBandSlugFailsAsExpected() {
         HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/not-a-real-band/edit-aliases/1/show", String.class));
+        assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
+    }
+
+    @Test
+    void testShowAliasesWithInvalidAliasIdFailsAsExpected() {
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/rothwell-temperance-band/edit-aliases/999/show", String.class));
+        assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
+    }
+
+    @Test
+    void testDeleteAliasWorksSuccessfully() throws AuthenticationFailedException {
+        loginTestUser(this.securityService, this.jwtService, TestUser.TEST_MEMBER);
+
+        Optional<BandDao> noAliasBand = this.bandService.fetchBySlug("black-dyke");
+        assertTrue(noAliasBand.isPresent());
+
+        List<BandPreviousNameDao> fetchedAliases1 = this.bandService.findAllPreviousNames(noAliasBand.get());
+        assertEquals(0, fetchedAliases1.size());
+
+        BandPreviousNameDao previousName = new BandPreviousNameDao();
+        previousName.setOldName("Old Name To Delete");
+        BandPreviousNameDao newAlias = this.bandService.createPreviousName(noAliasBand.get(), previousName);
+
+        List<BandPreviousNameDao> fetchedAliases2 = this.bandService.findAllPreviousNames(noAliasBand.get());
+        assertEquals(1, fetchedAliases2.size());
+
+        logoutTestUser();
+
+        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/black-dyke/edit-aliases/" + newAlias.getId() + "/delete", String.class);
+        assertNotNull(response);
+
+        List<BandPreviousNameDao> fetchedAliases3 = this.bandService.findAllPreviousNames(noAliasBand.get());
+        assertEquals(0, fetchedAliases3.size());
+    }
+
+    @Test
+    void testDeleteAliasWithInvalidBandSlugFailsAsExpected() {
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/not-a-real-band/edit-aliases/1/delete", String.class));
+        assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
+    }
+
+    @Test
+    void testDeleteAliasWithInvalidAliasIdFailsAsExpected() {
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/rothwell-temperance-band/edit-aliases/999/delete", String.class));
         assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
     }
 }
