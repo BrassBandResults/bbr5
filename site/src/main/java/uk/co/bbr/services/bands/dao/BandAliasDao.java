@@ -3,6 +3,7 @@ package uk.co.bbr.services.bands.dao;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import uk.co.bbr.services.contests.types.ContestEventDateResolution;
 import uk.co.bbr.services.framework.AbstractDao;
 import uk.co.bbr.services.framework.mixins.NameTools;
 
@@ -13,12 +14,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @Getter
 @Entity
 @NoArgsConstructor
 @Table(name="band_previous_name")
-public class BandPreviousNameDao extends AbstractDao implements NameTools {
+public class BandAliasDao extends AbstractDao implements NameTools {
 
     @ManyToOne(fetch=FetchType.EAGER, optional=false)
     @JoinColumn(name="band_id")
@@ -61,5 +63,25 @@ public class BandPreviousNameDao extends AbstractDao implements NameTools {
         }
 
         return returnString.toString();
+    }
+
+    public String getStartDateDisplay() {
+        if (this.startDate == null) {
+            return "";
+        }
+
+        String dateFormat = "dd MMM yyyy";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(dateFormat);
+        return this.startDate.format(formatter);
+    }
+
+    public String getEndDateDisplay() {
+        if (this.endDate == null) {
+            return "";
+        }
+
+        String dateFormat = "dd MMM yyyy";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(dateFormat);
+        return this.endDate.format(formatter);
     }
 }

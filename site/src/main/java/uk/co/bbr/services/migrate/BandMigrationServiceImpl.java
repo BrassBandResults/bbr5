@@ -1,26 +1,16 @@
 package uk.co.bbr.services.migrate;
 
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
-import org.jdom2.Document;
 import org.jdom2.Element;
-import org.jdom2.JDOMException;
-import org.jdom2.input.SAXBuilder;
 import org.springframework.stereotype.Service;
+import uk.co.bbr.services.bands.BandAliasService;
 import uk.co.bbr.services.bands.BandService;
 import uk.co.bbr.services.bands.dao.BandDao;
-import uk.co.bbr.services.bands.dao.BandPreviousNameDao;
+import uk.co.bbr.services.bands.dao.BandAliasDao;
 import uk.co.bbr.services.bands.dao.BandRelationshipDao;
 import uk.co.bbr.services.bands.types.BandStatus;
 import uk.co.bbr.services.bands.types.RehearsalDay;
-import uk.co.bbr.services.contests.ContestService;
-import uk.co.bbr.services.contests.ContestTypeService;
-import uk.co.bbr.services.contests.dao.ContestAliasDao;
-import uk.co.bbr.services.contests.dao.ContestDao;
-import uk.co.bbr.services.contests.repo.ContestAliasRepository;
-import uk.co.bbr.services.contests.repo.ContestRepository;
 import uk.co.bbr.services.framework.NotFoundException;
-import uk.co.bbr.services.framework.ValidationException;
 import uk.co.bbr.services.framework.annotations.IgnoreCoverage;
 import uk.co.bbr.services.framework.mixins.SlugTools;
 import uk.co.bbr.services.regions.RegionService;
@@ -28,13 +18,8 @@ import uk.co.bbr.services.regions.dao.RegionDao;
 import uk.co.bbr.services.sections.SectionService;
 import uk.co.bbr.services.sections.dao.SectionDao;
 import uk.co.bbr.services.security.SecurityService;
-import uk.co.bbr.web.security.annotations.IsBbrAdmin;
-import uk.co.bbr.web.security.annotations.IsBbrMember;
 
-import java.io.File;
-import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,6 +30,7 @@ public class BandMigrationServiceImpl extends AbstractMigrationServiceImpl imple
 
     private final RegionService regionService;
     private final BandService bandService;
+    private final BandAliasService bandAliasService;
     private final SectionService sectionService;
     private final SecurityService securityService;
 
@@ -117,9 +103,9 @@ public class BandMigrationServiceImpl extends AbstractMigrationServiceImpl imple
         String name = oldNameElement.getChildText("name");
         // does it already exist?
 
-        Optional<BandPreviousNameDao> existingAlias = this.bandService.aliasExists(band, name);
+        Optional<BandAliasDao> existingAlias = this.bandAliasService.aliasExists(band, name);
         if (existingAlias.isEmpty()) {
-            BandPreviousNameDao previousName = new BandPreviousNameDao();
+            BandAliasDao previousName = new BandAliasDao();
             previousName.setCreatedBy(this.createUser(this.notBlank(oldNameElement, "owner"), this.securityService));
             previousName.setUpdatedBy(this.createUser(this.notBlank(oldNameElement, "lastChangedBy"), this.securityService));
             previousName.setCreated(this.notBlankDateTime(oldNameElement, "created"));
@@ -136,7 +122,7 @@ public class BandMigrationServiceImpl extends AbstractMigrationServiceImpl imple
                 previousName.setUpdatedBy(band.getUpdatedBy());
             }
 
-            this.bandService.migratePreviousName(band, previousName);
+            this.bandAliasService.migrateAlias(band, previousName);
         }
     }
 

@@ -1,19 +1,12 @@
 package uk.co.bbr.services.bands;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import uk.co.bbr.services.bands.dao.BandDao;
-import uk.co.bbr.services.bands.dao.BandPreviousNameDao;
-import uk.co.bbr.services.bands.dao.BandRelationshipDao;
-import uk.co.bbr.services.bands.types.BandStatus;
+import uk.co.bbr.services.bands.dao.BandAliasDao;
 import uk.co.bbr.services.framework.ValidationException;
-import uk.co.bbr.services.regions.RegionService;
-import uk.co.bbr.services.regions.dao.RegionDao;
-import uk.co.bbr.services.sections.SectionService;
 import uk.co.bbr.services.security.JwtService;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.services.security.ex.AuthenticationFailedException;
@@ -32,8 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @SpringBootTest(properties = { "spring.config.name=band-alt-name-tests-h2", "spring.datasource.url=jdbc:h2:mem:band-alt-name-tests-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE", "spring.jpa.database-platform=org.hibernate.dialect.SQLServerDialect"})
 class BandPreviousNameTests implements LoginMixin {
     @Autowired private BandService bandService;
-    @Autowired private SectionService sectionService;
-    @Autowired private RegionService regionService;
+    @Autowired private BandAliasService bandAliasService;
     @Autowired private SecurityService securityService;
     @Autowired private JwtService jwtService;
 
@@ -43,11 +35,11 @@ class BandPreviousNameTests implements LoginMixin {
         loginTestUser(this.securityService, this.jwtService, TestUser.TEST_MEMBER);
 
         BandDao band = this.bandService.create("Rothwell Temperance 1");
-        BandPreviousNameDao newPreviousName = new BandPreviousNameDao();
+        BandAliasDao newPreviousName = new BandAliasDao();
         newPreviousName.setOldName("Rothwell Temperance B Band");
 
         // act
-        BandPreviousNameDao previousName = this.bandService.createPreviousName(band, newPreviousName);
+        BandAliasDao previousName = this.bandAliasService.createAlias(band, newPreviousName);
 
         // assert
         assertEquals("Rothwell Temperance 1", previousName.getBand().getName());
@@ -65,14 +57,14 @@ class BandPreviousNameTests implements LoginMixin {
         loginTestUser(this.securityService, this.jwtService, TestUser.TEST_MEMBER);
 
         BandDao band = this.bandService.create("Rothwell Temperance 2");
-        BandPreviousNameDao newPreviousName = new BandPreviousNameDao();
+        BandAliasDao newPreviousName = new BandAliasDao();
         newPreviousName.setOldName("Rothwell Temperance B Band");
         newPreviousName.setStartDate(LocalDate.of(2020, 1, 1));
         newPreviousName.setEndDate(LocalDate.of(2022, 12, 31));
         newPreviousName.setHidden(true);
 
         // act
-        BandPreviousNameDao previousName = this.bandService.createPreviousName(band, newPreviousName);
+        BandAliasDao previousName = this.bandAliasService.createAlias(band, newPreviousName);
 
         // assert
         assertEquals("Rothwell Temperance 2", previousName.getBand().getName());
@@ -90,14 +82,14 @@ class BandPreviousNameTests implements LoginMixin {
         loginTestUser(this.securityService, this.jwtService, TestUser.TEST_MEMBER);
 
         BandDao band = this.bandService.create("Rothwell Temperance 3");
-        BandPreviousNameDao newPreviousName = new BandPreviousNameDao();
+        BandAliasDao newPreviousName = new BandAliasDao();
         newPreviousName.setOldName("Rothwell Temperance B Band");
         newPreviousName.setStartDate(LocalDate.of(2020, 1, 2));
         newPreviousName.setEndDate(LocalDate.of(2020, 1, 1));
         newPreviousName.setHidden(true);
 
         // act
-        ValidationException ex = assertThrows(ValidationException.class, () -> this.bandService.createPreviousName(band, newPreviousName));
+        ValidationException ex = assertThrows(ValidationException.class, () -> this.bandAliasService.createAlias(band, newPreviousName));
 
         // assert
         assertEquals("Start date can't be after end date", ex.getMessage());

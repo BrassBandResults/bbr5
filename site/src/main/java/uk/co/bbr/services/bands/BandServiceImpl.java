@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import uk.co.bbr.services.bands.dao.BandDao;
-import uk.co.bbr.services.bands.dao.BandPreviousNameDao;
 import uk.co.bbr.services.bands.dao.BandRehearsalDayDao;
 import uk.co.bbr.services.bands.dao.BandRelationshipDao;
 import uk.co.bbr.services.bands.dao.BandRelationshipTypeDao;
@@ -19,7 +18,6 @@ import uk.co.bbr.services.bands.sql.BandSql;
 import uk.co.bbr.services.bands.sql.dto.BandWinnersSqlDto;
 import uk.co.bbr.services.bands.types.BandStatus;
 import uk.co.bbr.services.bands.types.RehearsalDay;
-import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.framework.mixins.SlugTools;
 import uk.co.bbr.services.framework.ValidationException;
 import uk.co.bbr.services.regions.RegionService;
@@ -115,22 +113,6 @@ public class BandServiceImpl implements BandService, SlugTools {
         band.setUpdated(LocalDateTime.now());
         band.setUpdatedBy(this.securityService.getCurrentUsername());
         return this.bandRepository.saveAndFlush(band);
-    }
-
-    @Override
-    public Optional<BandPreviousNameDao> aliasExists(BandDao band, String aliasName) {
-        String name = band.simplifyBandName(aliasName);
-        return this.bandPreviousNameRepository.fetchByNameForBand(band.getId(), name);
-    }
-
-    @Override
-    public List<BandPreviousNameDao> findVisiblePreviousNames(BandDao band) {
-        return this.bandPreviousNameRepository.findVisibleForBandOrderByName(band.getId());
-    }
-
-    @Override
-    public List<BandPreviousNameDao> findAllPreviousNames(BandDao band) {
-        return this.bandPreviousNameRepository.findAllForBandOrderByName(band.getId());
     }
 
     @Override
@@ -308,34 +290,6 @@ public class BandServiceImpl implements BandService, SlugTools {
     }
 
     @Override
-    @IsBbrMember
-    public BandPreviousNameDao createPreviousName(BandDao band, BandPreviousNameDao previousName) {
-        return createPreviousName(band, previousName, false);
-    }
-
-    @Override
-    @IsBbrAdmin
-    public BandPreviousNameDao migratePreviousName(BandDao band, BandPreviousNameDao previousName) {
-        return createPreviousName(band, previousName, true);
-    }
-
-    private BandPreviousNameDao createPreviousName(BandDao band, BandPreviousNameDao previousName, boolean migrating) {
-        previousName.setBand(band);
-
-        if (previousName.getStartDate() != null && previousName.getEndDate() != null && previousName.getStartDate().isAfter(previousName.getEndDate())) {
-            throw new ValidationException("Start date can't be after end date");
-        }
-
-        if (!migrating) {
-            previousName.setCreated(LocalDateTime.now());
-            previousName.setCreatedBy(this.securityService.getCurrentUsername());
-            previousName.setUpdated(LocalDateTime.now());
-            previousName.setUpdatedBy(this.securityService.getCurrentUsername());
-        }
-        return this.bandPreviousNameRepository.saveAndFlush(previousName);
-    }
-
-    @Override
     public BandRelationshipTypeDao fetchIsParentOfRelationship() {
         return this.bandRelationshipTypeRepository.fetchIsParentOfRelationship();
     }
@@ -382,35 +336,5 @@ public class BandServiceImpl implements BandService, SlugTools {
     @Override
     public List<BandWinnersSqlDto> fetchContestWinningBands() {
         return BandSql.selectWinningBands(this.entityManager);
-    }
-
-    @Override
-    public void showPreviousBandName(BandDao band, Long aliasId) {
-        BandPreviousNameDao previousName = this.bandPreviousNameRepository.fetchByIdForBand(band.getId(), aliasId);
-        if (previousName == null) {
-            throw NotFoundException.bandAliasNotFoundByIds(band.getSlug(), aliasId);
-        }
-        previousName.setHidden(false);
-        this.bandPreviousNameRepository.saveAndFlush(previousName);
-    }
-
-    @Override
-    public void hidePreviousBandName(BandDao band, Long aliasId) {
-        BandPreviousNameDao previousName = this.bandPreviousNameRepository.fetchByIdForBand(band.getId(), aliasId);
-        if (previousName == null) {
-            throw NotFoundException.bandAliasNotFoundByIds(band.getSlug(), aliasId);
-        }
-        previousName.setHidden(true);
-        this.bandPreviousNameRepository.saveAndFlush(previousName);
-    }
-
-    @Override
-    public void deletePreviousBandName(BandDao band, Long aliasId) {
-        BandPreviousNameDao previousName = this.bandPreviousNameRepository.fetchByIdForBand(band.getId(), aliasId);
-        if (previousName == null) {
-            throw NotFoundException.bandAliasNotFoundByIds(band.getSlug(), aliasId);
-        }
-        this.bandPreviousNameRepository.delete(previousName);
-
     }
 }

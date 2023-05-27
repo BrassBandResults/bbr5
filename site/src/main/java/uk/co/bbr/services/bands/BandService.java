@@ -1,7 +1,6 @@
 package uk.co.bbr.services.bands;
 
 import uk.co.bbr.services.bands.dao.BandDao;
-import uk.co.bbr.services.bands.dao.BandPreviousNameDao;
 import uk.co.bbr.services.bands.dao.BandRelationshipDao;
 import uk.co.bbr.services.bands.dao.BandRelationshipTypeDao;
 import uk.co.bbr.services.bands.dto.BandListDto;
@@ -33,9 +32,6 @@ public interface BandService {
 
     Optional<BandDao> fetchBandByOldId(String bandOldId);
 
-    BandPreviousNameDao createPreviousName(BandDao band, BandPreviousNameDao previousName);
-    BandPreviousNameDao migratePreviousName(BandDao band, BandPreviousNameDao previousName);
-
     BandRelationshipTypeDao fetchIsParentOfRelationship();
 
     BandRelationshipDao saveRelationship(BandRelationshipDao relationship);
@@ -43,18 +39,7 @@ public interface BandService {
 
     BandDao update(BandDao band);
 
-    Optional<BandPreviousNameDao> aliasExists(BandDao band, String aliasName);
-
-    List<BandPreviousNameDao> findVisiblePreviousNames(BandDao band);
-    List<BandPreviousNameDao> findAllPreviousNames(BandDao band);
-
     BandDao findMatchingBandByName(String bandName, LocalDate dateContext);
 
     List<BandWinnersSqlDto> fetchContestWinningBands();
-
-    void showPreviousBandName(BandDao band, Long aliasId);
-
-    void hidePreviousBandName(BandDao band, Long aliasId);
-
-    void deletePreviousBandName(BandDao band, Long aliasId);
 }

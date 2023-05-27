@@ -9,3 +9,7 @@
 <span th:fragment="showAlias(band, bandAlias)" th:remove="tag">
     <span th:replace="buttons/button.html :: button(#{page.buttons.show}, ${'/bands/' + band.slug + '/edit-aliases/' + bandAlias.id + '/show'})"></span>
 </span>
+
+<span th:fragment="editAlias(band, bandAlias)" th:remove="tag">
+    <span th:replace="buttons/button.html :: button(#{page.buttons.edit-dates}, ${'/bands/' + band.slug + '/edit-aliases/' + bandAlias.id + '/edit-dates'})"></span>
+</span>

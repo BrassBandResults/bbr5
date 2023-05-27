@@ -18,17 +18,10 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
+import uk.co.bbr.services.bands.BandAliasService;
 import uk.co.bbr.services.bands.BandService;
 import uk.co.bbr.services.bands.dao.BandDao;
-import uk.co.bbr.services.bands.dao.BandPreviousNameDao;
-import uk.co.bbr.services.contests.ContestEventService;
-import uk.co.bbr.services.contests.ContestResultService;
-import uk.co.bbr.services.contests.ContestService;
-import uk.co.bbr.services.contests.dao.ContestDao;
-import uk.co.bbr.services.contests.dao.ContestEventDao;
-import uk.co.bbr.services.contests.types.ContestEventDateResolution;
-import uk.co.bbr.services.people.PersonService;
-import uk.co.bbr.services.people.dao.PersonDao;
+import uk.co.bbr.services.bands.dao.BandAliasDao;
 import uk.co.bbr.services.regions.RegionService;
 import uk.co.bbr.services.regions.dao.RegionDao;
 import uk.co.bbr.services.security.JwtService;
@@ -38,7 +31,6 @@ import uk.co.bbr.web.LoginMixin;
 import uk.co.bbr.web.security.filter.SecurityFilter;
 import uk.co.bbr.web.security.support.TestUser;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -59,6 +51,7 @@ class BandAliasWebTests implements LoginMixin {
     @Autowired private JwtService jwtService;
     @Autowired private RegionService regionService;
     @Autowired private BandService bandService;
+    @Autowired private BandAliasService bandAliasService;
     @Autowired private CsrfTokenRepository csrfTokenRepository;
     @Autowired private RestTemplate restTemplate;
     @LocalServerPort private int port;
@@ -71,15 +64,15 @@ class BandAliasWebTests implements LoginMixin {
 
         // band with two aliases
         BandDao rtb = this.bandService.create("Rothwell Temperance Band", yorkshire);
-        BandPreviousNameDao bandPreviousName1 = new BandPreviousNameDao();
+        BandAliasDao bandPreviousName1 = new BandAliasDao();
         bandPreviousName1.setOldName("Visible");
         bandPreviousName1.setHidden(false);
-        this.bandService.createPreviousName(rtb, bandPreviousName1);
+        this.bandAliasService.createAlias(rtb, bandPreviousName1);
 
-        BandPreviousNameDao bandPreviousName2 = new BandPreviousNameDao();
+        BandAliasDao bandPreviousName2 = new BandAliasDao();
         bandPreviousName2.setOldName("Hidden");
         bandPreviousName2.setHidden(true);
-        this.bandService.createPreviousName(rtb, bandPreviousName2);
+        this.bandAliasService.createAlias(rtb, bandPreviousName2);
 
         // band with no aliases
         this.bandService.create("Black Dyke", yorkshire);
@@ -110,8 +103,8 @@ class BandAliasWebTests implements LoginMixin {
         Optional<BandDao> rtb = this.bandService.fetchBySlug("rothwell-temperance-band");
 
         long visibleAliasId = 0;
-        List<BandPreviousNameDao> previousNamesBefore = this.bandService.findAllPreviousNames(rtb.get());
-        for (BandPreviousNameDao previousName : previousNamesBefore) {
+        List<BandAliasDao> previousNamesBefore = this.bandAliasService.findAllAliases(rtb.get());
+        for (BandAliasDao previousName : previousNamesBefore) {
             if (previousName.getOldName().equals("Visible")) {
                 assertFalse(previousName.isHidden());
                 visibleAliasId = previousName.getId();
@@ -122,15 +115,15 @@ class BandAliasWebTests implements LoginMixin {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/rothwell-temperance-band/edit-aliases/" + visibleAliasId + "/hide", String.class);
         assertNotNull(response);
 
-        List<BandPreviousNameDao> previousNamesAfter = this.bandService.findAllPreviousNames(rtb.get());
-        for (BandPreviousNameDao previousName : previousNamesAfter) {
+        List<BandAliasDao> previousNamesAfter = this.bandAliasService.findAllAliases(rtb.get());
+        for (BandAliasDao previousName : previousNamesAfter) {
             if (previousName.getOldName().equals("Visible")) {
                 assertTrue(previousName.isHidden());
                 break;
             }
         }
 
-        this.bandService.showPreviousBandName(rtb.get(), visibleAliasId);
+        this.bandAliasService.showAlias(rtb.get(), visibleAliasId);
     }
 
     @Test
@@ -150,8 +143,8 @@ class BandAliasWebTests implements LoginMixin {
         Optional<BandDao> rtb = this.bandService.fetchBySlug("rothwell-temperance-band");
 
         long hiddenAliasId = 0;
-        List<BandPreviousNameDao> previousNamesBefore = this.bandService.findAllPreviousNames(rtb.get());
-        for (BandPreviousNameDao previousName : previousNamesBefore) {
+        List<BandAliasDao> previousNamesBefore = this.bandAliasService.findAllAliases(rtb.get());
+        for (BandAliasDao previousName : previousNamesBefore) {
             if (previousName.getOldName().equals("Hidden")) {
                 assertTrue(previousName.isHidden());
                 hiddenAliasId = previousName.getId();
@@ -162,15 +155,15 @@ class BandAliasWebTests implements LoginMixin {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/rothwell-temperance-band/edit-aliases/" + hiddenAliasId + "/show", String.class);
         assertNotNull(response);
 
-        List<BandPreviousNameDao> previousNamesAfter = this.bandService.findAllPreviousNames(rtb.get());
-        for (BandPreviousNameDao previousName : previousNamesAfter) {
+        List<BandAliasDao> previousNamesAfter = this.bandAliasService.findAllAliases(rtb.get());
+        for (BandAliasDao previousName : previousNamesAfter) {
             if (previousName.getOldName().equals("Hidden")) {
                 assertFalse(previousName.isHidden());
                 break;
             }
         }
 
-        this.bandService.hidePreviousBandName(rtb.get(), hiddenAliasId);
+        this.bandAliasService.hideAlias(rtb.get(), hiddenAliasId);
     }
 
     @Test
@@ -192,14 +185,14 @@ class BandAliasWebTests implements LoginMixin {
         Optional<BandDao> noAliasBand = this.bandService.fetchBySlug("black-dyke");
         assertTrue(noAliasBand.isPresent());
 
-        List<BandPreviousNameDao> fetchedAliases1 = this.bandService.findAllPreviousNames(noAliasBand.get());
+        List<BandAliasDao> fetchedAliases1 = this.bandAliasService.findAllAliases(noAliasBand.get());
         assertEquals(0, fetchedAliases1.size());
 
-        BandPreviousNameDao previousName = new BandPreviousNameDao();
+        BandAliasDao previousName = new BandAliasDao();
         previousName.setOldName("Old Name To Delete");
-        BandPreviousNameDao newAlias = this.bandService.createPreviousName(noAliasBand.get(), previousName);
+        BandAliasDao newAlias = this.bandAliasService.createAlias(noAliasBand.get(), previousName);
 
-        List<BandPreviousNameDao> fetchedAliases2 = this.bandService.findAllPreviousNames(noAliasBand.get());
+        List<BandAliasDao> fetchedAliases2 = this.bandAliasService.findAllAliases(noAliasBand.get());
         assertEquals(1, fetchedAliases2.size());
 
         logoutTestUser();
@@ -207,7 +200,7 @@ class BandAliasWebTests implements LoginMixin {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/black-dyke/edit-aliases/" + newAlias.getId() + "/delete", String.class);
         assertNotNull(response);
 
-        List<BandPreviousNameDao> fetchedAliases3 = this.bandService.findAllPreviousNames(noAliasBand.get());
+        List<BandAliasDao> fetchedAliases3 = this.bandAliasService.findAllAliases(noAliasBand.get());
         assertEquals(0, fetchedAliases3.size());
     }
 
@@ -228,7 +221,7 @@ class BandAliasWebTests implements LoginMixin {
         // arrange
         Optional<BandDao> band = this.bandService.fetchBySlug("rothwell-temperance-band");
         assertTrue(band.isPresent());
-        List<BandPreviousNameDao> fetchedAliases1 = this.bandService.findAllPreviousNames(band.get());
+        List<BandAliasDao> fetchedAliases1 = this.bandAliasService.findAllAliases(band.get());
         assertEquals(2, fetchedAliases1.size());
         long aliasId = fetchedAliases1.get(0).getId();
         assertEquals("Hidden", fetchedAliases1.get(0).getOldName());
@@ -258,7 +251,7 @@ class BandAliasWebTests implements LoginMixin {
 
         assertTrue(Objects.requireNonNull(response.getHeaders().get("Location")).get(0).endsWith("/bands/rothwell-temperance-band/edit-aliases"));
 
-        List<BandPreviousNameDao> fetchedAliases2 = this.bandService.findAllPreviousNames(band.get());
+        List<BandAliasDao> fetchedAliases2 = this.bandAliasService.findAllAliases(band.get());
         assertEquals(3, fetchedAliases2.size());
         assertEquals("Hidden", fetchedAliases2.get(0).getOldName());
         assertEquals("New Alias", fetchedAliases2.get(1).getOldName());

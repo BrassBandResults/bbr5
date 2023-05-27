@@ -36,12 +36,12 @@ public class EditBandController {
             throw NotFoundException.bandNotFoundBySlug(bandSlug);
         }
 
-        BandEditForm bandEditDto = new BandEditForm(band.get());
+        BandEditForm bandEditForm = new BandEditForm(band.get());
 
         List<RegionDao> regions = this.regionService.findAll();
 
         model.addAttribute("Band", band.get());
-        model.addAttribute("BandForm", bandEditDto);
+        model.addAttribute("BandForm", bandEditForm);
         model.addAttribute("Regions", regions);
 
         return "bands/edit";

@@ -23,9 +23,10 @@
                 <span th:text="#{page.band-aliases.hidden}" th:if="${previousName.hidden}">Hidden</span>
                 <span th:text="#{page.band-aliases.visible}" th:if="${!previousName.hidden}">Visible</span>
             </td>
-            <td th:text="${previousName.startDate}"></td>
-            <td th:text="${previousName.endDate}"></td>
+            <td th:text="${previousName.startDateDisplay}"></td>
+            <td th:text="${previousName.endDateDisplay}"></td>
             <td>
+                <span th:replace="buttons/alias.html :: editAlias(${Band}, ${previousName})">edit</span>
                 <span th:replace="buttons/alias.html :: deleteAlias(${Band}, ${previousName})">delete</span>
                 <span th:if="${!previousName.hidden}" th:remove="tag">
                     <span th:replace="buttons/alias.html :: hideAlias(${Band}, ${previousName})">hide</span>

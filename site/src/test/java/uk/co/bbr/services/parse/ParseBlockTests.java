@@ -6,9 +6,10 @@ import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import uk.co.bbr.services.bands.BandAliasService;
 import uk.co.bbr.services.bands.BandService;
 import uk.co.bbr.services.bands.dao.BandDao;
-import uk.co.bbr.services.bands.dao.BandPreviousNameDao;
+import uk.co.bbr.services.bands.dao.BandAliasDao;
 import uk.co.bbr.services.parse.dto.ParseResultDto;
 import uk.co.bbr.services.parse.types.ParseOutcome;
 import uk.co.bbr.services.people.PersonService;
@@ -38,6 +39,7 @@ class ParseBlockTests implements LoginMixin {
     @Autowired private JwtService jwtService;
     @Autowired private ParseService parseService;
     @Autowired private BandService bandService;
+    @Autowired private BandAliasService bandAliasService;
     @Autowired private RegionService regionService;
     @Autowired private PersonService personService;
 
@@ -54,9 +56,9 @@ class ParseBlockTests implements LoginMixin {
         BandDao suffolkVolunteer = this.bandService.create("11th Suffolk Volunteer Rifles (Sudbury)", yorkshire);
         BandDao briggus = this.bandService.create("Brighouse & Rastrick", yorkshire);
 
-        BandPreviousNameDao rothwellJunior = new BandPreviousNameDao();
+        BandAliasDao rothwellJunior = new BandAliasDao();
         rothwellJunior.setOldName("Rothwell Temperance Junior Band");
-        this.bandService.createPreviousName(rothwell, rothwellJunior);
+        this.bandAliasService.createAlias(rothwell, rothwellJunior);
 
         PersonDao robertChilds = this.personService.create("Childs", "Robert");
         PersonDao davidChilds = this.personService.create("Childs", "David");

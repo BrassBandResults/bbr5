@@ -5,9 +5,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import uk.co.bbr.services.bands.BandAliasService;
 import uk.co.bbr.services.bands.BandService;
 import uk.co.bbr.services.bands.dao.BandDao;
-import uk.co.bbr.services.bands.dao.BandPreviousNameDao;
+import uk.co.bbr.services.bands.dao.BandAliasDao;
 import uk.co.bbr.services.bands.dto.BandDetailsDto;
 import uk.co.bbr.services.contests.ContestGroupService;
 import uk.co.bbr.services.contests.ContestResultService;
@@ -26,6 +27,7 @@ import java.util.Optional;
 public class BandController {
 
     private final BandService bandService;
+    private final BandAliasService bandAliasService;
     private final ContestService contestService;
     private final ContestTagService contestTagService;
     private final ContestGroupService contestGroupService;
@@ -38,7 +40,7 @@ public class BandController {
             throw NotFoundException.bandNotFoundBySlug(bandSlug);
         }
 
-        List<BandPreviousNameDao> previousNames = this.bandService.findVisiblePreviousNames(band.get());
+        List<BandAliasDao> previousNames = this.bandAliasService.findVisibleAliases(band.get());
         BandDetailsDto bandResults = this.contestResultService.findResultsForBand(band.get());
 
         if (bandResults.getBandResults().isEmpty() && !bandResults.getBandWhitResults().isEmpty()) {
@@ -60,7 +62,7 @@ public class BandController {
             throw NotFoundException.bandNotFoundBySlug(bandSlug);
         }
 
-        List<BandPreviousNameDao> previousNames = this.bandService.findVisiblePreviousNames(band.get());
+        List<BandAliasDao> previousNames = this.bandAliasService.findVisibleAliases(band.get());
         BandDetailsDto bandResults = this.contestResultService.findResultsForBand(band.get());
 
         if (bandResults.getBandWhitResults().isEmpty()) {
@@ -86,7 +88,7 @@ public class BandController {
             throw NotFoundException.contestNotFoundBySlug(contestSlug);
         }
 
-        List<BandPreviousNameDao> previousNames = this.bandService.findVisiblePreviousNames(band.get());
+        List<BandAliasDao> previousNames = this.bandAliasService.findVisibleAliases(band.get());
         BandDetailsDto bandResults = this.contestResultService.findResultsForBand(band.get(), contest.get());
 
         model.addAttribute("Band", band.get());
@@ -108,7 +110,7 @@ public class BandController {
             throw NotFoundException.groupNotFoundBySlug(groupSlug);
         }
 
-        List<BandPreviousNameDao> previousNames = this.bandService.findVisiblePreviousNames(band.get());
+        List<BandAliasDao> previousNames = this.bandAliasService.findVisibleAliases(band.get());
         BandDetailsDto bandResults = this.contestResultService.findResultsForBand(band.get(), group.get());
 
         model.addAttribute("Band", band.get());
@@ -130,7 +132,7 @@ public class BandController {
             throw NotFoundException.tagNotFoundBySlug(tagSlug);
         }
 
-        List<BandPreviousNameDao> previousNames = this.bandService.findVisiblePreviousNames(band.get());
+        List<BandAliasDao> previousNames = this.bandAliasService.findVisibleAliases(band.get());
         BandDetailsDto bandResults = this.contestResultService.findResultsForBand(band.get(), tag.get());
 
         model.addAttribute("Band", band.get());
