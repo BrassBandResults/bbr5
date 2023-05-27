@@ -122,6 +122,53 @@ class PieceWebTests implements LoginMixin {
 
         // TODO more asserts here, perhaps split this test to new file with appropriate test data
     }
+
+    @Test
+    void testTestPiecesBySectionChampionshipReturnsSuccessfully() {
+        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/pieces/BY-SECTION/championship", String.class);
+        assertNotNull(response);
+
+        // TODO more asserts here, perhaps split this test to new file with appropriate test data
+    }
+
+    @Test
+    void testTestPiecesBySectionFirstSectionReturnsSuccessfully() {
+        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/pieces/BY-SECTION/first", String.class);
+        assertNotNull(response);
+
+        // TODO more asserts here, perhaps split this test to new file with appropriate test data
+    }
+
+    @Test
+    void testTestPiecesBySectionSecondSectionReturnsSuccessfully() {
+        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/pieces/BY-SECTION/second", String.class);
+        assertNotNull(response);
+
+        // TODO more asserts here, perhaps split this test to new file with appropriate test data
+    }
+
+    @Test
+    void testTestPiecesBySectionThirdSectionReturnsSuccessfully() {
+        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/pieces/BY-SECTION/third", String.class);
+        assertNotNull(response);
+
+        // TODO more asserts here, perhaps split this test to new file with appropriate test data
+    }
+
+    @Test
+    void testTestPiecesBySectionFourthSectionReturnsSuccessfully() {
+        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/pieces/BY-SECTION/fourth", String.class);
+        assertNotNull(response);
+
+        // TODO more asserts here, perhaps split this test to new file with appropriate test data
+    }
+
+    @Test
+    void testTestPiecesBySectionInvalidSectionFailsAsExpected() {
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/pieces/BY-SECTION/invalid", String.class));
+        assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
+    }
+
 }
 
 

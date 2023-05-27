@@ -5,6 +5,7 @@ import uk.co.bbr.services.framework.sql.SqlExec;
 import uk.co.bbr.services.pieces.sql.dto.BestPieceSqlDto;
 import uk.co.bbr.services.pieces.sql.dto.OwnChoiceUsagePieceSqlDto;
 import uk.co.bbr.services.pieces.sql.dto.PieceUsageCountSqlDto;
+import uk.co.bbr.services.pieces.sql.dto.PiecesPerSectionSqlDto;
 import uk.co.bbr.services.pieces.sql.dto.SetTestUsagePieceSqlDto;
 
 import javax.persistence.EntityManager;
@@ -101,5 +102,28 @@ public class PieceSql {
               AND c.name NOT LIKE '%Whit Friday%'""";
     public static List<BestPieceSqlDto> mostSuccessfulOwnChoice(EntityManager entityManager) {
         return SqlExec.execute(entityManager, SUCCESSFUL_OWN_CHOICE_SQL, BestPieceSqlDto.class);
+    }
+
+    private static final String PIECES_FOR_SECTION_SQL = """
+            WITH set_test AS (SELECT p.slug as piece_slug
+                FROM piece p
+                INNER JOIN contest_event_test_piece cetp on p.id = cetp.piece_id
+                INNER JOIN contest_event ce on cetp.contest_event_id = ce.id
+                INNER JOIN contest c on ce.contest_id = c.id
+                INNER JOIN section s on c.section_id = s.id
+                WHERE s.slug = ?1
+                AND YEAR(ce.date_of_event) >= 1990
+                GROUP BY p.slug)
+            SELECT p.slug as piece_slug, p.name as piece_name, p.piece_year, comp.surname as composer_surname, comp.first_names as composer_first_names, comp.suffix as composer_suffix, comp.slug as composer_slug, a.surname as arranger_surname, a.first_names as arranger_first_names, a.suffix as arranger_suffix, a.slug as arranger_slug,
+               (SELECT count(*) FROM contest_event_test_piece cetp WHERE p.id = cetp.piece_id) as set_test_count,
+               (SELECT count(*) FROM contest_result_test_piece crtp WHERE p.id = crtp.piece_id) as own_choice_count
+            FROM piece p
+             LEFT OUTER JOIN person comp ON comp.id = p.composer_id
+             LEFT OUTER JOIN person a ON a.id = p.arranger_id
+            WHERE p.slug IN (SELECT piece_slug FROM set_test)
+            ORDER BY 12""";
+
+    public static List<PiecesPerSectionSqlDto> piecesForSection(EntityManager entityManager, String sectionSlug) {
+        return SqlExec.execute(entityManager, PIECES_FOR_SECTION_SQL, sectionSlug, PiecesPerSectionSqlDto.class);
     }
 }

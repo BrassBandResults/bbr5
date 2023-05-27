@@ -7,7 +7,9 @@ import uk.co.bbr.services.pieces.dao.PieceAliasDao;
 import uk.co.bbr.services.pieces.dao.PieceDao;
 import uk.co.bbr.services.pieces.dto.BestOwnChoiceDto;
 import uk.co.bbr.services.pieces.dto.PieceListDto;
+import uk.co.bbr.services.pieces.sql.dto.PiecesPerSectionSqlDto;
 import uk.co.bbr.services.pieces.types.PieceCategory;
+import uk.co.bbr.services.sections.dao.SectionDao;
 
 import java.util.List;
 import java.util.Optional;
@@ -38,4 +40,6 @@ public interface PieceService {
     List<ContestEventTestPieceDao> fetchSetTestPieceUsage(PieceDao piece);
 
     List<BestOwnChoiceDto> fetchMostSuccessfulOwnChoice();
+
+    List<PiecesPerSectionSqlDto> fetchPiecesForSection(SectionDao section);
 }

@@ -1,32 +1,55 @@
 <!DOCTYPE html>
 <html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-    <title th:text="@{#{page.best-pieces.title} + ' - Brass Band Results'}">Best Own Choice Test Pieces - Brass Band Results</title>
+    <title th:text="@{#{page.pieces-by-section.title(${Section.name})} + ' - Brass Band Results'}">Championship - Test Pieces By Section - Brass Band Results</title>
 </head>
 <body>
 <div layout:fragment="content">
-    <h2 th:text="#{page.best-pieces.page-header}">Most Successful Own Choice Test Pieces</h2>
-    <p th:text="#{page.best-pieces.header1}">Points are calculated by looking through all the times a piece has been used for an own choice contest, and it has come in the top three places. 10 points are given for a first place, 5 for a second, and 3 for a third.</p>
-    <p th:text="#{page.best-pieces.header2}">The Podiums column shows the number of times this piece has featured in the top three at an own choice contest.</p>
-    <p th:text="#{page.best-pieces.header3}">Whit Friday contests are excluded.</p>
+    <h2 th:text="#{page.pieces-by-section.page-header}">Test Pieces By Section</h2>
+    <p th:text="#{page.pieces-by-section.header1}">This page shows test pieces that have been used as the set work for contests in particular sections in the last thirty years.</p>
+    <p th:text="#{page.pieces-by-section.header2}">Set Test and Own Choice numbers here are limited to nationally graded contests at the section specified.</p>
 
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a th:class="'nav-link ' + ${Section.slug == 'championship' ? 'active' : ''}" th:href="${'/pieces/BY-SECTION/championship'}" th:text="#{section.championship}">Championship</a>
+        </li>
+        <li class="nav-item">
+            <a th:class="'nav-link ' + ${Section.slug == 'first' ? 'active' : ''}" th:href="${'/pieces/BY-SECTION/first'}" th:text="#{section.first}">First</a>
+        </li>
+        <li class="nav-item">
+            <a th:class="'nav-link ' + ${Section.slug == 'second' ? 'active' : ''}" th:href="${'/pieces/BY-SECTION/second'}" th:text="#{section.second}">Second</a>
+        </li>
+        <li class="nav-item">
+            <a th:class="'nav-link ' + ${Section.slug == 'third' ? 'active' : ''}" th:href="${'/pieces/BY-SECTION/third'}" th:text="#{section.third}">Third</a>
+        </li>
+        <li class="nav-item">
+            <a th:class="'nav-link ' + ${Section.slug == 'fourth' ? 'active' : ''}" th:href="${'/pieces/BY-SECTION/fourth'}" th:text="#{section.fourth}">Fourth</a>
+        </li>
+    </ul>
+    <br/>
 
-    <table class="table table-hover sortable">
-        <thead>
-        <tr>
-            <th th:text="#{page.column-header.name}">Name</th>
-            <th th:text="#{page.column-header.podiums}">Podiums</th>
-            <th th:text="#{page.column-header.points}">Points</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="piece : ${BestPieces}">
-            <td class="bbr-piece" nowrap><span th:replace="links/piece-link.html :: pieceLink(${piece.piece})">Piece Title</span></td>
-            <td th:text="${piece.podiums}"></td>
-            <td th:text="${piece.points}"></td>
-        </tr>
-        </tbody>
-    </table>
+    <div class="tab-content">
+        <table class="table table-hover sortable">
+            <thead>
+            <tr>
+                <th th:text="#{page.column-header.name}">Name</th>
+                <th th:text="#{page.column-header.composer}">Composer</th>
+                <th th:text="#{page.column-header.arranger}">Arranger</th>
+                <th th:text="#{page.column-header.set-test}">Set Test</th>
+                <th th:text="#{page.column-header.own-choice}">Own Choice</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="piece : ${PiecesForSection}">
+                <td class="bbr-piece" nowrap><span th:replace="links/piece-link.html :: pieceLink(${piece.piece})">Piece Title</span></td>
+                <td class="composer person"><span th:replace="links/person-link.html :: personLink(${piece.piece.composer}, false, false)"></span></td>
+                <td class="arranger person"><span th:replace="links/person-link.html :: personLink(${piece.piece.arranger}, false, false)"></span></td>
+                <td th:text="${piece.setTestCount}"></td>
+                <td th:text="${piece.ownChoiceCount}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 </body>
 </html>

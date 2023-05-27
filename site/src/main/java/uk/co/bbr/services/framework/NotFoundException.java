@@ -3,8 +3,6 @@ package uk.co.bbr.services.framework;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import java.time.LocalDate;
-
 @ResponseStatus(value= HttpStatus.NOT_FOUND, reason="Record not found")
 public class NotFoundException extends RuntimeException {
     public NotFoundException(String message) {
@@ -47,6 +45,10 @@ public class NotFoundException extends RuntimeException {
         return NotFoundException.notFoundBySlug("Region", slug);
     }
 
+    public static Exception sectionNotFoundBySlug(String slug) {
+        return NotFoundException.notFoundBySlug("Section", slug);
+    }
+
     public static NotFoundException userNotFoundByUsercode(String usercode) {
         return new NotFoundException("User with usercode " + usercode + " not found");
     }
@@ -58,4 +60,6 @@ public class NotFoundException extends RuntimeException {
     public static NotFoundException bandAliasNotFoundByIds(String bandSlug, long aliasId) {
         return new NotFoundException("Alias with id " + aliasId + " not found for band with slug " + bandSlug);
     }
+
+
 }

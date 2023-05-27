@@ -12,6 +12,9 @@ import uk.co.bbr.services.pieces.PieceService;
 import uk.co.bbr.services.pieces.dao.PieceAliasDao;
 import uk.co.bbr.services.pieces.dao.PieceDao;
 import uk.co.bbr.services.pieces.dto.BestOwnChoiceDto;
+import uk.co.bbr.services.pieces.sql.dto.PiecesPerSectionSqlDto;
+import uk.co.bbr.services.sections.SectionService;
+import uk.co.bbr.services.sections.dao.SectionDao;
 
 
 import java.util.List;
@@ -22,6 +25,7 @@ import java.util.Optional;
 public class PieceController {
 
     private final PieceService pieceService;
+    private final SectionService sectionService;
 
     @GetMapping("/pieces/{slug:[\\-a-z\\d]{2,}}")
     public String pieceDetails(Model model, @PathVariable("slug") String slug) {
@@ -46,8 +50,17 @@ public class PieceController {
         return "pieces/piece";
     }
 
-    @GetMapping("/pieces/BY-SECTION")
-    public String piecesBySection(Model model) {
+    @GetMapping("/pieces/BY-SECTION/{sectionSlug:[\\-a-z\\d]{2,}}")
+    public String piecesBySection(Model model, @PathVariable("sectionSlug") String sectionSlug) throws Exception {
+        Optional<SectionDao> sectionOptional = this.sectionService.fetchBySlug(sectionSlug);
+        if (sectionOptional.isEmpty()) {
+            throw NotFoundException.sectionNotFoundBySlug(sectionSlug);
+        }
+
+        List<PiecesPerSectionSqlDto> piecesForSection = this.pieceService.fetchPiecesForSection(sectionOptional.get());
+
+        model.addAttribute("PiecesForSection", piecesForSection);
+        model.addAttribute("Section", sectionOptional.get());
 
         return "pieces/by-section";
     }

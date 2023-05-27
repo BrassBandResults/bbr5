@@ -26,9 +26,11 @@ import uk.co.bbr.services.pieces.sql.PieceSql;
 import uk.co.bbr.services.pieces.sql.dto.BestPieceSqlDto;
 import uk.co.bbr.services.pieces.sql.dto.OwnChoiceUsagePieceSqlDto;
 import uk.co.bbr.services.pieces.sql.dto.PieceUsageCountSqlDto;
+import uk.co.bbr.services.pieces.sql.dto.PiecesPerSectionSqlDto;
 import uk.co.bbr.services.pieces.sql.dto.SetTestUsagePieceSqlDto;
 import uk.co.bbr.services.pieces.types.PieceCategory;
 import uk.co.bbr.services.regions.dao.RegionDao;
+import uk.co.bbr.services.sections.dao.SectionDao;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.web.security.annotations.IsBbrAdmin;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
@@ -302,5 +304,10 @@ public class PieceServiceImpl implements PieceService, SlugTools {
             case 3 -> 3;
             default -> 0;
         };
+    }
+
+    @Override
+    public List<PiecesPerSectionSqlDto> fetchPiecesForSection(SectionDao section) {
+        return PieceSql.piecesForSection(this.entityManager, section.getSlug());
     }
 }
