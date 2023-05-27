@@ -5,6 +5,7 @@ import uk.co.bbr.services.contests.dao.ContestResultPieceDao;
 import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.pieces.dao.PieceAliasDao;
 import uk.co.bbr.services.pieces.dao.PieceDao;
+import uk.co.bbr.services.pieces.dto.BestOwnChoiceDto;
 import uk.co.bbr.services.pieces.dto.PieceListDto;
 import uk.co.bbr.services.pieces.types.PieceCategory;
 
@@ -35,4 +36,6 @@ public interface PieceService {
     List<ContestResultPieceDao> fetchOwnChoicePieceUsage(PieceDao piece);
 
     List<ContestEventTestPieceDao> fetchSetTestPieceUsage(PieceDao piece);
+
+    List<BestOwnChoiceDto> fetchMostSuccessfulOwnChoice();
 }

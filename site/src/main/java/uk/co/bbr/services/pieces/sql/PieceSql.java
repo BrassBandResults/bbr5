@@ -2,6 +2,7 @@ package uk.co.bbr.services.pieces.sql;
 
 import lombok.experimental.UtilityClass;
 import uk.co.bbr.services.framework.sql.SqlExec;
+import uk.co.bbr.services.pieces.sql.dto.BestPieceSqlDto;
 import uk.co.bbr.services.pieces.sql.dto.OwnChoiceUsagePieceSqlDto;
 import uk.co.bbr.services.pieces.sql.dto.PieceUsageCountSqlDto;
 import uk.co.bbr.services.pieces.sql.dto.SetTestUsagePieceSqlDto;
@@ -84,5 +85,19 @@ public class PieceSql {
 
     public static List<PieceUsageCountSqlDto> selectNumbersPieceUsageCounts(EntityManager entityManager) {
         return SqlExec.execute(entityManager, PIECES_USAGE_COUNT_FOR_NUMBERS_SQL, PieceUsageCountSqlDto.class);
+    }
+
+    private static final String SUCCESSFUL_OWN_CHOICE_SQL = """
+            SELECT r.result_position, p.slug, p.name, p.piece_year
+            FROM contest_result r
+                INNER JOIN contest_result_test_piece rp ON rp.contest_result_id = r.id
+                INNER JOIN piece p ON p.id = rp.piece_id
+                INNER JOIN contest_event e ON e.id = r.contest_event_id
+                INNER JOIN contest c ON c.id = e.contest_id
+            WHERE r.result_position < 4
+              AND r.result_position_type = 'R'
+              AND c.name NOT LIKE '%Whit Friday%'""";
+    public static List<BestPieceSqlDto> mostSuccessfulOwnChoice(EntityManager entityManager) {
+        return SqlExec.execute(entityManager, SUCCESSFUL_OWN_CHOICE_SQL, BestPieceSqlDto.class);
     }
 }

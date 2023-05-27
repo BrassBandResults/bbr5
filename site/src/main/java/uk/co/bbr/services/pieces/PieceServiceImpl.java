@@ -9,6 +9,7 @@ import uk.co.bbr.services.contests.dao.ContestEventDao;
 import uk.co.bbr.services.contests.dao.ContestEventTestPieceDao;
 import uk.co.bbr.services.contests.dao.ContestResultDao;
 import uk.co.bbr.services.contests.dao.ContestResultPieceDao;
+import uk.co.bbr.services.contests.dto.ContestListContestDto;
 import uk.co.bbr.services.contests.types.ContestEventDateResolution;
 import uk.co.bbr.services.contests.types.ResultAwardType;
 import uk.co.bbr.services.contests.types.ResultPositionType;
@@ -17,10 +18,12 @@ import uk.co.bbr.services.framework.mixins.SlugTools;
 import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.pieces.dao.PieceAliasDao;
 import uk.co.bbr.services.pieces.dao.PieceDao;
+import uk.co.bbr.services.pieces.dto.BestOwnChoiceDto;
 import uk.co.bbr.services.pieces.dto.PieceListDto;
 import uk.co.bbr.services.pieces.repo.PieceAliasRepository;
 import uk.co.bbr.services.pieces.repo.PieceRepository;
 import uk.co.bbr.services.pieces.sql.PieceSql;
+import uk.co.bbr.services.pieces.sql.dto.BestPieceSqlDto;
 import uk.co.bbr.services.pieces.sql.dto.OwnChoiceUsagePieceSqlDto;
 import uk.co.bbr.services.pieces.sql.dto.PieceUsageCountSqlDto;
 import uk.co.bbr.services.pieces.sql.dto.SetTestUsagePieceSqlDto;
@@ -33,8 +36,10 @@ import uk.co.bbr.web.security.annotations.IsBbrMember;
 import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -257,5 +262,45 @@ public class PieceServiceImpl implements PieceService, SlugTools {
         }
 
         return resultPieces;
+    }
+
+    @Override
+    public List<BestOwnChoiceDto> fetchMostSuccessfulOwnChoice() {
+        List<BestPieceSqlDto> bestPieceRawData = PieceSql.mostSuccessfulOwnChoice(this.entityManager);
+
+        List<BestOwnChoiceDto> returnData = new ArrayList<>();
+        for (BestPieceSqlDto eachSqlResult : bestPieceRawData) {
+            BestOwnChoiceDto foundPiece = null;
+            for (BestOwnChoiceDto eachPiece : returnData) {
+                if (eachPiece.getPiece().getSlug().equals(eachSqlResult.getPieceSlug())) {
+                    foundPiece = eachPiece;
+                    break;
+                }
+            }
+
+            if (foundPiece == null) {
+                int topThree = 1;
+                int points = this.pointsFromPosition(eachSqlResult.getResultPosition());
+                BestOwnChoiceDto newResult = new BestOwnChoiceDto(eachSqlResult.getPiece(), topThree, points);
+                returnData.add(newResult);
+            } else {
+                int newPoints = foundPiece.getPoints() + this.pointsFromPosition(eachSqlResult.getResultPosition());
+                int newTopThree = foundPiece.getTopThree() + 1;
+
+                foundPiece.setPoints(newPoints);
+                foundPiece.setTopThree(newTopThree);
+            }
+        }
+
+        return returnData.stream().sorted(Comparator.comparing(BestOwnChoiceDto::getPoints).reversed()).collect(Collectors.toList());
+    }
+
+    private int pointsFromPosition(Integer resultPosition) {
+        return switch (resultPosition) {
+            case 1 -> 10;
+            case 2 -> 5;
+            case 3 -> 3;
+            default -> 0;
+        };
     }
 }

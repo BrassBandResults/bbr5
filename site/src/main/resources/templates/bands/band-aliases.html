@@ -20,8 +20,8 @@
         <tr th:each="previousName : ${PreviousNames}">
             <td class="band-alias" th:text="${previousName.getOldName()}"></td>
             <td>
-                <span th:text="#{page.band-aliases.hidden}" th:if="${previousName.hidden}">Hidden</span>
-                <span th:text="#{page.band-aliases.visible}" th:if="${!previousName.hidden}">Visible</span>
+                <span th:text="#{page.aliases.hidden}" th:if="${previousName.hidden}">Hidden</span>
+                <span th:text="#{page.aliases.visible}" th:if="${!previousName.hidden}">Visible</span>
             </td>
             <td th:text="${previousName.startDateDisplay}"></td>
             <td th:text="${previousName.endDateDisplay}"></td>

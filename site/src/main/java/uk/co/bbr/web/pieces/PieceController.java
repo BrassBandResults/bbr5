@@ -11,6 +11,7 @@ import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.pieces.PieceService;
 import uk.co.bbr.services.pieces.dao.PieceAliasDao;
 import uk.co.bbr.services.pieces.dao.PieceDao;
+import uk.co.bbr.services.pieces.dto.BestOwnChoiceDto;
 
 
 import java.util.List;
@@ -43,5 +44,21 @@ public class PieceController {
         model.addAttribute("PreviousNames", pieceAliases);
 
         return "pieces/piece";
+    }
+
+    @GetMapping("/pieces/BY-SECTION")
+    public String piecesBySection(Model model) {
+
+        return "pieces/by-section";
+    }
+
+    @GetMapping("/pieces/BEST-OWN-CHOICE")
+    public String mostSuccessfulOwnChoicePieces(Model model) {
+
+        List<BestOwnChoiceDto> bestPieces = this.pieceService.fetchMostSuccessfulOwnChoice();
+
+        model.addAttribute("BestPieces", bestPieces);
+
+        return "pieces/best-own-choice";
     }
 }
