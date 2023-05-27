@@ -31,6 +31,7 @@ import uk.co.bbr.web.LoginMixin;
 import uk.co.bbr.web.security.filter.SecurityFilter;
 import uk.co.bbr.web.security.support.TestUser;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -38,6 +39,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -284,5 +286,291 @@ class BandAliasWebTests implements LoginMixin {
     }
 
 
+    @Test
+    void testShowDatesEditFormWorksSuccessfully() throws AuthenticationFailedException {
+        Optional<BandDao> rtb = this.bandService.fetchBySlug("rothwell-temperance-band");
+
+        long hiddenAliasId = 0;
+        List<BandAliasDao> previousNamesBefore = this.bandAliasService.findAllAliases(rtb.get());
+        for (BandAliasDao previousName : previousNamesBefore) {
+            if (previousName.getOldName().equals("Hidden")) {
+                hiddenAliasId = previousName.getId();
+                break;
+            }
+        }
+
+        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/rothwell-temperance-band/edit-aliases/" + hiddenAliasId + "/edit-dates", String.class);
+        assertNotNull(response);
+
+        assertTrue(response.contains("Edit Hidden Dates"));
+    }
+
+    @Test
+    void testShowDatesEditFormWithInvalidBandSlugFailsAsExpected() {
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/not-a-real-band/edit-aliases/1/edit-dates", String.class));
+        assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
+    }
+
+    @Test
+    void testShowDatesEditFormWithInvalidAliasIdFailsAsExpected() {
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/rothwell-temperance-band/edit-aliases/999/edit-dates", String.class));
+        assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
+    }
+
+
+    @Test
+    void testEditDatesPostWorksSuccessfully() {
+        // arrange
+        Optional<BandDao> band = this.bandService.fetchBySlug("rothwell-temperance-band");
+        assertTrue(band.isPresent());
+        List<BandAliasDao> fetchedAliases1 = this.bandAliasService.findAllAliases(band.get());
+        assertEquals(2, fetchedAliases1.size());
+
+        long aliasId = fetchedAliases1.get(1).getId();
+
+        assertEquals("Hidden", fetchedAliases1.get(0).getOldName());
+        assertEquals("Visible", fetchedAliases1.get(1).getOldName());
+
+        loginTestUserByWeb(TestUser.TEST_MEMBER, this.restTemplate, this.csrfTokenRepository, this.port);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+        CsrfToken csrfToken = csrfTokenRepository.generateToken(null);
+        headers.add(csrfToken.getHeaderName(), csrfToken.getToken());
+        headers.add("Cookie", SecurityFilter.CSRF_HEADER_NAME + "=" + csrfToken.getToken());
+
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+        map.add("startDate", "2000-01-01");
+        map.add("endDate", "2010-02-02");
+        map.add("_csrf", csrfToken.getToken());
+        map.add("_csrf_header", SecurityFilter.CSRF_HEADER_NAME);
+
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
+
+        // act
+        ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/bands/rothwell-temperance-band/edit-aliases/" + aliasId + "/edit-dates", request, String.class);
+
+        // assert
+        assertEquals(HttpStatus.FOUND, response.getStatusCode());
+
+        assertTrue(Objects.requireNonNull(response.getHeaders().get("Location")).get(0).endsWith("/bands/rothwell-temperance-band/edit-aliases"));
+
+        List<BandAliasDao> fetchedAliases2 = this.bandAliasService.findAllAliases(band.get());
+        assertEquals(2, fetchedAliases2.size());
+
+        assertNull(fetchedAliases2.get(0).getStartDate());
+        assertNull(fetchedAliases2.get(0).getEndDate());
+        assertEquals("Hidden", fetchedAliases2.get(0).getOldName());
+
+        assertEquals(LocalDate.of(2000, 1, 1), fetchedAliases2.get(1).getStartDate());
+        assertEquals(LocalDate.of(2010, 2, 2), fetchedAliases2.get(1).getEndDate());
+        assertEquals("Visible", fetchedAliases2.get(1).getOldName());
+
+        logoutTestUserByWeb(this.restTemplate, this.port);
+    }
+
+    @Test
+    void testEditDatesPostWithInvalidDatesFailsAsExpected() {
+        // arrange
+        Optional<BandDao> band = this.bandService.fetchBySlug("rothwell-temperance-band");
+        assertTrue(band.isPresent());
+        List<BandAliasDao> fetchedAliases1 = this.bandAliasService.findAllAliases(band.get());
+        assertEquals(2, fetchedAliases1.size());
+
+        long aliasId = fetchedAliases1.get(1).getId();
+
+        assertEquals("Hidden", fetchedAliases1.get(0).getOldName());
+        assertEquals("Visible", fetchedAliases1.get(1).getOldName());
+
+        loginTestUserByWeb(TestUser.TEST_MEMBER, this.restTemplate, this.csrfTokenRepository, this.port);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+        CsrfToken csrfToken = csrfTokenRepository.generateToken(null);
+        headers.add(csrfToken.getHeaderName(), csrfToken.getToken());
+        headers.add("Cookie", SecurityFilter.CSRF_HEADER_NAME + "=" + csrfToken.getToken());
+
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+        map.add("startDate", "2010-01-01");
+        map.add("endDate", "2000-02-02");
+        map.add("_csrf", csrfToken.getToken());
+        map.add("_csrf_header", SecurityFilter.CSRF_HEADER_NAME);
+
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
+
+        // act
+        ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/bands/rothwell-temperance-band/edit-aliases/" + aliasId + "/edit-dates", request, String.class);
+
+        // assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertTrue(response.getBody().contains("Edit Visible Dates"));
+        assertTrue(response.getBody().contains("The end date must be after the start date, if both are specified"));
+
+        logoutTestUserByWeb(this.restTemplate, this.port);
+    }
+
+    @Test
+    void testEditDatesPostWithInvalidBandSlugFailsAsExpected() {
+        Optional<BandDao> band = this.bandService.fetchBySlug("rothwell-temperance-band");
+        assertTrue(band.isPresent());
+        List<BandAliasDao> fetchedAliases1 = this.bandAliasService.findAllAliases(band.get());
+        assertEquals(2, fetchedAliases1.size());
+        long aliasId = fetchedAliases1.get(0).getId();
+
+        loginTestUserByWeb(TestUser.TEST_MEMBER, this.restTemplate, this.csrfTokenRepository, this.port);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+        CsrfToken csrfToken = csrfTokenRepository.generateToken(null);
+        headers.add(csrfToken.getHeaderName(), csrfToken.getToken());
+        headers.add("Cookie", SecurityFilter.CSRF_HEADER_NAME + "=" + csrfToken.getToken());
+
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+        map.add("startDate", "2000-01-01");
+        map.add("endDate", "2010-02-02");
+        map.add("_csrf", csrfToken.getToken());
+        map.add("_csrf_header", SecurityFilter.CSRF_HEADER_NAME);
+
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
+
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.postForEntity("http://localhost:" + this.port + "/bands/not-a-real-band/edit-aliases/" + aliasId + "/edit-dates", request, String.class));
+        assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
+    }
+
+    @Test
+    void testEditDatesPostWithInvalidAliasIdFailsAsExpected() {
+        Optional<BandDao> band = this.bandService.fetchBySlug("rothwell-temperance-band");
+        assertTrue(band.isPresent());
+        List<BandAliasDao> fetchedAliases1 = this.bandAliasService.findAllAliases(band.get());
+        assertEquals(2, fetchedAliases1.size());
+        long aliasId = fetchedAliases1.get(0).getId();
+
+        loginTestUserByWeb(TestUser.TEST_MEMBER, this.restTemplate, this.csrfTokenRepository, this.port);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+        CsrfToken csrfToken = csrfTokenRepository.generateToken(null);
+        headers.add(csrfToken.getHeaderName(), csrfToken.getToken());
+        headers.add("Cookie", SecurityFilter.CSRF_HEADER_NAME + "=" + csrfToken.getToken());
+
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+        map.add("startDate", "2000-01-01");
+        map.add("endDate", "2010-02-02");
+        map.add("_csrf", csrfToken.getToken());
+        map.add("_csrf_header", SecurityFilter.CSRF_HEADER_NAME);
+
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
+
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.postForEntity("http://localhost:" + this.port + "/bands/rothwell-temperance-band/edit-aliases/999/edit-dates", request, String.class));
+        assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
+    }
+
+    @Test
+    void testEditDatesPostWithJustStartDateWorksAsExpected() {
+        // arrange
+        Optional<BandDao> band = this.bandService.fetchBySlug("rothwell-temperance-band");
+        assertTrue(band.isPresent());
+        List<BandAliasDao> fetchedAliases1 = this.bandAliasService.findAllAliases(band.get());
+        assertEquals(2, fetchedAliases1.size());
+
+        long aliasId = fetchedAliases1.get(1).getId();
+
+        assertEquals("Hidden", fetchedAliases1.get(0).getOldName());
+        assertEquals("Visible", fetchedAliases1.get(1).getOldName());
+
+        loginTestUserByWeb(TestUser.TEST_MEMBER, this.restTemplate, this.csrfTokenRepository, this.port);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+        CsrfToken csrfToken = csrfTokenRepository.generateToken(null);
+        headers.add(csrfToken.getHeaderName(), csrfToken.getToken());
+        headers.add("Cookie", SecurityFilter.CSRF_HEADER_NAME + "=" + csrfToken.getToken());
+
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+        map.add("startDate", "2010-03-22");
+        map.add("endDate", "");
+        map.add("_csrf", csrfToken.getToken());
+        map.add("_csrf_header", SecurityFilter.CSRF_HEADER_NAME);
+
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
+
+        // act
+        ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/bands/rothwell-temperance-band/edit-aliases/" + aliasId + "/edit-dates", request, String.class);
+
+        // assert
+        assertEquals(HttpStatus.FOUND, response.getStatusCode());
+
+        assertTrue(Objects.requireNonNull(response.getHeaders().get("Location")).get(0).endsWith("/bands/rothwell-temperance-band/edit-aliases"));
+
+        List<BandAliasDao> fetchedAliases2 = this.bandAliasService.findAllAliases(band.get());
+        assertEquals(2, fetchedAliases2.size());
+
+        assertNull(fetchedAliases2.get(0).getStartDate());
+        assertNull(fetchedAliases2.get(0).getEndDate());
+        assertEquals("Hidden", fetchedAliases2.get(0).getOldName());
+
+        assertEquals(LocalDate.of(2010, 3, 22), fetchedAliases2.get(1).getStartDate());
+        assertNull(fetchedAliases2.get(1).getEndDate());
+        assertEquals("Visible", fetchedAliases2.get(1).getOldName());
+
+        logoutTestUserByWeb(this.restTemplate, this.port);
+    }
+
+    @Test
+    void testEditDatesPostWithJustEndDateWorksAsExpected() {
+        // arrange
+        Optional<BandDao> band = this.bandService.fetchBySlug("rothwell-temperance-band");
+        assertTrue(band.isPresent());
+        List<BandAliasDao> fetchedAliases1 = this.bandAliasService.findAllAliases(band.get());
+        assertEquals(2, fetchedAliases1.size());
+
+        long aliasId = fetchedAliases1.get(1).getId();
+
+        assertEquals("Hidden", fetchedAliases1.get(0).getOldName());
+        assertEquals("Visible", fetchedAliases1.get(1).getOldName());
+
+        loginTestUserByWeb(TestUser.TEST_MEMBER, this.restTemplate, this.csrfTokenRepository, this.port);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+        CsrfToken csrfToken = csrfTokenRepository.generateToken(null);
+        headers.add(csrfToken.getHeaderName(), csrfToken.getToken());
+        headers.add("Cookie", SecurityFilter.CSRF_HEADER_NAME + "=" + csrfToken.getToken());
+
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+        map.add("startDate", "");
+        map.add("endDate", "2000-10-10");
+        map.add("_csrf", csrfToken.getToken());
+        map.add("_csrf_header", SecurityFilter.CSRF_HEADER_NAME);
+
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
+
+        // act
+        ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/bands/rothwell-temperance-band/edit-aliases/" + aliasId + "/edit-dates", request, String.class);
+
+        // assert
+        assertEquals(HttpStatus.FOUND, response.getStatusCode());
+
+        assertTrue(Objects.requireNonNull(response.getHeaders().get("Location")).get(0).endsWith("/bands/rothwell-temperance-band/edit-aliases"));
+
+        List<BandAliasDao> fetchedAliases2 = this.bandAliasService.findAllAliases(band.get());
+        assertEquals(2, fetchedAliases2.size());
+
+        assertNull(fetchedAliases2.get(0).getStartDate());
+        assertNull(fetchedAliases2.get(0).getEndDate());
+        assertEquals("Hidden", fetchedAliases2.get(0).getOldName());
+
+        assertNull(fetchedAliases2.get(1).getStartDate());
+        assertEquals(LocalDate.of(2000, 10, 10), fetchedAliases2.get(1).getEndDate());
+        assertEquals("Visible", fetchedAliases2.get(1).getOldName());
+
+        logoutTestUserByWeb(this.restTemplate, this.port);
+    }
 }
 
