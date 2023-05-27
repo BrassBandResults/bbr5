@@ -6,8 +6,16 @@ import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.web.csrf.CsrfToken;
+import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import uk.co.bbr.services.bands.BandService;
@@ -27,10 +35,12 @@ import uk.co.bbr.services.security.JwtService;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.services.security.ex.AuthenticationFailedException;
 import uk.co.bbr.web.LoginMixin;
+import uk.co.bbr.web.security.filter.SecurityFilter;
 import uk.co.bbr.web.security.support.TestUser;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -49,10 +59,7 @@ class BandAliasWebTests implements LoginMixin {
     @Autowired private JwtService jwtService;
     @Autowired private RegionService regionService;
     @Autowired private BandService bandService;
-    @Autowired private ContestService contestService;
-    @Autowired private ContestEventService contestEventService;
-    @Autowired private ContestResultService contestResultService;
-    @Autowired private PersonService personService;
+    @Autowired private CsrfTokenRepository csrfTokenRepository;
     @Autowired private RestTemplate restTemplate;
     @LocalServerPort private int port;
 
@@ -215,5 +222,73 @@ class BandAliasWebTests implements LoginMixin {
         HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/rothwell-temperance-band/edit-aliases/999/delete", String.class));
         assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
     }
+
+    @Test
+    void testCreateAliasWorksSuccessfully() {
+        // arrange
+        Optional<BandDao> band = this.bandService.fetchBySlug("rothwell-temperance-band");
+        assertTrue(band.isPresent());
+        List<BandPreviousNameDao> fetchedAliases1 = this.bandService.findAllPreviousNames(band.get());
+        assertEquals(2, fetchedAliases1.size());
+        long aliasId = fetchedAliases1.get(0).getId();
+        assertEquals("Hidden", fetchedAliases1.get(0).getOldName());
+        assertEquals("Visible", fetchedAliases1.get(1).getOldName());
+
+        loginTestUserByWeb(TestUser.TEST_MEMBER, this.restTemplate, this.csrfTokenRepository, this.port);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+        CsrfToken csrfToken = csrfTokenRepository.generateToken(null);
+        headers.add(csrfToken.getHeaderName(), csrfToken.getToken());
+        headers.add("Cookie", SecurityFilter.CSRF_HEADER_NAME + "=" + csrfToken.getToken());
+
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+        map.add("oldName", "New Alias");
+        map.add("_csrf", csrfToken.getToken());
+        map.add("_csrf_header", SecurityFilter.CSRF_HEADER_NAME);
+
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
+
+        // act
+        ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/bands/rothwell-temperance-band/edit-aliases/add", request, String.class);
+
+        // assert
+        assertEquals(HttpStatus.FOUND, response.getStatusCode());
+
+        assertTrue(Objects.requireNonNull(response.getHeaders().get("Location")).get(0).endsWith("/bands/rothwell-temperance-band/edit-aliases"));
+
+        List<BandPreviousNameDao> fetchedAliases2 = this.bandService.findAllPreviousNames(band.get());
+        assertEquals(3, fetchedAliases2.size());
+        assertEquals("Hidden", fetchedAliases2.get(0).getOldName());
+        assertEquals("New Alias", fetchedAliases2.get(1).getOldName());
+        assertEquals("Visible", fetchedAliases2.get(2).getOldName());
+
+        logoutTestUserByWeb(this.restTemplate, this.port);
+    }
+
+    @Test
+    void testCreateAliasWithInvalidBandSlugFailsAsExpected() {
+        loginTestUserByWeb(TestUser.TEST_MEMBER, this.restTemplate, this.csrfTokenRepository, this.port);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+        CsrfToken csrfToken = csrfTokenRepository.generateToken(null);
+        headers.add(csrfToken.getHeaderName(), csrfToken.getToken());
+        headers.add("Cookie", SecurityFilter.CSRF_HEADER_NAME + "=" + csrfToken.getToken());
+
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+        map.add("oldName", "New Alias");
+        map.add("_csrf", csrfToken.getToken());
+        map.add("_csrf_header", SecurityFilter.CSRF_HEADER_NAME);
+
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
+
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.postForEntity("http://localhost:" + this.port + "/bands/not-a-real-band/edit-aliases/add", request, String.class));
+        assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
+    }
+
+
 }
 
