@@ -49,7 +49,7 @@ class CreatePersonAliasTests implements LoginMixin {
         altName.setOldName("Timothy Sawyer");
 
         // act
-        this.personAliasService.createAlternativeName(person, altName);
+        this.personAliasService.createAlias(person, altName);
 
         // assert
         List<PersonAliasDao> altNames = this.personAliasService.findAllAliases(person);
@@ -73,7 +73,7 @@ class CreatePersonAliasTests implements LoginMixin {
         PersonAliasDao altName = new PersonAliasDao();
         altName.setOldName("Dave Childs");
 
-        this.personAliasService.createAlternativeName(person, altName);
+        this.personAliasService.createAlias(person, altName);
 
         // act
         Optional<PersonAliasDao> matchingAlias = this.personAliasService.aliasExists(person, "Dave    Childs");
@@ -98,7 +98,7 @@ class CreatePersonAliasTests implements LoginMixin {
         PersonAliasDao altName = new PersonAliasDao();
         altName.setOldName("Rob Childs");
 
-        this.personAliasService.createAlternativeName(person, altName);
+        this.personAliasService.createAlias(person, altName);
 
         // act
         Optional<PersonAliasDao> matchingAlias = this.personAliasService.aliasExists(person, "Bob    Childs");

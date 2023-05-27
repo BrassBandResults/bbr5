@@ -69,7 +69,7 @@ public class PersonMigrationServiceImpl extends AbstractMigrationServiceImpl imp
             previousName.setOldName(name);
             previousName.setHidden(this.notBlankBoolean(oldNameElement, "hidden"));
 
-            this.personAliasService.migrateAlternativeName(person, previousName);
+            this.personAliasService.migrateAlias(person, previousName);
         }
     }
 }

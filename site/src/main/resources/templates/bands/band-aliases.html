@@ -26,13 +26,13 @@
             <td th:text="${previousName.startDateDisplay}"></td>
             <td th:text="${previousName.endDateDisplay}"></td>
             <td>
-                <span th:replace="buttons/alias.html :: editAlias(${Band}, ${previousName})">edit</span>
-                <span th:replace="buttons/alias.html :: deleteAlias(${Band}, ${previousName})">delete</span>
+                <span th:replace="buttons/alias.html :: editBandAlias(${Band}, ${previousName})">edit</span>
+                <span th:replace="buttons/alias.html :: deleteBandAlias(${Band}, ${previousName})">delete</span>
                 <span th:if="${!previousName.hidden}" th:remove="tag">
-                    <span th:replace="buttons/alias.html :: hideAlias(${Band}, ${previousName})">hide</span>
+                    <span th:replace="buttons/alias.html :: hideBandAlias(${Band}, ${previousName})">hide</span>
                 </span>
                 <span th:if="${previousName.hidden}" th:remove="tag">
-                    <span th:replace="buttons/alias.html :: showAlias(${Band}, ${previousName})" th:if="${previousName.hidden}">show</span>
+                    <span th:replace="buttons/alias.html :: showBandAlias(${Band}, ${previousName})" th:if="${previousName.hidden}">show</span>
                 </span>
             </td>
         </tr>

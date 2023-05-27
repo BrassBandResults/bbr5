@@ -72,7 +72,7 @@ class ParseLineTests implements LoginMixin {
 
         PersonAliasDao bobChilds = new PersonAliasDao();
         bobChilds.setOldName("Bob Childs");
-        this.personAliasService.createAlternativeName(robertChilds, bobChilds);
+        this.personAliasService.createAlias(robertChilds, bobChilds);
 
         logoutTestUser();
     }
