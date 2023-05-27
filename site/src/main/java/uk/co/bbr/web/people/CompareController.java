@@ -16,7 +16,7 @@ import java.util.List;
 public class CompareController {
     private final PersonService personService;
 
-    @GetMapping("/people/COMPARE")
+    @GetMapping("/people/COMPARE-CONDUCTORS")
     public String showPeopleBands(Model model) {
         ComparePeopleForm comparePeopleForm = new ComparePeopleForm();
         model.addAttribute("ComparePeopleForm", comparePeopleForm);
