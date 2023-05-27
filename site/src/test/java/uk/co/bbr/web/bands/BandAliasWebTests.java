@@ -262,6 +262,7 @@ class BandAliasWebTests implements LoginMixin {
         assertEquals(3, fetchedAliases2.size());
         assertEquals("Hidden", fetchedAliases2.get(0).getOldName());
         assertEquals("New Alias", fetchedAliases2.get(1).getOldName());
+        assertFalse(fetchedAliases2.get(1).isHidden());
         assertEquals("Visible", fetchedAliases2.get(2).getOldName());
 
         logoutTestUserByWeb(this.restTemplate, this.port);
