@@ -12,6 +12,7 @@ import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.bands.dao.BandAliasDao;
 import uk.co.bbr.services.parse.dto.ParseResultDto;
 import uk.co.bbr.services.parse.types.ParseOutcome;
+import uk.co.bbr.services.people.PersonAliasService;
 import uk.co.bbr.services.people.PersonService;
 import uk.co.bbr.services.people.dao.PersonAliasDao;
 import uk.co.bbr.services.people.dao.PersonDao;
@@ -42,6 +43,7 @@ class ParseBlockTests implements LoginMixin {
     @Autowired private BandAliasService bandAliasService;
     @Autowired private RegionService regionService;
     @Autowired private PersonService personService;
+    @Autowired private PersonAliasService personAliasService;
 
     @BeforeAll
     void setupData() throws AuthenticationFailedException {
@@ -69,7 +71,7 @@ class ParseBlockTests implements LoginMixin {
 
         PersonAliasDao bobChilds = new PersonAliasDao();
         bobChilds.setOldName("Bob Childs");
-        this.personService.createAlternativeName(robertChilds, bobChilds);
+        this.personAliasService.createAlternativeName(robertChilds, bobChilds);
 
         logoutTestUser();
     }

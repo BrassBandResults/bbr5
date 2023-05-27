@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import uk.co.bbr.services.contests.ContestResultService;
 import uk.co.bbr.services.framework.NotFoundException;
+import uk.co.bbr.services.people.PersonAliasService;
 import uk.co.bbr.services.people.PersonService;
 import uk.co.bbr.services.people.dao.PersonAliasDao;
 import uk.co.bbr.services.people.dao.PersonDao;
@@ -22,6 +23,7 @@ import java.util.Optional;
 public class PersonController {
 
     private final PersonService personService;
+    private final PersonAliasService personAliasService;
     private final ContestResultService contestResultService;
     private final PieceService pieceService;
 
@@ -32,7 +34,7 @@ public class PersonController {
             throw NotFoundException.personNotFoundBySlug(slug);
         }
 
-        List<PersonAliasDao> previousNames = this.personService.findVisibleAliases(person.get());
+        List<PersonAliasDao> previousNames = this.personAliasService.findVisibleAliases(person.get());
         ConductingDetailsDto personConductingResults = this.contestResultService.findResultsForConductor(person.get());
         int adjudicationsCount = this.personService.fetchAdjudicationCount(person.get());
         int composerCount = this.personService.fetchComposerCount(person.get());
@@ -57,7 +59,7 @@ public class PersonController {
             throw NotFoundException.personNotFoundBySlug(slug);
         }
 
-        List<PersonAliasDao> previousNames = this.personService.findVisibleAliases(person.get());
+        List<PersonAliasDao> previousNames = this.personAliasService.findVisibleAliases(person.get());
         ConductingDetailsDto personConductingResults = this.contestResultService.findResultsForConductor(person.get());
         int adjudicationsCount = this.personService.fetchAdjudicationCount(person.get());
         int composerCount = this.personService.fetchComposerCount(person.get());
@@ -82,7 +84,7 @@ public class PersonController {
             throw NotFoundException.personNotFoundBySlug(slug);
         }
 
-        List<PersonAliasDao> previousNames = this.personService.findVisibleAliases(person.get());
+        List<PersonAliasDao> previousNames = this.personAliasService.findVisibleAliases(person.get());
         List<PieceDao> personPieces = this.pieceService.findPiecesForPerson(person.get());
         ConductingDetailsDto personConductingResults = this.contestResultService.findResultsForConductor(person.get());
         int adjudicationsCount = this.personService.fetchAdjudicationCount(person.get());

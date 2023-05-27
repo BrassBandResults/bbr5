@@ -5,6 +5,7 @@ import org.jdom2.Element;
 import org.springframework.stereotype.Service;
 import uk.co.bbr.services.framework.annotations.IgnoreCoverage;
 import uk.co.bbr.services.framework.mixins.SlugTools;
+import uk.co.bbr.services.people.PersonAliasService;
 import uk.co.bbr.services.people.PersonService;
 import uk.co.bbr.services.people.dao.PersonAliasDao;
 import uk.co.bbr.services.people.dao.PersonDao;
@@ -19,6 +20,7 @@ import java.util.Optional;
 public class PersonMigrationServiceImpl extends AbstractMigrationServiceImpl implements PersonMigrationService, SlugTools {
 
     private final PersonService personService;
+    private final PersonAliasService personAliasService;
     private final SecurityService securityService;
 
     @Override
@@ -56,7 +58,7 @@ public class PersonMigrationServiceImpl extends AbstractMigrationServiceImpl imp
         String name = oldNameElement.getChildText("name");
         // does it already exist?
 
-        Optional<PersonAliasDao> existingAlias = this.personService.aliasExists(person, name);
+        Optional<PersonAliasDao> existingAlias = this.personAliasService.aliasExists(person, name);
         if (existingAlias.isEmpty()) {
 
             PersonAliasDao previousName = new PersonAliasDao();
@@ -67,7 +69,7 @@ public class PersonMigrationServiceImpl extends AbstractMigrationServiceImpl imp
             previousName.setOldName(name);
             previousName.setHidden(this.notBlankBoolean(oldNameElement, "hidden"));
 
-            this.personService.migrateAlternativeName(person, previousName);
+            this.personAliasService.migrateAlternativeName(person, previousName);
         }
     }
 }

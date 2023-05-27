@@ -26,6 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class CreatePersonAliasTests implements LoginMixin {
 
     @Autowired private PersonService personService;
+    @Autowired private PersonAliasService personAliasService;
     @Autowired private SecurityService securityService;
     @Autowired private JwtService jwtService;
 
@@ -48,10 +49,10 @@ class CreatePersonAliasTests implements LoginMixin {
         altName.setOldName("Timothy Sawyer");
 
         // act
-        this.personService.createAlternativeName(person, altName);
+        this.personAliasService.createAlternativeName(person, altName);
 
         // assert
-        List<PersonAliasDao> altNames = this.personService.findAllAliases(person);
+        List<PersonAliasDao> altNames = this.personAliasService.findAllAliases(person);
         assertEquals(1, altNames.size());
         assertEquals("Timothy Sawyer", altNames.get(0).getOldName());
         assertEquals(person.getName(), altNames.get(0).getPerson().getName());
@@ -72,10 +73,10 @@ class CreatePersonAliasTests implements LoginMixin {
         PersonAliasDao altName = new PersonAliasDao();
         altName.setOldName("Dave Childs");
 
-        this.personService.createAlternativeName(person, altName);
+        this.personAliasService.createAlternativeName(person, altName);
 
         // act
-        Optional<PersonAliasDao> matchingAlias = this.personService.aliasExists(person, "Dave    Childs");
+        Optional<PersonAliasDao> matchingAlias = this.personAliasService.aliasExists(person, "Dave    Childs");
 
         // assert
         assertTrue(matchingAlias.isPresent());
@@ -97,10 +98,10 @@ class CreatePersonAliasTests implements LoginMixin {
         PersonAliasDao altName = new PersonAliasDao();
         altName.setOldName("Rob Childs");
 
-        this.personService.createAlternativeName(person, altName);
+        this.personAliasService.createAlternativeName(person, altName);
 
         // act
-        Optional<PersonAliasDao> matchingAlias = this.personService.aliasExists(person, "Bob    Childs");
+        Optional<PersonAliasDao> matchingAlias = this.personAliasService.aliasExists(person, "Bob    Childs");
 
         // assert
         assertFalse(matchingAlias.isPresent());

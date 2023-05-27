@@ -119,29 +119,6 @@ public class PersonServiceImpl implements PersonService, SlugTools {
     }
 
     @Override
-    @IsBbrMember
-    public void createAlternativeName(PersonDao person, PersonAliasDao previousName) {
-        this.createAlternativeName(person, previousName, false);
-    }
-
-    @Override
-    @IsBbrAdmin
-    public void migrateAlternativeName(PersonDao person, PersonAliasDao previousName) {
-        this.createAlternativeName(person, previousName, true);
-    }
-
-    private void createAlternativeName(PersonDao person, PersonAliasDao previousName, boolean migrating) {
-        previousName.setPerson(person);
-        if (!migrating) {
-            previousName.setCreated(LocalDateTime.now());
-            previousName.setCreatedBy(this.securityService.getCurrentUsername());
-            previousName.setUpdated(LocalDateTime.now());
-            previousName.setUpdatedBy(this.securityService.getCurrentUsername());
-        }
-        this.personAliasRepository.saveAndFlush(previousName);
-    }
-
-    @Override
     public Optional<PersonDao> fetchBySlug(String personSlug) {
         return this.personRepository.fetchBySlug(personSlug);
     }
@@ -149,16 +126,6 @@ public class PersonServiceImpl implements PersonService, SlugTools {
     @Override
     public Optional<PersonDao> fetchById(long personId) {
         return this.personRepository.fetchById(personId);
-    }
-
-    @Override
-    public List<PersonAliasDao> findAllAliases(PersonDao person) {
-        return this.personAliasRepository.findForPersonId(person.getId());
-    }
-
-    @Override
-    public List<PersonAliasDao> findVisibleAliases(PersonDao person) {
-        return this.personAliasRepository.findVisibleForPersonId(person.getId());
     }
 
     @Override
@@ -197,13 +164,7 @@ public class PersonServiceImpl implements PersonService, SlugTools {
         return new PeopleListDto(peopleToReturn.size(), allBandsCount, prefix, peopleToReturn);
     }
 
-    @Override
-    public Optional<PersonAliasDao> aliasExists(PersonDao person, String aliasName) {
-        String name = person.simplifyPersonFullName(aliasName);
-        return this.personAliasRepository.fetchByNameForPerson(person.getId(), name);
-    }
-
-    @Override
+     @Override
     public int fetchAdjudicationCount(PersonDao person) {
         return this.contestAdjudicatorRepository.fetchAdjudicationCountForPerson(person.getId());
     }

@@ -17,20 +17,11 @@ public interface PersonService {
     PersonDao create(String surname, String firstNames);
     PersonDao update(PersonDao person);
 
-    void createAlternativeName(PersonDao person, PersonAliasDao previousName);
-    void migrateAlternativeName(PersonDao person, PersonAliasDao previousName);
-
     Optional<PersonDao> fetchBySlug(String personSlug);
 
     Optional<PersonDao> fetchById(long personId);
 
-    List<PersonAliasDao> findAllAliases(PersonDao person);
-    List<PersonAliasDao> findVisibleAliases(PersonDao person);
-
     PeopleListDto listPeopleStartingWith(String prefix);
-
-    Optional<PersonAliasDao> aliasExists(PersonDao person, String aliasName);
-
 
     int fetchAdjudicationCount(PersonDao person);
 
