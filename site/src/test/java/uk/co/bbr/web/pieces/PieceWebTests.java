@@ -119,8 +119,9 @@ class PieceWebTests implements LoginMixin {
     void testBestOwnChoicePageReturnsSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/pieces/BEST-OWN-CHOICE", String.class);
         assertNotNull(response);
-    }
 
+        // TODO more asserts here, perhaps split this test to new file with appropriate test data
+    }
 }
 
 

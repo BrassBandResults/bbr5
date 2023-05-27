@@ -88,12 +88,14 @@ public class PieceSql {
     }
 
     private static final String SUCCESSFUL_OWN_CHOICE_SQL = """
-            SELECT r.result_position, p.slug, p.name, p.piece_year
+            SELECT r.result_position, p.slug as piece_slug, p.name as piece_name, p.piece_year, comp.surname as composer_surname, comp.first_names as composer_first_names, comp.suffix as composer_suffix, comp.slug as composer_slug, a.surname as arranger_surname, a.first_names as arranger_first_names, a.suffix as arranger_suffix, a.slug as arranger_slug
             FROM contest_result r
                 INNER JOIN contest_result_test_piece rp ON rp.contest_result_id = r.id
                 INNER JOIN piece p ON p.id = rp.piece_id
                 INNER JOIN contest_event e ON e.id = r.contest_event_id
                 INNER JOIN contest c ON c.id = e.contest_id
+                LEFT OUTER JOIN person comp ON comp.id = p.composer_id
+                LEFT OUTER JOIN person a ON a.id = p.arranger_id
             WHERE r.result_position < 4
               AND r.result_position_type = 'R'
               AND c.name NOT LIKE '%Whit Friday%'""";

@@ -15,6 +15,8 @@
         <thead>
         <tr>
             <th th:text="#{page.column-header.name}">Name</th>
+            <th th:text="#{page.column-header.composer}">Composer</th>
+            <th th:text="#{page.column-header.arranger}">Arranger</th>
             <th th:text="#{page.column-header.podiums}">Podiums</th>
             <th th:text="#{page.column-header.points}">Points</th>
         </tr>
@@ -22,6 +24,8 @@
         <tbody>
         <tr th:each="piece : ${BestPieces}">
             <td class="bbr-piece" nowrap><span th:replace="links/piece-link.html :: pieceLink(${piece.piece})">Piece Title</span></td>
+            <td class="composer person"><span th:replace="links/person-link.html :: personLink(${piece.piece.composer}, false, false)"></span></td>
+            <td class="arranger person"><span th:replace="links/person-link.html :: personLink(${piece.piece.arranger}, false, false)"></span></td>
             <td th:text="${piece.topThree}"></td>
             <td th:text="${piece.points}"></td>
         </tr>
