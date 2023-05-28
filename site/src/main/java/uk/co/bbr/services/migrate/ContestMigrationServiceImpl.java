@@ -136,6 +136,7 @@ public class ContestMigrationServiceImpl extends AbstractMigrationServiceImpl im
             previousName.setCreated(this.notBlankDateTime(oldNameElement, "created"));
             previousName.setUpdated(this.notBlankDateTime(oldNameElement, "lastModified"));
             previousName.setName(name);
+            previousName.setOldId(oldNameElement.getAttributeValue("id"));
 
             this.contestService.migrateAlias(contest, previousName);
         }

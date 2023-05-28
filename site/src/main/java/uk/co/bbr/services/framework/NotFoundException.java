@@ -61,5 +61,9 @@ public class NotFoundException extends RuntimeException {
         return new NotFoundException("Alias with id " + aliasId + " not found for band with slug " + bandSlug);
     }
 
+    public static NotFoundException lookupNeedsThreeCharacters() {
+        return new NotFoundException("Lookup needs to have three or more characters");
+    }
+
 
 }

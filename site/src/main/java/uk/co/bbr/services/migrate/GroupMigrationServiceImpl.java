@@ -75,6 +75,7 @@ public class GroupMigrationServiceImpl extends AbstractMigrationServiceImpl impl
             previousName.setCreated(this.notBlankDateTime(oldNameElement, "created"));
             previousName.setUpdated(this.notBlankDateTime(oldNameElement, "lastModified"));
             previousName.setName(name);
+            previousName.setOldId(oldNameElement.getAttributeValue("id"));
 
             this.contestGroupService.migrateAlias(group, previousName);
         }

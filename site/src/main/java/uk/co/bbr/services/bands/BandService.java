@@ -42,4 +42,6 @@ public interface BandService {
     BandDao findMatchingBandByName(String bandName, LocalDate dateContext);
 
     List<BandWinnersSqlDto> fetchContestWinningBands();
+
+    List<BandDao> lookupByPrefix(String searchString);
 }

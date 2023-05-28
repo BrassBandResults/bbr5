@@ -337,4 +337,9 @@ public class BandServiceImpl implements BandService, SlugTools {
     public List<BandWinnersSqlDto> fetchContestWinningBands() {
         return BandSql.selectWinningBands(this.entityManager);
     }
+
+    @Override
+    public List<BandDao> lookupByPrefix(String searchString) {
+        return this.bandRepository.lookupByPrefix("%" + searchString.toUpperCase() + "%");
+    }
 }

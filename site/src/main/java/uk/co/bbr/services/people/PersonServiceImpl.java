@@ -230,5 +230,10 @@ public class PersonServiceImpl implements PersonService, SlugTools {
         return PeopleBandsSql.selectWinningPeopleAfter(this.entityManager, year);
     }
 
+    @Override
+    public List<PersonDao> lookupByPrefix(String searchString) {
+        return this.personRepository.lookupByPrefix("%" + searchString.toUpperCase() + "%");
+    }
+
 
 }

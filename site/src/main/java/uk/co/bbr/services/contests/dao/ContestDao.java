@@ -1,5 +1,7 @@
 package uk.co.bbr.services.contests.dao;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -118,5 +120,12 @@ public class ContestDao extends AbstractDao implements NameTools {
             value = value.trim();
         }
         this.description = value;
+    }
+
+    public ObjectNode asLookup(ObjectMapper objectMapper) {
+        ObjectNode person = objectMapper.createObjectNode();
+        person.put("slug", this.getSlug());
+        person.put("name", this.name);
+        return person;
     }
 }

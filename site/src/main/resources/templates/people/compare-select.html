@@ -6,25 +6,83 @@
 <body>
 <div layout:fragment="content">
     <h2 th:text="#{page.compare-people.page-header}">Compare People</h2>
-    <form th:object="${ComparePeopleForm}"
-          action="/people/COMPARE/"
-          method="post">
-        <div class="alert alert-danger" th:if="${#fields.hasErrors('*')}">
-            <ul>
-                <li th:each="err : ${#fields.errors('*')}" th:text="@{#{${err}}}"></li>
-            </ul>
-        </div>
-        <div class="mb-3">
-            <label class="form-label" for="first" th:text="#{page.compare-people.first}">First Person:</label>
-            <input id="first" class="form-control" type="text" maxlength="100"/>
-        </div>
-        <div class="mb-3">
-            <label class="form-label" for="second" th:text="#{page.compare-people.second}">Second person:</label>
-            <input id="second" class="form-control" type="text" maxlength="100"/>
-        </div>
-
-        <input type="submit" th:value="#{page.buttons.compare}" class="btn btn-success"/>
-    </form>
+    <div class="mb-3">
+        <label class="form-label" for="first" th:text="#{page.compare-people.first}">First Person:</label>
+        <input id="first" class="form-control" type="text" maxlength="100" onkeyup="lookup('first', 'person');"/>
+    </div>
+    <div class="mb-3">
+        <label class="form-label" for="second" th:text="#{page.compare-people.second}">Second person:</label>
+        <input id="second" class="form-control" type="text" maxlength="100" onkeyup="lookup('second', 'person');"/>
+    </div>
+    <button id="compare-button" th:text="#{page.buttons.compare}" class="btn btn-success disabled" onclick="showComparison()"></button>
 </div>
+
+<div layout:fragment="scriptfooter">
+<script>
+
+function showComparison() {
+    let firstPerson = document.getElementById("first").dataset.slug;
+    let secondPerson = document.getElementById("second").dataset.slug;
+    let location = '/people/COMPARE-CONDUCTORS/' + firstPerson + "/" + secondPerson;
+    history.pushState({}, "", window.location);
+    window.location.replace(location);
+}
+
+function fill(inputId, matchSlug, matchName) {
+    let inputElement = document.getElementById(inputId);
+    inputElement.value = matchName;
+    inputElement.dataset.slug = matchSlug;
+    inputElement.classList.remove("bg-warning");
+    inputElement.classList.add("bg-success");
+    inputElement.classList.add("text-white");
+
+    document.getElementById('list-' + inputId).remove();
+
+    let firstPerson = document.getElementById("first").dataset.slug;
+    let secondPerson = document.getElementById("second").dataset.slug;
+    if (firstPerson.length > 0 && secondPerson.length > 0) {
+        document.getElementById('compare-button').classList.remove("disabled");
+    }
+}
+
+function lookup(inputId, entity) {
+  let inputElement = document.getElementById(inputId);
+  let inputValue = inputElement.value;
+  if (inputValue.length > 2 ) {
+      inputElement.classList.remove("bg-success");
+      inputElement.classList.remove("text-white");
+      inputElement.classList.add("bg-warning");
+
+      let searchList = document.getElementById('list-' + inputId);
+      if (searchList === null) {
+          searchList = document.createElement("ul");
+          searchList.id = 'list-' + inputId;
+          searchList.className="list-lookup";
+          inputElement.parentElement.append(searchList);
+      }
+
+      const httpRequest = new XMLHttpRequest();
+      httpRequest.onreadystatechange = () => {
+          if (httpRequest.readyState === XMLHttpRequest.DONE) {
+              if (httpRequest.status === 200) {
+                  let resultsHtml = "";
+                  let data = JSON.parse(httpRequest.responseText);
+                  for (let i = 0; i < data.matches.length; i++) {
+                      let displayText = data.matches[i].name + " <small>" + data.matches[i].context + "</small>";
+                      resultsHtml += "<li onclick=\"fill('" + inputId + "', '" + data.matches[i].slug + "', '" + data.matches[i].name + "');\">" + displayText + "</li>";
+                  }
+                  searchList.innerHTML = resultsHtml;
+              }
+          }
+      };
+      httpRequest.open("GET", "/lookup/" + entity + "/data.json?s=" + inputValue, true);
+      httpRequest.send();
+  }
+}
+
+
+</script>
+</div>
+
 </body>
 </html>

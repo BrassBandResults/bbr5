@@ -1,5 +1,7 @@
 package uk.co.bbr.services.people.dao;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -172,5 +174,13 @@ public class PersonDao extends AbstractDao implements NameTools {
 
     public boolean matchesName(String personName) {
         return personName != null && personName.equalsIgnoreCase(this.combinedName);
+    }
+
+    public ObjectNode asLookup(ObjectMapper objectMapper) {
+        ObjectNode person = objectMapper.createObjectNode();
+        person.put("slug", this.getSlug());
+        person.put("name", this.combinedName);
+        person.put("context", this.knownFor != null ? this.knownFor : "");
+        return person;
     }
 }

@@ -17,6 +17,7 @@ public class ContestAliasDao extends AbstractDao implements NameTools {
     private String name;
 
     @Column(name="old_id")
+    @Setter
     private String oldId;
 
     @ManyToOne(fetch=FetchType.EAGER, optional=false)

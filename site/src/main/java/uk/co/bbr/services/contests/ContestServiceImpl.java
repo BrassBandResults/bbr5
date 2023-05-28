@@ -250,4 +250,9 @@ public class ContestServiceImpl implements ContestService, SlugTools {
     public List<ContestAliasDao> fetchAliases(ContestDao contest) {
         return this.contestAliasRepository.findForContest(contest.getId());
     }
+
+    @Override
+    public List<ContestDao> lookupByPrefix(String searchString) {
+        return this.contestRepository.lookupByPrefix("%" + searchString.toUpperCase() + "%");
+    }
 }

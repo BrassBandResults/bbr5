@@ -188,4 +188,11 @@ public class BandDao extends AbstractDao implements NameTools {
 
         return bandNode;
     }
+
+    public ObjectNode asLookup(ObjectMapper objectMapper) {
+        ObjectNode person = objectMapper.createObjectNode();
+        person.put("slug", this.getSlug());
+        person.put("name", this.name);
+        return person;
+    }
 }

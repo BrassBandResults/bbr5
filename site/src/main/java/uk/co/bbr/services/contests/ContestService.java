@@ -33,4 +33,6 @@ public interface ContestService {
     ContestDao addContestTag(ContestDao contest, ContestTagDao tag);
 
     List<ContestAliasDao> fetchAliases(ContestDao contest);
+
+    List<ContestDao> lookupByPrefix(String searchString);
 }

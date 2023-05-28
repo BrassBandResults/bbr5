@@ -42,4 +42,6 @@ public interface PersonService {
     List<PeopleBandsSqlDto> fetchBandsConductedListBefore(int year);
 
     List<PeopleBandsSqlDto> fetchBandsConductedListAfter(int year);
+
+    List<PersonDao> lookupByPrefix(String searchString);
 }
