@@ -35,68 +35,79 @@ public class BandMigrationServiceImpl extends AbstractMigrationServiceImpl imple
     private final SecurityService securityService;
 
     @Override
-    public void migrate(Element rootNode) {
-        BandDao newBand = new BandDao();
-        newBand.setOldId(rootNode.getAttributeValue("id"));
-        newBand.setName(rootNode.getChildText("name"));
-        newBand.setSlug(rootNode.getChildText("slug"));
-        if (!rootNode.getChildText("website").equals("http://")){
-            newBand.setWebsite(this.notBlank(rootNode, "website"));
-        }
-
-        newBand.setTwitterName(this.notBlank(rootNode, "twitter"));
-
-        Optional<RegionDao> region = this.regionService.fetchBySlug(rootNode.getChild("region").getAttributeValue("slug"));
-        if (region.isEmpty()) {
-            throw new NotFoundException("Region not found");
-        }
-        newBand.setRegion(region.get());
-
-        newBand.setLatitude(this.notBlank(rootNode, "latitude"));
-        newBand.setLongitude(this.notBlank(rootNode, "longitude"));
-
-        newBand.setStartDate(this.notBlankDate(rootNode, "start"));
-        newBand.setEndDate(this.notBlankDate(rootNode, "end"));
-
-        String statusText = this.notBlank(rootNode, "status");
-        if (statusText != null && statusText.length() > 0) {
-            newBand.setStatus(BandStatus.fromDescription(statusText));
-        }
-        if ("True".equalsIgnoreCase(this.notBlank(rootNode, "scratch_band"))){
-            newBand.setStatus(BandStatus.SCRATCH);
-        }
-
-        String gradingName = this.notBlank(rootNode, "grading");
-        if (gradingName != null) {
-            Optional<SectionDao> section = this.sectionService.fetchByName(gradingName);
-            if (section.isEmpty()) {
-                throw new NotFoundException("Section not found " + gradingName);
+    public void migrate(Element rootNode, int pass) {
+        if (pass == 1) {
+            BandDao newBand = new BandDao();
+            newBand.setOldId(rootNode.getAttributeValue("id"));
+            newBand.setName(rootNode.getChildText("name"));
+            newBand.setSlug(rootNode.getChildText("slug"));
+            if (!rootNode.getChildText("website").equals("http://")) {
+                newBand.setWebsite(this.notBlank(rootNode, "website"));
             }
-            newBand.setSection(section.get());
+
+            newBand.setTwitterName(this.notBlank(rootNode, "twitter"));
+
+            Optional<RegionDao> region = this.regionService.fetchBySlug(rootNode.getChild("region").getAttributeValue("slug"));
+            if (region.isEmpty()) {
+                throw new NotFoundException("Region not found");
+            }
+            newBand.setRegion(region.get());
+
+            newBand.setLatitude(this.notBlank(rootNode, "latitude"));
+            newBand.setLongitude(this.notBlank(rootNode, "longitude"));
+
+            newBand.setStartDate(this.notBlankDate(rootNode, "start"));
+            newBand.setEndDate(this.notBlankDate(rootNode, "end"));
+
+            String statusText = this.notBlank(rootNode, "status");
+            if (statusText != null && statusText.length() > 0) {
+                newBand.setStatus(BandStatus.fromDescription(statusText));
+            }
+            if ("True".equalsIgnoreCase(this.notBlank(rootNode, "scratch_band"))) {
+                newBand.setStatus(BandStatus.SCRATCH);
+            }
+
+            String gradingName = this.notBlank(rootNode, "grading");
+            if (gradingName != null) {
+                Optional<SectionDao> section = this.sectionService.fetchByName(gradingName);
+                if (section.isEmpty()) {
+                    throw new NotFoundException("Section not found " + gradingName);
+                }
+                newBand.setSection(section.get());
+            }
+
+            newBand.setMapper(this.createUser(this.notBlank(rootNode, "mapper"), this.securityService));
+            newBand.setCreatedBy(this.createUser(this.notBlank(rootNode, "owner"), this.securityService));
+            newBand.setUpdatedBy(this.createUser(this.notBlank(rootNode, "lastChangedBy"), this.securityService));
+
+            newBand.setCreated(this.notBlankDateTime(rootNode, "created"));
+            newBand.setUpdated(this.notBlankDateTime(rootNode, "lastModified"));
+
+            newBand.setNotes(this.notBlank(rootNode, "notes"));
+
+            // notes
+            newBand = this.bandService.migrate(newBand);
+
+            this.createBandRehearsalNight(newBand, this.notBlank(rootNode, "rehearsal1"));
+            this.createBandRehearsalNight(newBand, this.notBlank(rootNode, "rehearsal2"));
+
+            Element previousNames = rootNode.getChild("previous_names");
+            List<Element> previousNameNodes = previousNames.getChildren();
+            for (Element eachOldName : previousNameNodes) {
+                this.createPreviousName(newBand, eachOldName);
+            }
+            System.out.println(newBand.getName());
+        } else {
+            // second pass - all bands present, sort out band links
+            Element parent1 = rootNode.getChild("parent1");
+            Element parent2 = rootNode.getChild("parent2");
+            String oldId = rootNode.getAttributeValue("id");
+
+            createBandLink(oldId, parent1);
+            createBandLink(oldId, parent2);
+
+            System.out.println(rootNode.getAttributeValue("name"));
         }
-
-        newBand.setMapper(this.createUser(this.notBlank(rootNode, "mapper"), this.securityService));
-        newBand.setCreatedBy(this.createUser(this.notBlank(rootNode, "owner"), this.securityService));
-        newBand.setUpdatedBy(this.createUser(this.notBlank(rootNode, "lastChangedBy"), this.securityService));
-
-        newBand.setCreated(this.notBlankDateTime(rootNode, "created"));
-        newBand.setUpdated(this.notBlankDateTime(rootNode, "lastModified"));
-
-        newBand.setNotes(this.notBlank(rootNode, "notes"));
-
-        // notes
-        newBand = this.bandService.migrate(newBand);
-
-        this.createBandRehearsalNight(newBand, this.notBlank(rootNode,"rehearsal1"));
-        this.createBandRehearsalNight(newBand, this.notBlank(rootNode,"rehearsal2"));
-
-        Element previousNames = rootNode.getChild("previous_names");
-        List<Element> previousNameNodes = previousNames.getChildren();
-        for (Element eachOldName : previousNameNodes) {
-            this.createPreviousName(newBand, eachOldName);
-        }
-
-        System.out.println(newBand.getName());
     }
 
     private void createPreviousName(BandDao band, Element oldNameElement) {
