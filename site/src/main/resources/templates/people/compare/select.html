@@ -68,7 +68,7 @@ function lookup(inputId, entity) {
                   let resultsHtml = "";
                   let data = JSON.parse(httpRequest.responseText);
                   for (let i = 0; i < data.matches.length; i++) {
-                      let displayText = data.matches[i].name + " <small>" + data.matches[i].context + "</small>";
+                      let displayText = "<b>" + data.matches[i].name + "</b> <small>" + data.matches[i].context + "</small>";
                       resultsHtml += "<li style='cursor:pointer' onclick=\"fill('" + inputId + "', '" + data.matches[i].slug + "', '" + data.matches[i].name + "');\">" + displayText + "</li>";
                   }
                   searchList.innerHTML = resultsHtml;
