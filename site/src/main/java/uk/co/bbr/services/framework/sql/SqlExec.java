@@ -10,12 +10,15 @@ import java.util.List;
 
 @UtilityClass
 public class SqlExec {
-    public static <T extends AbstractSqlDto> List<T> execute(EntityManager entityManager, String sql, Object param1, Class<T> clazz) {
+    public static <T extends AbstractSqlDto> List<T> execute(EntityManager entityManager, String sql, Object param1, Object param2, Class<T> clazz) {
         List<T> returnData = new ArrayList<>();
         try {
             Query query = entityManager.createNativeQuery(sql);
             if (param1 != null) {
                 query.setParameter(1, param1);
+            }
+            if (param2 != null) {
+                query.setParameter(2, param2);
             }
             List<Object[]> queryResults = query.getResultList();
 
@@ -33,7 +36,11 @@ public class SqlExec {
         }
     }
 
+    public static <T extends AbstractSqlDto> List<T> execute(EntityManager entityManager, String sql, Object param1, Class<T> clazz) {
+            return execute(entityManager, sql, param1, null, clazz);
+    }
+
     public static <T extends AbstractSqlDto> List<T> execute(EntityManager entityManager, String sql, Class<T> clazz) {
-        return execute(entityManager, sql, null, clazz);
+        return execute(entityManager, sql, null, null, clazz);
     }
 }

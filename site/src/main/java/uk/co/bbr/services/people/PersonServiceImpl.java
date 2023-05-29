@@ -10,12 +10,15 @@ import uk.co.bbr.services.framework.ValidationException;
 import uk.co.bbr.services.framework.mixins.SlugTools;
 import uk.co.bbr.services.people.dao.PersonAliasDao;
 import uk.co.bbr.services.people.dao.PersonDao;
+import uk.co.bbr.services.people.dto.ConductorCompareDto;
 import uk.co.bbr.services.people.dto.PeopleListDto;
 import uk.co.bbr.services.people.repo.PersonAliasRepository;
 import uk.co.bbr.services.people.repo.PersonRepository;
 import uk.co.bbr.services.people.sql.PeopleBandsSql;
+import uk.co.bbr.services.people.sql.PeopleCompareSql;
 import uk.co.bbr.services.people.sql.PeopleCountSql;
 import uk.co.bbr.services.people.sql.PeopleWinnersSql;
+import uk.co.bbr.services.people.sql.dto.CompareConductorsSqlDto;
 import uk.co.bbr.services.people.sql.dto.PeopleBandsSqlDto;
 import uk.co.bbr.services.people.sql.dto.PeopleWinnersSqlDto;
 import uk.co.bbr.services.pieces.repo.PieceRepository;
@@ -233,6 +236,12 @@ public class PersonServiceImpl implements PersonService, SlugTools {
     @Override
     public List<PersonDao> lookupByPrefix(String searchString) {
         return this.personRepository.lookupByPrefix("%" + searchString.toUpperCase() + "%");
+    }
+
+    @Override
+    public ConductorCompareDto compareConductors(PersonDao leftPerson, PersonDao rightPerson) {
+        List<CompareConductorsSqlDto> results = PeopleCompareSql.compareConductors(this.entityManager, leftPerson.getId(), rightPerson.getId());
+        return new ConductorCompareDto(results);
     }
 
 

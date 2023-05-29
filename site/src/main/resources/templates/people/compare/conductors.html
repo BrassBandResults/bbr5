@@ -11,6 +11,39 @@
         <span th:text=" #{page.compare.page-header.with}">with</span>
         <a th:href="${'/people/' + RightPerson.slug}" th:text="${RightPerson.combinedName}">John Roberts</a>
     </h2>
+    <p th:text="#{page.compare.explain.conductor(${LeftPerson.combinedName}, ${LeftPersonWins}, ${RightPerson.combinedName}, ${RightPersonWins})}">This table lists results from contests where the two conductors have competed against each other. {{ConductorOne.name}} has been better {{ConductorOneWins}} times, {{ConductorTwo.name}} has been better {{ConductorTwoWins}} times.</p>
+    <table width="100%">
+        <tr>
+            <td class="bg-primary border border-dark text-white text-start" th:width="@{${LeftPersonPercent} + '%'}">
+                <span th:remove="tag" th:text="${LeftPerson.combinedName + ' ' + LeftPersonWins + '&nbsp;(' + LeftPersonPercent + '%)'}">Left Results</span>
+            </td>
+            <td class="bg-secondary border border-dark text-white text-end" th:width="@{${RightPersonPercent} + '%'}">
+                <span th:remove="tag" th:text="${RightPerson.combinedName + ' ' + RightPersonWins + '&nbsp;(' + RightPersonPercent + '%)'}">Right Results</span>
+            </td>
+        </tr>
+    </table>
+    <table class="table table-hover sortable">
+        <thead>
+            <tr>
+                <th th:text="${LeftPerson.combinedName}">David Roberts</th>
+                <th th:text="#{page.column-header.band}">Band</th>
+                <th th:text="#{page.column-header.date}">Date</th>
+                <th th:text="#{page.column-header.contest}">Contest</th>
+                <th th:text="#{page.column-header.band}">Band}</th>
+                <th th:text="${RightPerson.combinedName}">John Roberts</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="result : ${Results}">
+                <td th:text="${result.leftResult}">1</td>
+                <td th:text="${result.leftBandName}">Rothwell</td>
+                <td class="bbr-event" nowrap><span th:replace="links/event-link.html :: eventLink(${result.event})">9th Sep 2023</span></td>
+                <td th:text="${result.contestName}">Yorkshire Area</td>
+                <td th:text="${result.rightBandName}">Black Dyke</td>
+                <td th:text="${result.rightResult}">2</td>
+            </tr>
+        </tbody>
+    </table>
 </div>
 </body>
 </html>

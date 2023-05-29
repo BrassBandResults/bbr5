@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.people.PersonService;
 import uk.co.bbr.services.people.dao.PersonDao;
+import uk.co.bbr.services.people.dto.ConductorCompareDto;
 import uk.co.bbr.web.people.forms.ComparePeopleForm;
 
 import java.util.Optional;
@@ -37,8 +38,15 @@ public class CompareController {
             throw NotFoundException.personNotFoundBySlug(rightSlug);
         }
 
+        ConductorCompareDto compareConductors = this.personService.compareConductors(leftPerson.get(), rightPerson.get());
+
         model.addAttribute("LeftPerson", leftPerson.get());
         model.addAttribute("RightPerson", rightPerson.get());
+        model.addAttribute("LeftPersonWins", compareConductors.getLeftPersonWins());
+        model.addAttribute("RightPersonWins", compareConductors.getRightPersonWins());
+        model.addAttribute("LeftPersonPercent", compareConductors.getLeftPersonPercent());
+        model.addAttribute("RightPersonPercent", compareConductors.getRightPersonPercent());
+        model.addAttribute("Results", compareConductors.getResults());
 
         return "people/compare/conductors";
     }

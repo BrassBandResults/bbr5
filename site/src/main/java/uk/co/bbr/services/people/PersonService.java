@@ -3,6 +3,7 @@ package uk.co.bbr.services.people;
 import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.people.dao.PersonAliasDao;
 import uk.co.bbr.services.people.dao.PersonDao;
+import uk.co.bbr.services.people.dto.ConductorCompareDto;
 import uk.co.bbr.services.people.dto.PeopleListDto;
 import uk.co.bbr.services.people.sql.dto.PeopleBandsSqlDto;
 import uk.co.bbr.services.people.sql.dto.PeopleWinnersSqlDto;
@@ -44,4 +45,6 @@ public interface PersonService {
     List<PeopleBandsSqlDto> fetchBandsConductedListAfter(int year);
 
     List<PersonDao> lookupByPrefix(String searchString);
+
+    ConductorCompareDto compareConductors(PersonDao leftPerson, PersonDao rightPerson);
 }
