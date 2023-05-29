@@ -29,3 +29,9 @@ tbody tr.result-3 td {
   margin-top: 6px;
   text-align: left;
 }
+
+ul.list-lookup {
+  background-color: #000;
+  color: #FFF;
+  list-style-type: none;
+}
