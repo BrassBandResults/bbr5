@@ -14,7 +14,7 @@
     <p th:text="#{page.compare.explain.conductor(${LeftPerson.combinedName}, ${LeftPersonWins}, ${RightPerson.combinedName}, ${RightPersonWins})}">This table lists results from contests where the two conductors have competed against each other. {{ConductorOne.name}} has been better {{ConductorOneWins}} times, {{ConductorTwo.name}} has been better {{ConductorTwoWins}} times.</p>
     <table width="100%">
         <tr>
-            <td class="bg-primary border border-dark text-white text-start" th:width="@{${LeftPersonPercent} + '%'}">
+            <td class="bg-info border border-dark text-white text-start" th:width="@{${LeftPersonPercent} + '%'}">
                 <span th:remove="tag" th:text="${LeftPerson.combinedName + ' ' + LeftPersonWins + '&nbsp;(' + LeftPersonPercent + '%)'}">Left Results</span>
             </td>
             <td class="bg-secondary border border-dark text-white text-end" th:width="@{${RightPersonPercent} + '%'}">
