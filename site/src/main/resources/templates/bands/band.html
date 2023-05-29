@@ -33,7 +33,7 @@
                 <tr th:each="result : ${BandResults}" th:class="${'result-' + result.position}">
                     <td class="bbr-event" nowrap><span th:replace="links/event-link.html :: eventLink(${result.contestEvent})">9th Sep 2023</span></td>
                     <td class="bbr-contest">
-                        <img class="toggle-filter" th:data-id="${result.id}" th:src="@{${STATIC_HOST} + '/icons/zoom_in.png'}" th:alt="#{page.band.filter-text}" th:title="#{page.band.filter-text}"/>
+                        <img class="toggle-filter" th:data-id="${result.id}" th:src="@{${STATIC_HOST} + '/icons/zoom_in.png'}" th:alt="#{page.filter.prompt}" th:title="#{page.filter.prompt}"/>
                         <span th:title="${'Competed as ' + result.bandName}" th:text="${result.contestEvent.contest.name}">Yorkshire Area</span>
                         <div class="toggle-filter-links" th:id="${'toggle-filter-' + result.id}">12345</div>
                     </td>

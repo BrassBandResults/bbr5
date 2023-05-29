@@ -38,7 +38,11 @@
                 <td th:class="${result.leftClass}" th:text="${result.leftResult}">1</td>
                 <td><span th:replace="links/band-link.html :: bandLinkWithNameOverride(${result.leftBand}, ${result.leftBandName})"></span></td>
                 <td class="bbr-event" nowrap><span th:replace="links/event-link.html :: eventLink(${result.event})">9th Sep 2023</span></td>
-                <td th:text="${result.contestName}">Yorkshire Area</td>
+                <td>
+                    <img class="toggle-filter" th:data-id="${result.event.id}" th:src="@{${STATIC_HOST} + '/icons/zoom_in.png'}" th:alt="#{page.filter.prompt}" th:title="#{page.filter.prompt}"/>
+                    <span  th:text="${result.contestName}">Yorkshire Area</span>
+                    <div class="toggle-filter-links" th:id="${'toggle-filter-' + result.event.id}">12345</div>
+                </td>
                 <td><span th:replace="links/band-link.html :: bandLinkWithNameOverride(${result.rightBand}, ${result.rightBandName})"></span></td>
                 <td th:class="${result.rightClass}"  th:text="${result.rightResult}">2</td>
             </tr>
