@@ -17,3 +17,10 @@
         </span>
     </span>
 </span>
+
+<span th:fragment="bandLinkWithNameOverride(band, bandNameOverride)">
+    <span th:if="${band != null}" th:remove="tag">
+        <img th:if="${band.region != null}" th:title="${band.region.name}" th:src="@{${STATIC_HOST} + '/flags/' + ${band.region.countryCode} + '.png'}"/>
+        <a th:href="${'/bands/' + band.slug}" th:text="${bandNameOverride}" class="bbr-band" th:title="${band.name}">Band Name</a>
+    </span>
+</span>
