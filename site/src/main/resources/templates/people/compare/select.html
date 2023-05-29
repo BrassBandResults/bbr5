@@ -8,11 +8,11 @@
     <h2 th:text="#{page.compare-people.page-header}">Compare People</h2>
     <div class="mb-3">
         <label class="form-label" for="first" th:text="#{page.compare-people.first}">First Person:</label>
-        <input id="first" class="form-control" type="text" maxlength="100" onkeyup="lookup('first', 'person');"/>
+        <input id="first" autocomplete="off" class="form-control" type="text" maxlength="100" onkeyup="lookup('first', 'person');"/>
     </div>
     <div class="mb-3">
         <label class="form-label" for="second" th:text="#{page.compare-people.second}">Second person:</label>
-        <input id="second" class="form-control" type="text" maxlength="100" onkeyup="lookup('second', 'person');"/>
+        <input id="second" autocomplete="off" class="form-control" type="text" maxlength="100" onkeyup="lookup('second', 'person');"/>
     </div>
     <button id="compare-button" th:text="#{page.buttons.compare}" class="btn btn-success disabled" onclick="showComparison()"></button>
 </div>
@@ -69,7 +69,7 @@ function lookup(inputId, entity) {
                   let data = JSON.parse(httpRequest.responseText);
                   for (let i = 0; i < data.matches.length; i++) {
                       let displayText = data.matches[i].name + " <small>" + data.matches[i].context + "</small>";
-                      resultsHtml += "<li onclick=\"fill('" + inputId + "', '" + data.matches[i].slug + "', '" + data.matches[i].name + "');\">" + displayText + "</li>";
+                      resultsHtml += "<li style='cursor:pointer' onclick=\"fill('" + inputId + "', '" + data.matches[i].slug + "', '" + data.matches[i].name + "');\">" + displayText + "</li>";
                   }
                   searchList.innerHTML = resultsHtml;
               }
