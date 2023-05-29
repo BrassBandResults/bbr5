@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+<head>
+    <title th:text="@{#{page.compare-people.title} + ' - Brass Band Results'}">Compare People - Brass Band Results</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h2>
+        <span th:text=" #{page.compare.page-header.prefix}">Compare</span>
+        <a th:href="${'/people/' + LeftPerson.slug}" th:text="${LeftPerson.combinedName}">David Roberts</a>
+        <span th:text=" #{page.compare.page-header.with}">with</span>
+        <a th:href="${'/people/' + RightPerson.slug}" th:text="${RightPerson.combinedName}">John Roberts</a>
+    </h2>
+</div>
+</body>
+</html>
