@@ -62,6 +62,12 @@ At this point we have the base data in place, with a subset of the users - just 
 
 The results import relies on generated SQL rather than XML, so we need to at this point import the user details.
 
+    :::text
+    \copy (SELECT u.id, u.username, u.email, u.password, u.last_login, u.date_joined, p.id, points, contest_history_visibility, enhanced_functionality, superuser, pro_member, stripe_email,  stripe_token, stripe_customer
+    FROM auth_user u
+    INNER JOIN users_userprofile p ON p.user_id = u.id
+    WHERE u.is_active = true) to ‘~/bbr-users.csv’ WITH (FORMAT CSV, HEADER);
+
 Place the extracted users csv file into /tmp/bbr-users.csv
 
 * visit http://localhost:8080/migrate/Users

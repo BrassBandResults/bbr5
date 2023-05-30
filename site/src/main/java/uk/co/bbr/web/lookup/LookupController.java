@@ -31,7 +31,7 @@ public class LookupController {
 
     private static final String MATCH_TAG_NAME = "matches";
 
-    @GetMapping("/lookup/{type:person|band|contest}/data.json")
+@GetMapping("/lookup/{type:[a-z]+}/data.json")
     public ResponseEntity<JsonNode>  lookupElement(@PathVariable("type") String type, @RequestParam("s") String searchString) {
         if (searchString.length() < 3) {
             throw NotFoundException.lookupNeedsThreeCharacters();
@@ -41,7 +41,7 @@ public class LookupController {
             case "person" -> this.lookupPerson(searchString);
             case "band" -> this.lookupBand(searchString);
             case "contest" -> this.lookupContest(searchString);
-            default -> null;
+            default -> throw NotFoundException.lookupTypeNotFound(type);
         };
 
         return ResponseEntity.ok(objectNode);

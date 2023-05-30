@@ -65,5 +65,9 @@ public class NotFoundException extends RuntimeException {
         return new NotFoundException("Lookup needs to have three or more characters");
     }
 
+    public static NotFoundException lookupTypeNotFound(String type) {
+        return new NotFoundException("Lookup type " + type + " not found");
+    }
+
 
 }

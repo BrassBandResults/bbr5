@@ -105,8 +105,6 @@ public class BandMigrationServiceImpl extends AbstractMigrationServiceImpl imple
 
             createBandLink(oldId, parent1);
             createBandLink(oldId, parent2);
-
-            System.out.println(rootNode.getAttributeValue("name"));
         }
     }
 

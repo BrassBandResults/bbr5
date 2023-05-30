@@ -152,6 +152,7 @@ CREATE TABLE band_rehearsal_day (
     updated_by VARCHAR(50) NOT NULL CONSTRAINT fk_band_rehearsal_day_updated REFERENCES site_user(usercode),
     created_by VARCHAR(50) NOT NULL CONSTRAINT fk_band_rehearsal_day_owner REFERENCES site_user(usercode),
     day_number INT NOT NULL,
+    details VARCHAR(30),
     band_id BIGINT CONSTRAINT fk_band_rehearsal_day_band REFERENCES band(id)
 );
 
@@ -669,3 +670,27 @@ CREATE TABLE personal_contest_history_date_range (
 );
 
 CREATE INDEX idx_personal_history_date_range_owner ON personal_contest_history_date_range(created_by);
+
+-- CONTEST RESULT AWARDS
+
+CREATE TABLE contest_result_award_type (
+    id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_by VARCHAR(50) NOT NULL CONSTRAINT fk_contest_result_award_type_updated REFERENCES site_user(usercode),
+    created_by VARCHAR(50) NOT NULL CONSTRAINT fk_contest_result_award_type_owner REFERENCES site_user(usercode),
+    name VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE contest_result_award (
+    id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_by VARCHAR(50) NOT NULL CONSTRAINT fk_contest_result_award_updated REFERENCES site_user(usercode),
+    created_by VARCHAR(50) NOT NULL CONSTRAINT fk_contest_result_award_owner REFERENCES site_user(usercode),
+    contest_result_id BIGINT NOT NULL CONSTRAINT fk_contest_result_award_result REFERENCES contest_result(id),
+    award_type_id BIGINT NOT NULL CONSTRAINT fk_contest_result_award_type REFERENCES contest_result_award_type(id),
+    description VARCHAR(100)
+);
+
+CREATE INDEX idx_contest_result_award_event ON contest_result_award(contest_result_id);

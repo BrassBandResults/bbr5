@@ -27,4 +27,8 @@ public class BandRehearsalDayDao extends AbstractDao {
     @JoinColumn(name="band_id")
     @Setter
     private BandDao band;
+
+    @Column(name="details")
+    @Setter
+    private String details;
 }

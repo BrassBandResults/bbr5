@@ -26,6 +26,21 @@ public class CompareController {
         return "people/compare/select";
     }
 
+    @GetMapping("/people/COMPARE-CONDUCTORS/{leftSlug:[\\-a-z\\d]{2,}}")
+    public String compareConductorToAnother(Model model, @PathVariable("leftSlug") String leftSlug) {
+        Optional<PersonDao> leftPerson = this.personService.fetchBySlug(leftSlug);
+        if (leftPerson.isEmpty()) {
+            throw NotFoundException.personNotFoundBySlug(leftSlug);
+        }
+
+        ComparePeopleForm comparePeopleForm = new ComparePeopleForm();
+
+        model.addAttribute("ComparePeopleForm", comparePeopleForm);
+        model.addAttribute("LeftPerson", leftPerson.get());
+
+        return "people/compare/select-one";
+    }
+
     @GetMapping("/people/COMPARE-CONDUCTORS/{leftSlug:[\\-a-z\\d]{2,}}/{rightSlug:[\\-a-z\\d]{2,}}")
     public String compareConductorsDisplay(Model model, @PathVariable("leftSlug") String leftSlug, @PathVariable("rightSlug") String rightSlug) {
         Optional<PersonDao> leftPerson = this.personService.fetchBySlug(leftSlug);

@@ -20,7 +20,11 @@ CREATE TABLE site_user (
     stripe_email VARCHAR(100),
     stripe_token VARCHAR(30),
     stripe_customer VARCHAR(30),
-    new_email_required BIT DEFAULT 0
+    new_email_required BIT DEFAULT 0,
+    feedback_email_opt_out BIT DEFAULT 0,
+    pro_user_for_free BIT DEFAULT 0
+
+
 );
 
 CREATE UNIQUE INDEX idx_siteuser_usercode ON site_user(usercode);

@@ -29,6 +29,7 @@ import uk.co.bbr.web.LoginMixin;
 import uk.co.bbr.web.security.support.TestUser;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -68,11 +69,12 @@ class CompareConductorsWebTests implements LoginMixin {
         loginTestUser(this.securityService, this.jwtService, TestUser.TEST_MEMBER);
 
         this.personService.create("Childs", "David");
-        this.personService.create("Childs", "Nick");
+        PersonDao nickChilds = this.personService.create("Childs", "Nick");
         this.personService.create("Childs", "Bob");
         PersonDao davidRoberts = this.personService.create("Roberts", "David");
 
         BandDao rtb = this.bandService.create("Rothwell Temperance");
+        BandDao dyke = this.bandService.create("Black Dyke");
 
         ContestDao yorkshireArea = this.contestService.create("Yorkshire Area");
         ContestEventDao yorkshireArea2010 = this.contestEventService.create(yorkshireArea, LocalDate.of(2010, 3, 3));
@@ -80,13 +82,21 @@ class CompareConductorsWebTests implements LoginMixin {
         ContestDao broadoakWhitFriday = this.contestService.create("Broadoak (Whit Friday)");
         ContestEventDao broadoak2011 = this.contestEventService.create(broadoakWhitFriday, LocalDate.of(2011, 6, 7));
 
-        ContestResultDao yorkshireAreaResult = new ContestResultDao();
-        yorkshireAreaResult.setBand(rtb);
-        yorkshireAreaResult.setBandName("Rothwell Temperance");
-        yorkshireAreaResult.setConductor(davidRoberts);
-        yorkshireAreaResult.setPosition("1");
-        yorkshireAreaResult.setDraw(5);
-        this.contestResultService.addResult(yorkshireArea2010, yorkshireAreaResult);
+        ContestResultDao yorkshireAreaResult1 = new ContestResultDao();
+        yorkshireAreaResult1.setBand(rtb);
+        yorkshireAreaResult1.setBandName("Rothwell Temperance");
+        yorkshireAreaResult1.setConductor(davidRoberts);
+        yorkshireAreaResult1.setPosition("1");
+        yorkshireAreaResult1.setDraw(5);
+        this.contestResultService.addResult(yorkshireArea2010, yorkshireAreaResult1);
+
+        ContestResultDao yorkshireAreaResult2 = new ContestResultDao();
+        yorkshireAreaResult2.setBand(dyke);
+        yorkshireAreaResult2.setBandName("Black Dyke");
+        yorkshireAreaResult2.setConductor(nickChilds);
+        yorkshireAreaResult2.setPosition("2");
+        yorkshireAreaResult2.setDraw(4);
+        this.contestResultService.addResult(yorkshireArea2010, yorkshireAreaResult2);
 
         ContestResultDao whitFridayResult = new ContestResultDao();
         whitFridayResult.setBand(rtb);
@@ -109,5 +119,47 @@ class CompareConductorsWebTests implements LoginMixin {
         assertTrue(response.contains("Compare Conductors"));
         assertTrue(response.contains("First conductor:"));
         assertTrue(response.contains("Second conductor:"));
+    }
+
+    @Test
+    void testGetPersonDetailsPageWithOnePersonPopulatedWorksCorrectly() {
+        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/people/COMPARE-CONDUCTORS/david-roberts", String.class);
+        assertNotNull(response);
+
+        assertTrue(response.contains("Compare Conductors"));
+        assertTrue(response.contains("David Roberts"));
+        assertTrue(response.contains("First conductor:"));
+        assertTrue(response.contains("Second conductor:"));
+    }
+
+    @Test
+    void testGetPersonDetailsPageWithOneInvalidPersonFailsAsExpected() {
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/people/COMPARE-CONDUCTORS/not-a-real-person", String.class));
+        assertTrue(Objects.requireNonNull(ex.getMessage()).contains("404"));
+    }
+
+    @Test
+    void testResultPageWorksCorrectly() {
+        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/people/COMPARE-CONDUCTORS/david-roberts/nick-childs", String.class);
+        assertNotNull(response);
+
+        assertTrue(response.contains("Compare "));
+        assertTrue(response.contains("David Roberts"));
+        assertTrue(response.contains("Nick Childs"));
+        assertTrue(response.contains("Black Dyke"));
+        assertTrue(response.contains("Rothwell Temperance"));
+        assertFalse(response.contains("Broadoak"));
+    }
+
+    @Test
+    void testGetPersonDetailsPageWithLeftInvalidPersonFailsAsExpected() {
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/people/COMPARE-CONDUCTORS/not-a-real-person/nick-childs", String.class));
+        assertTrue(Objects.requireNonNull(ex.getMessage()).contains("404"));
+    }
+
+    @Test
+    void testGetPersonDetailsPageWithRightInvalidPersonFailsAsExpected() {
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/people/COMPARE-CONDUCTORS/david-roberts/not-a-real-person", String.class));
+        assertTrue(Objects.requireNonNull(ex.getMessage()).contains("404"));
     }
 }

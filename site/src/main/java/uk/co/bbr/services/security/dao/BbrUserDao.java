@@ -66,6 +66,18 @@ public class BbrUserDao extends AbstractDao {
     @Column(name="stripe_customer", length=30)
     private String stripeCustomer;
 
+    @Setter
+    @Column(name="new_email_required")
+    private boolean newEmailRequired;
+
+    @Setter
+    @Column(name="feedback_email_opt_out")
+    private boolean feedbackEmailOptOut;
+
+    @Setter
+    @Column(name="pro_user_for_free")
+    private boolean proUserForFree;
+
     public UserRole getRole() {
         return UserRole.fromCode(this.accessLevel);
     }

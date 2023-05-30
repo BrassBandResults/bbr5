@@ -18,8 +18,10 @@ import uk.co.bbr.services.migrate.PersonMigrationService;
 import uk.co.bbr.services.migrate.PieceMigrationService;
 import uk.co.bbr.services.migrate.TagsMigrationService;
 import uk.co.bbr.services.migrate.VenueMigrationService;
+import uk.co.bbr.services.migrate.sql.PersonMigrateSql;
 import uk.co.bbr.web.security.annotations.IsBbrAdmin;
 
+import javax.persistence.EntityManager;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,6 +41,7 @@ public class MigrateController {
     private final PersonMigrationService personMigrationService;
     private final PieceMigrationService pieceMigrationService;
     private final VenueMigrationService venueMigrationService;
+    private final EntityManager entityManager;
 
     @GetMapping("/migrate/{type}")
     @IsBbrAdmin
@@ -97,6 +100,7 @@ public class MigrateController {
             if (twoPasses) {
                 return "redirect:/migrate/" + type + "/2/0";
             }
+
             return "redirect:/";
         }
 
@@ -129,7 +133,7 @@ public class MigrateController {
 
                 switch(type) {
                     case "Bands":
-                        this.bandMigrationService.migrate(rootNode);
+                        this.bandMigrationService.migrate(rootNode, pass);
                         break;
                     case "Groups":
                         this.groupMigrationService.migrate(rootNode);
