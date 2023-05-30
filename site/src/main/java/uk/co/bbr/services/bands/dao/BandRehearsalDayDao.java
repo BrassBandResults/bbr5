@@ -29,6 +29,18 @@ public class BandRehearsalDayDao extends AbstractDao {
     private BandDao band;
 
     @Column(name="details")
-    @Setter
     private String details;
+
+    public void setDetails(String value) {
+        if (value == null) {
+            this.details = null;
+            return;
+        }
+
+        this.details = value.trim();
+    }
+
+    public String getDayTranslationKey() {
+        return this.day.getTranslationKey();
+    }
 }

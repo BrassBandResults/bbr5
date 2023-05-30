@@ -1,6 +1,7 @@
 package uk.co.bbr.services.bands;
 
 import uk.co.bbr.services.bands.dao.BandDao;
+import uk.co.bbr.services.bands.dao.BandRehearsalDayDao;
 import uk.co.bbr.services.bands.dao.BandRelationshipDao;
 import uk.co.bbr.services.bands.dao.BandRelationshipTypeDao;
 import uk.co.bbr.services.bands.dto.BandListDto;
@@ -24,6 +25,7 @@ public interface BandService {
     BandListDto listBandsStartingWith(String prefix);
 
     void createRehearsalDay(BandDao band, RehearsalDay day);
+    void createRehearsalDay(BandDao band, RehearsalDay day, String details);
     void migrateRehearsalNight(BandDao band, RehearsalDay day);
 
     List<RehearsalDay> findRehearsalNights(BandDao band);
@@ -44,4 +46,6 @@ public interface BandService {
     List<BandWinnersSqlDto> fetchContestWinningBands();
 
     List<BandDao> lookupByPrefix(String searchString);
+
+    List<BandRehearsalDayDao> fetchRehearsalDays(BandDao band);
 }

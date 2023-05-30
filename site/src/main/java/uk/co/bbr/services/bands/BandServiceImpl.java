@@ -237,19 +237,25 @@ public class BandServiceImpl implements BandService, SlugTools {
     @Override
     @IsBbrMember
     public void createRehearsalDay(BandDao band, RehearsalDay day) {
-        this.createRehearsalNight(band, day, false);
+        this.createRehearsalNight(band, day, null,false);
+    }
+
+    @Override
+    public void createRehearsalDay(BandDao band, RehearsalDay day, String details) {
+        this.createRehearsalNight(band, day, details,false);
     }
 
     @Override
     @IsBbrAdmin
     public void migrateRehearsalNight(BandDao band, RehearsalDay day) {
-        this.createRehearsalNight(band, day, true);
+        this.createRehearsalNight(band, day, null, true);
     }
 
-    private void createRehearsalNight(BandDao band, RehearsalDay day, boolean migrating) {
+    private void createRehearsalNight(BandDao band, RehearsalDay day, String details, boolean migrating) {
         BandRehearsalDayDao rehearsalNight = new BandRehearsalDayDao();
         rehearsalNight.setBand(band);
         rehearsalNight.setDay(day);
+        rehearsalNight.setDetails(details);
 
         if (!migrating) {
             rehearsalNight.setCreated(LocalDateTime.now());
@@ -341,5 +347,10 @@ public class BandServiceImpl implements BandService, SlugTools {
     @Override
     public List<BandDao> lookupByPrefix(String searchString) {
         return this.bandRepository.lookupByPrefix("%" + searchString.toUpperCase() + "%");
+    }
+
+    @Override
+    public List<BandRehearsalDayDao> fetchRehearsalDays(BandDao band) {
+        return this.bandRehearsalNightRepository.findForBand(band.getId());
     }
 }

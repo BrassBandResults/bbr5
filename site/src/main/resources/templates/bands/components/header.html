@@ -28,7 +28,11 @@
         </tr>
         <tr>
             <th th:text="#{page.band.details.rehearsals}">Rehearsals:</th>
-            <td></td>
+            <td>
+                <span th:each="rehearsalDay : ${BandRehearsalDays}" th:remove="tag">
+                    <span th:text="#{${rehearsalDay.dayTranslationKey}}">Monday</span> <span th:text="${rehearsalDay.details}">4pm</span><br/>
+                </span>
+            </td>
         </tr>
     </table>
 

@@ -13,6 +13,8 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import uk.co.bbr.services.bands.BandService;
 import uk.co.bbr.services.bands.dao.BandDao;
+import uk.co.bbr.services.bands.dao.BandRehearsalDayDao;
+import uk.co.bbr.services.bands.types.RehearsalDay;
 import uk.co.bbr.services.contests.ContestEventService;
 import uk.co.bbr.services.contests.ContestResultService;
 import uk.co.bbr.services.contests.ContestService;
@@ -63,6 +65,9 @@ class BandDetailsWebTests implements LoginMixin {
         BandDao rtb = this.bandService.create("Rothwell Temperance Band", yorkshire);
         BandDao notRtb = this.bandService.create("Not RTB", yorkshire);
         BandDao whitOnlyBand = this.bandService.create("Whit Band", yorkshire);
+
+        this.bandService.createRehearsalDay(rtb, RehearsalDay.MONDAY);
+        this.bandService.createRehearsalDay(rtb, RehearsalDay.WEDNESDAY, "After Junior Band");
 
         PersonDao davidRoberts = this.personService.create("Roberts", "David");
         PersonDao johnRoberts = this.personService.create("Roberts", "John");
@@ -124,6 +129,11 @@ class BandDetailsWebTests implements LoginMixin {
         assertTrue(response.contains(">David Roberts<"));
         assertTrue(response.contains(">John Roberts<"));
         assertFalse(response.contains(">Duncan Beckley<"));
+
+        assertTrue(response.contains("Monday"));
+        assertTrue(response.contains("Wednesday"));
+        assertTrue(response.contains("After Junior Band"));
+        assertFalse(response.contains("Thursday"));
     }
 
     @Test
