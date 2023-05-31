@@ -25,6 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class CreateRehearsalDayServiceTests implements LoginMixin {
     @Autowired private BandService bandService;
+    @Autowired private BandRehearsalsService bandRehearsalsService;
     @Autowired private RegionService regionService;
     @Autowired private SecurityService securityService;
     @Autowired private JwtService jwtService;
@@ -47,11 +48,11 @@ class CreateRehearsalDayServiceTests implements LoginMixin {
         BandDao band = this.bandService.fetchBySlug("black-dyke-band").get();
 
         // act
-        this.bandService.createRehearsalDay(band, RehearsalDay.FRIDAY);
-        this.bandService.createRehearsalDay(band, RehearsalDay.MONDAY);
+        this.bandRehearsalsService.createRehearsalDay(band, RehearsalDay.FRIDAY);
+        this.bandRehearsalsService.createRehearsalDay(band, RehearsalDay.MONDAY);
 
         // assert
-        List<RehearsalDay> bandRehearsalDays = this.bandService.findRehearsalNights(band);
+        List<RehearsalDay> bandRehearsalDays = this.bandRehearsalsService.findRehearsalDays(band);
         assertEquals(2, bandRehearsalDays.size());
         assertEquals(RehearsalDay.MONDAY, bandRehearsalDays.get(0));
         assertEquals(RehearsalDay.FRIDAY, bandRehearsalDays.get(1));

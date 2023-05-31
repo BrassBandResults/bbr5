@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
+import uk.co.bbr.services.bands.BandRehearsalsService;
 import uk.co.bbr.services.bands.BandService;
 import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.bands.dao.BandRehearsalDayDao;
@@ -49,6 +50,7 @@ class BandDetailsWebTests implements LoginMixin {
     @Autowired private JwtService jwtService;
     @Autowired private RegionService regionService;
     @Autowired private BandService bandService;
+    @Autowired private BandRehearsalsService bandRehearsalsService;
     @Autowired private ContestService contestService;
     @Autowired private ContestEventService contestEventService;
     @Autowired private ContestResultService contestResultService;
@@ -66,8 +68,8 @@ class BandDetailsWebTests implements LoginMixin {
         BandDao notRtb = this.bandService.create("Not RTB", yorkshire);
         BandDao whitOnlyBand = this.bandService.create("Whit Band", yorkshire);
 
-        this.bandService.createRehearsalDay(rtb, RehearsalDay.MONDAY);
-        this.bandService.createRehearsalDay(rtb, RehearsalDay.WEDNESDAY, "After Junior Band");
+        this.bandRehearsalsService.createRehearsalDay(rtb, RehearsalDay.MONDAY);
+        this.bandRehearsalsService.createRehearsalDay(rtb, RehearsalDay.WEDNESDAY, "After Junior Band");
 
         PersonDao davidRoberts = this.personService.create("Roberts", "David");
         PersonDao johnRoberts = this.personService.create("Roberts", "John");

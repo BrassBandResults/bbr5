@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import uk.co.bbr.services.bands.BandAliasService;
+import uk.co.bbr.services.bands.BandRehearsalsService;
 import uk.co.bbr.services.bands.BandService;
 import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.bands.dao.BandAliasDao;
@@ -28,6 +29,7 @@ import java.util.Optional;
 public class BandController {
 
     private final BandService bandService;
+    private final BandRehearsalsService bandRehearsalsService;
     private final BandAliasService bandAliasService;
     private final ContestService contestService;
     private final ContestTagService contestTagService;
@@ -41,7 +43,7 @@ public class BandController {
             throw NotFoundException.bandNotFoundBySlug(bandSlug);
         }
 
-        List<BandRehearsalDayDao> bandRehearsalDays = this.bandService.fetchRehearsalDays(band.get());
+        List<BandRehearsalDayDao> bandRehearsalDays = this.bandRehearsalsService.fetchRehearsalDays(band.get());
         List<BandAliasDao> previousNames = this.bandAliasService.findVisibleAliases(band.get());
         BandDetailsDto bandResults = this.contestResultService.findResultsForBand(band.get());
 
@@ -65,7 +67,7 @@ public class BandController {
             throw NotFoundException.bandNotFoundBySlug(bandSlug);
         }
 
-        List<BandRehearsalDayDao> bandRehearsalDays = this.bandService.fetchRehearsalDays(band.get());
+        List<BandRehearsalDayDao> bandRehearsalDays = this.bandRehearsalsService.fetchRehearsalDays(band.get());
         List<BandAliasDao> previousNames = this.bandAliasService.findVisibleAliases(band.get());
         BandDetailsDto bandResults = this.contestResultService.findResultsForBand(band.get());
 
@@ -93,7 +95,7 @@ public class BandController {
             throw NotFoundException.contestNotFoundBySlug(contestSlug);
         }
 
-        List<BandRehearsalDayDao> bandRehearsalDays = this.bandService.fetchRehearsalDays(band.get());
+        List<BandRehearsalDayDao> bandRehearsalDays = this.bandRehearsalsService.fetchRehearsalDays(band.get());
         List<BandAliasDao> previousNames = this.bandAliasService.findVisibleAliases(band.get());
         BandDetailsDto bandResults = this.contestResultService.findResultsForBand(band.get(), contest.get());
 
@@ -117,7 +119,7 @@ public class BandController {
             throw NotFoundException.groupNotFoundBySlug(groupSlug);
         }
 
-        List<BandRehearsalDayDao> bandRehearsalDays = this.bandService.fetchRehearsalDays(band.get());
+        List<BandRehearsalDayDao> bandRehearsalDays = this.bandRehearsalsService.fetchRehearsalDays(band.get());
         List<BandAliasDao> previousNames = this.bandAliasService.findVisibleAliases(band.get());
         BandDetailsDto bandResults = this.contestResultService.findResultsForBand(band.get(), group.get());
 
@@ -141,7 +143,7 @@ public class BandController {
             throw NotFoundException.tagNotFoundBySlug(tagSlug);
         }
 
-        List<BandRehearsalDayDao> bandRehearsalDays = this.bandService.fetchRehearsalDays(band.get());
+        List<BandRehearsalDayDao> bandRehearsalDays = this.bandRehearsalsService.fetchRehearsalDays(band.get());
         List<BandAliasDao> previousNames = this.bandAliasService.findVisibleAliases(band.get());
         BandDetailsDto bandResults = this.contestResultService.findResultsForBand(band.get(), tag.get());
 

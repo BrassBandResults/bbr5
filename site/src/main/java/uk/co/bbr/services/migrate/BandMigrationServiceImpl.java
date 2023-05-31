@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.jdom2.Element;
 import org.springframework.stereotype.Service;
 import uk.co.bbr.services.bands.BandAliasService;
+import uk.co.bbr.services.bands.BandRehearsalsService;
 import uk.co.bbr.services.bands.BandService;
 import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.bands.dao.BandAliasDao;
@@ -30,6 +31,7 @@ public class BandMigrationServiceImpl extends AbstractMigrationServiceImpl imple
 
     private final RegionService regionService;
     private final BandService bandService;
+    private final BandRehearsalsService bandRehearsalsService;
     private final BandAliasService bandAliasService;
     private final SectionService sectionService;
     private final SecurityService securityService;
@@ -137,7 +139,7 @@ public class BandMigrationServiceImpl extends AbstractMigrationServiceImpl imple
 
     private void createBandRehearsalNight(BandDao band, String rehearsalNight) {
         if (rehearsalNight != null) {
-            this.bandService.migrateRehearsalNight(band, RehearsalDay.fromName(rehearsalNight));
+            this.bandRehearsalsService.migrateRehearsalDay(band, RehearsalDay.fromName(rehearsalNight));
         }
     }
 

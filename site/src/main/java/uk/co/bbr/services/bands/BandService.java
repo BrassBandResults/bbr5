@@ -24,12 +24,6 @@ public interface BandService {
 
     BandListDto listBandsStartingWith(String prefix);
 
-    void createRehearsalDay(BandDao band, RehearsalDay day);
-    void createRehearsalDay(BandDao band, RehearsalDay day, String details);
-    void migrateRehearsalNight(BandDao band, RehearsalDay day);
-
-    List<RehearsalDay> findRehearsalNights(BandDao band);
-
     Optional<BandDao> fetchBySlug(String bandSlug);
 
     Optional<BandDao> fetchBandByOldId(String bandOldId);
@@ -46,6 +40,4 @@ public interface BandService {
     List<BandWinnersSqlDto> fetchContestWinningBands();
 
     List<BandDao> lookupByPrefix(String searchString);
-
-    List<BandRehearsalDayDao> fetchRehearsalDays(BandDao band);
 }
