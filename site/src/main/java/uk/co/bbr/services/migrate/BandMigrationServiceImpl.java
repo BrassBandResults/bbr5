@@ -5,6 +5,7 @@ import org.jdom2.Element;
 import org.springframework.stereotype.Service;
 import uk.co.bbr.services.bands.BandAliasService;
 import uk.co.bbr.services.bands.BandRehearsalsService;
+import uk.co.bbr.services.bands.BandRelationshipService;
 import uk.co.bbr.services.bands.BandService;
 import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.bands.dao.BandAliasDao;
@@ -31,6 +32,7 @@ public class BandMigrationServiceImpl extends AbstractMigrationServiceImpl imple
 
     private final RegionService regionService;
     private final BandService bandService;
+    private final BandRelationshipService bandRelationshipService;
     private final BandRehearsalsService bandRehearsalsService;
     private final BandAliasService bandAliasService;
     private final SectionService sectionService;
@@ -165,14 +167,14 @@ public class BandMigrationServiceImpl extends AbstractMigrationServiceImpl imple
         relationship.setRightBandName(fromBand.getName());
         relationship.setLeftBand(toBand);
         relationship.setLeftBandName(toBandName);
-        relationship.setRelationship(this.bandService.fetchIsParentOfRelationship());
+        relationship.setRelationship(this.bandRelationshipService.fetchIsParentOfRelationship());
 
         relationship.setCreatedBy(this.createUser("tjs", this.securityService));
         relationship.setUpdatedBy(this.createUser("tjs", this.securityService));
         relationship.setCreated(LocalDateTime.now());
         relationship.setUpdated(LocalDateTime.now());
 
-        this.bandService.migrateRelationship(relationship);
+        this.bandRelationshipService.migrateRelationship(relationship);
     }
 
 }

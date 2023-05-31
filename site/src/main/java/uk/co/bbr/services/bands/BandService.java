@@ -28,11 +28,6 @@ public interface BandService {
 
     Optional<BandDao> fetchBandByOldId(String bandOldId);
 
-    BandRelationshipTypeDao fetchIsParentOfRelationship();
-
-    BandRelationshipDao saveRelationship(BandRelationshipDao relationship);
-    BandRelationshipDao migrateRelationship(BandRelationshipDao relationship);
-
     BandDao update(BandDao band);
 
     BandDao findMatchingBandByName(String bandName, LocalDate dateContext);

@@ -41,9 +41,6 @@ public class BandServiceImpl implements BandService, SlugTools {
     private final SecurityService securityService;
 
     private final BandPreviousNameRepository bandPreviousNameRepository;
-    private final BandRehearsalNightRepository bandRehearsalNightRepository;
-    private final BandRelationshipRepository bandRelationshipRepository;
-    private final BandRelationshipTypeRepository bandRelationshipTypeRepository;
 
     private final EntityManager entityManager;
 
@@ -241,50 +238,6 @@ public class BandServiceImpl implements BandService, SlugTools {
     @Override
     public Optional<BandDao> fetchBandByOldId(String bandOldId) {
         return this.bandRepository.fetchByOldId(bandOldId);
-    }
-
-    @Override
-    public BandRelationshipTypeDao fetchIsParentOfRelationship() {
-        return this.bandRelationshipTypeRepository.fetchIsParentOfRelationship();
-    }
-
-    @Override
-    @IsBbrMember
-    public BandRelationshipDao saveRelationship(BandRelationshipDao relationship) {
-        if (relationship.getStartDate() != null && relationship.getEndDate() != null && relationship.getStartDate().isAfter(relationship.getEndDate())) {
-            throw new ValidationException("Start date can't be after end date");
-        }
-
-        return this.saveRelationship(relationship, false);
-    }
-
-    @Override
-    @IsBbrAdmin
-    public BandRelationshipDao migrateRelationship(BandRelationshipDao relationship) {
-        return this.saveRelationship(relationship, true);
-    }
-
-    private BandRelationshipDao saveRelationship(BandRelationshipDao relationship, boolean migrating) {
-        if (relationship.getLeftBand() != null) {
-            if (StringUtils.isBlank(relationship.getLeftBandName())) {
-                relationship.setLeftBandName(relationship.getLeftBand().getName());
-            }
-        }
-
-        if (relationship.getRightBand() != null) {
-            if (StringUtils.isBlank(relationship.getRightBandName())) {
-                relationship.setRightBandName(relationship.getRightBand().getName());
-            }
-        }
-
-        if (!migrating) {
-            relationship.setCreated(LocalDateTime.now());
-            relationship.setCreatedBy(this.securityService.getCurrentUsername());
-            relationship.setUpdated(LocalDateTime.now());
-            relationship.setUpdatedBy(this.securityService.getCurrentUsername());
-        }
-
-        return this.bandRelationshipRepository.saveAndFlush(relationship);
     }
 
     @Override

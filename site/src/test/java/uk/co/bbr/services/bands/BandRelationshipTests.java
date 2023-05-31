@@ -27,16 +27,12 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest(properties = { "spring.config.name=band-relationship-tests-h2", "spring.datasource.url=jdbc:h2:mem:band-relationship-tests-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE", "spring.jpa.database-platform=org.hibernate.dialect.SQLServerDialect"})
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class BandRelationshipTests implements LoginMixin {
-    @Autowired
-    private BandService bandService;
-    @Autowired
-    private SectionService sectionService;
-    @Autowired
-    private RegionService regionService;
-    @Autowired
-    private SecurityService securityService;
-    @Autowired
-    private JwtService jwtService;
+    @Autowired private BandService bandService;
+    @Autowired private BandRelationshipService bandRelationshipService;
+    @Autowired private SectionService sectionService;
+    @Autowired private RegionService regionService;
+    @Autowired private SecurityService securityService;
+    @Autowired private JwtService jwtService;
 
     @BeforeAll
     void setupBands() throws AuthenticationFailedException {
@@ -79,10 +75,10 @@ class BandRelationshipTests implements LoginMixin {
         BandRelationshipDao newRelationship = new BandRelationshipDao();
         newRelationship.setLeftBand(wallaceArnold);
         newRelationship.setRightBand(rothwellTemperance);
-        newRelationship.setRelationship(this.bandService.fetchIsParentOfRelationship());
+        newRelationship.setRelationship(this.bandRelationshipService.fetchIsParentOfRelationship());
 
         // act
-        BandRelationshipDao relationship = this.bandService.saveRelationship(newRelationship);
+        BandRelationshipDao relationship = this.bandRelationshipService.saveRelationship(newRelationship);
 
         // assert
         assertEquals("Rothwell Temperance", relationship.getRightBandName());
@@ -106,12 +102,12 @@ class BandRelationshipTests implements LoginMixin {
         BandRelationshipDao newRelationship = new BandRelationshipDao();
         newRelationship.setLeftBand(wallaceArnold);
         newRelationship.setRightBand(rothwellTemperance);
-        newRelationship.setRelationship(this.bandService.fetchIsParentOfRelationship());
+        newRelationship.setRelationship(this.bandRelationshipService.fetchIsParentOfRelationship());
         newRelationship.setStartDate(LocalDate.of(2020, 1, 1));
         newRelationship.setEndDate(LocalDate.of(2022, 12, 31));
 
         // act
-        BandRelationshipDao relationship = this.bandService.saveRelationship(newRelationship);
+        BandRelationshipDao relationship = this.bandRelationshipService.saveRelationship(newRelationship);
 
         // assert
         assertEquals("Rothwell Temperance", relationship.getRightBandName());
@@ -137,12 +133,12 @@ class BandRelationshipTests implements LoginMixin {
         BandRelationshipDao newRelationship = new BandRelationshipDao();
         newRelationship.setLeftBand(wallaceArnold);
         newRelationship.setRightBand(rothwellTemperance);
-        newRelationship.setRelationship(this.bandService.fetchIsParentOfRelationship());
+        newRelationship.setRelationship(this.bandRelationshipService.fetchIsParentOfRelationship());
         newRelationship.setStartDate(LocalDate.of(2020, 1, 2));
         newRelationship.setEndDate(LocalDate.of(2020, 1, 1));
 
         // act
-        ValidationException ex = assertThrows(ValidationException.class, () -> this.bandService.saveRelationship(newRelationship));
+        ValidationException ex = assertThrows(ValidationException.class, () -> this.bandRelationshipService.saveRelationship(newRelationship));
 
         // assert
         assertEquals("Start date can't be after end date", ex.getMessage());
