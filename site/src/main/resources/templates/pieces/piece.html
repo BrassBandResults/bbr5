@@ -5,7 +5,10 @@
 </head>
 <body>
 <div layout:fragment="content">
-    <h2 th:text="${Piece.name}">Piece Name<small th:if="${Piece.year != null}" th:text="${Piece.year}"></small></h2>
+    <h2>
+        <span th:remove="tag" th:text="${Piece.name}">Piece Name</span>
+        <small th:if="${Piece.year != null}"><small><small th:text="${Piece.year}"></small></small></small>
+    </h2>
     <span th:replace="components/aliases.html :: previousNames(${PreviousNames})"></span>
 
     <table>
