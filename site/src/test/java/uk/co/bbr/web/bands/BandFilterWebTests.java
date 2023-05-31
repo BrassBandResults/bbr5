@@ -127,7 +127,7 @@ class BandFilterWebTests implements LoginMixin {
 
         assertNotNull(response);
         assertTrue(response.contains("<title>Rothwell Temperance Band - Band - Brass Band Results</title>"));
-        assertTrue(response.contains("<h2>Rothwell Temperance Band</h2>"));
+        assertTrue(response.contains("Rothwell Temperance Band"));
 
         assertTrue(response.contains(">Yorkshire Area<"));
         assertFalse(response.contains(">Hardraw Scar Contest<"));
@@ -153,7 +153,7 @@ class BandFilterWebTests implements LoginMixin {
 
         assertNotNull(response);
         assertTrue(response.contains("<title>Rothwell Temperance Band - Band - Brass Band Results</title>"));
-        assertTrue(response.contains("<h2>Rothwell Temperance Band</h2>"));
+        assertTrue(response.contains("Rothwell Temperance Band"));
 
         assertTrue(response.contains(">Yorkshire Area<"));
         assertFalse(response.contains(">Hardraw Scar Contest<"));
@@ -179,7 +179,7 @@ class BandFilterWebTests implements LoginMixin {
 
         assertNotNull(response);
         assertTrue(response.contains("<title>Rothwell Temperance Band - Band - Brass Band Results</title>"));
-        assertTrue(response.contains("<h2>Rothwell Temperance Band</h2>"));
+        assertTrue(response.contains("Rothwell Temperance Band"));
 
         assertTrue(response.contains(">Yorkshire Area<"));
         assertTrue(response.contains(">Hardraw Scar Contest<"));

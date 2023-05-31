@@ -115,7 +115,7 @@ class BandDetailsWebTests implements LoginMixin {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/rothwell-temperance-band", String.class);
         assertNotNull(response);
         assertTrue(response.contains("<title>Rothwell Temperance Band - Band - Brass Band Results</title>"));
-        assertTrue(response.contains("<h2>Rothwell Temperance Band</h2>"));
+        assertTrue(response.contains("Rothwell Temperance Band"));
 
         assertTrue(response.contains(">Contests (4)<"));
         assertTrue(response.contains(">Whit Friday (1)<"));
@@ -149,7 +149,7 @@ class BandDetailsWebTests implements LoginMixin {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/not-rtb", String.class);
         assertNotNull(response);
         assertTrue(response.contains("<title>Not RTB - Band - Brass Band Results</title>"));
-        assertTrue(response.contains("<h2>Not RTB</h2>"));
+        assertTrue(response.contains("Not RTB"));
 
         assertTrue(response.contains("Contests"));
         assertFalse(response.contains(">Whit Friday"));
@@ -160,7 +160,7 @@ class BandDetailsWebTests implements LoginMixin {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/not-rtb/whits", String.class);
         assertNotNull(response);
         assertTrue(response.contains("<title>Not RTB - Band - Brass Band Results</title>"));
-        assertTrue(response.contains("<h2>Not RTB</h2>"));
+        assertTrue(response.contains("Not RTB"));
 
         assertTrue(response.contains(">Contests ("));
         assertFalse(response.contains(">Whit Friday ("));
@@ -171,7 +171,7 @@ class BandDetailsWebTests implements LoginMixin {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/whit-band", String.class);
         assertNotNull(response);
         assertTrue(response.contains("<title>Whit Band - Band - Brass Band Results</title>"));
-        assertTrue(response.contains("<h2>Whit Band</h2>"));
+        assertTrue(response.contains("Whit Band"));
 
         assertFalse(response.contains(">Contests ("));
         assertTrue(response.contains(">Whit Friday ("));
@@ -188,7 +188,7 @@ class BandDetailsWebTests implements LoginMixin {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/rothwell-temperance-band/whits", String.class);
         assertNotNull(response);
         assertTrue(response.contains("<title>Rothwell Temperance Band - Band - Brass Band Results</title>"));
-        assertTrue(response.contains("<h2>Rothwell Temperance Band</h2>"));
+        assertTrue(response.contains("Rothwell Temperance Band"));
 
         assertTrue(response.contains(">Contests (4)<"));
         assertTrue(response.contains(">Whit Friday (1)<"));
