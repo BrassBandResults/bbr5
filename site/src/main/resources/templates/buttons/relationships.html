@@ -1,0 +1,3 @@
+<span th:fragment="deleteBandRelationship(band, bandRelationship)" th:remove="tag">
+    <span th:replace="buttons/button.html :: dangerButton(#{page.buttons.delete}, ${'/bands/' + band.slug + '/edit-relationships/' + bandRelationship.id + '/delete'})"></span>
+</span>
