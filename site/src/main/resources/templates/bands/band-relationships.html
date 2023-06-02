@@ -8,6 +8,14 @@
     <h2><span th:replace="links/band-link.html :: bandLink(${Band}, false, false)"></span> <span th:text="#{page.band-relationships.page-header}" th:remove="tag">Relationships</span></h2>
 
     <div class="tab-content">
+        <ul>
+           <li th:each="relationship : ${BandRelationships}">
+               <span th:text="#{${relationship.relationshipName(Band)}}">relationship</span>
+               <span th:replace="links/band-link.html :: bandLinkWithNameOverride(${relationship.otherBand(Band)}, ${relationship.otherBandName(Band)})">Band Name</span>
+           </li>
+        </ul>
+
+
         <table class="table table-hover sortable">
             <tbody>
             <tr th:each="relationship : ${BandRelationships}">

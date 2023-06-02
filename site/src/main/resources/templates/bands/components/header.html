@@ -34,6 +34,13 @@
             </td>
         </tr>
     </table>
+    <b th:text="#{page.band.details.relationships}">Relationships:</b>
+    <ul>
+        <li th:each="relationship : ${BandRelationships}">
+            <span th:text="#{${relationship.relationshipName(Band)}}">relationship</span>
+            <span th:replace="links/band-link.html :: bandLinkWithNameOverride(${relationship.otherBand(Band)}, ${relationship.otherBandName(Band)})">Band Name</span>
+        </li>
+    </ul>
     <br/>
     <div style="white-space: pre-line" th:text="${#strings.escapeXml(Band.notes)}">Notes</div>
     <br/>

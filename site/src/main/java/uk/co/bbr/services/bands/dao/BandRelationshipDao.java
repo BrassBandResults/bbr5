@@ -61,4 +61,28 @@ public class BandRelationshipDao extends AbstractDao {
         }
         this.leftBandName = value;
     }
+
+    public String relationshipName(BandDao band) {
+        if (this.leftBand.getId().equals(band.getId())) {
+            return this.relationship.getName();
+        } else {
+            return this.relationship.getReverseName();
+        }
+    }
+
+    public BandDao otherBand(BandDao band) {
+        if (this.leftBand.getId().equals(band.getId())) {
+            return this.rightBand;
+        } else {
+            return this.leftBand;
+        }
+    }
+
+    public String otherBandName(BandDao band) {
+        if (this.leftBand.getId().equals(band.getId())) {
+            return this.rightBandName;
+        } else {
+            return this.leftBandName;
+        }
+    }
 }
