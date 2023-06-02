@@ -1,0 +1,99 @@
+    <!DOCTYPE html>
+<html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+<head>
+    <title th:text="@{#{page.band-rehearsals.title(${Band.name})} + ' - Brass Band Results'}">Band Rehearsals - Brass Band Results</title>
+</head>
+<body>
+<div layout:fragment="content">
+  <h2><span th:replace="links/band-link.html :: bandLink(${Band}, false, false)"></span> <span th:text="#{page.band-rehearsals.page-header}" th:remove="tag">Rehearsals</span></h2>
+    <form method="POST" th:action="${'/bands/' + Band.slug + '/edit-rehearsals'}">
+    <table id="bands-aliases" class="table table-hover">
+        <thead>
+        <tr>
+            <th th:text="#{page.column-header.rehearsal}">Rehearsal</th>
+            <th th:text="#{page.column-header.details}">Details</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>
+                <input type="checkbox" name="sunday-checkbox" th:checked="${Sunday != null}"/>
+                <span th:text="#{day.sunday}">Sunday</span>
+            </td>
+            <td>
+                <input th:if="${Sunday != null}" type="text" name="sunday-details" th:value="${Sunday.details}" size="60" maxlength="30"/>
+                <input th:if="${Sunday == null}" type="text" name="sunday-details" th:placeholder="#{page.form.placeholder.rehearsal-details}" size="60" maxlength="30"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input type="checkbox" name="monday-checkbox" th:checked="${Monday != null}"/>
+                <span th:text="#{day.monday}">Monday</span>
+            </td>
+            <td>
+                <input th:if="${Monday != null}" type="text" name="monday-details" th:placeholder="#{page.form.placeholder.rehearsal-details}" size="60" maxlength="30" th:value="${Monday.details}"/>
+                <input th:if="${Monday == null}" type="text" name="monday-details" th:placeholder="#{page.form.placeholder.rehearsal-details}" size="60" maxlength="30"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input type="checkbox" name="tuesday-checkbox" th:checked="${Tuesday != null}"/>
+                <span th:text="#{day.tuesday}">Tuesday</span>
+            </td>
+            <td>
+                <input th:if="${Tuesday != null}" type="text" name="tuesday-details" th:placeholder="#{page.form.placeholder.rehearsal-details}" size="60" maxlength="30" th:value="${Tuesday.details}"/>
+                <input th:if="${Tuesday == null}" type="text" name="tuesday-details" th:placeholder="#{page.form.placeholder.rehearsal-details}" size="60" maxlength="30"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input type="checkbox" name="wednesday-checkbox" th:checked="${Wednesday != null}"/>
+                <span th:text="#{day.wednesday}">Wednesday</span>
+            </td>
+            <td>
+                <input th:if="${Wednesday != null}" type="text" name="wednesday-details" th:placeholder="#{page.form.placeholder.rehearsal-details}" size="60" maxlength="30" th:value="${Wednesday.details}"/>
+                <input th:if="${Wednesday == null}" type="text" name="wednesday-details" th:placeholder="#{page.form.placeholder.rehearsal-details}" size="60" maxlength="30"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input type="checkbox" name="thursday-checkbox" th:checked="${Thursday != null}"/>
+                <span th:text="#{day.thursday}">Thursday</span>
+            </td>
+            <td>
+                <input th:if="${Thursday != null}" type="text" name="thursday-details" th:placeholder="#{page.form.placeholder.rehearsal-details}" size="60" maxlength="30" th:value="${Thursday.details}"/>
+                <input th:if="${Thursday == null}" type="text" name="thursday-details" th:placeholder="#{page.form.placeholder.rehearsal-details}" size="60" maxlength="30"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input type="checkbox" name="friday-checkbox" th:checked="${Friday != null}"/>
+                <span th:text="#{day.friday}">Friday</span>
+            </td>
+            <td>
+                <input th:if="${Friday != null}" type="text" name="friday-details" th:placeholder="#{page.form.placeholder.rehearsal-details}" size="60" maxlength="30" th:value="${Friday.details}"/>
+                <input th:if="${Friday == null}" type="text" name="friday-details" th:placeholder="#{page.form.placeholder.rehearsal-details}" size="60" maxlength="30"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input type="checkbox" name="saturday-checkbox" th:checked="${Saturday != null}"/>
+                <span th:text="#{day.saturday}">Saturday</span>
+            </td>
+            <td>
+                <input th:if="${Saturday != null}" type="text" name="saturday-details" th:placeholder="#{page.form.placeholder.rehearsal-details}" size="60" maxlength="30" th:value="${Saturday.details}"/>
+                <input th:if="${Saturday == null}" type="text" name="saturday-details" th:placeholder="#{page.form.placeholder.rehearsal-details}" size="60" maxlength="30"/>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <input type="submit" th:value="#{page.buttons.save-rehearsals}" class="btn btn-success btn-sm rounded"/>
+    </form>
+</div>
+
+<div layout:fragment="feedback">
+</div>
+
+</body>
+</html>
