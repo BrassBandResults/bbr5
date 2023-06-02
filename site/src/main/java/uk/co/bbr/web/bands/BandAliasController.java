@@ -81,7 +81,7 @@ public class BandAliasController {
     }
 
     @PostMapping("/bands/{bandSlug:[\\-a-z\\d]{2,}}/edit-aliases/add")
-    public String bandAliasShow(@PathVariable("bandSlug") String bandSlug, @RequestParam("oldName") String oldName) {
+    public String bandAliasAdd(@PathVariable("bandSlug") String bandSlug, @RequestParam("oldName") String oldName) {
         Optional<BandDao> band = this.bandService.fetchBySlug(bandSlug);
         if (band.isEmpty()) {
             throw NotFoundException.bandNotFoundBySlug(bandSlug);

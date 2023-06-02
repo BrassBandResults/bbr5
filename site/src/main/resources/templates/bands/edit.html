@@ -68,7 +68,7 @@
             <textarea id="notes" class="form-control" th:field="*{notes}" cols="80" rows="10"></textarea>
         </div>
 
-        <input type="submit" th:value="#{page.buttons.save-changes}" class="btn btn-success"/>
+        <input type="submit" th:value="#{page.buttons.save-changes}" class="btn btn-outline-success"/>
         <a th:href="${'/bands/' + Band.slug}" th:text="#{page.buttons.cancel-without-saving}" class="btn btn-light">Cancel wout saving</a>
     </form>
 </div>

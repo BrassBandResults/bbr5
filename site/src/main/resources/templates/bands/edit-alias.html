@@ -26,7 +26,7 @@
             <small class="form-text" th:text="#{page.band-alias-edit.hint.end-date}">Band Alias won't be matched with results after this date.</small>
         </div>
 
-        <input type="submit" th:value="#{page.buttons.save-changes}" class="btn btn-success"/>
+        <input type="submit" th:value="#{page.buttons.save-changes}" class="btn btn-outline-success"/>
         <a th:href="${'/bands/' + Band.slug + '/edit-aliases'}" th:text="#{page.buttons.cancel-without-saving}" class="btn btn-light">Cancel wout saving</a>
     </form>
 </div>

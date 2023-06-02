@@ -14,7 +14,7 @@
         <label class="form-label" for="second" th:text="#{page.compare-people.second}">Second person:</label>
         <input id="second" autocomplete="off" class="form-control" type="text" maxlength="100" onkeyup="lookup('second', 'person');"/>
     </div>
-    <button id="compare-button" th:text="#{page.buttons.compare}" class="btn btn-success disabled" onclick="showComparison()"></button>
+    <button id="compare-button" th:text="#{page.buttons.compare}" class="btn btn-outline-success disabled" onclick="showComparison()"></button>
 </div>
 
 <div layout:fragment="scriptfooter">

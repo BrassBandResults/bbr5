@@ -78,15 +78,15 @@ class BandRelationshipTests implements LoginMixin {
         newRelationship.setRelationship(this.bandRelationshipService.fetchIsParentOfRelationship());
 
         // act
-        BandRelationshipDao relationship = this.bandRelationshipService.saveRelationship(newRelationship);
+        BandRelationshipDao relationship = this.bandRelationshipService.createRelationship(newRelationship);
 
         // assert
         assertEquals("Rothwell Temperance", relationship.getRightBandName());
         assertEquals("Wallace Arnold (Rothwell) Band", relationship.getLeftBandName());
         assertEquals("Rothwell Temperance", relationship.getRightBand().getName());
         assertEquals("Wallace Arnold (Rothwell) Band", relationship.getLeftBand().getName());
-        assertEquals("Is Parent Of", relationship.getRelationship().getName());
-        assertEquals("Has Parent Of", relationship.getRelationship().getReverseName());
+        assertEquals("relationship.band.is-parent-of", relationship.getRelationship().getName());
+        assertEquals("relationship.band.has-parent-of", relationship.getRelationship().getReverseName());
 
         logoutTestUser();
     }
@@ -107,15 +107,15 @@ class BandRelationshipTests implements LoginMixin {
         newRelationship.setEndDate(LocalDate.of(2022, 12, 31));
 
         // act
-        BandRelationshipDao relationship = this.bandRelationshipService.saveRelationship(newRelationship);
+        BandRelationshipDao relationship = this.bandRelationshipService.createRelationship(newRelationship);
 
         // assert
         assertEquals("Rothwell Temperance", relationship.getRightBandName());
         assertEquals("Wallace Arnold (Rothwell) Band", relationship.getLeftBandName());
         assertEquals("Rothwell Temperance", relationship.getRightBand().getName());
         assertEquals("Wallace Arnold (Rothwell) Band", relationship.getLeftBand().getName());
-        assertEquals("Is Parent Of", relationship.getRelationship().getName());
-        assertEquals("Has Parent Of", relationship.getRelationship().getReverseName());
+        assertEquals("relationship.band.is-parent-of", relationship.getRelationship().getName());
+        assertEquals("relationship.band.has-parent-of", relationship.getRelationship().getReverseName());
         assertEquals(LocalDate.of(2020, 1, 1), newRelationship.getStartDate());
         assertEquals(LocalDate.of(2022, 12, 31), newRelationship.getEndDate());
 
@@ -138,7 +138,7 @@ class BandRelationshipTests implements LoginMixin {
         newRelationship.setEndDate(LocalDate.of(2020, 1, 1));
 
         // act
-        ValidationException ex = assertThrows(ValidationException.class, () -> this.bandRelationshipService.saveRelationship(newRelationship));
+        ValidationException ex = assertThrows(ValidationException.class, () -> this.bandRelationshipService.createRelationship(newRelationship));
 
         // assert
         assertEquals("Start date can't be after end date", ex.getMessage());

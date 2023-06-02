@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.Query;
 import uk.co.bbr.services.bands.dao.BandRelationshipTypeDao;
 
 public interface BandRelationshipTypeRepository extends JpaRepository<BandRelationshipTypeDao, Long> {
-    @Query("SELECT t FROM BandRelationshipTypeDao t WHERE t.name = 'Is Parent Of'")
+    @Query("SELECT t FROM BandRelationshipTypeDao t WHERE t.name = 'relationship.band.is-parent-of'")
     BandRelationshipTypeDao fetchIsParentOfRelationship();
 }

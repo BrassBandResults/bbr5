@@ -27,20 +27,20 @@
             <td th:text="${previousName.endDateDisplay}"></td>
             <td>
                 <span th:replace="buttons/alias.html :: editBandAlias(${Band}, ${previousName})">edit</span>
-                <span th:replace="buttons/alias.html :: deleteBandAlias(${Band}, ${previousName})">delete</span>
                 <span th:if="${!previousName.hidden}" th:remove="tag">
                     <span th:replace="buttons/alias.html :: hideBandAlias(${Band}, ${previousName})">hide</span>
                 </span>
                 <span th:if="${previousName.hidden}" th:remove="tag">
                     <span th:replace="buttons/alias.html :: showBandAlias(${Band}, ${previousName})" th:if="${previousName.hidden}">show</span>
                 </span>
+                <span th:replace="buttons/alias.html :: deleteBandAlias(${Band}, ${previousName})">delete</span>
             </td>
         </tr>
         </tbody>
     </table>
     <form method="POST" th:action="${'/bands/' + Band.slug + '/edit-aliases/add'}">
         <input type="text" maxlength="100" size="50" id="oldName" name="oldName" th:placeholder="#{page.form.placeholder.alias-name}"/>
-        <input type="submit" th:value="#{page.buttons.save-new-alias}" class="btn btn-success btn-sm rounded"/>
+        <input type="submit" th:value="#{page.buttons.save-new-alias}" class="btn btn-outline-success btn-sm rounded"/>
     </form>
 </div>
 

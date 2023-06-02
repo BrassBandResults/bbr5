@@ -3,146 +3,73 @@ package uk.co.bbr.web.bands;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import uk.co.bbr.services.bands.BandAliasService;
+import uk.co.bbr.services.bands.BandRelationshipService;
 import uk.co.bbr.services.bands.BandService;
-import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.bands.dao.BandAliasDao;
+import uk.co.bbr.services.bands.dao.BandDao;
+import uk.co.bbr.services.bands.dao.BandRelationshipDao;
 import uk.co.bbr.services.framework.NotFoundException;
-import uk.co.bbr.web.bands.forms.BandAliasEditForm;
-import uk.co.bbr.web.bands.forms.BandEditForm;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
-public class BandAliasController {
+public class BandRelationshipsController {
 
     private final BandService bandService;
-    private final BandAliasService bandAliasService;
+    private final BandRelationshipService bandRelationshipService;
 
-    private static final String REDIRECT_TO_BAND_ALIASES = "redirect:/bands/{bandSlug}/edit-aliases";
+    private static final String REDIRECT_TO_BAND_RELATIONSHIPS = "redirect:/bands/{bandSlug}/edit-relationships";
 
-    @GetMapping("/bands/{bandSlug:[\\-a-z\\d]{2,}}/edit-aliases")
-    public String bandAliasEdit(Model model, @PathVariable("bandSlug") String bandSlug) {
+    @GetMapping("/bands/{bandSlug:[\\-a-z\\d]{2,}}/edit-relationships")
+    public String bandRelationshipsEdit(Model model, @PathVariable("bandSlug") String bandSlug) {
         Optional<BandDao> band = this.bandService.fetchBySlug(bandSlug);
         if (band.isEmpty()) {
             throw NotFoundException.bandNotFoundBySlug(bandSlug);
         }
 
-        List<BandAliasDao> previousNames = this.bandAliasService.findAllAliases(band.get());
+        List<BandRelationshipDao> relationships = this.bandRelationshipService.fetchRelationshipsForBand(band.get());
 
         model.addAttribute("Band", band.get());
-        model.addAttribute("PreviousNames", previousNames);
-        return "bands/band-aliases";
+        model.addAttribute("BandRelationships", relationships);
+        return "bands/band-relationships";
     }
 
-    @GetMapping("/bands/{bandSlug:[\\-a-z\\d]{2,}}/edit-aliases/{aliasId:\\d+}/hide")
-    public String bandAliasHide(@PathVariable("bandSlug") String bandSlug, @PathVariable("aliasId") Long aliasId) {
+
+
+    @GetMapping("/bands/{bandSlug:[\\-a-z\\d]{2,}}/edit-relationships/{relationshipId:\\d+}/delete")
+    public String bandRelationshipsDelete(@PathVariable("bandSlug") String bandSlug, @PathVariable("relationshipId") Long relationshipId) {
         Optional<BandDao> band = this.bandService.fetchBySlug(bandSlug);
         if (band.isEmpty()) {
             throw NotFoundException.bandNotFoundBySlug(bandSlug);
         }
 
-        this.bandAliasService.hideAlias(band.get(), aliasId);
+        Optional<BandRelationshipDao> relationship = this.bandRelationshipService.fetchById(relationshipId);
+        if (relationship.isEmpty()) {
+            throw NotFoundException.relationshipNotFoundById(relationshipId);
+        }
 
-        return REDIRECT_TO_BAND_ALIASES;
+        this.bandRelationshipService.deleteRelationship(relationship.get());
+
+        return REDIRECT_TO_BAND_RELATIONSHIPS;
     }
 
-    @GetMapping("/bands/{bandSlug:[\\-a-z\\d]{2,}}/edit-aliases/{aliasId:\\d+}/show")
-    public String bandAliasShow(@PathVariable("bandSlug") String bandSlug, @PathVariable("aliasId") Long aliasId) {
-        Optional<BandDao> band = this.bandService.fetchBySlug(bandSlug);
-        if (band.isEmpty()) {
-            throw NotFoundException.bandNotFoundBySlug(bandSlug);
-        }
-
-        this.bandAliasService.showAlias(band.get(), aliasId);
-
-        return REDIRECT_TO_BAND_ALIASES;
-    }
-
-    @GetMapping("/bands/{bandSlug:[\\-a-z\\d]{2,}}/edit-aliases/{aliasId:\\d+}/delete")
-    public String bandAliasDelete(@PathVariable("bandSlug") String bandSlug, @PathVariable("aliasId") Long aliasId) {
-        Optional<BandDao> band = this.bandService.fetchBySlug(bandSlug);
-        if (band.isEmpty()) {
-            throw NotFoundException.bandNotFoundBySlug(bandSlug);
-        }
-
-        this.bandAliasService.deleteAlias(band.get(), aliasId);
-
-        return REDIRECT_TO_BAND_ALIASES;
-    }
-
-    @PostMapping("/bands/{bandSlug:[\\-a-z\\d]{2,}}/edit-aliases/add")
-    public String bandAliasShow(@PathVariable("bandSlug") String bandSlug, @RequestParam("oldName") String oldName) {
-        Optional<BandDao> band = this.bandService.fetchBySlug(bandSlug);
-        if (band.isEmpty()) {
-            throw NotFoundException.bandNotFoundBySlug(bandSlug);
-        }
-
-        BandAliasDao previousName = new BandAliasDao();
-        previousName.setOldName(oldName);
-        previousName.setHidden(false);
-        previousName.setStartDate(null);
-        previousName.setEndDate(null);
-        this.bandAliasService.createAlias(band.get(), previousName);
-
-        return REDIRECT_TO_BAND_ALIASES;
-    }
-
-    @GetMapping("/bands/{bandSlug:[\\-a-z\\d]{2,}}/edit-aliases/{aliasId:\\d+}/edit-dates")
-    public String bandAliasEditDates(Model model, @PathVariable("bandSlug") String bandSlug, @PathVariable("aliasId") Long aliasId) {
-        Optional<BandDao> band = this.bandService.fetchBySlug(bandSlug);
-        if (band.isEmpty()) {
-            throw NotFoundException.bandNotFoundBySlug(bandSlug);
-        }
-        Optional<BandAliasDao> bandAlias = this.bandAliasService.fetchAliasByBandAndId(band.get(), aliasId);
-        if (bandAlias.isEmpty()) {
-            throw NotFoundException.bandAliasNotFoundByIds(bandSlug, aliasId);
-        }
-
-        BandAliasEditForm bandAliasForm = new BandAliasEditForm(bandAlias.get());
-
-        model.addAttribute("Band", band.get());
-        model.addAttribute("BandAliasForm", bandAliasForm);
-        model.addAttribute("BandAlias", bandAlias.get());
-
-        return "bands/edit-alias";
-    }
-
-    @PostMapping("/bands/{bandSlug:[\\-a-z\\d]{2,}}/edit-aliases/{aliasId:\\d+}/edit-dates")
-    public String bandAliasEditDatesPost(Model model, @Valid @ModelAttribute("BandAliasForm") BandAliasEditForm aliasForm, BindingResult bindingResult, @PathVariable("bandSlug") String bandSlug, @PathVariable("aliasId") Long aliasId) {
-        Optional<BandDao> band = this.bandService.fetchBySlug(bandSlug);
-        if (band.isEmpty()) {
-            throw NotFoundException.bandNotFoundBySlug(bandSlug);
-        }
-        Optional<BandAliasDao> bandAlias = this.bandAliasService.fetchAliasByBandAndId(band.get(), aliasId);
-        if (bandAlias.isEmpty()) {
-            throw NotFoundException.bandAliasNotFoundByIds(bandSlug, aliasId);
-        }
-
-        aliasForm.validate(bindingResult);
-
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("Band", band.get());
-            model.addAttribute("BandAlias", bandAlias.get());
-
-            return "bands/edit-alias";
-        }
-
-        BandAliasDao previousName = bandAlias.get();
-        previousName.setStartDate(aliasForm.getStartDate());
-        previousName.setEndDate(aliasForm.getEndDate());
-        this.bandAliasService.updateAlias(band.get(), previousName);
-
-        return REDIRECT_TO_BAND_ALIASES;
-    }
+//    @PostMapping("/bands/{bandSlug:[\\-a-z\\d]{2,}}/edit-relationships/add")
+//    public String bandRelationshipsCreate(@PathVariable("bandSlug") String bandSlug, @RequestParam("oldName") String oldName) {
+//        Optional<BandDao> band = this.bandService.fetchBySlug(bandSlug);
+//        if (band.isEmpty()) {
+//            throw NotFoundException.bandNotFoundBySlug(bandSlug);
+//        }
+//
+//        this.bandRelationshipService.createRelationship(leftBand.get(), rightBand.get(), type);
+//
+//        return REDIRECT_TO_BAND_RELATIONSHIPS;
+//    }
 }
 

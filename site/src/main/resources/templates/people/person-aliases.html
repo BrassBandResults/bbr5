@@ -35,7 +35,7 @@
     </table>
     <form method="POST" th:action="${'/people/' + Person.slug + '/edit-aliases/add'}">
         <input type="text" maxlength="100" size="50" id="oldName" name="oldName" th:placeholder="#{page.form.placeholder.alias-name}"/>
-        <input type="submit" th:value="#{page.buttons.save-new-alias}" class="btn btn-success btn-sm rounded"/>
+        <input type="submit" th:value="#{page.buttons.save-new-alias}" class="btn btn-outline-success btn-sm rounded"/>
     </form>
 </div>
 
