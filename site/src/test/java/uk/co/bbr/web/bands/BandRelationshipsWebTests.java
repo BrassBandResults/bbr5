@@ -85,6 +85,7 @@ class BandRelationshipsWebTests implements LoginMixin {
         this.bandRelationshipService.createRelationship(toDelete);
 
         this.bandService.create("New Relationship Band");
+        this.bandService.create("New Relationship Band 2");
 
         logoutTestUser();
     }
@@ -158,7 +159,7 @@ class BandRelationshipsWebTests implements LoginMixin {
 
         MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
         map.add("RightBandSlug", newRelationshipBand.get().getSlug());
-        map.add("RightBandName", newRelationshipBand.get().getName());
+        map.add("RightBandName", newRelationshipBand.get().getName() + " Changed");
         map.add("RelationshipTypeId", String.valueOf(parentRelationship.getId()));
         map.add("_csrf", csrfToken.getToken());
         map.add("_csrf_header", SecurityFilter.CSRF_HEADER_NAME);
@@ -177,8 +178,53 @@ class BandRelationshipsWebTests implements LoginMixin {
         assertEquals(1, fetchedRelationships2.size());
         assertEquals("Rothwell Temperance Band", fetchedRelationships2.get(0).getLeftBandName());
         assertEquals("rothwell-temperance-band", fetchedRelationships2.get(0).getLeftBand().getSlug());
-        assertEquals("New Relationship Band", fetchedRelationships2.get(0).getRightBandName());
+        assertEquals("New Relationship Band Changed", fetchedRelationships2.get(0).getRightBandName());
         assertEquals("new-relationship-band", fetchedRelationships2.get(0).getRightBand().getSlug());
+        assertEquals("relationship.band.is-parent-of", fetchedRelationships2.get(0).getRelationship().getName());
+
+        logoutTestUserByWeb(this.restTemplate, this.port);
+    }
+
+    @Test
+    void testCreateRelationshipNoBandNameWorksSuccessfully() {
+        // arrange
+        Optional<BandDao> newRelationshipBand = this.bandService.fetchBySlug("new-relationship-band-2");
+        List<BandRelationshipDao> fetchedRelationships1 = this.bandRelationshipService.fetchRelationshipsForBand(newRelationshipBand.get());
+        assertEquals(0, fetchedRelationships1.size());
+
+        loginTestUserByWeb(TestUser.TEST_MEMBER, this.restTemplate, this.csrfTokenRepository, this.port);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+        CsrfToken csrfToken = csrfTokenRepository.generateToken(null);
+        headers.add(csrfToken.getHeaderName(), csrfToken.getToken());
+        headers.add("Cookie", SecurityFilter.CSRF_HEADER_NAME + "=" + csrfToken.getToken());
+
+        BandRelationshipTypeDao parentRelationship = this.bandRelationshipService.fetchIsParentOfRelationship();
+
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+        map.add("RightBandSlug", newRelationshipBand.get().getSlug());
+        map.add("RelationshipTypeId", String.valueOf(parentRelationship.getId()));
+        map.add("_csrf", csrfToken.getToken());
+        map.add("_csrf_header", SecurityFilter.CSRF_HEADER_NAME);
+
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
+
+        // act
+        ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/bands/rothwell-temperance-band/edit-relationships/add", request, String.class);
+
+        // assert
+        assertEquals(HttpStatus.FOUND, response.getStatusCode());
+
+        assertTrue(Objects.requireNonNull(response.getHeaders().get("Location")).get(0).endsWith("/bands/rothwell-temperance-band/edit-relationships"));
+
+        List<BandRelationshipDao> fetchedRelationships2 = this.bandRelationshipService.fetchRelationshipsForBand(newRelationshipBand.get());
+        assertEquals(1, fetchedRelationships2.size());
+        assertEquals("Rothwell Temperance Band", fetchedRelationships2.get(0).getLeftBandName());
+        assertEquals("rothwell-temperance-band", fetchedRelationships2.get(0).getLeftBand().getSlug());
+        assertEquals("New Relationship Band 2", fetchedRelationships2.get(0).getRightBandName());
+        assertEquals("new-relationship-band-2", fetchedRelationships2.get(0).getRightBand().getSlug());
         assertEquals("relationship.band.is-parent-of", fetchedRelationships2.get(0).getRelationship().getName());
 
         logoutTestUserByWeb(this.restTemplate, this.port);
@@ -205,6 +251,54 @@ class BandRelationshipsWebTests implements LoginMixin {
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
 
         HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.postForEntity("http://localhost:" + this.port + "/bands/not-a-real-band/edit-relationships/add", request, String.class));
+        assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
+    }
+
+    @Test
+    void testCreateRelationshipWithInvalidRightBandSlugFailsAsExpected() {
+        loginTestUserByWeb(TestUser.TEST_MEMBER, this.restTemplate, this.csrfTokenRepository, this.port);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+        CsrfToken csrfToken = csrfTokenRepository.generateToken(null);
+        headers.add(csrfToken.getHeaderName(), csrfToken.getToken());
+        headers.add("Cookie", SecurityFilter.CSRF_HEADER_NAME + "=" + csrfToken.getToken());
+
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+        map.add("RightBandSlug", "slug");
+        map.add("RightBandName", "name");
+        map.add("RelationshipTypeId", "1");
+        map.add("_csrf", csrfToken.getToken());
+        map.add("_csrf_header", SecurityFilter.CSRF_HEADER_NAME);
+
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
+
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.postForEntity("http://localhost:" + this.port + "/bands/rothwell-temperance-band/edit-relationships/add", request, String.class));
+        assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
+    }
+
+    @Test
+    void testCreateRelationshipWithInvalidRelationshipIdFailsAsExpected() {
+        loginTestUserByWeb(TestUser.TEST_MEMBER, this.restTemplate, this.csrfTokenRepository, this.port);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+        CsrfToken csrfToken = csrfTokenRepository.generateToken(null);
+        headers.add(csrfToken.getHeaderName(), csrfToken.getToken());
+        headers.add("Cookie", SecurityFilter.CSRF_HEADER_NAME + "=" + csrfToken.getToken());
+
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+        map.add("RightBandSlug", "wallace-arnold-rothwell-band");
+        map.add("RightBandName", "Wally Trolley Bus Band");
+        map.add("RelationshipTypeId", "999");
+        map.add("_csrf", csrfToken.getToken());
+        map.add("_csrf_header", SecurityFilter.CSRF_HEADER_NAME);
+
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
+
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.postForEntity("http://localhost:" + this.port + "/bands/rothwell-temperance-band/edit-relationships/add", request, String.class));
         assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
     }
 }
