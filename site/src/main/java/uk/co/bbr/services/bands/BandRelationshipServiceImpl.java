@@ -111,4 +111,9 @@ public class BandRelationshipServiceImpl implements BandRelationshipService, Slu
     public Optional<BandRelationshipTypeDao> fetchTypeById(long relationshipTypeId) {
         return this.bandRelationshipTypeRepository.findById(relationshipTypeId);
     }
+
+    @Override
+    public List<BandRelationshipTypeDao> listTypes() {
+        return this.bandRelationshipTypeRepository.findAllOrderByName();
+    }
 }

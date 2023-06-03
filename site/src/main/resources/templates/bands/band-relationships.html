@@ -10,16 +10,53 @@
     <table class="table table-hover sortable">
         <tbody>
         <tr th:each="relationship : ${BandRelationships}">
-            <td><span th:replace="links/band-link.html :: bandLinkWithNameOverride(${relationship.leftBand}, ${relationship.leftBandName})">Band Name</span></td>
+            <td>
+                <span th:if="${Band.slug == relationship.leftBand.slug}" th:text="${Band.name}">Band Name</span>
+                <span th:if="${Band.slug != relationship.leftBand.slug}"><span th:replace="links/band-link.html :: bandLinkWithNameOverride(${relationship.leftBand}, ${relationship.leftBandName})">Band Name</span></span>
+            </td>
             <td th:text="#{${relationship.relationship.name}}"></td>
-            <td><span th:replace="links/band-link.html :: bandLinkWithNameOverride(${relationship.rightBand}, ${relationship.rightBandName})">Band Name</span></td>
+            <td>
+                <span th:if="${Band.slug == relationship.rightBand.slug}" th:text="${Band.name}">Band Name</span>
+                <span th:if="${Band.slug != relationship.rightBand.slug}"><span th:replace="links/band-link.html :: bandLinkWithNameOverride(${relationship.rightBand}, ${relationship.rightBandName})">Band Name</span></span>
+            </td>
             <td><span th:replace="buttons/relationships.html :: deleteBandRelationship(${Band}, ${relationship})">delete</span></td>
         </tr>
         </tbody>
     </table>
 
-
+    <br/>
+    <br/>
+    <h4 th:text="#{page.band-relationships.add-header}">New Relationship</h4>
+    <form id="relationship-form" th:action="${'/bands/' + Band.slug + '/edit-relationships/add'}" method="POST">
+        <span th:text="${Band.name}">Band Name</span>
+        <select name="RelationshipTypeId" id="relationship-type-dropdown">
+            <option th:each="relationshipType : ${RelationshipTypes}" th:value="${relationshipType.id}" th:text="#{${relationshipType.name}}"></option>
+        </select><br/><br/>
+        <input id="right-band" th:placeholder="#{page.band-relationships.add-band-placeholder}" autocomplete="off" class="form-control" type="text" maxlength="100" onkeyup="lookup('right-band', 'band');"/>
+        <br/>
+        <input type="hidden" id="right-band-slug" name="RightBandSlug"/>
+        <input type="submit" th:value="#{page.buttons.save-new-relationship}" class="btn btn-outline-success btn-sm rounded"/>
+    </form>
 </div>
+
+<div layout:fragment="scriptfooter">
+    <script th:src="@{${STATIC_HOST} + '/js2023/lookup.js'}"></script>
+    <script>
+        function fill(inputId, matchSlug, matchName) {
+            let inputElement = document.getElementById(inputId);
+            let inputSlugElement = document.getElementById(inputId + '-slug');
+            inputElement.value = matchName;
+            inputSlugElement.value = matchSlug;
+            inputElement.classList.remove("bg-warning");
+            inputElement.classList.add("bg-success");
+            inputElement.classList.add("text-white");
+
+            document.getElementById('list-' + inputId).remove();
+        }
+
+    </script>
+</div>
+
 
 <div layout:fragment="feedback">
 </div>

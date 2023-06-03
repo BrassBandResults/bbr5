@@ -34,9 +34,11 @@ public class BandRelationshipsController {
         }
 
         List<BandRelationshipDao> relationships = this.bandRelationshipService.fetchRelationshipsForBand(band.get());
+        List<BandRelationshipTypeDao> relationshipTypes = this.bandRelationshipService.listTypes();
 
         model.addAttribute("Band", band.get());
         model.addAttribute("BandRelationships", relationships);
+        model.addAttribute("RelationshipTypes", relationshipTypes);
         return "bands/band-relationships";
     }
 
@@ -60,7 +62,9 @@ public class BandRelationshipsController {
     }
 
     @PostMapping("/bands/{bandSlug:[\\-a-z\\d]{2,}}/edit-relationships/add")
-    public String bandRelationshipsCreate(@PathVariable("bandSlug") String bandSlug, @RequestParam("RightBandSlug") String rightBandSlug, @RequestParam(name="RightBandName",required=false) String rightBandName, @RequestParam("RelationshipTypeId") String relationshipTypeId) {
+    public String bandRelationshipsCreate(@PathVariable("bandSlug") String bandSlug, @RequestParam("RightBandSlug") String rightBandSlug,
+                                                                                     @RequestParam(name="RightBandName",required=false) String rightBandName,
+                                                                                     @RequestParam("RelationshipTypeId") String relationshipTypeId) {
         Optional<BandDao> leftBand = this.bandService.fetchBySlug(bandSlug);
         if (leftBand.isEmpty()) {
             throw NotFoundException.bandNotFoundBySlug(bandSlug);
