@@ -63,8 +63,7 @@ public class PersonRelationshipsController {
 
     @PostMapping("/people/{personSlug:[\\-a-z\\d]{2,}}/edit-relationships/add")
     public String personRelationshipsCreate(@PathVariable("personSlug") String personSlug, @RequestParam("RightPersonSlug") String rightPersonSlug,
-                                                                                     @RequestParam(name="RightPersonName",required=false) String rightPersonName,
-                                                                                     @RequestParam("RelationshipTypeId") String relationshipTypeId) {
+                                                                                           @RequestParam("RelationshipTypeId") String relationshipTypeId) {
         Optional<PersonDao> leftPerson = this.personService.fetchBySlug(personSlug);
         if (leftPerson.isEmpty()) {
             throw NotFoundException.personNotFoundBySlug(personSlug);
@@ -73,10 +72,6 @@ public class PersonRelationshipsController {
         Optional<PersonDao> rightPerson = this.personService.fetchBySlug(rightPersonSlug);
         if (rightPerson.isEmpty()) {
             throw NotFoundException.personNotFoundBySlug(personSlug);
-        }
-
-        if (rightPersonName == null || rightPersonName.trim().length() == 0) {
-            rightPersonName = rightPerson.get().getName();
         }
 
         Optional<PersonRelationshipTypeDao> relationshipType = this.personRelationshipService.fetchTypeById(Long.parseLong(relationshipTypeId));

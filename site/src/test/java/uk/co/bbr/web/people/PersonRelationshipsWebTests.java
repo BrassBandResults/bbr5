@@ -238,7 +238,7 @@ class PersonRelationshipsWebTests implements LoginMixin {
         headers.add("Cookie", SecurityFilter.CSRF_HEADER_NAME + "=" + csrfToken.getToken());
 
         MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
-        map.add("RightPersonSlug", "slug");
+        map.add("RightPersonSlug", "gordon-roberts");
         map.add("RelationshipTypeId", "999");
         map.add("_csrf", csrfToken.getToken());
         map.add("_csrf_header", SecurityFilter.CSRF_HEADER_NAME);

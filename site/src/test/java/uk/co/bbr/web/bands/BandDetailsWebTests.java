@@ -202,5 +202,11 @@ class BandDetailsWebTests implements LoginMixin {
         assertFalse(response.contains(">Duncan Beckley<"));
     }
 
+    @Test
+    void testBandMapReturnsPage() {
+        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/MAP", String.class);
+        assertNotNull(response);
+    }
+
 }
 

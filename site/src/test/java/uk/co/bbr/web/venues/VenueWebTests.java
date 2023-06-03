@@ -224,4 +224,10 @@ class VenueWebTests implements LoginMixin {
         assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
     }
 
+    @Test
+    void testVenueMapReturnsPage() {
+        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/venues/MAP", String.class);
+        assertNotNull(response);
+    }
+
 }
