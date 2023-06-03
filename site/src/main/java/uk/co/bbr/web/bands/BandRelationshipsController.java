@@ -7,12 +7,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import uk.co.bbr.services.bands.BandAliasService;
 import uk.co.bbr.services.bands.BandRelationshipService;
 import uk.co.bbr.services.bands.BandService;
-import uk.co.bbr.services.bands.dao.BandAliasDao;
 import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.bands.dao.BandRelationshipDao;
+import uk.co.bbr.services.bands.dao.BandRelationshipTypeDao;
 import uk.co.bbr.services.framework.NotFoundException;
 
 import java.util.List;
@@ -60,16 +59,37 @@ public class BandRelationshipsController {
         return REDIRECT_TO_BAND_RELATIONSHIPS;
     }
 
-//    @PostMapping("/bands/{bandSlug:[\\-a-z\\d]{2,}}/edit-relationships/add")
-//    public String bandRelationshipsCreate(@PathVariable("bandSlug") String bandSlug, @RequestParam("oldName") String oldName) {
-//        Optional<BandDao> band = this.bandService.fetchBySlug(bandSlug);
-//        if (band.isEmpty()) {
-//            throw NotFoundException.bandNotFoundBySlug(bandSlug);
-//        }
-//
-//        this.bandRelationshipService.createRelationship(leftBand.get(), rightBand.get(), type);
-//
-//        return REDIRECT_TO_BAND_RELATIONSHIPS;
-//    }
+    @PostMapping("/bands/{bandSlug:[\\-a-z\\d]{2,}}/edit-relationships/add")
+    public String bandRelationshipsCreate(@PathVariable("bandSlug") String bandSlug, @RequestParam("RightBandSlug") String rightBandSlug, @RequestParam(name="RightBandName",required=false) String rightBandName, @RequestParam("RelationshipTypeId") String relationshipTypeId) {
+        Optional<BandDao> leftBand = this.bandService.fetchBySlug(bandSlug);
+        if (leftBand.isEmpty()) {
+            throw NotFoundException.bandNotFoundBySlug(bandSlug);
+        }
+
+        Optional<BandDao> rightBand = this.bandService.fetchBySlug(rightBandSlug);
+        if (rightBand.isEmpty()) {
+            throw NotFoundException.bandNotFoundBySlug(bandSlug);
+        }
+
+        if (rightBandName == null || rightBandName.trim().length() == 0) {
+            rightBandName = rightBand.get().getName();
+        }
+
+        Optional<BandRelationshipTypeDao> relationshipType = this.bandRelationshipService.fetchTypeById(Long.parseLong(relationshipTypeId));
+        if (relationshipType.isEmpty()) {
+            throw NotFoundException.bandRelationshipTypeNotFoundById(relationshipTypeId);
+        }
+
+        BandRelationshipDao newRelationship = new BandRelationshipDao();
+        newRelationship.setLeftBand(leftBand.get());
+        newRelationship.setLeftBandName(leftBand.get().getName());
+        newRelationship.setRelationship(relationshipType.get());
+        newRelationship.setRightBand(rightBand.get());
+        newRelationship.setRightBandName(rightBandName);
+
+        this.bandRelationshipService.createRelationship(newRelationship);
+
+        return REDIRECT_TO_BAND_RELATIONSHIPS;
+    }
 }
 

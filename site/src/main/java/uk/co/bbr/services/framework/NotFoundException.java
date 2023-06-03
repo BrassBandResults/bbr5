@@ -73,4 +73,8 @@ public class NotFoundException extends RuntimeException {
     public static NotFoundException relationshipNotFoundById(Long relationshipId) {
         return new NotFoundException("Band Relationship with id " + relationshipId + " not found");
     }
+
+    public static NotFoundException bandRelationshipTypeNotFoundById(String relationshipTypeId) {
+        return new NotFoundException("Band Relationship type with id " + relationshipTypeId + " not found");
+    }
 }

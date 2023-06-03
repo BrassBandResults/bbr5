@@ -16,4 +16,5 @@ public interface BandRelationshipService {
     List<BandRelationshipDao> fetchRelationshipsForBand(BandDao band);
     Optional<BandRelationshipDao> fetchById(Long relationshipId);
     void deleteRelationship(BandRelationshipDao bandRelationship);
+    Optional<BandRelationshipTypeDao> fetchTypeById(long relationshipTypeId);
 }

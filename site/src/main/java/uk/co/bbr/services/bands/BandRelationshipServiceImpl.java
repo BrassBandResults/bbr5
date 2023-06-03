@@ -106,4 +106,9 @@ public class BandRelationshipServiceImpl implements BandRelationshipService, Slu
     public void deleteRelationship(BandRelationshipDao bandRelationship) {
         this.bandRelationshipRepository.delete(bandRelationship);
     }
+
+    @Override
+    public Optional<BandRelationshipTypeDao> fetchTypeById(long relationshipTypeId) {
+        return this.bandRelationshipTypeRepository.findById(relationshipTypeId);
+    }
 }
