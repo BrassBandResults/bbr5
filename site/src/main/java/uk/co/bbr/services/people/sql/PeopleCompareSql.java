@@ -51,7 +51,7 @@ public class PeopleCompareSql {
     AND band_two_region.id = conductor_two_band.region_id
     AND e.id = conductor_one_result.contest_event_id
     AND e.contest_id = c.id
-    ORDER BY e.date_of_event DESC""";
+    ORDER BY e.date_of_event, c.name DESC""";
     public static List<CompareConductorsSqlDto> compareConductors(EntityManager entityManager, long leftConductorId, long rightConductorId) {
         return SqlExec.execute(entityManager, COMPARE_CONDUCTORS_SQL, leftConductorId, rightConductorId, CompareConductorsSqlDto.class);
     }

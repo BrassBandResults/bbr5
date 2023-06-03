@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+<head>
+    <title th:text="@{#{page.compare-bands.title} + ' - Brass Band Results'}">Compare Bands - Brass Band Results</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h2 th:text="#{page.compare-bands.page-header}">Compare Bands</h2>
+    <div class="mb-3">
+        <label class="form-label" for="first" th:text="#{page.compare-bands.first}">First Band:</label>
+        <input id="first" autocomplete="off" class="form-control" type="text" maxlength="100" onkeyup="lookup('first', 'band');"/>
+    </div>
+    <div class="mb-3">
+        <label class="form-label" for="second" th:text="#{page.compare-bands.second}">Second Band:</label>
+        <input id="second" autocomplete="off" class="form-control" type="text" maxlength="100" onkeyup="lookup('second', 'band');"/>
+    </div>
+    <button id="compare-button" th:text="#{page.buttons.compare}" class="btn btn-outline-success disabled" onclick="showComparison()"></button>
+</div>
+
+<div layout:fragment="scriptfooter">
+<script th:src="@{${STATIC_HOST} + '/js2023/lookup.js'}"></script>
+<script>
+
+function showComparison() {
+    let firstBand = document.getElementById("first").dataset.slug;
+    let secondBand = document.getElementById("second").dataset.slug;
+    let location = '/bands/COMPARE/' + firstBand + "/" + secondBand;
+    history.pushState({}, "", window.location);
+    window.location.replace(location);
+}
+
+function fill(inputId, matchSlug, matchName) {
+    let inputElement = document.getElementById(inputId);
+    inputElement.value = matchName;
+    inputElement.dataset.slug = matchSlug;
+    inputElement.classList.remove("bg-warning");
+    inputElement.classList.add("bg-success");
+    inputElement.classList.add("text-white");
+
+    document.getElementById('list-' + inputId).remove();
+
+    let firstBand = document.getElementById("first").dataset.slug;
+    let secondBand = document.getElementById("second").dataset.slug;
+    if (firstBand.length > 0 && secondBand.length > 0) {
+        document.getElementById('compare-button').classList.remove("disabled");
+    }
+}
+
+</script>
+</div>
+
+</body>
+</html>

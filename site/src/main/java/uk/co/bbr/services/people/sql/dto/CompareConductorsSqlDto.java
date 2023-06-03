@@ -102,14 +102,14 @@ public class CompareConductorsSqlDto extends AbstractSqlDto {
 
     public String getLeftClass() {
         if (this.leftResult < this.rightResult) {
-            return "bg-warning";
+            return "bg-warning-subtle";
         }
         return "";
     }
 
     public String getRightClass() {
         if (this.rightResult < this.leftResult) {
-            return "bg-warning";
+            return "bg-warning-subtle";
         }
         return "";
     }

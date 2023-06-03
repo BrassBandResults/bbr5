@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+<head>
+    <title th:text="@{#{page.compare-bands.title} + ' - Brass Band Results'}">Compare Bands - Brass Band Results</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h2>
+        <span th:text=" #{page.compare.page-header.prefix}">Compare</span>
+        <a th:href="${'/bands/' + LeftBand.slug}" th:text="${LeftBand.name}">Left Band</a>
+        <span th:text=" #{page.compare.page-header.with}">with</span>
+        <a th:href="${'/bands/' + RightBand.slug}" th:text="${RightBand.name}">Right Band</a>
+    </h2>
+    <p th:text="#{page.compare.explain.band(${LeftBand.name}, ${LeftBandWins}, ${RightBand.name}, ${RightBandWins})}">This table lists results from contests where the two conductors have competed against each other. {{ConductorOne.name}} has been better {{ConductorOneWins}} times, {{ConductorTwo.name}} has been better {{ConductorTwoWins}} times.</p>
+    <table class="table" width="100%">
+        <tr>
+            <td class="bg-info border border-dark text-start" th:width="@{${LeftBandPercent} + '%'}">
+                <span th:remove="tag" th:text="${LeftBand.name + ' ' + LeftBandWins + '&nbsp;(' + LeftBandPercent + '%)'}">Left Results</span>
+            </td>
+            <td class="bg-secondary border border-dark text-white text-end" th:width="@{${RightBandPercent} + '%'}">
+                <span th:remove="tag" th:text="${RightBand.name + ' ' + RightBandWins + '&nbsp;(' + RightBandPercent + '%)'}">Right Results</span>
+            </td>
+        </tr>
+    </table>
+    <table class="table table-hover sortable">
+        <thead>
+            <tr>
+                <th th:text="${LeftBand.name}">Rothwell Temperance</th>
+                <th th:text="#{page.column-header.conductor}">Conductor</th>
+                <th th:text="#{page.column-header.date}">Date</th>
+                <th th:text="#{page.column-header.contest}">Contest</th>
+                <th th:text="#{page.column-header.conductor}">Conductor</th>
+                <th th:text="${RightBand.name}">Black Dyke</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="result : ${Results}">
+                <td th:class="${result.leftClass}" th:text="${result.leftResult}">1</td>
+                <td><span th:replace="links/person-link.html :: personLink(${result.leftConductor}, false, false)">Bob Childs</span></td>
+                <td class="bbr-event" nowrap><span th:replace="links/event-link.html :: eventLink(${result.event})">9th Sep 2023</span></td>
+                <td>
+                    <img class="toggle-filter" th:data-id="${result.event.id}" th:src="@{${STATIC_HOST} + '/icons/zoom_in.png'}" th:alt="#{page.filter.prompt}" th:title="#{page.filter.prompt}"/>
+                    <span  th:text="${result.contestName}">Yorkshire Area</span>
+                    <div class="toggle-filter-links" th:id="${'toggle-filter-' + result.event.id}">12345</div>
+                </td>
+                <td><span th:replace="links/person-link.html :: personLink(${result.rightConductor}, false, false)">Bob Childs</span></td>
+                <td th:class="${result.rightClass}"  th:text="${result.rightResult}">2</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

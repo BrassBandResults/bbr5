@@ -7,6 +7,7 @@ import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.bands.dao.BandRehearsalDayDao;
 import uk.co.bbr.services.bands.dao.BandRelationshipDao;
 import uk.co.bbr.services.bands.dao.BandRelationshipTypeDao;
+import uk.co.bbr.services.bands.dto.BandCompareDto;
 import uk.co.bbr.services.bands.dto.BandListBandDto;
 import uk.co.bbr.services.bands.dto.BandListDto;
 import uk.co.bbr.services.bands.repo.BandPreviousNameRepository;
@@ -14,12 +15,17 @@ import uk.co.bbr.services.bands.repo.BandRehearsalNightRepository;
 import uk.co.bbr.services.bands.repo.BandRelationshipRepository;
 import uk.co.bbr.services.bands.repo.BandRelationshipTypeRepository;
 import uk.co.bbr.services.bands.repo.BandRepository;
+import uk.co.bbr.services.bands.sql.BandCompareSql;
 import uk.co.bbr.services.bands.sql.BandSql;
 import uk.co.bbr.services.bands.sql.dto.BandWinnersSqlDto;
+import uk.co.bbr.services.bands.sql.dto.CompareBandsSqlDto;
 import uk.co.bbr.services.bands.types.BandStatus;
 import uk.co.bbr.services.bands.types.RehearsalDay;
 import uk.co.bbr.services.framework.mixins.SlugTools;
 import uk.co.bbr.services.framework.ValidationException;
+import uk.co.bbr.services.people.dto.ConductorCompareDto;
+import uk.co.bbr.services.people.sql.PeopleCompareSql;
+import uk.co.bbr.services.people.sql.dto.CompareConductorsSqlDto;
 import uk.co.bbr.services.regions.RegionService;
 import uk.co.bbr.services.regions.dao.RegionDao;
 import uk.co.bbr.services.security.SecurityService;
@@ -248,5 +254,11 @@ public class BandServiceImpl implements BandService, SlugTools {
     @Override
     public List<BandDao> lookupByPrefix(String searchString) {
         return this.bandRepository.lookupByPrefix("%" + searchString.toUpperCase() + "%");
+    }
+
+    @Override
+    public BandCompareDto compareBands(BandDao leftBand, BandDao rightBand) {
+        List<CompareBandsSqlDto> results = BandCompareSql.compareBands(this.entityManager, leftBand.getId(), rightBand.getId());
+        return new BandCompareDto(results);
     }
 }

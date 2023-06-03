@@ -4,9 +4,11 @@ import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.bands.dao.BandRehearsalDayDao;
 import uk.co.bbr.services.bands.dao.BandRelationshipDao;
 import uk.co.bbr.services.bands.dao.BandRelationshipTypeDao;
+import uk.co.bbr.services.bands.dto.BandCompareDto;
 import uk.co.bbr.services.bands.dto.BandListDto;
 import uk.co.bbr.services.bands.sql.dto.BandWinnersSqlDto;
 import uk.co.bbr.services.bands.types.RehearsalDay;
+import uk.co.bbr.services.people.dto.ConductorCompareDto;
 import uk.co.bbr.services.regions.dao.RegionDao;
 
 import java.time.LocalDate;
@@ -35,4 +37,6 @@ public interface BandService {
     List<BandWinnersSqlDto> fetchContestWinningBands();
 
     List<BandDao> lookupByPrefix(String searchString);
+
+    BandCompareDto compareBands(BandDao leftBand, BandDao rightBand);
 }

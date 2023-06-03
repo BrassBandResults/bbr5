@@ -9,20 +9,16 @@ import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.people.PersonService;
 import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.people.dto.ConductorCompareDto;
-import uk.co.bbr.web.people.forms.ComparePeopleForm;
 
 import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
-public class CompareController {
+public class ConductorCompareController {
     private final PersonService personService;
 
     @GetMapping("/people/COMPARE-CONDUCTORS")
-    public String compareConductorsHome(Model model) {
-        ComparePeopleForm comparePeopleForm = new ComparePeopleForm();
-        model.addAttribute("ComparePeopleForm", comparePeopleForm);
-
+    public String compareConductorsHome() {
         return "people/compare/select";
     }
 
@@ -33,9 +29,6 @@ public class CompareController {
             throw NotFoundException.personNotFoundBySlug(leftSlug);
         }
 
-        ComparePeopleForm comparePeopleForm = new ComparePeopleForm();
-
-        model.addAttribute("ComparePeopleForm", comparePeopleForm);
         model.addAttribute("LeftPerson", leftPerson.get());
 
         return "people/compare/select-one";

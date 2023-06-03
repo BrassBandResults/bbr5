@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
 <head>
-    <title th:text="@{#{page.compare-people.title} + ' - Brass Band Results'}">Compare People - Brass Band Results</title>
+    <title th:text="@{#{page.compare-bands.title} + ' - Brass Band Results'}">Compare Bands - Brass Band Results</title>
 </head>
 <body>
 <div layout:fragment="content">
-    <h2 th:text="#{page.compare-people.page-header}">Compare People</h2>
+    <h2 th:text="#{page.compare-bands.page-header}">Compare Bands</h2>
     <div class="mb-3">
-        <label class="form-label" for="first" th:text="#{page.compare-people.first}">First Person:</label>
-        <input id="first" autocomplete="off" class="form-control" type="hidden" maxlength="100" th:value="${LeftPerson.combinedName}" th:data-slug="${LeftPerson.slug}"/>
-        <p th:text="${LeftPerson.combinedName}">Left Person</p>
+        <label class="form-label" for="first" th:text="#{page.compare-bands.first}">First Person:</label>
+        <input id="first" autocomplete="off" class="form-control" type="hidden" maxlength="100" th:value="${LeftBand.name}" th:data-slug="${LeftBand.slug}"/>
+        <p th:text="${LeftBand.name}">Left Person</p>
     </div>
     <div class="mb-3">
-        <label class="form-label" for="second" th:text="#{page.compare-people.second}">Second person:</label>
+        <label class="form-label" for="second" th:text="#{page.compare-bands.second}">Second person:</label>
         <input id="second" autocomplete="off" class="form-control" type="text" maxlength="100" onkeyup="lookup('second', 'person');"/>
     </div>
     <button id="compare-button" th:text="#{page.buttons.compare}" class="btn btn-outline-success disabled" onclick="showComparison()"></button>
@@ -23,9 +23,9 @@
 <script>
 
 function showComparison() {
-    let firstPerson = document.getElementById("first").dataset.slug;
-    let secondPerson = document.getElementById("second").dataset.slug;
-    let location = '/people/COMPARE-CONDUCTORS/' + firstPerson + "/" + secondPerson;
+    let firstBand = document.getElementById("first").dataset.slug;
+    let secondBand = document.getElementById("second").dataset.slug;
+    let location = '/bands/COMPARE/' + firstBand + "/" + secondBand;
     history.pushState({}, "", window.location);
     window.location.replace(location);
 }
@@ -46,6 +46,8 @@ function fill(inputId, matchSlug, matchName) {
         document.getElementById('compare-button').classList.remove("disabled");
     }
 }
+
+
 
 </script>
 </div>

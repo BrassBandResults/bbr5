@@ -193,6 +193,7 @@ public class BandDao extends AbstractDao implements NameTools {
         ObjectNode person = objectMapper.createObjectNode();
         person.put("slug", this.getSlug());
         person.put("name", this.name);
+        person.put("context", this.getDateRange() != null ? this.getDateRange() : "");
         return person;
     }
 }
