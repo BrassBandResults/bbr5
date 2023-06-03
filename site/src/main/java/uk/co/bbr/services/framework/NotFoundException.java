@@ -2,7 +2,6 @@ package uk.co.bbr.services.framework;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import uk.co.bbr.services.bands.dao.BandDao;
 
 @ResponseStatus(value= HttpStatus.NOT_FOUND, reason="Record not found")
 public class NotFoundException extends RuntimeException {
@@ -76,5 +75,9 @@ public class NotFoundException extends RuntimeException {
 
     public static NotFoundException bandRelationshipTypeNotFoundById(String relationshipTypeId) {
         return new NotFoundException("Band Relationship type with id " + relationshipTypeId + " not found");
+    }
+
+    public static NotFoundException personRelationshipTypeNotFoundById(String relationshipTypeId) {
+        return new NotFoundException("Person Relationship type with id " + relationshipTypeId + " not found");
     }
 }

@@ -184,12 +184,12 @@ CREATE TABLE band_relationship_type (
     reverse_name VARCHAR(100) NOT NULL
 );
 
-INSERT INTO band_relationship_type (updated_by, created_by, name, reverse_name) values ('owner', 'owner', 'Is Parent Of', 'Has Parent Of');
-INSERT INTO band_relationship_type (updated_by, created_by, name, reverse_name) values ('owner', 'owner', 'Is Senior Band To', 'Has Senior Band Of');
-INSERT INTO band_relationship_type (updated_by, created_by, name, reverse_name) values ('owner', 'owner', 'Was Subsumed Into', 'Has Parent Of');
-INSERT INTO band_relationship_type (updated_by, created_by, name, reverse_name) values ('owner', 'owner', 'Split From', 'Has Parent Of');
-INSERT INTO band_relationship_type (updated_by, created_by, name, reverse_name) values ('owner', 'owner', 'Is Scratch Band From', 'Has Scratch Band');
-INSERT INTO band_relationship_type (updated_by, created_by, name, reverse_name) values ('owner', 'owner', 'Reformed As', 'Reformed From');
+INSERT INTO band_relationship_type (updated_by, created_by, name, reverse_name) values ('owner', 'owner', 'relationship.band.is-parent-of', 'relationship.band.has-parent-of');
+INSERT INTO band_relationship_type (updated_by, created_by, name, reverse_name) values ('owner', 'owner', 'relationship.band.is-senior-band-to', 'relationship.band.has-senior-band-of');
+INSERT INTO band_relationship_type (updated_by, created_by, name, reverse_name) values ('owner', 'owner', 'relationship.band.was-subsumed-into', 'relationship.band.has-parent-of');
+INSERT INTO band_relationship_type (updated_by, created_by, name, reverse_name) values ('owner', 'owner', 'relationship.band.split-from', 'relationship.band.has-parent-of');
+INSERT INTO band_relationship_type (updated_by, created_by, name, reverse_name) values ('owner', 'owner', 'relationship.band.is-scratch-band-from', 'relationship.band.has-scratch-band');
+INSERT INTO band_relationship_type (updated_by, created_by, name, reverse_name) values ('owner', 'owner', 'relationship.band.reformed-as', 'relationship.band.reformed-from');
 
 CREATE TABLE band_relationship (
     id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
@@ -276,12 +276,12 @@ CREATE TABLE person_relationship_type (
     reverse_name VARCHAR(100) NOT NULL
 );
 
-INSERT INTO person_relationship_type (updated_by, created_by, name, reverse_name) values ('owner', 'owner', 'Is Father Of', 'Is Child Of');
-INSERT INTO person_relationship_type (updated_by, created_by, name, reverse_name) values ('owner', 'owner', 'Is Mother Of', 'Is Child Of');
-INSERT INTO person_relationship_type (updated_by, created_by, name, reverse_name) values ('owner', 'owner', 'Is Brother Of', 'Is Sibling Of');
-INSERT INTO person_relationship_type (updated_by, created_by, name, reverse_name) values ('owner', 'owner', 'Is Sister Of', 'Is Sibling Of');
-INSERT INTO person_relationship_type (updated_by, created_by, name, reverse_name) values ('owner', 'owner', 'Is Married To', 'Is Married To');
-INSERT INTO person_relationship_type (updated_by, created_by, name, reverse_name) values ('owner', 'owner', 'Is Grandparent Of', 'Is Grandchild Of');
+INSERT INTO person_relationship_type (updated_by, created_by, name, reverse_name) values ('owner', 'owner', 'relationship.person.is-father-of', 'relationship.person.is-child-of');
+INSERT INTO person_relationship_type (updated_by, created_by, name, reverse_name) values ('owner', 'owner', 'relationship.person.is-mother-of', 'relationship.person.is-child-of');
+INSERT INTO person_relationship_type (updated_by, created_by, name, reverse_name) values ('owner', 'owner', 'relationship.person.is-brother-of', 'relationship.person.is-sibling-of');
+INSERT INTO person_relationship_type (updated_by, created_by, name, reverse_name) values ('owner', 'owner', 'relationship.person.is-sister-of', 'relationship.person.is-sibling-of');
+INSERT INTO person_relationship_type (updated_by, created_by, name, reverse_name) values ('owner', 'owner', 'relationship.person.is-married-to', 'relationship.person.is-married-to');
+INSERT INTO person_relationship_type (updated_by, created_by, name, reverse_name) values ('owner', 'owner', 'relationship.person.is-grandparent-of', 'relationship.person.is-grandchild-of');
 
 CREATE TABLE person_relationship (
     id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
@@ -289,10 +289,10 @@ CREATE TABLE person_relationship (
     created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_by VARCHAR(50) NOT NULL CONSTRAINT fk_person_relationship_updated REFERENCES site_user(usercode),
     created_by VARCHAR(50) NOT NULL CONSTRAINT fk_person_relationship_owner REFERENCES site_user(usercode),
-    left_person_id BIGINT CONSTRAINT fk_person_relationship_left_person REFERENCES band(id),
+    left_person_id BIGINT CONSTRAINT fk_person_relationship_left_person REFERENCES person(id),
     left_person_name VARCHAR(100),
     relationship_id BIGINT CONSTRAINT fk_person_relationship_type REFERENCES band_relationship_type(id),
-    right_person_id BIGINT CONSTRAINT fk_person_relationship_right_person REFERENCES band(id),
+    right_person_id BIGINT CONSTRAINT fk_person_relationship_right_person REFERENCES person(id),
     right_person_name VARCHAR(100)
 );
 
@@ -482,6 +482,7 @@ INSERT INTO contest_type(old_id, updated, created, updated_by, created_by, name,
 INSERT INTO contest_type(old_id, updated, created, updated_by, created_by, name, slug, translation_key, draw_one_title, draw_two_title, draw_three_title, points_total_title, points_one_title, points_two_title, points_three_title, points_four_title, points_penalty_title, has_test_piece, has_own_choice, has_entertainments, statistics_show, statistics_limit) VALUES (27, '20131122 15:53:02', '20131122 15:21:03', 'owner', 'owner', 'Entertainments (2 Music, 1 Programme, 1 Entertainment points)', 'entertainments-2-music-1-programme-1-entertainment-points', 'contest-types.entertainments-2-music-1-programme-1-entertainment-points','Draw', null, null, 'Total', 'Quality Adj 1', 'Quality Adj 2', 'Programme', 'Entertainment', 'Penalty', 0, 0, 1, 1, '0');
 INSERT INTO contest_type(old_id, updated, created, updated_by, created_by, name, slug, translation_key, draw_one_title, draw_two_title, draw_three_title, points_total_title, points_one_title, points_two_title, points_three_title, points_four_title, points_penalty_title, has_test_piece, has_own_choice, has_entertainments, statistics_show, statistics_limit) VALUES (28, '20220601 20:41:20', '20220601 20:41:20', 'owner', 'owner', 'Sacred, Set Test and Own Choice Contest', 'sacred-set-test-and-own-choice-contest', 'contest-types.sacred-set-test-and-own-choice-contest','Draw', null, null, 'Total', 'Test Piece', 'Sacred', 'Own Choice', null, null, 1, 1, 0, 0, '0');
 INSERT INTO contest_type(old_id, updated, created, updated_by, created_by, name, slug, translation_key, draw_one_title, draw_two_title, draw_three_title, points_total_title, points_one_title, points_two_title, points_three_title, points_four_title, points_penalty_title, has_test_piece, has_own_choice, has_entertainments, statistics_show, statistics_limit) VALUES (29, '20220703 11:06:26', '20220703 11:06:26', 'owner', 'owner', 'March and Entertainments', 'march-and-entertainments', 'contest-types.march-and-entertainments','Draw', null, null, 'Points', 'March', 'Entertainment', 'Music', null, null, 0, 0, 1, 0, '0');
+INSERT INTO contest_type(old_id, updated, created, updated_by, created_by, name, slug, translation_key, draw_one_title, draw_two_title, draw_three_title, points_total_title, points_one_title, points_two_title, points_three_title, points_four_title, points_penalty_title, has_test_piece, has_own_choice, has_entertainments, statistics_show, statistics_limit) VALUES (30, '20230531 17:00:35', '20340531 17:00:35', 'owner', 'owner', 'Own Choice and Two Concert Item (Separate Points)', 'own-choice-and-two-concert-item-separate-points', 'contest-types.own-choice-and-two-concert-item-separate-points','Draw', null, null, 'Total Points', 'Own Choice', 'Concert Item 1', 'Concert Item 2', null, null, 0, 1, 0, 0, '0');
 
 CREATE TABLE contest (
     id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,

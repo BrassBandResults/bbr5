@@ -1,0 +1,65 @@
+    <!DOCTYPE html>
+<html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+<head>
+    <title th:text="@{#{page.person-relationships.title(${Person.name})} + ' - Brass Person Results'}">Person Relationships - Brass Person Results</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h2><span th:replace="links/person-link.html :: personLink(${Person}, false, false)"></span> <span th:text="#{page.person-relationships.page-header}" th:remove="tag">Relationships</span></h2>
+
+    <table class="table table-hover sortable">
+        <tbody>
+        <tr th:each="relationship : ${PersonRelationships}">
+            <td>
+                <span th:if="${Person.slug == relationship.leftPerson.slug}" th:text="${Person.name}">Person Name</span>
+                <span th:if="${Person.slug != relationship.leftPerson.slug}"><span th:replace="links/person-link.html :: personLink(${relationship.leftPerson}, false, false)">Person Name</span></span>
+            </td>
+            <td th:text="#{${relationship.relationship.name}}"></td>
+            <td>
+                <span th:if="${Person.slug == relationship.rightPerson.slug}" th:text="${Person.name}">Person Name</span>
+                <span th:if="${Person.slug != relationship.rightPerson.slug}"><span th:replace="links/person-link.html :: personLink(${relationship.rightPerson}, false, false)">Person Name</span></span>
+            </td>
+            <td><span th:replace="buttons/relationships.html :: deletePersonRelationship(${Person}, ${relationship})">delete</span></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <br/>
+    <br/>
+    <h4 th:text="#{page.person-relationships.add-header}">New Relationship</h4>
+    <form id="relationship-form" th:action="${'/people/' + Person.slug + '/edit-relationships/add'}" method="POST">
+        <span th:text="${Person.name}">Person Name</span>
+        <select name="RelationshipTypeId" id="relationship-type-dropdown">
+            <option th:each="relationshipType : ${RelationshipTypes}" th:value="${relationshipType.id}" th:text="#{${relationshipType.name}}"></option>
+        </select><br/><br/>
+        <input id="right-person" th:placeholder="#{page.person-relationships.add-person-placeholder}" autocomplete="off" class="form-control" type="text" maxlength="100" onkeyup="lookup('right-person', 'person');"/>
+        <br/>
+        <input type="hidden" id="right-person-slug" name="RightPersonSlug"/>
+        <input type="submit" th:value="#{page.buttons.save-new-relationship}" class="btn btn-outline-success btn-sm rounded"/>
+    </form>
+</div>
+
+<div layout:fragment="scriptfooter">
+    <script th:src="@{${STATIC_HOST} + '/js2023/lookup.js'}"></script>
+    <script>
+        function fill(inputId, matchSlug, matchName) {
+            let inputElement = document.getElementById(inputId);
+            let inputSlugElement = document.getElementById(inputId + '-slug');
+            inputElement.value = matchName;
+            inputSlugElement.value = matchSlug;
+            inputElement.classList.remove("bg-warning");
+            inputElement.classList.add("bg-success");
+            inputElement.classList.add("text-white");
+
+            document.getElementById('list-' + inputId).remove();
+        }
+
+    </script>
+</div>
+
+
+<div layout:fragment="feedback">
+</div>
+
+</body>
+</html>
