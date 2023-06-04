@@ -22,12 +22,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class StripeServiceImpl implements StripeService {
 
-    private void setupApiKey() {
-        Stripe.apiKey = EnvVar.getEnv("BBR_STRIPE_PRIVATE_API_KEY", "sk_test_abc123");
-    }
-
     private Optional<Subscription> getActiveSubscription(BbrUserDao user) {
-        this.setupApiKey();
+        Stripe.apiKey = EnvVar.getEnv("BBR_STRIPE_PRIVATE_API_KEY", "sk_test_abc123");
 
         try {
             Map<String, Object> params = new HashMap<>();
