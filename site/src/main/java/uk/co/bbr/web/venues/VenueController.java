@@ -43,6 +43,7 @@ public class VenueController {
         return "venues/venue";
     }
 
+    @IsBbrMember
     @GetMapping("/venues/{venueSlug:[\\-a-z\\d]{2,}}/{contestSlug:[\\-a-z\\d]{2,}}")
     public String venueContest(Model model, @PathVariable("venueSlug") String venueSlug, @PathVariable("contestSlug") String contestSlug) {
         Optional<VenueDao> venue = this.venueService.fetchBySlug(venueSlug);

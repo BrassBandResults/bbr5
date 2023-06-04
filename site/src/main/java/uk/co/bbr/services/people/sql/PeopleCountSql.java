@@ -49,7 +49,9 @@ public class PeopleCountSql {
             List<Object[]> queryResults = query.getResultList();
 
             for (Object[] columnList : queryResults) {
-                returnData.put(((BigInteger)columnList[0]).longValue(), (Integer)columnList[1]);
+                Long id = columnList[0] instanceof BigInteger ? ((BigInteger)columnList[0]).longValue() : (Integer)columnList[0];
+                int count = columnList[1] instanceof BigInteger ? ((BigInteger)columnList[1]).intValue() : (Integer)columnList[1];
+                returnData.put(id, count);
             }
 
             return returnData;

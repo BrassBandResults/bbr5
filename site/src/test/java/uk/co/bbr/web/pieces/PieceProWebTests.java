@@ -39,10 +39,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ActiveProfiles("test")
-@SpringBootTest(properties = { "spring.config.name=piece-single-web-tests-admin-h2", "spring.datasource.url=jdbc:h2:mem:piece-single-web-tests-admin-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE", "spring.jpa.database-platform=org.hibernate.dialect.SQLServerDialect"},
+@SpringBootTest(properties = { "spring.config.name=piece-pro-web-tests-admin-h2", "spring.datasource.url=jdbc:h2:mem:piece-pro-web-tests-admin-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE", "spring.jpa.database-platform=org.hibernate.dialect.SQLServerDialect"},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class PieceWebTests implements LoginMixin {
+class PieceProWebTests implements LoginMixin {
 
     @Autowired private SecurityService securityService;
     @Autowired private JwtService jwtService;
@@ -53,9 +53,16 @@ class PieceWebTests implements LoginMixin {
     @Autowired private ContestEventService contestEventService;
     @Autowired private ContestResultService contestResultService;
     @Autowired private RestTemplate restTemplate;
+    @Autowired private CsrfTokenRepository csrfTokenRepository;
     @LocalServerPort private int port;
 
+    @BeforeAll
+    void setupUser() {
+        this.securityService.createUser(TestUser.TEST_PRO.getUsername(), TestUser.TEST_PRO.getPassword(), TestUser.TEST_PRO.getEmail());
+        this.securityService.makeUserPro(TestUser.TEST_PRO.getUsername());
 
+        loginTestUserByWeb(TestUser.TEST_PRO, this.restTemplate, this.csrfTokenRepository, this.port);
+    }
 
     @BeforeAll
     void setupPieces() throws AuthenticationFailedException {
@@ -92,31 +99,77 @@ class PieceWebTests implements LoginMixin {
     }
 
     @Test
-    void testSinglePiecePageWorksWithTestPieceSuccessfully() {
-        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/pieces/hootenanny", String.class);
+    void testBestOwnChoicePageReturnsSuccessfully() {
+        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/pieces/BEST-OWN-CHOICE", String.class);
         assertNotNull(response);
-        assertTrue(response.contains("<title>Hootenanny - Piece - Brass Band Results</title>"));
-        assertTrue(response.contains("Hootenanny"));
 
-        assertTrue(response.contains(">Yorkshire Area<"));
+        assertFalse(response.contains("Page not found"));
+        assertFalse(response.contains("<h2>Sign In</h2>"));
+
+        // TODO more asserts here, perhaps split this test to new file with appropriate test data
     }
 
     @Test
-    void testSinglePiecePageWorksWithResultPieceSuccessfully() {
-        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/pieces/contest-music", String.class);
+    void testTestPiecesBySectionChampionshipReturnsSuccessfully() {
+        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/pieces/BY-SECTION/championship", String.class);
         assertNotNull(response);
 
-        assertTrue(response.contains("<title>Contest Music - Piece - Brass Band Results</title>"));
-        assertTrue(response.contains("Contest Music"));
+        assertFalse(response.contains("Page not found"));
+        assertFalse(response.contains("<h2>Sign In</h2>"));
 
-        assertTrue(response.contains(">Midlands Area<"));
+        // TODO more asserts here, perhaps split this test to new file with appropriate test data
     }
 
     @Test
-    void testGetPersonDetailsPageFailsWithInvalidSlug() {
-        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/pieces/not-a-real-piece", String.class));
+    void testTestPiecesBySectionFirstSectionReturnsSuccessfully() {
+        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/pieces/BY-SECTION/first", String.class);
+        assertNotNull(response);
+
+        assertFalse(response.contains("Page not found"));
+        assertFalse(response.contains("<h2>Sign In</h2>"));
+
+        // TODO more asserts here, perhaps split this test to new file with appropriate test data
+    }
+
+    @Test
+    void testTestPiecesBySectionSecondSectionReturnsSuccessfully() {
+        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/pieces/BY-SECTION/second", String.class);
+        assertNotNull(response);
+
+        assertFalse(response.contains("Page not found"));
+        assertFalse(response.contains("<h2>Sign In</h2>"));
+
+        // TODO more asserts here, perhaps split this test to new file with appropriate test data
+    }
+
+    @Test
+    void testTestPiecesBySectionThirdSectionReturnsSuccessfully() {
+        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/pieces/BY-SECTION/third", String.class);
+        assertNotNull(response);
+
+        assertFalse(response.contains("Page not found"));
+        assertFalse(response.contains("<h2>Sign In</h2>"));
+
+        // TODO more asserts here, perhaps split this test to new file with appropriate test data
+    }
+
+    @Test
+    void testTestPiecesBySectionFourthSectionReturnsSuccessfully() {
+        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/pieces/BY-SECTION/fourth", String.class);
+        assertNotNull(response);
+
+        assertFalse(response.contains("Page not found"));
+        assertFalse(response.contains("<h2>Sign In</h2>"));
+
+        // TODO more asserts here, perhaps split this test to new file with appropriate test data
+    }
+
+    @Test
+    void testTestPiecesBySectionInvalidSectionFailsAsExpected() {
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/pieces/BY-SECTION/invalid", String.class));
         assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
     }
+
 }
 
 

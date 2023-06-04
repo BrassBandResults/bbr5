@@ -17,6 +17,7 @@ import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.people.PersonService;
 import uk.co.bbr.services.people.dao.PersonDao;
+import uk.co.bbr.web.security.annotations.IsBbrMember;
 
 import java.util.List;
 
@@ -31,7 +32,8 @@ public class LookupController {
 
     private static final String MATCH_TAG_NAME = "matches";
 
-@GetMapping("/lookup/{type:[a-z]+}/data.json")
+    @IsBbrMember
+    @GetMapping("/lookup/{type:[a-z]+}/data.json")
     public ResponseEntity<JsonNode>  lookupElement(@PathVariable("type") String type, @RequestParam("s") String searchString) {
         if (searchString.length() < 3) {
             throw NotFoundException.lookupNeedsThreeCharacters();
