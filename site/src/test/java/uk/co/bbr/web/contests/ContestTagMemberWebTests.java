@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import uk.co.bbr.services.contests.ContestGroupService;
 import uk.co.bbr.services.contests.ContestService;
@@ -15,23 +16,26 @@ import uk.co.bbr.services.contests.ContestTagService;
 import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.contests.dao.ContestGroupDao;
 import uk.co.bbr.services.contests.dao.ContestTagDao;
+import uk.co.bbr.services.framework.ValidationException;
 import uk.co.bbr.services.security.JwtService;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.services.security.ex.AuthenticationFailedException;
 import uk.co.bbr.web.LoginMixin;
 import uk.co.bbr.web.security.support.TestUser;
 
+import java.util.Objects;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ActiveProfiles("test")
-@SpringBootTest(properties = { "spring.config.name=tag-web-tests-admin-h2", "spring.datasource.url=jdbc:h2:mem:tag-web-tests-admin-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE", "spring.jpa.database-platform=org.hibernate.dialect.SQLServerDialect"},
+@SpringBootTest(properties = { "spring.config.name=tag-member-web-tests-admin-h2", "spring.datasource.url=jdbc:h2:mem:tag-member-web-tests-admin-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE", "spring.jpa.database-platform=org.hibernate.dialect.SQLServerDialect"},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class ContestTagWebTests implements LoginMixin {
+class ContestTagMemberWebTests implements LoginMixin {
 
     @Autowired private SecurityService securityService;
     @Autowired private JwtService jwtService;
@@ -39,7 +43,16 @@ class ContestTagWebTests implements LoginMixin {
     @Autowired private ContestTagService contestTagService;
     @Autowired private ContestGroupService contestGroupService;
     @Autowired private RestTemplate restTemplate;
+    @Autowired private CsrfTokenRepository csrfTokenRepository;
     @LocalServerPort private int port;
+
+    @BeforeAll
+    void setupUser() {
+        this.securityService.createUser(TestUser.TEST_PRO.getUsername(), TestUser.TEST_PRO.getPassword(), TestUser.TEST_PRO.getEmail());
+        this.securityService.makeUserPro(TestUser.TEST_PRO.getUsername());
+
+        loginTestUserByWeb(TestUser.TEST_PRO, this.restTemplate, this.csrfTokenRepository, this.port);
+    }
 
     @BeforeAll
     void setupContests() throws AuthenticationFailedException {
@@ -75,69 +88,48 @@ class ContestTagWebTests implements LoginMixin {
     }
 
     @Test
-    void testGetTagListWorksSuccessfully() {
-        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/tags", String.class);
-        assertNotNull(response);
-        assertTrue(response.contains("<title>Tags - Brass Band Results</title>"));
-        assertTrue(response.contains("<h2>Tags starting with A</h2>"));
+    void testDeleteTagWithNoLinksWorksSuccessfully() throws AuthenticationFailedException {
+        // arrange
+        loginTestUser(this.securityService, this.jwtService, TestUser.TEST_MEMBER);
 
-        assertTrue(response.contains("AA Tag"));
-        assertTrue(response.contains("AB Tag"));
-        assertFalse(response.contains("Yorkshire Tag"));
-        assertFalse(response.contains("North West Tag"));
+        this.contestTagService.create("Tag To Delete");
+        Optional<ContestTagDao> tagToDelete = this.contestTagService.fetchBySlug("tag-to-delete");
+        assertTrue(tagToDelete.isPresent());
+
+        logoutTestUser();
+
+        // act
+        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/tags/tag-to-delete/delete", String.class);
+
+        // assert
+        Optional<ContestTagDao> tagToDeleteAfter = this.contestTagService.fetchBySlug("tag-to-delete");
+        assertFalse(tagToDeleteAfter.isPresent());
     }
 
     @Test
-    void testGetTagListForSpecificLetterWorksSuccessfully() {
-        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/tags/Y", String.class);
-        assertNotNull(response);
-        assertTrue(response.contains("<title>Tags - Brass Band Results</title>"));
-        assertTrue(response.contains("<h2>Tags starting with Y</h2>"));
+    void testDeleteTagWithLinksFailsAsExpected() throws AuthenticationFailedException {
+        // arrange
+        loginTestUser(this.securityService, this.jwtService, TestUser.TEST_MEMBER);
 
-        assertFalse(response.contains("AA Tag"));
-        assertFalse(response.contains("AB Tag"));
-        assertTrue(response.contains("Yorkshire Tag"));
-        assertFalse(response.contains("North West Tag"));
+        this.contestTagService.create("Tag With Links");
+        Optional<ContestTagDao> tagToDelete = this.contestTagService.fetchBySlug("tag-with-links");
+        assertTrue(tagToDelete.isPresent());
 
-    }
+        Optional<ContestDao> contest = this.contestService.fetchBySlug("yorkshire-area");
+        assertTrue(contest.isPresent());
 
-    @Test
-    void testGetTagListForSpecificLetterWithNoResultsWorksSuccessfully() {
-        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/tags/W", String.class);
-        assertNotNull(response);
-        assertTrue(response.contains("<title>Tags - Brass Band Results</title>"));
-        assertTrue(response.contains("<h2>Tags starting with W</h2>"));
+        Optional<ContestGroupDao> contestGroup = this.contestGroupService.fetchBySlug("YORKSHIRE-GROUP");
+        assertTrue(contestGroup.isPresent());
 
-        assertFalse(response.contains("AA Tag"));
-        assertFalse(response.contains("AB Tag"));
-        assertFalse(response.contains("Yorkshire Tag"));
-        assertFalse(response.contains("North West Tag"));
-    }
+        this.contestService.addContestTag(contest.get(), tagToDelete.get());
+        this.contestGroupService.addGroupTag(contestGroup.get(), tagToDelete.get());
 
-    @Test
-    void testGetAllTagsListWorksSuccessfully() {
-        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/tags/ALL", String.class);
-        assertNotNull(response);
-        assertTrue(response.contains("<title>Tags - Brass Band Results</title>"));
-        assertTrue(response.contains("<h2>All Tags</h2>"));
+        logoutTestUser();
 
-        assertTrue(response.contains("AA Tag"));
-        assertTrue(response.contains("AB Tag"));
-        assertTrue(response.contains("Yorkshire Tag"));
-        assertTrue(response.contains("North West Tag"));
-    }
+        // act
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/tags/tag-with-links/delete", String.class));
 
-    @Test
-    void testFetchTagDetailsPageWorksSuccessfully() {
-        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/tags/yorkshire-tag", String.class);
-        assertNotNull(response);
-        assertTrue(response.contains("<title>Yorkshire Tag - Tag - Brass Band Results</title>"));
-        assertTrue(response.contains("<h2>Yorkshire Tag</h2>"));
-
-        assertTrue(response.contains("Yorkshire Area"));
-        assertTrue(response.contains("Yorkshire Group"));
-        assertFalse(response.contains("North West Area"));
-        assertFalse(response.contains("Aberdeen Contest"));
-        assertFalse(response.contains("Abbey Hey Contest"));
+        // assert
+        assertTrue(Objects.requireNonNull(ex.getMessage()).contains("400"));
     }
 }

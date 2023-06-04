@@ -2,6 +2,7 @@ package uk.co.bbr.services.contests.dao;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Formula;
 import uk.co.bbr.services.framework.AbstractDao;
 import uk.co.bbr.services.framework.mixins.NameTools;
 
@@ -22,6 +23,12 @@ public class ContestTagDao extends AbstractDao implements NameTools {
 
     @Column(name="slug", nullable=false)
     private String slug;
+
+    @Formula("(SELECT COUNT(*) FROM contest_group_tag_link gtl WHERE gtl.contest_tag_id = id)")
+    private int groupCount;
+
+    @Formula("(SELECT COUNT(*) FROM contest_tag_link ctl WHERE ctl.contest_tag_id = id)")
+    private int contestCount;
 
     public void setName(String name){
         this.name = simplifyContestName(name);

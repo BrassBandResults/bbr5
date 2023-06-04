@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+<html lang="en" layout:decorate="~{layout}" xmlns:sec="http://www.thymeleaf.org" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
 <head>
     <title th:text="@{#{page.tags.title} + ' - Brass Band Results'}">Tags - Brass Band Results</title>
 </head>
@@ -12,11 +12,21 @@
         <thead>
         <tr>
             <th th:text="#{page.column-header.name}">Name</th>
+            <th th:text="#{page.column-header.contests}">Contests</th>
+            <th th:text="#{page.column-header.groups}">Groups</th>
+            <th sec:authorize="hasRole('BBR_SUPERUSER')"></th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="tag : ${Tags}">
             <td class="tag"><span th:replace="links/tag-link.html :: tagLink(${tag})"></span></td>
+            <td th:text="${tag.contestCount}"></td>
+            <td th:text="${tag.groupCount}"></td>
+            <td sec:authorize="hasRole('BBR_SUPERUSER')">
+                <span th:if="${tag.contestCount == 0 && tag.groupCount == 0}">
+                    <span th:replace="buttons/button.html :: dangerButton(#{page.buttons.delete}, '/tags/' + tag.slug + '/delete')"></span>
+                </span>
+            </td>
         </tr>
         </tbody>
     </table>

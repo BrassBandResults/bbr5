@@ -82,6 +82,11 @@ public class ContestTagServiceImpl implements ContestTagService, SlugTools {
 
     @Override
     public void deleteTag(ContestTagDao tag) {
+        int tagLinks = tag.getContestCount() + tag.getGroupCount();
+        if (tagLinks > 0) {
+            throw new ValidationException("Can't delete tag that has links to contests or groups");
+        }
+
         this.contestTagRepository.delete(tag);
     }
 
