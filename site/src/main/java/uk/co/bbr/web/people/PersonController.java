@@ -8,9 +8,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import uk.co.bbr.services.contests.ContestResultService;
 import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.people.PersonAliasService;
+import uk.co.bbr.services.people.PersonRelationshipService;
 import uk.co.bbr.services.people.PersonService;
 import uk.co.bbr.services.people.dao.PersonAliasDao;
 import uk.co.bbr.services.people.dao.PersonDao;
+import uk.co.bbr.services.people.dao.PersonRelationshipDao;
 import uk.co.bbr.services.people.dto.ConductingDetailsDto;
 import uk.co.bbr.services.pieces.PieceService;
 import uk.co.bbr.services.pieces.dao.PieceDao;
@@ -24,6 +26,7 @@ public class PersonController {
 
     private final PersonService personService;
     private final PersonAliasService personAliasService;
+    private final PersonRelationshipService personRelationshipService;
     private final ContestResultService contestResultService;
     private final PieceService pieceService;
 
@@ -39,6 +42,7 @@ public class PersonController {
         int adjudicationsCount = this.personService.fetchAdjudicationCount(person.get());
         int composerCount = this.personService.fetchComposerCount(person.get());
         int arrangerCount = this.personService.fetchArrangerCount(person.get());
+        List<PersonRelationshipDao> personRelationships = this.personRelationshipService.fetchRelationshipsForPerson(person.get());
 
         model.addAttribute("Person", person.get());
         model.addAttribute("PreviousNames", previousNames);
@@ -48,6 +52,7 @@ public class PersonController {
         model.addAttribute("WhitCount", personConductingResults.getBandWhitResults().size());
         model.addAttribute("AdjudicationsCount", adjudicationsCount);
         model.addAttribute("PieceCount", composerCount + arrangerCount);
+        model.addAttribute("PersonRelationships", personRelationships);
 
         return "people/person";
     }
@@ -64,6 +69,7 @@ public class PersonController {
         int adjudicationsCount = this.personService.fetchAdjudicationCount(person.get());
         int composerCount = this.personService.fetchComposerCount(person.get());
         int arrangerCount = this.personService.fetchArrangerCount(person.get());
+        List<PersonRelationshipDao> personRelationships = this.personRelationshipService.fetchRelationshipsForPerson(person.get());
 
         model.addAttribute("Person", person.get());
         model.addAttribute("PreviousNames", previousNames);
@@ -73,6 +79,7 @@ public class PersonController {
         model.addAttribute("WhitCount", personConductingResults.getBandWhitResults().size());
         model.addAttribute("AdjudicationsCount", adjudicationsCount);
         model.addAttribute("PieceCount", composerCount + arrangerCount);
+        model.addAttribute("PersonRelationships", personRelationships);
 
         return "people/person-whits";
     }
@@ -90,6 +97,7 @@ public class PersonController {
         int adjudicationsCount = this.personService.fetchAdjudicationCount(person.get());
         int composerCount = this.personService.fetchComposerCount(person.get());
         int arrangerCount = this.personService.fetchArrangerCount(person.get());
+        List<PersonRelationshipDao> personRelationships = this.personRelationshipService.fetchRelationshipsForPerson(person.get());
 
         model.addAttribute("Person", person.get());
         model.addAttribute("PreviousNames", previousNames);
@@ -97,6 +105,7 @@ public class PersonController {
         model.addAttribute("WhitCount", personConductingResults.getBandWhitResults().size());
         model.addAttribute("AdjudicationsCount", adjudicationsCount);
         model.addAttribute("PieceCount", composerCount + arrangerCount);
+        model.addAttribute("PersonRelationships", personRelationships);
         model.addAttribute("Pieces", personPieces);
 
         return "people/person-pieces";

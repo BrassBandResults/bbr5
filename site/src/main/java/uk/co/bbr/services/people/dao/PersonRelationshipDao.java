@@ -3,6 +3,7 @@ package uk.co.bbr.services.people.dao;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.framework.AbstractDao;
 
 import javax.persistence.Column;
@@ -38,4 +39,21 @@ public class PersonRelationshipDao extends AbstractDao {
 
     @Column(name="right_person_name")
     private String rightPersonName;
+
+    public String relationshipName(PersonDao person) {
+        if (this.leftPerson.getId().equals(person.getId())) {
+            return this.relationship.getName();
+        } else {
+            return this.relationship.getReverseName();
+        }
+    }
+
+    public PersonDao otherPerson(PersonDao person) {
+        if (this.leftPerson.getId().equals(person.getId())) {
+            return this.rightPerson;
+        } else {
+            return this.leftPerson;
+        }
+    }
+
 }
