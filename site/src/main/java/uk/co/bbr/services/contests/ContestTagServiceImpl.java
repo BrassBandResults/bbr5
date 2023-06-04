@@ -81,6 +81,11 @@ public class ContestTagServiceImpl implements ContestTagService, SlugTools {
     }
 
     @Override
+    public void deleteTag(ContestTagDao tag) {
+        this.contestTagRepository.delete(tag);
+    }
+
+    @Override
     @IsBbrMember
     public ContestTagDao create(ContestTagDao contestTag) {
         return this.create(contestTag, false);

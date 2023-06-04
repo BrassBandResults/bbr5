@@ -14,6 +14,7 @@ import uk.co.bbr.services.venues.dao.VenueAliasDao;
 import uk.co.bbr.services.venues.dao.VenueDao;
 import uk.co.bbr.services.venues.dto.VenueContestDto;
 import uk.co.bbr.services.venues.dto.VenueContestYearDto;
+import uk.co.bbr.web.security.annotations.IsBbrMember;
 
 import java.util.List;
 import java.util.Optional;
@@ -61,6 +62,7 @@ public class VenueController {
         return "venues/contest";
     }
 
+    @IsBbrMember
     @GetMapping("/venues/{venueSlug:[\\-a-z\\d]{2,}}/years")
     public String venueYears(Model model, @PathVariable("venueSlug") String venueSlug) {
         Optional<VenueDao> venue = this.venueService.fetchBySlug(venueSlug);
@@ -78,6 +80,7 @@ public class VenueController {
         return "venues/years";
     }
 
+    @IsBbrMember
     @GetMapping("/venues/{venueSlug:[\\-a-z\\d]{2,}}/years/{year:\\d{4}}")
     public String venueYearEvents(Model model, @PathVariable("venueSlug") String venueSlug, @PathVariable("year") int year) {
         Optional<VenueDao> venue = this.venueService.fetchBySlug(venueSlug);

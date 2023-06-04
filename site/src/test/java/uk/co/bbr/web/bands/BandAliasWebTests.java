@@ -59,6 +59,14 @@ class BandAliasWebTests implements LoginMixin {
     @LocalServerPort private int port;
 
     @BeforeAll
+    void setupUser() {
+        this.securityService.createUser(TestUser.TEST_PRO.getUsername(), TestUser.TEST_PRO.getPassword(), TestUser.TEST_PRO.getEmail());
+        this.securityService.makeUserPro(TestUser.TEST_PRO.getUsername());
+
+        loginTestUserByWeb(TestUser.TEST_PRO, this.restTemplate, this.csrfTokenRepository, this.port);
+    }
+
+    @BeforeAll
     void setupBands() throws AuthenticationFailedException {
         loginTestUser(this.securityService, this.jwtService, TestUser.TEST_MEMBER);
 

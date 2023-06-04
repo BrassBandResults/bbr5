@@ -9,6 +9,7 @@ import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.people.PersonService;
 import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.people.dto.ConductorCompareDto;
+import uk.co.bbr.web.security.annotations.IsBbrPro;
 
 import java.util.Optional;
 
@@ -17,11 +18,13 @@ import java.util.Optional;
 public class ConductorCompareController {
     private final PersonService personService;
 
+    @IsBbrPro
     @GetMapping("/people/COMPARE-CONDUCTORS")
     public String compareConductorsHome() {
         return "people/compare/select";
     }
 
+    @IsBbrPro
     @GetMapping("/people/COMPARE-CONDUCTORS/{leftSlug:[\\-a-z\\d]{2,}}")
     public String compareConductorToAnother(Model model, @PathVariable("leftSlug") String leftSlug) {
         Optional<PersonDao> leftPerson = this.personService.fetchBySlug(leftSlug);
@@ -34,6 +37,7 @@ public class ConductorCompareController {
         return "people/compare/select-one";
     }
 
+    @IsBbrPro
     @GetMapping("/people/COMPARE-CONDUCTORS/{leftSlug:[\\-a-z\\d]{2,}}/{rightSlug:[\\-a-z\\d]{2,}}")
     public String compareConductorsDisplay(Model model, @PathVariable("leftSlug") String leftSlug, @PathVariable("rightSlug") String rightSlug) {
         Optional<PersonDao> leftPerson = this.personService.fetchBySlug(leftSlug);

@@ -9,6 +9,8 @@ import uk.co.bbr.services.bands.BandService;
 import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.bands.dto.BandCompareDto;
 import uk.co.bbr.services.framework.NotFoundException;
+import uk.co.bbr.web.security.annotations.IsBbrMember;
+import uk.co.bbr.web.security.annotations.IsBbrPro;
 
 
 import java.util.Optional;
@@ -18,11 +20,13 @@ import java.util.Optional;
 public class BandCompareController {
     private final BandService bandService;
 
+    @IsBbrPro
     @GetMapping("/bands/COMPARE")
     public String compareBandsHome(Model model) {
         return "bands/compare/select";
     }
 
+    @IsBbrPro
     @GetMapping("/bands/COMPARE/{leftSlug:[\\-a-z\\d]{2,}}")
     public String compareConductorToAnother(Model model, @PathVariable("leftSlug") String leftSlug) {
         Optional<BandDao> leftBand = this.bandService.fetchBySlug(leftSlug);
@@ -35,6 +39,7 @@ public class BandCompareController {
         return "bands/compare/select-one";
     }
 
+    @IsBbrPro
     @GetMapping("/bands/COMPARE/{leftSlug:[\\-a-z\\d]{2,}}/{rightSlug:[\\-a-z\\d]{2,}}")
     public String compareBandsDisplay(Model model, @PathVariable("leftSlug") String leftSlug, @PathVariable("rightSlug") String rightSlug) {
         Optional<BandDao> leftBand = this.bandService.fetchBySlug(leftSlug);

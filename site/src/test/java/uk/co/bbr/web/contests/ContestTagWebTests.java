@@ -6,6 +6,7 @@ import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.client.RestTemplate;
 import uk.co.bbr.services.contests.ContestGroupService;
@@ -19,6 +20,8 @@ import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.services.security.ex.AuthenticationFailedException;
 import uk.co.bbr.web.LoginMixin;
 import uk.co.bbr.web.security.support.TestUser;
+
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -36,7 +39,16 @@ class ContestTagWebTests implements LoginMixin {
     @Autowired private ContestTagService contestTagService;
     @Autowired private ContestGroupService contestGroupService;
     @Autowired private RestTemplate restTemplate;
+    @Autowired private CsrfTokenRepository csrfTokenRepository;
     @LocalServerPort private int port;
+
+    @BeforeAll
+    void setupUser() {
+        this.securityService.createUser(TestUser.TEST_PRO.getUsername(), TestUser.TEST_PRO.getPassword(), TestUser.TEST_PRO.getEmail());
+        this.securityService.makeUserPro(TestUser.TEST_PRO.getUsername());
+
+        loginTestUserByWeb(TestUser.TEST_PRO, this.restTemplate, this.csrfTokenRepository, this.port);
+    }
 
     @BeforeAll
     void setupContests() throws AuthenticationFailedException {
@@ -136,5 +148,24 @@ class ContestTagWebTests implements LoginMixin {
         assertFalse(response.contains("North West Area"));
         assertFalse(response.contains("Aberdeen Contest"));
         assertFalse(response.contains("Abbey Hey Contest"));
+    }
+
+    @Test
+    void testDeleteTagWithNoLinksWorksSuccessfully() throws AuthenticationFailedException {
+        // arrange
+        loginTestUser(this.securityService, this.jwtService, TestUser.TEST_MEMBER);
+
+        this.contestTagService.create("Tag To Delete");
+        Optional<ContestTagDao> tagToDelete = this.contestTagService.fetchBySlug("tag-to-delete");
+        assertTrue(tagToDelete.isPresent());
+
+        logoutTestUser();
+
+        // act
+        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/tags/tag-to-delete/delete", String.class);
+
+        // assert
+        Optional<ContestTagDao> tagToDeleteAfter = this.contestTagService.fetchBySlug("tag-to-delete");
+        assertFalse(tagToDeleteAfter.isPresent());
     }
 }

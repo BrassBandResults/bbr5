@@ -13,6 +13,7 @@ import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.bands.dao.BandRelationshipDao;
 import uk.co.bbr.services.bands.dao.BandRelationshipTypeDao;
 import uk.co.bbr.services.framework.NotFoundException;
+import uk.co.bbr.web.security.annotations.IsBbrMember;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,6 +27,7 @@ public class BandRelationshipsController {
 
     private static final String REDIRECT_TO_BAND_RELATIONSHIPS = "redirect:/bands/{bandSlug}/edit-relationships";
 
+    @IsBbrMember
     @GetMapping("/bands/{bandSlug:[\\-a-z\\d]{2,}}/edit-relationships")
     public String bandRelationshipsEdit(Model model, @PathVariable("bandSlug") String bandSlug) {
         Optional<BandDao> band = this.bandService.fetchBySlug(bandSlug);
@@ -44,6 +46,7 @@ public class BandRelationshipsController {
 
 
 
+    @IsBbrMember
     @GetMapping("/bands/{bandSlug:[\\-a-z\\d]{2,}}/edit-relationships/{relationshipId:\\d+}/delete")
     public String bandRelationshipsDelete(@PathVariable("bandSlug") String bandSlug, @PathVariable("relationshipId") Long relationshipId) {
         Optional<BandDao> band = this.bandService.fetchBySlug(bandSlug);
@@ -61,6 +64,7 @@ public class BandRelationshipsController {
         return REDIRECT_TO_BAND_RELATIONSHIPS;
     }
 
+    @IsBbrMember
     @PostMapping("/bands/{bandSlug:[\\-a-z\\d]{2,}}/edit-relationships/add")
     public String bandRelationshipsCreate(@PathVariable("bandSlug") String bandSlug, @RequestParam("RightBandSlug") String rightBandSlug,
                                                                                      @RequestParam(name="RightBandName",required=false) String rightBandName,

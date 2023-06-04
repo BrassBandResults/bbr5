@@ -8,6 +8,7 @@ import uk.co.bbr.services.bands.BandService;
 import uk.co.bbr.services.bands.sql.dto.BandWinnersSqlDto;
 import uk.co.bbr.services.people.PersonService;
 import uk.co.bbr.services.people.sql.dto.PeopleWinnersSqlDto;
+import uk.co.bbr.web.security.annotations.IsBbrPro;
 
 import java.util.List;
 
@@ -16,6 +17,7 @@ import java.util.List;
 public class PeopleWinnersController {
     private final PersonService personService;
 
+    @IsBbrPro
     @GetMapping("/people/WINNERS")
     public String showPeopleWinners(Model model) {
         List<PeopleWinnersSqlDto> peopleWinners = this.personService.fetchContestWinningPeople();
@@ -25,6 +27,7 @@ public class PeopleWinnersController {
         return "people/winners";
     }
 
+    @IsBbrPro
     @GetMapping("/people/WINNERS/before/1950")
     public String showPeopleWinnersBefore1950(Model model) {
         List<PeopleWinnersSqlDto> peopleWinners = this.personService.fetchContestWinningPeopleBefore(1950);
@@ -34,6 +37,7 @@ public class PeopleWinnersController {
         return "people/winners-before-1950";
     }
 
+    @IsBbrPro
     @GetMapping("/people/WINNERS/after/1950")
     public String showPeopleWinnersAfter1950(Model model) {
         List<PeopleWinnersSqlDto> peopleWinners = this.personService.fetchContestWinningPeopleAfter(1950);

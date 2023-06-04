@@ -13,6 +13,7 @@ import uk.co.bbr.services.people.PersonService;
 import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.people.dao.PersonRelationshipDao;
 import uk.co.bbr.services.people.dao.PersonRelationshipTypeDao;
+import uk.co.bbr.web.security.annotations.IsBbrMember;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,6 +27,7 @@ public class PersonRelationshipsController {
 
     private static final String REDIRECT_TO_PERSON_RELATIONSHIPS = "redirect:/people/{personSlug}/edit-relationships";
 
+    @IsBbrMember
     @GetMapping("/people/{personSlug:[\\-a-z\\d]{2,}}/edit-relationships")
     public String personRelationshipsEdit(Model model, @PathVariable("personSlug") String personSlug) {
         Optional<PersonDao> person = this.personService.fetchBySlug(personSlug);
@@ -44,6 +46,7 @@ public class PersonRelationshipsController {
 
 
 
+    @IsBbrMember
     @GetMapping("/people/{personSlug:[\\-a-z\\d]{2,}}/edit-relationships/{relationshipId:\\d+}/delete")
     public String personRelationshipsDelete(@PathVariable("personSlug") String personSlug, @PathVariable("relationshipId") Long relationshipId) {
         Optional<PersonDao> person = this.personService.fetchBySlug(personSlug);
@@ -61,6 +64,7 @@ public class PersonRelationshipsController {
         return REDIRECT_TO_PERSON_RELATIONSHIPS;
     }
 
+    @IsBbrMember
     @PostMapping("/people/{personSlug:[\\-a-z\\d]{2,}}/edit-relationships/add")
     public String personRelationshipsCreate(@PathVariable("personSlug") String personSlug, @RequestParam("RightPersonSlug") String rightPersonSlug,
                                                                                            @RequestParam("RelationshipTypeId") String relationshipTypeId) {

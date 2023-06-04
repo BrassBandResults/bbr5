@@ -18,6 +18,8 @@ import uk.co.bbr.services.bands.dao.BandRehearsalDayDao;
 import uk.co.bbr.services.bands.types.RehearsalDay;
 import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.web.bands.forms.BandAliasEditForm;
+import uk.co.bbr.web.security.annotations.IsBbrMember;
+import uk.co.bbr.web.security.annotations.IsBbrPro;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -30,6 +32,7 @@ public class BandRehearsalsController {
     private final BandService bandService;
     private final BandRehearsalsService bandRehearsalsService;
 
+    @IsBbrMember
     @GetMapping("/bands/{bandSlug:[\\-a-z\\d]{2,}}/edit-rehearsals")
     public String bandRehearsalsEdit(Model model, @PathVariable("bandSlug") String bandSlug) {
         Optional<BandDao> band = this.bandService.fetchBySlug(bandSlug);
@@ -69,6 +72,7 @@ public class BandRehearsalsController {
         return "bands/band-rehearsals";
     }
 
+    @IsBbrMember
     @PostMapping("/bands/{bandSlug:[\\-a-z\\d]{2,}}/edit-rehearsals")
     public String bandRehearsalsPost(@PathVariable("bandSlug") String bandSlug,
                                      @RequestParam("monday-checkbox") Optional<Boolean> mondayCheckbox, @RequestParam("monday-details") String mondayDetails,

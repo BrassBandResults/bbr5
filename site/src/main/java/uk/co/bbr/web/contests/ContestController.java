@@ -14,6 +14,8 @@ import uk.co.bbr.services.contests.dao.ContestEventDao;
 import uk.co.bbr.services.contests.dao.ContestResultPieceDao;
 import uk.co.bbr.services.contests.sql.dto.ContestWinsSqlDto;
 import uk.co.bbr.services.framework.NotFoundException;
+import uk.co.bbr.web.security.annotations.IsBbrMember;
+import uk.co.bbr.web.security.annotations.IsBbrPro;
 
 import java.util.List;
 import java.util.Optional;
@@ -48,6 +50,7 @@ public class ContestController {
         return "contests/contests/contest";
     }
 
+    @IsBbrPro
     @GetMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}/own-choice")
     public String contestOwnChoicePieceDetails(Model model, @PathVariable String contestSlug) {
         Optional<ContestDao> contest = this.contestService.fetchBySlug(contestSlug);
@@ -66,6 +69,7 @@ public class ContestController {
         return "contests/contests/contest-own-choice";
     }
 
+    @IsBbrPro
     @GetMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}/wins")
     public String contestWins(Model model, @PathVariable String contestSlug) {
         Optional<ContestDao> contest = this.contestService.fetchBySlug(contestSlug);

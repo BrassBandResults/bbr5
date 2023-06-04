@@ -8,8 +8,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import uk.co.bbr.services.contests.ContestTagService;
 import uk.co.bbr.services.contests.dao.ContestTagDao;
 import uk.co.bbr.services.contests.dto.ContestTagDetailsDto;
+import uk.co.bbr.services.framework.NotFoundException;
+import uk.co.bbr.web.security.annotations.IsBbrMember;
+import uk.co.bbr.web.security.annotations.IsBbrPro;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -46,6 +50,19 @@ public class ContestTagsController {
 
         model.addAttribute("ContestTag", tagDetails);
         return "contests/tags/tag";
+    }
+
+    @IsBbrMember
+    @GetMapping("/tags/{slug:[\\-a-z\\d]{2,}}/delete")
+    public String deleteContestTag(@PathVariable("slug") String slug) {
+        Optional<ContestTagDao> tag = this.contestTagService.fetchBySlug(slug);
+        if (tag.isEmpty()) {
+            throw NotFoundException.tagNotFoundBySlug(slug);
+        }
+
+        this.contestTagService.deleteTag(tag.get());
+
+        return "redirect:/tags";
     }
 
 }

@@ -22,6 +22,7 @@ import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.contests.dao.ContestGroupDao;
 import uk.co.bbr.services.contests.dao.ContestTagDao;
 import uk.co.bbr.services.framework.NotFoundException;
+import uk.co.bbr.web.security.annotations.IsBbrPro;
 
 import java.util.List;
 import java.util.Optional;
@@ -93,6 +94,7 @@ public class BandController {
         return "bands/band-whits";
     }
 
+    @IsBbrPro
     @GetMapping("/bands/{bandSlug:[\\-a-z\\d]{2,}}/{contestSlug:[\\-a-z\\d]{2,}}")
     public String bandFilterToContest(Model model, @PathVariable("bandSlug") String bandSlug, @PathVariable("contestSlug") String contestSlug) {
         Optional<BandDao> band = this.bandService.fetchBySlug(bandSlug);
@@ -119,6 +121,7 @@ public class BandController {
         return "bands/band";
     }
 
+    @IsBbrPro
     @GetMapping("/bands/{bandSlug:[\\-a-z\\d]{2,}}/{groupSlug:[\\-A-Z\\d]{2,}}")
     public String bandFilterToContestGroup(Model model, @PathVariable("bandSlug") String bandSlug, @PathVariable("groupSlug") String groupSlug) {
         Optional<BandDao> band = this.bandService.fetchBySlug(bandSlug);
@@ -145,6 +148,7 @@ public class BandController {
         return "bands/band";
     }
 
+    @IsBbrPro
     @GetMapping("/bands/{bandSlug:[\\-a-z\\d]{2,}}/tag/{tagSlug:[\\-a-z\\d]{2,}}")
     public String bandFilterToTag(Model model, @PathVariable("bandSlug") String bandSlug, @PathVariable("tagSlug") String tagSlug) {
         Optional<BandDao> band = this.bandService.fetchBySlug(bandSlug);

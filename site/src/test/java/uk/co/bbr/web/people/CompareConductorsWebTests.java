@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
@@ -43,26 +44,25 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class CompareConductorsWebTests implements LoginMixin {
 
-    @Autowired
-    private SecurityService securityService;
-    @Autowired
-    private JwtService jwtService;
-    @Autowired
-    private PersonService personService;
-    @Autowired
-    private ContestService contestService;
-    @Autowired
-    private ContestEventService contestEventService;
-    @Autowired
-    private ContestResultService contestResultService;
-    @Autowired
-    private BandService bandService;
-    @Autowired
-    private PieceService pieceService;
-    @Autowired
-    private RestTemplate restTemplate;
-    @LocalServerPort
-    private int port;
+    @Autowired private SecurityService securityService;
+    @Autowired private JwtService jwtService;
+    @Autowired private PersonService personService;
+    @Autowired private ContestService contestService;
+    @Autowired private ContestEventService contestEventService;
+    @Autowired private ContestResultService contestResultService;
+    @Autowired private BandService bandService;
+    @Autowired private PieceService pieceService;
+    @Autowired private RestTemplate restTemplate;
+    @Autowired private CsrfTokenRepository csrfTokenRepository;
+    @LocalServerPort private int port;
+
+    @BeforeAll
+    void setupUser() {
+        this.securityService.createUser(TestUser.TEST_PRO.getUsername(), TestUser.TEST_PRO.getPassword(), TestUser.TEST_PRO.getEmail());
+        this.securityService.makeUserPro(TestUser.TEST_PRO.getUsername());
+
+        loginTestUserByWeb(TestUser.TEST_PRO, this.restTemplate, this.csrfTokenRepository, this.port);
+    }
 
     @BeforeAll
     void setupPeople() throws AuthenticationFailedException {

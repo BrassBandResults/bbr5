@@ -20,6 +20,8 @@ import uk.co.bbr.services.regions.RegionService;
 import uk.co.bbr.services.regions.dao.RegionDao;
 import uk.co.bbr.services.regions.dto.LinkSectionDto;
 import uk.co.bbr.services.regions.dto.RegionPageDto;
+import uk.co.bbr.web.security.annotations.IsBbrMember;
+import uk.co.bbr.web.security.annotations.IsBbrPro;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,6 +79,7 @@ public class RegionController {
         return "regions/regionLinks";
     }
 
+    @IsBbrPro
     @GetMapping("/regions/{regionSlug}/winners")
     public String regionWinners(Model model, @PathVariable("regionSlug") String regionSlug) {
         RegionPageDto region = this.regionService.fetchBySlugForPage(regionSlug);

@@ -12,6 +12,8 @@ import uk.co.bbr.services.people.PersonAliasService;
 import uk.co.bbr.services.people.PersonService;
 import uk.co.bbr.services.people.dao.PersonAliasDao;
 import uk.co.bbr.services.people.dao.PersonDao;
+import uk.co.bbr.web.security.annotations.IsBbrMember;
+import uk.co.bbr.web.security.annotations.IsBbrPro;
 
 import java.util.List;
 import java.util.Optional;
@@ -25,6 +27,7 @@ public class PersonAliasController {
 
     private static final String REDIRECT_TO_PERSON_ALIASES = "redirect:/people/{personSlug}/edit-aliases";
 
+    @IsBbrMember
     @GetMapping("/people/{personSlug:[\\-a-z\\d]{2,}}/edit-aliases")
     public String bandAliasEdit(Model model, @PathVariable("personSlug") String personSlug) {
         Optional<PersonDao> person = this.personService.fetchBySlug(personSlug);
@@ -39,6 +42,7 @@ public class PersonAliasController {
         return "people/person-aliases";
     }
 
+    @IsBbrMember
     @GetMapping("/people/{personSlug:[\\-a-z\\d]{2,}}/edit-aliases/{aliasId:\\d+}/hide")
     public String bandAliasHide(@PathVariable("personSlug") String personSlug, @PathVariable("aliasId") Long aliasId) {
         Optional<PersonDao> person = this.personService.fetchBySlug(personSlug);
@@ -51,6 +55,7 @@ public class PersonAliasController {
         return REDIRECT_TO_PERSON_ALIASES;
     }
 
+    @IsBbrMember
     @GetMapping("/people/{personSlug:[\\-a-z\\d]{2,}}/edit-aliases/{aliasId:\\d+}/show")
     public String bandAliasShow(@PathVariable("personSlug") String personSlug, @PathVariable("aliasId") Long aliasId) {
         Optional<PersonDao> person = this.personService.fetchBySlug(personSlug);
@@ -63,6 +68,7 @@ public class PersonAliasController {
         return REDIRECT_TO_PERSON_ALIASES;
     }
 
+    @IsBbrMember
     @GetMapping("/people/{personSlug:[\\-a-z\\d]{2,}}/edit-aliases/{aliasId:\\d+}/delete")
     public String bandAliasDelete(@PathVariable("personSlug") String personSlug, @PathVariable("aliasId") Long aliasId) {
         Optional<PersonDao> person = this.personService.fetchBySlug(personSlug);
@@ -75,6 +81,7 @@ public class PersonAliasController {
         return REDIRECT_TO_PERSON_ALIASES;
     }
 
+    @IsBbrMember
     @PostMapping("/people/{personSlug:[\\-a-z\\d]{2,}}/edit-aliases/add")
     public String bandAliasShow(@PathVariable("personSlug") String personSlug, @RequestParam("oldName") String oldName) {
         Optional<PersonDao> person = this.personService.fetchBySlug(personSlug);

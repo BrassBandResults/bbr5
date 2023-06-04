@@ -13,6 +13,8 @@ import uk.co.bbr.services.contests.dto.ContestGroupYearDto;
 import uk.co.bbr.services.contests.dto.ContestGroupYearsDetailsDto;
 import uk.co.bbr.services.contests.dto.GroupListDto;
 import uk.co.bbr.services.framework.NotFoundException;
+import uk.co.bbr.web.security.annotations.IsBbrMember;
+import uk.co.bbr.web.security.annotations.IsBbrPro;
 
 import java.util.List;
 import java.util.Optional;
@@ -61,6 +63,7 @@ public class ContestGroupController {
         return "contests/groups/group";
     }
 
+    @IsBbrMember
     @GetMapping("/contests/{slug:[\\-A-Z\\d]{2,}}/years")
     public String contestGroupYearDetails(Model model, @PathVariable("slug") String groupSlug) {
         Optional<ContestGroupDao> contestGroup = this.contestGroupService.fetchBySlug(groupSlug);
@@ -76,6 +79,7 @@ public class ContestGroupController {
         return "contests/groups/years";
     }
 
+    @IsBbrMember
     @GetMapping("/contests/{slug:[\\-A-Z\\d]{2,}}/{year:[0-9]{4}}")
     public String contestGroupYearDetails(Model model, @PathVariable("slug") String groupSlug, @PathVariable("year") Integer year) {
         ContestGroupYearDto eventsForGroupAndYear = this.contestGroupService.fetchEventsByGroupSlugAndYear(groupSlug, year);

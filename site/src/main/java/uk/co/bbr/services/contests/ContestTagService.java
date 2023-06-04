@@ -18,4 +18,6 @@ public interface ContestTagService {
     ContestTagDetailsDto fetchDetailsBySlug(String slug);
 
     Optional<ContestTagDao> fetchBySlug(String tagSlug);
+
+    void deleteTag(ContestTagDao tag);
 }

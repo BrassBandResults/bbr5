@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import uk.co.bbr.services.contests.dao.ContestResultDao;
 import uk.co.bbr.services.years.YearService;
 import uk.co.bbr.services.years.sql.dto.YearListEntrySqlDto;
+import uk.co.bbr.web.security.annotations.IsBbrMember;
 
 import java.util.List;
 
@@ -17,6 +18,7 @@ public class YearController {
 
     private final YearService yearService;
 
+    @IsBbrMember
     @GetMapping("/years")
     public String contestYearHome(Model model){
         List<YearListEntrySqlDto> allYears = this.yearService.fetchFullYearList();
@@ -26,6 +28,7 @@ public class YearController {
         return "years/home";
     }
 
+    @IsBbrMember
     @GetMapping("/years/{year:\\d{4}}")
     public String contestSingleYear(Model model, @PathVariable String year){
         List<ContestResultDao> yearEvents = this.yearService.fetchEventsForYear(year);
