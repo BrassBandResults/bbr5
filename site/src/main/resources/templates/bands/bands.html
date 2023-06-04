@@ -7,6 +7,7 @@
 <div layout:fragment="content">
     <span th:if="${BandPrefixLetter == 'ALL'}"><h2><span th:text="#{page.bands.page-title}" th:remove="tag">All Bands</span></h2></span>
     <span th:if="${BandPrefixLetter != 'ALL'}"><h2><span th:text="#{page.bands.bands-starting-with(${BandPrefixLetter})}" th:remove="tag">Bands starting with R</span></h2></span>
+    <p th:replace="buttons/create.html :: createBand()"></p><br/><br/>
     <p>
         <span th:text="#{page.bands.band-counts(${Bands.returnedBandsCount},${Bands.allBandsCount})}" th:remove="tag">Showing 1 of 6 bands.</span>
         <span th:text="#{page.bands.band-list-header}" th:remove="tag">This is a list of current or last known names, previous band names can be found by search.</span>

@@ -7,6 +7,7 @@
 <div layout:fragment="content">
     <span th:if="${PeoplePrefixLetter == 'ALL'}"><h2><span th:text="#{page.people.page-title}" th:remove="tag">All People</span></h2></span>
     <span th:if="${PeoplePrefixLetter != 'ALL'}"><h2><span th:text="#{page.people.people-starting-with(${PeoplePrefixLetter})}" th:remove="tag">People surnames starting with R</span></h2></span>
+    <p th:replace="buttons/create.html :: createPerson()"></p><br/><br/>
     <p>
         <span th:text="#{page.people.people-counts(${People.returnedPeopleCount},${People.allPeopleCount})}" th:remove="tag">Showing 1 of 6 people.</span>
     </p>
