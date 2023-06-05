@@ -5,16 +5,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import uk.co.bbr.services.contests.ContestEventService;
-import uk.co.bbr.services.contests.ContestResultService;
+import uk.co.bbr.services.events.ContestEventService;
+import uk.co.bbr.services.events.ContestResultService;
 import uk.co.bbr.services.contests.ContestService;
 import uk.co.bbr.services.contests.dao.ContestAliasDao;
 import uk.co.bbr.services.contests.dao.ContestDao;
-import uk.co.bbr.services.contests.dao.ContestEventDao;
-import uk.co.bbr.services.contests.dao.ContestResultPieceDao;
+import uk.co.bbr.services.events.dao.ContestEventDao;
+import uk.co.bbr.services.events.dao.ContestResultPieceDao;
 import uk.co.bbr.services.contests.sql.dto.ContestWinsSqlDto;
 import uk.co.bbr.services.framework.NotFoundException;
-import uk.co.bbr.web.security.annotations.IsBbrMember;
 import uk.co.bbr.web.security.annotations.IsBbrPro;
 
 import java.util.List;
@@ -47,7 +46,7 @@ public class ContestController {
         model.addAttribute("OwnChoicePieceCount", ownChoicePieceCount);
         model.addAttribute("PreviousNames", contestAliases);
 
-        return "contests/contests/contest";
+        return "contests/contest";
     }
 
     @IsBbrPro
@@ -66,7 +65,7 @@ public class ContestController {
         model.addAttribute("OwnChoiceResults", resultsWithOwnChoicePieces);
         model.addAttribute("PastEventsCount", pastEventsCount);
 
-        return "contests/contests/contest-own-choice";
+        return "contests/contest-own-choice";
     }
 
     @IsBbrPro
@@ -88,6 +87,6 @@ public class ContestController {
         model.addAttribute("PastEventsCount", pastEventsCount);
         model.addAttribute("OwnChoicePieceCount", ownChoicePieceCount);
 
-        return "contests/contests/contest-wins";
+        return "contests/contest-wins";
     }
 }

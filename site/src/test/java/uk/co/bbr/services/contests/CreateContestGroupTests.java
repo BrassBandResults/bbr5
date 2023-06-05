@@ -1,14 +1,13 @@
 package uk.co.bbr.services.contests;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
-import uk.co.bbr.services.contests.dao.ContestGroupDao;
-import uk.co.bbr.services.contests.dao.ContestTagDao;
+import uk.co.bbr.services.groups.ContestGroupService;
+import uk.co.bbr.services.groups.dao.ContestGroupDao;
+import uk.co.bbr.services.tags.ContestTagService;
+import uk.co.bbr.services.tags.dao.ContestTagDao;
 import uk.co.bbr.services.framework.ValidationException;
 import uk.co.bbr.services.security.JwtService;
 import uk.co.bbr.services.security.SecurityService;

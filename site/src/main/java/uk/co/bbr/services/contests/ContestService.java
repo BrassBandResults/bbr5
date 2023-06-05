@@ -2,8 +2,8 @@ package uk.co.bbr.services.contests;
 
 import uk.co.bbr.services.contests.dao.ContestAliasDao;
 import uk.co.bbr.services.contests.dao.ContestDao;
-import uk.co.bbr.services.contests.dao.ContestGroupDao;
-import uk.co.bbr.services.contests.dao.ContestTagDao;
+import uk.co.bbr.services.groups.dao.ContestGroupDao;
+import uk.co.bbr.services.tags.dao.ContestTagDao;
 import uk.co.bbr.services.contests.dto.ContestListDto;
 
 import java.util.List;

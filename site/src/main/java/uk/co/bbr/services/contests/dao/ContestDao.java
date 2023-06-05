@@ -8,8 +8,10 @@ import lombok.Setter;
 import org.hibernate.annotations.Formula;
 import uk.co.bbr.services.framework.AbstractDao;
 import uk.co.bbr.services.framework.mixins.NameTools;
+import uk.co.bbr.services.groups.dao.ContestGroupDao;
 import uk.co.bbr.services.regions.dao.RegionDao;
 import uk.co.bbr.services.sections.dao.SectionDao;
+import uk.co.bbr.services.tags.dao.ContestTagDao;
 
 import javax.persistence.*;
 import java.util.HashSet;

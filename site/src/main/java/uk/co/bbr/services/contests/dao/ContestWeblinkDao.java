@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import uk.co.bbr.services.framework.AbstractDao;
 import uk.co.bbr.services.framework.mixins.NameTools;
+import uk.co.bbr.services.groups.dao.ContestGroupDao;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

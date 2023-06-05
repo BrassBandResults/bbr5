@@ -1,13 +1,11 @@
 package uk.co.bbr.services.bands.sql.dto;
 
 import lombok.Getter;
-import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.contests.dao.ContestDao;
-import uk.co.bbr.services.contests.dao.ContestEventDao;
-import uk.co.bbr.services.contests.types.ContestEventDateResolution;
+import uk.co.bbr.services.events.dao.ContestEventDao;
+import uk.co.bbr.services.events.types.ContestEventDateResolution;
 import uk.co.bbr.services.framework.sql.AbstractSqlDto;
 import uk.co.bbr.services.people.dao.PersonDao;
-import uk.co.bbr.services.regions.dao.RegionDao;
 
 import java.sql.Date;
 import java.time.LocalDate;

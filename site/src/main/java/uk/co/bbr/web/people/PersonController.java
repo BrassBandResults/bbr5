@@ -5,7 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import uk.co.bbr.services.contests.ContestResultService;
+import uk.co.bbr.services.events.ContestResultService;
 import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.people.PersonAliasService;
 import uk.co.bbr.services.people.PersonRelationshipService;

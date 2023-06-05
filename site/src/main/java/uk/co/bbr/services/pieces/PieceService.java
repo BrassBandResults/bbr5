@@ -1,7 +1,7 @@
 package uk.co.bbr.services.pieces;
 
-import uk.co.bbr.services.contests.dao.ContestEventTestPieceDao;
-import uk.co.bbr.services.contests.dao.ContestResultPieceDao;
+import uk.co.bbr.services.events.dao.ContestEventTestPieceDao;
+import uk.co.bbr.services.events.dao.ContestResultPieceDao;
 import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.pieces.dao.PieceAliasDao;
 import uk.co.bbr.services.pieces.dao.PieceDao;

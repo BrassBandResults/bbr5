@@ -5,7 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import uk.co.bbr.services.contests.dao.ContestResultDao;
+import uk.co.bbr.services.events.dao.ContestResultDao;
 import uk.co.bbr.services.years.YearService;
 import uk.co.bbr.services.years.sql.dto.YearListEntrySqlDto;
 import uk.co.bbr.web.security.annotations.IsBbrMember;

@@ -25,7 +25,7 @@ public class ContestListController {
 
         model.addAttribute("ContestPrefixLetter", letter);
         model.addAttribute("Contests", contests);
-        return "contests/contests/contests";
+        return "contests/contests";
     }
 
     @GetMapping("/contests/ALL")
@@ -34,6 +34,6 @@ public class ContestListController {
 
         model.addAttribute("ContestPrefixLetter", "ALL");
         model.addAttribute("Contests", contests);
-        return "contests/contests/contests";
+        return "contests/contests";
     }
 }

@@ -3,7 +3,6 @@ package uk.co.bbr.services.bands.dao;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import uk.co.bbr.services.contests.types.ContestEventDateResolution;
 import uk.co.bbr.services.framework.AbstractDao;
 import uk.co.bbr.services.framework.mixins.NameTools;
 

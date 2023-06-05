@@ -14,13 +14,13 @@ import uk.co.bbr.services.bands.dao.BandAliasDao;
 import uk.co.bbr.services.bands.dao.BandRehearsalDayDao;
 import uk.co.bbr.services.bands.dao.BandRelationshipDao;
 import uk.co.bbr.services.bands.dto.BandDetailsDto;
-import uk.co.bbr.services.contests.ContestGroupService;
-import uk.co.bbr.services.contests.ContestResultService;
+import uk.co.bbr.services.groups.ContestGroupService;
+import uk.co.bbr.services.events.ContestResultService;
 import uk.co.bbr.services.contests.ContestService;
-import uk.co.bbr.services.contests.ContestTagService;
+import uk.co.bbr.services.tags.ContestTagService;
 import uk.co.bbr.services.contests.dao.ContestDao;
-import uk.co.bbr.services.contests.dao.ContestGroupDao;
-import uk.co.bbr.services.contests.dao.ContestTagDao;
+import uk.co.bbr.services.groups.dao.ContestGroupDao;
+import uk.co.bbr.services.tags.dao.ContestTagDao;
 import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.web.security.annotations.IsBbrPro;
 
