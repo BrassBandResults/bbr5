@@ -144,7 +144,7 @@ class PublicPagesTests implements LoginMixin {
     })
     void testInvalidSlugPagesFailAsExpectedWhenNotLoggedIn(String offset) {
         HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + offset, String.class));
-        assertTrue(Objects.requireNonNull(ex.getMessage()).contains("404"));  // Page Exists
+        assertTrue(Objects.requireNonNull(ex.getMessage()).contains("404"));  // Page Doesn't Exist
     }
 
     @ParameterizedTest
@@ -225,6 +225,7 @@ class PublicPagesTests implements LoginMixin {
             "/contests/yorkshire-area/wins",
             "/contests/YORKSHIRE-GROUP/years",
             "/contests/YORKSHIRE-GROUP/2000",
+            "/create/tag",
             "/lookup/band/data.json?s=abc",
             "/lookup/contest/data.json?s=abc",
             "/lookup/person/data.json?s=abc",
