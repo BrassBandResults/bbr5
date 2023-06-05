@@ -19,6 +19,9 @@ public interface ContestTagRepository extends JpaRepository<ContestTagDao, Long>
     @Query("SELECT t FROM ContestTagDao t WHERE UPPER(t.name) LIKE UPPER(CONCAT(:prefix, '%')) ORDER BY t.name")
     List<ContestTagDao> findByPrefixOrderByName(String prefix);
 
+    @Query("SELECT t FROM ContestTagDao t ORDER BY t.name")
+    List<ContestTagDao> findAllOrderByName();
+
     @Query("SELECT c FROM ContestDao c " +
             "INNER JOIN c.tags t ON t.slug = ?1 " +
             "ORDER BY c.name")
@@ -28,4 +31,6 @@ public interface ContestTagRepository extends JpaRepository<ContestTagDao, Long>
             "INNER JOIN g.tags t ON t.slug = ?1 " +
             "ORDER BY g.name")
     List<ContestGroupDao> fetchGroupsForTag(String slug);
+
+
 }

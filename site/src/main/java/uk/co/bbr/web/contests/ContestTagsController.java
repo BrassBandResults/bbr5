@@ -62,7 +62,7 @@ public class ContestTagsController {
 
         this.contestTagService.deleteTag(tag.get());
 
-        return "redirect:/tags";
+        return "redirect:/tags/ALL";
     }
 
 }

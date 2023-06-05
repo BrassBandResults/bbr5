@@ -51,7 +51,7 @@ public class ContestTagServiceImpl implements ContestTagService, SlugTools {
         List<ContestTagDao> groupsToReturn;
 
         if (prefix.equalsIgnoreCase("ALL")) {
-            groupsToReturn = this.contestTagRepository.findAll();
+            groupsToReturn = this.contestTagRepository.findAllOrderByName();
         } else {
             if (prefix.trim().length() != 1) {
                 throw new UnsupportedOperationException("Prefix must be a single character");

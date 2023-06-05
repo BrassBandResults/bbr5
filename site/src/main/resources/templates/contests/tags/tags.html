@@ -7,7 +7,8 @@
 <div layout:fragment="content">
     <span th:if="${TagPrefixLetter == 'ALL'}"><h2><span th:text="#{page.tags.page-title}" th:remove="tag">All Tags</span></h2></span>
     <span th:if="${TagPrefixLetter != 'ALL'}"><h2><span th:text="#{page.tags.tags-starting-with(${TagPrefixLetter})}" th:remove="tag">Contests Tags starting with R</span></h2></span>
-    <p th:replace="buttons/create.html :: createTag()"></p><br/><br/>
+    <p sec:authorize="hasRole('BBR_PRO')"><span th:replace="buttons/create.html :: createTag()"></span><br/></p>
+    <br/>
     <p th:replace="navigation/az-picker.html :: azPicker('tags', ${GroupPrefixLetter}, false, true)"></p>
     <table id="bands" class="table table-hover sortable">
         <thead>
@@ -25,7 +26,7 @@
             <td th:text="${tag.groupCount}"></td>
             <td sec:authorize="hasRole('BBR_SUPERUSER')">
                 <span th:if="${tag.contestCount == 0 && tag.groupCount == 0}">
-                    <span th:replace="buttons/button.html :: dangerButton(#{page.buttons.delete}, '/tags/' + tag.slug + '/delete')"></span>
+                    <span th:replace="buttons/button.html :: dangerButton(#{page.buttons.delete}, '/tags/' + ${tag.slug} + '/delete')"></span>
                 </span>
             </td>
         </tr>
