@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.bands.dto.BandDetailsDto;
+import uk.co.bbr.services.bands.types.ResultSetCategory;
 import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.events.dao.ContestEventDao;
 import uk.co.bbr.services.events.dao.ContestEventTestPieceDao;
@@ -31,7 +32,10 @@ import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Temporal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -112,16 +116,27 @@ public class ContestResultServiceImpl implements ContestResultService {
     }
 
     @Override
-    public BandDetailsDto findResultsForBand(BandDao band) {
+    public BandDetailsDto findResultsForBand(BandDao band, ResultSetCategory category) {
         List<BandResultSqlDto> bandResultsSql = ContestResultSql.selectBandResults(this.entityManager, band.getId());
         List<ResultPieceSqlDto> resultPiecesSql = ContestResultSql.selectBandResultPerformances(this.entityManager, band.getId());
         List<EventPieceSqlDto> eventPiecesSql = ContestResultSql.selectBandEventPieces(this.entityManager, band.getId());
 
+        LocalDate today = LocalDate.now();
+        LocalDate tomorrow = today.plus(1, ChronoUnit.DAYS);
+
         // combine
         List<ContestResultDao> bandResults = new ArrayList<>();
         List<ContestResultDao> whitResults = new ArrayList<>();
+        List<ContestResultDao> allResults = new ArrayList<>();
 
         for (BandResultSqlDto eachSqlResult : bandResultsSql) {
+            if (ResultSetCategory.FUTURE.equals(category) && eachSqlResult.getEventDate().isBefore(tomorrow)) {
+                continue;
+            }
+            if (ResultSetCategory.PAST.equals(category) && eachSqlResult.getEventDate().isAfter(today)) {
+                continue;
+            }
+
             ContestResultDao eachResult = new ContestResultDao();
             eachResult.setContestEvent(new ContestEventDao());
             eachResult.getContestEvent().setContest(new ContestDao());
@@ -173,13 +188,15 @@ public class ContestResultServiceImpl implements ContestResultService {
 
             if (eachResult.getContestEvent().getContest().getName().contains("Whit Friday")) {
                 whitResults.add(eachResult);
+                allResults.add(eachResult);
             } else {
                 bandResults.add(eachResult);
+                allResults.add(eachResult);
             }
         }
 
 
-        return new BandDetailsDto(bandResults, whitResults);
+        return new BandDetailsDto(bandResults, whitResults, allResults);
     }
 
     private void populateResultPieces(List<ResultPieceSqlDto> resultPieces, ContestResultDao result) {
@@ -221,8 +238,8 @@ public class ContestResultServiceImpl implements ContestResultService {
     }
 
     @Override
-    public BandDetailsDto findResultsForBand(BandDao band, ContestDao contest) {
-        BandDetailsDto returnData = this.findResultsForBand(band);
+    public BandDetailsDto findResultsForBand(BandDao band, ResultSetCategory category, ContestDao contest) {
+        BandDetailsDto returnData = this.findResultsForBand(band, category);
 
         List<ContestResultDao> filteredList = new ArrayList<>();
         for (ContestResultDao eachResult : returnData.getBandResults()) {
@@ -231,12 +248,12 @@ public class ContestResultServiceImpl implements ContestResultService {
             }
         }
 
-        return new BandDetailsDto(filteredList, returnData.getBandWhitResults());
+        return new BandDetailsDto(filteredList, returnData.getBandWhitResults(), returnData.getBandAllResults());
     }
 
     @Override
-    public BandDetailsDto findResultsForBand(BandDao band, ContestGroupDao contestGroup) {
-        BandDetailsDto returnData = this.findResultsForBand(band);
+    public BandDetailsDto findResultsForBand(BandDao band, ResultSetCategory category, ContestGroupDao contestGroup) {
+        BandDetailsDto returnData = this.findResultsForBand(band, category);
 
         List<ContestResultDao> filteredList = new ArrayList<>();
         for (ContestResultDao eachResult : returnData.getBandResults()) {
@@ -245,15 +262,15 @@ public class ContestResultServiceImpl implements ContestResultService {
             }
         }
 
-        return new BandDetailsDto(filteredList, returnData.getBandWhitResults());
+        return new BandDetailsDto(filteredList, returnData.getBandWhitResults(), returnData.getBandAllResults());
     }
 
     @Override
-    public BandDetailsDto findResultsForBand(BandDao band, ContestTagDao contestTag) {
+    public BandDetailsDto findResultsForBand(BandDao band, ResultSetCategory category, ContestTagDao contestTag) {
         List<ContestDao> contests = this.contestTagRepository.fetchContestsForTag(contestTag.getSlug());
         List<ContestGroupDao> groups = this.contestTagRepository.fetchGroupsForTag(contestTag.getSlug());
 
-        BandDetailsDto returnData = this.findResultsForBand(band);
+        BandDetailsDto returnData = this.findResultsForBand(band, category);
 
         List<ContestResultDao> filteredList = new ArrayList<>();
         for (ContestResultDao eachResult : returnData.getBandResults()) {
@@ -271,7 +288,7 @@ public class ContestResultServiceImpl implements ContestResultService {
             }
         }
 
-        return new BandDetailsDto(filteredList, returnData.getBandWhitResults());
+        return new BandDetailsDto(filteredList, returnData.getBandWhitResults(), returnData.getBandAllResults());
     }
 
     @Override

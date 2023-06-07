@@ -211,6 +211,17 @@ public class ContestResultDao extends AbstractDao implements NameTools {
         }
     }
 
+    public String getPositionDisplay() {
+        String returnValue;
+        switch(this.resultPositionType) {
+            case WITHDRAWN -> returnValue = "W";
+            case DISQUALIFIED -> returnValue = "D";
+            case UNKNOWN -> returnValue = "";
+            default -> returnValue = Integer.toString(this.position);
+        }
+        return returnValue;
+    }
+
     public void setDraw(Integer draw) {
         this.draw = draw;
     }

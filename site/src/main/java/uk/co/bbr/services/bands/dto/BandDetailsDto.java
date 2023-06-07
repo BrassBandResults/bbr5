@@ -11,4 +11,5 @@ import java.util.List;
 public class BandDetailsDto {
     private final List<ContestResultDao> bandResults;
     private final List<ContestResultDao> bandWhitResults;
+    private final List<ContestResultDao> bandAllResults;
 }

@@ -8,6 +8,7 @@ import uk.co.bbr.services.bands.dto.BandCompareDto;
 import uk.co.bbr.services.bands.dto.BandListDto;
 import uk.co.bbr.services.bands.sql.dto.BandWinnersSqlDto;
 import uk.co.bbr.services.bands.types.RehearsalDay;
+import uk.co.bbr.services.bands.types.ResultSetCategory;
 import uk.co.bbr.services.people.dto.ConductorCompareDto;
 import uk.co.bbr.services.regions.dao.RegionDao;
 

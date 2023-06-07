@@ -14,6 +14,7 @@ import uk.co.bbr.services.bands.dao.BandAliasDao;
 import uk.co.bbr.services.bands.dao.BandRehearsalDayDao;
 import uk.co.bbr.services.bands.dao.BandRelationshipDao;
 import uk.co.bbr.services.bands.dto.BandDetailsDto;
+import uk.co.bbr.services.bands.types.ResultSetCategory;
 import uk.co.bbr.services.groups.ContestGroupService;
 import uk.co.bbr.services.events.ContestResultService;
 import uk.co.bbr.services.contests.ContestService;
@@ -47,7 +48,7 @@ public class BandController {
             throw NotFoundException.bandNotFoundBySlug(bandSlug);
         }
 
-        BandDetailsDto bandResults = this.contestResultService.findResultsForBand(band.get());
+        BandDetailsDto bandResults = this.contestResultService.findResultsForBand(band.get(), ResultSetCategory.ALL);
 
         if (bandResults.getBandResults().isEmpty() && !bandResults.getBandWhitResults().isEmpty()) {
             return "redirect:/bands/{bandSlug}/whits";
@@ -74,7 +75,7 @@ public class BandController {
             throw NotFoundException.bandNotFoundBySlug(bandSlug);
         }
 
-        BandDetailsDto bandResults = this.contestResultService.findResultsForBand(band.get());
+        BandDetailsDto bandResults = this.contestResultService.findResultsForBand(band.get(), ResultSetCategory.ALL);
 
         if (bandResults.getBandWhitResults().isEmpty()) {
             return "redirect:/bands/{bandSlug}";
@@ -108,7 +109,7 @@ public class BandController {
 
         List<BandRehearsalDayDao> bandRehearsalDays = this.bandRehearsalsService.fetchRehearsalDays(band.get());
         List<BandAliasDao> previousNames = this.bandAliasService.findVisibleAliases(band.get());
-        BandDetailsDto bandResults = this.contestResultService.findResultsForBand(band.get(), contest.get());
+        BandDetailsDto bandResults = this.contestResultService.findResultsForBand(band.get(), ResultSetCategory.ALL, contest.get());
         List<BandRelationshipDao> bandRelationships = this.bandRelationshipService.fetchRelationshipsForBand(band.get());
 
         model.addAttribute("Band", band.get());
@@ -135,7 +136,7 @@ public class BandController {
 
         List<BandRehearsalDayDao> bandRehearsalDays = this.bandRehearsalsService.fetchRehearsalDays(band.get());
         List<BandAliasDao> previousNames = this.bandAliasService.findVisibleAliases(band.get());
-        BandDetailsDto bandResults = this.contestResultService.findResultsForBand(band.get(), group.get());
+        BandDetailsDto bandResults = this.contestResultService.findResultsForBand(band.get(), ResultSetCategory.ALL, group.get());
         List<BandRelationshipDao> bandRelationships = this.bandRelationshipService.fetchRelationshipsForBand(band.get());
 
         model.addAttribute("Band", band.get());
@@ -162,7 +163,7 @@ public class BandController {
 
         List<BandRehearsalDayDao> bandRehearsalDays = this.bandRehearsalsService.fetchRehearsalDays(band.get());
         List<BandAliasDao> previousNames = this.bandAliasService.findVisibleAliases(band.get());
-        BandDetailsDto bandResults = this.contestResultService.findResultsForBand(band.get(), tag.get());
+        BandDetailsDto bandResults = this.contestResultService.findResultsForBand(band.get(), ResultSetCategory.ALL, tag.get());
         List<BandRelationshipDao> bandRelationships = this.bandRelationshipService.fetchRelationshipsForBand(band.get());
 
         model.addAttribute("Band", band.get());
