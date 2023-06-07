@@ -10,21 +10,19 @@ import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.bands.dto.BandDetailsDto;
 import uk.co.bbr.services.bands.types.ResultSetCategory;
 import uk.co.bbr.services.events.ContestResultService;
-import uk.co.bbr.services.events.dao.ContestResultDao;
 import uk.co.bbr.services.framework.NotFoundException;
 
-import java.util.List;
 import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
-public class EmbedController {
+public class LegacyEmbedController {
 
     private final BandService bandService;
     private final ContestResultService contestResultService;
 
-    @GetMapping("/embed/band/{bandSlug:[\\-a-z\\d]{2,}}/results-{type:all|non-whit|whit}/2023")
-    public String embedBandResults(Model model, @PathVariable("bandSlug") String bandSlug, @PathVariable("type") String type) {
+    @GetMapping("/embed/band/{bandSlug:[\\-a-z\\d]{2,}}/results/{version:\\d}")
+    public String embedBandResults(Model model, @PathVariable("bandSlug") String bandSlug, @PathVariable("version") int version) {
         Optional<BandDao> band = this.bandService.fetchBySlug(bandSlug);
         if (band.isEmpty()) {
             throw NotFoundException.bandNotFoundBySlug(bandSlug);
@@ -32,18 +30,11 @@ public class EmbedController {
 
         BandDetailsDto bandResults = this.contestResultService.findResultsForBand(band.get(), ResultSetCategory.PAST);
 
-        List<ContestResultDao> resultsToReturn;
-        switch (type) {
-            case "non-whit" -> resultsToReturn = bandResults.getBandNonWhitResults();
-            case "whit" -> resultsToReturn = bandResults.getBandWhitResults();
-            default -> resultsToReturn = bandResults.getBandAllResults();
-        }
-
         model.addAttribute("Band", band.get());
         model.addAttribute("BandSlugUnderscores", band.get().getSlug().replace("-", "_"));
-        model.addAttribute("Results", resultsToReturn);
+        model.addAttribute("Results", bandResults.getBandAllResults());
 
-        return "embed/band-2023";
+        return "embed/band-legacy";
     }
 }
 

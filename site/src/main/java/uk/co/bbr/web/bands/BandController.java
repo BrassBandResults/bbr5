@@ -50,7 +50,7 @@ public class BandController {
 
         BandDetailsDto bandResults = this.contestResultService.findResultsForBand(band.get(), ResultSetCategory.ALL);
 
-        if (bandResults.getBandResults().isEmpty() && !bandResults.getBandWhitResults().isEmpty()) {
+        if (bandResults.getBandNonWhitResults().isEmpty() && !bandResults.getBandWhitResults().isEmpty()) {
             return "redirect:/bands/{bandSlug}/whits";
         }
 
@@ -60,8 +60,8 @@ public class BandController {
 
         model.addAttribute("Band", band.get());
         model.addAttribute("PreviousNames", previousNames);
-        model.addAttribute("BandResults", bandResults.getBandResults());
-        model.addAttribute("ResultsCount", bandResults.getBandResults().size());
+        model.addAttribute("BandResults", bandResults.getBandNonWhitResults());
+        model.addAttribute("ResultsCount", bandResults.getBandNonWhitResults().size());
         model.addAttribute("WhitCount", bandResults.getBandWhitResults().size());
         model.addAttribute("BandRehearsalDays", bandRehearsalDays);
         model.addAttribute("BandRelationships", bandRelationships);
@@ -88,7 +88,7 @@ public class BandController {
         model.addAttribute("Band", band.get());
         model.addAttribute("PreviousNames", previousNames);
         model.addAttribute("BandResults", bandResults.getBandWhitResults());
-        model.addAttribute("ResultsCount", bandResults.getBandResults().size());
+        model.addAttribute("ResultsCount", bandResults.getBandNonWhitResults().size());
         model.addAttribute("WhitCount", bandResults.getBandWhitResults().size());
         model.addAttribute("BandRehearsalDays", bandRehearsalDays);
         model.addAttribute("BandRelationships", bandRelationships);
@@ -114,8 +114,8 @@ public class BandController {
 
         model.addAttribute("Band", band.get());
         model.addAttribute("PreviousNames", previousNames);
-        model.addAttribute("BandResults", bandResults.getBandResults());
-        model.addAttribute("ResultsCount", bandResults.getBandResults().size());
+        model.addAttribute("BandResults", bandResults.getBandNonWhitResults());
+        model.addAttribute("ResultsCount", bandResults.getBandNonWhitResults().size());
         model.addAttribute("WhitCount", bandResults.getBandWhitResults().size());
         model.addAttribute("BandRehearsalDays", bandRehearsalDays);
         model.addAttribute("BandRelationships", bandRelationships);
@@ -141,8 +141,8 @@ public class BandController {
 
         model.addAttribute("Band", band.get());
         model.addAttribute("PreviousNames", previousNames);
-        model.addAttribute("BandResults", bandResults.getBandResults());
-        model.addAttribute("ResultsCount", bandResults.getBandResults().size());
+        model.addAttribute("BandResults", bandResults.getBandNonWhitResults());
+        model.addAttribute("ResultsCount", bandResults.getBandNonWhitResults().size());
         model.addAttribute("WhitCount", bandResults.getBandWhitResults().size());
         model.addAttribute("BandRehearsalDays", bandRehearsalDays);
         model.addAttribute("BandRelationships", bandRelationships);
@@ -168,8 +168,8 @@ public class BandController {
 
         model.addAttribute("Band", band.get());
         model.addAttribute("PreviousNames", previousNames);
-        model.addAttribute("BandResults", bandResults.getBandResults());
-        model.addAttribute("ResultsCount", bandResults.getBandResults().size());
+        model.addAttribute("BandResults", bandResults.getBandNonWhitResults());
+        model.addAttribute("ResultsCount", bandResults.getBandNonWhitResults().size());
         model.addAttribute("WhitCount", bandResults.getBandWhitResults().size());
         model.addAttribute("BandRehearsalDays", bandRehearsalDays);
         model.addAttribute("BandRelationships", bandRelationships);

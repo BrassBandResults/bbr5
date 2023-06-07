@@ -9,7 +9,7 @@ import java.util.List;
 @Getter
 @RequiredArgsConstructor
 public class BandDetailsDto {
-    private final List<ContestResultDao> bandResults;
+    private final List<ContestResultDao> bandNonWhitResults;
     private final List<ContestResultDao> bandWhitResults;
     private final List<ContestResultDao> bandAllResults;
 }

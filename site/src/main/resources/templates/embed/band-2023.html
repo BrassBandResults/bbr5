@@ -1,0 +1,13 @@
+bbr_embed_[[${BandSlugUnderscores}]]_jsonp([
+  <span th:each="result, stat: ${Results}" th:remove="tag">
+  	{
+		"contest_slug" : "[[${result.contestEvent.contest.slug}]]",
+		"date" : "[[${result.contestEvent.eventDate}]]",
+		"date_display" : "[[${result.contestEvent.eventDateDisplay}]]",
+		"contest_name" : "[[${result.contestEvent.contest.name}]]",
+		"result" : "[[${result.positionDisplay}]]",
+		"conductor_slug" : "[[${result.conductor.slug}]]",
+		"conductor_name" : "[[${result.conductor.name}]]"
+	}<span th:if="${stat.last == false}" th:remove="tag">,</span>
+  </span>
+]);

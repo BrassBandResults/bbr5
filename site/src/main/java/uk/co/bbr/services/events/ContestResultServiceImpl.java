@@ -32,7 +32,6 @@ import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Temporal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -242,7 +241,7 @@ public class ContestResultServiceImpl implements ContestResultService {
         BandDetailsDto returnData = this.findResultsForBand(band, category);
 
         List<ContestResultDao> filteredList = new ArrayList<>();
-        for (ContestResultDao eachResult : returnData.getBandResults()) {
+        for (ContestResultDao eachResult : returnData.getBandNonWhitResults()) {
             if (eachResult.getContestEvent().getContest().getSlug().equals(contest.getSlug())) {
                 filteredList.add(eachResult);
             }
@@ -256,7 +255,7 @@ public class ContestResultServiceImpl implements ContestResultService {
         BandDetailsDto returnData = this.findResultsForBand(band, category);
 
         List<ContestResultDao> filteredList = new ArrayList<>();
-        for (ContestResultDao eachResult : returnData.getBandResults()) {
+        for (ContestResultDao eachResult : returnData.getBandNonWhitResults()) {
             if (eachResult.getContestEvent().getContest().getContestGroup() != null && eachResult.getContestEvent().getContest().getContestGroup().getSlug().equals(contestGroup.getSlug())) {
                 filteredList.add(eachResult);
             }
@@ -273,7 +272,7 @@ public class ContestResultServiceImpl implements ContestResultService {
         BandDetailsDto returnData = this.findResultsForBand(band, category);
 
         List<ContestResultDao> filteredList = new ArrayList<>();
-        for (ContestResultDao eachResult : returnData.getBandResults()) {
+        for (ContestResultDao eachResult : returnData.getBandNonWhitResults()) {
             for (ContestDao tagContest : contests) {
                 if (eachResult.getContestEvent().getContest().getSlug().equals(tagContest.getSlug())) {
                     filteredList.add(eachResult);

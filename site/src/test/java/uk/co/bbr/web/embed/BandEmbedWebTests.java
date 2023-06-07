@@ -97,7 +97,7 @@ class BandEmbedWebTests implements LoginMixin {
     }
 
     @Test
-    void testFetchEmbedVersion1WorksSuccessfully() throws JsonProcessingException {
+    void testFetchEmbedLegacyJsonPWorksSuccessfully() throws JsonProcessingException {
         String bandSlug = "rothwell-temperance-band";
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/embed/band/" + bandSlug + "/results/1", String.class);
         assertNotNull(response);
@@ -153,11 +153,173 @@ class BandEmbedWebTests implements LoginMixin {
 
 
     @Test
-    void testFetchEmbedVersion1WithInvalidSlugFailsAsExpected() {
+    void testFetchEmbedLegacyWithInvalidSlugFailsAsExpected() {
         HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/embed/band/not-a-real-band/results/1", String.class));
         assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
     }
 
+    @Test
+    void testFetchEmbedBandAllResultsJsonPWorksSuccessfully() throws JsonProcessingException {
+        String bandSlug = "rothwell-temperance-band";
+        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/embed/band/" + bandSlug + "/results-all/2023", String.class);
+        assertNotNull(response);
 
+        assertTrue(response.startsWith("bbr_embed_" + bandSlug.replace("-", "_") + "_jsonp(["));
+        assertTrue(response.endsWith("]);"));
+
+        StringBuilder json = new StringBuilder();
+        for (String eachLine : response.split("\n")) {
+            if (eachLine.startsWith("bbr_embed")) {
+                json.append("[\n");
+                continue;
+            }
+            if (eachLine.startsWith("]);")) {
+                json.append("]\n");
+                continue;
+            }
+
+            json.append(eachLine);
+            json.append("\n");
+        }
+
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode root = mapper.readTree(json.toString());
+
+        Iterator<JsonNode> children = root.elements();
+
+        JsonNode yorkshire2012Result = children.next();
+        assertEquals("yorkshire-area", yorkshire2012Result.get("contest_slug").asText());
+        assertEquals("2012-03-03", yorkshire2012Result.get("date").asText());
+        assertEquals("03 Mar 2012", yorkshire2012Result.get("date_display").asText());
+        assertEquals("Yorkshire Area", yorkshire2012Result.get("contest_name").asText());
+        assertEquals("1", yorkshire2012Result.get("result").asText());
+        assertEquals("david-roberts", yorkshire2012Result.get("conductor_slug").asText());
+        assertEquals("David Roberts", yorkshire2012Result.get("conductor_name").asText());
+        JsonNode yorkshire2011Result = children.next();
+        assertEquals("yorkshire-area", yorkshire2011Result.get("contest_slug").asText());
+        assertEquals("2011-03-02", yorkshire2011Result.get("date").asText());
+        assertEquals("02 Mar 2011", yorkshire2011Result.get("date_display").asText());
+        assertEquals("Yorkshire Area", yorkshire2011Result.get("contest_name").asText());
+        assertEquals("4", yorkshire2011Result.get("result").asText());
+        assertEquals("john-roberts", yorkshire2011Result.get("conductor_slug").asText());
+        assertEquals("John Roberts", yorkshire2011Result.get("conductor_name").asText());
+        JsonNode whit2000Result = children.next();
+        assertEquals("broadoak-whit-friday", whit2000Result.get("contest_slug").asText());
+        assertEquals("2000-06-16", whit2000Result.get("date").asText());
+        assertEquals("16 Jun 2000", whit2000Result.get("date_display").asText());
+        assertEquals("Broadoak (Whit Friday)", whit2000Result.get("contest_name").asText());
+        assertEquals("4", whit2000Result.get("result").asText());
+        assertEquals("duncan-beckley", whit2000Result.get("conductor_slug").asText());
+        assertEquals("Duncan Beckley", whit2000Result.get("conductor_name").asText());
+    }
+
+
+    @Test
+    void testFetchEmbedBandAllResultsJsonPWithInvalidSlugFailsAsExpected() {
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/embed/band/not-a-real-band/results-all/2023", String.class));
+        assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
+    }
+
+    @Test
+    void testFetchEmbedBandWhitResultsJsonPWorksSuccessfully() throws JsonProcessingException {
+        String bandSlug = "rothwell-temperance-band";
+        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/embed/band/" + bandSlug + "/results-whit/2023", String.class);
+        assertNotNull(response);
+
+        assertTrue(response.startsWith("bbr_embed_" + bandSlug.replace("-", "_") + "_jsonp(["));
+        assertTrue(response.endsWith("]);"));
+
+        StringBuilder json = new StringBuilder();
+        for (String eachLine : response.split("\n")) {
+            if (eachLine.startsWith("bbr_embed")) {
+                json.append("[\n");
+                continue;
+            }
+            if (eachLine.startsWith("]);")) {
+                json.append("]\n");
+                continue;
+            }
+
+            json.append(eachLine);
+            json.append("\n");
+        }
+
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode root = mapper.readTree(json.toString());
+
+        Iterator<JsonNode> children = root.elements();
+
+        JsonNode whit2000Result = children.next();
+        assertEquals("broadoak-whit-friday", whit2000Result.get("contest_slug").asText());
+        assertEquals("2000-06-16", whit2000Result.get("date").asText());
+        assertEquals("16 Jun 2000", whit2000Result.get("date_display").asText());
+        assertEquals("Broadoak (Whit Friday)", whit2000Result.get("contest_name").asText());
+        assertEquals("4", whit2000Result.get("result").asText());
+        assertEquals("duncan-beckley", whit2000Result.get("conductor_slug").asText());
+        assertEquals("Duncan Beckley", whit2000Result.get("conductor_name").asText());
+    }
+
+
+    @Test
+    void testFetchEmbedBandWhitResultsJsonPWithInvalidSlugFailsAsExpected() {
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/embed/band/not-a-real-band/results-whit/2023", String.class));
+        assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
+    }
+
+
+    @Test
+    void testFetchEmbedBandNonWhitResultsJsonPWorksSuccessfully() throws JsonProcessingException {
+        String bandSlug = "rothwell-temperance-band";
+        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/embed/band/" + bandSlug + "/results-non-whit/2023", String.class);
+        assertNotNull(response);
+
+        assertTrue(response.startsWith("bbr_embed_" + bandSlug.replace("-", "_") + "_jsonp(["));
+        assertTrue(response.endsWith("]);"));
+
+        StringBuilder json = new StringBuilder();
+        for (String eachLine : response.split("\n")) {
+            if (eachLine.startsWith("bbr_embed")) {
+                json.append("[\n");
+                continue;
+            }
+            if (eachLine.startsWith("]);")) {
+                json.append("]\n");
+                continue;
+            }
+
+            json.append(eachLine);
+            json.append("\n");
+        }
+
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode root = mapper.readTree(json.toString());
+
+        Iterator<JsonNode> children = root.elements();
+
+        JsonNode yorkshire2012Result = children.next();
+        assertEquals("yorkshire-area", yorkshire2012Result.get("contest_slug").asText());
+        assertEquals("2012-03-03", yorkshire2012Result.get("date").asText());
+        assertEquals("03 Mar 2012", yorkshire2012Result.get("date_display").asText());
+        assertEquals("Yorkshire Area", yorkshire2012Result.get("contest_name").asText());
+        assertEquals("1", yorkshire2012Result.get("result").asText());
+        assertEquals("david-roberts", yorkshire2012Result.get("conductor_slug").asText());
+        assertEquals("David Roberts", yorkshire2012Result.get("conductor_name").asText());
+        JsonNode yorkshire2011Result = children.next();
+        assertEquals("yorkshire-area", yorkshire2011Result.get("contest_slug").asText());
+        assertEquals("2011-03-02", yorkshire2011Result.get("date").asText());
+        assertEquals("02 Mar 2011", yorkshire2011Result.get("date_display").asText());
+        assertEquals("Yorkshire Area", yorkshire2011Result.get("contest_name").asText());
+        assertEquals("4", yorkshire2011Result.get("result").asText());
+        assertEquals("john-roberts", yorkshire2011Result.get("conductor_slug").asText());
+        assertEquals("John Roberts", yorkshire2011Result.get("conductor_name").asText());
+
+    }
+
+
+    @Test
+    void testFetchEmbedBandNonWhitResultsJsonPWithInvalidSlugFailsAsExpected() {
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/embed/band/not-a-real-band/results-non-whit/2023", String.class));
+        assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
+    }
 
 }
