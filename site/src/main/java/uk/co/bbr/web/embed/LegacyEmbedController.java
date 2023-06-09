@@ -31,10 +31,10 @@ public class LegacyEmbedController {
         BandDetailsDto bandResults = this.contestResultService.findResultsForBand(band.get(), ResultSetCategory.PAST);
 
         model.addAttribute("Band", band.get());
-        model.addAttribute("BandSlugUnderscores", band.get().getSlug().replace("-", "_"));
+        model.addAttribute("BandSlugUnderscores", band.get().getSlugWithUnderscores());
         model.addAttribute("Results", bandResults.getBandAllResults());
 
-        return "embed/band-legacy";
+        return "embed/band-legacy-jsonp";
     }
 }
 

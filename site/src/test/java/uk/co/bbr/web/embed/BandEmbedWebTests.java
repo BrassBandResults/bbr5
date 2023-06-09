@@ -164,7 +164,7 @@ class BandEmbedWebTests implements LoginMixin {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/embed/band/" + bandSlug + "/results-all/2023", String.class);
         assertNotNull(response);
 
-        assertTrue(response.startsWith("bbr_embed_" + bandSlug.replace("-", "_") + "_jsonp(["));
+        assertTrue(response.startsWith("bbr_embed_" + bandSlug.replace("-", "_") + "_all_jsonp(["));
         assertTrue(response.endsWith("]);"));
 
         StringBuilder json = new StringBuilder();
@@ -226,7 +226,7 @@ class BandEmbedWebTests implements LoginMixin {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/embed/band/" + bandSlug + "/results-whit/2023", String.class);
         assertNotNull(response);
 
-        assertTrue(response.startsWith("bbr_embed_" + bandSlug.replace("-", "_") + "_jsonp(["));
+        assertTrue(response.startsWith("bbr_embed_" + bandSlug.replace("-", "_") + "_whit_jsonp(["));
         assertTrue(response.endsWith("]);"));
 
         StringBuilder json = new StringBuilder();
@@ -270,10 +270,10 @@ class BandEmbedWebTests implements LoginMixin {
     @Test
     void testFetchEmbedBandNonWhitResultsJsonPWorksSuccessfully() throws JsonProcessingException {
         String bandSlug = "rothwell-temperance-band";
-        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/embed/band/" + bandSlug + "/results-non-whit/2023", String.class);
+        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/embed/band/" + bandSlug + "/results-non_whit/2023", String.class);
         assertNotNull(response);
 
-        assertTrue(response.startsWith("bbr_embed_" + bandSlug.replace("-", "_") + "_jsonp(["));
+        assertTrue(response.startsWith("bbr_embed_" + bandSlug.replace("-", "_") + "_non_whit_jsonp(["));
         assertTrue(response.endsWith("]);"));
 
         StringBuilder json = new StringBuilder();
@@ -318,7 +318,7 @@ class BandEmbedWebTests implements LoginMixin {
 
     @Test
     void testFetchEmbedBandNonWhitResultsJsonPWithInvalidSlugFailsAsExpected() {
-        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/embed/band/not-a-real-band/results-non-whit/2023", String.class));
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/embed/band/not-a-real-band/results-non_whit/2023", String.class));
         assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
     }
 

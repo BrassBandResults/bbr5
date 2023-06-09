@@ -1,4 +1,4 @@
-bbr_embed_[[${BandSlugUnderscores}]]_jsonp([
+bbr_embed_[[${BandSlugUnderscores}]]_[[${Type}]]_jsonp([
   <span th:each="result, stat: ${Results}" th:remove="tag">
   	{
 		"contest_slug" : "[[${result.contestEvent.contest.slug}]]",

@@ -196,4 +196,8 @@ public class BandDao extends AbstractDao implements NameTools {
         person.put("context", this.getDateRange() != null ? this.getDateRange() : "");
         return person;
     }
+
+    public String getSlugWithUnderscores() {
+        return this.slug.replace("-", "_");
+    }
 }

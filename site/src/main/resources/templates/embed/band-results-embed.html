@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+<head>
+    <title th:text="@{#{page.band-embed.title(${Band.name})} + ' - Brass Band Results'}">Rothwell Temperance Band - Embed Results - Brass Band Results</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h2>
+        <span th:text="#{page.band-embed.headerPrefix}">Embed results for</span>
+        <a th:href="${'/bands/' + Band.slug}" th:text="${Band.name}">Rothwell Temperance Band</a>
+    </h2>
+    <p th:text="#{page.band-embed.header-1}">This page allows you to embed live results from Brass Band Results for this band onto the band's own website. This will render as a html table with four columns: date, contest, results position and conductor. Conductor and Date will be links which, when clicked, will call through to full results on this website.</p>
+
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a th:class="'nav-link ' + ${Type == 'embed.type.all' ? 'active' : ''}" th:href="${'/bands/' + Band.slug + '/embed'}" th:text="#{embed.type.all}">All Results</a>
+        </li>
+        <li class="nav-item">
+            <a th:class="'nav-link ' + ${Type == 'embed.type.non-whit' ? 'active' : ''}" th:href="${'/bands/' + Band.slug + '/embed/non_whit'}" th:text="#{embed.type.non-whit}">No Whit Friday</a>
+        </li>
+        <li class="nav-item">
+            <a th:class="'nav-link ' + ${Type == 'embed.type.whit' ? 'active' : ''}" th:href="${'/bands/' + Band.slug + '/embed/whit'}" th:text="#{embed.type.whit}">Whit Friday Only</a>
+        </li>
+    </ul>
+    <br/>
+
+    <div class="tab-content">
+        <p th:text="#{page.band-embed.header-2}">To use this, copy and paste the following code into the HTML of a page on your website:</p>
+        <textarea cols="140" rows="30" th:text="${EmbedCode}"></textarea>
+        <p th:text="#{page.band-embed.footer-1}">Any problems, let us know in the feedback box below.</p>
+    </div>
+</div>
+</body>
+</html>
