@@ -16,4 +16,17 @@ public interface BbrUserRepository  extends JpaRepository<BbrUserDao, Long> {
 
     @Query("SELECT u FROM BbrUserDao u WHERE u.points > 49 ORDER BY u.points DESC")
     List<BbrUserDao> fetchTopUsers();
+
+    @Query("SELECT u FROM BbrUserDao u ORDER BY u.usercode")
+    List<BbrUserDao> fetchAllUsers();
+
+    @Query("SELECT u FROM BbrUserDao u WHERE u.accessLevel = 'P' ORDER BY u.usercode")
+    List<BbrUserDao> fetchAllProUsers();
+
+    @Query("SELECT u FROM BbrUserDao u WHERE u.accessLevel = 'S' ORDER BY u.usercode")
+    List<BbrUserDao> fetchAllSuperusers();
+
+    @Query("SELECT u FROM BbrUserDao u WHERE u.accessLevel = 'A' ORDER BY u.usercode")
+    List<BbrUserDao> fetchAllAdminUsers();
+
 }

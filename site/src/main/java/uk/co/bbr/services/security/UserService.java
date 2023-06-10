@@ -10,4 +10,12 @@ public interface UserService {
     Optional<BbrUserDao> fetchUserByUsercode(String usercode);
 
     List<BbrUserDao> fetchTopUsers();
+
+    List<BbrUserDao> findAll();
+
+    List<BbrUserDao> findAllPro();
+
+    List<BbrUserDao> findAllSuperuser();
+
+    List<BbrUserDao> findAllAdmin();
 }

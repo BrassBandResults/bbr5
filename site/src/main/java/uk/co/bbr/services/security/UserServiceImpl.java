@@ -29,4 +29,24 @@ public class UserServiceImpl implements UserService {
     public List<BbrUserDao> fetchTopUsers() {
         return this.bbrUserRepository.fetchTopUsers();
     }
+
+    @Override
+    public List<BbrUserDao> findAll() {
+        return this.bbrUserRepository.fetchAllUsers();
+    }
+
+    @Override
+    public List<BbrUserDao> findAllPro() {
+        return this.bbrUserRepository.fetchAllProUsers();
+    }
+
+    @Override
+    public List<BbrUserDao> findAllSuperuser() {
+        return this.bbrUserRepository.fetchAllSuperusers();
+    }
+
+    @Override
+    public List<BbrUserDao> findAllAdmin() {
+        return this.bbrUserRepository.fetchAllAdminUsers();
+    }
 }

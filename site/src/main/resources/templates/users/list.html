@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+<head>
+    <title th:text="@{#{page.user-list.title} + ' - Brass Band Results'}">User List - Brass Band Results</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h2 th:text="#{page.user-list.title}">Users</h2>
+
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a th:class="'nav-link ' + ${Type == 'all' ? 'active' : ''}" href="/user-list/" th:text="#{page.user-list.tab.all}">All Users</a>
+        </li>
+        <li class="nav-item">
+            <a th:class="'nav-link ' + ${Type == 'pro' ? 'active' : ''}" href="/user-list/pro" th:text="#{page.user-list.tab.pro}">Pro Users</a>
+        </li>
+        <li class="nav-item">
+            <a th:class="'nav-link ' + ${Type == 'superuser' ? 'active' : ''}" href="/user-list/superuser" th:text="#{page.user-list.tab.superuser}">Superusers</a>
+        </li>
+        <li class="nav-item">
+            <a th:class="'nav-link ' + ${Type == 'admin' ? 'active' : ''}" href="/user-list/admin" th:text="#{page.user-list.tab.admins}">Admins</a>
+        </li>
+    </ul>
+    <br/>
+
+    <div class="tab-content">
+        <p><span th:text="${Users.size}">123</span> Users</p>
+        <table id="users" class="table table-hover sortable">
+            <thead>
+            <tr>
+                <th th:text="#{page.column-header.user}">User</th>
+                <th th:text="#{page.column-header.points}">Points</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user: ${Users}">
+                <td><span th:replace="links/user-link.html :: userLink(${user})">Lokry</span></td>
+                <td th:text="${user.points}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>
