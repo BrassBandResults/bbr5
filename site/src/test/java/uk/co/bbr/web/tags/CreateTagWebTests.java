@@ -17,9 +17,9 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.services.tags.ContestTagService;
 import uk.co.bbr.services.tags.dao.ContestTagDao;
-import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.web.LoginMixin;
 import uk.co.bbr.web.security.filter.SecurityFilter;
 import uk.co.bbr.web.security.support.TestUser;
@@ -28,7 +28,6 @@ import java.util.Objects;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -46,10 +45,8 @@ class CreateTagWebTests implements LoginMixin {
 
     @BeforeAll
     void setupUser() {
-        this.securityService.createUser(TestUser.TEST_PRO.getUsername(), TestUser.TEST_PRO.getPassword(), TestUser.TEST_PRO.getEmail());
-        this.securityService.makeUserPro(TestUser.TEST_PRO.getUsername());
-
-        loginTestUserByWeb(TestUser.TEST_PRO, this.restTemplate, this.csrfTokenRepository, this.port);
+        this.securityService.createUser(TestUser.TEST_MEMBER.getUsername(), TestUser.TEST_MEMBER.getPassword(), TestUser.TEST_MEMBER.getEmail());
+        loginTestUserByWeb(TestUser.TEST_MEMBER, this.restTemplate, this.csrfTokenRepository, this.port);
     }
 
     @Test
@@ -87,8 +84,6 @@ class CreateTagWebTests implements LoginMixin {
         assertEquals(HttpStatus.FOUND, response.getStatusCode());
 
         assertTrue(Objects.requireNonNull(response.getHeaders().get("Location")).get(0).endsWith("/tags/ALL"));
-
-        logoutTestUserByWeb(this.restTemplate, this.port);
 
         Optional<ContestTagDao> contestTagAfter = this.contestTagService.fetchBySlug("test-tag");
         assertTrue(contestTagAfter.isPresent());

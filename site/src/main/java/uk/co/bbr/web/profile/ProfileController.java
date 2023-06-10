@@ -10,6 +10,7 @@ import uk.co.bbr.services.payments.PaymentsService;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.services.security.UserService;
 import uk.co.bbr.services.security.dao.BbrUserDao;
+import uk.co.bbr.web.security.annotations.IsBbrMember;
 
 import java.util.Optional;
 
@@ -17,21 +18,19 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ProfileController {
 
-    private final UserService userService;
+    private final SecurityService securityService;
     private final PaymentsService paymentsService;
 
-    @GetMapping("/users/{usercode:[a-zA-Z0-9@_\\-.]+}")
-    public String profileHome(Model model, @PathVariable("usercode") String usercode) {
+    @IsBbrMember
+    @GetMapping("/profile")
+    public String profileHome(Model model) {
 
-        Optional<BbrUserDao> user = this.userService.fetchUserByUsercode(usercode);
-        if (user.isEmpty()) {
-            throw NotFoundException.userNotFoundByUsercode(usercode);
-        }
+        BbrUserDao user = this.securityService.getCurrentUser();
 
         String stripeBuyButtonId = this.paymentsService.fetchStripeBuyButtonId();
         String stripePublishableKey = this.paymentsService.fetchStripePublishableKey();
 
-        model.addAttribute("User", user.get());
+        model.addAttribute("User", user);
         model.addAttribute("StripeBuyButtonId", stripeBuyButtonId);
         model.addAttribute("StripePublishableKey", stripePublishableKey);
 

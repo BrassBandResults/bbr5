@@ -32,12 +32,12 @@ class RegionListProWebTests implements LoginMixin {
     void setupUser() {
         this.securityService.createUser(TestUser.TEST_PRO.getUsername(), TestUser.TEST_PRO.getPassword(), TestUser.TEST_PRO.getEmail());
         this.securityService.makeUserPro(TestUser.TEST_PRO.getUsername());
+
+        loginTestUserByWeb(TestUser.TEST_PRO, this.restTemplate, this.csrfTokenRepository, this.port);
     }
 
     @Test
     void testGetReturnListAsProUserWorksSuccessfully() {
-        loginTestUserByWeb(TestUser.TEST_PRO, this.restTemplate, this.csrfTokenRepository, this.port);
-
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/regions", String.class);
         assertNotNull(response);
         assertTrue(response.contains("<h2>Regions</h2>"));

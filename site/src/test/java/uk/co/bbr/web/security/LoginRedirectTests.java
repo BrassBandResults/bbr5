@@ -1,4 +1,4 @@
-package uk.co.bbr.web.profile;
+package uk.co.bbr.web.security;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -6,22 +6,29 @@ import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.client.RestTemplate;
 import uk.co.bbr.services.security.JwtService;
 import uk.co.bbr.services.security.SecurityService;
+import uk.co.bbr.services.security.ex.AuthenticationFailedException;
 import uk.co.bbr.web.LoginMixin;
 import uk.co.bbr.web.security.support.TestUser;
 
+import java.util.Objects;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ActiveProfiles("test")
-@SpringBootTest(properties = { "spring.config.name=profile-web-tests-admin-h2", "spring.datasource.url=jdbc:h2:mem:profile-web-tests-admin-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE", "spring.jpa.database-platform=org.hibernate.dialect.SQLServerDialect"},
+@SpringBootTest(properties = { "spring.config.name=login-redirect-web-tests-admin-h2", "spring.datasource.url=jdbc:h2:mem:login-redirect-web-tests-admin-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE", "spring.jpa.database-platform=org.hibernate.dialect.SQLServerDialect"},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class ProfileWebTests implements LoginMixin {
+class LoginRedirectTests implements LoginMixin {
 
     @Autowired private SecurityService securityService;
     @Autowired private JwtService jwtService;
@@ -32,17 +39,15 @@ class ProfileWebTests implements LoginMixin {
     @BeforeAll
     void setupUser() {
         this.securityService.createUser(TestUser.TEST_MEMBER.getUsername(), TestUser.TEST_MEMBER.getPassword(), TestUser.TEST_MEMBER.getEmail());
-        loginTestUserByWeb(TestUser.TEST_MEMBER, this.restTemplate, this.csrfTokenRepository, this.port);
     }
-
     @Test
-    void testGetProfileHomeWorksSuccessfully() {
-        // act
+    void testRedirectAfterLoginWorksAsExpected() {
+        // request profile page - not logged in, so returns 404 but should remember location
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/profile", String.class);
 
-        // assert
-        assertNotNull(response);
-        assertTrue(response.contains("<title>test_user_member - User Profile - Brass Band Results</title>"));
+        ResponseEntity<String> loginResponse = httpLoginTestUserByWeb(TestUser.TEST_MEMBER, restTemplate, csrfTokenRepository, port);
+        assertEquals(HttpStatus.FOUND, loginResponse.getStatusCode());
+        assertTrue(Objects.requireNonNull(loginResponse.getHeaders().get("Location")).get(0).endsWith("/profile"));
     }
-}
 
+}

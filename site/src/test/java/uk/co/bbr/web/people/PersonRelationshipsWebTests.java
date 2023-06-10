@@ -54,6 +54,11 @@ class PersonRelationshipsWebTests implements LoginMixin {
     @LocalServerPort private int port;
 
     @BeforeAll
+    void setupUser() {
+        loginTestUserByWeb(TestUser.TEST_MEMBER, this.restTemplate, this.csrfTokenRepository, this.port);
+    }
+
+    @BeforeAll
     void setupPersons() throws AuthenticationFailedException {
         loginTestUser(this.securityService, this.jwtService, TestUser.TEST_MEMBER);
 
@@ -144,8 +149,6 @@ class PersonRelationshipsWebTests implements LoginMixin {
         List<PersonRelationshipDao> fetchedRelationships1 = this.personRelationshipService.fetchRelationshipsForPerson(newRelationshipPerson.get());
         assertEquals(0, fetchedRelationships1.size());
 
-        loginTestUserByWeb(TestUser.TEST_MEMBER, this.restTemplate, this.csrfTokenRepository, this.port);
-
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
@@ -176,14 +179,10 @@ class PersonRelationshipsWebTests implements LoginMixin {
         assertEquals("david-roberts", fetchedRelationships2.get(0).getLeftPerson().getSlug());
         assertEquals("new-relationship-person", fetchedRelationships2.get(0).getRightPerson().getSlug());
         assertEquals("relationship.person.is-father-of", fetchedRelationships2.get(0).getRelationship().getName());
-
-        logoutTestUserByWeb(this.restTemplate, this.port);
     }
 
     @Test
     void testCreateRelationshipWithInvalidPersonSlugFailsAsExpected() {
-        loginTestUserByWeb(TestUser.TEST_MEMBER, this.restTemplate, this.csrfTokenRepository, this.port);
-
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
@@ -205,8 +204,6 @@ class PersonRelationshipsWebTests implements LoginMixin {
 
     @Test
     void testCreateRelationshipWithInvalidRightPersonSlugFailsAsExpected() {
-        loginTestUserByWeb(TestUser.TEST_MEMBER, this.restTemplate, this.csrfTokenRepository, this.port);
-
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
@@ -228,8 +225,6 @@ class PersonRelationshipsWebTests implements LoginMixin {
 
     @Test
     void testCreateRelationshipWithInvalidRelationshipIdFailsAsExpected() {
-        loginTestUserByWeb(TestUser.TEST_MEMBER, this.restTemplate, this.csrfTokenRepository, this.port);
-
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 

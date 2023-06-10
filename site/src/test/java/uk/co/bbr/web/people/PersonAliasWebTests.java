@@ -56,10 +56,7 @@ class PersonAliasWebTests implements LoginMixin {
 
     @BeforeAll
     void setupUser() {
-        this.securityService.createUser(TestUser.TEST_PRO.getUsername(), TestUser.TEST_PRO.getPassword(), TestUser.TEST_PRO.getEmail());
-        this.securityService.makeUserPro(TestUser.TEST_PRO.getUsername());
-
-        loginTestUserByWeb(TestUser.TEST_PRO, this.restTemplate, this.csrfTokenRepository, this.port);
+        loginTestUserByWeb(TestUser.TEST_MEMBER, this.restTemplate, this.csrfTokenRepository, this.port);
     }
 
     @BeforeAll
@@ -228,8 +225,6 @@ class PersonAliasWebTests implements LoginMixin {
         assertEquals("Dave Roberts", fetchedAliases1.get(0).getOldName());
         assertEquals("Davey Roberts", fetchedAliases1.get(1).getOldName());
 
-        loginTestUserByWeb(TestUser.TEST_MEMBER, this.restTemplate, this.csrfTokenRepository, this.port);
-
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
@@ -258,14 +253,10 @@ class PersonAliasWebTests implements LoginMixin {
         assertEquals("Davey Roberts", fetchedAliases2.get(1).getOldName());
         assertEquals("Robertsy", fetchedAliases2.get(2).getOldName());
         assertFalse(fetchedAliases2.get(2).isHidden());
-
-        logoutTestUserByWeb(this.restTemplate, this.port);
     }
 
     @Test
     void testCreateAliasWithInvalidBandSlugFailsAsExpected() {
-        loginTestUserByWeb(TestUser.TEST_MEMBER, this.restTemplate, this.csrfTokenRepository, this.port);
-
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 

@@ -5,6 +5,7 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import uk.co.bbr.services.framework.NotFoundException;
+import uk.co.bbr.services.framework.ValidationException;
 import uk.co.bbr.services.security.dao.BbrUserDao;
 import uk.co.bbr.services.security.repo.BbrUserRepository;
 import uk.co.bbr.services.security.dao.UserRole;
@@ -84,6 +85,10 @@ public class SecurityServiceImpl implements SecurityService {
 
     @Override
     public BbrUserDao createUser(String usercode, String plaintextPassword, String email) {
+        if (this.userExists(usercode)) {
+            throw new ValidationException("User with usercode " + usercode + " already exists");
+        }
+
         String salt = PasswordTools.createSalt();
         String passwordVersion = PasswordTools.latestVersion();
 

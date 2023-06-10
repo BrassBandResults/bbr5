@@ -74,4 +74,18 @@ public class UserController {
         model.addAttribute("Type", "admin");
         return "users/list";
     }
+
+    @GetMapping("/users/{usercode:[a-zA-Z0-9@_\\-.]+}")
+    public String publicUserPage(Model model, @PathVariable("usercode") String usercode) {
+
+        Optional<BbrUserDao> user = this.userService.fetchUserByUsercode(usercode);
+        if (user.isEmpty()) {
+            throw NotFoundException.userNotFoundByUsercode(usercode);
+        }
+
+        model.addAttribute("User", user.get());
+
+        return "users/public-user";
+    }
+
 }

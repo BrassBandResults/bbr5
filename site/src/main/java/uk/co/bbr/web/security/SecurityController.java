@@ -39,13 +39,14 @@ public class SecurityController {
 
     @PostMapping(SecurityFilter.URL_SIGN_IN)
     public String signInPost(Model model, HttpServletRequest request, HttpServletResponse response, @RequestParam("username") String username, @RequestParam("password") String plaintextPassword) {
+        String nextUrl = "/";
         try {
             BbrUserDao user = this.securityService.authenticate(username, plaintextPassword);
 
             Cookie securityCookie = buildLoginCookie(user);
             response.addCookie(securityCookie);
 
-            String nextUrl = (String)request.getSession().getAttribute(SessionKeys.LOGIN_NEXT_PAGE);
+            nextUrl = (String)request.getSession().getAttribute(SessionKeys.LOGIN_NEXT_PAGE);
 
             if (nextUrl != null && nextUrl.trim().length() > 0 && nextUrl.startsWith("/")) {
                 return "redirect:" + nextUrl;
@@ -54,7 +55,8 @@ public class SecurityController {
             return "redirect:/";
         } catch (AuthenticationFailedException e) {
             model.addAttribute("LoginError", e.getMessage());
-            return this.signInGet(model, request);
+            model.addAttribute("Next", nextUrl);
+            return "security/sign-in";
         }
     }
 

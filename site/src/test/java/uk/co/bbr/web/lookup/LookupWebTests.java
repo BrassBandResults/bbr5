@@ -57,10 +57,7 @@ class LookupWebTests implements LoginMixin {
 
     @BeforeAll
     void setupUser() {
-        this.securityService.createUser(TestUser.TEST_PRO.getUsername(), TestUser.TEST_PRO.getPassword(), TestUser.TEST_PRO.getEmail());
-        this.securityService.makeUserPro(TestUser.TEST_PRO.getUsername());
-
-        loginTestUserByWeb(TestUser.TEST_PRO, this.restTemplate, this.csrfTokenRepository, this.port);
+        loginTestUserByWeb(TestUser.TEST_MEMBER, this.restTemplate, this.csrfTokenRepository, this.port);
     }
 
     @BeforeAll

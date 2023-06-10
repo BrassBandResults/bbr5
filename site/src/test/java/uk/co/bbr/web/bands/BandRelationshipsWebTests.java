@@ -57,6 +57,11 @@ class BandRelationshipsWebTests implements LoginMixin {
     @LocalServerPort private int port;
 
     @BeforeAll
+    void setupUser() {
+        loginTestUserByWeb(TestUser.TEST_MEMBER, this.restTemplate, this.csrfTokenRepository, this.port);
+    }
+
+    @BeforeAll
     void setupBands() throws AuthenticationFailedException {
         loginTestUser(this.securityService, this.jwtService, TestUser.TEST_MEMBER);
 
@@ -146,8 +151,6 @@ class BandRelationshipsWebTests implements LoginMixin {
         List<BandRelationshipDao> fetchedRelationships1 = this.bandRelationshipService.fetchRelationshipsForBand(newRelationshipBand.get());
         assertEquals(0, fetchedRelationships1.size());
 
-        loginTestUserByWeb(TestUser.TEST_MEMBER, this.restTemplate, this.csrfTokenRepository, this.port);
-
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
@@ -181,8 +184,6 @@ class BandRelationshipsWebTests implements LoginMixin {
         assertEquals("New Relationship Band Changed", fetchedRelationships2.get(0).getRightBandName());
         assertEquals("new-relationship-band", fetchedRelationships2.get(0).getRightBand().getSlug());
         assertEquals("relationship.band.is-parent-of", fetchedRelationships2.get(0).getRelationship().getName());
-
-        logoutTestUserByWeb(this.restTemplate, this.port);
     }
 
     @Test
@@ -191,8 +192,6 @@ class BandRelationshipsWebTests implements LoginMixin {
         Optional<BandDao> newRelationshipBand = this.bandService.fetchBySlug("new-relationship-band-2");
         List<BandRelationshipDao> fetchedRelationships1 = this.bandRelationshipService.fetchRelationshipsForBand(newRelationshipBand.get());
         assertEquals(0, fetchedRelationships1.size());
-
-        loginTestUserByWeb(TestUser.TEST_MEMBER, this.restTemplate, this.csrfTokenRepository, this.port);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
@@ -226,14 +225,10 @@ class BandRelationshipsWebTests implements LoginMixin {
         assertEquals("New Relationship Band 2", fetchedRelationships2.get(0).getRightBandName());
         assertEquals("new-relationship-band-2", fetchedRelationships2.get(0).getRightBand().getSlug());
         assertEquals("relationship.band.is-parent-of", fetchedRelationships2.get(0).getRelationship().getName());
-
-        logoutTestUserByWeb(this.restTemplate, this.port);
     }
 
     @Test
     void testCreateRelationshipWithInvalidBandSlugFailsAsExpected() {
-        loginTestUserByWeb(TestUser.TEST_MEMBER, this.restTemplate, this.csrfTokenRepository, this.port);
-
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
@@ -256,8 +251,6 @@ class BandRelationshipsWebTests implements LoginMixin {
 
     @Test
     void testCreateRelationshipWithInvalidRightBandSlugFailsAsExpected() {
-        loginTestUserByWeb(TestUser.TEST_MEMBER, this.restTemplate, this.csrfTokenRepository, this.port);
-
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
@@ -280,8 +273,6 @@ class BandRelationshipsWebTests implements LoginMixin {
 
     @Test
     void testCreateRelationshipWithInvalidRelationshipIdFailsAsExpected() {
-        loginTestUserByWeb(TestUser.TEST_MEMBER, this.restTemplate, this.csrfTokenRepository, this.port);
-
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 

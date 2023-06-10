@@ -60,10 +60,7 @@ class BandAliasWebTests implements LoginMixin {
 
     @BeforeAll
     void setupUser() {
-        this.securityService.createUser(TestUser.TEST_PRO.getUsername(), TestUser.TEST_PRO.getPassword(), TestUser.TEST_PRO.getEmail());
-        this.securityService.makeUserPro(TestUser.TEST_PRO.getUsername());
-
-        loginTestUserByWeb(TestUser.TEST_PRO, this.restTemplate, this.csrfTokenRepository, this.port);
+        loginTestUserByWeb(TestUser.TEST_MEMBER, this.restTemplate, this.csrfTokenRepository, this.port);
     }
 
     @BeforeAll
@@ -237,8 +234,6 @@ class BandAliasWebTests implements LoginMixin {
         assertEquals("Hidden", fetchedAliases1.get(0).getOldName());
         assertEquals("Visible", fetchedAliases1.get(1).getOldName());
 
-        loginTestUserByWeb(TestUser.TEST_MEMBER, this.restTemplate, this.csrfTokenRepository, this.port);
-
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
@@ -267,14 +262,10 @@ class BandAliasWebTests implements LoginMixin {
         assertEquals("New Alias", fetchedAliases2.get(1).getOldName());
         assertFalse(fetchedAliases2.get(1).isHidden());
         assertEquals("Visible", fetchedAliases2.get(2).getOldName());
-
-        logoutTestUserByWeb(this.restTemplate, this.port);
     }
 
     @Test
     void testCreateAliasWithInvalidBandSlugFailsAsExpected() {
-        loginTestUserByWeb(TestUser.TEST_MEMBER, this.restTemplate, this.csrfTokenRepository, this.port);
-
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
@@ -339,8 +330,6 @@ class BandAliasWebTests implements LoginMixin {
         assertEquals("Hidden", fetchedAliases1.get(0).getOldName());
         assertEquals("Visible", fetchedAliases1.get(1).getOldName());
 
-        loginTestUserByWeb(TestUser.TEST_MEMBER, this.restTemplate, this.csrfTokenRepository, this.port);
-
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
@@ -374,8 +363,6 @@ class BandAliasWebTests implements LoginMixin {
         assertEquals(LocalDate.of(2000, 1, 1), fetchedAliases2.get(1).getStartDate());
         assertEquals(LocalDate.of(2010, 2, 2), fetchedAliases2.get(1).getEndDate());
         assertEquals("Visible", fetchedAliases2.get(1).getOldName());
-
-        logoutTestUserByWeb(this.restTemplate, this.port);
     }
 
     @Test
@@ -390,8 +377,6 @@ class BandAliasWebTests implements LoginMixin {
 
         assertEquals("Hidden", fetchedAliases1.get(0).getOldName());
         assertEquals("Visible", fetchedAliases1.get(1).getOldName());
-
-        loginTestUserByWeb(TestUser.TEST_MEMBER, this.restTemplate, this.csrfTokenRepository, this.port);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
@@ -415,8 +400,6 @@ class BandAliasWebTests implements LoginMixin {
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertTrue(response.getBody().contains("Edit Visible Dates"));
         assertTrue(response.getBody().contains("The end date must be after the start date, if both are specified"));
-
-        logoutTestUserByWeb(this.restTemplate, this.port);
     }
 
     @Test
@@ -426,8 +409,6 @@ class BandAliasWebTests implements LoginMixin {
         List<BandAliasDao> fetchedAliases1 = this.bandAliasService.findAllAliases(band.get());
         assertEquals(2, fetchedAliases1.size());
         long aliasId = fetchedAliases1.get(0).getId();
-
-        loginTestUserByWeb(TestUser.TEST_MEMBER, this.restTemplate, this.csrfTokenRepository, this.port);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
@@ -455,8 +436,6 @@ class BandAliasWebTests implements LoginMixin {
         List<BandAliasDao> fetchedAliases1 = this.bandAliasService.findAllAliases(band.get());
         assertEquals(2, fetchedAliases1.size());
         long aliasId = fetchedAliases1.get(0).getId();
-
-        loginTestUserByWeb(TestUser.TEST_MEMBER, this.restTemplate, this.csrfTokenRepository, this.port);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
@@ -489,8 +468,6 @@ class BandAliasWebTests implements LoginMixin {
 
         assertEquals("Hidden", fetchedAliases1.get(0).getOldName());
         assertEquals("Visible", fetchedAliases1.get(1).getOldName());
-
-        loginTestUserByWeb(TestUser.TEST_MEMBER, this.restTemplate, this.csrfTokenRepository, this.port);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
@@ -525,8 +502,6 @@ class BandAliasWebTests implements LoginMixin {
         assertEquals(LocalDate.of(2010, 3, 22), fetchedAliases2.get(1).getStartDate());
         assertNull(fetchedAliases2.get(1).getEndDate());
         assertEquals("Visible", fetchedAliases2.get(1).getOldName());
-
-        logoutTestUserByWeb(this.restTemplate, this.port);
     }
 
     @Test
@@ -541,8 +516,6 @@ class BandAliasWebTests implements LoginMixin {
 
         assertEquals("Hidden", fetchedAliases1.get(0).getOldName());
         assertEquals("Visible", fetchedAliases1.get(1).getOldName());
-
-        loginTestUserByWeb(TestUser.TEST_MEMBER, this.restTemplate, this.csrfTokenRepository, this.port);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
@@ -577,8 +550,6 @@ class BandAliasWebTests implements LoginMixin {
         assertNull(fetchedAliases2.get(1).getStartDate());
         assertEquals(LocalDate.of(2000, 10, 10), fetchedAliases2.get(1).getEndDate());
         assertEquals("Visible", fetchedAliases2.get(1).getOldName());
-
-        logoutTestUserByWeb(this.restTemplate, this.port);
     }
 }
 

@@ -154,6 +154,7 @@ public abstract class PageSets {
         pageList.add("/tags/Y");
         pageList.add("/tags/ALL");
         pageList.add("/tags/yorkshire");
+        pageList.add("/users/owner");
         pageList.add("/venues");
         pageList.add("/venues/S");
         pageList.add("/venues/0");
@@ -180,6 +181,7 @@ public abstract class PageSets {
         pageList.add("/lookup/band/data.json?s=abc");
         pageList.add("/lookup/contest/data.json?s=abc");
         pageList.add("/lookup/person/data.json?s=abc");
+        pageList.add("/profile");
         pageList.add("/people/david-roberts/edit");
         pageList.add("/people/david-roberts/edit-aliases");
         pageList.add("/people/david-roberts/edit-aliases/1/hide");

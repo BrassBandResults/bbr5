@@ -26,6 +26,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public interface LoginMixin {
 
     default void loginTestUserByWeb(TestUser testUser, RestTemplate restTemplate, CsrfTokenRepository csrfTokenRepository, int port) {
+        this.logoutTestUserByWeb(restTemplate, port);
+
         ResponseEntity<String> response = httpLoginTestUserByWeb(testUser, restTemplate, csrfTokenRepository, port);
 
         assertEquals(302, response.getStatusCode().value());
@@ -40,6 +42,7 @@ public interface LoginMixin {
     }
 
     default void loginTestUser(SecurityService securityService, JwtService jwtService, TestUser testUser) throws AuthenticationFailedException {
+        this.logoutTestUser();
         if (!securityService.userExists(testUser.getUsername())) {
             securityService.createUser(testUser.getUsername(), testUser.getPassword(), testUser.getEmail());
         }

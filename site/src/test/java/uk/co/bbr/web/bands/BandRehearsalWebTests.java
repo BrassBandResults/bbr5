@@ -61,6 +61,11 @@ class BandRehearsalWebTests implements LoginMixin {
     @LocalServerPort private int port;
 
     @BeforeAll
+    void setupUser() {
+        loginTestUserByWeb(TestUser.TEST_MEMBER, this.restTemplate, this.csrfTokenRepository, this.port);
+    }
+
+    @BeforeAll
     void setupBands() throws AuthenticationFailedException {
         loginTestUser(this.securityService, this.jwtService, TestUser.TEST_MEMBER);
         this.bandService.create("Rothwell Temperance Band");
@@ -131,8 +136,6 @@ class BandRehearsalWebTests implements LoginMixin {
         List<BandRehearsalDayDao> fetchedRehearsals1 = this.bandRehearsalsService.fetchRehearsalDays(band.get());
         assertEquals(0, fetchedRehearsals1.size());
 
-        loginTestUserByWeb(TestUser.TEST_MEMBER, this.restTemplate, this.csrfTokenRepository, this.port);
-
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
@@ -177,16 +180,10 @@ class BandRehearsalWebTests implements LoginMixin {
         assertEquals("Thu", fetchedRehearsals2.get(4).getDetails());
         assertEquals("Fri", fetchedRehearsals2.get(5).getDetails());
         assertEquals("Sat", fetchedRehearsals2.get(6).getDetails());
-
-
-        logoutTestUserByWeb(this.restTemplate, this.port);
     }
 
     @Test
     void testEditRehearsalsPostWithInvalidSlugFails() {
-
-        loginTestUserByWeb(TestUser.TEST_MEMBER, this.restTemplate, this.csrfTokenRepository, this.port);
-
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
@@ -209,8 +206,6 @@ class BandRehearsalWebTests implements LoginMixin {
 
         HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.postForEntity("http://localhost:" + port + "/bands/invalid-band/edit-rehearsals", request, String.class));
         assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
-
-        logoutTestUserByWeb(this.restTemplate, this.port);
     }
 }
 

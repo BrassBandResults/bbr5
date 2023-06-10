@@ -55,6 +55,11 @@ class PersonEditWebTests implements LoginMixin {
     @LocalServerPort private int port;
 
     @BeforeAll
+    void setupUser() {
+        loginTestUserByWeb(TestUser.TEST_MEMBER, this.restTemplate, this.csrfTokenRepository, this.port);
+    }
+
+    @BeforeAll
     void setupBands() throws AuthenticationFailedException {
         loginTestUser(this.securityService, this.jwtService, TestUser.TEST_MEMBER);
 
@@ -66,9 +71,6 @@ class PersonEditWebTests implements LoginMixin {
 
     @Test
     void testEditBandPageWorksSuccessfullyForLoggedInUser() {
-        // arrange
-        loginTestUserByWeb(TestUser.TEST_MEMBER, this.restTemplate, this.csrfTokenRepository, this.port);
-
         // act
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/people/duncan-beckley/edit", String.class);
 
@@ -78,28 +80,19 @@ class PersonEditWebTests implements LoginMixin {
         assertTrue(response.contains("<form action = \"/people/duncan-beckley/edit\""));
         assertTrue(response.contains("value=\"Duncan\""));
         assertTrue(response.contains("value=\"Beckley\""));
-
-        logoutTestUserByWeb(this.restTemplate, this.port);
     }
 
     @Test
     void testEditBandPageGetFailsWhereSlugIsNotFound() {
-        // arrange
-        loginTestUserByWeb(TestUser.TEST_MEMBER, this.restTemplate, this.csrfTokenRepository, this.port);
-
         // act
         HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/people/david-roberts/edit", String.class));
 
         // assert
         assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
-        logoutTestUserByWeb(this.restTemplate, this.port);
     }
 
     @Test
     void testSubmitEditBandPageSucceedsForLoggedInMember() {
-        // arrange
-        loginTestUserByWeb(TestUser.TEST_MEMBER, this.restTemplate, this.csrfTokenRepository, this.port);
-
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
@@ -128,8 +121,6 @@ class PersonEditWebTests implements LoginMixin {
 
         assertTrue(Objects.requireNonNull(response.getHeaders().get("Location")).get(0).endsWith("/people/robert-childs"));
 
-        logoutTestUserByWeb(this.restTemplate, this.port);
-
         Optional<PersonDao> fetchedPerson = this.personService.fetchBySlug("robert-childs");
         assertTrue(fetchedPerson.isPresent());
         assertEquals("Beckley 4", fetchedPerson.get().getSurname());
@@ -143,9 +134,6 @@ class PersonEditWebTests implements LoginMixin {
 
     @Test
     void testSubmitEditBandPageFailsBecauseNameIsRequired() {
-        // arrange
-        loginTestUserByWeb(TestUser.TEST_MEMBER, this.restTemplate, this.csrfTokenRepository, this.port);
-
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
@@ -171,15 +159,11 @@ class PersonEditWebTests implements LoginMixin {
 
         assertNotNull(response.getBody());
         assertTrue(response.getBody().contains("A person must have a surname"));
-
-        logoutTestUserByWeb(this.restTemplate, this.port);
     }
 
     @Test
     void testSubmitEditBandPageFailsWhereDatesAreNonsenseIsRequired() {
         // arrange
-        loginTestUserByWeb(TestUser.TEST_MEMBER, this.restTemplate, this.csrfTokenRepository, this.port);
-
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
@@ -206,15 +190,11 @@ class PersonEditWebTests implements LoginMixin {
 
         assertNotNull(response.getBody());
         assertTrue(response.getBody().contains("The end date must be after the start date, if both are specified"));
-
-        logoutTestUserByWeb(this.restTemplate, this.port);
     }
 
     @Test
     void testSubmitEditBandPageFailsWhereSlugIsNotFound() {
         // arrange
-        loginTestUserByWeb(TestUser.TEST_MEMBER, this.restTemplate, this.csrfTokenRepository, this.port);
-
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
@@ -232,8 +212,6 @@ class PersonEditWebTests implements LoginMixin {
 
         // assert
         assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
-
-        logoutTestUserByWeb(this.restTemplate, this.port);
     }
 
 }
