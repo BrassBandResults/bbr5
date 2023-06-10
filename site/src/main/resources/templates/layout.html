@@ -11,8 +11,18 @@
     <link rel="stylesheet" th:href="@{${STATIC_HOST} + '/css2023/bbr.css'}"/>
     <link rel="stylesheet" th:href="@{${STATIC_HOST} + '/css2023/bbr-print.css'}" media="print"/>
 </head>
-<body>
 
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-F7QD4QD99Z"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-F7QD4QD99Z');
+</script>
+
+<body>
 <nav class="navbar navbar-expand-xl bg-light navbar-light">
     <div class="container-fluid">
         <a class="navbar-brand text-primary" href="/">Brass Band Results</a>
