@@ -110,4 +110,11 @@ class HomeWebTests implements LoginMixin {
         assertNotNull(response);
         assertTrue(response.contains("<title>Privacy Policy - Brass Band Results</title>"));
     }
+
+    @Test
+    void testGetLeaderboardPageReturnsSuccessfully() {
+        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/leaderboard", String.class);
+        assertNotNull(response);
+        assertTrue(response.contains("<title>Leaderboard - Brass Band Results</title>"));
+    }
 }

@@ -11,6 +11,7 @@ import uk.co.bbr.services.pieces.PieceService;
 import uk.co.bbr.services.pieces.dao.PieceAliasDao;
 import uk.co.bbr.services.pieces.dao.PieceDao;
 import uk.co.bbr.services.security.SecurityService;
+import uk.co.bbr.services.security.UserService;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,6 +23,7 @@ public class PieceMigrationServiceImpl extends AbstractMigrationServiceImpl impl
 
 
     private final PieceService pieceService;
+    private final UserService userService;
     private final SecurityService securityService;
     private final PersonService personService;
 
@@ -54,8 +56,8 @@ public class PieceMigrationServiceImpl extends AbstractMigrationServiceImpl impl
             newPiece.setArranger(arranger.get());
         }
 
-        newPiece.setCreatedBy(this.createUser(this.notBlank(rootNode, "owner"), this.securityService));
-        newPiece.setUpdatedBy(this.createUser(this.notBlank(rootNode, "lastChangedBy"), this.securityService));
+        newPiece.setCreatedBy(this.createUser(this.notBlank(rootNode, "owner"), this.securityService, this.userService));
+        newPiece.setUpdatedBy(this.createUser(this.notBlank(rootNode, "lastChangedBy"), this.securityService, this.userService));
 
         newPiece.setCreated(this.notBlankDateTime(rootNode, "created"));
         newPiece.setUpdated(this.notBlankDateTime(rootNode, "lastModified"));
@@ -74,8 +76,8 @@ public class PieceMigrationServiceImpl extends AbstractMigrationServiceImpl impl
 
     private void createPreviousName(PieceDao piece, Element oldNameElement) {
         PieceAliasDao previousName = new PieceAliasDao();
-        previousName.setCreatedBy(this.createUser(this.notBlank(oldNameElement, "owner"), this.securityService));
-        previousName.setUpdatedBy(this.createUser(this.notBlank(oldNameElement, "lastChangedBy"), this.securityService));
+        previousName.setCreatedBy(this.createUser(this.notBlank(oldNameElement, "owner"), this.securityService, this.userService));
+        previousName.setUpdatedBy(this.createUser(this.notBlank(oldNameElement, "lastChangedBy"), this.securityService, this.userService));
         previousName.setCreated(this.notBlankDateTime(oldNameElement, "created"));
         previousName.setUpdated(this.notBlankDateTime(oldNameElement, "lastModified"));
         previousName.setName(oldNameElement.getChildText("name"));

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.payments.PaymentsService;
 import uk.co.bbr.services.security.SecurityService;
+import uk.co.bbr.services.security.UserService;
 import uk.co.bbr.services.security.dao.BbrUserDao;
 
 import java.util.Optional;
@@ -16,13 +17,13 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ProfileController {
 
-    private final SecurityService securityService;
+    private final UserService userService;
     private final PaymentsService paymentsService;
 
     @GetMapping("/users/{usercode:[a-zA-Z0-9@_\\-.]+}")
     public String profileHome(Model model, @PathVariable("usercode") String usercode) {
 
-        Optional<BbrUserDao> user = this.securityService.fetchUserByUsercode(usercode);
+        Optional<BbrUserDao> user = this.userService.fetchUserByUsercode(usercode);
         if (user.isEmpty()) {
             throw NotFoundException.userNotFoundByUsercode(usercode);
         }

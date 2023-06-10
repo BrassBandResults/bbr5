@@ -20,6 +20,7 @@ import uk.co.bbr.services.regions.dao.RegionDao;
 import uk.co.bbr.services.sections.SectionService;
 import uk.co.bbr.services.sections.dao.SectionDao;
 import uk.co.bbr.services.security.SecurityService;
+import uk.co.bbr.services.security.UserService;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -37,6 +38,7 @@ public class BandMigrationServiceImpl extends AbstractMigrationServiceImpl imple
     private final BandAliasService bandAliasService;
     private final SectionService sectionService;
     private final SecurityService securityService;
+    private final UserService userService;
 
     @Override
     public void migrate(Element rootNode, int pass) {
@@ -80,9 +82,9 @@ public class BandMigrationServiceImpl extends AbstractMigrationServiceImpl imple
                 newBand.setSection(section.get());
             }
 
-            newBand.setMapper(this.createUser(this.notBlank(rootNode, "mapper"), this.securityService));
-            newBand.setCreatedBy(this.createUser(this.notBlank(rootNode, "owner"), this.securityService));
-            newBand.setUpdatedBy(this.createUser(this.notBlank(rootNode, "lastChangedBy"), this.securityService));
+            newBand.setMapper(this.createUser(this.notBlank(rootNode, "mapper"), this.securityService, this.userService));
+            newBand.setCreatedBy(this.createUser(this.notBlank(rootNode, "owner"), this.securityService, this.userService));
+            newBand.setUpdatedBy(this.createUser(this.notBlank(rootNode, "lastChangedBy"), this.securityService, this.userService));
 
             newBand.setCreated(this.notBlankDateTime(rootNode, "created"));
             newBand.setUpdated(this.notBlankDateTime(rootNode, "lastModified"));
@@ -119,8 +121,8 @@ public class BandMigrationServiceImpl extends AbstractMigrationServiceImpl imple
         Optional<BandAliasDao> existingAlias = this.bandAliasService.aliasExists(band, name);
         if (existingAlias.isEmpty()) {
             BandAliasDao previousName = new BandAliasDao();
-            previousName.setCreatedBy(this.createUser(this.notBlank(oldNameElement, "owner"), this.securityService));
-            previousName.setUpdatedBy(this.createUser(this.notBlank(oldNameElement, "lastChangedBy"), this.securityService));
+            previousName.setCreatedBy(this.createUser(this.notBlank(oldNameElement, "owner"), this.securityService, this.userService));
+            previousName.setUpdatedBy(this.createUser(this.notBlank(oldNameElement, "lastChangedBy"), this.securityService, this.userService));
             previousName.setCreated(this.notBlankDateTime(oldNameElement, "created"));
             previousName.setUpdated(this.notBlankDateTime(oldNameElement, "lastModified"));
             previousName.setOldName(name);
@@ -169,8 +171,8 @@ public class BandMigrationServiceImpl extends AbstractMigrationServiceImpl imple
         relationship.setLeftBandName(toBandName);
         relationship.setRelationship(this.bandRelationshipService.fetchIsParentOfRelationship());
 
-        relationship.setCreatedBy(this.createUser("tjs", this.securityService));
-        relationship.setUpdatedBy(this.createUser("tjs", this.securityService));
+        relationship.setCreatedBy(this.createUser("tjs", this.securityService, this.userService));
+        relationship.setUpdatedBy(this.createUser("tjs", this.securityService, this.userService));
         relationship.setCreated(LocalDateTime.now());
         relationship.setUpdated(LocalDateTime.now());
 

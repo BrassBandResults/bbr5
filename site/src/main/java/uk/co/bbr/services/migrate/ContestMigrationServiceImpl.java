@@ -5,6 +5,7 @@ import org.jdom2.Element;
 import org.springframework.stereotype.Service;
 import uk.co.bbr.services.groups.ContestGroupService;
 import uk.co.bbr.services.contests.ContestService;
+import uk.co.bbr.services.security.UserService;
 import uk.co.bbr.services.tags.ContestTagService;
 import uk.co.bbr.services.contests.ContestTypeService;
 import uk.co.bbr.services.contests.dao.ContestAliasDao;
@@ -30,6 +31,7 @@ import java.util.Optional;
 public class ContestMigrationServiceImpl extends AbstractMigrationServiceImpl implements ContestMigrationService, SlugTools {
 
     private final SecurityService securityService;
+    private final UserService userService;
     private final ContestGroupService contestGroupService;
     private final ContestTagService contestTagService;
     private final ContestService contestService;
@@ -105,8 +107,8 @@ public class ContestMigrationServiceImpl extends AbstractMigrationServiceImpl im
             this.createTag(contest, eachTag);
         }
 
-        contest.setCreatedBy(this.createUser(this.notBlank(rootNode, "owner"), this.securityService));
-        contest.setUpdatedBy(this.createUser(this.notBlank(rootNode, "lastChangedBy"), this.securityService));
+        contest.setCreatedBy(this.createUser(this.notBlank(rootNode, "owner"), this.securityService, this.userService));
+        contest.setUpdatedBy(this.createUser(this.notBlank(rootNode, "lastChangedBy"), this.securityService, this.userService));
 
         contest.setCreated(this.notBlankDateTime(rootNode, "created"));
         contest.setUpdated(this.notBlankDateTime(rootNode, "lastModified"));
@@ -131,8 +133,8 @@ public class ContestMigrationServiceImpl extends AbstractMigrationServiceImpl im
         if (existingAlias.isEmpty()) {
 
             ContestAliasDao previousName = new ContestAliasDao();
-            previousName.setCreatedBy(this.createUser(this.notBlank(oldNameElement, "owner"), this.securityService));
-            previousName.setUpdatedBy(this.createUser(this.notBlank(oldNameElement, "lastChangedBy"), this.securityService));
+            previousName.setCreatedBy(this.createUser(this.notBlank(oldNameElement, "owner"), this.securityService, this.userService));
+            previousName.setUpdatedBy(this.createUser(this.notBlank(oldNameElement, "lastChangedBy"), this.securityService, this.userService));
             previousName.setCreated(this.notBlankDateTime(oldNameElement, "created"));
             previousName.setUpdated(this.notBlankDateTime(oldNameElement, "lastModified"));
             previousName.setName(name);

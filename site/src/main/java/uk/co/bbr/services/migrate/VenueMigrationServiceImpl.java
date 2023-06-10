@@ -9,6 +9,7 @@ import uk.co.bbr.services.framework.mixins.SlugTools;
 import uk.co.bbr.services.regions.RegionService;
 import uk.co.bbr.services.regions.dao.RegionDao;
 import uk.co.bbr.services.security.SecurityService;
+import uk.co.bbr.services.security.UserService;
 import uk.co.bbr.services.venues.VenueService;
 import uk.co.bbr.services.venues.dao.VenueAliasDao;
 import uk.co.bbr.services.venues.dao.VenueDao;
@@ -22,6 +23,7 @@ import java.util.Optional;
 public class VenueMigrationServiceImpl extends AbstractMigrationServiceImpl implements VenueMigrationService, SlugTools {
 
     private final SecurityService securityService;
+    private final UserService userService;
     private final VenueService venueService;
     private final RegionService regionService;
 
@@ -46,10 +48,10 @@ public class VenueMigrationServiceImpl extends AbstractMigrationServiceImpl impl
             venue.setLatitude(this.notBlank(rootNode, "latitude"));
             venue.setLongitude(this.notBlank(rootNode, "longitude"));
             venue.setExact(this.notBlankBoolean(rootNode, "exact"));
-            venue.setMapper(this.createUser(this.notBlank(rootNode, "mapper"), this.securityService));
+            venue.setMapper(this.createUser(this.notBlank(rootNode, "mapper"), this.securityService, this.userService));
 
-            venue.setCreatedBy(this.createUser(this.notBlank(rootNode, "owner"), this.securityService));
-            venue.setUpdatedBy(this.createUser(this.notBlank(rootNode, "lastChangedBy"), this.securityService));
+            venue.setCreatedBy(this.createUser(this.notBlank(rootNode, "owner"), this.securityService, this.userService));
+            venue.setUpdatedBy(this.createUser(this.notBlank(rootNode, "lastChangedBy"), this.securityService, this.userService));
 
             venue.setCreated(this.notBlankDateTime(rootNode, "created"));
             venue.setUpdated(this.notBlankDateTime(rootNode, "lastModified"));
@@ -99,8 +101,8 @@ public class VenueMigrationServiceImpl extends AbstractMigrationServiceImpl impl
         if (existingAlias.isEmpty()) {
 
             VenueAliasDao previousName = new VenueAliasDao();
-            previousName.setCreatedBy(this.createUser(this.notBlank(oldNameElement, "owner"), this.securityService));
-            previousName.setUpdatedBy(this.createUser(this.notBlank(oldNameElement, "lastChangedBy"), this.securityService));
+            previousName.setCreatedBy(this.createUser(this.notBlank(oldNameElement, "owner"), this.securityService, this.userService));
+            previousName.setUpdatedBy(this.createUser(this.notBlank(oldNameElement, "lastChangedBy"), this.securityService, this.userService));
             previousName.setCreated(this.notBlankDateTime(oldNameElement, "created"));
             previousName.setUpdated(this.notBlankDateTime(oldNameElement, "lastModified"));
             previousName.setStartDate(this.notBlankDate(oldNameElement, "start"));

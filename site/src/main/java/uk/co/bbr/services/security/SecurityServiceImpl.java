@@ -18,6 +18,7 @@ import java.util.Optional;
 public class SecurityServiceImpl implements SecurityService {
 
     private final BbrUserRepository bbrUserRepository;
+    private final UserService userService;
 
     @Override
     public String getCurrentUsername() {
@@ -143,12 +144,7 @@ public class SecurityServiceImpl implements SecurityService {
     }
 
     @Override
-    public Optional<BbrUserDao> fetchUserByUsercode(String usercode) {
-        return this.bbrUserRepository.fetchByUsercode(usercode);
-    }
-
-    @Override
     public boolean userExists(String usercode) {
-        return this.fetchUserByUsercode(usercode).isPresent();
+        return this.userService.fetchUserByUsercode(usercode).isPresent();
     }
 }

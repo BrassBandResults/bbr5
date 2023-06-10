@@ -3,6 +3,7 @@ package uk.co.bbr.services.migrate;
 import org.jdom2.Element;
 import uk.co.bbr.services.framework.annotations.IgnoreCoverage;
 import uk.co.bbr.services.security.SecurityService;
+import uk.co.bbr.services.security.UserService;
 import uk.co.bbr.services.security.dao.BbrUserDao;
 
 import java.time.LocalDate;
@@ -13,12 +14,12 @@ import java.util.Optional;
 @IgnoreCoverage
 public class AbstractMigrationServiceImpl {
 
-    protected final String createUser(String username, SecurityService securityService) {
+    protected final String createUser(String username, SecurityService securityService, UserService userService) {
         if (username == null) {
             return null;
         }
 
-        Optional<BbrUserDao> user = securityService.fetchUserByUsercode(username);
+        Optional<BbrUserDao> user = userService.fetchUserByUsercode(username);
         if (user.isPresent()) {
             return user.get().getUsercode();
         }

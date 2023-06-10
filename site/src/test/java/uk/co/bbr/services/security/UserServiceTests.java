@@ -21,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class UserServiceTests implements LoginMixin {
 
     @Autowired private SecurityService securityService;
+    @Autowired private UserService userService;
     @Autowired private JwtService jwtService;
 
     @Test
@@ -32,7 +33,7 @@ class UserServiceTests implements LoginMixin {
         this.securityService.createUser("test_User", "testPassword", "test@brassbandresults.co.uk");
 
         // assert
-        Optional<BbrUserDao> fetchedUser = this.securityService.fetchUserByUsercode("test_User");
+        Optional<BbrUserDao> fetchedUser = this.userService.fetchUserByUsercode("test_User");
         assertTrue(fetchedUser.isPresent());
         assertEquals("test_User", fetchedUser.get().getUsercode());
         assertEquals("1", fetchedUser.get().getPasswordVersion());

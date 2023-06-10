@@ -1,0 +1,6 @@
+<span th:fragment="userLink(user)">
+    <a th:if="${user != null}" th:href="${'/users/' + user.usercode}" th:text="${user.usercode}" class="bbr-user">Lokry</a>
+</span>
+
+
+

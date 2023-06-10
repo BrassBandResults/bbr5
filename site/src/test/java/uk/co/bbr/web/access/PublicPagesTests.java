@@ -176,6 +176,7 @@ class PublicPagesTests implements LoginMixin {
             "/embed/band/rothwell-temperance/results-non_whit/2023",
             "/embed/band/rothwell-temperance/results-whit/2023",
             "/faq",
+            "/leaderboard",
             "/people",
             "/people/R",
             "/people/david-roberts",

@@ -21,7 +21,5 @@ public interface SecurityService {
 
     void makeUserSuperuser(String usercode);
 
-    Optional<BbrUserDao> fetchUserByUsercode(String usercode);
-
     boolean userExists(String username);
 }
