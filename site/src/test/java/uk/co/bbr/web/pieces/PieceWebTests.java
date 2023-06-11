@@ -13,7 +13,7 @@ import org.springframework.web.client.RestTemplate;
 import uk.co.bbr.services.bands.BandService;
 import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.events.ContestEventService;
-import uk.co.bbr.services.events.ContestResultService;
+import uk.co.bbr.services.events.ResultService;
 import uk.co.bbr.services.contests.ContestService;
 import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.events.dao.ContestEventDao;
@@ -50,7 +50,7 @@ class PieceWebTests implements LoginMixin {
     @Autowired private PieceService pieceService;
     @Autowired private ContestService contestService;
     @Autowired private ContestEventService contestEventService;
-    @Autowired private ContestResultService contestResultService;
+    @Autowired private ResultService contestResultService;
     @Autowired private RestTemplate restTemplate;
     @LocalServerPort private int port;
 

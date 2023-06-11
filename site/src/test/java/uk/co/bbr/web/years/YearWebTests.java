@@ -12,7 +12,7 @@ import org.springframework.web.client.RestTemplate;
 import uk.co.bbr.services.bands.BandService;
 import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.events.ContestEventService;
-import uk.co.bbr.services.events.ContestResultService;
+import uk.co.bbr.services.events.ResultService;
 import uk.co.bbr.services.contests.ContestService;
 import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.events.dao.ContestEventDao;
@@ -51,7 +51,7 @@ class YearWebTests implements LoginMixin {
     @Autowired private PersonService personService;
     @Autowired private PieceService pieceService;
     @Autowired private ContestEventService contestEventService;
-    @Autowired private ContestResultService contestResultService;
+    @Autowired private ResultService contestResultService;
     @Autowired private RestTemplate restTemplate;
     @Autowired private CsrfTokenRepository csrfTokenRepository;
     @LocalServerPort private int port;

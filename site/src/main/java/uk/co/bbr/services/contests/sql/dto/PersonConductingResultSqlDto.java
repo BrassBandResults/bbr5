@@ -25,6 +25,8 @@ public class PersonConductingResultSqlDto extends AbstractSqlDto {
     private final BigInteger contestEventId;
     private final String regionName;
     private final String regionCountryCode;
+    private final String groupName;
+    private final String groupSlug;
 
     public PersonConductingResultSqlDto(Object[] columnList) {
         Date tempEventDate = (Date)columnList[0];
@@ -44,5 +46,7 @@ public class PersonConductingResultSqlDto extends AbstractSqlDto {
         this.contestEventId = (BigInteger)columnList[13];
         this.regionName = (String)columnList[14];
         this.regionCountryCode = (String)columnList[15];
+        this.groupName = (String)columnList[16];
+        this.groupSlug = (String)columnList[17];
     }
 }

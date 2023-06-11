@@ -15,7 +15,7 @@ import uk.co.bbr.services.bands.BandService;
 import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.bands.types.RehearsalDay;
 import uk.co.bbr.services.events.ContestEventService;
-import uk.co.bbr.services.events.ContestResultService;
+import uk.co.bbr.services.events.ResultService;
 import uk.co.bbr.services.contests.ContestService;
 import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.events.dao.ContestEventDao;
@@ -55,7 +55,7 @@ class BandDetailsWebTests implements LoginMixin {
     @Autowired private BandRehearsalsService bandRehearsalsService;
     @Autowired private ContestService contestService;
     @Autowired private ContestEventService contestEventService;
-    @Autowired private ContestResultService contestResultService;
+    @Autowired private ResultService contestResultService;
     @Autowired private ContestGroupService contestGroupService;
     @Autowired private ContestTagService contestTagService;
     @Autowired private PersonService personService;

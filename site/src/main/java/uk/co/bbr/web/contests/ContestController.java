@@ -6,7 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import uk.co.bbr.services.events.ContestEventService;
-import uk.co.bbr.services.events.ContestResultService;
+import uk.co.bbr.services.events.ResultService;
 import uk.co.bbr.services.contests.ContestService;
 import uk.co.bbr.services.contests.dao.ContestAliasDao;
 import uk.co.bbr.services.contests.dao.ContestDao;
@@ -25,7 +25,7 @@ public class ContestController {
 
     private final ContestService contestService;
     private final ContestEventService contestEventService;
-    private final ContestResultService contestResultService;
+    private final ResultService contestResultService;
 
     @GetMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}")
     public String contestDetails(Model model, @PathVariable String contestSlug) {

@@ -15,7 +15,7 @@ import uk.co.bbr.services.bands.BandService;
 import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.events.ContestEventService;
 import uk.co.bbr.services.groups.ContestGroupService;
-import uk.co.bbr.services.events.ContestResultService;
+import uk.co.bbr.services.events.ResultService;
 import uk.co.bbr.services.contests.ContestService;
 import uk.co.bbr.services.tags.ContestTagService;
 import uk.co.bbr.services.contests.dao.ContestDao;
@@ -55,7 +55,7 @@ class BandFilterWebTests implements LoginMixin {
     @Autowired private ContestEventService contestEventService;
     @Autowired private ContestGroupService contestGroupService;
     @Autowired private ContestTagService contestTagService;
-    @Autowired private ContestResultService contestResultService;
+    @Autowired private ResultService contestResultService;
     @Autowired private PersonService personService;
 
     @Autowired private RestTemplate restTemplate;
@@ -134,7 +134,7 @@ class BandFilterWebTests implements LoginMixin {
 
     @Test
     void testGetBandResultsFilteredToContestWorksSuccessfully() {
-        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/rothwell-temperance-band/yorkshire-area", String.class);
+        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/rothwell-temperance-band/filter/yorkshire-area", String.class);
 
         assertNotNull(response);
         assertTrue(response.contains("<title>Rothwell Temperance Band - Band - Brass Band Results</title>"));
@@ -148,19 +148,19 @@ class BandFilterWebTests implements LoginMixin {
 
     @Test
     void testGetBandResultsFilteredToContestFailsWithInvalidBandSlug() {
-        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/not-a-real-band/yorkshire-area", String.class));
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/not-a-real-band/filter/yorkshire-area", String.class));
         assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
     }
 
     @Test
     void testGetBandResultsFilteredToContestFailsWithInvalidContestSlug() {
-        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/rothwell-temperance-band/not-a-real-contest-slug", String.class));
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/rothwell-temperance-band/filter/not-a-real-contest-slug", String.class));
         assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
     }
 
     @Test
     void testGetBandResultsFilteredToGroupWorksSuccessfully() {
-        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/rothwell-temperance-band/UK-NATIONAL-CHAMPIONSHIPS", String.class);
+        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/rothwell-temperance-band/filter/UK-NATIONAL-CHAMPIONSHIPS", String.class);
 
         assertNotNull(response);
         assertTrue(response.contains("<title>Rothwell Temperance Band - Band - Brass Band Results</title>"));
@@ -174,13 +174,13 @@ class BandFilterWebTests implements LoginMixin {
 
     @Test
     void testGetBandResultsFilteredToGroupFailsWithInvalidBandSlug() {
-        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/not-a-real-band/UK-NATIONAL-CHAMPIONSHIPS", String.class));
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/not-a-real-band/filter/UK-NATIONAL-CHAMPIONSHIPS", String.class));
         assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
     }
 
     @Test
     void testGetBandResultsFilteredToGroupFailsWithInvalidGroupSlug() {
-        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/rothwell-temperance-band/NOT-A-REAL-GROUP-SLUG", String.class));
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/rothwell-temperance-band/filter/NOT-A-REAL-GROUP-SLUG", String.class));
         assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
     }
 

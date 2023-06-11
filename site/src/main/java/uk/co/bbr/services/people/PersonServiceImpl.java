@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import uk.co.bbr.services.bands.dao.BandDao;
-import uk.co.bbr.services.events.ContestResultService;
+import uk.co.bbr.services.events.ResultService;
 import uk.co.bbr.services.events.repo.ContestAdjudicatorRepository;
 import uk.co.bbr.services.framework.ValidationException;
 import uk.co.bbr.services.framework.mixins.SlugTools;
@@ -38,7 +38,7 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class PersonServiceImpl implements PersonService, SlugTools {
 
-    private final ContestResultService contestResultService;
+    private final ResultService contestResultService;
     private final PersonRepository personRepository;
     private final PersonAliasRepository personAliasRepository;
     private final ContestAdjudicatorRepository contestAdjudicatorRepository;

@@ -60,12 +60,13 @@ public class ContestResultSql {
     }
 
     private static final String PERSON_CONDUCTING_SQL = """
-        SELECT e.date_of_event, e.date_resolution, c.slug as contest_slug, c.name as contest_name, r.band_name, b.name as current_band_name, b.slug as band_slug, r.result_position, r.result_position_type, r.result_award, r.points_total, r.draw, r.id as result_id, e.id as event_id, region.name as region_name, region.country_code
+        SELECT e.date_of_event, e.date_resolution, c.slug as contest_slug, c.name as contest_name, r.band_name, b.name as current_band_name, b.slug as band_slug, r.result_position, r.result_position_type, r.result_award, r.points_total, r.draw, r.id as result_id, e.id as event_id, region.name as region_name, region.country_code, g.name as group_name, g.slug as group_slug
         FROM contest_result r
                  INNER JOIN contest_event e ON e.id = r.contest_event_id
                  INNER JOIN contest c ON c.id = e.contest_id
                  INNER JOIN band b ON b.id = r.band_id
                  LEFT OUTER JOIN region region on region.id = b.region_id
+                 LEFT OUTER JOIN contest_group g ON g.id = c.contest_group_id
         WHERE r.conductor_id = ?1 OR r.conductor_two_id = ?1 OR r.conductor_three_id = ?1
         ORDER BY e.date_of_event DESC;
         """;

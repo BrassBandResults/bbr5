@@ -9,7 +9,7 @@ import uk.co.bbr.services.bands.dao.BandRelationshipDao;
 import uk.co.bbr.services.contests.ContestService;
 import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.events.ContestEventService;
-import uk.co.bbr.services.events.ContestResultService;
+import uk.co.bbr.services.events.ResultService;
 import uk.co.bbr.services.events.dao.ContestEventDao;
 import uk.co.bbr.services.groups.ContestGroupService;
 import uk.co.bbr.services.groups.dao.ContestGroupDao;
@@ -40,7 +40,7 @@ public abstract class PageSets {
                              BandService bandService, BandAliasService bandAliasService, BandRelationshipService bandRelationshipService,
                              PersonService personService, PersonRelationshipService personRelationshipService,
                              VenueService venueService, PieceService pieceService,
-                             ContestGroupService contestGroupService, ContestService contestService, ContestEventService contestEventService, ContestResultService contestResultService, ContestTagService contestTagService) {
+                             ContestGroupService contestGroupService, ContestService contestService, ContestEventService contestEventService, ResultService contestResultService, ContestTagService contestTagService) {
         Optional<RegionDao> yorkshire = regionService.fetchBySlug("yorkshire");
         assertTrue(yorkshire.isPresent());
 
@@ -200,8 +200,8 @@ public abstract class PageSets {
         pageList.add("/bands/COMPARE/rothwell-temperance");
         pageList.add("/bands/COMPARE/rothwell-temperance/wallace-arnold-rothwell");
         pageList.add("/bands/WINNERS");
-        pageList.add("/bands/rothwell-temperance/yorkshire-area");
-        pageList.add("/bands/rothwell-temperance/YORKSHIRE-GROUP");
+        pageList.add("/bands/rothwell-temperance/filter/yorkshire-area");
+        pageList.add("/bands/rothwell-temperance/filter/YORKSHIRE-GROUP");
         pageList.add("/bands/rothwell-temperance/tag/yorkshire");
         pageList.add("/contests/yorkshire-area/own-choice");
         pageList.add("/contests/yorkshire-area/wins");

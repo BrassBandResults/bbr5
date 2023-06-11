@@ -7,7 +7,7 @@ import org.springframework.test.context.ActiveProfiles;
 import uk.co.bbr.services.bands.BandService;
 import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.contests.dao.ContestDao;
-import uk.co.bbr.services.events.ContestResultService;
+import uk.co.bbr.services.events.ResultService;
 import uk.co.bbr.services.events.dao.ContestEventDao;
 import uk.co.bbr.services.events.dao.ContestResultDao;
 import uk.co.bbr.services.events.types.ResultPositionType;
@@ -31,7 +31,7 @@ class CreateContestResultTests implements LoginMixin {
 
     @Autowired private ContestService contestService;
     @Autowired private ContestEventService contestEventService;
-    @Autowired private ContestResultService contestResultService;
+    @Autowired private ResultService contestResultService;
     @Autowired private BandService bandService;
     @Autowired private PersonService personService;
     @Autowired private SecurityService securityService;

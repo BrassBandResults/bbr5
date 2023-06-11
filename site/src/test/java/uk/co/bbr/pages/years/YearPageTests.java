@@ -9,7 +9,7 @@ import org.springframework.test.context.ActiveProfiles;
 import uk.co.bbr.services.bands.BandService;
 import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.events.ContestEventService;
-import uk.co.bbr.services.events.ContestResultService;
+import uk.co.bbr.services.events.ResultService;
 import uk.co.bbr.services.contests.ContestService;
 import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.events.dao.ContestEventDao;
@@ -48,7 +48,7 @@ class YearPageTests implements LoginMixin {
     @Autowired private ContestService contestService;
     @Autowired private PersonService personService;
     @Autowired private ContestEventService contestEventService;
-    @Autowired private ContestResultService contestResultService;
+    @Autowired private ResultService contestResultService;
     @Autowired private YearService yearService;
 
     @BeforeAll

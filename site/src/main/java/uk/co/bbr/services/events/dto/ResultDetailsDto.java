@@ -1,4 +1,4 @@
-package uk.co.bbr.services.people.dto;
+package uk.co.bbr.services.events.dto;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -8,7 +8,8 @@ import java.util.List;
 
 @Getter
 @RequiredArgsConstructor
-public class ConductingDetailsDto {
-    private final List<ContestResultDao> bandResults;
+public class ResultDetailsDto {
+    private final List<ContestResultDao> bandNonWhitResults;
     private final List<ContestResultDao> bandWhitResults;
+    private final List<ContestResultDao> bandAllResults;
 }

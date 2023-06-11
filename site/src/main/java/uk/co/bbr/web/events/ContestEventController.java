@@ -6,7 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import uk.co.bbr.services.events.ContestEventService;
-import uk.co.bbr.services.events.ContestResultService;
+import uk.co.bbr.services.events.ResultService;
 import uk.co.bbr.services.events.dao.ContestEventDao;
 import uk.co.bbr.services.events.dao.ContestResultDao;
 import uk.co.bbr.services.framework.NotFoundException;
@@ -20,7 +20,7 @@ import java.util.Optional;
 public class ContestEventController {
 
     private final ContestEventService contestEventService;
-    private final ContestResultService contestResultService;
+    private final ResultService contestResultService;
 
     @GetMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}")
     public String contestEventDetails(Model model, @PathVariable String contestSlug, @PathVariable String contestEventDate) {

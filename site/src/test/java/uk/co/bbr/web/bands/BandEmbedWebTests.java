@@ -10,18 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
-import uk.co.bbr.services.bands.BandRehearsalsService;
 import uk.co.bbr.services.bands.BandService;
-import uk.co.bbr.services.bands.dao.BandDao;
-import uk.co.bbr.services.bands.types.RehearsalDay;
-import uk.co.bbr.services.contests.ContestService;
-import uk.co.bbr.services.contests.dao.ContestDao;
-import uk.co.bbr.services.events.ContestEventService;
-import uk.co.bbr.services.events.ContestResultService;
-import uk.co.bbr.services.events.dao.ContestEventDao;
-import uk.co.bbr.services.events.types.ContestEventDateResolution;
-import uk.co.bbr.services.people.PersonService;
-import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.regions.RegionService;
 import uk.co.bbr.services.regions.dao.RegionDao;
 import uk.co.bbr.services.security.JwtService;
@@ -29,8 +18,6 @@ import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.services.security.ex.AuthenticationFailedException;
 import uk.co.bbr.web.LoginMixin;
 import uk.co.bbr.web.security.support.TestUser;
-
-import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
