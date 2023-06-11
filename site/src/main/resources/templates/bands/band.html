@@ -36,8 +36,10 @@
                         <img class="toggle-filter" th:data-id="${result.id}" th:src="@{${STATIC_HOST} + '/icons/zoom_in.png'}" th:alt="#{page.filter.prompt}" th:title="#{page.filter.prompt}"/>
                         <span th:title="${'Competed as ' + result.bandName}" th:text="${result.contestEvent.contest.name}">Yorkshire Area</span>
                         <div class="toggle-filter-links" th:id="${'toggle-filter-' + result.id}">
-                            <span th:each="eachTag : ${result.tags}">
-                                <a th:href="${'/bands/' + Band.slug + '/' + eachTag.contestSlug}" th:text="${eachTag.tagName}">Tag name</a>
+                            <a class="btn btn-sm btn-secondary text-white" th:href="${'/bands/' + Band.slug + '/' + result.contestEvent.contest.slug}" th:text="#{filter.this-contest}">This Contest</a>
+                            <a class="btn btn-sm btn-secondary text-white" th:if="${result.contestEvent.contest.contestGroup != null}" th:href="${'/bands/' + Band.slug + '/' + result.contestEvent.contest.contestGroup.slug}" th:text="#{filter.this-group}">This Group</a>
+                            <span th:each="eachTag : ${result.tags}" th:remove="tag">
+                                <a class="btn btn-sm btn-secondary text-white" th:href="${'/bands/' + Band.slug + '/' + eachTag.contestSlug}" th:text="${eachTag.tagName}">Tag name</a>
                             </span>
                         </div>
                     </td>
@@ -53,10 +55,19 @@
 
 <div layout:fragment="scriptfooter">
     <script>
-        function toggleZoomBlock(id) {
-            const divToExpand = document.querySelector('#toggle-filter-' + id);
-            var value = divToExpand.dataset.id
-        }
+        const filterLinks = document.querySelectorAll('.toggle-filter');
+        filterLinks.forEach(filterBlock => {
+            filterBlock.addEventListener('click', function toggleFilter() {
+                const filterBlockId = "toggle-filter-" + filterBlock.dataset.id;
+                const filterBlockDiv = document.getElementById(filterBlockId);
+                const currentStyle = filterBlockDiv.style.display;
+                if (currentStyle === '' || currentStyle === 'none') {
+                    filterBlockDiv.style.display = 'block';
+                } else {
+                    filterBlockDiv.style.display = 'none';
+                }
+            });
+        });
     </script>
 </div>
 </body>

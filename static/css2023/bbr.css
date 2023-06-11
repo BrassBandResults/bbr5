@@ -23,6 +23,10 @@ tbody tr.result-3 td {
   background-color: #b1a399 !important;
 }
 
+.toggle-filter {
+  cursor: pointer;
+}
+
 .toggle-filter-links {
   display: none;
   margin-bottom: 1px;
