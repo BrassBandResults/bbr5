@@ -17,6 +17,12 @@
     </ul>
     <br/>
 
+    <p th:if="${FilteredTo != null}" class="alert alert-warning">
+        <span th:text="#{page.band.filter-prompt}">This view of the band's results is filtered to something.</span>
+        <b th:text="${FilteredTo}"></b>
+        <a class="btn btn-sm btn-secondary text-white" th:href="${'/bands/' + Band.slug}" th:text="#{page.band.filter-remove}">Remove Filter</a>
+    </p>
+
     <div class="tab-content">
         <table class="table table-hover sortable">
             <thead>

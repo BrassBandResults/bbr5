@@ -119,6 +119,7 @@ public class BandController {
         model.addAttribute("WhitCount", bandResults.getBandWhitResults().size());
         model.addAttribute("BandRehearsalDays", bandRehearsalDays);
         model.addAttribute("BandRelationships", bandRelationships);
+        model.addAttribute("FilteredTo", contest.get().getName());
         return "bands/band";
     }
 
@@ -146,6 +147,7 @@ public class BandController {
         model.addAttribute("WhitCount", bandResults.getBandWhitResults().size());
         model.addAttribute("BandRehearsalDays", bandRehearsalDays);
         model.addAttribute("BandRelationships", bandRelationships);
+        model.addAttribute("FilteredTo", group.get().getName());
         return "bands/band";
     }
 
@@ -173,6 +175,7 @@ public class BandController {
         model.addAttribute("WhitCount", bandResults.getBandWhitResults().size());
         model.addAttribute("BandRehearsalDays", bandRehearsalDays);
         model.addAttribute("BandRelationships", bandRelationships);
+        model.addAttribute("FilteredTo", tag.get().getName());
         return "bands/band";
     }
 }
