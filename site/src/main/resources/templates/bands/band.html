@@ -35,7 +35,11 @@
                     <td class="bbr-contest">
                         <img class="toggle-filter" th:data-id="${result.id}" th:src="@{${STATIC_HOST} + '/icons/zoom_in.png'}" th:alt="#{page.filter.prompt}" th:title="#{page.filter.prompt}"/>
                         <span th:title="${'Competed as ' + result.bandName}" th:text="${result.contestEvent.contest.name}">Yorkshire Area</span>
-                        <div class="toggle-filter-links" th:id="${'toggle-filter-' + result.id}">12345</div>
+                        <div class="toggle-filter-links" th:id="${'toggle-filter-' + result.id}">
+                            <span th:each="eachTag : ${result.tags}">
+                                <a th:href="${'/bands/' + Band.slug + '/' + eachTag.contestSlug}" th:text="${eachTag.tagName}">Tag name</a>
+                            </span>
+                        </div>
                     </td>
                     <td class="bbr-position"><span th:replace="components/results-position.html :: resultsPosition(${result})">1</span></td>
                     <td class="bbr-piece"><span th:replace="links/piece-link.html :: resultPieceLink(${result})">Test Piece</span></td>

@@ -10,6 +10,7 @@ import uk.co.bbr.services.events.types.ResultPositionType;
 import uk.co.bbr.services.framework.AbstractDao;
 import uk.co.bbr.services.framework.mixins.NameTools;
 import uk.co.bbr.services.people.dao.PersonDao;
+import uk.co.bbr.services.tags.sql.dto.ContestTagSqlDto;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,6 +19,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -98,6 +100,10 @@ public class ContestResultDao extends AbstractDao implements NameTools {
     @Transient
     @Setter
     private List<ContestResultPieceDao> pieces;
+
+    @Transient
+    @Setter
+    private List<ContestTagSqlDto> tags = new ArrayList<>();
 
     public void populateFrom(ContestResultDao result) {
         if (this.getConductor() == null && result.getConductor() != null) {

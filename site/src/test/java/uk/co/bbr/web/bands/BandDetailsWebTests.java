@@ -20,6 +20,8 @@ import uk.co.bbr.services.contests.ContestService;
 import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.events.dao.ContestEventDao;
 import uk.co.bbr.services.events.types.ContestEventDateResolution;
+import uk.co.bbr.services.groups.ContestGroupService;
+import uk.co.bbr.services.groups.dao.ContestGroupDao;
 import uk.co.bbr.services.people.PersonService;
 import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.regions.RegionService;
@@ -27,6 +29,8 @@ import uk.co.bbr.services.regions.dao.RegionDao;
 import uk.co.bbr.services.security.JwtService;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.services.security.ex.AuthenticationFailedException;
+import uk.co.bbr.services.tags.ContestTagService;
+import uk.co.bbr.services.tags.dao.ContestTagDao;
 import uk.co.bbr.web.LoginMixin;
 import uk.co.bbr.web.security.support.TestUser;
 
@@ -52,6 +56,8 @@ class BandDetailsWebTests implements LoginMixin {
     @Autowired private ContestService contestService;
     @Autowired private ContestEventService contestEventService;
     @Autowired private ContestResultService contestResultService;
+    @Autowired private ContestGroupService contestGroupService;
+    @Autowired private ContestTagService contestTagService;
     @Autowired private PersonService personService;
     @Autowired private RestTemplate restTemplate;
     @LocalServerPort private int port;
@@ -74,6 +80,7 @@ class BandDetailsWebTests implements LoginMixin {
         PersonDao duncanBeckley = this.personService.create("Beckley", "Duncan");
 
         ContestDao yorkshireArea = this.contestService.create("Yorkshire Area");
+        ContestDao yorkshireCup = this.contestService.create("Yorkshire Cup");
         ContestDao broadoakWhitFriday = this.contestService.create("Broadoak (Whit Friday)");
 
         ContestEventDao yorkshireArea2000 = this.contestEventService.create(yorkshireArea, LocalDate.of(2000, 3, 1));
@@ -105,6 +112,16 @@ class BandDetailsWebTests implements LoginMixin {
         this.contestResultService.addResult(broadoakWhitFriday2010, "3", rtb, davidRoberts);
         this.contestResultService.addResult(broadoakWhitFriday2010, "4", whitOnlyBand, duncanBeckley);
 
+        ContestTagDao yorkshireTag = this.contestTagService.create("Yorkshire Tag");
+        yorkshireArea = this.contestService.addContestTag(yorkshireArea, yorkshireTag);
+        yorkshireCup = this.contestService.addContestTag(yorkshireCup, yorkshireTag);
+
+        ContestTagDao groupTag = this.contestTagService.create("Group Tag");
+        ContestGroupDao yorksGroup = this.contestGroupService.create("Yorks");
+        yorksGroup = this.contestGroupService.addGroupTag(yorksGroup, groupTag);
+        this.contestService.addContestToGroup(yorkshireArea, yorksGroup);
+
+
         logoutTestUser();
     }
 
@@ -134,6 +151,9 @@ class BandDetailsWebTests implements LoginMixin {
         assertTrue(response.contains("Wednesday"));
         assertTrue(response.contains("After Junior Band"));
         assertFalse(response.contains("Thursday"));
+
+        assertTrue(response.contains(">Yorkshire Tag<"));
+        assertTrue(response.contains(">Group Tag<"));
     }
 
     @Test

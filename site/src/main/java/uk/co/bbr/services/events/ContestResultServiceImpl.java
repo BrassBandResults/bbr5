@@ -29,6 +29,8 @@ import uk.co.bbr.services.people.dto.ConductingDetailsDto;
 import uk.co.bbr.services.pieces.dao.PieceDao;
 import uk.co.bbr.services.regions.dao.RegionDao;
 import uk.co.bbr.services.security.SecurityService;
+import uk.co.bbr.services.tags.sql.ContestTagSql;
+import uk.co.bbr.services.tags.sql.dto.ContestTagSqlDto;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
 import javax.persistence.EntityManager;
@@ -127,6 +129,8 @@ public class ContestResultServiceImpl implements ContestResultService {
         List<ContestResultDao> bandResults = new ArrayList<>();
         List<ContestResultDao> whitResults = new ArrayList<>();
         List<ContestResultDao> allResults = new ArrayList<>();
+        Set<String> contestSlugs = new HashSet<>();
+        Set<String> groupSlugs = new HashSet<>();
 
         for (BandResultSqlDto eachSqlResult : bandResultsSql) {
             if (ResultSetCategory.FUTURE.equals(category) && eachSqlResult.getEventDate().isBefore(tomorrow)) {
@@ -148,10 +152,14 @@ public class ContestResultServiceImpl implements ContestResultService {
             eachResult.getContestEvent().getContest().setSlug(eachSqlResult.getContestSlug());
             eachResult.getContestEvent().getContest().setName(eachSqlResult.getContestName());
 
+            contestSlugs.add(eachSqlResult.getContestSlug());
+
             if (eachSqlResult.getGroupSlug() != null) {
                 eachResult.getContestEvent().getContest().setContestGroup(new ContestGroupDao());
                 eachResult.getContestEvent().getContest().getContestGroup().setName(eachSqlResult.getGroupName());
                 eachResult.getContestEvent().getContest().getContestGroup().setSlug(eachSqlResult.getGroupSlug());
+
+                groupSlugs.add(eachSqlResult.getGroupSlug());
             }
 
             if (eachSqlResult.getResultPosition() != null) {
@@ -191,6 +199,29 @@ public class ContestResultServiceImpl implements ContestResultService {
             } else {
                 bandResults.add(eachResult);
                 allResults.add(eachResult);
+            }
+        }
+
+        List<ContestTagSqlDto> contestTags = ContestTagSql.selectTagsForContestSlugs(this.entityManager, contestSlugs);
+        List<ContestTagSqlDto> groupTags = ContestTagSql.selectTagsForGroupSlugs(this.entityManager, groupSlugs);
+
+        for (ContestResultDao eachResult : allResults) {
+            String contestSlug = eachResult.getContestEvent().getContest().getSlug();
+            String groupSlug = null;
+            if (eachResult.getContestEvent().getContest().getContestGroup() != null) {
+                groupSlug = eachResult.getContestEvent().getContest().getContestGroup().getSlug();
+            }
+            for (ContestTagSqlDto eachContestTag : contestTags) {
+                if (eachContestTag.getContestSlug().equals(contestSlug)) {
+                    eachResult.getTags().add(eachContestTag);
+                }
+            }
+            if (groupSlug != null) {
+                for (ContestTagSqlDto eachGroupTag : groupTags) {
+                    if (eachGroupTag.getContestSlug().equals(groupSlug)) {
+                        eachResult.getTags().add(eachGroupTag);
+                    }
+                }
             }
         }
 
