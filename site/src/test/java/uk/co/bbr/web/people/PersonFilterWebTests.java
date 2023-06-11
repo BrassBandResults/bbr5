@@ -7,15 +7,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import uk.co.bbr.services.bands.BandService;
 import uk.co.bbr.services.bands.dao.BandDao;
-import uk.co.bbr.services.events.ContestEventService;
-import uk.co.bbr.services.events.ResultService;
 import uk.co.bbr.services.contests.ContestService;
 import uk.co.bbr.services.contests.dao.ContestDao;
+import uk.co.bbr.services.events.ContestEventService;
+import uk.co.bbr.services.events.ResultService;
 import uk.co.bbr.services.events.dao.ContestEventDao;
 import uk.co.bbr.services.events.dao.ContestResultDao;
 import uk.co.bbr.services.groups.ContestGroupService;
@@ -41,10 +42,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ActiveProfiles("test")
-@SpringBootTest(properties = { "spring.config.name=people-details-web-tests-admin-h2", "spring.datasource.url=jdbc:h2:mem:people-details-web-tests-admin-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE", "spring.jpa.database-platform=org.hibernate.dialect.SQLServerDialect"},
+@SpringBootTest(properties = { "spring.config.name=people-filter-web-tests-admin-h2", "spring.datasource.url=jdbc:h2:mem:people-filter-web-tests-admin-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE", "spring.jpa.database-platform=org.hibernate.dialect.SQLServerDialect"},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class PeopleDetailsWebTests implements LoginMixin {
+class PersonFilterWebTests implements LoginMixin {
 
     @Autowired private SecurityService securityService;
     @Autowired private JwtService jwtService;
@@ -57,7 +58,16 @@ class PeopleDetailsWebTests implements LoginMixin {
     @Autowired private BandService bandService;
     @Autowired private PieceService pieceService;
     @Autowired private RestTemplate restTemplate;
+    @Autowired private CsrfTokenRepository csrfTokenRepository;
     @LocalServerPort private int port;
+
+    @BeforeAll
+    void setupUser() {
+        this.securityService.createUser(TestUser.TEST_PRO.getUsername(), TestUser.TEST_PRO.getPassword(), TestUser.TEST_PRO.getEmail());
+        this.securityService.makeUserPro(TestUser.TEST_PRO.getUsername());
+
+        loginTestUserByWeb(TestUser.TEST_PRO, this.restTemplate, this.csrfTokenRepository, this.port);
+    }
 
     @BeforeAll
     void setupPeople() throws AuthenticationFailedException {
@@ -107,8 +117,8 @@ class PeopleDetailsWebTests implements LoginMixin {
     }
 
     @Test
-    void testGetPersonDetailsPageWorksCorrectly() {
-        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/people/david-roberts", String.class);
+    void testGetPersonDetailsPageFilteredToContestWorksCorrectly() {
+        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/people/david-roberts/filter/yorkshire-area", String.class);
         assertNotNull(response);
         assertTrue(response.contains("<title>David Roberts - Person - Brass Band Results</title>"));
         assertTrue(response.contains("<h2>David Roberts</h2>"));
@@ -121,49 +131,66 @@ class PeopleDetailsWebTests implements LoginMixin {
     }
 
     @Test
-    void testGetPersonDetailsPageFailsWithInvalidSlug() {
-        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/people/not-a-real-person", String.class));
+    void testGetPersonDetailsPageFilteredToContestWithInvalidPersonSlugFails() {
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/people/not-a-real-person/filter/yorkshire-area", String.class));
         assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
     }
 
     @Test
-    void testGetPersonWhitsPageWorksCorrectly() {
-        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/people/david-roberts/whits", String.class);
+    void testGetPersonDetailsPageFilteredToContestWithInvalidContestSlugFails() {
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/people/david-roberts/filter/not-a-real-contest", String.class));
+        assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
+    }
+
+    @Test
+    void testGetPersonDetailsPageFilteredToGroupWorksCorrectly() {
+        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/people/david-roberts/filter/YORKSHIRE-GROUP", String.class);
         assertNotNull(response);
         assertTrue(response.contains("<title>David Roberts - Person - Brass Band Results</title>"));
         assertTrue(response.contains("<h2>David Roberts</h2>"));
 
-        assertFalse(response.contains(">Yorkshire Area<"));
-        assertFalse(response.contains(">03 Mar 2010<"));
-        assertTrue(response.contains(">Broadoak (Whit Friday)<"));
-        assertTrue(response.contains(">07 Jun 2011<"));
+        assertTrue(response.contains(">Yorkshire Area<"));
+        assertTrue(response.contains(">03 Mar 2010<"));
+        assertFalse(response.contains(">Broadoak (Whit Friday)<"));
+        assertFalse(response.contains(">07 Jun 2011<"));
         assertFalse(response.contains(">Bandance<"));
     }
 
     @Test
-    void testGetPersonWhitsPageFailsWithInvalidSlug() {
-        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/people/not-a-real-person/whits", String.class));
+    void testGetPersonDetailsPageFilteredToGroupWithInvalidPersonSlugFails() {
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/people/not-a-real-person/filter/YORKSHIRE-GROUP", String.class));
         assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
     }
 
     @Test
-    void testGetPersonPiecesPageWorksCorrectly() {
-        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/people/david-roberts/pieces", String.class);
+    void testGetPersonDetailsPageFilteredToGroupWithInvalidGroupSlugFails() {
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/people/david-roberts/filter/NOT-A-REAL-GROUP", String.class));
+        assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
+    }
+
+    @Test
+    void testGetPersonDetailsPageFilteredToTagWorksCorrectly() {
+        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/people/david-roberts/tag/yorkshire-tag", String.class);
         assertNotNull(response);
         assertTrue(response.contains("<title>David Roberts - Person - Brass Band Results</title>"));
         assertTrue(response.contains("<h2>David Roberts</h2>"));
 
-        assertFalse(response.contains(">Yorkshire Area<"));
-        assertFalse(response.contains(">03 Mar 2010<"));
+        assertTrue(response.contains(">Yorkshire Area<"));
+        assertTrue(response.contains(">03 Mar 2010<"));
         assertFalse(response.contains(">Broadoak (Whit Friday)<"));
-        assertFalse(response.contains(">7 Jun 2011<"));
-        assertTrue(response.contains(">Bandance<"));
+        assertFalse(response.contains(">07 Jun 2011<"));
+        assertFalse(response.contains(">Bandance<"));
     }
 
     @Test
-    void testGetPersonPiecesPageFailsWithInvalidSlug() {
-        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/people/not-a-real-person/pieces", String.class));
+    void testGetPersonDetailsPageFilteredToTagWithInvalidPersonSlugFails() {
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/people/not-a-real-person/tag/yorkshire-tag", String.class));
         assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
     }
 
+    @Test
+    void testGetPersonDetailsPageFilteredToTagWithInvalidTagSlugFails() {
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/people/david-roberts/tag/not-a-real-tag", String.class));
+        assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
+    }
 }

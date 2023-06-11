@@ -205,6 +205,9 @@ public abstract class PageSets {
         pageList.add("/bands/rothwell-temperance/tag/yorkshire");
         pageList.add("/contests/yorkshire-area/own-choice");
         pageList.add("/contests/yorkshire-area/wins");
+        pageList.add("/people/david-roberts/filter/yorkshire-area");
+        pageList.add("/people/david-roberts/filter/YORKSHIRE-GROUP");
+        pageList.add("/people/david-roberts/tag/yorkshire");
         pageList.add("/people/COMPARE-CONDUCTORS");
         pageList.add("/people/COMPARE-CONDUCTORS/david-roberts");
         pageList.add("/people/COMPARE-CONDUCTORS/david-roberts/gordon-roberts");
