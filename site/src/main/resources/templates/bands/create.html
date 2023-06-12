@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
 <head>
-    <title th:text="@{#{page.band-edit.title(${Band.name})} + ' - Brass Band Results'}">Band - Brass Band Results</title>
+    <title th:text="@{#{page.band-create.title} + ' - Brass Band Results'}">Band - Brass Band Results</title>
 </head>
 <body>
 <div layout:fragment="content">
-    <h2><span th:text="#{page.edit-header-prefix}" th:remove="tag">Edit</span> <span th:text="${Band.name}" th:remove="tag">Band Name</span></h2>
+    <h2 th:text="#{page.band-create.title}">Create Band</h2>
 
     <form th:object="${BandForm}"
-          th:action = "${'/bands/' + Band.slug + '/edit'}"
+          th:action = "${'/create/band'}"
           method="post">
         <div class="alert alert-danger" th:if="${#fields.hasErrors('*')}">
             <ul>
@@ -64,8 +64,8 @@
             <textarea id="notes" class="form-control" th:field="*{notes}" cols="80" rows="10"></textarea>
         </div>
 
-        <input type="submit" th:value="#{page.buttons.save-changes}" class="btn btn-outline-success"/>
-        <a th:href="${'/bands/' + Band.slug}" th:text="#{page.buttons.cancel-without-saving}" class="btn btn-light">Cancel wout saving</a>
+        <input type="submit" th:value="#{page.buttons.create}" class="btn btn-outline-success"/>
+        <a href="/bands/A" th:text="#{page.buttons.cancel-without-saving}" class="btn btn-light">Cancel wout saving</a>
     </form>
 </div>
 

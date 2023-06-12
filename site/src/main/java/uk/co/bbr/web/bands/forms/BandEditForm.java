@@ -19,7 +19,6 @@ public class BandEditForm {
     private String latitude;
     private String longitude;
     private String website;
-    private String twitter;
     private Integer status;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate startDate;
@@ -39,7 +38,6 @@ public class BandEditForm {
         this.latitude = band.getLatitude();
         this.longitude = band.getLongitude();
         this.website = band.getWebsite();
-        this.twitter = band.getTwitterName();
         this.status = band.getStatus().getCode();
         this.startDate = band.getStartDate();
         this.endDate = band.getEndDate();

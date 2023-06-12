@@ -72,7 +72,6 @@ public class EditBandController {
         existingBand.setLatitude(submittedBand.getLatitude());
         existingBand.setLongitude(submittedBand.getLongitude());
         existingBand.setWebsite(submittedBand.getWebsite());
-        existingBand.setTwitterName(submittedBand.getTwitter());
         existingBand.setStartDate(submittedBand.getStartDate());
         existingBand.setEndDate(submittedBand.getEndDate());
         existingBand.setNotes(submittedBand.getNotes());
