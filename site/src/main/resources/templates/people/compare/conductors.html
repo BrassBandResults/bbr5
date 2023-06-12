@@ -22,6 +22,13 @@
             </td>
         </tr>
     </table>
+
+    <p th:if="${FilteredTo != null}" class="alert alert-warning">
+        <a class="btn btn-sm btn-secondary text-white" th:href="${'/people/COMPARE-CONDUCTORS/' + LeftPerson.slug + '/' + RightPerson.slug}" th:text="#{page.filter.remove-link}">Remove Filter</a>
+        <span th:text="#{page.filter.alert}">This view of the band's results is filtered to something.</span>
+        <b th:text="${FilteredTo}"></b>
+    </p>
+
     <table class="table table-hover sortable">
         <thead>
             <tr>
@@ -39,8 +46,8 @@
                 <td><span th:replace="links/band-link.html :: bandLinkWithNameOverride(${result.leftBand}, ${result.leftBandName})"></span></td>
                 <td class="bbr-event" nowrap><span th:replace="links/event-link.html :: eventLink(${result.event})">9th Sep 2023</span></td>
                 <td>
-                    <img class="toggle-filter" th:data-id="${result.event.id}" th:src="@{${STATIC_HOST} + '/icons/zoom_in.png'}" th:alt="#{page.filter.prompt}" th:title="#{page.filter.prompt}"/>
-                    <span  th:text="${result.contestName}">Yorkshire Area</span>
+                    <a th:href="${'/people/COMPARE-CONDUCTORS/' + LeftPerson.slug + '/' + RightPerson.slug + '/' + result.event.contest.slug}"><img class="toggle-filter" th:data-id="${result.event.id}" th:src="@{${STATIC_HOST} + '/icons/zoom_in.png'}" th:alt="#{page.filter.prompt}" th:title="#{page.filter.prompt}"/></a>
+                    <span th:text="${result.contestName}">Yorkshire Area</span>
                     <div class="toggle-filter-links" th:id="${'toggle-filter-' + result.event.id}">12345</div>
                 </td>
                 <td><span th:replace="links/band-link.html :: bandLinkWithNameOverride(${result.rightBand}, ${result.rightBandName})"></span></td>

@@ -111,7 +111,7 @@ class CompareConductorsWebTests implements LoginMixin {
     }
 
     @Test
-    void testGetPersonDetailsPageWorksCorrectly() {
+    void testGetCompareConductorsSearchWorksAsExpected() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/people/COMPARE-CONDUCTORS", String.class);
         assertNotNull(response);
 
@@ -121,7 +121,7 @@ class CompareConductorsWebTests implements LoginMixin {
     }
 
     @Test
-    void testGetPersonDetailsPageWithOnePersonPopulatedWorksCorrectly() {
+    void testGetCompareConductorsWithOnePersonPopulatedWorksCorrectly() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/people/COMPARE-CONDUCTORS/david-roberts", String.class);
         assertNotNull(response);
 
@@ -151,14 +151,45 @@ class CompareConductorsWebTests implements LoginMixin {
     }
 
     @Test
-    void testGetPersonDetailsPageWithLeftInvalidPersonFailsAsExpected() {
+    void testConductorComparePageWithLeftInvalidPersonFailsAsExpected() {
         HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/people/COMPARE-CONDUCTORS/not-a-real-person/nick-childs", String.class));
         assertTrue(Objects.requireNonNull(ex.getMessage()).contains("404"));
     }
 
     @Test
-    void testGetPersonDetailsPageWithRightInvalidPersonFailsAsExpected() {
+    void testConductorComparePageWithRightInvalidPersonFailsAsExpected() {
         HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/people/COMPARE-CONDUCTORS/david-roberts/not-a-real-person", String.class));
+        assertTrue(Objects.requireNonNull(ex.getMessage()).contains("404"));
+    }
+
+    @Test
+    void testResultPageFilteredWorksCorrectly() {
+        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/people/COMPARE-CONDUCTORS/david-roberts/nick-childs/yorkshire-area", String.class);
+        assertNotNull(response);
+
+        assertTrue(response.contains("Compare "));
+        assertTrue(response.contains("David Roberts"));
+        assertTrue(response.contains("Nick Childs"));
+        assertTrue(response.contains("Black Dyke"));
+        assertTrue(response.contains("Rothwell Temperance"));
+        assertFalse(response.contains("Broadoak"));
+    }
+
+    @Test
+    void testConductorComparePageFilteredWithLeftInvalidPersonFailsAsExpected() {
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/people/COMPARE-CONDUCTORS/not-a-real-person/nick-childs/yorkshire-area", String.class));
+        assertTrue(Objects.requireNonNull(ex.getMessage()).contains("404"));
+    }
+
+    @Test
+    void testConductorComparePageFilteredWithRightInvalidPersonFailsAsExpected() {
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/people/COMPARE-CONDUCTORS/david-roberts/not-a-real-person/yorkshire-area", String.class));
+        assertTrue(Objects.requireNonNull(ex.getMessage()).contains("404"));
+    }
+
+    @Test
+    void testConductorComparePageFilteredWithContestSlugInvalidFailsAsExpected() {
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/people/COMPARE-CONDUCTORS/david-roberts/nick-childs/not-a-real-contest", String.class));
         assertTrue(Objects.requireNonNull(ex.getMessage()).contains("404"));
     }
 }
