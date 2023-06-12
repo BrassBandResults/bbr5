@@ -2,24 +2,40 @@ package uk.co.bbr.services.bands.dto;
 
 import lombok.Getter;
 import uk.co.bbr.services.bands.sql.dto.CompareBandsSqlDto;
+import uk.co.bbr.services.people.sql.dto.CompareConductorsSqlDto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 public class BandCompareDto {
     private final List<CompareBandsSqlDto> results;
-    private final int leftBandPercent;
-    private final int rightBandPercent;
-    private final int leftBandWins;
-    private final int rightBandWins;
+    private int leftBandPercent;
+    private int rightBandPercent;
+    private int leftBandWins;
+    private int rightBandWins;
+
+    public BandCompareDto(List<CompareBandsSqlDto> results, String contestSlug) {
+        List<CompareBandsSqlDto> filteredResults = new ArrayList<>();
+        for (CompareBandsSqlDto eachResult : results) {
+            if (eachResult.getContestSlug().equals(contestSlug)) {
+                filteredResults.add(eachResult);
+            }
+        }
+        this.results = filteredResults;
+        this.calculateWins(this.results);
+    }
 
     public BandCompareDto(List<CompareBandsSqlDto> results) {
         this.results = results;
+        this.calculateWins(this.results);
+    }
 
+    private void calculateWins(List<CompareBandsSqlDto> resultsToAnalyse) {
         int leftCount = 0;
         int rightCount = 0;
 
-        for (CompareBandsSqlDto eachResult : this.results) {
+        for (CompareBandsSqlDto eachResult : resultsToAnalyse) {
             if (eachResult.getLeftResult() < eachResult.getRightResult()) {
                 leftCount++;
             }

@@ -63,7 +63,7 @@ class CompareBandsWebTests implements LoginMixin {
     }
 
     @BeforeAll
-    void setupPeople() throws AuthenticationFailedException {
+    void setupBands() throws AuthenticationFailedException {
         loginTestUser(this.securityService, this.jwtService, TestUser.TEST_MEMBER);
 
         this.personService.create("Childs", "David");
@@ -110,7 +110,7 @@ class CompareBandsWebTests implements LoginMixin {
     }
 
     @Test
-    void testGetPersonDetailsPageWorksCorrectly() {
+    void testCompareBandsPageWorkSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/COMPARE", String.class);
         assertNotNull(response);
 
@@ -120,7 +120,7 @@ class CompareBandsWebTests implements LoginMixin {
     }
 
     @Test
-    void testGetPersonDetailsPageWithOnePersonPopulatedWorksCorrectly() {
+    void testCompareBandPageWithOneBandPopulatedWorksCorrectly() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/COMPARE/rothwell-temperance-band", String.class);
         assertNotNull(response);
 
@@ -131,13 +131,13 @@ class CompareBandsWebTests implements LoginMixin {
     }
 
     @Test
-    void testGetPersonDetailsPageWithOneInvalidPersonFailsAsExpected() {
+    void testCompareBandPageWithOneInvalidBandFailsAsExpected() {
         HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/COMPARE/not-a-real-person", String.class));
         assertTrue(Objects.requireNonNull(ex.getMessage()).contains("404"));
     }
 
     @Test
-    void testResultPageWorksCorrectly() {
+    void testCompareBandsResultPageWorksCorrectly() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/COMPARE/rothwell-temperance-band/black-dyke", String.class);
         assertNotNull(response);
 
@@ -148,14 +148,43 @@ class CompareBandsWebTests implements LoginMixin {
     }
 
     @Test
-    void testGetPersonDetailsPageWithLeftInvalidPersonFailsAsExpected() {
+    void testCompareBandsResultPageWithLeftInvalidPersonFailsAsExpected() {
         HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/COMPARE/not-a-real-person/black-dyke", String.class));
         assertTrue(Objects.requireNonNull(ex.getMessage()).contains("404"));
     }
 
     @Test
-    void testGetPersonDetailsPageWithRightInvalidPersonFailsAsExpected() {
+    void testCompareBandsResultPageWithRightInvalidPersonFailsAsExpected() {
         HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/COMPARE/rothwell-temperance-band/not-a-real-person", String.class));
+        assertTrue(Objects.requireNonNull(ex.getMessage()).contains("404"));
+    }
+
+    @Test
+    void testCompareBandsResultPageFilteredToContestWorksCorrectly() {
+        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/COMPARE/rothwell-temperance-band/black-dyke/yorkshire-area", String.class);
+        assertNotNull(response);
+
+        assertTrue(response.contains("Compare "));
+        assertTrue(response.contains("Rothwell Temperance Band"));
+        assertTrue(response.contains("Black Dyke"));
+        assertFalse(response.contains("Broadoak"));
+    }
+
+    @Test
+    void testCompareBandsResultPageFilterWithLeftInvalidPersonFailsAsExpected() {
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/COMPARE/not-a-real-person/black-dyke/yorkshire-area", String.class));
+        assertTrue(Objects.requireNonNull(ex.getMessage()).contains("404"));
+    }
+
+    @Test
+    void testCompareBandsResultPageFilterWithRightInvalidPersonFailsAsExpected() {
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/COMPARE/rothwell-temperance-band/not-a-real-person/yorkshire-area", String.class));
+        assertTrue(Objects.requireNonNull(ex.getMessage()).contains("404"));
+    }
+
+    @Test
+    void testCompareBandsResultPageFilterWithContestInvalidFailsAsExpected() {
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/COMPARE/rothwell-temperance-band/black-dyke/not-a-valid-contest", String.class));
         assertTrue(Objects.requireNonNull(ex.getMessage()).contains("404"));
     }
 }
