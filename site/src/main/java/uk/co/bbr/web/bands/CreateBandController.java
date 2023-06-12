@@ -74,6 +74,6 @@ public class CreateBandController {
 
         this.bandService.create(newBand);
 
-        return "redirect:/bands/A";
+        return "redirect:/bands";
     }
 }

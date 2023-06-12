@@ -41,6 +41,6 @@ public class CreateTagController {
 
         this.contestTagService.create(submittedTag.getName());
 
-        return "redirect:/tags/A";
+        return "redirect:/tags";
     }
 }
