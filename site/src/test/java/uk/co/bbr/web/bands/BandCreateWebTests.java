@@ -83,7 +83,7 @@ class BandCreateWebTests implements LoginMixin {
         Optional<RegionDao> northWest = this.regionService.fetchBySlug("north-west");
         assertTrue(northWest.isPresent());
 
-        MultiValueMap<String, String> map= new LinkedMultiValueMap<>();
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
         map.add("name", "Rothwell   Temperance   Band");
         map.add("region", String.valueOf(northWest.get().getId()));
         map.add("latitude", " 1.23 ");
@@ -132,7 +132,7 @@ class BandCreateWebTests implements LoginMixin {
         Optional<RegionDao> northWest = this.regionService.fetchBySlug("north-west");
         assertTrue(northWest.isPresent());
 
-        MultiValueMap<String, String> map= new LinkedMultiValueMap<>();
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
         map.add("name", "");
         map.add("region", String.valueOf(northWest.get().getId()));
         map.add("_csrf", csrfToken.getToken());
@@ -163,7 +163,7 @@ class BandCreateWebTests implements LoginMixin {
         Optional<RegionDao> northWest = this.regionService.fetchBySlug("north-west");
         assertTrue(northWest.isPresent());
 
-        MultiValueMap<String, String> map= new LinkedMultiValueMap<>();
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
         map.add("name", "New Band");
         map.add("region", String.valueOf(northWest.get().getId()));
         map.add("startDate", "2001-01-01");

@@ -80,7 +80,7 @@ class PersonEditNotLoggedInWebTests implements LoginMixin {
         headers.add(csrfToken.getHeaderName(), csrfToken.getToken());
         headers.add("Cookie", SecurityFilter.CSRF_HEADER_NAME + "=" + csrfToken.getToken());
 
-        MultiValueMap<String, String> map= new LinkedMultiValueMap<>();
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
         map.add("firstNames", "  Duncan  1  ");
         map.add("surname", " Beckley    4  ");
         map.add("suffix", "  Jnr  ");

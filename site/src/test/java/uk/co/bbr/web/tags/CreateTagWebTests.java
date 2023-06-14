@@ -70,7 +70,7 @@ class CreateTagWebTests implements LoginMixin {
         Optional<ContestTagDao> contestTagBefore = this.contestTagService.fetchBySlug("test-tag");
         assertTrue(contestTagBefore.isEmpty());
 
-        MultiValueMap<String, String> map= new LinkedMultiValueMap<>();
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
         map.add("name", "  Test       Tag");
         map.add("_csrf", csrfToken.getToken());
         map.add("_csrf_header", SecurityFilter.CSRF_HEADER_NAME);
@@ -107,7 +107,7 @@ class CreateTagWebTests implements LoginMixin {
         Optional<ContestTagDao> contestTagBefore = this.contestTagService.fetchBySlug("second-test-tag");
         assertTrue(contestTagBefore.isEmpty());
 
-        MultiValueMap<String, String> map= new LinkedMultiValueMap<>();
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
         map.add("name", "  ");
         map.add("_csrf", csrfToken.getToken());
         map.add("_csrf_header", SecurityFilter.CSRF_HEADER_NAME);

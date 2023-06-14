@@ -106,7 +106,7 @@ class BandEditWebTests implements LoginMixin {
         Optional<RegionDao> northWest = this.regionService.fetchBySlug("north-west");
         assertTrue(northWest.isPresent());
 
-        MultiValueMap<String, String> map= new LinkedMultiValueMap<>();
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
         map.add("name", "Rothwell   Temperance   Band");
         map.add("region", String.valueOf(northWest.get().getId()));
         map.add("latitude", " 1.23 ");
@@ -155,7 +155,7 @@ class BandEditWebTests implements LoginMixin {
         Optional<RegionDao> northWest = this.regionService.fetchBySlug("north-west");
         assertTrue(northWest.isPresent());
 
-        MultiValueMap<String, String> map= new LinkedMultiValueMap<>();
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
         map.add("name", "");
         map.add("_csrf", csrfToken.getToken());
         map.add("_csrf_header", SecurityFilter.CSRF_HEADER_NAME);
@@ -186,7 +186,7 @@ class BandEditWebTests implements LoginMixin {
         Optional<RegionDao> northWest = this.regionService.fetchBySlug("north-west");
         assertTrue(northWest.isPresent());
 
-        MultiValueMap<String, String> map= new LinkedMultiValueMap<>();
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
         map.add("startDate", "2001-01-01");
         map.add("endDate", "2000-01-01");
         map.add("_csrf", csrfToken.getToken());
@@ -215,7 +215,7 @@ class BandEditWebTests implements LoginMixin {
         headers.add(csrfToken.getHeaderName(), csrfToken.getToken());
         headers.add("Cookie", SecurityFilter.CSRF_HEADER_NAME + "=" + csrfToken.getToken());
 
-        MultiValueMap<String, String> map= new LinkedMultiValueMap<>();
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
         map.add("name", "Rothwell   Temperance   Band");
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);

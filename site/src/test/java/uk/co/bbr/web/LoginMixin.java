@@ -67,7 +67,7 @@ public interface LoginMixin {
         headers.add(csrfToken.getHeaderName(), csrfToken.getToken());
         headers.add("Cookie", SecurityFilter.CSRF_HEADER_NAME + "=" + csrfToken.getToken());
 
-        MultiValueMap<String, String> map= new LinkedMultiValueMap<>();
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
         map.add("username", testUser.getUsername());
         map.add("password", testUser.getPassword());
         map.add("_csrf", csrfToken.getToken());
