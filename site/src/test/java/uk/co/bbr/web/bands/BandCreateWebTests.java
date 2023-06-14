@@ -153,7 +153,6 @@ class BandCreateWebTests implements LoginMixin {
     @Test
     void testSubmitEditBandPageFailsWhereDatesAreNonsenseIsRequired() {
         // arrange
-
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 

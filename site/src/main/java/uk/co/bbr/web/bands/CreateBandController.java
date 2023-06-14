@@ -57,17 +57,16 @@ public class CreateBandController {
 
         if (submittedBand.getRegion() != null) {
             Optional<RegionDao> region = this.regionService.fetchById(submittedBand.getRegion());
-            if (region.isEmpty()) {
-                return "bands/create";
-            }
-            newBand.setRegion(region.get());
+            region.ifPresent(newBand::setRegion);
         }
 
         newBand.setName(submittedBand.getName());
         newBand.setLatitude(submittedBand.getLatitude());
         newBand.setLongitude(submittedBand.getLongitude());
         newBand.setWebsite(submittedBand.getWebsite());
-        newBand.setStatus(BandStatus.fromCode(submittedBand.getStatus()));
+        if (submittedBand.getStatus() != null) {
+            newBand.setStatus(BandStatus.fromCode(submittedBand.getStatus()));
+        }
         newBand.setStartDate(submittedBand.getStartDate());
         newBand.setEndDate(submittedBand.getEndDate());
         newBand.setNotes(submittedBand.getNotes());
