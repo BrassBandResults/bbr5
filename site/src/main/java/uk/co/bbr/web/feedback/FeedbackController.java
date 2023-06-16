@@ -1,5 +1,6 @@
 package uk.co.bbr.web.feedback;
 
+import com.fasterxml.jackson.databind.deser.DataFormatReaders;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import uk.co.bbr.services.feedback.FeedbackService;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Controller
 @RequiredArgsConstructor
@@ -31,14 +34,13 @@ public class FeedbackController {
             return "redirect:/feedback/thanks?next=/&t=r2";
         }
 
+        final String URL_PATTERN = "^[^#]*?://.*?(/.*)$";
+        Pattern pattern = Pattern.compile(URL_PATTERN);
+        Matcher matcher = pattern.matcher(url.trim());
         String offset = url.trim();
-        if (offset.startsWith("http://")) {
-            offset = offset.substring("http://".length());
+        if (matcher.find()) {
+            offset = matcher.group(1);
         }
-        if (offset.startsWith("https://")) {
-            offset = offset.substring("https://".length());
-        }
-        offset = offset.substring(offset.indexOf("/"));
 
         String browserName = request.getHeader("User-Agent");
         String ip = request.getHeader("X-FORWARDED-FOR");

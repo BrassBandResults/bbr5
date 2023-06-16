@@ -96,6 +96,84 @@ class FeedbackWebTests implements LoginMixin {
     }
 
     @Test
+    void testSubmitFeedbackWithHoneypotPopulatedFailsAsExpected() {
+        // arrange
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+        headers.add("Referer", "http://localhost:8080/url/populated/fail");
+
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+        map.add("feedback", "   Some   test  feedback   ");
+        map.add("x_url", "  http://localhost:8080/offset/test  ");
+        map.add("x_owner", "   owner  ");
+        map.add("url", "something");
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
+
+        // act
+        ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/feedback", request, String.class);
+
+        // assert
+        assertEquals(HttpStatus.FOUND, response.getStatusCode());
+
+        assertTrue(Objects.requireNonNull(response.getHeaders().get("Location")).get(0).endsWith("/feedback/thanks?next=/&t=h"));
+
+        Optional<FeedbackDao> latestFeedback = this.feedbackService.fetchLatestFeedback("/url/populated/fail");
+        assertTrue(latestFeedback.isEmpty());
+    }
+
+    @Test
+    void testSubmitFeedbackWithIncorrectReferrerFailsAsExpected() {
+        // arrange
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+        headers.add("Referer", "http://blassblandresults.co.uk/incorrect/referer/host");
+
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+        map.add("feedback", "   Some   test  feedback   ");
+        map.add("x_url", "  http://localhost:8080/offset/test  ");
+        map.add("x_owner", "   owner  ");
+        map.add("url", "");
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
+
+        // act
+        ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/feedback", request, String.class);
+
+        // assert
+        assertEquals(HttpStatus.FOUND, response.getStatusCode());
+
+        assertTrue(Objects.requireNonNull(response.getHeaders().get("Location")).get(0).endsWith("/feedback/thanks?next=/&t=r1"));
+
+        Optional<FeedbackDao> latestFeedback = this.feedbackService.fetchLatestFeedback("/incorrect/referer/host");
+        assertTrue(latestFeedback.isEmpty());
+    }
+
+    @Test
+    void testSubmitFeedbackWithNonMatchingReferrerFailsAsExpected() {
+        // arrange
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+        headers.add("Referer", "http://localhost:8080/incorrect/referer/match");
+
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+        map.add("feedback", "   Some   test  feedback   ");
+        map.add("x_url", "http://localhost:8080/offset/test");
+        map.add("x_owner", "   owner  ");
+        map.add("url", "");
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
+
+        // act
+        ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/feedback", request, String.class);
+
+        // assert
+        assertEquals(HttpStatus.FOUND, response.getStatusCode());
+
+        assertTrue(Objects.requireNonNull(response.getHeaders().get("Location")).get(0).endsWith("/feedback/thanks?next=/&t=r2"));
+
+        Optional<FeedbackDao> latestFeedback = this.feedbackService.fetchLatestFeedback("/incorrect/referer/host");
+        assertTrue(latestFeedback.isEmpty());
+    }
+
+    @Test
     void testSubmitThanksWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/feedback/thanks?next=/abc/def", String.class);
         assertNotNull(response);
