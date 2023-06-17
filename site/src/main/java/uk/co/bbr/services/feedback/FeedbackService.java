@@ -27,4 +27,6 @@ public interface FeedbackService {
     int fetchInconclusiveCount();
 
     Optional<FeedbackDao> fetchById(Long feedbackId);
+
+    void create(FeedbackDao feedback);
 }

@@ -21,32 +21,38 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     @Override
     public void submit(String url, String referrer, String ownerUsercode, String feedback, String browserName, String ip) {
+        FeedbackDao newFeedback = new FeedbackDao();
+        newFeedback.setUrl(url);
+        newFeedback.setComment(feedback);
+        newFeedback.setBrowser(browserName);
+        newFeedback.setIp(ip);
 
+        newFeedback.addAuditLog("Referrer: " + url);
+        newFeedback.addAuditLog("Ip: " + ip);
+
+        newFeedback.setStatus(FeedbackStatus.NEW);
+
+        this.create(newFeedback);
+    }
+
+    @Override
+    public void create(FeedbackDao feedback) {
         String currentUsercode = this.securityService.getCurrentUsername();
         String reportedBy = currentUsercode;
         if (currentUsercode == null || currentUsercode.trim().length() == 0 || currentUsercode.equals("anonymousUser")) {
             reportedBy = "owner";
         }
 
-        FeedbackDao newFeedback = new FeedbackDao();
-        newFeedback.setUrl(url);
-        newFeedback.setReportedBy(reportedBy);
-        newFeedback.setComment(feedback);
-        newFeedback.setBrowser(browserName);
-        newFeedback.setIp(ip);
+        feedback.addAuditLog("Reported by: " + currentUsercode);
 
-        newFeedback.addAuditLog("Referrer: " + url);
-        newFeedback.addAuditLog("Reported by: " + currentUsercode);
-        newFeedback.addAuditLog("Ip: " + ip);
+        feedback.setReportedBy(reportedBy);
 
-        newFeedback.setStatus(FeedbackStatus.NEW);
+        feedback.setCreated(LocalDateTime.now());
+        feedback.setCreatedBy(reportedBy);
+        feedback.setUpdated(LocalDateTime.now());
+        feedback.setUpdatedBy(reportedBy);
 
-        newFeedback.setCreated(LocalDateTime.now());
-        newFeedback.setCreatedBy(reportedBy);
-        newFeedback.setUpdated(LocalDateTime.now());
-        newFeedback.setUpdatedBy(reportedBy);
-
-        this.feedbackRepository.saveAndFlush(newFeedback);
+        this.feedbackRepository.saveAndFlush(feedback);
     }
 
     @Override

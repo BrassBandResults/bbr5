@@ -59,15 +59,6 @@ class FeedbackWebTests implements LoginMixin {
     @Autowired private RestTemplate restTemplate;
     @LocalServerPort private int port;
 
-    @BeforeAll
-    void setupContests() throws AuthenticationFailedException {
-        loginTestUser(this.securityService, this.jwtService, TestUser.TEST_MEMBER);
-
-
-
-        logoutTestUser();
-    }
-
     @Test
     void testSubmitFeedbackWorkSuccessfully() {
         // arrange

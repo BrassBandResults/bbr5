@@ -5,10 +5,10 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class HtmlTools {
 
-    public String format(String inputString) {
+    public static String format(String inputString) {
         if (inputString == null || inputString.trim().length() == 0) {
-        return "";
-    }
+            return "";
+        }
 
         String outputString = inputString.trim();
         outputString = outputString.replace("&", "&amp;");

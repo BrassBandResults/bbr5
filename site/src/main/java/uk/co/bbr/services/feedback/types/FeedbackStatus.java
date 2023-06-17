@@ -7,8 +7,8 @@ public enum FeedbackStatus {
     OWNER("O", "Owner"),
     DONE("D", "Done"),
     INCONCLUSIVE("I", "Inconclusive"),
-    SPAM("I", "Spam"),
-    CLOSED("D", "Closed"),
+    SPAM("S", "Spam"),
+    CLOSED("C", "Closed"),
     ;
     private final String code;
     private final String name;
