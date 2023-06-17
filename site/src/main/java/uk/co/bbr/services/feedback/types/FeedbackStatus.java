@@ -3,22 +3,27 @@ package uk.co.bbr.services.feedback.types;
 import java.util.stream.Stream;
 
 public enum FeedbackStatus {
-    NEW("N", "feedback-status.new"),
+    NEW("N", "New"),
+    OWNER("O", "Owner"),
+    DONE("D", "Done"),
+    INCONCLUSIVE("I", "Inconclusive"),
+    SPAM("I", "Spam"),
+    CLOSED("D", "Closed"),
     ;
     private final String code;
-    private final String translationKey;
+    private final String name;
 
-    FeedbackStatus(String code, String translationKey) {
+    FeedbackStatus(String code, String name) {
         this.code = code;
-        this.translationKey = translationKey;
+        this.name = name;
     }
 
     public String getCode() {
         return this.code;
     }
 
-    public String getTranslationKey(){
-        return this.translationKey;
+    public String getName(){
+        return this.name;
     }
 
     public static FeedbackStatus fromCode(String code) {

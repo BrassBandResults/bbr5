@@ -9,6 +9,7 @@ import uk.co.bbr.services.events.dao.ContestResultDao;
 import uk.co.bbr.services.years.YearService;
 import uk.co.bbr.services.years.sql.dto.YearListEntrySqlDto;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
+import uk.co.bbr.web.security.annotations.IsBbrPro;
 
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class YearController {
         return "years/home";
     }
 
-    @IsBbrMember
+    @IsBbrPro
     @GetMapping("/years/{year:\\d{4}}")
     public String contestSingleYear(Model model, @PathVariable String year){
         List<ContestResultDao> yearEvents = this.yearService.fetchEventsForYear(year);

@@ -7,8 +7,8 @@ import uk.co.bbr.services.feedback.repo.FeedbackRepository;
 import uk.co.bbr.services.feedback.types.FeedbackStatus;
 import uk.co.bbr.services.security.SecurityService;
 
-import javax.swing.text.html.Option;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,5 +57,50 @@ public class FeedbackServiceImpl implements FeedbackService {
         } else {
             return Optional.empty();
         }
+    }
+
+    @Override
+    public List<FeedbackDao> fetchSuperuserQueue() {
+        return this.feedbackRepository.fetchForType(FeedbackStatus.NEW);
+    }
+
+    @Override
+    public List<FeedbackDao> fetchOwnerQueue() {
+        return this.feedbackRepository.fetchForType(FeedbackStatus.OWNER);
+    }
+
+    @Override
+    public List<FeedbackDao> fetchSpam() {
+        return this.feedbackRepository.fetchForType(FeedbackStatus.SPAM);
+    }
+
+    @Override
+    public List<FeedbackDao> fetchInconclusive() {
+        return this.feedbackRepository.fetchForType(FeedbackStatus.INCONCLUSIVE);
+    }
+
+    @Override
+    public int fetchFeedbackCount() {
+        return this.feedbackRepository.fetchCount(FeedbackStatus.NEW);
+    }
+
+    @Override
+    public int fetchOwnerCount() {
+        return this.feedbackRepository.fetchCount(FeedbackStatus.OWNER);
+    }
+
+    @Override
+    public int fetchSpamCount() {
+        return this.feedbackRepository.fetchCount(FeedbackStatus.SPAM);
+    }
+
+    @Override
+    public int fetchInconclusiveCount() {
+        return this.feedbackRepository.fetchCount(FeedbackStatus.INCONCLUSIVE);
+    }
+
+    @Override
+    public Optional<FeedbackDao> fetchById(Long feedbackId) {
+        return this.feedbackRepository.findById(feedbackId);
     }
 }

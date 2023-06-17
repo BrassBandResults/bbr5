@@ -2,13 +2,16 @@ package uk.co.bbr.services.feedback.dao;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import uk.co.bbr.services.events.types.ContestEventDateResolution;
 import uk.co.bbr.services.feedback.types.FeedbackStatus;
 import uk.co.bbr.services.framework.AbstractDao;
+import uk.co.bbr.web.HtmlTools;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Getter
 @Entity
@@ -68,7 +71,8 @@ public class FeedbackDao extends AbstractDao {
             this.auditLog = "";
         }
 
-        this.auditLog += LocalDateTime.now().toString();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        this.auditLog += LocalDateTime.now().format(formatter);
         this.auditLog += " ";
         this.auditLog += message;
         this.auditLog += "\n";
@@ -76,5 +80,23 @@ public class FeedbackDao extends AbstractDao {
 
     public void setStatus(FeedbackStatus feedbackStatus) {
         this.status = feedbackStatus;
+    }
+
+    public String getCreatedDisplay() {
+        String dateFormat = "dd MMM yyyy";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(dateFormat);
+        return this.getCreated().format(formatter);
+    }
+
+    public String getCommentHtmlSafe() {
+        return HtmlTools.format(this.comment);
+    }
+
+    public String getCommentsAdditionalHtmlSafe() {
+        return HtmlTools.format(this.commentsAdditional);
+    }
+
+    public String getAuditLogHtmlSafe() {
+        return HtmlTools.format(this.auditLog);
     }
 }

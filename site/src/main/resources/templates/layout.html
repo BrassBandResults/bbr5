@@ -87,7 +87,7 @@
                     <div class="dropdown-menu">
                         <a class="dropdown-item" aria-labelledby="siteDropdown" href="/leaderboard/" th:text="#{menu.site.leaderboard}">Leaderboard</a>
                         <a class="dropdown-item" aria-labelledby="siteDropdown" href="/badges/" th:text="#{menu.site.badges}">Badges</a>
-                        <div class="dropdown-divider" sec:authorize="hasRole('BBR_SUPERUSER') or hasRole('BBR_ADMIN')"></div>
+                        <div class="dropdown-divider" sec:authorize="hasRole('BBR_SUPERUSER')"></div>
                         <a class="dropdown-item" aria-labelledby="siteDropdown" href="/feedback/queue/" th:text="#{menu.site.feedback-queue}" sec:authorize="hasRole('BBR_SUPERUSER')">Feedback Queue</a>
                         <a class="dropdown-item" aria-labelledby="siteDropdown" href="/feedback/admin/" th:text="#{menu.site.owner-queue}" sec:authorize="hasRole('BBR_ADMIN')">Owner Queue</a>
                         <div class="dropdown-divider"></div>

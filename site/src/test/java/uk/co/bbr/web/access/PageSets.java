@@ -1,5 +1,6 @@
 package uk.co.bbr.web.access;
 
+import com.stripe.model.Person;
 import uk.co.bbr.services.bands.BandAliasService;
 import uk.co.bbr.services.bands.BandRelationshipService;
 import uk.co.bbr.services.bands.BandService;
@@ -13,8 +14,10 @@ import uk.co.bbr.services.events.ResultService;
 import uk.co.bbr.services.events.dao.ContestEventDao;
 import uk.co.bbr.services.groups.ContestGroupService;
 import uk.co.bbr.services.groups.dao.ContestGroupDao;
+import uk.co.bbr.services.people.PersonAliasService;
 import uk.co.bbr.services.people.PersonRelationshipService;
 import uk.co.bbr.services.people.PersonService;
+import uk.co.bbr.services.people.dao.PersonAliasDao;
 import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.people.dao.PersonRelationshipDao;
 import uk.co.bbr.services.pieces.PieceService;
@@ -38,7 +41,7 @@ public abstract class PageSets {
 
     protected void setupData(RegionService regionService,
                              BandService bandService, BandAliasService bandAliasService, BandRelationshipService bandRelationshipService,
-                             PersonService personService, PersonRelationshipService personRelationshipService,
+                             PersonService personService, PersonRelationshipService personRelationshipService, PersonAliasService personAliasService,
                              VenueService venueService, PieceService pieceService,
                              ContestGroupService contestGroupService, ContestService contestService, ContestEventService contestEventService, ResultService contestResultService, ContestTagService contestTagService) {
         Optional<RegionDao> yorkshire = regionService.fetchBySlug("yorkshire");
@@ -57,6 +60,10 @@ public abstract class PageSets {
         assertEquals(1, bandrelationship.getId());
 
         PersonDao davidRoberts = personService.create("Roberts", "David");
+        PersonAliasDao daveRoberts = new PersonAliasDao();
+        daveRoberts.setOldName("Dave Roberts");
+        personAliasService.createAlias(davidRoberts, daveRoberts);
+
         PersonDao gordonRoberts = personService.create("Roberts", "Gordon");
         PersonRelationshipDao personRelationship = new PersonRelationshipDao();
         personRelationship.setLeftPerson(gordonRoberts);
@@ -80,6 +87,8 @@ public abstract class PageSets {
         ContestTagDao yorkshireTag = contestTagService.create("Yorkshire");
         yorkshireArea = contestService.addContestTag(yorkshireArea, yorkshireTag);
         yorkshireGroup = contestGroupService.addGroupTag(yorkshireGroup, yorkshireTag);
+
+        ContestTagDao tagToDelete = contestTagService.create("Tag To Delete");
 
         PieceDao contestMusic = pieceService.create("Contest Music");
     }
@@ -132,6 +141,7 @@ public abstract class PageSets {
         pageList.add("/embed/band/rothwell-temperance/results-non_whit/2023");
         pageList.add("/embed/band/rothwell-temperance/results-whit/2023");
         pageList.add("/faq");
+        pageList.add("/feedback/thanks?next=/");
         pageList.add("/leaderboard");
         pageList.add("/people");
         pageList.add("/people/R");
@@ -189,7 +199,7 @@ public abstract class PageSets {
         pageList.add("/people/david-roberts/edit-aliases/1/delete");
         pageList.add("/people/david-roberts/edit-relationships");
         pageList.add("/people/david-roberts/edit-relationships/1/delete");
-        pageList.add("/tags/yorkshire/delete");
+        pageList.add("/tags/tag-to-delete/delete");
         pageList.add("/years");
         return pageList;
     }
@@ -224,8 +234,18 @@ public abstract class PageSets {
         return pageList;
     }
 
+    protected List<String> superuserPages() {
+        List<String> pageList = new ArrayList<>();
+        pageList.add("/feedback/queue");
+        pageList.add("/feedback/detail/1");
+        return pageList;
+    }
+
     protected List<String> adminPages() {
         List<String> pageList = new ArrayList<>();
+        pageList.add("/feedback/owner");
+        pageList.add("/feedback/inconclusive");
+        pageList.add("/feedback/spam");
         pageList.add("/user-list");
         pageList.add("/user-list/pro");
         pageList.add("/user-list/superuser");

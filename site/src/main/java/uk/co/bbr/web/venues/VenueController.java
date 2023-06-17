@@ -15,6 +15,7 @@ import uk.co.bbr.services.venues.dao.VenueDao;
 import uk.co.bbr.services.venues.dto.VenueContestDto;
 import uk.co.bbr.services.venues.dto.VenueContestYearDto;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
+import uk.co.bbr.web.security.annotations.IsBbrPro;
 
 import java.util.List;
 import java.util.Optional;
@@ -43,7 +44,7 @@ public class VenueController {
         return "venues/venue";
     }
 
-    @IsBbrMember
+    @IsBbrPro
     @GetMapping("/venues/{venueSlug:[\\-a-z\\d]{2,}}/{contestSlug:[\\-a-z\\d]{2,}}")
     public String venueContest(Model model, @PathVariable("venueSlug") String venueSlug, @PathVariable("contestSlug") String contestSlug) {
         Optional<VenueDao> venue = this.venueService.fetchBySlug(venueSlug);
@@ -63,7 +64,7 @@ public class VenueController {
         return "venues/contest";
     }
 
-    @IsBbrMember
+    @IsBbrPro
     @GetMapping("/venues/{venueSlug:[\\-a-z\\d]{2,}}/years")
     public String venueYears(Model model, @PathVariable("venueSlug") String venueSlug) {
         Optional<VenueDao> venue = this.venueService.fetchBySlug(venueSlug);
@@ -81,7 +82,7 @@ public class VenueController {
         return "venues/years";
     }
 
-    @IsBbrMember
+    @IsBbrPro
     @GetMapping("/venues/{venueSlug:[\\-a-z\\d]{2,}}/years/{year:\\d{4}}")
     public String venueYearEvents(Model model, @PathVariable("venueSlug") String venueSlug, @PathVariable("year") int year) {
         Optional<VenueDao> venue = this.venueService.fetchBySlug(venueSlug);

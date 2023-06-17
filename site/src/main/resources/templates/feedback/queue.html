@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org">
+<head>
+    <title th:text="@{#{page.feedback-queue.title} + ' - Brass Band Results'}">Feedback Queue - Brass Band Results</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h2 th:text="#{page.feedback-queue.title}">Feedback Queue</h2>
+
+    <span sec:authorize="hasRole('BBR_ADMIN')" th:remove="tag">
+            <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a th:class="'nav-link ' + ${Type == 'queue' ? 'active' : ''}" href="/feedback/queue" th:text="#{page.feedback.tab.queue(${FeedbackCount})}">Feedback Queue (11)</a>
+        </li>
+        <li class="nav-item">
+            <a th:class="'nav-link ' + ${Type == 'owner' ? 'active' : ''}" href="/feedback/owner" th:text="#{page.feedback.tab.owner(${OwnerCount})}">Owner Queue (12)</a>
+        </li>
+        <li class="nav-item">
+            <a th:class="'nav-link ' + ${Type == 'inconclusive' ? 'active' : ''}" href="/feedback/inconclusive" th:text="#{page.feedback.tab.inconclusive(${InconclusiveCount})}">Inconclusive</a>
+        </li>
+        <li class="nav-item">
+            <a th:class="'nav-link ' + ${Type == 'spam' ? 'active' : ''}" href="/feedback/spam" th:text="#{page.feedback.tab.spam(${SpamCount})}">Spam</a>
+        </li>
+    </ul>
+    <br/>
+    </span>
+
+    <div class="tab-content">
+        <table id="bands" class="table table-hover sortable">
+            <thead>
+            <tr>
+                <th th:text="#{page.column-header.date}">Date</th>
+                <th th:text="#{page.column-header.feedback}">Feedback</th>
+                <th th:text="#{page.column-header.user}">User</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="feedback : ${Feedback}" th:id="${'feedback-' + feedback.id}">
+                <td class="date" nowrap><a th:href="${'/feedback/detail/' + feedback.id}" th:text="${feedback.createdDisplay}">date</a></td>
+                <td>
+                    <a th:href="${feedback.url}" th:text="${feedback.url}">/url/offset</a><br/>
+                    <span th:utext="${feedback.commentHtmlSafe}">Comment</span>
+                </td>
+                <td>
+                    <a th:text="${feedback.reportedBy}" th:href="${'/users/' + feedback.reportedBy}">user</a>
+                </td>
+                <td>
+                    <span class="feedback-buttons" th:id="${'feedback-buttons-' + feedback.id}">
+                        <button type="button" class="btn btn-sm btn-outline-warning rounded text-dark bbr-fb-claim" th:data-id="${feedback.id}">Claim</button>
+                        <button type="button" class="btn btn-sm btn-outline-warning rounded text-dark bbr-fb-done" th:data-id="${feedback.id}">Mark Done</button>
+                        <button type="button" class="btn btn-sm btn-outline-warning rounded text-dark bbr-fb-owner" th:data-id="${feedback.id}" th:if="${feedback.status.code != 'O'}">Send To Owner</button>
+                        <button type="button" class="btn btn-sm btn-outline-warning rounded text-dark bbr-fb-closed" th:data-id="${feedback.id}" sec:authorize="hasRole('BBR_ADMIN')">Mark Closed</button>
+                        <button type="button" class="btn btn-sm btn-outline-warning rounded text-dark bbr-fb-inconclusive" th:data-id="${feedback.id}" sec:authorize="hasRole('BBR_ADMIN')">Inconclusive</button>
+                    </span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+<div layout:fragment="scriptfooter">
+    <script>
+        function processClick(type, feedbackId){
+            const buttonBlockId = 'feedback-buttons-' + feedbackId;
+            const buttonBlockDiv = document.getElementById(buttonBlockId);
+            let newState = "";
+            switch(type) {
+                case 'claim':
+                    newState = "Claimed";
+                    break;
+                case 'done':
+                    newState = "Done";
+                    break;
+                case 'owner':
+                    newState = "Sent to Site Owner";
+                    break;
+                case 'closed':
+                    newState = "Closed";
+                    break;
+                case 'inconclusive':
+                    newState = "Marked Inconclusive";
+                    break;
+            }
+            buttonBlockDiv.innerHTML = newState;
+
+            const url = "/feedback/status-change/" + type + "/[[${CurrentUserCode}]]/" + feedbackId + "/";
+            const httpRequest = new XMLHttpRequest();
+            httpRequest.open("GET", url, true);
+        }
+
+        const feedbackClaimLinks = document.querySelectorAll('.bbr-fb-claim');
+        feedbackClaimLinks.forEach(feedbackBlock => {
+            feedbackBlock.addEventListener('click', function claimFeedback() {
+                processClick('claim', feedbackBlock.dataset.id);
+            });
+        });
+
+        const feedbackDoneLinks = document.querySelectorAll('.bbr-fb-done');
+        feedbackDoneLinks.forEach(feedbackBlock => {
+            feedbackBlock.addEventListener('click', function doneFeedback() {
+                processClick('done', feedbackBlock.dataset.id);
+            });
+        });
+
+        const feedbackOwnerLinks = document.querySelectorAll('.bbr-fb-owner');
+        feedbackOwnerLinks.forEach(feedbackBlock => {
+            feedbackBlock.addEventListener('click', function ownerFeedback() {
+                processClick('owner', feedbackBlock.dataset.id);
+            });
+        });
+    </script>
+    <script sec:authorize="hasRole('BBR_ADMIN')">
+
+        const feedbackCloseLinks = document.querySelectorAll('.bbr-fb-closed');
+        feedbackCloseLinks.forEach(feedbackBlock => {
+            feedbackBlock.addEventListener('click', function closeFeedback() {
+                processClick('closed', feedbackBlock.dataset.id);
+            });
+        });
+
+        const feedbackInconclusiveLinks = document.querySelectorAll('.bbr-fb-inconclusive');
+        feedbackInconclusiveLinks.forEach(feedbackBlock => {
+            feedbackBlock.addEventListener('click', function inconclusiveFeedback() {
+                processClick('inconclusive', feedbackBlock.dataset.id);
+            });
+        });
+    </script>
+</div>
+
+<div layout:fragment="feedback">
+</div>
+
+</body>
+</html>

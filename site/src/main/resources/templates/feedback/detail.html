@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+<head>
+    <title th:text="@{#{page.feedback-detail.title} + ' - Brass Band Results'}">Feedback Detail - Brass Band Results</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h2 th:text="#{page.feedback-detail.title}">Feedback Detail</h2>
+    <table>
+        <tr>
+            <th>Created:</th>
+            <td>
+                <span th:text="${#temporals.format(Feedback.created, 'dd-MMM-yyyy hh:mm:ss')}">created</span>
+                by <a th:text="${Feedback.reportedBy}" th:href="${'users/' + Feedback.reportedBy}">user</a>
+            </td>
+        </tr>
+        <tr>
+            <th>Updated:</th>
+            <td>
+                <span th:text="${#temporals.format(Feedback.updated, 'dd-MMM-yyyy hh:mm:ss')}">updated</span>
+                by <a th:text="${Feedback.updatedBy}" th:href="${'users/' + Feedback.updatedBy}">user</a>
+            </td
+        ></tr>
+        <tr><th>Page:</th><td><a th:text="${Feedback.url}" th:href="${Feedback.url}">/offset</a></td></tr>
+        <tr><th>Status:</th><td th:text="${Feedback.status.name}">status</td></tr>
+        <tr><th>IP:</th><td th:text="${Feedback.ip}">status</td></tr>
+        <tr><th>Browser:</th><td th:text="${Feedback.browser}">status</td></tr>
+    </table>
+    <h3>Comment</h3>
+    <p th:utext="${Feedback.commentHtmlSafe}"></p>
+    <h3>Additional Comments</h3>
+    <p th:utext="${Feedback.commentsAdditionalHtmlSafe}"></p>
+    <h3>Audit</h3>
+    <p th:utext="${Feedback.auditLogHtmlSafe}"></p>
+</div>
+</body>
+</html>

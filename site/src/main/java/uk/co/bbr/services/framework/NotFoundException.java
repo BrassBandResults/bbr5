@@ -80,4 +80,8 @@ public class NotFoundException extends RuntimeException {
     public static NotFoundException personRelationshipTypeNotFoundById(String relationshipTypeId) {
         return new NotFoundException("Person Relationship type with id " + relationshipTypeId + " not found");
     }
+
+    public static NotFoundException feedbackNotFoundById(long feedbackId) {
+        return new NotFoundException("Feedback with id " + feedbackId + " not found");
+    }
 }

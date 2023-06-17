@@ -1,6 +1,5 @@
 package uk.co.bbr.web.feedback;
 
-import com.fasterxml.jackson.databind.deser.DataFormatReaders;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,7 +14,7 @@ import java.util.regex.Pattern;
 
 @Controller
 @RequiredArgsConstructor
-public class FeedbackController {
+public class FeedbackSubmitController {
     private final FeedbackService feedbackService;
 
 
