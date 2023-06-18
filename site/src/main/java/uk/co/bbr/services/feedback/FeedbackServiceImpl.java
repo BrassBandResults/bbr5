@@ -21,14 +21,17 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     @Override
     public void submit(String url, String referrer, String ownerUsercode, String feedback, String browserName, String ip) {
+        String currentUsername = this.securityService.getCurrentUsername();
+
+
         FeedbackDao newFeedback = new FeedbackDao();
         newFeedback.setUrl(url);
         newFeedback.setComment(feedback);
         newFeedback.setBrowser(browserName);
         newFeedback.setIp(ip);
 
-        newFeedback.addAuditLog("Referrer: " + url);
-        newFeedback.addAuditLog("Ip: " + ip);
+        newFeedback.addAuditLog(currentUsername, "Referrer: " + url);
+        newFeedback.addAuditLog(currentUsername, "Ip: " + ip);
 
         newFeedback.setStatus(FeedbackStatus.NEW);
 
@@ -43,7 +46,7 @@ public class FeedbackServiceImpl implements FeedbackService {
             reportedBy = "owner";
         }
 
-        feedback.addAuditLog("Reported by: " + currentUsercode);
+        feedback.addAuditLog(currentUsercode, "Reported by: " + currentUsercode);
 
         feedback.setReportedBy(reportedBy);
 
@@ -51,6 +54,16 @@ public class FeedbackServiceImpl implements FeedbackService {
         feedback.setCreatedBy(reportedBy);
         feedback.setUpdated(LocalDateTime.now());
         feedback.setUpdatedBy(reportedBy);
+
+        this.feedbackRepository.saveAndFlush(feedback);
+    }
+
+    @Override
+    public void update(FeedbackDao feedback) {
+        String currentUsercode = this.securityService.getCurrentUsername();
+
+        feedback.setUpdated(LocalDateTime.now());
+        feedback.setUpdatedBy(currentUsercode);
 
         this.feedbackRepository.saveAndFlush(feedback);
     }

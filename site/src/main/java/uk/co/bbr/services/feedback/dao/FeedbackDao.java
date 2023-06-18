@@ -2,10 +2,11 @@ package uk.co.bbr.services.feedback.dao;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import uk.co.bbr.services.events.types.ContestEventDateResolution;
 import uk.co.bbr.services.feedback.types.FeedbackStatus;
 import uk.co.bbr.services.framework.AbstractDao;
+import uk.co.bbr.services.security.dao.BbrUserDao;
 import uk.co.bbr.web.HtmlTools;
+import uk.co.bbr.web.security.annotations.IsBbrSuperuser;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -43,36 +44,63 @@ public class FeedbackDao extends AbstractDao {
     @Column(name="reported_by")
     private String reportedBy;
 
+    @Column(name="owned_by")
+    private String ownedBy;
+
     public void setUrl(String url) {
+        if (url != null) {
+            url = url.trim();
+        }
         this.url = url;
     }
 
     public void setReportedBy(String usercode) {
+        if (usercode != null) {
+            usercode = usercode.trim();
+        }
         this.reportedBy = usercode;
     }
 
     public void setComment(String comment) {
+        if (comment != null) {
+            comment = comment.trim();
+        }
         this.comment = comment;
     }
 
     public void setBrowser(String browser) {
+        if (browser != null) {
+            browser = browser.trim();
+        }
         this.browser = browser;
+    }
+
+    public void setOwnedBy(String username) {
+        if (username != null) {
+            username = username.trim();
+        }
+        this.ownedBy = username;
     }
 
     public void setIp(String ip) {
         if (ip != null && ip.trim().length() > 15) {
             ip = ip.trim().substring(0, 15);
         }
+        if (ip != null) {
+            ip = ip.trim();
+        }
         this.ip = ip;
     }
 
-    public void addAuditLog(String message) {
+    public void addAuditLog(String currentUsercode, String message) {
         if (this.auditLog == null) {
             this.auditLog = "";
         }
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         this.auditLog += LocalDateTime.now().format(formatter);
+        this.auditLog += " ";
+        this.auditLog += currentUsercode;
         this.auditLog += " ";
         this.auditLog += message;
         this.auditLog += "\n";
@@ -98,5 +126,38 @@ public class FeedbackDao extends AbstractDao {
 
     public String getAuditLogHtmlSafe() {
         return HtmlTools.format(this.auditLog);
+    }
+
+    @IsBbrSuperuser
+    public void assignToUser(String currentUsername, BbrUserDao bbrUserDao) {
+        this.setStatus(FeedbackStatus.WITH_USER);
+        this.setOwnedBy(bbrUserDao.getUsercode());
+        this.addAuditLog(currentUsername, "Assigning to user " + bbrUserDao.getUsercode());
+    }
+
+    public void markDone(String currentUsername) {
+        this.setStatus(FeedbackStatus.DONE);
+        this.addAuditLog(currentUsername, "Setting status to done");
+    }
+
+    public void sendToOwner(String currentUsername) {
+        this.setStatus(FeedbackStatus.OWNER);
+        this.setOwnedBy("owner");
+        this.addAuditLog(currentUsername, "Assigning to owner");
+    }
+
+    public void markClosed(String currentUsername) {
+        this.setStatus(FeedbackStatus.CLOSED);
+        this.addAuditLog(currentUsername, "Setting status closed");
+    }
+
+    public void markInconclusive(String currentUsername) {
+        this.setStatus(FeedbackStatus.INCONCLUSIVE);
+        this.addAuditLog(currentUsername, "Setting status inconclusive");
+    }
+
+    public void markAsSpam(String currentUsername) {
+        this.setStatus(FeedbackStatus.SPAM);
+        this.addAuditLog(currentUsername, "Setting status to spam");
     }
 }

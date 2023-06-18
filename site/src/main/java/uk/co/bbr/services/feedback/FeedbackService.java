@@ -29,4 +29,6 @@ public interface FeedbackService {
     Optional<FeedbackDao> fetchById(Long feedbackId);
 
     void create(FeedbackDao feedback);
+
+    void update(FeedbackDao feedback);
 }

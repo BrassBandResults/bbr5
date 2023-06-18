@@ -9,7 +9,7 @@ public enum FeedbackStatus {
     INCONCLUSIVE("I", "Inconclusive"),
     SPAM("S", "Spam"),
     CLOSED("C", "Closed"),
-    ;
+    WITH_USER("U", "With User");
     private final String code;
     private final String name;
 
