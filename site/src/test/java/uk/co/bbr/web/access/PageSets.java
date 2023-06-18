@@ -12,6 +12,9 @@ import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.events.ContestEventService;
 import uk.co.bbr.services.events.ResultService;
 import uk.co.bbr.services.events.dao.ContestEventDao;
+import uk.co.bbr.services.feedback.FeedbackService;
+import uk.co.bbr.services.feedback.dao.FeedbackDao;
+import uk.co.bbr.services.feedback.types.FeedbackStatus;
 import uk.co.bbr.services.groups.ContestGroupService;
 import uk.co.bbr.services.groups.dao.ContestGroupDao;
 import uk.co.bbr.services.people.PersonAliasService;
@@ -43,7 +46,8 @@ public abstract class PageSets {
                              BandService bandService, BandAliasService bandAliasService, BandRelationshipService bandRelationshipService,
                              PersonService personService, PersonRelationshipService personRelationshipService, PersonAliasService personAliasService,
                              VenueService venueService, PieceService pieceService,
-                             ContestGroupService contestGroupService, ContestService contestService, ContestEventService contestEventService, ResultService contestResultService, ContestTagService contestTagService) {
+                             ContestGroupService contestGroupService, ContestService contestService, ContestEventService contestEventService, ResultService contestResultService, ContestTagService contestTagService,
+                             FeedbackService feedbackService) {
         Optional<RegionDao> yorkshire = regionService.fetchBySlug("yorkshire");
         assertTrue(yorkshire.isPresent());
 
@@ -91,6 +95,14 @@ public abstract class PageSets {
         ContestTagDao tagToDelete = contestTagService.create("Tag To Delete");
 
         PieceDao contestMusic = pieceService.create("Contest Music");
+
+        FeedbackDao feedbackNew = new FeedbackDao();
+        feedbackNew.setStatus(FeedbackStatus.NEW);
+        feedbackNew.setComment("  This is a new feedback  ");
+        feedbackNew.setBrowser("SquirrelSoft");
+        feedbackNew.setIp("4.3.2.1");
+        feedbackNew.setUrl("/bands");
+        feedbackService.create(feedbackNew);
     }
 
     protected List<String> notFoundPages() {

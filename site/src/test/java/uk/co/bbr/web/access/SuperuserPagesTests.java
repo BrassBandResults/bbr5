@@ -40,10 +40,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ActiveProfiles("test")
-@SpringBootTest(properties = { "spring.config.name=member-pages-web-tests-admin-h2", "spring.datasource.url=jdbc:h2:mem:member-pages-web-tests-admin-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE", "spring.jpa.database-platform=org.hibernate.dialect.SQLServerDialect"},
+@SpringBootTest(properties = { "spring.config.name=superuser-pages-web-tests-admin-h2", "spring.datasource.url=jdbc:h2:mem:superuser-pages-web-tests-admin-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE", "spring.jpa.database-platform=org.hibernate.dialect.SQLServerDialect"},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class MemberPagesTests extends PageSets implements LoginMixin {
+class SuperuserPagesTests extends PageSets implements LoginMixin {
 
     @Autowired private SecurityService securityService;
     @Autowired private BandService bandService;
@@ -68,7 +68,10 @@ class MemberPagesTests extends PageSets implements LoginMixin {
 
     @BeforeAll
     void setupUser() {
-        loginTestUserByWeb(TestUser.TEST_MEMBER, this.restTemplate, this.csrfTokenRepository, this.port);
+        this.securityService.createUser(TestUser.TEST_SUPERUSER.getUsername(), TestUser.TEST_SUPERUSER.getPassword(), TestUser.TEST_SUPERUSER.getEmail());
+        this.securityService.makeUserSuperuser(TestUser.TEST_SUPERUSER.getUsername());
+
+        loginTestUserByWeb(TestUser.TEST_SUPERUSER, this.restTemplate, this.csrfTokenRepository, this.port);
     }
 
     @BeforeAll
@@ -108,15 +111,19 @@ class MemberPagesTests extends PageSets implements LoginMixin {
     @ParameterizedTest
     @MethodSource("proPages")
     void testProPagesFailWhenLoggedInAsMember(String offset) {
-        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + offset, String.class));
-        assertTrue(Objects.requireNonNull(ex.getMessage()).contains("403"));  // Not allowed access
+        String response = this.restTemplate.getForObject("http://localhost:" + this.port + offset, String.class);
+        assertNotNull(response);
+        assertFalse(response.contains("<h2>Sign In</h2>")); // page requires login
+        assertFalse(response.contains("Page not found")); // page exists
     }
 
     @ParameterizedTest
     @MethodSource("superuserPages")
     void testSuperuserPagesFailWhenLoggedInAsMember(String offset) {
-        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + offset, String.class));
-        assertTrue(Objects.requireNonNull(ex.getMessage()).contains("403"));  // Not allowed access
+        String response = this.restTemplate.getForObject("http://localhost:" + this.port + offset, String.class);
+        assertNotNull(response);
+        assertFalse(response.contains("<h2>Sign In</h2>")); // page requires login
+        assertFalse(response.contains("Page not found")); // page exists
     }
 
     @ParameterizedTest
