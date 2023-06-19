@@ -27,6 +27,8 @@ import uk.co.bbr.services.pieces.PieceService;
 import uk.co.bbr.services.pieces.dao.PieceDao;
 import uk.co.bbr.services.regions.RegionService;
 import uk.co.bbr.services.regions.dao.RegionDao;
+import uk.co.bbr.services.security.SecurityService;
+import uk.co.bbr.services.security.UserService;
 import uk.co.bbr.services.tags.ContestTagService;
 import uk.co.bbr.services.tags.dao.ContestTagDao;
 import uk.co.bbr.services.venues.VenueService;
@@ -47,7 +49,7 @@ public abstract class PageSets {
                              PersonService personService, PersonRelationshipService personRelationshipService, PersonAliasService personAliasService,
                              VenueService venueService, PieceService pieceService,
                              ContestGroupService contestGroupService, ContestService contestService, ContestEventService contestEventService, ResultService contestResultService, ContestTagService contestTagService,
-                             FeedbackService feedbackService) {
+                             FeedbackService feedbackService, SecurityService securityService) {
         Optional<RegionDao> yorkshire = regionService.fetchBySlug("yorkshire");
         assertTrue(yorkshire.isPresent());
 
@@ -103,6 +105,8 @@ public abstract class PageSets {
         feedbackNew.setIp("4.3.2.1");
         feedbackNew.setUrl("/bands");
         feedbackService.create(feedbackNew);
+
+        securityService.createUser("tjs", "password", "test.1@brassbandresults.co.uk");
     }
 
     protected List<String> notFoundPages() {
@@ -250,6 +254,12 @@ public abstract class PageSets {
         List<String> pageList = new ArrayList<>();
         pageList.add("/feedback/queue");
         pageList.add("/feedback/detail/1");
+        pageList.add("/feedback/status-change/claim/tjs/1");
+        pageList.add("/feedback/status-change/done/tjs/1");
+        pageList.add("/feedback/status-change/owner/tjs/1");
+        pageList.add("/feedback/status-change/closed/tjs/1");
+        pageList.add("/feedback/status-change/inconclusive/tjs/1");
+        pageList.add("/feedback/status-change/spam/tjs/1");
         return pageList;
     }
 

@@ -84,4 +84,8 @@ public class NotFoundException extends RuntimeException {
     public static NotFoundException feedbackNotFoundById(long feedbackId) {
         return new NotFoundException("Feedback with id " + feedbackId + " not found");
     }
+
+    public static NotFoundException feedbackUpdateNotFound(String type) {
+        return new NotFoundException("Feedback update type " + type + " not recognised");
+    }
 }

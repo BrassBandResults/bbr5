@@ -24,6 +24,9 @@ public class SecurityServiceImpl implements SecurityService {
     @Override
     public String getCurrentUsername() {
         SecurityContext securityContext = SecurityContextHolder.getContext();
+        if (securityContext.getAuthentication() == null) {
+            return null;
+        }
         return securityContext.getAuthentication().getName();
     }
 

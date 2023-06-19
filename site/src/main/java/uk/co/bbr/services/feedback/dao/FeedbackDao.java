@@ -137,6 +137,7 @@ public class FeedbackDao extends AbstractDao {
 
     public void markDone(String currentUsername) {
         this.setStatus(FeedbackStatus.DONE);
+        this.setOwnedBy(currentUsername);
         this.addAuditLog(currentUsername, "Setting status to done");
     }
 
@@ -148,16 +149,19 @@ public class FeedbackDao extends AbstractDao {
 
     public void markClosed(String currentUsername) {
         this.setStatus(FeedbackStatus.CLOSED);
+        this.setOwnedBy(currentUsername);
         this.addAuditLog(currentUsername, "Setting status closed");
     }
 
     public void markInconclusive(String currentUsername) {
         this.setStatus(FeedbackStatus.INCONCLUSIVE);
+        this.setOwnedBy(currentUsername);
         this.addAuditLog(currentUsername, "Setting status inconclusive");
     }
 
     public void markAsSpam(String currentUsername) {
         this.setStatus(FeedbackStatus.SPAM);
+        this.setOwnedBy(currentUsername);
         this.addAuditLog(currentUsername, "Setting status to spam");
     }
 }

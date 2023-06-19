@@ -58,6 +58,8 @@ public class FeedbackStatusChangeController {
             case "spam":
                 feedback.get().markAsSpam(currentUsername);
                 break;
+            default:
+                throw NotFoundException.feedbackUpdateNotFound(type);
         }
 
         this.feedbackService.update(feedback.get());

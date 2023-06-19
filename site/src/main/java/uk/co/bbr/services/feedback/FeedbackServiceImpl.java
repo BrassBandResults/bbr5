@@ -39,7 +39,7 @@ public class FeedbackServiceImpl implements FeedbackService {
     }
 
     @Override
-    public void create(FeedbackDao feedback) {
+    public FeedbackDao create(FeedbackDao feedback) {
         String currentUsercode = this.securityService.getCurrentUsername();
         String reportedBy = currentUsercode;
         if (currentUsercode == null || currentUsercode.trim().length() == 0 || currentUsercode.equals("anonymousUser")) {
@@ -55,17 +55,17 @@ public class FeedbackServiceImpl implements FeedbackService {
         feedback.setUpdated(LocalDateTime.now());
         feedback.setUpdatedBy(reportedBy);
 
-        this.feedbackRepository.saveAndFlush(feedback);
+        return this.feedbackRepository.saveAndFlush(feedback);
     }
 
     @Override
-    public void update(FeedbackDao feedback) {
+    public FeedbackDao update(FeedbackDao feedback) {
         String currentUsercode = this.securityService.getCurrentUsername();
 
         feedback.setUpdated(LocalDateTime.now());
         feedback.setUpdatedBy(currentUsercode);
 
-        this.feedbackRepository.saveAndFlush(feedback);
+        return this.feedbackRepository.saveAndFlush(feedback);
     }
 
     @Override
