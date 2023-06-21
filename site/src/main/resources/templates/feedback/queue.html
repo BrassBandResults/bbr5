@@ -86,9 +86,10 @@
             }
             buttonBlockDiv.innerHTML = newState;
 
-            const url = "/feedback/status-change/" + type + "/[[${CurrentUserCode}]]/" + feedbackId + "/";
+            const url = "/feedback/status-change/" + type + "/[[${CurrentUserCode}]]/" + feedbackId;
             const httpRequest = new XMLHttpRequest();
             httpRequest.open("GET", url, true);
+            httpRequest.send();
         }
 
         const feedbackClaimLinks = document.querySelectorAll('.bbr-fb-claim');
