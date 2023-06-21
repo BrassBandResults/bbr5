@@ -1,11 +1,33 @@
 <!DOCTYPE html>
 <html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
 <head>
-    <title>Brass Band Results</title>
+    <title th:text="@{#{page.signup.title} + ' - Brass Band Results'}">Create Account - Brass Band Results</title>
 </head>
 <body>
 <div layout:fragment="content">
-    <h1>Home Page</h1>
+    <h2 th:text="#{page.signup.title}">Create Account</h2>
+    <p th:text="#{page.anti-spam.prompt}">To prove you're a real person and not a computer creating spam accounts, please look at the picture below.</p>
+    <img th:src="@{${STATIC_HOST} + '/images/SectionQuestion.jpg'}"/><br/><br/>
+    <span th:text="#{page.anti-spam.question}">Which section of the band is this?</span>
+    <form method="POST" action="/acc/sign-up">
+        <select name="section">
+            <option value="ww" th:text="#{page.anti-spam.section.woodwind}">Woodwind</option>
+            <option value="co" th:text="#{page.anti-spam.section.cornets}">Cornets</option>
+            <option value="bs" th:text="#{page.anti-spam.section.basses}">Basses</option>
+            <option value="pr" th:text="#{page.anti-spam.section.percussion}">Percussion</option>
+            <option value="vi" th:text="#{page.anti-spam.section.violins}">Violins</option>
+            <option value="ps" th:text="#{page.anti-spam.section.sheds}">Shed Builders</option>
+            <option value="ba" th:text="#{page.anti-spam.section.trombones}">Trombones</option>
+            <option value="sx" th:text="#{page.anti-spam.section.saxophones}">Saxophones</option>
+            <option value="cb" th:text="#{page.anti-spam.section.cowbell}">More Cowbell</option>
+            <option value="py" th:text="#{page.anti-spam.section.pony}">Pony</option>
+        </select>
+        <input type="submit" th:value="#{page.buttons.submit}" class="btn btn-outline-success btn-sm rounded"/>
+    </form>
 </div>
+
+<div layout:fragment="feedback">
+</div>
+
 </body>
 </html>

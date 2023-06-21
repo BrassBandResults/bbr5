@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+<head>
+    <title th:text="@{#{page.signup.title} + ' - Brass Band Results'}">Create Account - Brass Band Results</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h2 th:text="#{page.signup.title}">Create Account</h2>
+    <p th:text="#{page.signup.prompt}">Please fill in the details below to create your new account.</p>
+
+    <div th:if="${Errors.length > 0}">
+        <p class="text-danger" th:text="#{${Errors}}"Error Text></p>
+    </div>
+
+    <form method="POST" action="/acc/register">
+
+        <div class="mb-3">
+            <label class="form-label" for="username" th:text="#{page.signup.prompt.username}">Username:</label>
+            <input id="username" name="username" class="form-control" type="text" maxlength="50" size="80" th:value="${Username}" required/>
+            <small class="form-text" th:text="#{page.signup.prompt.username-hint}">This will be public, and spaces are not allowed.</small>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label" for="email" th:text="#{page.signup.prompt.email}">Email:</label>
+            <input id="email" name="email" class="form-control" type="email" maxlength="100" size="80" th:value="${Email}" required/>
+            <small class="form-text" th:text="#{page.signup.prompt.email-hint}">This is kept hidden, but you will be emailed to check that this is valid</small>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="password1" th:text="#{page.signup.prompt.password}">Password:</label>
+            <input id="password1" name="password1" class="form-control" type="text" maxlength="100" size="80" required/>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="password2" th:text="#{page.signup.prompt.password-again}">Password Again:</label>
+            <input id="password2" name="password2" class="form-control" type="text" maxlength="100" size="80" required/>
+        </div>
+
+        <input type="submit" th:value="#{page.buttons.create.account}" class="btn btn-outline-success btn-sm rounded"/>
+    </form>
+</div>
+
+<div layout:fragment="feedback">
+</div>
+
+</body>
+</html>

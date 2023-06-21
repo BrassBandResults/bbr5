@@ -1,52 +1,76 @@
-package uk.co.bbr.web.home;
+package uk.co.bbr.web.signup;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import uk.co.bbr.services.security.UserService;
 import uk.co.bbr.services.security.dao.BbrUserDao;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Controller
 @RequiredArgsConstructor
-public class HomeController {
+public class SignUpController {
 
     private final UserService userService;
 
-    @GetMapping("/")
-    public String home(Model model) {
-        return "home/home";
+    @GetMapping("/acc/sign-up")
+    public String antiSpam() {
+        return "signup/spam-check";
     }
 
-    @GetMapping("/statistics")
-    public String statistics() {
-        return "home/statistics";
+    @PostMapping("/acc/sign-up")
+    public String antiSpamPost(@RequestParam("section") String section) {
+
+        if (section.equalsIgnoreCase("bs")) {
+            return "redirect:/acc/register";
+        }
+
+        return "redirect:/acc/login-pro";
     }
 
-    @GetMapping("/faq")
-    public String faq() {
-        return "home/faq";
+    @GetMapping("/acc/register")
+    public String register(Model model) {
+
+        model.addAttribute("Errors", "");
+        model.addAttribute("Email", "");
+        model.addAttribute("Username", "");
+
+        return "signup/register";
     }
 
-    @GetMapping("/about-us")
-    public String aboutUs() {
-        return "home/about-us";
-    }
+    @PostMapping("/acc/register")
+    public String registerPost(Model model, @RequestParam("username") String username, @RequestParam("email") String email, @RequestParam("password1") String password1, @RequestParam("password2") String password2) {
 
-    @GetMapping("/privacy")
-    public String privacy() {
-        return "home/privacy";
-    }
+        Optional<BbrUserDao> existingUser = this.userService.fetchUserByUsercode(username);
+        if (existingUser.isPresent()) {
+            model.addAttribute("Errors", "page.signup.errors.username-already-used");
+            model.addAttribute("Email", email);
+            model.addAttribute("Username", username);
+            return "signup/register";
+        }
 
-    @GetMapping("/leaderboard")
-    public String leaderboard(Model model) {
+        if (!password1.equals(password2)) {
+            model.addAttribute("Errors", "page.signup.errors.passwords-dont-match");
+            model.addAttribute("Email", email);
+            model.addAttribute("Username", username);
+            return "signup/register";
+        }
 
-        List<BbrUserDao> topUsers = this.userService.fetchTopUsers();
+        if (password1.trim().length() < 8) {
+            model.addAttribute("Errors", "page.signup.errors.password-too-short");
+            model.addAttribute("Email", email);
+            model.addAttribute("Username", username);
+            return "signup/register";
+        }
 
-        model.addAttribute("TopUsers", topUsers);
-
-        return "home/leaderboard";
+        return "redirect:/acc/sign-up-confirm";
     }
 }
