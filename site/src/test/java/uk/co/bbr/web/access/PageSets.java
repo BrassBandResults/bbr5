@@ -132,6 +132,9 @@ public abstract class PageSets {
         List<String> pageList = new ArrayList<>();
         pageList.add("/");
         pageList.add("/about-us");
+        pageList.add("/acc/sign-up");
+        pageList.add("/acc/register");
+        pageList.add("/acc/sign-up-confirm");
         pageList.add("/bands/");
         pageList.add("/bands/R");
         pageList.add("/bands/0");
@@ -272,6 +275,7 @@ public abstract class PageSets {
         pageList.add("/user-list/pro");
         pageList.add("/user-list/superuser");
         pageList.add("/user-list/admin");
+        pageList.add("/user-list/unactivated");
         return pageList;
     }
 }

@@ -13,4 +13,7 @@ public interface PendingUserRepository extends JpaRepository<PendingUserDao, Lon
 
     @Query("SELECT p FROM PendingUserDao p WHERE p.activationKey = :activationKey")
     Optional<PendingUserDao> findByKey(String activationKey);
+
+    @Query("SELECT p FROM PendingUserDao p WHERE p.usercode = :usercode")
+    Optional<PendingUserDao> findByUsercode(String usercode);
 }

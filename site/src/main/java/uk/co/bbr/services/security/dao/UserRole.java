@@ -7,7 +7,9 @@ public enum UserRole {
     ADMIN(JwtAuthenticationToken.ROLE_TEXT_ADMIN, "A"),
     SUPERUSER(JwtAuthenticationToken.ROLE_TEXT_SUPERUSER, "S"),
     PRO(JwtAuthenticationToken.ROLE_TEXT_PRO, "P"),
-    MEMBER(JwtAuthenticationToken.ROLE_TEXT_MEMBER, "M");
+    MEMBER(JwtAuthenticationToken.ROLE_TEXT_MEMBER, "M"),
+    NO_ACCESS(null, "0"),
+    ;
 
     UserRole(String text, String code) {
         this.roleText = text;

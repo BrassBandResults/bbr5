@@ -11,6 +11,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.client.RestTemplate;
 import uk.co.bbr.services.security.JwtService;
 import uk.co.bbr.services.security.SecurityService;
+import uk.co.bbr.services.security.UserService;
 import uk.co.bbr.services.security.ex.AuthenticationFailedException;
 import uk.co.bbr.web.LoginMixin;
 import uk.co.bbr.web.security.support.TestUser;
@@ -26,6 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class UserListsWebTests implements LoginMixin {
 
     @Autowired private SecurityService securityService;
+    @Autowired private UserService userService;
     @Autowired private JwtService jwtService;
     @Autowired private CsrfTokenRepository csrfTokenRepository;
     @Autowired private RestTemplate restTemplate;
@@ -54,6 +56,8 @@ class UserListsWebTests implements LoginMixin {
         this.securityService.createUser("admin-user", "password4", "admin-test@brassbandresults.co.uk");
         this.securityService.makeUserAdmin("admin-user");
 
+        this.userService.registerNewUser("new-user", "new-test@brassbandresults.co.uk", "password5");
+
         logoutTestUser();
     }
 
@@ -68,6 +72,7 @@ class UserListsWebTests implements LoginMixin {
         assertTrue(response.contains("pro-user"));
         assertTrue(response.contains("superuser-user"));
         assertTrue(response.contains("admin-user"));
+        assertFalse(response.contains("new-user"));
     }
 
     @Test
@@ -81,6 +86,7 @@ class UserListsWebTests implements LoginMixin {
         assertTrue(response.contains("pro-user"));
         assertFalse(response.contains("superuser-user"));
         assertFalse(response.contains("admin-user"));
+        assertFalse(response.contains("new-user"));
     }
 
     @Test
@@ -94,6 +100,7 @@ class UserListsWebTests implements LoginMixin {
         assertFalse(response.contains("pro-user"));
         assertTrue(response.contains("superuser-user"));
         assertFalse(response.contains("admin-user"));
+        assertFalse(response.contains("new-user"));
     }
 
     @Test
@@ -107,5 +114,20 @@ class UserListsWebTests implements LoginMixin {
         assertFalse(response.contains("pro-user"));
         assertFalse(response.contains("superuser-user"));
         assertTrue(response.contains("admin-user"));
+        assertFalse(response.contains("new-user"));
+    }
+
+    @Test
+    void testGetUnactivatedUserListReturnsSuccessfully() {
+        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/user-list/unactivated", String.class);
+        assertNotNull(response);
+        assertTrue(response.contains("<title>Users - Brass Band Results</title>"));
+        assertTrue(response.contains(">Users<"));
+
+        assertFalse(response.contains("member-user"));
+        assertFalse(response.contains("pro-user"));
+        assertFalse(response.contains("superuser-user"));
+        assertFalse(response.contains("admin-user"));
+        assertTrue(response.contains("new-user"));
     }
 }

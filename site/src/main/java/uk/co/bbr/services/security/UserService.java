@@ -25,4 +25,6 @@ public interface UserService {
     List<PendingUserDao> listUnactivatedUsers();
 
     void activateUser(String activationKey);
+
+    Optional<PendingUserDao> fetchPendingUser(String usercode);
 }

@@ -70,8 +70,23 @@ public class UserServiceImpl implements UserService {
         pendingUser.setCreated(LocalDateTime.now());
         pendingUser.setUpdatedBy("owner");
         pendingUser.setUpdated(LocalDateTime.now());
-
         this.pendingUserRepository.saveAndFlush(pendingUser);
+
+        BbrUserDao newUser = new BbrUserDao();
+        newUser.setEmail(pendingUser.getEmail());
+        newUser.setAccessLevel(UserRole.NO_ACCESS.getCode());
+        newUser.setUsercode(pendingUser.getUsercode());
+
+        newUser.setCreated(pendingUser.getCreated());
+        newUser.setCreatedBy(pendingUser.getCreatedBy());
+        newUser.setUpdated(LocalDateTime.now());
+        newUser.setUpdatedBy("owner");
+
+        newUser.setSalt(pendingUser.getSalt());
+        newUser.setPasswordVersion(PasswordTools.latestVersion());
+        newUser.setPassword(RandomStringUtils.randomAlphanumeric(5)); // temporary invalid password
+        this.bbrUserRepository.saveAndFlush(newUser);
+
 
         this.emailService.sendActivationEmail(email, pendingUser.getActivationKey());
 
@@ -91,21 +106,21 @@ public class UserServiceImpl implements UserService {
         }
 
         PendingUserDao pendingUserDao = matchingUser.get();
-        BbrUserDao newUser = new BbrUserDao();
-        newUser.setEmail(pendingUserDao.getEmail());
-        newUser.setAccessLevel(UserRole.MEMBER.getCode());
-        newUser.setUsercode(pendingUserDao.getUsercode());
+        Optional<BbrUserDao> fetchedUser = this.bbrUserRepository.fetchByUsercode(pendingUserDao.getUsercode());
+        if (fetchedUser.isEmpty()) {
+            throw NotFoundException.userNotFoundByActivationKey();
+        }
 
-        newUser.setCreated(pendingUserDao.getCreated());
-        newUser.setCreatedBy(pendingUserDao.getCreatedBy());
-        newUser.setUpdated(LocalDateTime.now());
-        newUser.setUpdatedBy("owner");
-
-        newUser.setSalt(pendingUserDao.getSalt());
-        newUser.setPasswordVersion(PasswordTools.latestVersion());
-        newUser.setPassword(pendingUserDao.getPassword());
-        this.bbrUserRepository.saveAndFlush(newUser);
+        // user is already created, just need to set a valid password and allow access
+        fetchedUser.get().setPassword(pendingUserDao.getPassword());
+        fetchedUser.get().setAccessLevel(UserRole.MEMBER.getCode());
+        this.bbrUserRepository.saveAndFlush(fetchedUser.get());
 
         this.pendingUserRepository.delete(matchingUser.get());
+    }
+
+    @Override
+    public Optional<PendingUserDao> fetchPendingUser(String usercode) {
+        return this.pendingUserRepository.findByUsercode(usercode);
     }
 }

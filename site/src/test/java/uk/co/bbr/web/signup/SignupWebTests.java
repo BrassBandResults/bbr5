@@ -1,0 +1,269 @@
+package uk.co.bbr.web.signup;
+
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.web.csrf.CsrfToken;
+import org.springframework.security.web.csrf.CsrfTokenRepository;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
+import uk.co.bbr.services.bands.dao.BandDao;
+import uk.co.bbr.services.bands.dao.BandRehearsalDayDao;
+import uk.co.bbr.services.security.JwtService;
+import uk.co.bbr.services.security.SecurityService;
+import uk.co.bbr.services.security.UserService;
+import uk.co.bbr.services.security.dao.BbrUserDao;
+import uk.co.bbr.services.security.dao.PendingUserDao;
+import uk.co.bbr.services.security.dao.UserRole;
+import uk.co.bbr.services.security.ex.AuthenticationFailedException;
+import uk.co.bbr.services.venues.VenueService;
+import uk.co.bbr.web.LoginMixin;
+import uk.co.bbr.web.security.filter.SecurityFilter;
+import uk.co.bbr.web.security.support.TestUser;
+
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+@ActiveProfiles("test")
+@SpringBootTest(properties = { "spring.config.name=signup-web-tests-admin-h2", "spring.datasource.url=jdbc:h2:mem:signup-web-tests-admin-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE", "spring.jpa.database-platform=org.hibernate.dialect.SQLServerDialect"},
+        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+class SignupWebTests implements LoginMixin {
+
+    @Autowired private CsrfTokenRepository csrfTokenRepository;
+    @Autowired private UserService userService;
+    @Autowired private RestTemplate restTemplate;
+    @LocalServerPort private int port;
+
+    @Test
+    void testGetSignupPageWorksSuccessfully() {
+        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/acc/sign-up", String.class);
+        assertNotNull(response);
+        assertTrue(response.contains("<title>Create Account - Brass Band Results</title>"));
+        assertTrue(response.contains("<h2>Create Account</h2>"));
+        assertTrue(response.contains("a real person and not a computer creating spam accounts, please look at the picture below.<"));
+    }
+
+    @Test
+    void testGetRegisterPageWorksSuccessfully() {
+        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/acc/register", String.class);
+        assertNotNull(response);
+        assertTrue(response.contains("<title>Create Account - Brass Band Results</title>"));
+        assertTrue(response.contains("<h2>Create Account</h2>"));
+        assertTrue(response.contains(">Please fill in the details below to create your new account.<"));
+    }
+
+    @Test
+    void testGetSignupConfirmPageWorksSuccessfully() {
+        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/acc/sign-up-confirm", String.class);
+        assertNotNull(response);
+        assertTrue(response.contains("<title>Activate Account - Brass Band Results</title>"));
+        assertTrue(response.contains("<h2>Activate Account</h2>"));
+        assertTrue(response.contains(">Your account has been created, but you need to activate it.<"));
+    }
+
+    @Test
+    void testGetActivatePageWorksSuccessfully() {
+        // arrange
+        String activationKey = this.userService.registerNewUser("test1", "test1@brassbandresults.co.uk", "password1");
+
+        // act
+        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/acc/activate/" + activationKey, String.class);
+
+        // assert
+        assertNotNull(response);
+        assertTrue(response.contains("<title>Account Activated - Brass Band Results</title>"));
+        assertTrue(response.contains("<h2>Account Activated</h2>"));
+        assertTrue(response.contains(">Your account has been activated.  Thanks for helping.<"));
+
+        Optional<BbrUserDao> userAfter = this.userService.fetchUserByUsercode("test1");
+        assertTrue(userAfter.isPresent());
+        assertEquals("test1", userAfter.get().getUsercode());
+        assertEquals(UserRole.MEMBER.getCode(), userAfter.get().getAccessLevel());
+    }
+
+    @Test
+    void testSubmitRegisterPageWorksSuccessfully() {
+        // arrange
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+        CsrfToken csrfToken = csrfTokenRepository.generateToken(null);
+        headers.add(csrfToken.getHeaderName(), csrfToken.getToken());
+        headers.add("Cookie", SecurityFilter.CSRF_HEADER_NAME + "=" + csrfToken.getToken());
+
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+        map.add("username", "tjs-test1");
+        map.add("email", "tjs-test1@brassbandresults.co.uk");
+        map.add("password1", "password1234");
+        map.add("password2", "password1234");
+        map.add("_csrf", csrfToken.getToken());
+        map.add("_csrf_header", SecurityFilter.CSRF_HEADER_NAME);
+
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
+
+        // act
+        ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/acc/register", request, String.class);
+
+        // assert
+        assertEquals(HttpStatus.FOUND, response.getStatusCode());
+
+        assertTrue(Objects.requireNonNull(response.getHeaders().get("Location")).get(0).endsWith("/acc/sign-up-confirm"));
+
+        Optional<PendingUserDao> pendingUser = this.userService.fetchPendingUser("tjs-test1");
+        assertTrue(pendingUser.isPresent());
+        assertEquals("tjs-test1", pendingUser.get().getUsercode());
+    }
+
+    @Test
+    void testSubmitRegisterPageWithNonMatchingPasswordsFails() {
+        // arrange
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+        CsrfToken csrfToken = csrfTokenRepository.generateToken(null);
+        headers.add(csrfToken.getHeaderName(), csrfToken.getToken());
+        headers.add("Cookie", SecurityFilter.CSRF_HEADER_NAME + "=" + csrfToken.getToken());
+
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+        map.add("username", "tjs-test2");
+        map.add("email", "tjs-test2@brassbandresults.co.uk");
+        map.add("password1", "password1234");
+        map.add("password2", "password1235");
+        map.add("_csrf", csrfToken.getToken());
+        map.add("_csrf_header", SecurityFilter.CSRF_HEADER_NAME);
+
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
+
+        // act
+        ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/acc/register", request, String.class);
+
+        // assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        Optional<PendingUserDao> pendingUser = this.userService.fetchPendingUser("tjs-test2");
+        assertFalse(pendingUser.isPresent());
+    }
+
+    @Test
+    void testSubmitRegisterPageWithExistingUsernameFails() {
+        // arrange
+        String activationKey = this.userService.registerNewUser("tjs-test3", "test@brassbandresults.co.uk", "password1");
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+        CsrfToken csrfToken = csrfTokenRepository.generateToken(null);
+        headers.add(csrfToken.getHeaderName(), csrfToken.getToken());
+        headers.add("Cookie", SecurityFilter.CSRF_HEADER_NAME + "=" + csrfToken.getToken());
+
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+        map.add("username", "tjs-test3");
+        map.add("email", "tjs-test3@brassbandresults.co.uk");
+        map.add("password1", "password1234");
+        map.add("password2", "password1234");
+        map.add("_csrf", csrfToken.getToken());
+        map.add("_csrf_header", SecurityFilter.CSRF_HEADER_NAME);
+
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
+
+        // act
+        ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/acc/register", request, String.class);
+
+        // assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
+
+    @Test
+    void testSubmitRegisterPageWithShortPasswordFails() {
+        // arrange
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+        CsrfToken csrfToken = csrfTokenRepository.generateToken(null);
+        headers.add(csrfToken.getHeaderName(), csrfToken.getToken());
+        headers.add("Cookie", SecurityFilter.CSRF_HEADER_NAME + "=" + csrfToken.getToken());
+
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+        map.add("username", "tjs-test4");
+        map.add("email", "tjs-test3@brassbandresults.co.uk");
+        map.add("password1", "1234");
+        map.add("password2", "1234");
+        map.add("_csrf", csrfToken.getToken());
+        map.add("_csrf_header", SecurityFilter.CSRF_HEADER_NAME);
+
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
+
+        // act
+        ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/acc/register", request, String.class);
+
+        // assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
+
+    @Test
+    void testSubmitAntiSpamPageWithCorrectAnswerWorks() {
+        // arrange
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+        CsrfToken csrfToken = csrfTokenRepository.generateToken(null);
+        headers.add(csrfToken.getHeaderName(), csrfToken.getToken());
+        headers.add("Cookie", SecurityFilter.CSRF_HEADER_NAME + "=" + csrfToken.getToken());
+
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+        map.add("section", "bs");
+        map.add("_csrf", csrfToken.getToken());
+        map.add("_csrf_header", SecurityFilter.CSRF_HEADER_NAME);
+
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
+
+        // act
+        ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/acc/sign-up", request, String.class);
+
+        // assert
+        assertEquals(HttpStatus.FOUND, response.getStatusCode());
+
+        assertTrue(Objects.requireNonNull(response.getHeaders().get("Location")).get(0).endsWith("/acc/register"));
+    }
+
+    @Test
+    void testSubmitAntiSpamPageWithIncorrectAnswerFails() {
+        // arrange
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+        CsrfToken csrfToken = csrfTokenRepository.generateToken(null);
+        headers.add(csrfToken.getHeaderName(), csrfToken.getToken());
+        headers.add("Cookie", SecurityFilter.CSRF_HEADER_NAME + "=" + csrfToken.getToken());
+
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+        map.add("section", "pe");
+        map.add("_csrf", csrfToken.getToken());
+        map.add("_csrf_header", SecurityFilter.CSRF_HEADER_NAME);
+
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
+
+        // act
+        ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/acc/sign-up", request, String.class);
+
+        // assert
+        assertEquals(HttpStatus.FOUND, response.getStatusCode());
+
+        assertTrue(Objects.requireNonNull(response.getHeaders().get("Location")).get(0).endsWith("/acc/login-pro"));
+    }
+}

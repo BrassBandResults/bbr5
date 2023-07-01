@@ -11,13 +11,13 @@ public interface BbrUserRepository  extends JpaRepository<BbrUserDao, Long> {
     @Query("SELECT u FROM BbrUserDao u WHERE u.usercode = ?1")
     Optional<BbrUserDao> fetchByUsercode(String usercode);
 
-    @Query("SELECT u FROM BbrUserDao u WHERE u.usercode = ?1 AND u.password = ?2")
+    @Query("SELECT u FROM BbrUserDao u WHERE u.usercode = ?1 AND u.password = ?2 AND u.accessLevel != '0'")
     Optional<BbrUserDao> loginCheck(String usercode, String hashedPassword);
 
-    @Query("SELECT u FROM BbrUserDao u WHERE u.points > 49 ORDER BY u.points DESC")
+    @Query("SELECT u FROM BbrUserDao u WHERE u.points > 49 AND u.accessLevel != '0' ORDER BY u.points DESC")
     List<BbrUserDao> fetchTopUsers();
 
-    @Query("SELECT u FROM BbrUserDao u ORDER BY u.usercode")
+    @Query("SELECT u FROM BbrUserDao u WHERE u.accessLevel != '0' ORDER BY u.usercode")
     List<BbrUserDao> fetchAllUsers();
 
     @Query("SELECT u FROM BbrUserDao u WHERE u.accessLevel = 'P' ORDER BY u.usercode")
