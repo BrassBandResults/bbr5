@@ -88,4 +88,8 @@ public class NotFoundException extends RuntimeException {
     public static NotFoundException feedbackUpdateNotFound(String type) {
         return new NotFoundException("Feedback update type " + type + " not recognised");
     }
+
+    public static NotFoundException userNotFoundByActivationKey() {
+        return new NotFoundException("Couldn't find a user to activate with that key");
+    }
 }

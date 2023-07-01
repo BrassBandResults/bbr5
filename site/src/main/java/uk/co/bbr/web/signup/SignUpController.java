@@ -4,16 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import uk.co.bbr.services.security.UserService;
 import uk.co.bbr.services.security.dao.BbrUserDao;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 import java.util.Optional;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Controller
 @RequiredArgsConstructor
@@ -71,6 +68,21 @@ public class SignUpController {
             return "signup/register";
         }
 
+        this.userService.registerNewUser(username, email, password1);
+
         return "redirect:/acc/sign-up-confirm";
+    }
+
+    @GetMapping("/acc/sign-up-confirm")
+    public String register() {
+        return "signup/confirm";
+    }
+
+    @GetMapping("/acc/activate/{activationKey:[A-Za-z0-9]{40}}")
+    public String activate(Model model, @PathVariable("activationKey") String activationKey) {
+
+        this.userService.activateUser(activationKey);
+
+        return "signup/activated";
     }
 }

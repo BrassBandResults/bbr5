@@ -10,14 +10,14 @@
         <tr>
             <th>Created:</th>
             <td>
-                <span th:text="${#temporals.format(Feedback.created, 'dd-MMM-yyyy hh:mm:ss')}">created</span>
+                <span th:text="${#temporals.format(Feedback.created, 'dd MMM yyyy hh:mm:ss')}">created</span>
                 by <a th:text="${Feedback.reportedBy}" th:href="${'users/' + Feedback.reportedBy}">user</a>
             </td>
         </tr>
         <tr>
             <th>Updated:</th>
             <td>
-                <span th:text="${#temporals.format(Feedback.updated, 'dd-MMM-yyyy hh:mm:ss')}">updated</span>
+                <span th:text="${#temporals.format(Feedback.updated, 'dd MMM yyyy hh:mm:ss')}">updated</span>
                 by <a th:text="${Feedback.updatedBy}" th:href="${'users/' + Feedback.updatedBy}">user</a>
             </td
         ></tr>

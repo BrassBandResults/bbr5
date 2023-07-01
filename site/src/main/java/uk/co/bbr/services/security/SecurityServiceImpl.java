@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.framework.ValidationException;
 import uk.co.bbr.services.security.dao.BbrUserDao;
+import uk.co.bbr.services.security.dao.PendingUserDao;
 import uk.co.bbr.services.security.repo.BbrUserRepository;
 import uk.co.bbr.services.security.dao.UserRole;
 import uk.co.bbr.services.security.ex.AuthenticationFailedException;

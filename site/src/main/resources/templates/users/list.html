@@ -20,6 +20,9 @@
         <li class="nav-item">
             <a th:class="'nav-link ' + ${Type == 'admin' ? 'active' : ''}" href="/user-list/admin" th:text="#{page.user-list.tab.admins}">Admins</a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/user-list/unactivated" th:text="#{page.user-list.tab.unactivated}">Unactivated</a>
+        </li>
     </ul>
     <br/>
 
@@ -29,12 +32,16 @@
             <thead>
             <tr>
                 <th th:text="#{page.column-header.user}">User</th>
+                <th th:text="#{page.column-header.email}">Email</th>
+                <th th:text="#{page.column-header.created}" class="date">Created</th>
                 <th th:text="#{page.column-header.points}">Points</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="user: ${Users}">
                 <td><span th:replace="links/user-link.html :: userLink(${user})">Lokry</span></td>
+                <td><span th:text="${user.email}">me@here.com</span></td>
+                <td th:text="${#temporals.format(user.created, 'dd MMM yyyy')}"></td>
                 <td th:text="${user.points}"></td>
             </tr>
             </tbody>

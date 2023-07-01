@@ -21,6 +21,7 @@ import uk.co.bbr.services.regions.dto.LinkSectionDto;
 import uk.co.bbr.services.regions.dto.RegionPageDto;
 import uk.co.bbr.services.security.UserService;
 import uk.co.bbr.services.security.dao.BbrUserDao;
+import uk.co.bbr.services.security.dao.PendingUserDao;
 import uk.co.bbr.web.security.annotations.IsBbrAdmin;
 import uk.co.bbr.web.security.annotations.IsBbrPro;
 
@@ -73,6 +74,15 @@ public class UserController {
         model.addAttribute("Users", users);
         model.addAttribute("Type", "admin");
         return "users/list";
+    }
+
+    @IsBbrAdmin
+    @GetMapping("/user-list/unactivated")
+    public String unactivatedUserList(Model model) {
+        List<PendingUserDao> users = this.userService.listUnactivatedUsers();
+
+        model.addAttribute("Users", users);
+        return "users/list-unactivated";
     }
 
     @GetMapping("/users/{usercode:[a-zA-Z0-9@_\\-.]+}")

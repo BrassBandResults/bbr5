@@ -1,6 +1,7 @@
 package uk.co.bbr.services.security;
 
 import uk.co.bbr.services.security.dao.BbrUserDao;
+import uk.co.bbr.services.security.dao.PendingUserDao;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,4 +19,10 @@ public interface UserService {
     List<BbrUserDao> findAllSuperuser();
 
     List<BbrUserDao> findAllAdmin();
+
+    String registerNewUser(String username, String email, String plainTextPassword);
+
+    List<PendingUserDao> listUnactivatedUsers();
+
+    void activateUser(String activationKey);
 }

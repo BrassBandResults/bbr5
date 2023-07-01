@@ -49,4 +49,8 @@ public class PasswordTools {
         }
         return hexString.toString();
     }
+
+    public static String newPassword(String salt, String usercode, String plainTextPassword) {
+        return PasswordTools.hashPassword(PasswordTools.latestVersion(), salt, usercode, plainTextPassword);
+    }
 }

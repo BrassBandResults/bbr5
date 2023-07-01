@@ -1,6 +1,7 @@
 package uk.co.bbr.services.security;
 
 import uk.co.bbr.services.security.dao.BbrUserDao;
+import uk.co.bbr.services.security.dao.PendingUserDao;
 import uk.co.bbr.services.security.ex.AuthenticationFailedException;
 
 import java.util.Optional;
@@ -13,6 +14,7 @@ public interface SecurityService {
     BbrUserDao authenticate(String email, String plaintextPassword) throws AuthenticationFailedException;
 
     BbrUserDao createUser(String usercode, String plaintextPassword, String email);
+
     BbrUserDao createUserWithDjangoStylePassword(String usercode, String hashedPassword, String email);
 
     void makeUserAdmin(String usercode);
@@ -22,4 +24,6 @@ public interface SecurityService {
     void makeUserSuperuser(String usercode);
 
     boolean userExists(String username);
+
+
 }
