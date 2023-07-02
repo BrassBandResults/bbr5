@@ -6,4 +6,6 @@ public interface EmailService {
     void sendActivationEmail(String email, String activationKey);
 
     void sendFeedbackEmail(SiteUserDao user, String feedbackComment, String feedbackOffset);
+
+    void sendResetPasswordEmail(SiteUserDao siteUserDao);
 }

@@ -34,7 +34,7 @@ public class EmailServiceImpl implements EmailService {
         }
 
         StringBuilder messageText = new StringBuilder();
-        messageText.append(this.messageSource.getMessage("email.feedback.salutation", null, LocaleContextHolder.getLocale()));
+        messageText.append(this.messageSource.getMessage("email.hello", null, LocaleContextHolder.getLocale()));
         messageText.append(" ");
         messageText.append(user.getUsercode());
         messageText.append("\n\n");
@@ -47,10 +47,29 @@ public class EmailServiceImpl implements EmailService {
         messageText.append(this.messageSource.getMessage("email.feedback.opt-out", null, LocaleContextHolder.getLocale()));
         messageText.append("https://www.brassbandresults.co.uk/acc/feedback/opt-out?id=").append(user.getUuid());
         messageText.append("\n\n");
-        messageText.append(this.messageSource.getMessage("email.salutation", null, LocaleContextHolder.getLocale()));
+        messageText.append(this.messageSource.getMessage("email.sign-off", null, LocaleContextHolder.getLocale()));
 
         String subject = this.messageSource.getMessage("email.feedback.subject", null, LocaleContextHolder.getLocale()) + " " + feedbackOffset;
         this.sendEmail(EmailServiceImpl.EMAIL_FROM, destinationEmail, subject, messageText.toString());
+    }
+
+    @Override
+    public void sendResetPasswordEmail(SiteUserDao user) {
+        StringBuilder messageText = new StringBuilder();
+        messageText.append(this.messageSource.getMessage("email.hello", null, LocaleContextHolder.getLocale()));
+        messageText.append(" ");
+        messageText.append(user.getUsercode());
+        messageText.append("\n\n");
+        messageText.append(this.messageSource.getMessage("email.reset-password.prompt1", null, LocaleContextHolder.getLocale()));
+        messageText.append("\n\n");
+        messageText.append("https://www.brassbandresults.co.uk/acc/forgotten-password/reset/").append(user.getResetPasswordKey());
+        messageText.append("\n\n");
+        messageText.append(this.messageSource.getMessage("email.reset-password.username-prompt", null, LocaleContextHolder.getLocale())).append(" ").append(user.getUsercode());
+        messageText.append("\n\n");
+        messageText.append(this.messageSource.getMessage("email.sign-off", null, LocaleContextHolder.getLocale()));
+
+        String subject = this.messageSource.getMessage("email.reset-password.subject", null, LocaleContextHolder.getLocale());
+        this.sendEmail(EmailServiceImpl.EMAIL_FROM, user.getEmail(), subject, messageText.toString());
     }
 
     @Override
@@ -59,7 +78,7 @@ public class EmailServiceImpl implements EmailService {
         messageText.append(this.messageSource.getMessage("email.account-activation.line1", null, LocaleContextHolder.getLocale())).append("\n\n");
         messageText.append(this.messageSource.getMessage("email.account-activation.line2", null, LocaleContextHolder.getLocale())).append("\n\n");
         messageText.append("https://brassbandresults.co.uk/acc/activate/").append(activationKey).append("\n\n");
-        messageText.append(this.messageSource.getMessage("email.salutation", null, LocaleContextHolder.getLocale()));
+        messageText.append(this.messageSource.getMessage("email.sign-off", null, LocaleContextHolder.getLocale()));
 
         String subject = this.messageSource.getMessage("email.account-activation.subject", null, LocaleContextHolder.getLocale());
         this.sendEmail(EmailServiceImpl.EMAIL_FROM, destinationEmail, subject, messageText.toString());

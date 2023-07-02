@@ -29,4 +29,6 @@ public interface BbrUserRepository  extends JpaRepository<SiteUserDao, Long> {
     @Query("SELECT u FROM SiteUserDao u WHERE u.accessLevel = 'A' ORDER BY u.usercode")
     List<SiteUserDao> fetchAllAdminUsers();
 
+    @Query("SELECT u FROM SiteUserDao u WHERE u.email = :email ORDER BY u.lastLogin DESC")
+    List<SiteUserDao> fetchByEmail(String email);
 }

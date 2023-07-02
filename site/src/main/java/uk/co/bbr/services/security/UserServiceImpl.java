@@ -1,6 +1,7 @@
 package uk.co.bbr.services.security;
 
 import lombok.RequiredArgsConstructor;
+import net.bytebuddy.utility.RandomString;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
 import uk.co.bbr.services.email.EmailService;
@@ -123,5 +124,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<PendingUserDao> fetchPendingUser(String usercode) {
         return this.pendingUserRepository.findByUsercode(usercode);
+    }
+
+    @Override
+    public Optional<SiteUserDao> fetchUserByEmail(String email) {
+        List<SiteUserDao> users = this.bbrUserRepository.fetchByEmail(email);
+        if (users.isEmpty()) {
+            return Optional.empty();
+        }
+        return Optional.of(users.get(0));
+    }
+
+    @Override
+    public void generateResetPasswordKey(SiteUserDao siteUser) {
+        siteUser.setResetPasswordKey(RandomStringUtils.randomAlphanumeric(40));
+        this.bbrUserRepository.saveAndFlush(siteUser);
     }
 }

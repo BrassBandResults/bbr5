@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title th:text="@{#{page.reset-password.title} + ' - Brass Band Results'}">Forgotten Password - Brass Band Results</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h2 th:text="#{page.reset-password.title}">Forgotten Password</h2>
+    <p th:text="#{page.reset-password.prompt}">Please enter your username or the email address of your account below. The registered email for your account will be sent a link which will allow you to reset your password.</p>
+    <form method="POST" action="/acc/forgotten-password">
+
+        <div class="mb-3">
+            <label class="form-label" for="usercode" th:text="#{page.reset-password.prompt.username}">Username:</label>
+            <input id="usercode" name="usercode" class="form-control" type="text" maxlength="50" size="80" required/>
+        </div>
+
+        <input type="submit" th:value="#{page.buttons.reset-password}" class="btn btn-outline-success btn-sm rounded"/>
+    </form>
+</div>
+
+<div layout:fragment="feedback">
+</div>
+</body>
+</html>

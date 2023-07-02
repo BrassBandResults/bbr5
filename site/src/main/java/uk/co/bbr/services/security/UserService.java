@@ -27,4 +27,8 @@ public interface UserService {
     void activateUser(String activationKey);
 
     Optional<PendingUserDao> fetchPendingUser(String usercode);
+
+    Optional<SiteUserDao> fetchUserByEmail(String email);
+
+    void generateResetPasswordKey(SiteUserDao siteUser);
 }
