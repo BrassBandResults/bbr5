@@ -46,6 +46,8 @@ public class EmailServiceImpl implements EmailService {
         messageText.append("\n\n");
         messageText.append(this.messageSource.getMessage("email.feedback.opt-out", null, LocaleContextHolder.getLocale()));
         messageText.append("https://www.brassbandresults.co.uk/acc/feedback/opt-out?id=").append(user.getUuid());
+        messageText.append("\n\n");
+        messageText.append(this.messageSource.getMessage("email.salutation", null, LocaleContextHolder.getLocale()));
 
         String subject = this.messageSource.getMessage("email.feedback.subject", null, LocaleContextHolder.getLocale()) + " " + feedbackOffset;
         this.sendEmail(EmailServiceImpl.EMAIL_FROM, destinationEmail, subject, messageText.toString());

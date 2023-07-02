@@ -2,7 +2,9 @@ package uk.co.bbr.web.feedback;
 
 import com.icegreen.greenmail.configuration.GreenMailConfiguration;
 import com.icegreen.greenmail.junit5.GreenMailExtension;
+import com.icegreen.greenmail.util.GreenMailUtil;
 import com.icegreen.greenmail.util.ServerSetupTest;
+import org.awaitility.Awaitility;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -41,9 +43,11 @@ import uk.co.bbr.web.LoginMixin;
 import uk.co.bbr.web.security.filter.SecurityFilter;
 import uk.co.bbr.web.security.support.TestUser;
 
+import javax.mail.internet.MimeMessage;
 import java.time.LocalDate;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -92,6 +96,22 @@ class FeedbackWebTests implements LoginMixin {
         Optional<FeedbackDao> latestFeedback = this.feedbackService.fetchLatestFeedback("/offset/test");
         assertTrue(latestFeedback.isPresent());
         assertEquals("Some   test  feedback", latestFeedback.get().getComment());
+
+        Awaitility.await().atMost(2, TimeUnit.SECONDS).untilAsserted(()-> {
+            MimeMessage receivedMessage = greenMail.getReceivedMessages()[0];
+
+            assertEquals(1, receivedMessage.getAllRecipients().length);
+            assertEquals("owner@brassbandresults.co.uk", receivedMessage.getAllRecipients()[0].toString());
+            assertEquals("BrassBandResults <notification@brassbandresults.co.uk>", receivedMessage.getFrom()[0].toString());
+            assertEquals("Feedback /offset/test", receivedMessage.getSubject());
+
+            String emailContents = GreenMailUtil.getBody(receivedMessage);
+
+            assertTrue(emailContents.contains("Some feedback has been entered on https://www.brassbandresults.co.uk site, on a page containing information that you entered."));
+            assertTrue(emailContents.contains("/offset/test"));
+            assertTrue(emailContents.contains("Don't want to receive these emails?  Opt out here"));
+            assertTrue(emailContents.contains("The Brass Band Results Team"));
+        });
     }
 
     @Test
