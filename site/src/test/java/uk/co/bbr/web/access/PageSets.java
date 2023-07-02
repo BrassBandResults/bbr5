@@ -137,6 +137,7 @@ public abstract class PageSets {
         pageList.add("/acc/sign-up-confirm");
         pageList.add("/acc/forgotten-password");
         pageList.add("/acc/forgotten-password/sent");
+        pageList.add("/acc/forgotten-password/changed");
         pageList.add("/bands/");
         pageList.add("/bands/R");
         pageList.add("/bands/0");

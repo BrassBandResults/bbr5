@@ -92,4 +92,8 @@ public class NotFoundException extends RuntimeException {
     public static NotFoundException userNotFoundByActivationKey() {
         return new NotFoundException("Couldn't find a user to activate with that key");
     }
+
+    public static NotFoundException userNotFoundByResetPasswordKey() {
+        return new NotFoundException("Couldn't find a user to reset password for with that key");
+    }
 }

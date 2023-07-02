@@ -9,7 +9,7 @@
     <p th:text="#{page.signup.prompt}">Please fill in the details below to create your new account.</p>
 
     <div th:if="${Errors.length > 0}">
-        <p class="text-danger" th:text="#{${Errors}}"Error Text></p>
+        <p class="text-danger" th:text="#{${Errors}}">Error Text</p>
     </div>
 
     <form method="POST" action="/acc/register">

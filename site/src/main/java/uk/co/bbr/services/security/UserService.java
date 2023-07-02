@@ -31,4 +31,6 @@ public interface UserService {
     Optional<SiteUserDao> fetchUserByEmail(String email);
 
     void generateResetPasswordKey(SiteUserDao siteUser);
+
+    Optional<SiteUserDao> fetchUserByResetPasswordKey(String resetKey);
 }

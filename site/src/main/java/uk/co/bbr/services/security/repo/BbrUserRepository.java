@@ -8,10 +8,10 @@ import java.util.List;
 import java.util.Optional;
 
 public interface BbrUserRepository  extends JpaRepository<SiteUserDao, Long> {
-    @Query("SELECT u FROM SiteUserDao u WHERE u.usercode = ?1")
+    @Query("SELECT u FROM SiteUserDao u WHERE u.usercode = :usercode")
     Optional<SiteUserDao> fetchByUsercode(String usercode);
 
-    @Query("SELECT u FROM SiteUserDao u WHERE u.usercode = ?1 AND u.password = ?2 AND u.accessLevel != '0'")
+    @Query("SELECT u FROM SiteUserDao u WHERE u.usercode = :usercode AND u.password = :hashedPassword AND u.accessLevel != '0'")
     Optional<SiteUserDao> loginCheck(String usercode, String hashedPassword);
 
     @Query("SELECT u FROM SiteUserDao u WHERE u.points > 49 AND u.accessLevel != '0' ORDER BY u.points DESC")
@@ -31,4 +31,7 @@ public interface BbrUserRepository  extends JpaRepository<SiteUserDao, Long> {
 
     @Query("SELECT u FROM SiteUserDao u WHERE u.email = :email ORDER BY u.lastLogin DESC")
     List<SiteUserDao> fetchByEmail(String email);
+
+    @Query("SELECT u FROM SiteUserDao u WHERE u.resetPasswordKey = :resetKey")
+    Optional<SiteUserDao> fetchByResetKey(String resetKey);
 }

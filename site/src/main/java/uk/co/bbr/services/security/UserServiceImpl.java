@@ -140,4 +140,9 @@ public class UserServiceImpl implements UserService {
         siteUser.setResetPasswordKey(RandomStringUtils.randomAlphanumeric(40));
         this.bbrUserRepository.saveAndFlush(siteUser);
     }
+
+    @Override
+    public Optional<SiteUserDao> fetchUserByResetPasswordKey(String resetKey) {
+        return this.bbrUserRepository.fetchByResetKey(resetKey);
+    }
 }
