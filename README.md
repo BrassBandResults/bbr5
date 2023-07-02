@@ -8,6 +8,18 @@ This is the source repository for the next incarnation of https://brassbandresul
 * Azure SQL Server database
 * Azure Storage Account for static assets
 
+## Environment Variables
+The following environment variables are used by the site.
+* BBR_DATABASE_URL - url for the sqlserver database, something like __`jdbc:sqlserver://timpi;database=bbr;trustServerCertificate=true`__
+* BBR_DATABASE_USERNAME - database username
+* BBR_DATABASE_PASSWORD - database password
+* BBR_SMTP_SERVER_HOST - hostname for the SMTP server to use, probably __`smtp.sendgrid.net`__
+* BBR_SMTP_SERVER_USERNAME - username for SMTP server
+* BBR_SMTP_SERVER_PASSWORD - password for SMTP server
+* BBR_STRIPE_PUBLIC_BUY_BUTTON - Stripe buy button, starts with buy_btn_
+* BBR_STRIPE_PUBLIC_PUBLISHABLE_KEY - Stripe publishable key, starts with pk_
+* BBR_STRIPE_PRIVATE_API_KEY - Stripe private key, starts with sk_
+
 ## Running Locally
 Close the git repository to your local machine.  From here the unit test suite can be run.
 In order to run the application locally, you'll need a running sql server database.  The easiest way to do this is to deploy the `mcr.microsoft.com/azure-sql-edge:latest` image using docker.
@@ -62,7 +74,6 @@ At this point we have the base data in place, with a subset of the users - just 
 
 The results import relies on generated SQL rather than XML, so we need to at this point import the user details.
 
-    :::text
     \copy (SELECT u.id, u.username, u.email, u.password, u.last_login, u.date_joined, p.id, points, contest_history_visibility, enhanced_functionality, superuser, pro_member, stripe_email,  stripe_token, stripe_customer
     FROM auth_user u
     INNER JOIN users_userprofile p ON p.user_id = u.id

@@ -1,6 +1,7 @@
 package uk.co.bbr.web.migrate;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -109,6 +110,7 @@ public class MigrateUsersController {
             user.setCreatedBy("tjs");
             user.setUpdatedBy("tjs");
 
+            user.setUuid(RandomStringUtils.randomAlphanumeric(40));
 
             this.bbrUserRepository.saveAndFlush(user);
         }
@@ -143,6 +145,8 @@ public class MigrateUsersController {
             user.setCreatedBy("tjs");
             user.setUpdatedBy("tjs");
 
+            user.setUuid(RandomStringUtils.randomAlphanumeric(40));
+
             this.bbrUserRepository.saveAndFlush(user);
         }
     }
@@ -153,10 +157,10 @@ public class MigrateUsersController {
         }
         // 2015-08-18 08:08:27.143742
 
-        if (dateTime.indexOf("+") > -1){
+        if (dateTime.contains("+")){
             dateTime = dateTime.substring(0, dateTime.indexOf("+"));
         }
-        if (dateTime.indexOf(".") > -1){
+        if (dateTime.contains(".")){
             dateTime = dateTime.substring(0, dateTime.indexOf("."));
         }
 

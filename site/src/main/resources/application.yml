@@ -1,9 +1,9 @@
 spring:
   datasource:
-    url: jdbc:sqlserver://timpi;database=bbr;trustServerCertificate=true
+    url: ${BBR_DATABASE_URL}
     driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
-    username: sa
-    password: admin9552Password
+    username: ${BBR_DATABASE_USERNAME}
+    password: ${BBR_DATABASE_PASSWORD}
   jpa:
     open-in-view: false
     # show-sql: true
@@ -11,9 +11,9 @@ spring:
     hibernate:
       ddl-auto: none
   mail:
-    password: ${SMTP_SERVER_PASSWORD}
-    username: ${SMTP_SERVER_USERNAME}
-    host: ${SMTP_SERVER_HOST}
+    password: ${BBR_SMTP_SERVER_PASSWORD}
+    username: ${BBR_SMTP_SERVER_USERNAME}
+    host: ${BBR_SMTP_SERVER_HOST}
     port: 587
     protocol: smtp
     properties:
