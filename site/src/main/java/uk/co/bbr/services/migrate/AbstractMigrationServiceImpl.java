@@ -4,7 +4,7 @@ import org.jdom2.Element;
 import uk.co.bbr.services.framework.annotations.IgnoreCoverage;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.services.security.UserService;
-import uk.co.bbr.services.security.dao.BbrUserDao;
+import uk.co.bbr.services.security.dao.SiteUserDao;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -19,12 +19,12 @@ public class AbstractMigrationServiceImpl {
             return null;
         }
 
-        Optional<BbrUserDao> user = userService.fetchUserByUsercode(username);
+        Optional<SiteUserDao> user = userService.fetchUserByUsercode(username);
         if (user.isPresent()) {
             return user.get().getUsercode();
         }
 
-        BbrUserDao newUser = securityService.createUser(username, "NoPassword", "migrated@brassbandresults.co.uk");
+        SiteUserDao newUser = securityService.createUser(username, "NoPassword", "migrated@brassbandresults.co.uk");
         return newUser.getUsercode();
     }
 

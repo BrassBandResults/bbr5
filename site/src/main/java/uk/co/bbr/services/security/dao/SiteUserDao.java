@@ -15,9 +15,9 @@ import java.time.LocalDateTime;
 @Entity
 @NoArgsConstructor
 @Table(name="site_user")
-public class BbrUserDao extends AbstractDao {
+public class SiteUserDao extends AbstractDao {
 
-    public BbrUserDao(long id) {
+    public SiteUserDao(long id) {
         this.setId(id);
     }
 

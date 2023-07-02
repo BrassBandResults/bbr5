@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import uk.co.bbr.services.security.JwtService;
 import uk.co.bbr.services.security.SecurityService;
-import uk.co.bbr.services.security.dao.BbrUserDao;
+import uk.co.bbr.services.security.dao.SiteUserDao;
 import uk.co.bbr.services.security.ex.AuthenticationFailedException;
 import uk.co.bbr.web.SessionKeys;
 import uk.co.bbr.web.security.filter.SecurityFilter;
@@ -41,7 +41,7 @@ public class SecurityController {
     public String signInPost(Model model, HttpServletRequest request, HttpServletResponse response, @RequestParam("username") String username, @RequestParam("password") String plaintextPassword) {
         String nextUrl = "/";
         try {
-            BbrUserDao user = this.securityService.authenticate(username, plaintextPassword);
+            SiteUserDao user = this.securityService.authenticate(username, plaintextPassword);
 
             Cookie securityCookie = buildLoginCookie(user);
             response.addCookie(securityCookie);
@@ -60,7 +60,7 @@ public class SecurityController {
         }
     }
 
-    private Cookie buildLoginCookie(BbrUserDao user) {
+    private Cookie buildLoginCookie(SiteUserDao user) {
         String jwt = "";
         if (user != null) {
             jwt = this.jwtService.createJwt(user);

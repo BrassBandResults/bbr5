@@ -1,6 +1,6 @@
 package uk.co.bbr.services.security;
 
-import uk.co.bbr.services.security.dao.BbrUserDao;
+import uk.co.bbr.services.security.dao.SiteUserDao;
 import uk.co.bbr.services.security.dao.PendingUserDao;
 
 import java.util.List;
@@ -8,17 +8,17 @@ import java.util.Optional;
 
 public interface UserService {
 
-    Optional<BbrUserDao> fetchUserByUsercode(String usercode);
+    Optional<SiteUserDao> fetchUserByUsercode(String usercode);
 
-    List<BbrUserDao> fetchTopUsers();
+    List<SiteUserDao> fetchTopUsers();
 
-    List<BbrUserDao> findAll();
+    List<SiteUserDao> findAll();
 
-    List<BbrUserDao> findAllPro();
+    List<SiteUserDao> findAllPro();
 
-    List<BbrUserDao> findAllSuperuser();
+    List<SiteUserDao> findAllSuperuser();
 
-    List<BbrUserDao> findAllAdmin();
+    List<SiteUserDao> findAllAdmin();
 
     String registerNewUser(String username, String email, String plainTextPassword);
 

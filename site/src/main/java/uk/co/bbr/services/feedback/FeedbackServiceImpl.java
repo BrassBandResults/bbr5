@@ -8,10 +8,9 @@ import uk.co.bbr.services.feedback.repo.FeedbackRepository;
 import uk.co.bbr.services.feedback.types.FeedbackStatus;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.services.security.UserService;
-import uk.co.bbr.services.security.dao.BbrUserDao;
+import uk.co.bbr.services.security.dao.SiteUserDao;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -62,7 +61,7 @@ public class FeedbackServiceImpl implements FeedbackService {
 
         FeedbackDao newFeedback = this.feedbackRepository.saveAndFlush(feedback);
 
-        Optional<BbrUserDao> user = this.userService.fetchUserByUsercode(reportedBy);
+        Optional<SiteUserDao> user = this.userService.fetchUserByUsercode(reportedBy);
         if (user.isEmpty()) {
             user = this.userService.fetchUserByUsercode("tjs");
         }

@@ -6,7 +6,7 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
-import uk.co.bbr.services.security.dao.BbrUserDao;
+import uk.co.bbr.services.security.dao.SiteUserDao;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
@@ -27,7 +27,7 @@ public class EmailServiceImpl implements EmailService {
     private final JavaMailSender javaMailSender;
 
     @Override
-    public void sendFeedbackEmail(BbrUserDao user, String feedbackComment, String feedbackOffset) {
+    public void sendFeedbackEmail(SiteUserDao user, String feedbackComment, String feedbackOffset) {
         String destinationEmail = user.getEmail();
         if (user.isFeedbackEmailOptOut()) {
             destinationEmail = FEEDBACK_NOTIFY_ADDRESS;

@@ -14,7 +14,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import uk.co.bbr.services.security.JwtService;
 import uk.co.bbr.services.security.SecurityService;
-import uk.co.bbr.services.security.dao.BbrUserDao;
+import uk.co.bbr.services.security.dao.SiteUserDao;
 import uk.co.bbr.services.security.ex.AuthenticationFailedException;
 import uk.co.bbr.web.security.filter.SecurityFilter;
 import uk.co.bbr.web.security.support.TestUser;
@@ -46,7 +46,7 @@ public interface LoginMixin {
         if (!securityService.userExists(testUser.getUsername())) {
             securityService.createUser(testUser.getUsername(), testUser.getPassword(), testUser.getEmail());
         }
-        BbrUserDao localUser = securityService.authenticate(testUser.getUsername(), testUser.getPassword());
+        SiteUserDao localUser = securityService.authenticate(testUser.getUsername(), testUser.getPassword());
         String jwtEncoded = jwtService.createJwt(localUser);
         DecodedJWT jwt = jwtService.verifyJwt(jwtEncoded);
 

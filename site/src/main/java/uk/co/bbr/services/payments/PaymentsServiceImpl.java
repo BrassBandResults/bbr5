@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import uk.co.bbr.services.framework.EnvVar;
 import uk.co.bbr.services.security.SecurityService;
-import uk.co.bbr.services.security.dao.BbrUserDao;
+import uk.co.bbr.services.security.dao.SiteUserDao;
 
 import java.time.LocalDate;
 
@@ -18,7 +18,7 @@ public class PaymentsServiceImpl implements PaymentsService {
 
     @Override
     public boolean isProAccountActive() {
-        BbrUserDao currentUser = this.securityService.getCurrentUser();
+        SiteUserDao currentUser = this.securityService.getCurrentUser();
         if (currentUser.isProUserForFree()) {
             return true;
         }
@@ -28,13 +28,13 @@ public class PaymentsServiceImpl implements PaymentsService {
 
     @Override
     public boolean isProAccountForFree() {
-        BbrUserDao currentUser = this.securityService.getCurrentUser();
+        SiteUserDao currentUser = this.securityService.getCurrentUser();
         return currentUser.isProUserForFree();
     }
 
     @Override
     public LocalDate getProAccountExpiryDate() {
-        BbrUserDao currentUser = this.securityService.getCurrentUser();
+        SiteUserDao currentUser = this.securityService.getCurrentUser();
         return this.stripeService.subscriptionExpiryDate(currentUser);
     }
 

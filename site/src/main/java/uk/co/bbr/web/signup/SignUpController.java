@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import uk.co.bbr.services.security.UserService;
-import uk.co.bbr.services.security.dao.BbrUserDao;
+import uk.co.bbr.services.security.dao.SiteUserDao;
 
 import java.util.Optional;
 
@@ -46,7 +46,7 @@ public class SignUpController {
     @PostMapping("/acc/register")
     public String registerPost(Model model, @RequestParam("username") String username, @RequestParam("email") String email, @RequestParam("password1") String password1, @RequestParam("password2") String password2) {
 
-        Optional<BbrUserDao> existingUser = this.userService.fetchUserByUsercode(username);
+        Optional<SiteUserDao> existingUser = this.userService.fetchUserByUsercode(username);
         if (existingUser.isPresent()) {
             model.addAttribute("Errors", "page.signup.errors.username-already-used");
             model.addAttribute("Email", email);

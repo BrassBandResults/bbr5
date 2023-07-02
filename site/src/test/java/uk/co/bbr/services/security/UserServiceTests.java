@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import uk.co.bbr.services.security.dao.BbrUserDao;
+import uk.co.bbr.services.security.dao.SiteUserDao;
 import uk.co.bbr.services.security.ex.AuthenticationFailedException;
 import uk.co.bbr.web.LoginMixin;
 import uk.co.bbr.web.security.support.TestUser;
@@ -34,7 +34,7 @@ class UserServiceTests implements LoginMixin {
         this.securityService.createUser("test_User", "testPassword", "test@brassbandresults.co.uk");
 
         // assert
-        Optional<BbrUserDao> fetchedUser = this.userService.fetchUserByUsercode("test_User");
+        Optional<SiteUserDao> fetchedUser = this.userService.fetchUserByUsercode("test_User");
         assertTrue(fetchedUser.isPresent());
         assertEquals("test_User", fetchedUser.get().getUsercode());
         assertEquals("1", fetchedUser.get().getPasswordVersion());

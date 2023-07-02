@@ -2,20 +2,16 @@ package uk.co.bbr.web.feedback;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import uk.co.bbr.services.feedback.FeedbackService;
 import uk.co.bbr.services.feedback.dao.FeedbackDao;
-import uk.co.bbr.services.feedback.types.FeedbackStatus;
 import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.services.security.UserService;
-import uk.co.bbr.services.security.dao.BbrUserDao;
-import uk.co.bbr.web.security.annotations.IsBbrAdmin;
+import uk.co.bbr.services.security.dao.SiteUserDao;
 import uk.co.bbr.web.security.annotations.IsBbrSuperuser;
 
-import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -32,7 +28,7 @@ public class FeedbackStatusChangeController {
         if (feedback.isEmpty()) {
             throw NotFoundException.feedbackNotFoundById(feedbackId);
         }
-        Optional<BbrUserDao> destinationUser = this.userService.fetchUserByUsercode(usercode);
+        Optional<SiteUserDao> destinationUser = this.userService.fetchUserByUsercode(usercode);
         if (destinationUser.isEmpty()) {
             throw NotFoundException.userNotFoundByUsercode(usercode);
         }

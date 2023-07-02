@@ -5,7 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import uk.co.bbr.services.security.UserService;
-import uk.co.bbr.services.security.dao.BbrUserDao;
+import uk.co.bbr.services.security.dao.SiteUserDao;
 
 import java.util.List;
 
@@ -43,7 +43,7 @@ public class HomeController {
     @GetMapping("/leaderboard")
     public String leaderboard(Model model) {
 
-        List<BbrUserDao> topUsers = this.userService.fetchTopUsers();
+        List<SiteUserDao> topUsers = this.userService.fetchTopUsers();
 
         model.addAttribute("TopUsers", topUsers);
 

@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import uk.co.bbr.services.feedback.types.FeedbackStatus;
 import uk.co.bbr.services.framework.AbstractDao;
-import uk.co.bbr.services.security.dao.BbrUserDao;
+import uk.co.bbr.services.security.dao.SiteUserDao;
 import uk.co.bbr.web.HtmlTools;
 import uk.co.bbr.web.security.annotations.IsBbrSuperuser;
 
@@ -129,10 +129,10 @@ public class FeedbackDao extends AbstractDao {
     }
 
     @IsBbrSuperuser
-    public void assignToUser(String currentUsername, BbrUserDao bbrUserDao) {
+    public void assignToUser(String currentUsername, SiteUserDao siteUserDao) {
         this.setStatus(FeedbackStatus.WITH_USER);
-        this.setOwnedBy(bbrUserDao.getUsercode());
-        this.addAuditLog(currentUsername, "Assigning to user " + bbrUserDao.getUsercode());
+        this.setOwnedBy(siteUserDao.getUsercode());
+        this.addAuditLog(currentUsername, "Assigning to user " + siteUserDao.getUsercode());
     }
 
     public void markDone(String currentUsername) {

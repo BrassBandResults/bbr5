@@ -5,7 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import uk.co.bbr.services.framework.annotations.IgnoreCoverage;
-import uk.co.bbr.services.security.dao.BbrUserDao;
+import uk.co.bbr.services.security.dao.SiteUserDao;
 import uk.co.bbr.services.security.dao.UserRole;
 import uk.co.bbr.services.security.repo.BbrUserRepository;
 import uk.co.bbr.web.security.annotations.IsBbrAdmin;
@@ -77,11 +77,11 @@ public class MigrateUsersController {
             }
         }
 
-        Optional<BbrUserDao> matchingUser = this.bbrUserRepository.fetchByUsercode(username);
+        Optional<SiteUserDao> matchingUser = this.bbrUserRepository.fetchByUsercode(username);
         if (matchingUser.isEmpty()) {
             System.out.println(username + " - creating");
 
-            BbrUserDao user = new BbrUserDao();
+            SiteUserDao user = new SiteUserDao();
             user.setUsercode(username);
 
             user.setOldId(Integer.parseInt(oldUserId));
@@ -114,7 +114,7 @@ public class MigrateUsersController {
         }
         if (matchingUser.isPresent()) {
             // update user
-            BbrUserDao user = matchingUser.get();
+            SiteUserDao user = matchingUser.get();
 
             System.out.println(username + " - updating");
 

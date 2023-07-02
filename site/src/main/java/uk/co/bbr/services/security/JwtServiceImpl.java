@@ -7,7 +7,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-import uk.co.bbr.services.security.dao.BbrUserDao;
+import uk.co.bbr.services.security.dao.SiteUserDao;
 
 @Service
 @RequiredArgsConstructor
@@ -26,7 +26,7 @@ public class JwtServiceImpl implements JwtService {
     }
 
     @Override
-    public String createJwt(BbrUserDao irisUser) {
+    public String createJwt(SiteUserDao irisUser) {
         Algorithm algorithmHS = Algorithm.HMAC256(this.getPrivateKey());
         return JWT.create().withIssuer(JWT_ISSUER)
                 .withClaim(JwtAuthenticationToken.CLAIM_USER_ID, irisUser.getId())

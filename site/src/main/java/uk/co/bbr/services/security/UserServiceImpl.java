@@ -5,7 +5,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
 import uk.co.bbr.services.email.EmailService;
 import uk.co.bbr.services.framework.NotFoundException;
-import uk.co.bbr.services.security.dao.BbrUserDao;
+import uk.co.bbr.services.security.dao.SiteUserDao;
 import uk.co.bbr.services.security.dao.PendingUserDao;
 import uk.co.bbr.services.security.dao.UserRole;
 import uk.co.bbr.services.security.repo.BbrUserRepository;
@@ -24,32 +24,32 @@ public class UserServiceImpl implements UserService {
     private final EmailService emailService;
 
     @Override
-    public Optional<BbrUserDao> fetchUserByUsercode(String usercode) {
+    public Optional<SiteUserDao> fetchUserByUsercode(String usercode) {
         return this.bbrUserRepository.fetchByUsercode(usercode);
     }
 
     @Override
-    public List<BbrUserDao> fetchTopUsers() {
+    public List<SiteUserDao> fetchTopUsers() {
         return this.bbrUserRepository.fetchTopUsers();
     }
 
     @Override
-    public List<BbrUserDao> findAll() {
+    public List<SiteUserDao> findAll() {
         return this.bbrUserRepository.fetchAllUsers();
     }
 
     @Override
-    public List<BbrUserDao> findAllPro() {
+    public List<SiteUserDao> findAllPro() {
         return this.bbrUserRepository.fetchAllProUsers();
     }
 
     @Override
-    public List<BbrUserDao> findAllSuperuser() {
+    public List<SiteUserDao> findAllSuperuser() {
         return this.bbrUserRepository.fetchAllSuperusers();
     }
 
     @Override
-    public List<BbrUserDao> findAllAdmin() {
+    public List<SiteUserDao> findAllAdmin() {
         return this.bbrUserRepository.fetchAllAdminUsers();
     }
 
@@ -72,7 +72,7 @@ public class UserServiceImpl implements UserService {
         pendingUser.setUpdated(LocalDateTime.now());
         this.pendingUserRepository.saveAndFlush(pendingUser);
 
-        BbrUserDao newUser = new BbrUserDao();
+        SiteUserDao newUser = new SiteUserDao();
         newUser.setEmail(pendingUser.getEmail());
         newUser.setAccessLevel(UserRole.NO_ACCESS.getCode());
         newUser.setUsercode(pendingUser.getUsercode());
@@ -106,7 +106,7 @@ public class UserServiceImpl implements UserService {
         }
 
         PendingUserDao pendingUserDao = matchingUser.get();
-        Optional<BbrUserDao> fetchedUser = this.bbrUserRepository.fetchByUsercode(pendingUserDao.getUsercode());
+        Optional<SiteUserDao> fetchedUser = this.bbrUserRepository.fetchByUsercode(pendingUserDao.getUsercode());
         if (fetchedUser.isEmpty()) {
             throw NotFoundException.userNotFoundByActivationKey();
         }

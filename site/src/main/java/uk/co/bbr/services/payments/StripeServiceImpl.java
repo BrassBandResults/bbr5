@@ -2,13 +2,12 @@ package uk.co.bbr.services.payments;
 
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
-import com.stripe.model.Customer;
 import com.stripe.model.Subscription;
 import com.stripe.model.SubscriptionCollection;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import uk.co.bbr.services.framework.EnvVar;
-import uk.co.bbr.services.security.dao.BbrUserDao;
+import uk.co.bbr.services.security.dao.SiteUserDao;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -22,7 +21,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class StripeServiceImpl implements StripeService {
 
-    private Optional<Subscription> getActiveSubscription(BbrUserDao user) {
+    private Optional<Subscription> getActiveSubscription(SiteUserDao user) {
         Stripe.apiKey = EnvVar.getEnv("BBR_STRIPE_PRIVATE_API_KEY", "sk_test_abc123");
 
         try {
@@ -42,13 +41,13 @@ public class StripeServiceImpl implements StripeService {
     }
 
     @Override
-    public boolean isSubscriptionActive(BbrUserDao user) {
+    public boolean isSubscriptionActive(SiteUserDao user) {
         Optional<Subscription> subscription = this.getActiveSubscription(user);
         return subscription.isPresent();
     }
 
     @Override
-    public LocalDate subscriptionExpiryDate(BbrUserDao user) {
+    public LocalDate subscriptionExpiryDate(SiteUserDao user) {
         Optional<Subscription> subscription = this.getActiveSubscription(user);
         if (subscription.isEmpty()) {
             return null;

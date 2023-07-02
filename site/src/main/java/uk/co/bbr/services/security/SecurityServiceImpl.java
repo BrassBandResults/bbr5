@@ -7,8 +7,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.framework.ValidationException;
-import uk.co.bbr.services.security.dao.BbrUserDao;
-import uk.co.bbr.services.security.dao.PendingUserDao;
+import uk.co.bbr.services.security.dao.SiteUserDao;
 import uk.co.bbr.services.security.repo.BbrUserRepository;
 import uk.co.bbr.services.security.dao.UserRole;
 import uk.co.bbr.services.security.ex.AuthenticationFailedException;
@@ -33,8 +32,8 @@ public class SecurityServiceImpl implements SecurityService {
     }
 
     @Override
-    public BbrUserDao getCurrentUser() {
-        Optional<BbrUserDao> user = this.bbrUserRepository.fetchByUsercode(this.getCurrentUsername());
+    public SiteUserDao getCurrentUser() {
+        Optional<SiteUserDao> user = this.bbrUserRepository.fetchByUsercode(this.getCurrentUsername());
         if (user.isEmpty()) {
             throw new NotFoundException("Current user not found");
         }
@@ -42,13 +41,13 @@ public class SecurityServiceImpl implements SecurityService {
     }
 
     @Override
-    public BbrUserDao authenticate(String usercode, String plaintextPassword) throws AuthenticationFailedException {
-        Optional<BbrUserDao> fetchedUserOptional = this.bbrUserRepository.fetchByUsercode(usercode);
+    public SiteUserDao authenticate(String usercode, String plaintextPassword) throws AuthenticationFailedException {
+        Optional<SiteUserDao> fetchedUserOptional = this.bbrUserRepository.fetchByUsercode(usercode);
         if (fetchedUserOptional.isEmpty()) {
             throw new AuthenticationFailedException();
         }
-        BbrUserDao fetchedUser = fetchedUserOptional.get();
-        BbrUserDao loggedInUser;
+        SiteUserDao fetchedUser = fetchedUserOptional.get();
+        SiteUserDao loggedInUser;
 
         if (fetchedUser.getPasswordVersion().equals("D")) { // django password
             DjangoHasher djangoHash = new DjangoHasher();
@@ -59,7 +58,7 @@ public class SecurityServiceImpl implements SecurityService {
             loggedInUser = fetchedUser;
         } else { // java password
             String hashedPassword = PasswordTools.hashPassword(fetchedUser.getPasswordVersion(), fetchedUser.getSalt(), usercode, plaintextPassword);
-            Optional<BbrUserDao> userOptional = this.bbrUserRepository.loginCheck(usercode, hashedPassword);
+            Optional<SiteUserDao> userOptional = this.bbrUserRepository.loginCheck(usercode, hashedPassword);
             if (userOptional.isEmpty()) {
                 throw new AuthenticationFailedException();
             }
@@ -70,8 +69,8 @@ public class SecurityServiceImpl implements SecurityService {
     }
 
     @Override
-    public BbrUserDao createUserWithDjangoStylePassword(String usercode, String hashedPassword, String email) {
-        BbrUserDao newUser = new BbrUserDao();
+    public SiteUserDao createUserWithDjangoStylePassword(String usercode, String hashedPassword, String email) {
+        SiteUserDao newUser = new SiteUserDao();
         newUser.setEmail(email);
         newUser.setAccessLevel(UserRole.MEMBER.getCode());
         newUser.setUsercode(usercode);
@@ -90,7 +89,7 @@ public class SecurityServiceImpl implements SecurityService {
     }
 
     @Override
-    public BbrUserDao createUser(String usercode, String plaintextPassword, String email) {
+    public SiteUserDao createUser(String usercode, String plaintextPassword, String email) {
         if (this.userExists(usercode)) {
             throw new ValidationException("User with usercode " + usercode + " already exists");
         }
@@ -98,7 +97,7 @@ public class SecurityServiceImpl implements SecurityService {
         String salt = PasswordTools.createSalt();
         String passwordVersion = PasswordTools.latestVersion();
 
-        BbrUserDao newUser = new BbrUserDao();
+        SiteUserDao newUser = new SiteUserDao();
         newUser.setEmail(email);
         newUser.setAccessLevel(UserRole.MEMBER.getCode());
         newUser.setUsercode(usercode);
@@ -118,12 +117,12 @@ public class SecurityServiceImpl implements SecurityService {
 
     @Override
     public void makeUserAdmin(String usercode) {
-        Optional<BbrUserDao> matchingUserOptional = this.bbrUserRepository.fetchByUsercode(usercode);
+        Optional<SiteUserDao> matchingUserOptional = this.bbrUserRepository.fetchByUsercode(usercode);
         if (matchingUserOptional.isEmpty()){
             throw NotFoundException.userNotFoundByUsercode(usercode);
         }
 
-        BbrUserDao matchingUser = matchingUserOptional.get();
+        SiteUserDao matchingUser = matchingUserOptional.get();
 
         matchingUser.setAccessLevel(UserRole.ADMIN.getCode());
         this.bbrUserRepository.saveAndFlush(matchingUser);
@@ -131,12 +130,12 @@ public class SecurityServiceImpl implements SecurityService {
 
     @Override
     public void makeUserPro(String usercode) {
-        Optional<BbrUserDao> matchingUserOptional = this.bbrUserRepository.fetchByUsercode(usercode);
+        Optional<SiteUserDao> matchingUserOptional = this.bbrUserRepository.fetchByUsercode(usercode);
         if (matchingUserOptional.isEmpty()){
             throw NotFoundException.userNotFoundByUsercode(usercode);
         }
 
-        BbrUserDao matchingUser = matchingUserOptional.get();
+        SiteUserDao matchingUser = matchingUserOptional.get();
 
         matchingUser.setAccessLevel(UserRole.PRO.getCode());
         this.bbrUserRepository.saveAndFlush(matchingUser);
@@ -144,12 +143,12 @@ public class SecurityServiceImpl implements SecurityService {
 
     @Override
     public void makeUserSuperuser(String usercode) {
-        Optional<BbrUserDao> matchingUserOptional = this.bbrUserRepository.fetchByUsercode(usercode);
+        Optional<SiteUserDao> matchingUserOptional = this.bbrUserRepository.fetchByUsercode(usercode);
         if (matchingUserOptional.isEmpty()){
             throw NotFoundException.userNotFoundByUsercode(usercode);
         }
 
-        BbrUserDao matchingUser = matchingUserOptional.get();
+        SiteUserDao matchingUser = matchingUserOptional.get();
 
         matchingUser.setAccessLevel(UserRole.SUPERUSER.getCode());
         this.bbrUserRepository.saveAndFlush(matchingUser);
