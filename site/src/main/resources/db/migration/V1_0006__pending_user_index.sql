@@ -1,1 +1,0 @@
-CREATE UNIQUE INDEX activation_key_index ON site_user_pending(activation_key);

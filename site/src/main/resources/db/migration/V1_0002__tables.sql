@@ -640,7 +640,9 @@ CREATE TABLE site_feedback (
     ip VARCHAR(15) NOT NULL,
     additional_comments TEXT,
     audit_log TEXT,
+    owned_by VARCHAR(50) CONSTRAINT fk_site_feedback_owning_user REFERENCES site_user(usercode),
     reported_by VARCHAR(50) CONSTRAINT fk_site_feedback_reporter REFERENCES site_user(usercode),
+    updated_by VARCHAR(50) CONSTRAINT fk_site_feedback_updated REFERENCES site_user(usercode),
     created_by VARCHAR(50) CONSTRAINT fk_site_feedback_owner REFERENCES site_user(usercode)
 );
 

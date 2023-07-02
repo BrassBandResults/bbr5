@@ -78,6 +78,18 @@ public class BbrUserDao extends AbstractDao {
     @Column(name="pro_user_for_free")
     private boolean proUserForFree;
 
+    @Setter
+    @Column(name="uuid", length=40, nullable=false)
+    private String uuid;
+
+    @Setter
+    @Column(name="reset_password_key", length=40)
+    private String resetPasswordKey;
+
+    @Setter
+    @Column(name="locale", length=10)
+    private String locale;
+
     public UserRole getRole() {
         return UserRole.fromCode(this.accessLevel);
     }

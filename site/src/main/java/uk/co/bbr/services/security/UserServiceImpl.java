@@ -85,8 +85,8 @@ public class UserServiceImpl implements UserService {
         newUser.setSalt(pendingUser.getSalt());
         newUser.setPasswordVersion(PasswordTools.latestVersion());
         newUser.setPassword(RandomStringUtils.randomAlphanumeric(5)); // temporary invalid password
+        newUser.setUuid(RandomStringUtils.randomAlphanumeric(40));
         this.bbrUserRepository.saveAndFlush(newUser);
-
 
         this.emailService.sendActivationEmail(email, pendingUser.getActivationKey());
 
@@ -113,6 +113,7 @@ public class UserServiceImpl implements UserService {
 
         // user is already created, just need to set a valid password and allow access
         fetchedUser.get().setPassword(pendingUserDao.getPassword());
+        fetchedUser.get().setSalt(pendingUserDao.getSalt());
         fetchedUser.get().setAccessLevel(UserRole.MEMBER.getCode());
         this.bbrUserRepository.saveAndFlush(fetchedUser.get());
 

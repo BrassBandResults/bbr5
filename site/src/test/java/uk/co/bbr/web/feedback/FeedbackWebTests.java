@@ -1,8 +1,12 @@
 package uk.co.bbr.web.feedback;
 
+import com.icegreen.greenmail.configuration.GreenMailConfiguration;
+import com.icegreen.greenmail.junit5.GreenMailExtension;
+import com.icegreen.greenmail.util.ServerSetupTest;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
@@ -54,11 +58,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class FeedbackWebTests implements LoginMixin {
 
-    @Autowired private SecurityService securityService;
-    @Autowired private JwtService jwtService;
     @Autowired private FeedbackService feedbackService;
     @Autowired private RestTemplate restTemplate;
     @LocalServerPort private int port;
+
+    @RegisterExtension
+    static GreenMailExtension greenMail = new GreenMailExtension(ServerSetupTest.SMTP)
+            .withConfiguration(GreenMailConfiguration.aConfig().withUser("user", "admin"))
+            .withPerMethodLifecycle(false);
 
     @Test
     void testSubmitFeedbackWorkSuccessfully() {

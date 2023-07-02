@@ -2,10 +2,13 @@ package uk.co.bbr.services.feedback;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import uk.co.bbr.services.email.EmailService;
 import uk.co.bbr.services.feedback.dao.FeedbackDao;
 import uk.co.bbr.services.feedback.repo.FeedbackRepository;
 import uk.co.bbr.services.feedback.types.FeedbackStatus;
 import uk.co.bbr.services.security.SecurityService;
+import uk.co.bbr.services.security.UserService;
+import uk.co.bbr.services.security.dao.BbrUserDao;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -18,6 +21,8 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     private final FeedbackRepository feedbackRepository;
     private final SecurityService securityService;
+    private final UserService userService;
+    private final EmailService emailService;
 
     @Override
     public void submit(String url, String referrer, String ownerUsercode, String feedback, String browserName, String ip) {
@@ -55,7 +60,15 @@ public class FeedbackServiceImpl implements FeedbackService {
         feedback.setUpdated(LocalDateTime.now());
         feedback.setUpdatedBy(reportedBy);
 
-        return this.feedbackRepository.saveAndFlush(feedback);
+        FeedbackDao newFeedback = this.feedbackRepository.saveAndFlush(feedback);
+
+        Optional<BbrUserDao> user = this.userService.fetchUserByUsercode(reportedBy);
+        if (user.isEmpty()) {
+            user = this.userService.fetchUserByUsercode("tjs");
+        }
+        user.ifPresent(bbrUserDao -> this.emailService.sendFeedbackEmail(bbrUserDao, newFeedback.getComment(), newFeedback.getUrl()));
+
+        return newFeedback;
     }
 
     @Override

@@ -1,8 +1,12 @@
 package uk.co.bbr.web.feedback;
 
+import com.icegreen.greenmail.configuration.GreenMailConfiguration;
+import com.icegreen.greenmail.junit5.GreenMailExtension;
+import com.icegreen.greenmail.util.ServerSetupTest;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
@@ -66,6 +70,11 @@ class FeedbackStatusChangeWebTests implements LoginMixin {
         this.securityService.createUser("tjs", "password", "test.1@brassbandresults.co.uk");
         this.securityService.createUser("sms", "password", "test.2@brassbandresults.co.uk");
     }
+
+    @RegisterExtension
+    static GreenMailExtension greenMail = new GreenMailExtension(ServerSetupTest.SMTP)
+            .withConfiguration(GreenMailConfiguration.aConfig().withUser("user", "admin"))
+            .withPerMethodLifecycle(false);
 
     @Test
     void testClaimFeedbackWorksSuccessfully() throws AuthenticationFailedException {

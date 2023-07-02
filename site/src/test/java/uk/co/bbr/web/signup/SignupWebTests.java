@@ -150,7 +150,7 @@ class SignupWebTests implements LoginMixin {
 
             assertEquals(1, receivedMessage.getAllRecipients().length);
             assertEquals("tjs-test1@brassbandresults.co.uk", receivedMessage.getAllRecipients()[0].toString());
-            assertEquals("BrassBandResults <accounts@brassbandresults.co.uk>", receivedMessage.getFrom()[0].toString());
+            assertEquals("BrassBandResults <notification@brassbandresults.co.uk>", receivedMessage.getFrom()[0].toString());
             assertEquals("Account Activation", receivedMessage.getSubject());
 
             String emailContents = GreenMailUtil.getBody(receivedMessage);

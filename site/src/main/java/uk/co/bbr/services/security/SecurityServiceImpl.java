@@ -1,6 +1,7 @@
 package uk.co.bbr.services.security;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -83,6 +84,7 @@ public class SecurityServiceImpl implements SecurityService {
         newUser.setSalt("");
         newUser.setPasswordVersion("D");
         newUser.setPassword(hashedPassword);
+        newUser.setUuid(RandomStringUtils.randomAlphanumeric(40));
         this.bbrUserRepository.saveAndFlush(newUser);
         return newUser;
     }
@@ -109,6 +111,7 @@ public class SecurityServiceImpl implements SecurityService {
         newUser.setSalt(salt);
         newUser.setPasswordVersion(passwordVersion);
         newUser.setPassword(PasswordTools.hashPassword(passwordVersion, salt, usercode, plaintextPassword));
+        newUser.setUuid(RandomStringUtils.randomAlphanumeric(40));
         this.bbrUserRepository.saveAndFlush(newUser);
         return newUser;
     }
