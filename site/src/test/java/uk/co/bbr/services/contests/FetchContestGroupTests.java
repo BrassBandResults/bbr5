@@ -27,7 +27,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ActiveProfiles("test")
-@SpringBootTest(properties = { "spring.config.name=contest-fetch-group-tests-h2", "spring.datasource.url=jdbc:h2:mem:contest-fetch-group-tests-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE", "spring.jpa.database-platform=org.hibernate.dialect.SQLServerDialect"})
+@SpringBootTest(properties = {  "spring.config.location=classpath:test-application.yml",
+        "spring.datasource.url=jdbc:h2:mem:contests-fetch-group-services-tests-admin-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE"})
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class FetchContestGroupTests implements LoginMixin {
 

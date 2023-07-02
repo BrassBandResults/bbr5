@@ -27,7 +27,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 @ActiveProfiles("test")
-@SpringBootTest(properties = { "spring.config.name=create-event-tests-h2", "spring.datasource.url=jdbc:h2:mem:create-event-tests-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE", "spring.jpa.database-platform=org.hibernate.dialect.SQLServerDialect"})
+@SpringBootTest(properties = {  "spring.config.location=classpath:test-application.yml",
+        "spring.datasource.url=jdbc:h2:mem:contests-create-event-services-tests-admin-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE"})
 class CreateContestEventTests implements LoginMixin {
 
     @Autowired private ContestService contestService;

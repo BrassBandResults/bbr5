@@ -28,6 +28,7 @@
         <div class="mb-3">
             <label class="form-label" for="password1" th:text="#{page.signup.prompt.password}">Password:</label>
             <input id="password1" name="password1" class="form-control" type="password" maxlength="100" size="80" required/>
+            <small class="form-text" th:text="#{page.signup.prompt.password-hint}">Must be eight characters or longer.</small>
         </div>
         <div class="mb-3">
             <label class="form-label" for="password2" th:text="#{page.signup.prompt.password-again}">Password Again:</label>

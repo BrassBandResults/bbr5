@@ -7,7 +7,7 @@
 <div layout:fragment="content">
     <h2 th:text="#{page.signup-activated.title}">Account Activated</h2>
     <p th:text="#{page.signup-activated.prompt-1}">Your account has been activated.  Thanks for helping.</p>
-    <p th:utext="#{page.signup-activated.prompt-2}"><a href="/acc/sign-in?next=/">Sign in here</a></p>
+    <p><a href="/acc/sign-in?next=/" th:text="#{page.signup-activated.prompt-2}">Sign in here</a>.</p>
 </div>
 </body>
 </html>

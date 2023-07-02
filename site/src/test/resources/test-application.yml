@@ -1,0 +1,23 @@
+debug: true
+logging:
+  level:
+    org:
+      springframework:
+        security: INFO
+      apache:
+        http: INFO
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE
+    driverClassName: org.h2.Driver
+    username: sa
+    password: password
+  jpa:
+    database-platform: org.hibernate.dialect.SQLServerDialect
+    open-in-view: false
+  mail:
+    username: user
+    password: admin
+    host: 127.0.0.1
+    port: 3025
+    protocol: smtp

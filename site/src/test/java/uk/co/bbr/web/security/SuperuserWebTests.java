@@ -19,8 +19,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ActiveProfiles("test")
-@SpringBootTest(properties = { "spring.config.name=security-web-tests-superuser-h2", "spring.datasource.url=jdbc:h2:mem:security-web-tests-superuser-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE", "spring.jpa.database-platform=org.hibernate.dialect.SQLServerDialect"},
-        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(properties = {  "spring.config.location=classpath:test-application.yml",
+                                "spring.datasource.url=jdbc:h2:mem:security-superuser-web-tests-admin-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE"},
+                webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @WithMockUser(username="admin_user", roles= { "BBR_ADMIN" })
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class SuperuserWebTests implements LoginMixin {

@@ -31,10 +31,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ActiveProfiles("test")
-@SpringBootTest(properties = { "spring.config.name=tag-member-web-tests-admin-h2", "spring.datasource.url=jdbc:h2:mem:tag-member-web-tests-admin-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE", "spring.jpa.database-platform=org.hibernate.dialect.SQLServerDialect"},
-        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(properties = {  "spring.config.location=classpath:test-application.yml",
+                                "spring.datasource.url=jdbc:h2:mem:tags-tag-member-web-tests-admin-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE"},
+                webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class ContestTagMemberWebTests implements LoginMixin {
+class TagMemberWebTests implements LoginMixin {
 
     @Autowired private SecurityService securityService;
     @Autowired private JwtService jwtService;

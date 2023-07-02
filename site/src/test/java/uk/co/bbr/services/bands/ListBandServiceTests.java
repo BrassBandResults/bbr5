@@ -21,7 +21,8 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ActiveProfiles("test")
-@SpringBootTest(properties = { "spring.config.name=list-band-tests-h2", "spring.datasource.url=jdbc:h2:mem:list-band-tests-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE", "spring.jpa.database-platform=org.hibernate.dialect.SQLServerDialect"})
+@SpringBootTest(properties = {  "spring.config.location=classpath:test-application.yml",
+        "spring.datasource.url=jdbc:h2:mem:bands-list-bands-services-tests-admin-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE"})
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ListBandServiceTests implements LoginMixin {
     @Autowired private BandService bandService;

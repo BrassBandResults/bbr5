@@ -22,7 +22,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ActiveProfiles("test")
-@SpringBootTest(properties = { "spring.config.name=band-alt-name-tests-h2", "spring.datasource.url=jdbc:h2:mem:band-alt-name-tests-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE", "spring.jpa.database-platform=org.hibernate.dialect.SQLServerDialect"})
+@SpringBootTest(properties = {  "spring.config.location=classpath:test-application.yml",
+        "spring.datasource.url=jdbc:h2:mem:-bands-band-aliases-services-tests-admin-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE"})
 class BandPreviousNameTests implements LoginMixin {
     @Autowired private BandService bandService;
     @Autowired private BandAliasService bandAliasService;

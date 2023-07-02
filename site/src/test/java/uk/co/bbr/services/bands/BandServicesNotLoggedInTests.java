@@ -13,7 +13,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ActiveProfiles("test")
-@SpringBootTest(properties = { "spring.config.name=band-no-login-tests-h2", "spring.datasource.url=jdbc:h2:mem:band-no-login-tests-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE", "spring.jpa.database-platform=org.hibernate.dialect.SQLServerDialect"})
+@SpringBootTest(properties = {  "spring.config.location=classpath:test-application.yml",
+        "spring.datasource.url=jdbc:h2:mem:bands-band-not-logged-in-services-tests-admin-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE"})
 class BandServicesNotLoggedInTests {
 
     @Autowired private BandService bandService;

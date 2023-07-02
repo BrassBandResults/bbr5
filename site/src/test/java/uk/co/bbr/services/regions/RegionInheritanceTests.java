@@ -24,7 +24,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ActiveProfiles("test")
-@SpringBootTest(properties = { "spring.config.name=region-inherit-tests-h2", "spring.datasource.url=jdbc:h2:mem:region-inherit-tests-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE", "spring.jpa.database-platform=org.hibernate.dialect.SQLServerDialect"})
+@SpringBootTest(properties = {  "spring.config.location=classpath:test-application.yml",
+        "spring.datasource.url=jdbc:h2:mem:regions-region-inheritance-services-tests-admin-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE"})
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class RegionInheritanceTests implements LoginMixin {
     @Autowired private RegionService regionService;

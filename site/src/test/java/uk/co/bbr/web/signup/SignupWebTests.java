@@ -1,8 +1,14 @@
 package uk.co.bbr.web.signup;
 
+import com.icegreen.greenmail.configuration.GreenMailConfiguration;
+import com.icegreen.greenmail.junit5.GreenMailExtension;
+import com.icegreen.greenmail.util.GreenMailUtil;
+import com.icegreen.greenmail.util.ServerSetupTest;
+import org.awaitility.Awaitility;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
@@ -14,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
@@ -31,9 +38,11 @@ import uk.co.bbr.web.LoginMixin;
 import uk.co.bbr.web.security.filter.SecurityFilter;
 import uk.co.bbr.web.security.support.TestUser;
 
+import javax.mail.internet.MimeMessage;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -41,14 +50,21 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ActiveProfiles("test")
-@SpringBootTest(properties = { "spring.config.name=signup-web-tests-admin-h2", "spring.datasource.url=jdbc:h2:mem:signup-web-tests-admin-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE", "spring.jpa.database-platform=org.hibernate.dialect.SQLServerDialect"},
-        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(properties = {  "spring.config.location=classpath:test-application.yml",
+                                "spring.datasource.url=jdbc:h2:mem:signup-signup-web-tests-admin-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE"},
+                 webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class SignupWebTests implements LoginMixin {
 
     @Autowired private CsrfTokenRepository csrfTokenRepository;
     @Autowired private UserService userService;
     @Autowired private RestTemplate restTemplate;
     @LocalServerPort private int port;
+
+    @RegisterExtension
+    static GreenMailExtension greenMail = new GreenMailExtension(ServerSetupTest.SMTP)
+            .withConfiguration(GreenMailConfiguration.aConfig().withUser("user", "admin"))
+            .withPerMethodLifecycle(false);
 
     @Test
     void testGetSignupPageWorksSuccessfully() {
@@ -128,6 +144,22 @@ class SignupWebTests implements LoginMixin {
         Optional<PendingUserDao> pendingUser = this.userService.fetchPendingUser("tjs-test1");
         assertTrue(pendingUser.isPresent());
         assertEquals("tjs-test1", pendingUser.get().getUsercode());
+
+        Awaitility.await().atMost(2, TimeUnit.SECONDS).untilAsserted(()-> {
+            MimeMessage receivedMessage = greenMail.getReceivedMessages()[0];
+
+            assertEquals(1, receivedMessage.getAllRecipients().length);
+            assertEquals("tjs-test1@brassbandresults.co.uk", receivedMessage.getAllRecipients()[0].toString());
+            assertEquals("BrassBandResults <accounts@brassbandresults.co.uk>", receivedMessage.getFrom()[0].toString());
+            assertEquals("Account Activation", receivedMessage.getSubject());
+
+            String emailContents = GreenMailUtil.getBody(receivedMessage);
+
+            assertTrue(emailContents.contains("You, or someone using your email address, has signed up for an account on https://brassbandresults.co.uk/"));
+            assertTrue(emailContents.contains("To activate your new account, click on the link below."));
+            assertTrue(emailContents.contains("/acc/activate/"));
+            assertTrue(emailContents.contains("The Brass Band Results Team"));
+        });
     }
 
     @Test

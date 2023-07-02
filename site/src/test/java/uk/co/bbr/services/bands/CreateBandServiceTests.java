@@ -23,7 +23,8 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ActiveProfiles("test")
-@SpringBootTest(properties = { "spring.config.name=create-band-tests-h2", "spring.datasource.url=jdbc:h2:mem:create-band-tests-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE", "spring.jpa.database-platform=org.hibernate.dialect.SQLServerDialect"})
+@SpringBootTest(properties = {  "spring.config.location=classpath:test-application.yml",
+        "spring.datasource.url=jdbc:h2:mem:bands-create-band-services-tests-admin-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE"})
 class CreateBandServiceTests implements LoginMixin {
 
     @Autowired private BandService bandService;

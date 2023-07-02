@@ -1,8 +1,12 @@
 package uk.co.bbr.web.users;
 
+import com.icegreen.greenmail.configuration.GreenMailConfiguration;
+import com.icegreen.greenmail.junit5.GreenMailExtension;
+import com.icegreen.greenmail.util.ServerSetupTest;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
@@ -21,8 +25,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ActiveProfiles("test")
-@SpringBootTest(properties = { "spring.config.name=user-lists-web-tests-admin-h2", "spring.datasource.url=jdbc:h2:mem:user-lists-web-tests-admin-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE", "spring.jpa.database-platform=org.hibernate.dialect.SQLServerDialect"},
-        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(properties = {  "spring.config.location=classpath:test-application.yml",
+                                "spring.datasource.url=jdbc:h2:mem:users-user-lists-web-tests-admin-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE"},
+                webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class UserListsWebTests implements LoginMixin {
 
@@ -60,6 +65,11 @@ class UserListsWebTests implements LoginMixin {
 
         logoutTestUser();
     }
+
+    @RegisterExtension
+    static GreenMailExtension greenMail = new GreenMailExtension(ServerSetupTest.SMTP)
+            .withConfiguration(GreenMailConfiguration.aConfig().withUser("user", "admin"))
+            .withPerMethodLifecycle(false);
 
     @Test
     void testGetUserListReturnsSuccessfully() {
