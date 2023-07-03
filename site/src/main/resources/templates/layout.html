@@ -35,47 +35,47 @@
                 <div class="nav-item dropdown">
                     <a class="nav-item nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" id="bandsDropdown" aria-haspopup="true" aria-expanded="false" th:text="#{menu.bands.title}">Bands</a>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" aria-labelledby="bandsDropdown" href="/bands/" th:text="#{menu.bands.list-bands}">List Bands</a>
-                        <a class="dropdown-item" aria-labelledby="bandsDropdown" href="/regions/" th:text="#{menu.bands.regions}">Regions</a>
+                        <a class="dropdown-item" aria-labelledby="bandsDropdown" href="/bands" th:text="#{menu.bands.list-bands}">List Bands</a>
+                        <a class="dropdown-item" aria-labelledby="bandsDropdown" href="/regions" th:text="#{menu.bands.regions}">Regions</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" aria-labelledby="bandsDropdown" href="/bands/MAP/" th:text="#{menu.bands.map}">Band Map</a>
+                        <a class="dropdown-item" aria-labelledby="bandsDropdown" href="/bands/MAP" th:text="#{menu.bands.map}">Band Map</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" aria-labelledby="bandsDropdown" href="/bands/COMPARE/" th:text="#{manu_bands-compare-bands}">Compare Bands</a>
-                        <a class="dropdown-item" aria-labelledby="bandsDropdown" href="/bands/WINNERS/" th:text="#{menu.bands.winning-bands}">Winning Bands</a>
+                        <a class="dropdown-item" aria-labelledby="bandsDropdown" href="/bands/COMPARE" th:text="#{manu_bands-compare-bands}">Compare Bands</a>
+                        <a class="dropdown-item" aria-labelledby="bandsDropdown" href="/bands/WINNERS" th:text="#{menu.bands.winning-bands}">Winning Bands</a>
                     </div>
                 </div>
 
                 <div class="dropdown">
                     <a class="nav-item nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" id="contestsDropdown" aria-haspopup="true" aria-expanded="false" th:text="#{menu.contests.title}">Contests</a>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/contests/" th:text="#{menu.contests.list-contests}">List Contests</a>
-                        <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/contest-groups/" sec:authorize="hasRole('BBR_SUPERUSER')" th:text="#{menu.contests.groups}">Groups</a>
-                        <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/tags/" th:text="#{menu.contests.list-tags}">List Tags</a>
-                        <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/calendar/" th:text="#{menu.contests.calendar}">Calendar</a>
-                        <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/years/" th:text="#{menu.contests.years}">Years</a>
-                        <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/venues/" th:text="#{menu.contests.list-venues}">List Venues</a>
+                        <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/contests" th:text="#{menu.contests.list-contests}">List Contests</a>
+                        <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/contest-groups" sec:authorize="hasRole('BBR_SUPERUSER')" th:text="#{menu.contests.groups}">Groups</a>
+                        <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/tags" th:text="#{menu.contests.list-tags}">List Tags</a>
+                        <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/calendar" th:text="#{menu.contests.calendar}">Calendar</a>
+                        <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/years" th:text="#{menu.contests.years}">Years</a>
+                        <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/venues" th:text="#{menu.contests.list-venues}">List Venues</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/venues/MAP/" th:text="#{menu.contests.venue-map}">Venue Map</a>
+                        <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/venues/MAP" th:text="#{menu.contests.venue-map}">Venue Map</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/add-results/" th:text="#{menu.contests.add-results}">Add Results</a>
+                        <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/add-results" th:text="#{menu.contests.add-results}">Add Results</a>
                     </div>
                 </div>
 
                 <div class="dropdown">
                     <a class="nav-item nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" id="peopleDropdown" aria-haspopup="true" aria-expanded="false" th:text="#{menu.people.title}">People</a>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" aria-labelledby="peopleDropdown" href="/people/" th:text="#{menu.people.list-people}">List People</a>
+                        <a class="dropdown-item" aria-labelledby="peopleDropdown" href="/people" th:text="#{menu.people.list-people}">List People</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" aria-labelledby="peopleDropdown" href="/people/COMPARE-CONDUCTORS/" th:text="#{menu.people.compare-conductors}">Compare Conductors</a>
-                        <a class="dropdown-item" aria-labelledby="peopleDropdown" href="/people/WINNERS/" th:text="#{menu.people.winning-conductors}">Winning Conductors</a>
-                        <a class="dropdown-item" aria-labelledby="peopleDropdown" href="/people/BANDS/" th:text="#{menu.people.most-bands-conducted}">Most Bands Conducted</a>
+                        <a class="dropdown-item" aria-labelledby="peopleDropdown" href="/people/COMPARE-CONDUCTORS" th:text="#{menu.people.compare-conductors}">Compare Conductors</a>
+                        <a class="dropdown-item" aria-labelledby="peopleDropdown" href="/people/WINNERS" th:text="#{menu.people.winning-conductors}">Winning Conductors</a>
+                        <a class="dropdown-item" aria-labelledby="peopleDropdown" href="/people/BANDS" th:text="#{menu.people.most-bands-conducted}">Most Bands Conducted</a>
                     </div>
                 </div>
 
                 <div class="dropdown">
                     <a class="nav-item nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" id="piecesDropdown" aria-haspopup="true" aria-expanded="false" th:text="#{menu.pieces.title}">Pieces</a>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" aria-labelledby="piecesDropdown" href="/pieces/" th:text="#{menu.pieces.list-pieces}">List Pieces</a>
+                        <a class="dropdown-item" aria-labelledby="piecesDropdown" href="/pieces" th:text="#{menu.pieces.list-pieces}">List Pieces</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" aria-labelledby="piecesDropdown" href="/pieces/BY-SECTION/championship" th:text="#{menu.pieces.by-section}">By Section</a>
                         <a class="dropdown-item" aria-labelledby="piecesDropdown" href="/pieces/BEST-OWN-CHOICE" th:text="#{menu.pieces.successful}">Successful</a>
