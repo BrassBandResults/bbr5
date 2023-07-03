@@ -22,4 +22,10 @@ public interface ContestResultRepository extends JpaRepository<ContestResultDao,
     @Query("SELECT r FROM ContestResultDao r " +
             "WHERE r.band.id = :bandId")
     List<ContestResultDao> findAllForBand(Long bandId);
+
+    @Query("SELECT COUNT(r) FROM ContestResultDao r")
+    int countResults();
+
+    @Query("SELECT COUNT(r) FROM ContestResultDao r WHERE r.resultPositionType = uk.co.bbr.services.events.types.ResultPositionType.RESULT")
+    int countResultsWithPlacings();
 }

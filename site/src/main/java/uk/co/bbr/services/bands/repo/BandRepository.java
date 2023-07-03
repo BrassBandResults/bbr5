@@ -41,4 +41,16 @@ public interface BandRepository extends JpaRepository<BandDao, Long> {
 
     @Query("SELECT b FROM BandDao b WHERE UPPER(b.name) LIKE :searchStringUpper")
     List<BandDao> lookupByPrefix(String searchStringUpper);
+
+    @Query("SELECT COUNT(b) FROM BandDao b")
+    int countBands();
+
+    @Query("SELECT COUNT(b) FROM BandDao b WHERE LENGTH(b.website) > 2")
+    int countBandsWithWebsite();
+
+    @Query("SELECT COUNT(b) FROM BandDao b WHERE LENGTH(b.longitude) > 0 AND LENGTH(b.latitude) > 0")
+    int countBandsOnMap();
+
+    @Query("SELECT COUNT(b) FROM BandDao b WHERE LENGTH(b.longitude) > 0 AND LENGTH(b.latitude) > 0 AND b.status = uk.co.bbr.services.bands.types.BandStatus.EXTINCT")
+    int countExtinctBandsOnMap();
 }

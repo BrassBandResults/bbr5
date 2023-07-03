@@ -48,4 +48,7 @@ public interface ContestEventRepository extends JpaRepository<ContestEventDao, L
             "AND e.contest.id = :contestId " +
             "ORDER BY e.contest.name DESC")
     List<ContestEventDao> fetchEventsForVenueForSpecificContest(Long venueId, Long contestId);
+
+    @Query("SELECT COUNT(e) FROM ContestEventDao e")
+    int countEvents();
 }

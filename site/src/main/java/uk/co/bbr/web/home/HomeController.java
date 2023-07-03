@@ -6,6 +6,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import uk.co.bbr.services.security.UserService;
 import uk.co.bbr.services.security.dao.SiteUserDao;
+import uk.co.bbr.services.statistics.StatisticsService;
+import uk.co.bbr.services.statistics.dto.StatisticsDto;
 
 import java.util.List;
 
@@ -14,6 +16,7 @@ import java.util.List;
 public class HomeController {
 
     private final UserService userService;
+    private final StatisticsService statisticsService;
 
     @GetMapping("/")
     public String home(Model model) {
@@ -21,7 +24,10 @@ public class HomeController {
     }
 
     @GetMapping("/statistics")
-    public String statistics() {
+    public String statistics(Model model) {
+        StatisticsDto statistics = this.statisticsService.fetchStatistics();
+
+        model.addAttribute("Statistics", statistics);
         return "home/statistics";
     }
 

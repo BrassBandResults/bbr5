@@ -30,4 +30,7 @@ public interface ContestRepository extends JpaRepository<ContestDao, Long> {
 
     @Query("SELECT c FROM ContestDao c WHERE UPPER(c.name) LIKE :searchStringUpper")
     List<ContestDao> lookupByPrefix(String searchStringUpper);
+
+    @Query("SELECT COUNT(c) FROM ContestDao c")
+    int countContests();
 }

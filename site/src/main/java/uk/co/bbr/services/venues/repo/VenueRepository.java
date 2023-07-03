@@ -16,4 +16,10 @@ public interface VenueRepository extends JpaRepository<VenueDao, Long> {
 
     @Query("SELECT v FROM VenueDao v WHERE v.slug = ?1")
     Optional<VenueDao> fetchBySlug(String venueSlug);
+
+    @Query("SELECT COUNT(v) FROM VenueDao v")
+    int countVenues();
+
+    @Query("SELECT COUNT(v) FROM VenueDao v WHERE LENGTH(v.latitude) > 0 AND LENGTH(v.longitude) > 0")
+    int countVenuesOnMap();
 }
