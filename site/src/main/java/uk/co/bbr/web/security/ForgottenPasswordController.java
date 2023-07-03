@@ -35,8 +35,7 @@ public class ForgottenPasswordController {
         }
 
         if (matchingUser.isPresent()) {
-            this.userService.generateResetPasswordKey(matchingUser.get());
-            this.emailService.sendResetPasswordEmail(matchingUser.get());
+            this.userService.sendResetPasswordEmail(matchingUser.get());
         }
 
         return "redirect:/acc/forgotten-password/sent";
@@ -47,7 +46,7 @@ public class ForgottenPasswordController {
         return "security/password/sent";
     }
 
-    @GetMapping("/acc/forgotten-password/reset/{resetKey:[A-Za-z0-9]{40}}")
+    @GetMapping("/acc/forgotten-password/reset/{resetKey:[-A-Za-z0-9]{40}}")
     public String passwordChangeGet(Model model, @PathVariable("resetKey") String resetKey) {
         Optional<SiteUserDao> matchingUser = this.userService.fetchUserByResetPasswordKey(resetKey);
         if (matchingUser.isEmpty()) {
@@ -56,11 +55,12 @@ public class ForgottenPasswordController {
 
         model.addAttribute("ResetKey", resetKey);
         model.addAttribute("User", matchingUser.get());
+        model.addAttribute("Errors", "");
 
         return "security/password/enter-new-password";
     }
 
-    @PostMapping("/acc/forgotten-password/reset/{resetKey:[A-Za-z0-9]{40}}")
+    @PostMapping("/acc/forgotten-password/reset/{resetKey:[-A-Za-z0-9]{40}}")
     public String passwordChangePost(Model model, @RequestParam("password1") String password1, @RequestParam("password2") String password2, @PathVariable("resetKey") String resetKey) {
         Optional<SiteUserDao> matchingUser = this.userService.fetchUserByResetPasswordKey(resetKey);
         if (matchingUser.isEmpty()) {
@@ -78,6 +78,8 @@ public class ForgottenPasswordController {
             model.addAttribute("User", matchingUser.get());
             return "security/password/enter-new-password";
         }
+
+        this.userService.changePassword(matchingUser.get(), password1);
 
         return "redirect:/acc/forgotten-password/changed";
     }

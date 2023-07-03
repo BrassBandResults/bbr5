@@ -136,13 +136,28 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void generateResetPasswordKey(SiteUserDao siteUser) {
+    public void sendResetPasswordEmail(SiteUserDao siteUser) {
         siteUser.setResetPasswordKey(RandomStringUtils.randomAlphanumeric(40));
         this.bbrUserRepository.saveAndFlush(siteUser);
+        this.emailService.sendResetPasswordEmail(siteUser);
     }
 
     @Override
     public Optional<SiteUserDao> fetchUserByResetPasswordKey(String resetKey) {
         return this.bbrUserRepository.fetchByResetKey(resetKey);
+    }
+
+    @Override
+    public void changePassword(SiteUserDao siteUser, String plaintextPassword) {
+        Optional<SiteUserDao> matchingUser = this.fetchUserByUsercode(siteUser.getUsercode());
+        if (matchingUser.isEmpty()) {
+            throw NotFoundException.userNotFoundByActivationKey();
+        }
+
+        matchingUser.get().setSalt(PasswordTools.createSalt());
+        matchingUser.get().setPasswordVersion(PasswordTools.latestVersion());
+        matchingUser.get().setPassword(PasswordTools.hashPassword(PasswordTools.latestVersion(), matchingUser.get().getSalt(), siteUser.getUsercode(), plaintextPassword));
+
+        this.bbrUserRepository.saveAndFlush(matchingUser.get());
     }
 }
