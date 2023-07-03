@@ -85,15 +85,16 @@
                 <div class="dropdown">
                     <a class="nav-item nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" id="siteDropdown" aria-haspopup="true" aria-expanded="false" th:text="#{menu.site.title}">Site</a>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" aria-labelledby="siteDropdown" href="/leaderboard/" th:text="#{menu.site.leaderboard}">Leaderboard</a>
-                        <a class="dropdown-item" aria-labelledby="siteDropdown" href="/badges/" th:text="#{menu.site.badges}">Badges</a>
+                        <a class="dropdown-item" aria-labelledby="siteDropdown" href="/leaderboard" th:text="#{menu.site.leaderboard}">Leaderboard</a>
+                        <a class="dropdown-item" aria-labelledby="siteDropdown" href="/badges" th:text="#{menu.site.badges}">Badges</a>
                         <div class="dropdown-divider" sec:authorize="hasRole('BBR_SUPERUSER')"></div>
-                        <a class="dropdown-item" aria-labelledby="siteDropdown" href="/feedback/queue/" th:text="#{menu.site.feedback-queue}" sec:authorize="hasRole('BBR_SUPERUSER')">Feedback Queue</a>
+                        <a class="dropdown-item" aria-labelledby="siteDropdown" href="/feedback/queue" th:text="#{menu.site.feedback-queue}" sec:authorize="hasRole('BBR_SUPERUSER')">Feedback Queue</a>
+                        <a class="dropdown-item" aria-labelledby="siteDropdown" href="/user-list" th:text="#{menu.site.user-list}" sec:authorize="hasRole('BBR_ADMIN')">User List</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" aria-labelledby="siteDropdown" href="/statistics/" th:text="#{menu.site.statistics}">Statistics</a>
-                        <a class="dropdown-item" aria-labelledby="siteDropdown" href="/faq/" th:text="#{menu.site.faq}">FAQ</a>
-                        <a class="dropdown-item" aria-labelledby="siteDropdown" href="/about-us/" th:text="#{menu.site.who-we-are}">Who We Are</a>
-                        <a class="dropdown-item" aria-labelledby="siteDropdown" href="/privacy/" th:text="#{menu.site.privacy-policy}">Privacy Policy</a>
+                        <a class="dropdown-item" aria-labelledby="siteDropdown" href="/statistics" th:text="#{menu.site.statistics}">Statistics</a>
+                        <a class="dropdown-item" aria-labelledby="siteDropdown" href="/faq" th:text="#{menu.site.faq}">FAQ</a>
+                        <a class="dropdown-item" aria-labelledby="siteDropdown" href="/about-us" th:text="#{menu.site.who-we-are}">Who We Are</a>
+                        <a class="dropdown-item" aria-labelledby="siteDropdown" href="/privacy" th:text="#{menu.site.privacy-policy}">Privacy Policy</a>
                     </div>
                 </div>
 
