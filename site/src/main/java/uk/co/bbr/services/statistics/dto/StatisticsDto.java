@@ -81,13 +81,15 @@ public class StatisticsDto {
             return "0.0";
         }
         BigDecimal day = new BigDecimal(dayCount);
-        day = day.multiply(new BigDecimal(100));
+        day = day.setScale(5, RoundingMode.HALF_UP);
+        day = day.multiply(BigDecimal.valueOf(100.0));
 
         BigDecimal bands = new BigDecimal(this.bandsWithRehearsalNight);
-        bands = bands.multiply(new BigDecimal(100));
+        bands = bands.setScale(5, RoundingMode.HALF_UP);
+        bands = bands.multiply(BigDecimal.valueOf(100.0));
 
-        BigDecimal fraction = day.divide(bands);
-        BigDecimal result = fraction.multiply(new BigDecimal(100));
+        BigDecimal fraction = day.divide(bands, RoundingMode.DOWN);
+        BigDecimal result = fraction.multiply(BigDecimal.valueOf(100.0));
         result = result.setScale(1, RoundingMode.HALF_UP);
 
         return result.toString();

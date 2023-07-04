@@ -54,10 +54,14 @@ public class BandSql {
         try {
             Query query = entityManager.createNativeQuery(BANDS_COMPETED_IN_YEAR_SQL);
             query.setParameter(1, year);
-            List<BigInteger> queryResults = query.getResultList();
+            List queryResults = query.getResultList();
 
-            for (BigInteger columnList : queryResults) {
-                count = columnList.intValue();
+            if (!queryResults.isEmpty()) {
+                if (queryResults.get(0) instanceof BigInteger) {
+                    count = ((BigInteger) queryResults.get(0)).intValue();
+                } else {
+                    count = (Integer)queryResults.get(0);
+                }
             }
 
             return count;
