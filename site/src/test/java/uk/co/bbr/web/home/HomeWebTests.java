@@ -47,6 +47,7 @@ class HomeWebTests implements LoginMixin {
     @Autowired private ContestService contestService;
     @Autowired private RegionService regionService;
     @Autowired private BandService bandService;
+    @Autowired private BandRehearsalsService bandRehearsalsService;
     @Autowired private PersonService personService;
     @Autowired private ContestEventService contestEventService;
     @Autowired private ResultService contestResultService;
@@ -62,18 +63,30 @@ class HomeWebTests implements LoginMixin {
         BandDao rtb = this.bandService.create("Rothwell Temperance Band", yorkshire);
         BandDao blackDyke = this.bandService.create("Black Dyke", yorkshire);
         BandDao grimethorpe = this.bandService.create("Grimethorpe", yorkshire);
-         this.bandService.create("YBS Band", yorkshire);
+        BandDao ybs = this.bandService.create("YBS Band", yorkshire);
+
+        this.bandRehearsalsService.createRehearsalDay(rtb, RehearsalDay.MONDAY);
+        this.bandRehearsalsService.createRehearsalDay(rtb, RehearsalDay.WEDNESDAY);
+        this.bandRehearsalsService.createRehearsalDay(blackDyke, RehearsalDay.MONDAY);
+        this.bandRehearsalsService.createRehearsalDay(blackDyke, RehearsalDay.THURSDAY);
+        this.bandRehearsalsService.createRehearsalDay(grimethorpe, RehearsalDay.MONDAY);
+        this.bandRehearsalsService.createRehearsalDay(grimethorpe, RehearsalDay.TUESDAY);
+        this.bandRehearsalsService.createRehearsalDay(ybs, RehearsalDay.TUESDAY);
+        this.bandRehearsalsService.createRehearsalDay(ybs, RehearsalDay.SATURDAY);
 
         PersonDao davidRoberts = this.personService.create("Roberts", "David");
         PersonDao johnRoberts = this.personService.create("Roberts", "John");
         PersonDao duncanBeckley = this.personService.create("Beckley", "Duncan");
-        this.personService.create("Childs", "David");
+        PersonDao davidChilds = this.personService.create("Childs", "David");
 
         ContestDao yorkshireArea = this.contestService.create("Yorkshire Area");
-        ContestEventDao yorkshireArea2010 = this.contestEventService.create(yorkshireArea, LocalDate.of(2010, 3, 1));
+        int lastYear = LocalDate.now().getYear() - 1;
+        ContestEventDao yorkshireArea2010 = this.contestEventService.create(yorkshireArea, LocalDate.of(lastYear, 3, 1));
         this.contestResultService.addResult(yorkshireArea2010, "1", blackDyke, davidRoberts);
         this.contestResultService.addResult(yorkshireArea2010, "2", rtb, johnRoberts);
         this.contestResultService.addResult(yorkshireArea2010, "3", grimethorpe, duncanBeckley);
+        this.contestResultService.addResult(yorkshireArea2010, "", ybs, davidChilds);
+
 
         logoutTestUser();
     }

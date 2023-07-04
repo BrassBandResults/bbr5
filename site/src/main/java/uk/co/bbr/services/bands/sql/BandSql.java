@@ -5,6 +5,8 @@ import uk.co.bbr.services.bands.sql.dto.BandWinnersSqlDto;
 import uk.co.bbr.services.framework.sql.SqlExec;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import java.math.BigInteger;
 import java.util.List;
 
 @UtilityClass
@@ -39,4 +41,29 @@ public class BandSql {
     public static List<BandWinnersSqlDto> selectWinningBands(EntityManager entityManager) {
         return SqlExec.execute(entityManager, WINNING_BANDS_SQL, BandWinnersSqlDto.class);
     }
+
+    private static final String BANDS_COMPETED_IN_YEAR_SQL = """
+            SELECT COUNT(*) FROM 
+            ( SELECT DISTINCT(r.band_id)
+              FROM contest_result r
+              INNER JOIN contest_event e ON e.id = r.contest_event_id
+              WHERE YEAR(e.date_of_event) = ?1) counts
+    """;
+    public static int countBandsCompetedInYear(EntityManager entityManager, int year) {
+        int count = 0;
+        try {
+            Query query = entityManager.createNativeQuery(BANDS_COMPETED_IN_YEAR_SQL);
+            query.setParameter(1, year);
+            List<BigInteger> queryResults = query.getResultList();
+
+            for (BigInteger columnList : queryResults) {
+                count = columnList.intValue();
+            }
+
+            return count;
+        } catch (Exception e) {
+            throw new RuntimeException("SQL Failure, " + e.getMessage());
+        }
+    }
 }
+

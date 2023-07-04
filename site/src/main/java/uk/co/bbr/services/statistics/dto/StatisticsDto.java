@@ -49,8 +49,7 @@ public class StatisticsDto {
 
 
     public String getMondayPercent() {
-        String percent = this.calcPercent(this.bandsRehearseOnMonday);
-        return percent;
+        return this.calcPercent(this.bandsRehearseOnMonday);
     }
 
     public String getTuesdayPercent() {

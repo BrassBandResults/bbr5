@@ -264,6 +264,6 @@ public class BandServiceImpl implements BandService, SlugTools {
 
     @Override
     public int countBandsCompetedInYear(int year) {
-        return 0; // TODO implement properly
+        return BandSql.countBandsCompetedInYear(this.entityManager, year);
     }
 }

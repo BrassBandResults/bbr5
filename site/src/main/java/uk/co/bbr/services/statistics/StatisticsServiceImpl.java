@@ -45,7 +45,8 @@ public class StatisticsServiceImpl implements StatisticsService {
         
         stats.setBandCount(this.bandRepository.countBands());
         stats.setLatestBand(this.bandRepository.fetchLatestBand());
-        stats.setBandsCompetedLastYear(this.bandService.countBandsCompetedInYear(LocalDate.now().minus(1, ChronoUnit.YEARS).getYear()));
+        int lastYear = LocalDate.now().minus(1, ChronoUnit.YEARS).getYear();
+        stats.setBandsCompetedLastYear(this.bandService.countBandsCompetedInYear(lastYear));
         stats.setBandsWithWebsite(this.bandRepository.countBandsWithWebsite());
         stats.setBandsOnMap(this.bandRepository.countBandsOnMap());
         stats.setExtinctBandsOnMap(this.bandRepository.countExtinctBandsOnMap());

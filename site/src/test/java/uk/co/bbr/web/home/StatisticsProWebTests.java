@@ -84,13 +84,15 @@ class StatisticsProWebTests implements LoginMixin {
         PersonDao davidRoberts = this.personService.create("Roberts", "David");
         PersonDao johnRoberts = this.personService.create("Roberts", "John");
         PersonDao duncanBeckley = this.personService.create("Beckley", "Duncan");
-        this.personService.create("Childs", "David");
+        PersonDao davidChilds = this.personService.create("Childs", "David");
 
         ContestDao yorkshireArea = this.contestService.create("Yorkshire Area");
-        ContestEventDao yorkshireArea2010 = this.contestEventService.create(yorkshireArea, LocalDate.of(2010, 3, 1));
+        int lastYear = LocalDate.now().getYear() - 1;
+        ContestEventDao yorkshireArea2010 = this.contestEventService.create(yorkshireArea, LocalDate.of(lastYear, 3, 1));
         this.contestResultService.addResult(yorkshireArea2010, "1", blackDyke, davidRoberts);
         this.contestResultService.addResult(yorkshireArea2010, "2", rtb, johnRoberts);
         this.contestResultService.addResult(yorkshireArea2010, "3", grimethorpe, duncanBeckley);
+        this.contestResultService.addResult(yorkshireArea2010, "", ybs, davidChilds);
 
         logoutTestUser();
     }
