@@ -1,7 +1,6 @@
 package uk.co.bbr.services.security;
 
 import lombok.RequiredArgsConstructor;
-import net.bytebuddy.utility.RandomString;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
 import uk.co.bbr.services.email.EmailService;
@@ -158,6 +157,22 @@ public class UserServiceImpl implements UserService {
         matchingUser.get().setPasswordVersion(PasswordTools.latestVersion());
         matchingUser.get().setPassword(PasswordTools.hashPassword(PasswordTools.latestVersion(), matchingUser.get().getSalt(), siteUser.getUsercode(), plaintextPassword));
 
+        this.bbrUserRepository.saveAndFlush(matchingUser.get());
+    }
+
+    @Override
+    public Optional<SiteUserDao> fetchUserByUuid(String uuid) {
+        return this.bbrUserRepository.fetchByUuid(uuid);
+    }
+
+    @Override
+    public void optUserOutFromFeedbackEmails(SiteUserDao siteUser) {
+        Optional<SiteUserDao> matchingUser = this.fetchUserByUsercode(siteUser.getUsercode());
+        if (matchingUser.isEmpty()) {
+            throw NotFoundException.userNotFoundByUsercode(siteUser.getUsercode());
+        }
+
+        matchingUser.get().setFeedbackEmailOptOut(true);
         this.bbrUserRepository.saveAndFlush(matchingUser.get());
     }
 }

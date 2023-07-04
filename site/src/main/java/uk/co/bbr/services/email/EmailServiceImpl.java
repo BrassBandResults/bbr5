@@ -45,7 +45,7 @@ public class EmailServiceImpl implements EmailService {
         messageText.append("https://www.brassbandresults.co.uk").append(feedbackOffset);
         messageText.append("\n\n");
         messageText.append(this.messageSource.getMessage("email.feedback.opt-out", null, LocaleContextHolder.getLocale()));
-        messageText.append("https://www.brassbandresults.co.uk/acc/feedback/opt-out?id=").append(user.getUuid());
+        messageText.append("https://www.brassbandresults.co.uk/acc/feedback/opt-out/").append(user.getUuid());
         messageText.append("\n\n");
         messageText.append(this.messageSource.getMessage("email.sign-off", null, LocaleContextHolder.getLocale()));
 

@@ -35,4 +35,8 @@ public interface UserService {
     Optional<SiteUserDao> fetchUserByResetPasswordKey(String resetKey);
 
     void changePassword(SiteUserDao siteUser, String plaintextPassword);
+
+    Optional<SiteUserDao> fetchUserByUuid(String userRandomId);
+
+    void optUserOutFromFeedbackEmails(SiteUserDao siteUser);
 }

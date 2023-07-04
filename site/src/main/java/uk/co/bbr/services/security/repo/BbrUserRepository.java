@@ -34,4 +34,7 @@ public interface BbrUserRepository  extends JpaRepository<SiteUserDao, Long> {
 
     @Query("SELECT u FROM SiteUserDao u WHERE u.resetPasswordKey = :resetKey")
     Optional<SiteUserDao> fetchByResetKey(String resetKey);
+
+    @Query("SELECT u FROM SiteUserDao u WHERE u.uuid = :uuid")
+    Optional<SiteUserDao> fetchByUuid(String uuid);
 }

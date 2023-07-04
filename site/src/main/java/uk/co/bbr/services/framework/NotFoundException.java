@@ -96,4 +96,8 @@ public class NotFoundException extends RuntimeException {
     public static NotFoundException userNotFoundByResetPasswordKey() {
         return new NotFoundException("Couldn't find a user to reset password for with that key");
     }
+
+    public static NotFoundException userNotFoundByRandomString() {
+        return new NotFoundException("Couldn't find a user to opt out for with that key");
+    }
 }
