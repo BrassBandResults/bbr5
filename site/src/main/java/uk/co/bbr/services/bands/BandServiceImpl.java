@@ -261,4 +261,9 @@ public class BandServiceImpl implements BandService, SlugTools {
         List<CompareBandsSqlDto> results = BandCompareSql.compareBands(this.entityManager, leftBand.getId(), rightBand.getId());
         return new BandCompareDto(results);
     }
+
+    @Override
+    public int countBandsCompetedInYear(int year) {
+        return 0; // TODO implement properly
+    }
 }

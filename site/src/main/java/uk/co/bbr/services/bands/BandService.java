@@ -40,4 +40,6 @@ public interface BandService {
     List<BandDao> lookupByPrefix(String searchString);
 
     BandCompareDto compareBands(BandDao leftBand, BandDao rightBand);
+
+    int countBandsCompetedInYear(int year);
 }

@@ -30,4 +30,7 @@ public interface BandRehearsalNightRepository extends JpaRepository<BandRehearsa
 
     @Query("SELECT COUNT(rd) FROM BandRehearsalDayDao rd WHERE rd.day = uk.co.bbr.services.bands.types.RehearsalDay.SUNDAY")
     int countBandsOnSunday();
+
+    @Query("SELECT COUNT(DISTINCT rd.band) FROM BandRehearsalDayDao rd")
+    int fetchBandCount();
 }

@@ -1,11 +1,133 @@
 <!DOCTYPE html>
-<html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+<html lang="en" layout:decorate="~{layout}" xmlns:sec="http://www.thymeleaf.org" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
 <head>
     <title th:text="@{#{page.statistics.title} + ' - Brass Band Results'}">Statistics - Brass Band Results</title>
 </head>
 <body>
 <div layout:fragment="content">
     <h2 th:text="#{page.statistics.title}">Site Statistics</h2>
+    <ul>
+        <li>
+            <span th:text="${Statistics.bandCount}" th:remove="tag">123</span>
+            <span th:text="#{page.statistics.bands}" th:remove="tag">bands</span>,
+            <span sec:authorize="hasRole('BBR_PRO')" th:text="#{page.statistics.latest-is}" th:remove="tag">latest is</span>
+            <span sec:authorize="hasRole('BBR_PRO')" th:replace="links/band-link.html :: bandLink(${Statistics.latestBand}, false, false)"></span>
+            <ul sec:authorize="hasRole('BBR_PRO')">
+                <li>
+                    <span th:text="${Statistics.bandsCompetedLastYear}" th:remove="tag">123</span>
+                    <span th:text="#{page.statistics.competed-last-year}" th:remove="tag">competed last year</span>.
+                </li>
+                <li>
+                    <span th:text="${Statistics.bandsWithWebsite}" th:remove="tag">123</span>
+                    <span th:text="#{page.statistics.have-a-website}" th:remove="tag">have a website</span>.
+                </li>
+                <li>
+                    <span th:text="${Statistics.bandsOnMap}" th:remove="tag">123</span>
+                    <span th:text="#{page.statistics.appear-on-map}" th:remove="tag">appear on the map</span>,
+                    <span th:text="#{page.statistics.of-which}" th:remove="tag">of which</span>
+                    <span th:text="${Statistics.extinctBandsOnMap}" th:remove="tag">123</span>
+                    <span th:text="#{page.statistics.are-extinct}" th:remove="tag">are extinct</span>.
+                </li>
+            </ul>
+        </li>
+        <li>
+            <span th:text="${Statistics.peopleCount}" th:remove="tag">123</span>
+            <span th:text="#{page.statistics.people}" th:remove="tag">people</span>,
+            <span sec:authorize="hasRole('BBR_PRO')" th:text="#{page.statistics.latest-is}" th:remove="tag">latest is</span>
+            <span sec:authorize="hasRole('BBR_PRO')" th:replace="links/person-link.html :: personLink(${Statistics.latestPerson}, false, false)"></span>
+        </li>
+        <li>
+            <span th:text="${Statistics.resultCount}" th:remove="tag">123</span>
+            <span th:text="#{page.statistics.results}" th:remove="tag">results</span>,
+            <span sec:authorize="hasRole('BBR_PRO')" th:text="#{page.statistics.of-which}" th:remove="tag">of which</span>
+            <span sec:authorize="hasRole('BBR_PRO')" th:text="${Statistics.resultsWithPlacingsCount}" th:remove="tag">123</span>
+            <span sec:authorize="hasRole('BBR_PRO')" th:text="#{page.statistics.have-placings}" th:remove="tag">have placings</span>.
+        </li>
+        <li>
+            <span th:text="${Statistics.eventCount}" th:remove="tag">123</span>
+            <span th:text="#{page.statistics.events}" th:remove="tag">events</span>,
+            <span sec:authorize="hasRole('BBR_PRO')" th:text="#{page.statistics.latest-is}" th:remove="tag">latest is</span>
+            <span sec:authorize="hasRole('BBR_PRO')" th:text="${Statistics.latestEvent.contest.name}">Contest Name</span>
+            <span sec:authorize="hasRole('BBR_PRO')" th:replace="links/event-link.html :: eventLink(${Statistics.latestEvent})"></span>
+        </li>
+        <li>
+            <span th:text="${Statistics.contestCount}" th:remove="tag">123</span>
+            <span th:text="#{page.statistics.contests}" th:remove="tag">contests</span>,
+            <span sec:authorize="hasRole('BBR_PRO')" th:text="#{page.statistics.latest-is}" th:remove="tag">latest is</span>
+            <span sec:authorize="hasRole('BBR_PRO')" th:replace="links/contest-link.html :: contestLink(${Statistics.latestContest})"></span>
+        </li>
+        <li>
+            <span th:text="${Statistics.pieceCount}" th:remove="tag">123</span>
+            <span th:text="#{page.statistics.pieces}" th:remove="tag">pieces</span>,
+            <span sec:authorize="hasRole('BBR_PRO')" th:text="#{page.statistics.latest-is}" th:remove="tag">latest is</span>
+            <span sec:authorize="hasRole('BBR_PRO')" th:replace="links/piece-link.html :: pieceLink(${Statistics.latestPiece})"></span>
+        </li>
+        <li>
+            <span th:text="${Statistics.venueCount}" th:remove="tag">123</span>
+            <span th:text="#{page.statistics.venues}" th:remove="tag">venues</span>,
+            <span sec:authorize="hasRole('BBR_PRO')" th:text="#{page.statistics.latest-is}" th:remove="tag">latest is</span>
+            <span sec:authorize="hasRole('BBR_PRO')" th:replace="links/venue-link.html :: venueLink(${Statistics.latestVenue})"></span>
+        </li>
+        <ul sec:authorize="hasRole('BBR_PRO')">
+            <li>
+                <span th:text="${Statistics.venuesOnMap}" th:remove="tag">123</span>
+                <span th:text="#{page.statistics.appear-on-map}" th:remove="tag">appear on the map</span>.
+            </li>
+        </ul>
+    </ul>
+
+    <h3 sec:authorize="hasRole('BBR_PRO')" th:text="#{page.statistics.rehearsals}">Band Rehearsals</h3>
+    <ul sec:authorize="hasRole('BBR_PRO')">
+        <li>
+            <span th:text="${Statistics.bandsRehearseOnMonday}" th:remove="tag">123</span>
+            <span th:text="#{page.statistics.bands}" th:remove="tag">bands</span>
+            (<span th:text="${Statistics.mondayPercent}" th:remove="tag">12</span>%)
+            <span th:text="#{page.statistics.rehearse-on}" th:remove="tag">rehearse on</span>
+            <span th:text="#{day.monday}" th:remove="tag">Monday</span>.
+        </li>
+        <li>
+            <span th:text="${Statistics.bandsRehearseOnTuesday}" th:remove="tag">123</span>
+            <span th:text="#{page.statistics.bands}" th:remove="tag">bands</span>
+            (<span th:text="${Statistics.tuesdayPercent}" th:remove="tag">12</span>%)
+            <span th:text="#{page.statistics.rehearse-on}" th:remove="tag">rehearse on</span>
+            <span th:text="#{day.tuesday}" th:remove="tag">Tuesday</span>.
+        </li>
+        <li>
+            <span th:text="${Statistics.bandsRehearseOnWednesday}" th:remove="tag">123</span>
+            <span th:text="#{page.statistics.bands}" th:remove="tag">bands</span>
+            (<span th:text="${Statistics.wednesdayPercent}" th:remove="tag">12</span>%)
+            <span th:text="#{page.statistics.rehearse-on}" th:remove="tag">rehearse on</span>
+            <span th:text="#{day.wednesday}" th:remove="tag">Wednesday</span>.
+        </li>
+        <li>
+            <span th:text="${Statistics.bandsRehearseOnThursday}" th:remove="tag">123</span>
+            <span th:text="#{page.statistics.bands}" th:remove="tag">bands</span>
+            (<span th:text="${Statistics.thursdayPercent}" th:remove="tag">12</span>%)
+            <span th:text="#{page.statistics.rehearse-on}" th:remove="tag">rehearse on</span>
+            <span th:text="#{day.thursday}" th:remove="tag">Thursday</span>.
+        </li>
+        <li>
+            <span th:text="${Statistics.bandsRehearseOnFriday}" th:remove="tag">123</span>
+            <span th:text="#{page.statistics.bands}" th:remove="tag">bands</span>
+            (<span th:text="${Statistics.fridayPercent}" th:remove="tag">12</span>%)
+            <span th:text="#{page.statistics.rehearse-on}" th:remove="tag">rehearse on</span>
+            <span th:text="#{day.friday}" th:remove="tag">Friday</span>.
+        </li>
+        <li>
+            <span th:text="${Statistics.bandsRehearseOnSaturday}" th:remove="tag">123</span>
+            <span th:text="#{page.statistics.bands}" th:remove="tag">bands</span>
+            (<span th:text="${Statistics.saturdayPercent}" th:remove="tag">12</span>%)
+            <span th:text="#{page.statistics.rehearse-on}" th:remove="tag">rehearse on</span>
+            <span th:text="#{day.saturday}" th:remove="tag">Saturday</span>.
+        </li>
+        <li>
+            <span th:text="${Statistics.bandsRehearseOnSunday}" th:remove="tag">123</span>
+            <span th:text="#{page.statistics.bands}" th:remove="tag">bands</span>
+            (<span th:text="${Statistics.sundayPercent}" th:remove="tag">12</span>%)
+            <span th:text="#{page.statistics.rehearse-on}" th:remove="tag">rehearse on</span>
+            <span th:text="#{day.sunday}" th:remove="tag">Sunday</span>.
+        </li>
+    </ul>
 </div>
 </body>
 </html>

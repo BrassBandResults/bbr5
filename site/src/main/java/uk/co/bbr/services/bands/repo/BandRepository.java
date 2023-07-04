@@ -53,4 +53,7 @@ public interface BandRepository extends JpaRepository<BandDao, Long> {
 
     @Query("SELECT COUNT(b) FROM BandDao b WHERE LENGTH(b.longitude) > 0 AND LENGTH(b.latitude) > 0 AND b.status = uk.co.bbr.services.bands.types.BandStatus.EXTINCT")
     int countExtinctBandsOnMap();
+
+    @Query("SELECT b FROM BandDao b WHERE b.created = (SELECT MAX(b1.created) FROM BandDao b1)")
+    BandDao fetchLatestBand();
 }

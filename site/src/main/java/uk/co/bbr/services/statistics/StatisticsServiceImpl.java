@@ -2,6 +2,7 @@ package uk.co.bbr.services.statistics;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import uk.co.bbr.services.bands.BandService;
 import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.bands.repo.BandRehearsalNightRepository;
 import uk.co.bbr.services.bands.repo.BandRepository;
@@ -27,6 +28,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class StatisticsServiceImpl implements StatisticsService {
 
+    private final BandService bandService;
     private final BandRepository bandRepository;
     private final BandRehearsalNightRepository bandRehearsalNightRepository;
     private final PersonRepository personRepository;
@@ -36,39 +38,40 @@ public class StatisticsServiceImpl implements StatisticsService {
     private final PieceRepository pieceRepository;
     private final VenueRepository venueRepository;
 
+
     @Override
     public StatisticsDto fetchStatistics() {
         StatisticsDto stats = new StatisticsDto();
         
         stats.setBandCount(this.bandRepository.countBands());
-        //stats.setLatestBand(this.bandRepository.fetchLatestBand());
-        //stats.setBandsCompetedLastYear(this.bandRepository.countBandsCompetedInYear(LocalDate.now().minus(1, ChronoUnit.YEARS).getYear()));
+        stats.setLatestBand(this.bandRepository.fetchLatestBand());
+        stats.setBandsCompetedLastYear(this.bandService.countBandsCompetedInYear(LocalDate.now().minus(1, ChronoUnit.YEARS).getYear()));
         stats.setBandsWithWebsite(this.bandRepository.countBandsWithWebsite());
         stats.setBandsOnMap(this.bandRepository.countBandsOnMap());
         stats.setExtinctBandsOnMap(this.bandRepository.countExtinctBandsOnMap());
         stats.setPeopleCount(this.personRepository.countPeople());
-        //stats.setLatestPerson(this.personRepository.fetchLatestPerson());
+        stats.setLatestPerson(this.personRepository.fetchLatestPerson());
         stats.setResultCount(this.contestResultRepository.countResults());
         stats.setResultsWithPlacingsCount(this.contestResultRepository.countResultsWithPlacings());
         stats.setEventCount(this.contestEventRepository.countEvents());
-        //stats.setLatestEvent(this.contestEventRepository.fetchLatestEvent());
+        stats.setLatestEvent(this.contestEventRepository.fetchLatestEvent());
         stats.setContestCount(this.contestRepository.countContests());
-        //stats.setLatestContest(this.contestRepository.fetchLatestContest());
+        stats.setLatestContest(this.contestRepository.fetchLatestContest());
         stats.setPieceCount(this.pieceRepository.countPieces());
-        //stats.setLatestPiece(this.pieceRepository.fetchLatestPiece());
+        stats.setLatestPiece(this.pieceRepository.fetchLatestPiece());
         stats.setVenueCount(this.venueRepository.countVenues());
         stats.setVenuesOnMap(this.venueRepository.countVenuesOnMap());
-        //stats.setLatestVenue(this.venueRepository.fetchLatestVenue());
+        stats.setLatestVenue(this.venueRepository.fetchLatestVenue());
 
         stats.setBandsRehearseOnMonday(this.bandRehearsalNightRepository.countBandsOnMonday());
-        stats.setBandsRehearseOnTuesday(this.bandRehearsalNightRepository.countBandsOnMonday());
-        stats.setBandsRehearseOnWednesday(this.bandRehearsalNightRepository.countBandsOnMonday());
-        stats.setBandsRehearseOnThursday(this.bandRehearsalNightRepository.countBandsOnMonday());
-        stats.setBandsRehearseOnFriday(this.bandRehearsalNightRepository.countBandsOnMonday());
-        stats.setBandsRehearseOnSaturday(this.bandRehearsalNightRepository.countBandsOnMonday());
-        stats.setBandsRehearseOnSunday(this.bandRehearsalNightRepository.countBandsOnMonday());
+        stats.setBandsRehearseOnTuesday(this.bandRehearsalNightRepository.countBandsOnTuesday());
+        stats.setBandsRehearseOnWednesday(this.bandRehearsalNightRepository.countBandsOnWednesday());
+        stats.setBandsRehearseOnThursday(this.bandRehearsalNightRepository.countBandsOnThursday());
+        stats.setBandsRehearseOnFriday(this.bandRehearsalNightRepository.countBandsOnFriday());
+        stats.setBandsRehearseOnSaturday(this.bandRehearsalNightRepository.countBandsOnSaturday());
+        stats.setBandsRehearseOnSunday(this.bandRehearsalNightRepository.countBandsOnSunday());
 
-        //stats.setBandsWithRehearsalNight(this.bandRehearsalNightRepository.fetchBandCount());
+        stats.setBandsWithRehearsalNight(this.bandRehearsalNightRepository.fetchBandCount());
 
         return stats;
     }
