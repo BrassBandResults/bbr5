@@ -51,6 +51,22 @@ public class PersonFinderServiceImpl implements PersonFinderService, SlugTools {
                 return person;
             }
         }
+
+        if (personName.charAt(1) == '.') {
+            String initialUpper = personName.substring(0, 1).toUpperCase();
+            String surnameUpper = personName.substring(personName.lastIndexOf(" ")).trim().toUpperCase();
+
+            List<PersonDao> matchingInitialPeople = this.personRepository.fetchByInitialAndSurname(initialUpper + "%", surnameUpper);
+            for (PersonDao eachPerson : matchingInitialPeople) {
+                if (this.withinDates(eachPerson, dateContext)) {
+                    return eachPerson;
+                }
+            }
+        }
+
+
+
+
         return null;
     }
 
