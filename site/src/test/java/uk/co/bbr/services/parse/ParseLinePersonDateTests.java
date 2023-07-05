@@ -31,7 +31,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @ActiveProfiles("test")
 @SpringBootTest(properties = {  "spring.config.location=classpath:test-application.yml",
-        "spring.datasource.url=jdbc:h2:mem:parse-line-services-tests-admin-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE"})
+        "spring.datasource.url=jdbc:h2:mem:parse-person-date-services-tests-admin-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE"})
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ParseLinePersonDateTests implements LoginMixin {
 
