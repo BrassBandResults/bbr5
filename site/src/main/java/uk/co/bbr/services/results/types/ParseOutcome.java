@@ -1,4 +1,4 @@
-package uk.co.bbr.services.parse.types;
+package uk.co.bbr.services.results.types;
 
 public enum ParseOutcome {
     RED_FAILED_PARSE, // Unable to parse

@@ -30,8 +30,6 @@ public interface PersonService {
 
     int fetchArrangerCount(PersonDao person);
 
-    PersonDao findMatchingPersonByName(String personName, BandDao band, LocalDate dateContext);
-
     List<PeopleWinnersSqlDto> fetchContestWinningPeople();
 
     List<PeopleWinnersSqlDto> fetchContestWinningPeopleBefore(int year);

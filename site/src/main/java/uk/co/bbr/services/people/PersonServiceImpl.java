@@ -183,27 +183,6 @@ public class PersonServiceImpl implements PersonService, SlugTools {
     }
 
     @Override
-    public PersonDao findMatchingPersonByName(String personName, BandDao band, LocalDate dateContext) {
-        Set<PersonDao> previousConductorsForThisBand = this.contestResultService.fetchBandConductors(band);
-
-        for (PersonDao eachExistingConductor : previousConductorsForThisBand) {
-            if (eachExistingConductor.matchesName(personName)) {
-                return eachExistingConductor;
-            }
-        }
-
-        Optional<PersonDao> matchingPerson = this.personRepository.fetchByCombinedName(personName.toUpperCase());
-
-        if (matchingPerson.isPresent()) {
-            return matchingPerson.get();
-        }
-
-        Optional<PersonAliasDao> matchingAlias = this.personAliasRepository.fetchByUpperName(personName.toUpperCase());
-        return matchingAlias.map(PersonAliasDao::getPerson).orElse(null);
-
-    }
-
-    @Override
     public List<PeopleWinnersSqlDto> fetchContestWinningPeople() {
         return PeopleWinnersSql.selectWinningPeople(this.entityManager);
     }

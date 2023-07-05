@@ -10,8 +10,10 @@ import uk.co.bbr.services.bands.BandAliasService;
 import uk.co.bbr.services.bands.BandService;
 import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.bands.dao.BandAliasDao;
-import uk.co.bbr.services.parse.dto.ParseResultDto;
-import uk.co.bbr.services.parse.types.ParseOutcome;
+import uk.co.bbr.services.results.ParseResultService;
+import uk.co.bbr.services.results.ParseService;
+import uk.co.bbr.services.results.dto.ParseResultDto;
+import uk.co.bbr.services.results.types.ParseOutcome;
 import uk.co.bbr.services.people.PersonAliasService;
 import uk.co.bbr.services.people.PersonService;
 import uk.co.bbr.services.people.dao.PersonAliasDao;
@@ -39,7 +41,7 @@ class ParseBlockTests implements LoginMixin {
 
     @Autowired private SecurityService securityService;
     @Autowired private JwtService jwtService;
-    @Autowired private ParseService parseService;
+    @Autowired private ParseResultService parseResultService;
     @Autowired private BandService bandService;
     @Autowired private BandAliasService bandAliasService;
     @Autowired private RegionService regionService;
@@ -83,7 +85,7 @@ class ParseBlockTests implements LoginMixin {
         String testEntry = "1. Black Dyke Band, Robert Childs, 5, 123";
 
         // act
-        List<ParseResultDto> parseResult = this.parseService.parseBlock(testEntry, LocalDate.now());
+        List<ParseResultDto> parseResult = this.parseResultService.parseBlock(testEntry, LocalDate.now());
 
         // assert
         assertEquals(1, parseResult.size());
@@ -111,7 +113,7 @@ class ParseBlockTests implements LoginMixin {
                   5. Rothwell Temperance, David Roberts, 26""";
 
         // act
-        List<ParseResultDto> parseResult = this.parseService.parseBlock(testEntry, LocalDate.now());
+        List<ParseResultDto> parseResult = this.parseResultService.parseBlock(testEntry, LocalDate.now());
 
         // assert
         assertEquals(2, parseResult.size());

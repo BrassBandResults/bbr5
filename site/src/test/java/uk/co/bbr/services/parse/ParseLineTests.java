@@ -10,8 +10,10 @@ import uk.co.bbr.services.bands.BandAliasService;
 import uk.co.bbr.services.bands.BandService;
 import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.bands.dao.BandAliasDao;
-import uk.co.bbr.services.parse.dto.ParseResultDto;
-import uk.co.bbr.services.parse.types.ParseOutcome;
+import uk.co.bbr.services.results.ParseResultService;
+import uk.co.bbr.services.results.ParseService;
+import uk.co.bbr.services.results.dto.ParseResultDto;
+import uk.co.bbr.services.results.types.ParseOutcome;
 import uk.co.bbr.services.people.PersonAliasService;
 import uk.co.bbr.services.people.PersonService;
 import uk.co.bbr.services.people.dao.PersonAliasDao;
@@ -40,7 +42,7 @@ class ParseLineTests implements LoginMixin {
 
     @Autowired private SecurityService securityService;
     @Autowired private JwtService jwtService;
-    @Autowired private ParseService parseService;
+    @Autowired private ParseResultService parseResultService;
     @Autowired private BandService bandService;
     @Autowired private BandAliasService bandAliasService;
     @Autowired private RegionService regionService;
@@ -84,7 +86,7 @@ class ParseLineTests implements LoginMixin {
         String testEntry = "Gibberish";
 
         // act
-        ParseResultDto parseResult = this.parseService.parseLine(testEntry, LocalDate.now());
+        ParseResultDto parseResult = this.parseResultService.parseLine(testEntry, LocalDate.now());
 
         // assert
         assertEquals(ParseOutcome.RED_FAILED_PARSE, parseResult.getOutcome());
@@ -107,7 +109,7 @@ class ParseLineTests implements LoginMixin {
         String testEntry = "1. Black Dyke Band, Robert Childs, 5, 123";
 
         // act
-        ParseResultDto parseResult = this.parseService.parseLine(testEntry, LocalDate.now());
+        ParseResultDto parseResult = this.parseResultService.parseLine(testEntry, LocalDate.now());
 
         // assert
         assertEquals(ParseOutcome.GREEN_MATCHES_FOUND_IN_DATABASE, parseResult.getOutcome());
@@ -132,7 +134,7 @@ class ParseLineTests implements LoginMixin {
         String testEntry = "5. Rothwell Temperance, David Roberts, 26";
 
         // act
-        ParseResultDto parseResult = this.parseService.parseLine(testEntry, LocalDate.now());
+        ParseResultDto parseResult = this.parseResultService.parseLine(testEntry, LocalDate.now());
 
         // assert
         assertEquals(ParseOutcome.GREEN_MATCHES_FOUND_IN_DATABASE, parseResult.getOutcome());
@@ -157,7 +159,7 @@ class ParseLineTests implements LoginMixin {
         String testEntry = "8. 11th Suffolk Volunteer Rifles (Sudbury), David Roberts, 1";
 
         // act
-        ParseResultDto parseResult = this.parseService.parseLine(testEntry, LocalDate.now());
+        ParseResultDto parseResult = this.parseResultService.parseLine(testEntry, LocalDate.now());
 
         // assert
         assertEquals(ParseOutcome.GREEN_MATCHES_FOUND_IN_DATABASE, parseResult.getOutcome());
@@ -182,7 +184,7 @@ class ParseLineTests implements LoginMixin {
         String testEntry = "8. Brighouse & Rastrick, David Roberts, 1";
 
         // act
-        ParseResultDto parseResult = this.parseService.parseLine(testEntry, LocalDate.now());
+        ParseResultDto parseResult = this.parseResultService.parseLine(testEntry, LocalDate.now());
 
         // assert
         assertEquals(ParseOutcome.GREEN_MATCHES_FOUND_IN_DATABASE, parseResult.getOutcome());
@@ -207,7 +209,7 @@ class ParseLineTests implements LoginMixin {
         String testEntry = "0. Rothwell Temperance, David Roberts, 111";
 
         // act
-        ParseResultDto parseResult = this.parseService.parseLine(testEntry, LocalDate.now());
+        ParseResultDto parseResult = this.parseResultService.parseLine(testEntry, LocalDate.now());
 
         // assert
         assertEquals(ParseOutcome.GREEN_MATCHES_FOUND_IN_DATABASE, parseResult.getOutcome());
@@ -232,7 +234,7 @@ class ParseLineTests implements LoginMixin {
         String testEntry = "0. Rothwell Temperance, (David Roberts), 111";
 
         // act
-        ParseResultDto parseResult = this.parseService.parseLine(testEntry, LocalDate.now());
+        ParseResultDto parseResult = this.parseResultService.parseLine(testEntry, LocalDate.now());
 
         // assert
         assertEquals(ParseOutcome.GREEN_MATCHES_FOUND_IN_DATABASE, parseResult.getOutcome());
@@ -257,7 +259,7 @@ class ParseLineTests implements LoginMixin {
         String testEntry = "0, Rothwell Temperance, David Roberts, 0";
 
         // act
-        ParseResultDto parseResult = this.parseService.parseLine(testEntry, LocalDate.now());
+        ParseResultDto parseResult = this.parseResultService.parseLine(testEntry, LocalDate.now());
 
         // assert
         assertEquals(ParseOutcome.GREEN_MATCHES_FOUND_IN_DATABASE, parseResult.getOutcome());
@@ -282,7 +284,7 @@ class ParseLineTests implements LoginMixin {
         String testEntry = "0 Rothwell Temperance, David Roberts, 0";
 
         // act
-        ParseResultDto parseResult = this.parseService.parseLine(testEntry, LocalDate.now());
+        ParseResultDto parseResult = this.parseResultService.parseLine(testEntry, LocalDate.now());
 
         // assert
         assertEquals(ParseOutcome.GREEN_MATCHES_FOUND_IN_DATABASE, parseResult.getOutcome());
@@ -307,7 +309,7 @@ class ParseLineTests implements LoginMixin {
         String testEntry = "1. Rothwell Temperance, David Roberts";
 
         // act
-        ParseResultDto parseResult = this.parseService.parseLine(testEntry, LocalDate.now());
+        ParseResultDto parseResult = this.parseResultService.parseLine(testEntry, LocalDate.now());
 
         // assert
         assertEquals(ParseOutcome.GREEN_MATCHES_FOUND_IN_DATABASE, parseResult.getOutcome());
@@ -332,7 +334,7 @@ class ParseLineTests implements LoginMixin {
         String testEntry = "  1.     Black     Dyke     Band    ,     Robert     Childs    ,     5    ,    321  ";
 
         // act
-        ParseResultDto parseResult = this.parseService.parseLine(testEntry, LocalDate.now());
+        ParseResultDto parseResult = this.parseResultService.parseLine(testEntry, LocalDate.now());
 
         // assert
         assertEquals(ParseOutcome.GREEN_MATCHES_FOUND_IN_DATABASE, parseResult.getOutcome());
@@ -356,7 +358,7 @@ class ParseLineTests implements LoginMixin {
         String testEntry = "  1.     Black     Dyke     Band    ,     Theo    Q   Whigley    ,     5    ,    321  ";
 
         // act
-        ParseResultDto parseResult = this.parseService.parseLine(testEntry, LocalDate.now());
+        ParseResultDto parseResult = this.parseResultService.parseLine(testEntry, LocalDate.now());
 
         // assert
         assertEquals(ParseOutcome.GREEN_MATCHES_FOUND_IN_DATABASE, parseResult.getOutcome());
@@ -381,7 +383,7 @@ class ParseLineTests implements LoginMixin {
         String testEntry = "  1.     Black     Dyke     Band    ,     Theo    Q    P  Whigley    ,     5    ,    321  ";
 
         // act
-        ParseResultDto parseResult = this.parseService.parseLine(testEntry, LocalDate.now());
+        ParseResultDto parseResult = this.parseResultService.parseLine(testEntry, LocalDate.now());
 
         // assert
         assertEquals(ParseOutcome.GREEN_MATCHES_FOUND_IN_DATABASE, parseResult.getOutcome());
@@ -406,7 +408,7 @@ class ParseLineTests implements LoginMixin {
         String testEntry = "W. Wallace Arnold (Rothwell) Band, John Roberts, 13";
 
         // act
-        ParseResultDto parseResult = this.parseService.parseLine(testEntry, LocalDate.now());
+        ParseResultDto parseResult = this.parseResultService.parseLine(testEntry, LocalDate.now());
 
         // assert
         assertEquals(ParseOutcome.GREEN_MATCHES_FOUND_IN_DATABASE, parseResult.getOutcome());
@@ -431,7 +433,7 @@ class ParseLineTests implements LoginMixin {
         String testEntry = "w. Black Dyke Band, John Roberts, 11";
 
         // act
-        ParseResultDto parseResult = this.parseService.parseLine(testEntry, LocalDate.now());
+        ParseResultDto parseResult = this.parseResultService.parseLine(testEntry, LocalDate.now());
 
         // assert
         assertEquals(ParseOutcome.GREEN_MATCHES_FOUND_IN_DATABASE, parseResult.getOutcome());
@@ -456,7 +458,7 @@ class ParseLineTests implements LoginMixin {
         String testEntry = "D. Wallace Arnold (Rothwell) Band, John Roberts, 11";
 
         // act
-        ParseResultDto parseResult = this.parseService.parseLine(testEntry, LocalDate.now());
+        ParseResultDto parseResult = this.parseResultService.parseLine(testEntry, LocalDate.now());
 
         // assert
         assertEquals(ParseOutcome.GREEN_MATCHES_FOUND_IN_DATABASE, parseResult.getOutcome());
@@ -481,7 +483,7 @@ class ParseLineTests implements LoginMixin {
         String testEntry = "d. Rothwell Temperance B, David Roberts, 2";
 
         // act
-        ParseResultDto parseResult = this.parseService.parseLine(testEntry, LocalDate.now());
+        ParseResultDto parseResult = this.parseResultService.parseLine(testEntry, LocalDate.now());
 
         // assert
         assertEquals(ParseOutcome.GREEN_MATCHES_FOUND_IN_DATABASE, parseResult.getOutcome());
@@ -506,7 +508,7 @@ class ParseLineTests implements LoginMixin {
         String testEntry = "Q. Wallace Arnold (Rothwell) Band, John Roberts, 11";
 
         // act
-        ParseResultDto parseResult = this.parseService.parseLine(testEntry, LocalDate.now());
+        ParseResultDto parseResult = this.parseResultService.parseLine(testEntry, LocalDate.now());
 
         // assert
         assertEquals(ParseOutcome.RED_FAILED_PARSE, parseResult.getOutcome());
@@ -529,7 +531,7 @@ class ParseLineTests implements LoginMixin {
         String testEntry = "11. Wallace Arnold (Rothwell) Band, Bob Childs, 321";
 
         // act
-        ParseResultDto parseResult = this.parseService.parseLine(testEntry, LocalDate.now());
+        ParseResultDto parseResult = this.parseResultService.parseLine(testEntry, LocalDate.now());
 
         // assert
         assertEquals(ParseOutcome.GREEN_MATCHES_FOUND_IN_DATABASE, parseResult.getOutcome());
@@ -554,7 +556,7 @@ class ParseLineTests implements LoginMixin {
         String testEntry = "D. Rothwell Temperance Junior Band, John Roberts, 11";
 
         // act
-        ParseResultDto parseResult = this.parseService.parseLine(testEntry, LocalDate.now());
+        ParseResultDto parseResult = this.parseResultService.parseLine(testEntry, LocalDate.now());
 
         // assert
         assertEquals(ParseOutcome.GREEN_MATCHES_FOUND_IN_DATABASE, parseResult.getOutcome());
@@ -579,7 +581,7 @@ class ParseLineTests implements LoginMixin {
         String testEntry = "5. Rothwell Temperance B, John Gillam, 2";
 
         // act
-        ParseResultDto parseResult = this.parseService.parseLine(testEntry, LocalDate.now());
+        ParseResultDto parseResult = this.parseResultService.parseLine(testEntry, LocalDate.now());
 
         // assert
         assertEquals(ParseOutcome.AMBER_PARSE_SUCCEEDED, parseResult.getOutcome());
@@ -602,7 +604,7 @@ class ParseLineTests implements LoginMixin {
         String testEntry = "7. White Rose Concert Band, John Roberts, 7, 642";
 
         // act
-        ParseResultDto parseResult = this.parseService.parseLine(testEntry, LocalDate.now());
+        ParseResultDto parseResult = this.parseResultService.parseLine(testEntry, LocalDate.now());
 
         // assert
         assertEquals(ParseOutcome.AMBER_PARSE_SUCCEEDED, parseResult.getOutcome());
@@ -629,7 +631,7 @@ class ParseLineTests implements LoginMixin {
         String testEntry = "D. Rothwell Temperance B Band, John Roberts, 11";
 
         // act
-        ParseResultDto parseResult = this.parseService.parseLine(testEntry, LocalDate.now());
+        ParseResultDto parseResult = this.parseResultService.parseLine(testEntry, LocalDate.now());
 
         // assert
         assertEquals(ParseOutcome.GREEN_MATCHES_FOUND_IN_DATABASE, parseResult.getOutcome());
@@ -654,7 +656,7 @@ class ParseLineTests implements LoginMixin {
         String testEntry = "Rothwell Temperance B Band, John Roberts";
 
         // act
-        ParseResultDto parseResult = this.parseService.parseLine(testEntry, LocalDate.now());
+        ParseResultDto parseResult = this.parseResultService.parseLine(testEntry, LocalDate.now());
 
         // assert
         assertEquals(ParseOutcome.GREEN_MATCHES_FOUND_IN_DATABASE, parseResult.getOutcome());
@@ -679,7 +681,7 @@ class ParseLineTests implements LoginMixin {
         String testEntry = "Rothwell Temperance B Band, (John Roberts)";
 
         // act
-        ParseResultDto parseResult = this.parseService.parseLine(testEntry, LocalDate.now());
+        ParseResultDto parseResult = this.parseResultService.parseLine(testEntry, LocalDate.now());
 
         // assert
         assertEquals(ParseOutcome.GREEN_MATCHES_FOUND_IN_DATABASE, parseResult.getOutcome());

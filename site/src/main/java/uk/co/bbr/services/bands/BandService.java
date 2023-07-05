@@ -33,8 +33,6 @@ public interface BandService {
 
     BandDao update(BandDao band);
 
-    BandDao findMatchingBandByName(String bandName, LocalDate dateContext);
-
     List<BandWinnersSqlDto> fetchContestWinningBands();
 
     List<BandDao> lookupByPrefix(String searchString);

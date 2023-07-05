@@ -1,11 +1,11 @@
-package uk.co.bbr.services.parse;
+package uk.co.bbr.services.results;
 
-import uk.co.bbr.services.parse.dto.ParseResultDto;
+import uk.co.bbr.services.results.dto.ParseResultDto;
 
 import java.time.LocalDate;
 import java.util.List;
 
-public interface ParseService {
+public interface ParseResultService {
 
     ParseResultDto parseLine(String resultLine, LocalDate dateContext);
 

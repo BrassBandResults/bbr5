@@ -1,4 +1,4 @@
-package uk.co.bbr.services.parse.dto;
+package uk.co.bbr.services.results.dto;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -6,7 +6,7 @@ import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.events.dao.ContestEventDao;
 import uk.co.bbr.services.events.dao.ContestResultDao;
 import uk.co.bbr.services.framework.mixins.NameTools;
-import uk.co.bbr.services.parse.types.ParseOutcome;
+import uk.co.bbr.services.results.types.ParseOutcome;
 import uk.co.bbr.services.people.dao.PersonDao;
 
 @Getter
