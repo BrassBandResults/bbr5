@@ -74,18 +74,11 @@ class ParseLinePersonDateTests implements LoginMixin {
         derekChilds.setEndDate(LocalDate.of(1937, 2, 5));
         this.personService.update(derekChilds);
 
-        PersonDao davidRoberts = this.personService.create("Roberts", "David");
-        davidRoberts.setStartDate(LocalDate.of(1970, 6, 10));
-        this.personService.update(davidRoberts);
+        this.personService.create("Roberts", "David");
 
-        PersonDao johnRoberts = this.personService.create("Roberts", "John");
-        johnRoberts.setStartDate(LocalDate.of(1965, 12, 25));
-        this.personService.update(johnRoberts);
-
-        PersonDao theoQWhigley = this.personService.create("Whigley", "Theo Q.");
-        theoQWhigley.setStartDate(LocalDate.of(1886, 1, 25));
-        theoQWhigley.setEndDate(LocalDate.of(1980, 2, 2));
-        this.personService.update(theoQWhigley);
+        PersonDao peterParks = this.personService.create("Parkes", "Peter");
+        peterParks.setEndDate(LocalDate.of(1995, 12, 25));
+        this.personService.update(peterParks);
 
         PersonDao theoQPWhigley = this.personService.create("Whigley", "Theo Q. P.");
         theoQPWhigley.setStartDate(LocalDate.of(1885, 1, 25));
@@ -139,6 +132,72 @@ class ParseLinePersonDateTests implements LoginMixin {
         assertEquals("david-childs", parseResult.getMatchedConductor().getSlug());
         assertEquals("Childs", parseResult.getMatchedConductor().getSurname());
         assertEquals("David", parseResult.getMatchedConductor().getFirstNames());
+
+        assertNotNull(parseResult.buildContestResult(null));
+    }
+
+    @Test
+    void testFindingWithInitialAndDateWorksSuccessfullyWhenNoDateRange() {
+        String line = "1. Rothwell Temperance B, D. Roberts, 5";
+        ParseResultDto parseResult = this.parseResultService.parseLine(line, LocalDate.of(1982, 1, 1));
+
+        // assert
+        assertEquals("1", parseResult.getRawPosition());
+        assertEquals("Rothwell Temperance B", parseResult.getRawBandName());
+        assertEquals("D. Roberts", parseResult.getRawConductorName());
+        assertEquals(5, parseResult.getRawDraw());
+        assertEquals("", parseResult.getRawPoints());
+
+        assertEquals(ParseOutcome.GREEN_MATCHES_FOUND_IN_DATABASE, parseResult.getOutcome());
+
+        assertEquals("rothwell-temperance-b", parseResult.getMatchedBand().getSlug());
+        assertEquals("david-roberts", parseResult.getMatchedConductor().getSlug());
+        assertEquals("Roberts", parseResult.getMatchedConductor().getSurname());
+        assertEquals("David", parseResult.getMatchedConductor().getFirstNames());
+
+        assertNotNull(parseResult.buildContestResult(null));
+    }
+
+    @Test
+    void testFindingWithInitialAndDateWorksSuccessfullyWhenEndDateRange() {
+        String line = "1. Rothwell Temperance B, P. Parkes, 5";
+        ParseResultDto parseResult = this.parseResultService.parseLine(line, LocalDate.of(1978, 1, 1));
+
+        // assert
+        assertEquals("1", parseResult.getRawPosition());
+        assertEquals("Rothwell Temperance B", parseResult.getRawBandName());
+        assertEquals("P. Parkes", parseResult.getRawConductorName());
+        assertEquals(5, parseResult.getRawDraw());
+        assertEquals("", parseResult.getRawPoints());
+
+        assertEquals(ParseOutcome.GREEN_MATCHES_FOUND_IN_DATABASE, parseResult.getOutcome());
+
+        assertEquals("rothwell-temperance-b", parseResult.getMatchedBand().getSlug());
+        assertEquals("peter-parkes", parseResult.getMatchedConductor().getSlug());
+        assertEquals("Parkes", parseResult.getMatchedConductor().getSurname());
+        assertEquals("Peter", parseResult.getMatchedConductor().getFirstNames());
+
+        assertNotNull(parseResult.buildContestResult(null));
+    }
+
+    @Test
+    void testFindingWithInitialAndDateWorksSuccessfullyWithMultipleInitials() {
+        String line = "1. Rothwell Temperance B, T. Whigley, 5";
+        ParseResultDto parseResult = this.parseResultService.parseLine(line, LocalDate.of(1950, 1, 1));
+
+        // assert
+        assertEquals("1", parseResult.getRawPosition());
+        assertEquals("Rothwell Temperance B", parseResult.getRawBandName());
+        assertEquals("T. Whigley", parseResult.getRawConductorName());
+        assertEquals(5, parseResult.getRawDraw());
+        assertEquals("", parseResult.getRawPoints());
+
+        assertEquals(ParseOutcome.GREEN_MATCHES_FOUND_IN_DATABASE, parseResult.getOutcome());
+
+        assertEquals("rothwell-temperance-b", parseResult.getMatchedBand().getSlug());
+        assertEquals("theo-q-p-whigley", parseResult.getMatchedConductor().getSlug());
+        assertEquals("Whigley", parseResult.getMatchedConductor().getSurname());
+        assertEquals("Theo Q. P.", parseResult.getMatchedConductor().getFirstNames());
 
         assertNotNull(parseResult.buildContestResult(null));
     }
