@@ -3,6 +3,7 @@ package uk.co.bbr.web.feedback;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import uk.co.bbr.services.framework.NotFoundException;
@@ -17,7 +18,7 @@ public class FeedbackOptOutController {
     private final UserService userService;
 
 
-    @PostMapping("https://www.brassbandresults.co.uk/acc/feedback/opt-out/{uuid:[A-Za-z0-9]{40}}")
+    @GetMapping("/acc/feedback/opt-out/{uuid:[-1A-Za-z0-9]{40}}")
     public String feedbackOptOut(Model model, @PathVariable("uuid") String uuid) {
         Optional<SiteUserDao> matchingUser = this.userService.fetchUserByUuid(uuid);
         if (matchingUser.isEmpty()) {
