@@ -34,6 +34,6 @@ public interface ContestRepository extends JpaRepository<ContestDao, Long> {
     @Query("SELECT COUNT(c) FROM ContestDao c")
     int countContests();
 
-    @Query("SELECT c FROM ContestDao c WHERE c.created = (SELECT MAX(c1.created) FROM ContestDao c1)")
+    @Query("SELECT c FROM ContestDao c WHERE c.id = (SELECT MAX(c1.id) FROM ContestDao c1)")
     ContestDao fetchLatestContest();
 }

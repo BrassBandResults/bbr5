@@ -29,7 +29,7 @@ public interface PersonRepository extends JpaRepository<PersonDao, Long> {
     @Query("SELECT COUNT(p) FROM PersonDao p")
     int countPeople();
 
-    @Query("SELECT p FROM PersonDao p WHERE p.created = (SELECT MAX(p1.created) FROM PersonDao p1)")
+    @Query("SELECT p FROM PersonDao p WHERE p.id = (SELECT MAX(p1.id) FROM PersonDao p1)")
     PersonDao fetchLatestPerson();
 
     @Query("SELECT p FROM PersonDao p WHERE UPPER(p.surname) = :surnameUpper AND UPPER(p.firstNames) LIKE :initialUpper")

@@ -45,6 +45,6 @@ public interface PieceRepository extends JpaRepository<PieceDao, Long> {
     @Query("SELECT COUNT(p) FROM PieceDao p")
     int countPieces();
 
-    @Query("SELECT p FROM PieceDao p WHERE p.created = (SELECT MAX(p1.created) FROM PieceDao p1)")
+    @Query("SELECT p FROM PieceDao p WHERE p.id = (SELECT MAX(p1.id) FROM PieceDao p1)")
     PieceDao fetchLatestPiece();
 }

@@ -23,6 +23,6 @@ public interface VenueRepository extends JpaRepository<VenueDao, Long> {
     @Query("SELECT COUNT(v) FROM VenueDao v WHERE LENGTH(v.latitude) > 0 AND LENGTH(v.longitude) > 0")
     int countVenuesOnMap();
 
-    @Query("SELECT v FROM VenueDao v WHERE v.created = (SELECT MAX(v1.created) FROM VenueDao v1)")
+    @Query("SELECT v FROM VenueDao v WHERE v.id = (SELECT MAX(v1.id) FROM VenueDao v1)")
     VenueDao fetchLatestVenue();
 }
