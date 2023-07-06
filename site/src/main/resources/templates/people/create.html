@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+<head>
+    <title th:text="@{#{page.person-create.title} + ' - Brass Band Results'}">Create Person - Brass Band Results</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h2 th:text="#{page.person-create.title}">Create Person</h2>
+
+    <form th:object="${PersonForm}"
+          th:action = "${'/people/' + Person.slug + '/edit'}"
+          method="post">
+        <div class="alert alert-danger" th:if="${#fields.hasErrors('*')}">
+            <ul>
+                <li th:each="err : ${#fields.errors('*')}" th:text="@{#{${err}}}"></li>
+            </ul>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="firstNames" th:text="#{page.person-edit.first-names}">First names:</label>
+            <input id="firstNames" class="form-control" type="text" th:field="*{firstNames}" maxlength="100" size="80"/>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="surname" th:text="#{page.person-edit.surname}">Surname:</label>
+            <input id="surname" class="form-control" type="text" th:field="*{surname}" maxlength="100" size="80"/>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="suffix" th:text="#{page.person-edit.suffix}">Suffix:</label>
+            <select id="suffix" class="form-control" name="suffix" th:field="*{suffix}">
+                <option value="" selected></option>
+                <option value="Jnr" th:text="#{page.person-edit.suffix-jnr}">Jnr</option>
+                <option value="Snr" th:text="#{page.person-edit.suffix-snr}">Snr</option>
+                <option value="I" th:text="#{page.person-edit.suffix-i}">I</option>
+                <option value="II" th:text="#{page.person-edit.suffix-ii}">II</option>
+                <option value="III" th:text="#{page.person-edit.suffix-iii}">III</option>
+            </select>
+            <small class="form-text" th:text="#{page.person-edit.hint.suffix}">Text shown after a surname, like Junior, Senior, III etc.</small>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="knownFor" th:text="#{page.person-edit.known-for}">Known for:</label>
+            <input id="knownFor" class="form-control" type="text" th:field="*{knownFor}" maxlength="100" size="80"/>
+            <small class="form-text" th:text="#{page.person-edit.hint.known-for}">Band(s) this person is most associated with.</small>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="startDate" th:text="#{page.person-edit.start-date}">Start date:</label>
+            <input id="startDate" class="form-control" type="date" th:field="*{startDate}"/>
+            <small class="form-text" th:text="#{page.person-edit.hint.start-date}">Person won't be matched with results before this date.</small>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="endDate" th:text="#{page.person-edit.end-date}">End date:</label>
+            <input id="endDate" class="form-control" type="date" th:field="*{endDate}"/>
+            <small class="form-text" th:text="#{page.person-edit.hint.end-date}">Person won't be matched with results after this date.</small>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="notes" th:text="#{page.person-edit.notes}">Notes:</label>
+            <textarea id="notes" class="form-control" th:field="*{notes}" cols="80" rows="10"></textarea>
+        </div>
+        
+        <input type="submit" th:value="#{page.buttons.save-changes}" class="btn btn-outline-success"/>
+        <a href="/people/" th:text="#{page.buttons.cancel-without-saving}" class="btn btn-light">Cancel wout saving</a>
+    </form>
+</div>
+
+<div layout:fragment="feedback">
+</div>
+
+</body>
+</html>
