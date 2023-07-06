@@ -209,6 +209,9 @@ public abstract class PageSets {
         pageList.add("/bands/rothwell-temperance/edit-relationships/1/delete");
         pageList.add("/contests/YORKSHIRE-GROUP/years");
         pageList.add("/contests/YORKSHIRE-GROUP/2000");
+        pageList.add("/create/band");
+        pageList.add("/create/contest");
+        pageList.add("/create/group");
         pageList.add("/create/tag");
         pageList.add("/lookup/band/data.json?s=abc");
         pageList.add("/lookup/contest/data.json?s=abc");

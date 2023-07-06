@@ -34,6 +34,11 @@
             <small class="form-text" th:text="#{page.contest-edit.hint.contest-type}">The default type to use for events of this contest.  Can be overridden for a particular event.</small>
         </div>
         <div class="mb-3">
+            <label class="form-label" for="qualifies-for" th:text="#{page.contest-edit.qualifies-for}">Qualifies For:</label>
+            <input id="qualifies-for" autocomplete="off" class="form-control" type="text" maxlength="100" onkeyup="lookup('qualifies-for', 'contest');"/>
+            <small class="form-text" th:text="#{page.contest-edit.hint.qualifies-for}">Contest that bands who do well here qualify through to.</small>
+        </div>
+        <div class="mb-3">
             <label class="form-label" for="region" th:text="#{page.contest-edit.region}">Region:</label>
             <select id="region" class="form-control" th:field="*{region}">
                 <option th:each="region : ${Regions}"

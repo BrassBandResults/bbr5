@@ -85,7 +85,7 @@ public class MigrateController {
     @IsBbrAdmin
     public String process(Model model, @PathVariable("index") int index, @PathVariable("type") String type, @PathVariable("pass") int pass) {
 
-        boolean twoPasses = pass == 1 && (type.equals("Venues") || type.equals("Bands"));
+        boolean twoPasses = pass == 1 && (type.equals("Venues") || type.equals("Bands") || type.equals("Contests"));
 
         List<String> messages = new ArrayList<>();
 
@@ -139,7 +139,7 @@ public class MigrateController {
                         this.groupMigrationService.migrate(rootNode);
                         break;
                     case "Contests":
-                        this.contestMigrationService.migrate(rootNode);
+                        this.contestMigrationService.migrate(rootNode, pass);
                         break;
                     case "Tags":
                         this.tagsMigrationService.migrate(rootNode);

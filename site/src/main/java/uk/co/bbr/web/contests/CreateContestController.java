@@ -82,6 +82,13 @@ public class CreateContestController {
             }
         }
 
+        if (submittedForm.getQualifiesFor() != null) {
+            Optional<ContestDao> qualifiesFor = this.contestService.fetchBySlug(submittedForm.getQualifiesFor());
+            if (qualifiesFor.isPresent()) {
+                newContest.setQualifiesFor(qualifiesFor.get());
+            }
+        }
+
         if (submittedForm.getContestType() != null) {
             Optional<ContestTypeDao> contestType = this.contestTypeService.fetchById(submittedForm.getContestType());
             if (contestType.isPresent()) {

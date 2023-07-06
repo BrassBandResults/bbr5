@@ -1,0 +1,13 @@
+<div th:fragment="header(Contest, PreviousNames)" xmlns:sec="http://www.thymeleaf.org">
+    <h2>
+        <span th:if="${Contest.contestGroup != null}" th:replace="links/group-link.html :: groupLinkFromContest(${Contest})"></span>
+        <span th:if="${Contest.contestGroup == null}" th:text="${Contest.name}">Yorkshire Area (Championship Section)</span>
+    </h2>
+    <small th:if="${Contest.qualifiesFor != null}">
+        <span th:text="page.contest.prompt.qualifies-for">Qualifying contest for </span>
+        <span th:replace="links/contest-link.html :: contestLink(${Contest.qualifiesFor})"></span>
+    </small>
+    <span th:replace="components/aliases.html :: previousNames(${PreviousNames})"></span>
+
+    <p th:text="${Contest.description}">Contest Description</p>
+</div>

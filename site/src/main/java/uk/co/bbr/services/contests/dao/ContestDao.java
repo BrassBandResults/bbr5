@@ -82,6 +82,11 @@ public class ContestDao extends AbstractDao implements NameTools {
     @Setter
     private Integer repeatPeriod;
 
+    @ManyToOne(fetch=FetchType.EAGER)
+    @JoinColumn(name="qualifies_for")
+    @Setter
+    private ContestDao qualifiesFor;
+
     @ManyToMany(fetch=FetchType.EAGER)
     @JoinTable(
             name = "contest_tag_link",

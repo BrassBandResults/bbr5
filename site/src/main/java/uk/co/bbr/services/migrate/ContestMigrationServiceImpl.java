@@ -40,89 +40,108 @@ public class ContestMigrationServiceImpl extends AbstractMigrationServiceImpl im
     private final ContestTypeService contestTypeService;
 
     @Override
-    public void migrate(Element rootNode) {
-        ContestDao contest = new ContestDao();
-        contest.setOldId(rootNode.getAttributeValue("id"));
-        contest.setSlug(rootNode.getChildText("slug"));
-        contest.setName(rootNode.getChildText("name"));
-        contest.setNotes(rootNode.getChildText("notes"));
+    public void migrate(Element rootNode, int pass) {
+        if (pass == 1) {
 
-        Element groupNode = rootNode.getChild("group");
-        if (groupNode != null) {
-            String groupSlug = groupNode.getAttributeValue("slug");
-            Optional<ContestGroupDao> group = this.contestGroupService.fetchBySlug(groupSlug);
-            if (group.isEmpty()) {
-                throw NotFoundException.groupNotFoundBySlug(groupSlug);
+            ContestDao contest = new ContestDao();
+            contest.setOldId(rootNode.getAttributeValue("id"));
+            contest.setSlug(rootNode.getChildText("slug"));
+            contest.setName(rootNode.getChildText("name"));
+            contest.setNotes(rootNode.getChildText("notes"));
+
+            Element groupNode = rootNode.getChild("group");
+            if (groupNode != null) {
+                String groupSlug = groupNode.getAttributeValue("slug");
+                Optional<ContestGroupDao> group = this.contestGroupService.fetchBySlug(groupSlug);
+                if (group.isEmpty()) {
+                    throw NotFoundException.groupNotFoundBySlug(groupSlug);
+                }
+                contest.setContestGroup(group.get());
             }
-            contest.setContestGroup(group.get());
-        }
 
-        contest.setDescription(this.notBlank(rootNode, "description"));
-        if (contest.getDescription() != null && contest.getDescription().equals(contest.getName())) {
-            contest.setDescription(null);
-        }
-
-        Element regionNode = rootNode.getChild("region");
-        if (regionNode != null) {
-            String regionSlug = regionNode.getAttributeValue("slug");
-            Optional<RegionDao> region = this.regionService.fetchBySlug(regionSlug);
-            if (region.isEmpty()) {
-                throw new NotFoundException("Region not found");
+            contest.setDescription(this.notBlank(rootNode, "description"));
+            if (contest.getDescription() != null && contest.getDescription().equals(contest.getName())) {
+                contest.setDescription(null);
             }
-            contest.setRegion(region.get());
-        }
 
-        Element sectionNode = rootNode.getChild("section");
-        if (sectionNode != null) {
-            String sectionSlug = sectionNode.getAttributeValue("slug");
-            Optional<SectionDao> section = this.sectionService.fetchBySlug(sectionSlug);
-            if (section.isEmpty()) {
-                throw new NotFoundException("Section not found");
+            Element regionNode = rootNode.getChild("region");
+            if (regionNode != null) {
+                String regionSlug = regionNode.getAttributeValue("slug");
+                Optional<RegionDao> region = this.regionService.fetchBySlug(regionSlug);
+                if (region.isEmpty()) {
+                    throw new NotFoundException("Region not found");
+                }
+                contest.setRegion(region.get());
             }
-            contest.setSection(section.get());
-        }
 
-        Element contestTypeNode = rootNode.getChild("contest_type_link");
-        if (contestTypeNode != null) {
-            String contestTypeName = contestTypeNode.getText().replace("Chuch", "Church");
-            Optional<ContestTypeDao> contestType = this.contestTypeService.fetchByName(contestTypeName);
-            if (contestType.isEmpty()) {
-                throw new NotFoundException("ContestType with name " + contestTypeNode.getText() + " not found");
+            Element sectionNode = rootNode.getChild("section");
+            if (sectionNode != null) {
+                String sectionSlug = sectionNode.getAttributeValue("slug");
+                Optional<SectionDao> section = this.sectionService.fetchBySlug(sectionSlug);
+                if (section.isEmpty()) {
+                    throw new NotFoundException("Section not found");
+                }
+                contest.setSection(section.get());
             }
-            contest.setDefaultContestType(contestType.get());
+
+            Element contestTypeNode = rootNode.getChild("contest_type_link");
+            if (contestTypeNode != null) {
+                String contestTypeName = contestTypeNode.getText().replace("Chuch", "Church");
+                Optional<ContestTypeDao> contestType = this.contestTypeService.fetchByName(contestTypeName);
+                if (contestType.isEmpty()) {
+                    throw new NotFoundException("ContestType with name " + contestTypeNode.getText() + " not found");
+                }
+                contest.setDefaultContestType(contestType.get());
+            }
+
+            contest.setOrdering(this.notBlankInteger(rootNode, "ordering"));
+            contest.setRepeatPeriod(this.notBlankInteger(rootNode, "period"));
+
+            contest.setExtinct(this.notBlankBoolean(rootNode, "extinct"));
+            contest.setExcludeFromGroupResults(this.notBlankBoolean(rootNode, "exclude_from_group_results"));
+            contest.setAllEventsAdded(this.notBlankBoolean(rootNode, "all_events_added"));
+            contest.setPreventFutureBands(this.notBlankBoolean(rootNode, "prevent_future_bands"));
+
+            // tags
+            Element tags = rootNode.getChild("tags");
+            List<Element> tagNodes = tags.getChildren();
+            for (Element eachTag : tagNodes) {
+                this.createTag(contest, eachTag);
+            }
+
+            contest.setCreatedBy(this.createUser(this.notBlank(rootNode, "owner"), this.securityService, this.userService));
+            contest.setUpdatedBy(this.createUser(this.notBlank(rootNode, "lastChangedBy"), this.securityService, this.userService));
+
+            contest.setCreated(this.notBlankDateTime(rootNode, "created"));
+            contest.setUpdated(this.notBlankDateTime(rootNode, "lastModified"));
+
+            contest = this.contestService.migrate(contest);
+
+            // aliases
+            Element previousNames = rootNode.getChild("previous_names");
+            List<Element> previousNameNodes = previousNames.getChildren();
+            for (Element eachOldName : previousNameNodes) {
+                this.createPreviousName(contest, eachOldName);
+            }
+
+            System.out.println(contest.getName());
+        } else {
+            // second pass - all contests present, sort out band links
+            Element qualifiesFor = rootNode.getChild("qualifies_for");
+            if (qualifiesFor != null) {
+                String qualifiesForContestSlug = qualifiesFor.getAttributeValue("slug");
+                String thisContestSlug = rootNode.getChildText("slug");
+
+                Optional<ContestDao> thisContest = this.contestService.fetchBySlug(thisContestSlug);
+                Optional<ContestDao> qualifiesForContest = this.contestService.fetchBySlug(qualifiesForContestSlug);
+
+                if (thisContest.isPresent() && qualifiesForContest.isPresent()) {
+                    thisContest.get().setQualifiesFor(qualifiesForContest.get());
+                    this.contestService.update(thisContest.get());
+                }
+                System.out.println(thisContest.get().getName() + " => " + qualifiesForContest.get().getName());
+            }
         }
-
-        contest.setOrdering(this.notBlankInteger(rootNode, "ordering"));
-        contest.setRepeatPeriod(this.notBlankInteger(rootNode, "period"));
-
-        contest.setExtinct(this.notBlankBoolean(rootNode, "extinct"));
-        contest.setExcludeFromGroupResults(this.notBlankBoolean(rootNode, "exclude_from_group_results"));
-        contest.setAllEventsAdded(this.notBlankBoolean(rootNode, "all_events_added"));
-        contest.setPreventFutureBands(this.notBlankBoolean(rootNode, "prevent_future_bands"));
-
-        // tags
-        Element tags = rootNode.getChild("tags");
-        List<Element> tagNodes = tags.getChildren();
-        for (Element eachTag : tagNodes) {
-            this.createTag(contest, eachTag);
-        }
-
-        contest.setCreatedBy(this.createUser(this.notBlank(rootNode, "owner"), this.securityService, this.userService));
-        contest.setUpdatedBy(this.createUser(this.notBlank(rootNode, "lastChangedBy"), this.securityService, this.userService));
-
-        contest.setCreated(this.notBlankDateTime(rootNode, "created"));
-        contest.setUpdated(this.notBlankDateTime(rootNode, "lastModified"));
-
-        contest = this.contestService.migrate(contest);
-
-        // aliases
-        Element previousNames = rootNode.getChild("previous_names");
-        List<Element> previousNameNodes = previousNames.getChildren();
-        for (Element eachOldName : previousNameNodes) {
-            this.createPreviousName(contest, eachOldName);
-        }
-
-        System.out.println(contest.getName());
     }
 
     private void createPreviousName(ContestDao contest, Element oldNameElement) {
