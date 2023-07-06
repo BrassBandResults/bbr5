@@ -9,15 +9,15 @@
     <h3 th:text="${ContestEvent.eventDateDisplayWithDay}"></h3>
     <table>
         <tr>
-            <th th:text="#{page.contest-event.top-table.test-piece}">Test Piece:</th>
+            <th th:text="#{page.field-prompt.test-piece}">Test Piece:</th>
             <td></td>
         </tr>
         <tr>
-            <th th:text="#{page.contest-event.top-table.adjudicators}">Adjudicators:</th>
+            <th th:text="#{page.field-prompt.adjudicators}">Adjudicators:</th>
             <td></td>
         </tr>
         <tr>
-            <th th:text="#{page.contest-event.top-table.venue}">Venue:</th>
+            <th th:text="#{page.field-prompt.venue}">Venue:</th>
             <td class="venue"><span th:replace="links/venue-link.html :: venueLink(${ContestEvent.venue})"></span></td>
         </tr>
     </table>

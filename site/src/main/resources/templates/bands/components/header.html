@@ -14,19 +14,19 @@
     <table>
         <tr><td colspan="2" th:if="${Band.status.notCompeting}" th:text="#{${Band.status.translationKey} +'.long'}">Band Status</td></tr>
         <tr th:if="${Band.section}">
-            <th th:text="#{page.band.details.section}">Section:</th>
+            <th th:text="#{page.field-prompt.section}">Section:</th>
             <td th:text="#{${Band.section.translationKey}}"></td>
         </tr>
         <tr>
-            <th th:text="#{page.band.details.website}">Website:</th>
+            <th th:text="#{page.field-prompt.website}">Website:</th>
             <td><a th:if="${Band.website != null && Band.website.length > 0}" th:href="${Band.website}" th:text="${Band.website}">link</a></td>
         </tr>
         <tr>
-            <th th:text="#{page.band.details.region}">Region:</th>
+            <th th:text="#{page.field-prompt.region}">Region:</th>
             <td><span th:replace="links/region-link.html :: regionLink(${Band.region})"></span></td>
         </tr>
         <tr>
-            <th th:text="#{page.band.details.rehearsals}">Rehearsals:</th>
+            <th th:text="#{page.field-prompt.rehearsals}">Rehearsals:</th>
             <td>
                 <span th:each="rehearsalDay : ${BandRehearsalDays}" th:remove="tag">
                     <span th:text="#{${rehearsalDay.dayTranslationKey}}">Monday</span> <span th:text="${rehearsalDay.details}">4pm</span>
@@ -34,7 +34,7 @@
             </td>
         </tr>
     </table>
-    <b th:text="#{page.band.details.relationships}">Relationships:</b>
+    <b th:text="#{page.field-prompt.relationships}">Relationships:</b>
     <ul>
         <li th:each="relationship : ${BandRelationships}">
             <span th:text="#{${relationship.relationshipName(Band)}}">relationship</span>

@@ -7,12 +7,12 @@
 <div layout:fragment="content">
     <h2 th:text="#{page.compare-bands.page-header}">Compare Bands</h2>
     <div class="mb-3">
-        <label class="form-label" for="first" th:text="#{page.compare-bands.first}">First Person:</label>
+        <label class="form-label" for="first" th:text="#{page.field-prompt.first-band}">First Person:</label>
         <input id="first" autocomplete="off" class="form-control" type="hidden" maxlength="100" th:value="${LeftBand.name}" th:data-slug="${LeftBand.slug}"/>
         <p th:text="${LeftBand.name}">Left Person</p>
     </div>
     <div class="mb-3">
-        <label class="form-label" for="second" th:text="#{page.compare-bands.second}">Second person:</label>
+        <label class="form-label" for="second" th:text="#{page.field-prompt.second-band}">Second person:</label>
         <input id="second" autocomplete="off" class="form-control" type="text" maxlength="100" onkeyup="lookup('second', 'person');"/>
     </div>
     <button id="compare-button" th:text="#{page.buttons.compare}" class="btn btn-outline-success disabled" onclick="showComparison()"></button>

@@ -16,11 +16,11 @@
             </ul>
         </div>
         <div class="mb-3">
-            <label class="form-label" for="name" th:text="#{page.group-edit.name}">Name:</label>
+            <label class="form-label" for="name" th:text="#{page.field-prompt.name}">Name:</label>
             <input id="name" class="form-control" type="text" th:field="*{name}" maxlength="100" size="80" required/>
         </div>
         <div class="mb-3">
-            <label class="form-label" for="status" th:text="#{page.group-edit.group-type}">Group Type:</label>
+            <label class="form-label" for="status" th:text="#{page.field-prompt.group-type}">Group Type:</label>
             <select id="status" class="form-control" th:field="*{groupType}">
                 <option th:each="state : ${T(uk.co.bbr.services.groups.types.ContestGroupType).values()}"
                         th:value="${state.code}"
@@ -29,7 +29,7 @@
             </select>
         </div>
         <div class="mb-3">
-            <label class="form-label" for="notes" th:text="#{page.group-edit.notes}">Notes:</label>
+            <label class="form-label" for="notes" th:text="#{page.field-prompt.notes}">Notes:</label>
             <textarea id="notes" class="form-control" th:field="*{notes}" cols="80" rows="10"></textarea>
         </div>
 

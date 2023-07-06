@@ -16,15 +16,15 @@
             </ul>
         </div>
         <div class="mb-3">
-            <label class="form-label" for="name" th:text="#{page.contest-edit.name}">Name:</label>
+            <label class="form-label" for="name" th:text="#{page.field-prompt.name}">Name:</label>
             <input id="name" class="form-control" type="text" th:field="*{name}" maxlength="100" size="80" required/>
         </div>
         <div class="mb-3">
-            <label class="form-label" for="contest-group" th:text="#{page.contest-edit.group}">Group:</label>
+            <label class="form-label" for="contest-group" th:text="#{page.field-prompt.group}">Group:</label>
             <input id="contest-group" autocomplete="off" class="form-control" type="text" maxlength="100" onkeyup="lookup('contest-group', 'group');"/>
         </div>
         <div class="mb-3">
-            <label class="form-label" for="contest-type" th:text="#{page.contest-edit.contest-type}">Contest Type:</label>
+            <label class="form-label" for="contest-type" th:text="#{page.field-prompt.contest-type}">Contest Type:</label>
             <select id="contest-type" class="form-control" th:field="*{contestType}">
                 <option th:each="contestType : ${ContestTypes}"
                         th:value="${contestType.id}"
@@ -34,12 +34,12 @@
             <small class="form-text" th:text="#{page.contest-edit.hint.contest-type}">The default type to use for events of this contest.  Can be overridden for a particular event.</small>
         </div>
         <div class="mb-3">
-            <label class="form-label" for="qualifies-for" th:text="#{page.contest-edit.qualifies-for}">Qualifies For:</label>
+            <label class="form-label" for="qualifies-for" th:text="#{page.field-prompt.qualifies-for}">Qualifies For:</label>
             <input id="qualifies-for" autocomplete="off" class="form-control" type="text" maxlength="100" onkeyup="lookup('qualifies-for', 'contest');"/>
             <small class="form-text" th:text="#{page.contest-edit.hint.qualifies-for}">Contest that bands who do well here qualify through to.</small>
         </div>
         <div class="mb-3">
-            <label class="form-label" for="region" th:text="#{page.contest-edit.region}">Region:</label>
+            <label class="form-label" for="region" th:text="#{page.field-prompt.region}">Region:</label>
             <select id="region" class="form-control" th:field="*{region}">
                 <option th:each="region : ${Regions}"
                         th:value="${region.id}"
@@ -49,7 +49,7 @@
             <small class="form-text" th:text="#{page.contest-edit.hint.region}">Region bands are drawn from. Leave blank for non-region limited contests.</small>
         </div>
         <div class="mb-3">
-            <label class="form-label" for="section" th:text="#{page.contest-edit.section}">Section:</label>
+            <label class="form-label" for="section" th:text="#{page.field-prompt.section}">Section:</label>
             <select id="section" class="form-control" th:field="*{section}">
                 <option th:each="section : ${Sections}"
                         th:value="${section.id}"
@@ -59,40 +59,40 @@
             <small class="form-text" th:text="#{page.contest-edit.hint.section}">Used to determine a band's section.  Leave blank if not applicable or contest is not nationally graded.</small>
         </div>
         <div class="mb-3">
-            <label class="form-label" for="ordering" th:text="#{page.contest-edit.ordering}">Ordering:</label>
+            <label class="form-label" for="ordering" th:text="#{page.field-prompt.ordering}">Ordering:</label>
             <input id="ordering" class="form-control" type="text" th:field="*{ordering}" maxlength="10" size="80"/>
             <small class="form-text" th:text="#{page.contest-edit.hint.ordering}">Order to show contest in group. Higher numbers are later in the list.</small>
         </div>
         <div class="mb-3">
-            <label class="form-label" for="description" th:text="#{page.contest-edit.description}">Description:</label>
+            <label class="form-label" for="description" th:text="#{page.field-prompt.description}">Description:</label>
             <textarea id="description" class="form-control" th:field="*{description}" cols="80" rows="10"></textarea>
         </div>
         <div class="mb-3">
-            <label class="form-label" for="notes" th:text="#{page.contest-edit.notes}">Notes:</label>
+            <label class="form-label" for="notes" th:text="#{page.field-prompt.notes}">Notes:</label>
             <textarea id="notes" class="form-control" th:field="*{notes}" cols="80" rows="10"></textarea>
         </div>
         <div class="mb-3">
-            <label class="form-label" for="repeat-period" th:text="#{page.contest-edit.repeat-period}">Repeat Period (months):</label>
+            <label class="form-label" for="repeat-period" th:text="#{page.field-prompt.repeat-period}">Repeat Period (months):</label>
             <input id="repeat-period" class="form-control" type="text" th:field="*{repeatPeriod}" maxlength="10" size="80"/>
             <small class="form-text" th:text="#{page.contest-edit.hint.repeat-period}">Number of months this contest repeats over. If this is not blank, allows contests between 14 months and 60 months to be included in current champions.</small>
         </div>
         <div class="mb-3">
-            <label class="form-label" for="extinct" th:text="#{page.contest-edit.extinct}">Extinct:</label>
+            <label class="form-label" for="extinct" th:text="#{page.field-prompt.extinct}">Extinct:</label>
             <input id="extinct" class="form-control" type="checkbox" th:field="*{extinct}"/>
             <small class="form-text" th:text="#{page.contest-edit.hint.extinct}">This marks the contest as one that is no longer run.</small>
         </div>
         <div class="mb-3">
-            <label class="form-label" for="exclude-from-group-results" th:text="#{page.contest-edit.exclude-from-group-results}">Exclude from Group Results:</label>
+            <label class="form-label" for="exclude-from-group-results" th:text="#{page.field-prompt.exclude-from-group-results}">Exclude from Group Results:</label>
             <input id="exclude-from-group-results" class="form-control" type="checkbox" th:field="*{excludeFromGroupResults}"/>
             <small class="form-text" th:text="#{page.contest-edit.hint.exclude-from-group-results}">If true, this contest is not included in total points calculated from the group (ie Overall Whit Friday)</small>
         </div>
         <div class="mb-3">
-            <label class="form-label" for="all-events-added" th:text="#{page.contest-edit.all-events-added}">All Events Added:</label>
+            <label class="form-label" for="all-events-added" th:text="#{page.field-prompt.all-events-added}">All Events Added:</label>
             <input id="all-events-added" class="form-control" type="checkbox" th:field="*{allEventsAdded}"/>
             <small class="form-text" th:text="#{page.contest-edit.hint.all-events-added}">This hides the prompt to add more results if contest extinct.</small>
         </div>
         <div class="mb-3">
-            <label class="form-label" for="prevent-future-bands" th:text="#{page.contest-edit.prevent-future-bands}">Prevent Future Bands:</label>
+            <label class="form-label" for="prevent-future-bands" th:text="#{page.field-prompt.prevent-future-bands}">Prevent Future Bands:</label>
             <input id="prevent-future-bands" class="form-control" type="checkbox" th:field="*{preventFutureBands}"/>
             <small class="form-text" th:text="#{page.contest-edit.hint.prevent-future-bands}">If true, prevents bands being added to the contest event whilst it is still in the future.</small>
         </div>

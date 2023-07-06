@@ -15,23 +15,23 @@
     <form method="POST" action="/acc/register">
 
         <div class="mb-3">
-            <label class="form-label" for="username" th:text="#{page.signup.prompt.username}">Username:</label>
+            <label class="form-label" for="username" th:text="#{page.field-prompt.username}">Username:</label>
             <input id="username" name="username" class="form-control" type="text" maxlength="50" size="80" th:value="${Username}" required/>
-            <small class="form-text" th:text="#{page.signup.prompt.username-hint}">This will be public, and spaces are not allowed.</small>
+            <small class="form-text" th:text="#{page.field-prompt.username-hint}">This will be public, and spaces are not allowed.</small>
         </div>
 
         <div class="mb-3">
-            <label class="form-label" for="email" th:text="#{page.signup.prompt.email}">Email:</label>
+            <label class="form-label" for="email" th:text="#{page.field-prompt.email}">Email:</label>
             <input id="email" name="email" class="form-control" type="email" maxlength="100" size="80" th:value="${Email}" required/>
-            <small class="form-text" th:text="#{page.signup.prompt.email-hint}">This is kept hidden, but you will be emailed to check that this is valid</small>
+            <small class="form-text" th:text="#{page.field-prompt.email-hint}">This is kept hidden, but you will be emailed to check that this is valid</small>
         </div>
         <div class="mb-3">
-            <label class="form-label" for="password1" th:text="#{page.signup.prompt.password}">Password:</label>
+            <label class="form-label" for="password1" th:text="#{page.field-prompt.password}">Password:</label>
             <input id="password1" name="password1" class="form-control" type="password" maxlength="100" size="80" required/>
-            <small class="form-text" th:text="#{page.signup.prompt.password-hint}">Must be eight characters or longer.</small>
+            <small class="form-text" th:text="#{page.field-prompt.password-hint}">Must be eight characters or longer.</small>
         </div>
         <div class="mb-3">
-            <label class="form-label" for="password2" th:text="#{page.signup.prompt.password-again}">Password Again:</label>
+            <label class="form-label" for="password2" th:text="#{page.field-prompt.password-again}">Password Again:</label>
             <input id="password2" name="password2" class="form-control" type="password" maxlength="100" size="80" required/>
         </div>
 

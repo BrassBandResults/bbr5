@@ -7,7 +7,7 @@
     </div>
     <span th:replace="components/aliases.html :: previousNames(${PreviousNames})"></span>
     <br/>
-    <b th:text="#{page.band.details.relationships}">Relationships:</b>
+    <b th:text="#{page.field-prompt.relationships}">Relationships:</b>
     <ul>
         <li th:each="relationship : ${PersonRelationships}">
             <span th:text="#{${relationship.relationshipName(Person)}}">relationship</span>

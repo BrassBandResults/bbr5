@@ -16,42 +16,42 @@
             </ul>
         </div>
         <div class="mb-3">
-            <label class="form-label" for="firstNames" th:text="#{page.person-edit.first-names}">First names:</label>
+            <label class="form-label" for="firstNames" th:text="#{page.field-prompt.first-names}">First names:</label>
             <input id="firstNames" class="form-control" type="text" th:field="*{firstNames}" maxlength="100" size="80"/>
         </div>
         <div class="mb-3">
-            <label class="form-label" for="surname" th:text="#{page.person-edit.surname}">Surname:</label>
+            <label class="form-label" for="surname" th:text="#{page.field-prompt.surname}">Surname:</label>
             <input id="surname" class="form-control" type="text" th:field="*{surname}" maxlength="100" size="80"/>
         </div>
         <div class="mb-3">
-            <label class="form-label" for="suffix" th:text="#{page.person-edit.suffix}">Suffix:</label>
+            <label class="form-label" for="suffix" th:text="#{page.field-prompt.suffix}">Suffix:</label>
             <select id="suffix" class="form-control" name="suffix" th:field="*{suffix}">
                 <option value="" selected></option>
-                <option value="Jnr" th:text="#{page.person-edit.suffix-jnr}">Jnr</option>
-                <option value="Snr" th:text="#{page.person-edit.suffix-snr}">Snr</option>
-                <option value="I" th:text="#{page.person-edit.suffix-i}">I</option>
-                <option value="II" th:text="#{page.person-edit.suffix-ii}">II</option>
-                <option value="III" th:text="#{page.person-edit.suffix-iii}">III</option>
+                <option value="Jnr" th:text="#{page.field-prompt.suffix-jnr}">Jnr</option>
+                <option value="Snr" th:text="#{page.field-prompt.suffix-snr}">Snr</option>
+                <option value="I" th:text="#{page.field-prompt.suffix-i}">I</option>
+                <option value="II" th:text="#{page.field-prompt.suffix-ii}">II</option>
+                <option value="III" th:text="#{page.field-prompt.suffix-iii}">III</option>
             </select>
             <small class="form-text" th:text="#{page.person-edit.hint.suffix}">Text shown after a surname, like Junior, Senior, III etc.</small>
         </div>
         <div class="mb-3">
-            <label class="form-label" for="knownFor" th:text="#{page.person-edit.known-for}">Known for:</label>
+            <label class="form-label" for="knownFor" th:text="#{page.field-prompt.known-for}">Known for:</label>
             <input id="knownFor" class="form-control" type="text" th:field="*{knownFor}" maxlength="100" size="80"/>
             <small class="form-text" th:text="#{page.person-edit.hint.known-for}">Band(s) this person is most associated with.</small>
         </div>
         <div class="mb-3">
-            <label class="form-label" for="startDate" th:text="#{page.person-edit.start-date}">Start date:</label>
+            <label class="form-label" for="startDate" th:text="#{page.field-prompt.start-date}">Start date:</label>
             <input id="startDate" class="form-control" type="date" th:field="*{startDate}"/>
             <small class="form-text" th:text="#{page.person-edit.hint.start-date}">Person won't be matched with results before this date.</small>
         </div>
         <div class="mb-3">
-            <label class="form-label" for="endDate" th:text="#{page.person-edit.end-date}">End date:</label>
+            <label class="form-label" for="endDate" th:text="#{page.field-prompt.end-date}">End date:</label>
             <input id="endDate" class="form-control" type="date" th:field="*{endDate}"/>
             <small class="form-text" th:text="#{page.person-edit.hint.end-date}">Person won't be matched with results after this date.</small>
         </div>
         <div class="mb-3">
-            <label class="form-label" for="notes" th:text="#{page.person-edit.notes}">Notes:</label>
+            <label class="form-label" for="notes" th:text="#{page.field-prompt.notes}">Notes:</label>
             <textarea id="notes" class="form-control" th:field="*{notes}" cols="80" rows="10"></textarea>
         </div>
         

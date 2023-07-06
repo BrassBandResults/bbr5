@@ -16,11 +16,11 @@
             </ul>
         </div>
         <div class="mb-3">
-            <label class="form-label" for="name" th:text="#{page.band-edit.name}">Name:</label>
+            <label class="form-label" for="name" th:text="#{page.field-prompt.name}">Name:</label>
             <input id="name" class="form-control" type="text" th:field="*{name}" maxlength="100" size="80" required/>
         </div>
         <div class="mb-3">
-            <label class="form-label" for="region" th:text="#{page.band-edit.region}">Region:</label>
+            <label class="form-label" for="region" th:text="#{page.field-prompt.region}">Region:</label>
             <select id="region" class="form-control" th:field="*{region}">
                 <option th:each="region : ${Regions}"
                         th:value="${region.id}"
@@ -29,19 +29,19 @@
             </select>
         </div>
         <div class="mb-3">
-            <label class="form-label" for="latitude" th:text="#{page.band-edit.latitude}">Latitude:</label>
+            <label class="form-label" for="latitude" th:text="#{page.field-prompt.latitude}">Latitude:</label>
             <input id="latitude" class="form-control" type="text" th:field="*{latitude}" maxlength="15" size="30"/>
         </div>
         <div class="mb-3">
-            <label class="form-label" for="longitude" th:text="#{page.band-edit.longitude}">Longitude:</label>
+            <label class="form-label" for="longitude" th:text="#{page.field-prompt.longitude}">Longitude:</label>
             <input id="longitude" class="form-control" type="text" th:field="*{longitude}" maxlength="15" size="30"/>
         </div>
         <div class="mb-3">
-            <label class="form-label" for="website" th:text="#{page.band-edit.website}">Website:</label>
+            <label class="form-label" for="website" th:text="#{page.field-prompt.website}">Website:</label>
             <input id="website" class="form-control" type="text" th:field="*{website}" maxlength="100" size="80"/>
         </div>
         <div class="mb-3">
-            <label class="form-label" for="status" th:text="#{page.band-edit.status}">Status:</label>
+            <label class="form-label" for="status" th:text="#{page.field-prompt.status}">Status:</label>
             <select id="status" class="form-control" th:field="*{status}">
                 <option th:each="state : ${T(uk.co.bbr.services.bands.types.BandStatus).values()}"
                         th:value="${state.code}"
@@ -50,17 +50,17 @@
             </select>
         </div>
         <div class="mb-3">
-            <label class="form-label" for="startDate" th:text="#{page.band-edit.start-date}">Start date:</label>
+            <label class="form-label" for="startDate" th:text="#{page.field-prompt.start-date}">Start date:</label>
             <input id="startDate" class="form-control" type="date" th:field="*{startDate}"/>
             <small class="form-text" th:text="#{page.band-edit.hint.start-date}">Band won't be matched with results before this date.</small>
         </div>
         <div class="mb-3">
-            <label class="form-label" for="endDate" th:text="#{page.band-edit.end-date}">End date:</label>
+            <label class="form-label" for="endDate" th:text="#{page.field-prompt.end-date}">End date:</label>
             <input id="endDate" class="form-control" type="date" th:field="*{endDate}"/>
             <small class="form-text" th:text="#{page.band-edit.hint.end-date}">Band won't be matched with results after this date.</small>
         </div>
         <div class="mb-3">
-            <label class="form-label" for="notes" th:text="#{page.band-edit.notes}">Notes:</label>
+            <label class="form-label" for="notes" th:text="#{page.field-prompt.notes}">Notes:</label>
             <textarea id="notes" class="form-control" th:field="*{notes}" cols="80" rows="10"></textarea>
         </div>
 
