@@ -24,6 +24,9 @@ public enum ContestGroupType {
     }
 
     public static ContestGroupType fromCode(String code) {
+        if (code == null) {
+            return null;
+        }
         return Stream.of(ContestGroupType.values())
                 .filter(c -> c.getCode().equals(code))
                 .findFirst()

@@ -6,6 +6,7 @@ import uk.co.bbr.services.contests.dao.ContestTypeDao;
 import uk.co.bbr.services.contests.repo.ContestTypeRepository;
 import uk.co.bbr.services.framework.mixins.SlugTools;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -24,5 +25,15 @@ public class ContestTypeServiceImpl implements ContestTypeService, SlugTools {
     @Override
     public Optional<ContestTypeDao> fetchByName(String contestTypeName) {
         return this.contestTypeRepository.fetchByName(contestTypeName);
+    }
+
+    @Override
+    public List<ContestTypeDao> fetchAll() {
+        return this.contestTypeRepository.fetchAllOrderByName();
+    }
+
+    @Override
+    public Optional<ContestTypeDao> fetchById(Long contestTypeId) {
+        return this.contestTypeRepository.findById(contestTypeId);
     }
 }

@@ -55,5 +55,5 @@ public interface BandRepository extends JpaRepository<BandDao, Long> {
     int countExtinctBandsOnMap();
 
     @Query("SELECT b FROM BandDao b WHERE b.created = (SELECT MAX(b1.created) FROM BandDao b1)")
-    BandDao fetchLatestBand();
+    List<BandDao> fetchLatestBand();
 }

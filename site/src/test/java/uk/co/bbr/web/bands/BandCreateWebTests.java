@@ -121,7 +121,7 @@ class BandCreateWebTests implements LoginMixin {
     }
 
     @Test
-    void testSubmitEditBandPageFailsBecauseNameIsRequired() {
+    void testSubmitCreateBandPageFailsBecauseNameIsRequired() {
         // arrange
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
@@ -152,7 +152,7 @@ class BandCreateWebTests implements LoginMixin {
     }
 
     @Test
-    void testSubmitEditBandPageFailsWhereDatesAreNonsenseIsRequired() {
+    void testSubmitCreateBandPageFailsWhereDatesAreNonsense() {
         // arrange
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);

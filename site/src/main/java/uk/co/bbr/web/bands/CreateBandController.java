@@ -42,12 +42,12 @@ public class CreateBandController {
 
     @IsBbrMember
     @PostMapping("/create/band")
-    public String createPost(Model model, @Valid @ModelAttribute("BandForm") BandEditForm submittedBand, BindingResult bindingResult) {
+    public String createPost(Model model, @Valid @ModelAttribute("BandForm") BandEditForm submittedForm, BindingResult bindingResult) {
 
         List<RegionDao> regions = this.regionService.findAll();
         model.addAttribute("Regions", regions);
 
-        submittedBand.validate(bindingResult);
+        submittedForm.validate(bindingResult);
 
         if (bindingResult.hasErrors()) {
             return "bands/create";
@@ -55,21 +55,21 @@ public class CreateBandController {
 
         BandDao newBand = new BandDao();
 
-        if (submittedBand.getRegion() != null) {
-            Optional<RegionDao> region = this.regionService.fetchById(submittedBand.getRegion());
+        if (submittedForm.getRegion() != null) {
+            Optional<RegionDao> region = this.regionService.fetchById(submittedForm.getRegion());
             region.ifPresent(newBand::setRegion);
         }
 
-        newBand.setName(submittedBand.getName());
-        newBand.setLatitude(submittedBand.getLatitude());
-        newBand.setLongitude(submittedBand.getLongitude());
-        newBand.setWebsite(submittedBand.getWebsite());
-        if (submittedBand.getStatus() != null) {
-            newBand.setStatus(BandStatus.fromCode(submittedBand.getStatus()));
+        newBand.setName(submittedForm.getName());
+        newBand.setLatitude(submittedForm.getLatitude());
+        newBand.setLongitude(submittedForm.getLongitude());
+        newBand.setWebsite(submittedForm.getWebsite());
+        if (submittedForm.getStatus() != null) {
+            newBand.setStatus(BandStatus.fromCode(submittedForm.getStatus()));
         }
-        newBand.setStartDate(submittedBand.getStartDate());
-        newBand.setEndDate(submittedBand.getEndDate());
-        newBand.setNotes(submittedBand.getNotes());
+        newBand.setStartDate(submittedForm.getStartDate());
+        newBand.setEndDate(submittedForm.getEndDate());
+        newBand.setNotes(submittedForm.getNotes());
 
         this.bandService.create(newBand);
 

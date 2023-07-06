@@ -174,7 +174,7 @@ class BandEditWebTests implements LoginMixin {
     }
 
     @Test
-    void testSubmitEditBandPageFailsWhereDatesAreNonsenseIsRequired() {
+    void testSubmitEditBandPageFailsWhereDatesAreNonsense() {
         // arrange
 
         HttpHeaders headers = new HttpHeaders();
