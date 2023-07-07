@@ -25,10 +25,15 @@
         <tbody>
         <tr th:each="result : ${Results}">
             <td class="bbr-event" nowrap><span th:replace="links/event-link.html :: eventLink(${result.contestEvent})">9th Sep 2023</span></td>
-            <td th:text="${result.positionDisplay}">8</td>
+            <td><span th:replace="components/results-position.html :: resultsPosition(${result})">1</span></td>
             <td class="bbr-band"><span th:replace="links/band-link.html :: bandLinkWithOverride(${result})"></span></td>
             <td class="bbr-conductor"><span th:replace="links/person-link.html :: conductorsLink(${result})">Bob Childs</span></td>
-            <td th:text="${result.draw}">4</td>
+            <td class="bbr-draw">
+                <span th:if="${result.draw != 0}">
+                    <span th:replace="links/contest-link.html :: contestLinkDraw(${result.contestEvent.contest}, ${result.draw})"></span>
+                </span>
+            </td>
+
             <td th:text="${result.pointsTotal}">123</td>
         </tr>
         </tbody>

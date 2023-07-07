@@ -9,6 +9,13 @@ Pipeline to run terraform for prod
 
 Sendgrid account
 
+Better SQL for contests results for position
+Better SQL for contests results for draw
+
+contest results for position works with W and D
+
+csrf
+
 Azure Function receives band and venue changes and updates cosmosdb
 Azure Function updates points on a user, by calling api on site
 

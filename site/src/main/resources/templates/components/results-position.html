@@ -1,12 +1,12 @@
 <span th:fragment="resultsPosition(result)">
   <span th:if="${result.resultPositionType.code == 'R'}">
-    <span th:text="${result.position}"></span>
+    <a th:href="${'/contests/' + result.contestEvent.contest.slug + '/position/' + result.position}" th:text="${result.position}">123</a>
   </span>
   <span th:if="${result.resultPositionType.code == 'W'}">
-    <span>W</span>
+    <a th:href="${'/contests/' + result.contestEvent.contest.slug + '/position/W'}">W</a>
   </span>
   <span th:if="${result.resultPositionType.code == 'D'}">
-    <span>D</span>
+    <a th:href="${'/contests/' + result.contestEvent.contest.slug + '/position/D'}">D</a>
   </span>
   <span th:if="${result.resultPositionType.code == 'U'}">
   </span>
