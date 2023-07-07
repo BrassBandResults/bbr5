@@ -30,7 +30,7 @@ public class CreatePieceController {
     @GetMapping("/create/piece")
     public String createGet(Model model) {
 
-        PersonEditForm editForm = new PersonEditForm();
+        PieceEditForm editForm = new PieceEditForm();
 
         model.addAttribute("Form", editForm);
 
@@ -53,11 +53,11 @@ public class CreatePieceController {
         newPiece.setNotes(submittedForm.getNotes());
         newPiece.setYear(submittedForm.getYear());
         newPiece.setCategory(PieceCategory.fromCode(submittedForm.getCategory()));
-        Optional<PersonDao> composer = this.personService.fetchBySlug(submittedForm.getComposer());
+        Optional<PersonDao> composer = this.personService.fetchBySlug(submittedForm.getComposerSlug());
         if (composer.isPresent()) {
             newPiece.setComposer(composer.get());
         }
-        Optional<PersonDao> arranger = this.personService.fetchBySlug(submittedForm.getArranger());
+        Optional<PersonDao> arranger = this.personService.fetchBySlug(submittedForm.getArrangerSlug());
         if (arranger.isPresent()) {
             newPiece.setArranger(arranger.get());
         }

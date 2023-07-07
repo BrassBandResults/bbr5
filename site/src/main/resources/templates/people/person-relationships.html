@@ -29,7 +29,7 @@
     <h4 th:text="#{page.person-relationships.add-header}">New Relationship</h4>
     <form id="relationship-form" th:action="${'/people/' + Person.slug + '/edit-relationships/add'}" method="POST">
         <span th:text="${Person.name}">Person Name</span>
-        <select name="RelationshipTypeId" id="relationship-type-dropdown">
+        <select name="RelationshipTypeId" id="relationship-type-dropdown" class="form-select">
             <option th:each="relationshipType : ${RelationshipTypes}" th:value="${relationshipType.id}" th:text="#{${relationshipType.name}}"></option>
         </select><br/><br/>
         <input id="right-person" th:placeholder="#{page.person-relationships.add-person-placeholder}" autocomplete="off" class="form-control" type="text" maxlength="100" onkeyup="lookup('right-person', 'person');"/>

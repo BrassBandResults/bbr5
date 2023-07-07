@@ -25,7 +25,7 @@
         </div>
         <div class="mb-3">
             <label class="form-label" for="contest-type" th:text="#{page.field-prompt.contest-type}">Contest Type:</label>
-            <select id="contest-type" class="form-control" th:field="*{contestType}">
+            <select id="contest-type" class="form-select" th:field="*{contestType}">
                 <option th:each="contestType : ${ContestTypes}"
                         th:value="${contestType.id}"
                         th:text="#{'contest-types.' + ${contestType.slug}}">
@@ -40,7 +40,7 @@
         </div>
         <div class="mb-3">
             <label class="form-label" for="region" th:text="#{page.field-prompt.region}">Region:</label>
-            <select id="region" class="form-control" th:field="*{region}">
+            <select id="region" class="form-select" th:field="*{region}">
                 <option th:each="region : ${Regions}"
                         th:value="${region.id}"
                         th:text="#{'region.' + ${region.slug}}">
@@ -50,7 +50,7 @@
         </div>
         <div class="mb-3">
             <label class="form-label" for="section" th:text="#{page.field-prompt.section}">Section:</label>
-            <select id="section" class="form-control" th:field="*{section}">
+            <select id="section" class="form-select" th:field="*{section}">
                 <option th:each="section : ${Sections}"
                         th:value="${section.id}"
                         th:text="#{'section.' + ${section.slug}}">

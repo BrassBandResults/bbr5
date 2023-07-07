@@ -10,7 +10,7 @@
     <img th:src="@{${STATIC_HOST} + '/images/SectionQuestion.jpg'}"/><br/><br/>
     <span th:text="#{page.anti-spam.question}">Which section of the band is this?</span>
     <form method="POST" action="/acc/sign-up">
-        <select name="section">
+        <select name="section" class="form-select">
             <option value="ww" th:text="#{page.anti-spam.section.woodwind}">Woodwind</option>
             <option value="co" th:text="#{page.anti-spam.section.cornets}">Cornets</option>
             <option value="bs" th:text="#{page.anti-spam.section.basses}">Basses</option>

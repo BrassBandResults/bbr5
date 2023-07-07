@@ -21,7 +21,7 @@
         </div>
         <div class="mb-3">
             <label class="form-label" for="status" th:text="#{page.field-prompt.group-type}">Group Type:</label>
-            <select id="status" class="form-control" th:field="*{groupType}">
+            <select id="status" class="form-select" th:field="*{groupType}">
                 <option th:each="state : ${T(uk.co.bbr.services.groups.types.ContestGroupType).values()}"
                         th:value="${state.code}"
                         th:text="#{${state.translationKey}}">

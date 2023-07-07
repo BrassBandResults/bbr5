@@ -16,8 +16,10 @@ public class PieceEditForm {
     private String notes;
     private String year;
     private String category;
-    private String composer;
-    private String arranger;
+    private String composerName;
+    private String composerSlug;
+    private String arrangerName;
+    private String arrangerSlug;
 
     public PieceEditForm() {
         super();
@@ -30,8 +32,14 @@ public class PieceEditForm {
         this.notes = piece.getNotes();
         this.year = piece.getYear();
         this.category = piece.getCategory().getCode();
-        this.composer = piece.getComposer().getName();
-        this.arranger = piece.getArranger().getName();
+        if (piece.getComposer() != null) {
+            this.composerName = piece.getComposer().getName();
+            this.composerSlug = piece.getComposer().getSlug();
+        }
+        if (piece.getArranger() != null) {
+            this.arrangerName = piece.getArranger().getName();
+            this.arrangerSlug = piece.getArranger().getSlug();
+        }
     }
 
     public void validate(BindingResult bindingResult) {
