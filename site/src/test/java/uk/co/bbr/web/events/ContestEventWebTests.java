@@ -86,10 +86,10 @@ class ContestEventWebTests implements LoginMixin {
         assertTrue(response.contains(">Yorkshire Area<"));
         assertTrue(response.contains("<h3>Mon 01 Mar 2010</h3>"));
 
-        assertTrue(response.contains("<span>1</span>"));
-        assertTrue(response.contains("<span>2</span>"));
-        assertTrue(response.contains("<span>3</span>"));
-        assertFalse(response.contains("<span>4</span>"));
+        assertTrue(response.contains(">1<"));
+        assertTrue(response.contains(">2<"));
+        assertTrue(response.contains(">3<"));
+        assertFalse(response.contains(">4<"));
 
         assertTrue(response.contains(">Rothwell Temperance Band<"));
         assertTrue(response.contains(">Black Dyke<"));

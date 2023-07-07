@@ -210,7 +210,6 @@ public abstract class PageSets {
         pageList.add("/contests/YORKSHIRE-GROUP/years");
         pageList.add("/contests/YORKSHIRE-GROUP/2000");
         pageList.add("/create/band");
-        pageList.add("/create/contest");
         pageList.add("/create/group");
         pageList.add("/create/tag");
         pageList.add("/lookup/band/data.json?s=abc");

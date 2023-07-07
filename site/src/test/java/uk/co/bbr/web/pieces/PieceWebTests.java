@@ -109,6 +109,17 @@ class PieceWebTests implements LoginMixin {
         assertTrue(response.contains("<title>Contest Music - Piece - Brass Band Results</title>"));
         assertTrue(response.contains("Contest Music"));
 
+        assertFalse(response.contains(">Midlands Area<"));
+    }
+
+    @Test
+    void testSinglePieceOwnChoicePageWorksWithResultPieceSuccessfully() {
+        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/pieces/contest-music/own-choice", String.class);
+        assertNotNull(response);
+
+        assertTrue(response.contains("<title>Contest Music - Piece - Brass Band Results</title>"));
+        assertTrue(response.contains("Contest Music"));
+
         assertTrue(response.contains(">Midlands Area<"));
     }
 
