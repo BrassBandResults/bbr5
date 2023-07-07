@@ -1,8 +1,10 @@
+Edit contest
+
 Edit group
 Edit venue
 Edit piece
-Edit contest
 Edit event
+Edit person
 
 Build pipeline
 Push to github docker repo
@@ -32,6 +34,8 @@ Add results - add results fix unknown band
 Add results - add results fix unknown conductor
 Add results - add adjudicators
 Add results - add notes
+
+Security on who can edit result
 
 Edit result
 Edit adjudicators

@@ -15,6 +15,8 @@ import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.contests.ContestService;
 import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.framework.NotFoundException;
+import uk.co.bbr.services.groups.ContestGroupService;
+import uk.co.bbr.services.groups.dao.ContestGroupDao;
 import uk.co.bbr.services.people.PersonService;
 import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.venues.VenueService;
@@ -30,6 +32,7 @@ public class LookupController {
     private final BandService bandService;
     private final PersonService personService;
     private final ContestService contestService;
+    private final ContestGroupService contestGroupService;
     private final VenueService venueService;
     private final ObjectMapper objectMapper;
 
@@ -47,6 +50,7 @@ public class LookupController {
             case "band" -> this.lookupBand(searchString);
             case "contest" -> this.lookupContest(searchString);
             case "venue" -> this.lookupVenue(searchString);
+            case "group" -> this.lookupGroup(searchString);
             default -> throw NotFoundException.lookupTypeNotFound(type);
         };
 
@@ -100,6 +104,19 @@ public class LookupController {
 
         for (VenueDao eachVenue : matchingVenues) {
             people.add(eachVenue.asLookup(this.objectMapper));
+        }
+
+        return rootNode;
+    }
+
+    private ObjectNode lookupGroup(String searchString) {
+        List<ContestGroupDao> matchingGroups = this.contestGroupService.lookupByPrefix(searchString);
+
+        ObjectNode rootNode = objectMapper.createObjectNode();
+        ArrayNode groups = rootNode.putArray(MATCH_TAG_NAME);
+
+        for (ContestGroupDao eachGroup : matchingGroups) {
+            groups.add(eachGroup.asLookup(this.objectMapper));
         }
 
         return rootNode;

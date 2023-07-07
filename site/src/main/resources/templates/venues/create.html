@@ -60,13 +60,12 @@
     <script>
         function fill(inputId, matchSlug, matchName) {
             let inputElement = document.getElementById(inputId);
+            let inputSlugElement = document.getElementById(inputId + '-slug');
             inputElement.value = matchName;
+            inputSlugElement.value = matchSlug;
             inputElement.classList.remove("bg-warning");
             inputElement.classList.add("bg-success");
             inputElement.classList.add("text-white");
-
-            let inputElementSlug = document.getElementById(inputId + "-slug");
-            inputElementSlug.value = matchSlug;
 
             document.getElementById('list-' + inputId).remove();
         }

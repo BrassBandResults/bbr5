@@ -13,7 +13,8 @@ import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 @Setter
 public class ContestEditForm {
     private String name;
-    private String contestGroup;
+    private String contestGroupName;
+    private String contestGroupSlug;
     private Long contestType;
     private Long region;
     private Long section;
@@ -37,7 +38,8 @@ public class ContestEditForm {
 
         this.name = contest.getName();
         if (contest.getContestGroup() != null) {
-            this.contestGroup = contest.getContestGroup().getName();
+            this.contestGroupName = contest.getContestGroup().getName();
+            this.contestGroupSlug = contest.getContestGroup().getSlug();
         }
         this.contestType = contest.getDefaultContestType().getId();
         this.region = contest.getRegion().getId();

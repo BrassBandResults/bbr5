@@ -59,4 +59,7 @@ public interface ContestGroupRepository extends JpaRepository<ContestGroupDao, L
             "AND YEAR(e.eventDate) < :before " +
             "ORDER BY e.eventDate desc")
     List<ContestEventDao> selectPreviousEventByGroupSlugAndYear(Long groupId, Integer before, Pageable pageable);
+
+    @Query("SELECT g FROM ContestGroupDao g WHERE UPPER(g.name) LIKE :searchStringUpper")
+    List<ContestGroupDao> lookupByPrefix(String searchStringUpper);
 }

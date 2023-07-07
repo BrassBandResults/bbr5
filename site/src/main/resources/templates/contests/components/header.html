@@ -3,11 +3,14 @@
         <span th:if="${Contest.contestGroup != null}" th:replace="links/group-link.html :: groupLinkFromContest(${Contest})"></span>
         <span th:if="${Contest.contestGroup == null}" th:text="${Contest.name}">Yorkshire Area (Championship Section)</span>
     </h2>
+    <div sec:authorize="hasRole('BBR_SUPERUSER')">
+        <span th:replace="buttons/edit.html :: editContest(${Contest})"></span>
+    </div>
     <small th:if="${Contest.qualifiesFor != null}">
-        <span th:text="page.contest.prompt.qualifies-for">Qualifying contest for </span>
+        <span th:text="#{page.contest.prompt.qualifies-for}">Qualifying contest for</span>
         <span th:replace="links/contest-link.html :: contestLink(${Contest.qualifiesFor})"></span>
     </small>
     <span th:replace="components/aliases.html :: previousNames(${PreviousNames})"></span>
-
+    <br/><br/>
     <p th:text="${Contest.description}">Contest Description</p>
 </div>

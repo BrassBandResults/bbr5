@@ -25,3 +25,7 @@
 <span th:fragment="editRehearsalDays(band)" th:remove="tag">
     <span th:replace="buttons/button.html :: button(#{page.buttons.edit-rehearsals}, ${'/bands/' + band.slug + '/edit-rehearsals'})"></span>
 </span>
+
+<span th:fragment="editContest(contest)" th:remove="tag">
+    <span th:replace="buttons/button.html :: button(#{page.buttons.edit}, ${'/contests/' + contest.slug + '/edit'})"></span>
+</span>
