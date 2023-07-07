@@ -1,9 +1,6 @@
-
-
 Edit group
 Edit venue
 Edit piece
-Create contest
 Edit contest
 Edit event
 
