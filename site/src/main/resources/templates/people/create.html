@@ -7,8 +7,8 @@
 <div layout:fragment="content">
     <h2 th:text="#{page.person-create.title}">Create Person</h2>
 
-    <form th:object="${PersonForm}"
-          th:action = "${'/people/' + Person.slug + '/edit'}"
+    <form th:object="${Form}"
+          th:action = "${'/create/person'}"
           method="post">
         <div class="alert alert-danger" th:if="${#fields.hasErrors('*')}">
             <ul>

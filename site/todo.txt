@@ -41,6 +41,8 @@ Add results - add notes
 Edit result
 Edit adjudicators
 
+Deal with unique slug clash
+
 Get simple search working
 
 Event band map/geography
