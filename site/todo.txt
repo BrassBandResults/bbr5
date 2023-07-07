@@ -1,8 +1,7 @@
-Edit group
 Edit venue
 Edit piece
+
 Edit event
-Edit person
 
 Build pipeline
 Push to github docker repo

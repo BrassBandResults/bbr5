@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+<head>
+    <title th:text="@{#{page.venue-edit.title(${Venue.name})} + ' - Brass Band Results'}">Edit Venue - Brass Band Results</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h2><span th:text="#{page.edit-header-prefix}" th:remove="tag">Edit</span> <span th:text="${Venue.name}" th:remove="tag">Venue Name</span></h2>
+
+    <form th:object="${Form}"
+          th:action = "${'/venues/' + Venue.slug + '/edit'}"
+          method="post">
+        <div class="alert alert-danger" th:if="${#fields.hasErrors('*')}">
+            <ul>
+                <li th:each="err : ${#fields.errors('*')}" th:text="@{#{${err}}}"></li>
+            </ul>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="name" th:text="#{page.field-prompt.name}">Name:</label>
+            <input id="name" class="form-control" type="text" th:field="*{name}" maxlength="100" size="80" required/>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="region" th:text="#{page.field-prompt.region}">Region:</label>
+            <select id="region" class="form-select" th:field="*{region}">
+                <option th:each="region : ${Regions}"
+                        th:value="${region.id}"
+                        th:text="#{'region.' + ${region.slug}}">
+                </option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="latitude" th:text="#{page.field-prompt.latitude}">Latitude:</label>
+            <input id="latitude" class="form-control" type="text" th:field="*{latitude}" maxlength="15" size="30"/>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="longitude" th:text="#{page.field-prompt.longitude}">Longitude:</label>
+            <input id="longitude" class="form-control" type="text" th:field="*{longitude}" maxlength="15" size="30"/>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="parent-venue" th:text="#{page.field-prompt.parent-venue}">Parent Venue:</label>
+            <input id="parent-venue" th:field="*{parentVenueName}" autocomplete="off" class="form-control" type="text" maxlength="100" onkeyup="lookup('parent-venue', 'venue');"/>
+            <small class="form-text" th:text="#{page.venue-edit.hint.parent-venue}">Parent for this venue.</small>
+            <input type="hidden" th:field="*{parentVenueSlug}" id="parent-venue-slug"/>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="notes" th:text="#{page.field-prompt.notes}">Notes:</label>
+            <textarea id="notes" class="form-control" th:field="*{notes}" cols="80" rows="10"></textarea>
+        </div>
+
+        <input type="submit" th:value="#{page.buttons.save-changes}" class="btn btn-outline-success"/>
+        <a th:href="${'/venues/' + Venue.slug}" th:text="#{page.buttons.cancel-without-saving}" class="btn btn-light">Cancel wout saving</a>
+    </form>
+</div>
+
+<div layout:fragment="feedback">
+</div>
+
+<div layout:fragment="scriptfooter">
+    <script th:src="@{${STATIC_HOST} + '/js2023/lookup.js'}"></script>
+    <script>
+        function fill(inputId, matchSlug, matchName) {
+            let inputElement = document.getElementById(inputId);
+            let inputSlugElement = document.getElementById(inputId + '-slug');
+            inputElement.value = matchName;
+            inputSlugElement.value = matchSlug;
+            inputElement.classList.remove("bg-warning");
+            inputElement.classList.add("bg-success");
+            inputElement.classList.add("text-white");
+
+            document.getElementById('list-' + inputId).remove();
+        }
+    </script>
+</div>
+
+</body>
+</html>
