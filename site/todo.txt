@@ -1,0 +1,80 @@
+
+
+Edit group
+Create venue
+Edit venue
+Create piece
+Edit piece
+Create contest
+Edit contest
+Create event
+Edit event
+
+Build pipeline
+Push to github docker repo
+
+Terraform app service
+Terraform cosmosdb
+Terraform storage account queue for points
+Terraform storage account queue for band and venue changes for map updates
+Pipeline to run terraform for prod
+
+Sendgrid account
+
+Azure Function receives band and venue changes and updates cosmosdb
+Azure Function updates points on a user, by calling api on site
+
+Show event results
+Links up/down/next/previous
+Event results for specific draw
+Event results for specific position
+
+Add results - contest
+Add results - date
+Add results - contest type
+Add results - test piece
+Add results - add results parse block
+Add results - add results fix unknown band
+Add results - add results fix unknown conductor
+Add results - add adjudicators
+Add results - add notes
+
+Edit result
+Edit adjudicators
+
+Get simple search working
+
+Event band map/geography
+Event competitors
+
+Person profile support
+
+Initial User's profile page at /users/<username>
+Change password for user
+Add contest history to users profile page
+Support for instruments on contest history for pro users
+Add /myresults/<username> page for personal contest history
+Add privacy settings for personal contest history
+Add date ranges for personal contest history
+"I played at this contest" link from event
+Add pro status to users profile page
+Add points and avatar to users profile page
+Add owned feedback to users profile page
+Add classifieds to users profile page
+
+Upgrade to pro support
+
+Something on the homepage
+Blog on the homepage
+Assign points
+
+Search for location on map and give bands and venues within specific range of it
+Filter map by section
+Filter map by band rehearsal night
+Other bands near band
+
+Download band csv
+Download conductor csv
+
+Member can add missing conductor
+Member can add missing points etc on a result
