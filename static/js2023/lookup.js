@@ -5,11 +5,6 @@ function lookup(inputId, entity) {
     inputElement.classList.remove("text-white");
     inputElement.classList.add("bg-warning");
 
-    let inputElementSlug = document.getElementById(inputId + '-slug');
-    if (inputElementSlug) {
-        inputElementSlug.value="";
-    }
-
     if (inputValue.length > 2 ) {
      
         let searchList = document.getElementById('list-' + inputId);
