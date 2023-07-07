@@ -25,4 +25,7 @@ public interface VenueRepository extends JpaRepository<VenueDao, Long> {
 
     @Query("SELECT v FROM VenueDao v WHERE v.id = (SELECT MAX(v1.id) FROM VenueDao v1)")
     VenueDao fetchLatestVenue();
+
+    @Query("SELECT v FROM VenueDao v WHERE UPPER(v.name) LIKE :searchStringUpper")
+    List<VenueDao> lookupByPrefix(String searchStringUpper);
 }

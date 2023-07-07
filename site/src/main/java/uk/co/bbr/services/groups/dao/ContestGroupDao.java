@@ -1,5 +1,7 @@
 package uk.co.bbr.services.groups.dao;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,6 +11,7 @@ import uk.co.bbr.services.tags.dao.ContestTagDao;
 import uk.co.bbr.services.groups.types.ContestGroupType;
 import uk.co.bbr.services.framework.AbstractDao;
 import uk.co.bbr.services.framework.mixins.NameTools;
+import uk.co.bbr.web.HtmlTools;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -90,5 +93,13 @@ public class ContestGroupDao extends AbstractDao implements NameTools {
 
     public boolean hasNotes() {
         return !StringUtils.isBlank(this.notes);
+    }
+
+    public ObjectNode asLookup(ObjectMapper objectMapper) {
+        ObjectNode group = objectMapper.createObjectNode();
+        group.put("slug", this.getSlug());
+        group.put("name", HtmlTools.format(this.name));
+        group.put("context", "");
+        return group;
     }
 }

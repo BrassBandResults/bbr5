@@ -1,5 +1,7 @@
 package uk.co.bbr.services.pieces.dao;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -7,6 +9,7 @@ import uk.co.bbr.services.framework.AbstractDao;
 import uk.co.bbr.services.framework.mixins.NameTools;
 import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.pieces.types.PieceCategory;
+import uk.co.bbr.web.HtmlTools;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -93,5 +96,13 @@ public class PieceDao extends AbstractDao implements NameTools {
             year = year.trim();
         }
         this.year = year;
+    }
+
+    public ObjectNode asLookup(ObjectMapper objectMapper) {
+        ObjectNode piece = objectMapper.createObjectNode();
+        piece.put("slug", this.getSlug());
+        piece.put("name", HtmlTools.format(this.name));
+        piece.put("context", "");
+        return piece;
     }
 }

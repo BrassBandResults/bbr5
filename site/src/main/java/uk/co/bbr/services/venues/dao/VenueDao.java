@@ -1,11 +1,14 @@
 package uk.co.bbr.services.venues.dao;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import uk.co.bbr.services.framework.AbstractDao;
 import uk.co.bbr.services.framework.mixins.NameTools;
 import uk.co.bbr.services.regions.dao.RegionDao;
+import uk.co.bbr.web.HtmlTools;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -103,5 +106,13 @@ public class VenueDao extends AbstractDao implements NameTools {
             longitude = longitude.trim();
         }
         this.longitude = longitude;
+    }
+
+    public ObjectNode asLookup(ObjectMapper objectMapper) {
+        ObjectNode venue = objectMapper.createObjectNode();
+        venue.put("slug", this.getSlug());
+        venue.put("name", HtmlTools.format(this.name));
+        venue.put("context", "");
+        return venue;
     }
 }

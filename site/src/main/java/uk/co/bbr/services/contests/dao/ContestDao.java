@@ -12,6 +12,7 @@ import uk.co.bbr.services.groups.dao.ContestGroupDao;
 import uk.co.bbr.services.regions.dao.RegionDao;
 import uk.co.bbr.services.sections.dao.SectionDao;
 import uk.co.bbr.services.tags.dao.ContestTagDao;
+import uk.co.bbr.web.HtmlTools;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -132,7 +133,8 @@ public class ContestDao extends AbstractDao implements NameTools {
     public ObjectNode asLookup(ObjectMapper objectMapper) {
         ObjectNode person = objectMapper.createObjectNode();
         person.put("slug", this.getSlug());
-        person.put("name", this.name);
+        person.put("name", HtmlTools.format(this.name));
+        person.put("context", "");
         return person;
     }
 }

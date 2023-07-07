@@ -16,7 +16,8 @@ public class VenueEditForm {
     private String latitude;
     private String longitude;
     private String notes;
-    private String parentVenue;
+    private String parentVenueName;
+    private String parentVenueSlug;
 
     public VenueEditForm() {
         super();
@@ -31,7 +32,8 @@ public class VenueEditForm {
         this.longitude = venue.getLongitude();
         this.notes = venue.getNotes();
         if (venue.getParent() != null) {
-            this.parentVenue = venue.getParent().getName();
+            this.parentVenueName = venue.getParent().getName();
+            this.parentVenueSlug = venue.getParent().getSlug();
         }
     }
 

@@ -17,6 +17,8 @@ import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.people.PersonService;
 import uk.co.bbr.services.people.dao.PersonDao;
+import uk.co.bbr.services.venues.VenueService;
+import uk.co.bbr.services.venues.dao.VenueDao;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
 import java.util.List;
@@ -28,6 +30,7 @@ public class LookupController {
     private final BandService bandService;
     private final PersonService personService;
     private final ContestService contestService;
+    private final VenueService venueService;
     private final ObjectMapper objectMapper;
 
     private static final String MATCH_TAG_NAME = "matches";
@@ -43,6 +46,7 @@ public class LookupController {
             case "person" -> this.lookupPerson(searchString);
             case "band" -> this.lookupBand(searchString);
             case "contest" -> this.lookupContest(searchString);
+            case "venue" -> this.lookupVenue(searchString);
             default -> throw NotFoundException.lookupTypeNotFound(type);
         };
 
@@ -87,4 +91,18 @@ public class LookupController {
 
         return rootNode;
     }
+
+    private ObjectNode lookupVenue(String searchString) {
+        List<VenueDao> matchingVenues = this.venueService.lookupByPrefix(searchString);
+
+        ObjectNode rootNode = objectMapper.createObjectNode();
+        ArrayNode people = rootNode.putArray(MATCH_TAG_NAME);
+
+        for (VenueDao eachVenue : matchingVenues) {
+            people.add(eachVenue.asLookup(this.objectMapper));
+        }
+
+        return rootNode;
+    }
+
 }

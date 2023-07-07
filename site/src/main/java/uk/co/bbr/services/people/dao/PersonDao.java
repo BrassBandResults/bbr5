@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import uk.co.bbr.services.framework.AbstractDao;
 import uk.co.bbr.services.framework.mixins.NameTools;
+import uk.co.bbr.web.HtmlTools;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -179,7 +180,7 @@ public class PersonDao extends AbstractDao implements NameTools {
     public ObjectNode asLookup(ObjectMapper objectMapper) {
         ObjectNode person = objectMapper.createObjectNode();
         person.put("slug", this.getSlug());
-        person.put("name", this.combinedName);
+        person.put("name", HtmlTools.format(this.combinedName));
         person.put("context", this.knownFor != null ? this.knownFor : "");
         return person;
     }

@@ -16,6 +16,7 @@ import uk.co.bbr.web.security.annotations.IsBbrMember;
 import uk.co.bbr.web.venues.forms.VenueEditForm;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -29,9 +30,13 @@ public class CreateVenueController {
     @GetMapping("/create/venue")
     public String createGet(Model model) {
 
-        PersonEditForm editForm = new PersonEditForm();
+        List<RegionDao> regions = this.regionService.findAll();
+
+        VenueEditForm editForm = new VenueEditForm();
+        editForm.setRegion(this.regionService.fetchUnknownRegion().getId());
 
         model.addAttribute("Form", editForm);
+        model.addAttribute("Regions", regions);
 
         return "venues/create";
     }
@@ -57,7 +62,7 @@ public class CreateVenueController {
         newVenue.setLongitude(submittedForm.getLongitude());
         newVenue.setNotes(submittedForm.getNotes());
 
-        Optional<VenueDao> parent = this.venueService.fetchBySlug(submittedForm.getParentVenue());
+        Optional<VenueDao> parent = this.venueService.fetchBySlug(submittedForm.getParentVenueSlug());
         if (parent.isPresent()) {
             newVenue.setParent(parent.get());
         }

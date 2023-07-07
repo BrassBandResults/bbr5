@@ -1,7 +1,6 @@
 
 
 Edit group
-Create venue
 Edit venue
 Create piece
 Edit piece
