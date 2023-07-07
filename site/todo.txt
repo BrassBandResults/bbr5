@@ -2,11 +2,9 @@
 
 Edit group
 Edit venue
-Create piece
 Edit piece
 Create contest
 Edit contest
-Create event
 Edit event
 
 Build pipeline

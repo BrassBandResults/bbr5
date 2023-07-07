@@ -25,7 +25,8 @@ public class ContestEditForm {
     private boolean allEventsAdded;
     private boolean preventFutureBands;
     private Integer repeatPeriod;
-    private String qualifiesFor;
+    private String qualifiesForName;
+    private String qualifiesForSlug;
 
     public ContestEditForm() {
         super();
@@ -47,7 +48,10 @@ public class ContestEditForm {
         this.description = contest.getDescription();
         this.notes = contest.getNotes();
         this.extinct = contest.isExtinct();
-        this.qualifiesFor = contest.getQualifiesFor().getName();
+        if (contest.getQualifiesFor() != null) {
+            this.qualifiesForName = contest.getQualifiesFor().getName();
+            this.qualifiesForSlug = contest.getQualifiesFor().getSlug();
+        }
         this.excludeFromGroupResults = contest.isExcludeFromGroupResults();
         this.allEventsAdded = contest.isAllEventsAdded();
         this.preventFutureBands = contest.isPreventFutureBands();
