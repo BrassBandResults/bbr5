@@ -174,13 +174,13 @@ public class ResultServiceImpl implements ResultService {
         List<ContestResultDrawPositionSqlDto> results;
         switch (position) {
             case "W":
-                results = ContestResultSql1.selectContestResultsForPosition(this.entityManager, contest.getSlug(), "W", "");
+                results = ContestResultSql1.selectContestResultsForWithdrawn(this.entityManager, contest.getSlug());
                 break;
             case "D":
-                results = ContestResultSql1.selectContestResultsForPosition(this.entityManager, contest.getSlug(), "D", "");
+                results = ContestResultSql1.selectContestResultsForDisqualified(this.entityManager, contest.getSlug());
                 break;
             default:
-                results = ContestResultSql1.selectContestResultsForPosition(this.entityManager, contest.getSlug(), "R", position);
+                results = ContestResultSql1.selectContestResultsForPosition(this.entityManager, contest.getSlug(), position);
                 break;
         }
 
