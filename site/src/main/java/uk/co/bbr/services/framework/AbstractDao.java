@@ -30,6 +30,10 @@ public class AbstractDao {
 
     @Column(name="updated_by")
     private String updatedBy;
+
+    protected String escapeJson(String text) {
+        return text.replace("'", "`");
+    }
 }
 
 

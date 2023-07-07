@@ -101,7 +101,7 @@ public class PieceDao extends AbstractDao implements NameTools {
     public ObjectNode asLookup(ObjectMapper objectMapper) {
         ObjectNode piece = objectMapper.createObjectNode();
         piece.put("slug", this.getSlug());
-        piece.put("name", HtmlTools.format(this.name));
+        piece.put("name", this.escapeJson(this.name));
         piece.put("context", "");
         return piece;
     }

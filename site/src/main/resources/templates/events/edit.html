@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+<head>
+    <title th:text="@{#{page.edit-event.title(${ContestEvent.contest.name}, ${ContestEvent.eventDateDisplay})} + ' - Brass Band Results'}">Edit Event - Brass Band Results</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h2><span th:text="#{page.edit-header-prefix}" th:remove="tag">Edit</span> <span th:text="${ContestEvent.name}" th:remove="tag">Contest Name</span></h2>
+
+    <form th:object="${Form}"
+          th:action="${'/contests/' + ContestEvent.contest.slug + '/' + ContestEvent.eventDateForUrl + '/edit'}"
+          method="post">
+        <div class="alert alert-danger" th:if="${#fields.hasErrors('*')}">
+            <ul>
+                <li th:each="err : ${#fields.errors('*')}" th:text="@{#{${err}}}"></li>
+            </ul>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="eventDate" th:text="#{page.field-prompt.event-date}">Event date:</label>
+            <input id="eventDate" class="form-control" type="date" th:field="*{eventDate}"/>
+            <small class="form-text" th:text="#{page.event-edit.hint.event-date}">Date the contest took place.</small>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="date-resolution" th:text="#{page.field-prompt.date-resolution}">Date Resolution:</label>
+            <select id="date-resolution" class="form-select" th:field="*{dateResolution}">
+                <option th:each="state : ${T(uk.co.bbr.services.events.types.ContestEventDateResolution).values()}"
+                        th:value="${state.code}"
+                        th:text="#{${state.translationKey}}">
+                </option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="name" th:text="#{page.field-prompt.name}">Name:</label>
+            <input id="name" class="form-control" type="text" th:field="*{name}" maxlength="100" size="80" required/>
+            <small class="form-text" th:text="#{page.event-edit.hint.name}">Display name for event.</small>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="venue" th:text="#{page.field-prompt.venue}">Venue:</label>
+            <input id="venue" th:field="*{venueName}" autocomplete="off" class="form-control" type="text" maxlength="100" onkeyup="lookup('venue', 'venue');"/>
+            <input type="hidden" th:field="*{venueSlug}" id="venue-slug"/>
+            <small class="form-text" th:text="#{page.event-edit.hint.venue}">The location the contest event took place.</small>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="contest-type" th:text="#{page.field-prompt.contest-type}">Contest Type:</label>
+            <select id="contest-type" class="form-select" th:field="*{contestType}">
+                <option th:each="contestType : ${ContestTypes}"
+                        th:value="${contestType.id}"
+                        th:text="#{'contest-types.' + ${contestType.slug}}">
+                </option>
+            </select>
+            <small class="form-text" th:text="#{page.event-edit.hint.contest-type}">The structure of this event.</small>
+        </div>
+
+        <input type="submit" th:value="#{page.buttons.save-changes}" class="btn btn-outline-success"/>
+        <a th:href="${'/contests/' + ContestEvent.contest.slug + '/' + ContestEvent.eventDateForUrl}" th:text="#{page.buttons.cancel-without-saving}" class="btn btn-light">Cancel wout saving</a>
+    </form>
+</div>
+
+<div layout:fragment="feedback">
+</div>
+
+<div layout:fragment="scriptfooter">
+    <script th:src="@{${STATIC_HOST} + '/js2023/lookup.js'}"></script>
+    <script>
+        function fill(inputId, matchSlug, matchName) {
+            let inputElement = document.getElementById(inputId);
+            let inputSlugElement = document.getElementById(inputId + '-slug');
+            inputElement.value = matchName;
+            inputSlugElement.value = matchSlug;
+            inputElement.classList.remove("bg-warning-subtle");
+            inputElement.classList.add("bg-success-subtle");
+
+            document.getElementById('list-' + inputId).remove();
+        }
+    </script>
+</div>
+
+</body>
+</html>

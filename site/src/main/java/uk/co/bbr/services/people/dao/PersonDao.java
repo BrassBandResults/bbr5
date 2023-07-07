@@ -180,7 +180,7 @@ public class PersonDao extends AbstractDao implements NameTools {
     public ObjectNode asLookup(ObjectMapper objectMapper) {
         ObjectNode person = objectMapper.createObjectNode();
         person.put("slug", this.getSlug());
-        person.put("name", HtmlTools.format(this.combinedName));
+        person.put("name", this.escapeJson(this.combinedName));
         person.put("context", this.knownFor != null ? this.knownFor : "");
         return person;
     }

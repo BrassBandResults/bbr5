@@ -98,7 +98,7 @@ public class ContestGroupDao extends AbstractDao implements NameTools {
     public ObjectNode asLookup(ObjectMapper objectMapper) {
         ObjectNode group = objectMapper.createObjectNode();
         group.put("slug", this.getSlug());
-        group.put("name", HtmlTools.format(this.name));
+        group.put("name", this.escapeJson(this.name));
         group.put("context", "");
         return group;
     }

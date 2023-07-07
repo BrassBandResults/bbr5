@@ -111,7 +111,7 @@ public class VenueDao extends AbstractDao implements NameTools {
     public ObjectNode asLookup(ObjectMapper objectMapper) {
         ObjectNode venue = objectMapper.createObjectNode();
         venue.put("slug", this.getSlug());
-        venue.put("name", HtmlTools.format(this.name));
+        venue.put("name", this.escapeJson(this.name));
         venue.put("context", "");
         return venue;
     }

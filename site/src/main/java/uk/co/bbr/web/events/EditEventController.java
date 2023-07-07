@@ -95,15 +95,6 @@ public class EditEventController {
             existingEvent.setContestType(null);
         }
 
-        if (submittedEvent.getContestSlug() != null) {
-            Optional<ContestDao> contest = this.contestService.fetchBySlug(submittedEvent.getContestSlug());
-            if (contest.isPresent()) {
-                existingEvent.setContest(contest.get());
-            }
-            // don't do anything if this doesn't match - it'll get left with the old contest, which is better than
-            // setting it to null, it's not optional!
-        }
-
         if (submittedEvent.getVenueSlug() != null) {
             Optional<VenueDao> venue = this.venueService.fetchBySlug(submittedEvent.getVenueSlug());
             if (venue.isPresent()) {

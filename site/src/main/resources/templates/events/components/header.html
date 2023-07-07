@@ -3,6 +3,7 @@
     <h3 th:text="${ContestEvent.eventDateDisplayWithDay}"></h3>
     <div sec:authorize="hasRole('BBR_SUPERUSER')">
         <span th:replace="buttons/edit.html :: editEvent(${ContestEvent})"></span>
+        <span th:replace="buttons/edit.html :: editEventSetTests(${ContestEvent})"></span>
     </div>
     <br/>
 </div>

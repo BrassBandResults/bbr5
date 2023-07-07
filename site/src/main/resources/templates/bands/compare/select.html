@@ -33,9 +33,8 @@ function fill(inputId, matchSlug, matchName) {
     let inputElement = document.getElementById(inputId);
     inputElement.value = matchName;
     inputElement.dataset.slug = matchSlug;
-    inputElement.classList.remove("bg-warning");
-    inputElement.classList.add("bg-success");
-    inputElement.classList.add("text-white");
+    inputElement.classList.remove("bg-warning-subtle");
+    inputElement.classList.add("bg-success-subtle");
 
     document.getElementById('list-' + inputId).remove();
 

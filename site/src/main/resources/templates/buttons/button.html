@@ -5,3 +5,7 @@
 <span th:fragment="dangerButton(text, link)" th:remove="tag">
     <a role="button" th:onclick="@{'return confirm(\'' + #{are.you.sure} + '\');'}" class="btn btn-sm btn-outline-danger rounded" th:text="${text}" th:href="${link}">Edit</a>
 </span>
+
+<span th:fragment="greenButton(text, link)" th:remove="tag">
+    <a role="button" class="btn btn-sm btn-success text-white rounded" th:text="${text}" th:href="${link}">Edit</a>
+</span>
