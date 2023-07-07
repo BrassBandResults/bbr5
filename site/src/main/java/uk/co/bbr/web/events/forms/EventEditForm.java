@@ -19,9 +19,11 @@ public class EventEditForm {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate eventDate;
     private String dateResolution;
-    private String contest;
+    private String contestName;
+    private String contestSlug;
     private String notes;
-    private String venue;
+    private String venueName;
+    private String venueSlug;
     private boolean noContest;
     private Long contestType;
 
@@ -35,9 +37,13 @@ public class EventEditForm {
         this.name = event.getName();
         this.eventDate = event.getEventDate();
         this.dateResolution = event.getEventDateResolution().getCode();
-        this.contest = event.getContest().getName();
+        this.contestName = event.getContest().getName();
+        this.contestSlug = event.getContest().getSlug();
         this.notes = event.getNotes();
-        this.venue = event.getVenue().getName();
+        if (event.getVenue() != null) {
+            this.venueName = event.getVenue().getName();
+            this.venueSlug = event.getVenue().getSlug();
+        }
         this.noContest = event.isNoContest();
         this.contestType = event.getContestType().getId();
     }

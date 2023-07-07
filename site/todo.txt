@@ -55,6 +55,7 @@ Add pro status to users profile page
 Add points and avatar to users profile page
 Add owned feedback to users profile page
 Add classifieds to users profile page
+Show user's performances of pieces on piece page tab
 
 Upgrade to pro support
 
