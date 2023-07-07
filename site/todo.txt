@@ -21,8 +21,6 @@ Azure Function updates points on a user, by calling api on site
 
 Show event results
 Links up/down/next/previous
-Event results for specific draw
-Event results for specific position
 
 Add results - contest
 Add results - date
@@ -38,6 +36,7 @@ Security on who can edit result
 
 Edit result
 Edit adjudicators
+Edit Test Pieces
 
 Deal with unique slug clash
 
