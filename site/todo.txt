@@ -1,5 +1,3 @@
-Edit event
-
 Build pipeline
 Push to github docker repo
 

@@ -28,4 +28,10 @@ public interface ContestResultRepository extends JpaRepository<ContestResultDao,
 
     @Query("SELECT COUNT(r) FROM ContestResultDao r WHERE r.resultPositionType = uk.co.bbr.services.events.types.ResultPositionType.RESULT")
     int countResultsWithPlacings();
+
+    @Query("SELECT r FROM ContestResultDao r WHERE r.contestEvent.contest.slug = :contestSlug AND r.resultPositionType = 'R' AND r.position = :position ORDER BY r.contestEvent.eventDate DESC")
+    List<ContestResultDao> fetchForContestAndPosition(String contestSlug, int position);
+
+    @Query("SELECT r FROM ContestResultDao r WHERE r.contestEvent.contest.slug = :contestSlug AND  r.draw = :draw ORDER BY r.contestEvent.eventDate DESC")
+    List<ContestResultDao> fetchForContestAndDraw(String contestSlug, int draw);
 }

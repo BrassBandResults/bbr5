@@ -30,4 +30,8 @@ public interface ResultService {
     List<ContestWinsSqlDto> fetchWinsCounts(ContestDao contest);
 
     Set<PersonDao> fetchBandConductors(BandDao band);
+
+    List<ContestResultDao> fetchResultsForContestAndPosition(ContestDao contestDao, int position);
+
+    List<ContestResultDao> fetchResultsForContestAndDraw(ContestDao contestDao, int draw);
 }

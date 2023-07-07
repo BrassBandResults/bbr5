@@ -40,7 +40,4 @@ public class ContestEventController {
 
         return "events/event";
     }
-
-
-
 }

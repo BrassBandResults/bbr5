@@ -11,6 +11,7 @@ import uk.co.bbr.services.contests.ContestService;
 import uk.co.bbr.services.contests.dao.ContestAliasDao;
 import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.events.dao.ContestEventDao;
+import uk.co.bbr.services.events.dao.ContestResultDao;
 import uk.co.bbr.services.events.dao.ContestResultPieceDao;
 import uk.co.bbr.services.contests.sql.dto.ContestWinsSqlDto;
 import uk.co.bbr.services.framework.NotFoundException;
@@ -88,5 +89,42 @@ public class ContestController {
         model.addAttribute("OwnChoicePieceCount", ownChoicePieceCount);
 
         return "contests/contest-wins";
+    }
+
+
+    @IsBbrPro
+    @GetMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}/position/{position:\\d+}")
+    public String contestResultsForPosition(Model model, @PathVariable String contestSlug, @PathVariable int position) {
+        Optional<ContestDao> contest = this.contestService.fetchBySlug(contestSlug);
+
+        if (contest.isEmpty()) {
+            throw NotFoundException.contestNotFoundBySlug(contestSlug);
+        }
+
+        List<ContestResultDao> results = this.contestResultService.fetchResultsForContestAndPosition(contest.get(), position);
+
+        model.addAttribute("Contest", contest.get());
+        model.addAttribute("ResultPosition", position);
+        model.addAttribute("Results", results);
+
+        return "contests/results-for-position";
+    }
+
+    @IsBbrPro
+    @GetMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}/draw/{draw:\\d+}")
+    public String contestResultsForDraw(Model model, @PathVariable String contestSlug, @PathVariable int draw) {
+        Optional<ContestDao> contest = this.contestService.fetchBySlug(contestSlug);
+
+        if (contest.isEmpty()) {
+            throw NotFoundException.contestNotFoundBySlug(contestSlug);
+        }
+
+        List<ContestResultDao> results = this.contestResultService.fetchResultsForContestAndDraw(contest.get(), draw);
+
+        model.addAttribute("Contest", contest.get());
+        model.addAttribute("DrawPosition", draw);
+        model.addAttribute("Results", results);
+
+        return "contests/results-for-draw";
     }
 }

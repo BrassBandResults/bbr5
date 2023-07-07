@@ -168,6 +168,16 @@ public class ResultServiceImpl implements ResultService {
     }
 
     @Override
+    public List<ContestResultDao> fetchResultsForContestAndPosition(ContestDao contestDao, int position) {
+        return this.contestResultRepository.fetchForContestAndPosition(contestDao.getSlug(), position);
+    }
+
+    @Override
+    public List<ContestResultDao> fetchResultsForContestAndDraw(ContestDao contestDao, int draw) {
+        return this.contestResultRepository.fetchForContestAndDraw(contestDao.getSlug(), draw);
+    }
+
+    @Override
     @IsBbrMember
     public ContestResultDao migrate(ContestEventDao event, ContestResultDao contestResult) {
         contestResult.setContestEvent(event);
