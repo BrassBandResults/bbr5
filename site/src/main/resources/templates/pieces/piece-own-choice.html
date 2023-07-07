@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title th:text="@{#{page.piece.title(${Piece.name})} + ' - Brass Band Results'}">Piece - Brass Band Results</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <span th:replace="pieces/components/header.html :: header(${Piece},${PreviousNames})"></span>
+
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link" th:href="${'/pieces/' + Piece.slug}" th:text="#{page.piece.header.set-test(${SetTestCount})}">Set Tests</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" th:href="${'/pieces/' + Piece.slug + '/own-choice'}" th:text="#{page.piece.header.own-choice(${OwnChoiceCount})}">Own Choice</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" th:href="${'/pieces/' + Piece.slug + '/performances'}" th:text="#{page.piece.header.performances(${PerformanceCount})}">Your Performances</a>
+        </li>
+    </ul>
+    <br/>
+
+    <div class="tab-content">
+        <table class="table table-hover sortable">
+            <thead>
+            <tr>
+                <th th:text="#{page.column-header.date}" class="date">Date</th>
+                <th th:text="#{page.column-header.contest}">Contest</th>
+                <th th:text="#{page.column-header.band}">Band</th>
+                <th th:text="#{page.column-header.position}" class="result">Position</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="resultPiece : ${OwnChoiceResults}" th:class="${'result-' + resultPiece.contestResult.position}">
+                <td class="bbr-event" nowrap><span th:replace="links/event-link.html :: eventLink(${resultPiece.contestResult.contestEvent})">9th Sep 2023</span></td>
+                <td class="bbr-contest"><span th:title="${'Competed as ' + resultPiece.contestResult.bandName}" th:text="${resultPiece.contestResult.contestEvent.contest.name}">Yorkshire Area</span></td>
+                <td class="bbr-band"><span th:replace="links/band-link.html :: bandLinkWithOverride(${resultPiece.contestResult})"></span></td>
+                <td class="bbr-position"><span th:replace="components/results-position.html :: resultsPosition(${resultPiece.contestResult})">1</span></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

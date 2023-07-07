@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import uk.co.bbr.services.events.dao.ContestEventTestPieceDao;
+import uk.co.bbr.services.events.dao.ContestResultDao;
 import uk.co.bbr.services.events.dao.ContestResultPieceDao;
 import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.pieces.PieceService;
@@ -18,6 +19,7 @@ import uk.co.bbr.services.sections.dao.SectionDao;
 import uk.co.bbr.web.security.annotations.IsBbrPro;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,6 +42,57 @@ public class PieceController {
         List<ContestResultPieceDao> ownChoiceResults = this.pieceService.fetchOwnChoicePieceUsage(piece.get());
         List<ContestEventTestPieceDao> setTestContests = this.pieceService.fetchSetTestPieceUsage(piece.get());
 
+        List<ContestResultDao> performances = new ArrayList<>(); // TODO get real values for this
+
+
+        model.addAttribute("Piece", piece.get());
+        model.addAttribute("SetTestContests", setTestContests);
+        model.addAttribute("SetTestCount", setTestContests.size());
+        model.addAttribute("OwnChoiceCount", ownChoiceResults.size());
+        model.addAttribute("PreviousNames", pieceAliases);
+        model.addAttribute("PerformanceCount", performances.size());
+
+        return "pieces/piece";
+    }
+
+    @GetMapping("/pieces/{slug:[\\-a-z\\d]{2,}}/own-choice")
+    public String pieceOwnChoiceDetails(Model model, @PathVariable("slug") String slug) {
+        Optional<PieceDao> piece = this.pieceService.fetchBySlug(slug);
+        if (piece.isEmpty()) {
+            throw NotFoundException.pieceNotFoundBySlug(slug);
+        }
+
+        List<PieceAliasDao> pieceAliases = this.pieceService.fetchAlternateNames(piece.get());
+
+        List<ContestResultPieceDao> ownChoiceResults = this.pieceService.fetchOwnChoicePieceUsage(piece.get());
+        List<ContestEventTestPieceDao> setTestContests = this.pieceService.fetchSetTestPieceUsage(piece.get());
+
+        List<ContestResultDao> performances = new ArrayList<>(); // TODO get real values for this
+
+        model.addAttribute("Piece", piece.get());
+        model.addAttribute("OwnChoiceResults", ownChoiceResults);
+        model.addAttribute("SetTestCount", setTestContests.size());
+        model.addAttribute("OwnChoiceCount", ownChoiceResults.size());
+        model.addAttribute("PreviousNames", pieceAliases);
+        model.addAttribute("PerformanceCount", performances.size());
+
+        return "pieces/piece-own-choice";
+    }
+
+    @GetMapping("/pieces/{slug:[\\-a-z\\d]{2,}}/performances")
+    public String piecePerformanceDetails(Model model, @PathVariable("slug") String slug) {
+        Optional<PieceDao> piece = this.pieceService.fetchBySlug(slug);
+        if (piece.isEmpty()) {
+            throw NotFoundException.pieceNotFoundBySlug(slug);
+        }
+
+        List<PieceAliasDao> pieceAliases = this.pieceService.fetchAlternateNames(piece.get());
+
+        List<ContestResultPieceDao> ownChoiceResults = this.pieceService.fetchOwnChoicePieceUsage(piece.get());
+        List<ContestEventTestPieceDao> setTestContests = this.pieceService.fetchSetTestPieceUsage(piece.get());
+
+        List<ContestResultDao> performances = new ArrayList<>(); // TODO get real values for this
+
 
         model.addAttribute("Piece", piece.get());
         model.addAttribute("OwnChoiceResults", ownChoiceResults);
@@ -47,8 +100,10 @@ public class PieceController {
         model.addAttribute("SetTestCount", setTestContests.size());
         model.addAttribute("OwnChoiceCount", ownChoiceResults.size());
         model.addAttribute("PreviousNames", pieceAliases);
+        model.addAttribute("PerformanceCount", performances.size());
+        model.addAttribute("Performances", performances);
 
-        return "pieces/piece";
+        return "pieces/piece-performances";
     }
 
     @IsBbrPro

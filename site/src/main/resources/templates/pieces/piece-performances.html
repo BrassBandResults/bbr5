@@ -9,13 +9,13 @@
 
     <ul class="nav nav-tabs">
         <li class="nav-item">
-            <a class="nav-link active" th:href="${'/pieces/' + Piece.slug}" th:text="#{page.piece.header.set-test(${SetTestCount})}">Set Tests</a>
+            <a class="nav-link" th:href="${'/pieces/' + Piece.slug}" th:text="#{page.piece.header.set-test(${SetTestCount})}">Set Tests</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" th:href="${'/pieces/' + Piece.slug + '/own-choice'}" th:text="#{page.piece.header.own-choice(${OwnChoiceCount})}">Own Choice</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" th:href="${'/pieces/' + Piece.slug + '/performances'}" th:text="#{page.piece.header.performances(${PerformanceCount})}">Your Performances</a>
+            <a class="nav-link active" th:href="${'/pieces/' + Piece.slug + '/performances'}" th:text="#{page.piece.header.performances(${PerformanceCount})}">Your Performances</a>
         </li>
     </ul>
     <br/>
@@ -26,18 +26,16 @@
             <tr>
                 <th th:text="#{page.column-header.date}" class="date">Date</th>
                 <th th:text="#{page.column-header.contest}">Contest</th>
-                <th th:text="#{page.column-header.winner}">Winner</th>
+                <th th:text="#{page.column-header.band}">Band</th>
+                <th th:text="#{page.column-header.position}" class="result">Position</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="eventPiece : ${SetTestContests}">
-                <td class="bbr-event" nowrap><span th:replace="links/event-link.html :: eventLink(${eventPiece.contestEvent})">9th Sep 2023</span></td>
-                <td class="bbr-contest"><span th:text="${eventPiece.contestEvent.contest.name}">Yorkshire Area</span></td>
-                <td class="bbr-band">
-                    <span th:each="winningBand : ${eventPiece.winners}">
-                        <span th:replace="links/band-link.html :: bandLink(${winningBand}, true, false)"></span>
-                    </span>
-                </td>
+            <tr th:each="contestResult : ${Performances}" th:class="${'result-' + contestResult.position}">
+                <td class="bbr-event" nowrap><span th:replace="links/event-link.html :: eventLink(${contestResult.contestEvent})">9th Sep 2023</span></td>
+                <td class="bbr-contest"><span th:title="${'Competed as ' + contestResult.bandName}" th:text="${contestResult.contestEvent.contest.name}">Yorkshire Area</span></td>
+                <td class="bbr-band"><span th:replace="links/band-link.html :: bandLinkWithOverride(${contestResult})"></span></td>
+                <td class="bbr-position"><span th:replace="components/results-position.html :: resultsPosition(${contestResult})">1</span></td>
             </tr>
             </tbody>
         </table>
