@@ -54,13 +54,9 @@ public class CreatePieceController {
         newPiece.setYear(submittedForm.getYear());
         newPiece.setCategory(PieceCategory.fromCode(submittedForm.getCategory()));
         Optional<PersonDao> composer = this.personService.fetchBySlug(submittedForm.getComposerSlug());
-        if (composer.isPresent()) {
-            newPiece.setComposer(composer.get());
-        }
+        composer.ifPresent(newPiece::setComposer);
         Optional<PersonDao> arranger = this.personService.fetchBySlug(submittedForm.getArrangerSlug());
-        if (arranger.isPresent()) {
-            newPiece.setArranger(arranger.get());
-        }
+        arranger.ifPresent(newPiece::setArranger);
 
         this.pieceService.create(newPiece);
 

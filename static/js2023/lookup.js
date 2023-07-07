@@ -1,11 +1,17 @@
 function lookup(inputId, entity) {
     let inputElement = document.getElementById(inputId);
     let inputValue = inputElement.value;
+    inputElement.classList.remove("bg-success");
+    inputElement.classList.remove("text-white");
+    inputElement.classList.add("bg-warning");
+
+    let inputElementSlug = document.getElementById(inputId + '-slug');
+    if (inputElementSlug) {
+        inputElementSlug.value="";
+    }
+
     if (inputValue.length > 2 ) {
-        inputElement.classList.remove("bg-success");
-        inputElement.classList.remove("text-white");
-        inputElement.classList.add("bg-warning");
-  
+     
         let searchList = document.getElementById('list-' + inputId);
         if (searchList === null) {
             searchList = document.createElement("ul");
