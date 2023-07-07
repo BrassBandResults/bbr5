@@ -63,15 +63,15 @@ public class PieceServiceImpl implements PieceService, SlugTools {
         return this.create(piece, true);
     }
 
-    private PieceDao create(PieceDao piece, boolean migrating) {
+    private void validateMandatory(PieceDao piece) {
         // validation
-        if (piece.getId() != null) {
-            throw new ValidationException("Can't create with specific id");
-        }
-
         if (StringUtils.isBlank(piece.getName())) {
             throw new ValidationException("Piece name must be specified");
         }
+    }
+
+    private PieceDao create(PieceDao piece, boolean migrating) {
+       this.validateMandatory(piece);
 
         // defaults
         if (StringUtils.isBlank(piece.getSlug())) {
@@ -80,6 +80,10 @@ public class PieceServiceImpl implements PieceService, SlugTools {
 
         if (piece.getCategory() == null) {
             piece.setCategory(PieceCategory.TEST_PIECE);
+        }
+
+        if (piece.getId() != null) {
+            throw new ValidationException("Can't create with specific id");
         }
 
         // does the slug already exist?
@@ -114,6 +118,16 @@ public class PieceServiceImpl implements PieceService, SlugTools {
         newPiece.setName(name);
         newPiece.setCategory(PieceCategory.TEST_PIECE);
         return this.create(newPiece);
+    }
+
+    @Override
+    @IsBbrMember
+    public PieceDao update(PieceDao piece) {
+        this.validateMandatory(piece);
+
+        piece.setUpdated(LocalDateTime.now());
+        piece.setUpdatedBy(this.securityService.getCurrentUsername());
+        return this.pieceRepository.saveAndFlush(piece);
     }
 
     @Override

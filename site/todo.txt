@@ -1,4 +1,3 @@
-Edit venue
 Edit piece
 
 Edit event

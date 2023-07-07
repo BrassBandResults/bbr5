@@ -27,6 +27,9 @@ public enum PieceCategory {
     }
 
     public static PieceCategory fromCode(String code) {
+        if (code == null) {
+            return null;
+        }
         return Stream.of(PieceCategory.values())
                 .filter(c -> c.getCode().equals(code))
                 .findFirst()

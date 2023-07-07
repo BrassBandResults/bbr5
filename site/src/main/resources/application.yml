@@ -1,3 +1,11 @@
+debug: true
+logging:
+  level:
+    org:
+      springframework:
+        security: INFO
+      apache:
+        http: INFO
 spring:
   datasource:
     url: ${BBR_DATABASE_URL}

@@ -1,0 +1,26 @@
+<div th:fragment="header(Piece, PreviousNames)" xmlns:sec="http://www.thymeleaf.org">
+    <h2>
+        <span th:remove="tag" th:text="${Piece.name}">Piece Name</span>
+        <small th:if="${Piece.year != null}"><small><small th:text="${Piece.year}"></small></small></small>
+    </h2>
+    <div sec:authorize="hasRole('BBR_SUPERUSER')">
+        <span th:replace="buttons/edit.html :: editPiece(${Piece})"></span>
+    </div><br/>
+    <span th:replace="components/aliases.html :: previousNames(${PreviousNames})"></span>
+
+    <table>
+        <tr th:if="${Piece.composer != null}">
+            <th th:text="#{page.field-prompt.composer}">Composer:</th>
+            <td class="bbr-composer"><span th:replace="links/person-link.html :: personLink(${Piece.composer}, false, false)">Bob Childs</span></td>
+        </tr>
+        <tr th:if="${Piece.arranger != null}">
+            <th th:text="#{page.field-prompt.arranger}">Arranger:</th>
+            <td class="bbr-arranger"><span th:replace="links/person-link.html :: personLink(${Piece.arranger}, false, false)">Bob Childs</span></td>
+        </tr>
+        <tr>
+            <th th:text="#{page.field-prompt.type}">Type:</th>
+            <td><span th:text="#{${Piece.category.translationKey}}"</td>
+        </tr>
+    </table>
+    <br/>
+</div>
