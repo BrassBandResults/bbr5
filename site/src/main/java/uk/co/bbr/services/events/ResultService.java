@@ -31,7 +31,7 @@ public interface ResultService {
 
     Set<PersonDao> fetchBandConductors(BandDao band);
 
-    List<ContestResultDao> fetchResultsForContestAndPosition(ContestDao contestDao, int position);
+    List<ContestResultDao> fetchResultsForContestAndPosition(ContestDao contestDao, String position);
 
     List<ContestResultDao> fetchResultsForContestAndDraw(ContestDao contestDao, int draw);
 }

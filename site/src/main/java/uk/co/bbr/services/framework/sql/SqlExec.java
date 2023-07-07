@@ -10,7 +10,7 @@ import java.util.List;
 
 @UtilityClass
 public class SqlExec {
-    public static <T extends AbstractSqlDto> List<T> execute(EntityManager entityManager, String sql, Object param1, Object param2, Class<T> clazz) {
+    public static <T extends AbstractSqlDto> List<T> execute(EntityManager entityManager, String sql, Object param1, Object param2, Object param3, Class<T> clazz) {
         List<T> returnData = new ArrayList<>();
         try {
             Query query = entityManager.createNativeQuery(sql);
@@ -19,6 +19,9 @@ public class SqlExec {
             }
             if (param2 != null) {
                 query.setParameter(2, param2);
+            }
+            if (param3 != null) {
+                query.setParameter(3, param3);
             }
             List<Object[]> queryResults = query.getResultList();
 
@@ -36,11 +39,15 @@ public class SqlExec {
         }
     }
 
+    public static <T extends AbstractSqlDto> List<T> execute(EntityManager entityManager, String sql, Object param1, Object param2, Class<T> clazz) {
+        return execute(entityManager, sql, param1, param2, null, clazz);
+    }
+
     public static <T extends AbstractSqlDto> List<T> execute(EntityManager entityManager, String sql, Object param1, Class<T> clazz) {
-            return execute(entityManager, sql, param1, null, clazz);
+            return execute(entityManager, sql, param1, null, null, clazz);
     }
 
     public static <T extends AbstractSqlDto> List<T> execute(EntityManager entityManager, String sql, Class<T> clazz) {
-        return execute(entityManager, sql, null, null, clazz);
+        return execute(entityManager, sql, null, null, null, clazz);
     }
 }

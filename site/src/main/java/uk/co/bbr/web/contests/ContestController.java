@@ -93,8 +93,8 @@ public class ContestController {
 
 
     @IsBbrPro
-    @GetMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}/position/{position:\\d+}")
-    public String contestResultsForPosition(Model model, @PathVariable String contestSlug, @PathVariable int position) {
+    @GetMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}/position/{position:\\d+|W|D}")
+    public String contestResultsForPosition(Model model, @PathVariable String contestSlug, @PathVariable String position) {
         Optional<ContestDao> contest = this.contestService.fetchBySlug(contestSlug);
 
         if (contest.isEmpty()) {

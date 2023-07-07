@@ -12,6 +12,8 @@ import uk.co.bbr.services.events.dao.ContestResultDao;
 import uk.co.bbr.services.events.dao.ContestResultPieceDao;
 import uk.co.bbr.services.events.repo.ContestResultPieceRepository;
 import uk.co.bbr.services.events.repo.ContestResultRepository;
+import uk.co.bbr.services.events.sql.ContestResultSql1;
+import uk.co.bbr.services.events.sql.dto.ContestResultDrawPositionSqlDto;
 import uk.co.bbr.services.events.types.ContestEventDateResolution;
 import uk.co.bbr.services.events.types.ResultPositionType;
 import uk.co.bbr.services.people.dao.PersonDao;
@@ -168,13 +170,38 @@ public class ResultServiceImpl implements ResultService {
     }
 
     @Override
-    public List<ContestResultDao> fetchResultsForContestAndPosition(ContestDao contestDao, int position) {
-        return this.contestResultRepository.fetchForContestAndPosition(contestDao.getSlug(), position);
+    public List<ContestResultDao> fetchResultsForContestAndPosition(ContestDao contest, String position) {
+        List<ContestResultDrawPositionSqlDto> results;
+        switch (position) {
+            case "W":
+                results = ContestResultSql1.selectContestResultsForPosition(this.entityManager, contest.getSlug(), "W", "");
+                break;
+            case "D":
+                results = ContestResultSql1.selectContestResultsForPosition(this.entityManager, contest.getSlug(), "D", "");
+                break;
+            default:
+                results = ContestResultSql1.selectContestResultsForPosition(this.entityManager, contest.getSlug(), "R", position);
+                break;
+        }
+
+        List<ContestResultDao> resultsToReturn = new ArrayList<>();
+        for (ContestResultDrawPositionSqlDto eachSqlResult : results) {
+            resultsToReturn.add(eachSqlResult.getResult());
+        }
+
+        return resultsToReturn;
     }
 
     @Override
-    public List<ContestResultDao> fetchResultsForContestAndDraw(ContestDao contestDao, int draw) {
-        return this.contestResultRepository.fetchForContestAndDraw(contestDao.getSlug(), draw);
+    public List<ContestResultDao> fetchResultsForContestAndDraw(ContestDao contest, int draw) {
+        List<ContestResultDrawPositionSqlDto> results = ContestResultSql1.selectContestResultsForDraw(this.entityManager, contest.getSlug(), draw);
+
+        List<ContestResultDao> resultsToReturn = new ArrayList<>();
+        for (ContestResultDrawPositionSqlDto eachSqlResult : results) {
+            resultsToReturn.add(eachSqlResult.getResult());
+        }
+
+        return resultsToReturn;
     }
 
     @Override
