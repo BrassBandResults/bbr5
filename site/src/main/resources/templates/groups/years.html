@@ -5,8 +5,7 @@
 </head>
 <body>
 <div layout:fragment="content">
-    <h2 th:text="${Group.contestGroup.name}">Group Name</h2>
-    <span th:replace="components/aliases.html :: previousNames(${PreviousNames})"></span>
+    <span th:replace="groups/components/header.html :: header(${Group.contestGroup},${PreviousNames})"></span>
 
     <ul class="nav nav-tabs">
         <li class="nav-item">

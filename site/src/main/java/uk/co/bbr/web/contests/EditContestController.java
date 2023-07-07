@@ -75,7 +75,7 @@ public class EditContestController {
             model.addAttribute("Contest", existingContestOptional.get());
             model.addAttribute("Regions", regions);
 
-            return "/contests/edit";
+            return "contests/edit";
         }
 
         ContestDao existingContest = existingContestOptional.get();

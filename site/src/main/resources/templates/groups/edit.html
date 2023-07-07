@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+<head>
+    <title th:text="@{#{page.group-edit.title(${Group.name})} + ' - Brass Band Results'}">Edit Group - Brass Band Results</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h2><span th:text="#{page.edit-header-prefix}" th:remove="tag">Edit</span> <span th:text="${Group.name}" th:remove="tag">Group Name</span></h2>
+
+    <form th:object="${Form}"
+          th:action = "${'/contests/' + Group.slug + '/edit'}"
+          method="post">
+        <div class="alert alert-danger" th:if="${#fields.hasErrors('*')}">
+            <ul>
+                <li th:each="err : ${#fields.errors('*')}" th:text="@{#{${err}}}"></li>
+            </ul>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="name" th:text="#{page.field-prompt.name}">Name:</label>
+            <input id="name" class="form-control" type="text" th:field="*{name}" maxlength="100" size="80" required/>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="status" th:text="#{page.field-prompt.group-type}">Group Type:</label>
+            <select id="status" class="form-select" th:field="*{groupType}">
+                <option th:each="state : ${T(uk.co.bbr.services.groups.types.ContestGroupType).values()}"
+                        th:value="${state.code}"
+                        th:text="#{${state.translationKey}}">
+                </option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="notes" th:text="#{page.field-prompt.notes}">Notes:</label>
+            <textarea id="notes" class="form-control" th:field="*{notes}" cols="80" rows="10"></textarea>
+        </div>
+
+        <input type="submit" th:value="#{page.buttons.save-changes}" class="btn btn-outline-success"/>
+        <a th:href="${'/contests/' + Group.slug}" th:text="#{page.buttons.cancel-without-saving}" class="btn btn-light">Cancel wout saving</a>
+    </form>
+</div>
+
+<div layout:fragment="feedback">
+</div>
+
+</body>
+</html>

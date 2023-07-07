@@ -1,5 +1,3 @@
-Edit contest
-
 Edit group
 Edit venue
 Edit piece
@@ -78,3 +76,5 @@ Download conductor csv
 
 Member can add missing conductor
 Member can add missing points etc on a result
+
+contest streaks

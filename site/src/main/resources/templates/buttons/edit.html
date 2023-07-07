@@ -29,3 +29,7 @@
 <span th:fragment="editContest(contest)" th:remove="tag">
     <span th:replace="buttons/button.html :: button(#{page.buttons.edit}, ${'/contests/' + contest.slug + '/edit'})"></span>
 </span>
+
+<span th:fragment="editGroup(group)" th:remove="tag">
+    <span th:replace="buttons/button.html :: button(#{page.buttons.edit}, ${'/contests/' + group.slug + '/edit'})"></span>
+</span>

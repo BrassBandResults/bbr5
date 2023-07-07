@@ -63,7 +63,7 @@ public class EditBandController {
             model.addAttribute("Band", existingBandOptional.get());
             model.addAttribute("Regions", regions);
 
-            return "/bands/edit";
+            return "bands/edit";
         }
 
         BandDao existingBand = existingBandOptional.get();

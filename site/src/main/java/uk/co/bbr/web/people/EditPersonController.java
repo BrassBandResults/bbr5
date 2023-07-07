@@ -55,7 +55,7 @@ public class EditPersonController {
         if (bindingResult.hasErrors()) {
             model.addAttribute("Person", existingPersonOptional.get());
 
-            return "/people/edit";
+            return "people/edit";
         }
 
         PersonDao existingPerson = existingPersonOptional.get();
