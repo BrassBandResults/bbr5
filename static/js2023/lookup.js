@@ -1,9 +1,8 @@
 function lookup(inputId, entity) {
     let inputElement = document.getElementById(inputId);
     let inputValue = inputElement.value;
-    inputElement.classList.remove("bg-success");
-    inputElement.classList.remove("text-white");
-    inputElement.classList.add("bg-warning");
+    inputElement.classList.remove("bg-success-subtle");
+    inputElement.classList.add("bg-warning-subtle");
 
     let inputElementSlug = document.getElementById(inputId + '-slug');
     if (inputElementSlug) {
