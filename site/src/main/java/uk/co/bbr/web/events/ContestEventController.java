@@ -33,6 +33,7 @@ public class ContestEventController {
         Optional<ContestEventDao> contestEvent = this.contestEventService.fetchEvent(contestSlug, eventDate);
 
         if (contestEvent.isEmpty()) {
+            // TODO look 14 days either way before giving up
             throw NotFoundException.eventNotFound(contestSlug, contestEventDate);
         }
 

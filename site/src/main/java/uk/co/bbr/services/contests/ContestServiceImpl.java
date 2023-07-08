@@ -100,7 +100,7 @@ public class ContestServiceImpl implements ContestService, SlugTools {
         }
 
         // does the name already exist?
-        Optional<ContestDao> nameMatches = this.contestRepository.fetchByName(contest.getName());
+        Optional<ContestDao> nameMatches = this.contestRepository.fetchByExactName(contest.getName());
         if (nameMatches.isPresent() && !nameMatches.get().getId().equals(contest.getId())) {
             throw new ValidationException("Contest with name " + contest.getName() + " already exists.");
         }
@@ -137,7 +137,7 @@ public class ContestServiceImpl implements ContestService, SlugTools {
         }
 
         // does the name already exist?
-        Optional<ContestDao> nameMatches = this.contestRepository.fetchByName(contest.getName());
+        Optional<ContestDao> nameMatches = this.contestRepository.fetchByExactName(contest.getName());
         if (nameMatches.isPresent()) {
             throw new ValidationException("Contest with name " + contest.getName() + " already exists.");
         }
@@ -254,5 +254,15 @@ public class ContestServiceImpl implements ContestService, SlugTools {
     @Override
     public List<ContestDao> lookupByPrefix(String searchString) {
         return this.contestRepository.lookupByPrefix("%" + searchString.toUpperCase() + "%");
+    }
+
+    @Override
+    public Optional<ContestDao> fetchByExactName(String contestName) {
+        return this.contestRepository.fetchByExactName(contestName);
+    }
+
+    @Override
+    public Optional<ContestDao> fetchByNameUpper(String contestName) {
+        return this.contestRepository.fetchByNameUpper(contestName.toUpperCase());
     }
 }

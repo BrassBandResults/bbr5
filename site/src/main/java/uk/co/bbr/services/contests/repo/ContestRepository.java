@@ -12,7 +12,10 @@ public interface ContestRepository extends JpaRepository<ContestDao, Long> {
     Optional<ContestDao> fetchBySlug(String slug);
 
     @Query("SELECT c FROM ContestDao c WHERE c.name = ?1")
-    Optional<ContestDao> fetchByName(String name);
+    Optional<ContestDao> fetchByExactName(String name);
+
+    @Query("SELECT c FROM ContestDao c WHERE UPPER(c.name) = ?1")
+    Optional<ContestDao> fetchByNameUpper(String nameUpper);
 
     @Query("SELECT c FROM ContestDao c WHERE UPPER(c.name) LIKE UPPER(CONCAT(:prefix, '%')) ORDER BY c.name")
     List<ContestDao> findByPrefixOrderByName(String prefix);
@@ -36,4 +39,6 @@ public interface ContestRepository extends JpaRepository<ContestDao, Long> {
 
     @Query("SELECT c FROM ContestDao c WHERE c.id = (SELECT MAX(c1.id) FROM ContestDao c1)")
     ContestDao fetchLatestContest();
+
+
 }

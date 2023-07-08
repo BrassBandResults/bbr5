@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title th:text="@{#{page.add-results.title} + ' - Brass Band Results'}">Add Results - Brass Band Results</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h2 th:text="#{page.add-results.title}">Add Results</h2>
+
+    <form th:object="${Form}"
+          th:action="${'/add-results'}"
+          method="post">
+        <div class="alert alert-danger" th:if="${#fields.hasErrors('*')}">
+            <ul>
+                <li th:each="err : ${#fields.errors('*')}" th:text="@{#{${err}}}"></li>
+            </ul>
+        </div>
+        <div class="mb-3">
+            <span class="form-label" for="contest" th:text="#{page.field-prompt.contest}">Contest:</span>
+            <span th:text="${Contest.name}">Yorkshire Area</span>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="event-date" th:text="#{page.field-prompt.event-date}">Event Date:</label>
+            <input id="event-date" th:field="*{eventDate}" autocomplete="off" class="form-control" type="text" maxlength="10"/>
+        </div>
+
+        <input type="submit" th:value="#{page.buttons.submit}" class="btn btn-outline-success"/>
+    </form>
+</div>
+
+<div layout:fragment="feedback">
+</div>
+
+</body>
+</html>
