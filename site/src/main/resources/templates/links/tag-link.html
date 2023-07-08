@@ -2,9 +2,22 @@
     <a th:if="${tag != null}" th:href="${'/tags/' + tag.slug}" th:text="${tag.name}" class="bbr-tag">Tag Name</a>
 </span>
 
-<span th:fragment="tagCloud(tagList)">
-    <span th:each="tag : ${tagList}">
-        <a class="bg-info text-white p-1 rounded bbr-tag" th:href="@{'/tags/'+${tag.slug} }" th:text="${tag.name}">Tag Name</a>
+<span th:fragment="tagCloudGroup(group)">
+    <span th:if="${group != null}" th:remove="tag">
+        <span th:each="tag : ${group.tags}">
+            <a class="bg-info text-white p-1 rounded bbr-tag" th:href="@{'/tags/'+${tag.slug} }" th:text="${tag.name}">Tag Name</a>
+        </span>
+    </span>
+</span>
+
+<span th:fragment="tagCloudContest(contest)">
+    <span th:if="${contest != null}" th:remove="tag">
+        <span th:each="tag : ${contest.tags}" th:remove="tag">
+            <a class="bg-info text-white p-1 rounded bbr-tag" th:href="@{'/tags/'+${tag.slug} }" th:text="${tag.name}">Tag Name</a>
+        </span>
+        <span th:if="${contest.contestGroup != null}" th:each="tag : ${contest.contestGroup.tags}" th:remove="tag">
+            <a class="bg-info text-white p-1 rounded bbr-tag" th:href="@{'/tags/'+${tag.slug} }" th:text="${tag.name}">Tag Name</a>
+        </span>
     </span>
 </span>
 

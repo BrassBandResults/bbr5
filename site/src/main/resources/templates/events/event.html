@@ -91,6 +91,10 @@
                 </div>
             </div>
         </div>
+
+        <p th:utext="${ContestEvent.notesSafe}">Notes</p>
+
+        <span th:replace="links/tag-link.html :: tagCloudContest(${ContestEvent.contest})"></span>
     </div>
 </div>
 </body>

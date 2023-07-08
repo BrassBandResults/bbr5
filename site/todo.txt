@@ -16,8 +16,6 @@ csrf
 Azure Function receives band and venue changes and updates cosmosdb
 Azure Function updates points on a user, by calling api on site
 
-Links up/down/next/previous
-
 if event not found, look a day either side
 if event not found, look through entire year
 

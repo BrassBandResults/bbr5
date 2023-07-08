@@ -50,6 +50,11 @@
             </select>
             <small class="form-text" th:text="#{page.event-edit.hint.contest-type}">The structure of this event.</small>
         </div>
+        <div class="mb-3">
+            <label class="form-label" for="notes" th:text="#{page.field-prompt.notes}">Notes:</label>
+            <textarea id="notes" class="form-control" th:field="*{notes}" cols="80" rows="10"></textarea>
+            <small class="form-text" th:text="#{page.event-edit.hint.notes}">Notes</small>
+        </div>
 
         <input type="submit" th:value="#{page.buttons.save-changes}" class="btn btn-outline-success"/>
         <a th:href="${'/contests/' + ContestEvent.contest.slug + '/' + ContestEvent.eventDateForUrl}" th:text="#{page.buttons.cancel-without-saving}" class="btn btn-light">Cancel wout saving</a>
