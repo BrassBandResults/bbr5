@@ -27,7 +27,9 @@ public class VenueEditForm {
         assertNotNull(venue);
 
         this.name = venue.getName();
-        this.region = venue.getRegion().getId();
+        if (venue.getRegion() != null) {
+            this.region = venue.getRegion().getId();
+        }
         this.latitude = venue.getLatitude();
         this.longitude = venue.getLongitude();
         this.notes = venue.getNotes();

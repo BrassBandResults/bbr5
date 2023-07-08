@@ -57,6 +57,7 @@ public class EditVenueController {
         submittedVenue.validate(bindingResult);
 
         if (bindingResult.hasErrors()) {
+            model.addAttribute("Venue", venue.get());
             return "venues/edit";
         }
 
@@ -68,19 +69,15 @@ public class EditVenueController {
         existingVenue.setLongitude(submittedVenue.getLongitude());
         if (submittedVenue.getRegion() != null) {
             Optional<RegionDao> region = this.regionService.fetchById(submittedVenue.getRegion());
-            if (region.isPresent()) {
-                existingVenue.setRegion(region.get());
-            } else {
-                existingVenue.setParent(null);
-            }
+            region.ifPresent(existingVenue::setRegion);
+        } else {
+            existingVenue.setRegion(null);
         }
         if (submittedVenue.getParentVenueSlug() != null) {
             Optional<VenueDao> parentVenue = this.venueService.fetchBySlug(submittedVenue.getParentVenueSlug());
-            if (parentVenue.isPresent()) {
-                existingVenue.setParent(parentVenue.get());
-            } else {
-                existingVenue.setParent(null);
-            }
+            parentVenue.ifPresent(existingVenue::setParent);
+        } else {
+            existingVenue.setParent(null);
         }
 
         this.venueService.update(existingVenue);

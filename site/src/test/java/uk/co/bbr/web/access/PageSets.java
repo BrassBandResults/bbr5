@@ -198,6 +198,7 @@ public abstract class PageSets {
 
     protected List<String> memberPages() {
         List<String> pageList = new ArrayList<>();
+        pageList.add("/add-results");
         pageList.add("/bands/rothwell-temperance/edit");
         pageList.add("/bands/rothwell-temperance/edit-aliases");
         pageList.add("/bands/rothwell-temperance/edit-aliases/1/show");
@@ -227,6 +228,7 @@ public abstract class PageSets {
         pageList.add("/people/david-roberts/edit-relationships");
         pageList.add("/people/david-roberts/edit-relationships/1/delete");
         pageList.add("/tags/tag-to-delete/delete");
+        pageList.add("/venues/st-george-s-hall/edit");
         pageList.add("/years");
         return pageList;
     }
