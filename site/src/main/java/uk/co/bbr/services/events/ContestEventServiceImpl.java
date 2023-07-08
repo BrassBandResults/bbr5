@@ -15,6 +15,8 @@ import uk.co.bbr.services.events.repo.ContestEventTestPieceRepository;
 import uk.co.bbr.services.contests.repo.ContestRepository;
 import uk.co.bbr.services.contests.sql.ContestResultSql;
 import uk.co.bbr.services.contests.sql.dto.ContestEventResultSqlDto;
+import uk.co.bbr.services.events.sql.EventSql;
+import uk.co.bbr.services.events.sql.dto.EventUpDownLeftRightSqlDto;
 import uk.co.bbr.services.events.types.ContestEventDateResolution;
 import uk.co.bbr.services.events.types.TestPieceAndOr;
 import uk.co.bbr.services.people.dao.PersonDao;
@@ -261,5 +263,56 @@ public class ContestEventServiceImpl implements ContestEventService {
         return this.contestEventRepository.countEventsForContest(contest.getId());
     }
 
+    @Override
+    public ContestEventDao fetchEventLinkNext(ContestEventDao contestEventDao) {
+        if (contestEventDao.getContest().getContestGroup() == null) {
+            return null;
+        }
+
+        EventUpDownLeftRightSqlDto linkEvent = EventSql.selectLinkedNextEvent(this.entityManager, contestEventDao.getContest().getContestGroup().getSlug(), contestEventDao.getContest().getOrdering(), contestEventDao.getEventDate().getYear());
+        if (linkEvent == null) {
+            return null;
+        }
+        return linkEvent.getEvent();
+    }
+
+    @Override
+    public ContestEventDao fetchEventLinkPrevious(ContestEventDao contestEventDao) {
+        if (contestEventDao.getContest().getContestGroup() == null) {
+            return null;
+        }
+
+        EventUpDownLeftRightSqlDto linkEvent = EventSql.selectLinkedPreviousEvent(this.entityManager, contestEventDao.getContest().getContestGroup().getSlug(), contestEventDao.getContest().getOrdering(), contestEventDao.getEventDate().getYear());
+        if (linkEvent == null) {
+            return null;
+        }
+        return linkEvent.getEvent();
+    }
+
+    @Override
+    public ContestEventDao fetchEventLinkUp(ContestEventDao contestEventDao) {
+        if (contestEventDao.getContest().getContestGroup() == null) {
+            return null;
+        }
+
+        EventUpDownLeftRightSqlDto linkEvent = EventSql.selectLinkedUpEvent(this.entityManager, contestEventDao.getContest().getContestGroup().getSlug(), contestEventDao.getContest().getOrdering(), contestEventDao.getEventDate().getYear());
+        if (linkEvent == null) {
+            return null;
+        }
+        return linkEvent.getEvent();
+    }
+
+    @Override
+    public ContestEventDao fetchEventLinkDown(ContestEventDao contestEventDao) {
+        if (contestEventDao.getContest().getContestGroup() == null) {
+            return null;
+        }
+
+        EventUpDownLeftRightSqlDto linkEvent = EventSql.selectLinkedDownEvent(this.entityManager, contestEventDao.getContest().getContestGroup().getSlug(), contestEventDao.getContest().getOrdering(), contestEventDao.getEventDate().getYear());
+        if (linkEvent == null) {
+            return null;
+        }
+        return linkEvent.getEvent();
+    }
 
 }

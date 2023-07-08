@@ -40,6 +40,26 @@
             </tr>
         </table>
 
+        <br/>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <span th:replace="links/event-link.html :: eventNavigationUpLink(${SectionUp})">Yorkshire Area (Championship Section) 2013</span>
+                </div>
+                <div class="col text-end">
+                    <span th:replace="links/event-link.html :: eventNavigationDownLink(${SectionDown})">Yorkshire Area (Second Section) 2013</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <span th:replace="links/event-link.html :: eventNavigationLeftLink(${PreviousEvent})">Previous Event</span>
+                </div>
+                <div class="col text-end">
+                    <span th:replace="links/event-link.html :: eventNavigationRightLink(${NextEvent})">Next Event</span>
+                </div>
+            </div>
+        </div>
+
         <table class="table table-hover sortable">
             <thead>
                 <tr>
@@ -64,6 +84,17 @@
                 </tr>
             </tbody>
         </table>
+
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <span th:replace="links/event-link.html :: eventNavigationLeftLink(${PreviousEvent})">Previous Event</span>
+                </div>
+                <div class="col text-end">
+                    <span th:replace="links/event-link.html :: eventNavigationRightLink(${NextEvent})">Next Event</span>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 </body>

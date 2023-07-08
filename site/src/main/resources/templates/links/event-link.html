@@ -2,3 +2,31 @@
     <a th:if="${event != null}" th:href="${'/contests/' + event.contest.slug + '/' + event.eventDateForUrl}" th:text="${event.eventDateDisplay}" class="bbr-event">22nd May 2010</a>
 </span>
 
+<span th:fragment="eventNavigationUpLink(event)">
+    <span th:if="${event != null}" th:remove="tag">
+        <img th:src="@{${STATIC_HOST} + '/icons/arrow_up.png'}" th:alt="#{event.up}"/>
+        <a th:href="${'/contests/' + event.contest.slug + '/' + event.eventDateForUrl}" th:text="${event.contest.name + ' ' + event.eventDate.year}" class="bbr-event">Yorkshire Area (First Section) 2013</a>
+    </span>
+</span>
+
+<span th:fragment="eventNavigationDownLink(event)">
+    <span th:if="${event != null}" th:remove="tag">
+        <a th:href="${'/contests/' + event.contest.slug + '/' + event.eventDateForUrl}" th:text="${event.contest.name + ' ' + event.eventDate.year}" class="bbr-event">Yorkshire Area (Third Section) 2013</a>
+        <img th:src="@{${STATIC_HOST} + '/icons/arrow_down.png'}" th:alt="#{event.down}"/>
+    </span>
+</span>
+
+<span th:fragment="eventNavigationLeftLink(event)">
+    <span th:if="${event != null}" th:remove="tag">
+        <img th:src="@{${STATIC_HOST} + '/icons/arrow_left.png'}" th:alt="#{event.previous}"/>
+       <a th:href="${'/contests/' + event.contest.slug + '/' + event.eventDateForUrl}" class="bbr-event" th:text="#{event.previous}">Previous Event</a>
+    </span>
+</span>
+
+<span th:fragment="eventNavigationRightLink(event)">
+    <span th:if="${event != null}" th:remove="tag">
+        <a th:href="${'/contests/' + event.contest.slug + '/' + event.eventDateForUrl}" class="bbr-event" th:text="#{event.next}">Next Event</a>
+        <img th:src="@{${STATIC_HOST} + '/icons/arrow_right.png'}" th:alt="#{event.next}"/>
+    </span>
+</span>
+

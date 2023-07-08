@@ -8,7 +8,7 @@ import javax.persistence.EntityManager;
 import java.util.List;
 
 @UtilityClass
-public class ContestResultSql1 {
+public class ResultFilterSql {
 
     private static final String CONTEST_FILTERED_TO_POSITION_SQL = """
             SELECT e.date_of_event, e.date_resolution, c.slug, r.result_position, r.result_position_type, r.band_name, b.name as actual_band_name, b.slug as band_slug, reg.name as region_name, reg.slug as region_slug, reg.country_code, r.draw, r.points_total,

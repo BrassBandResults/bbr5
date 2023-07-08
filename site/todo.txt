@@ -18,6 +18,9 @@ Azure Function updates points on a user, by calling api on site
 
 Links up/down/next/previous
 
+if event not found, look a day either side
+if event not found, look through entire year
+
 Add results - contest
 Add results - date
 Add results - contest type

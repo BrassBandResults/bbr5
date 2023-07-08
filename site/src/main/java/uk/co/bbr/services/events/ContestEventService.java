@@ -4,6 +4,7 @@ import uk.co.bbr.services.events.dao.ContestAdjudicatorDao;
 import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.events.dao.ContestEventDao;
 import uk.co.bbr.services.events.dao.ContestEventTestPieceDao;
+import uk.co.bbr.services.events.sql.dto.EventUpDownLeftRightSqlDto;
 import uk.co.bbr.services.events.types.TestPieceAndOr;
 import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.pieces.dao.PieceDao;
@@ -41,4 +42,12 @@ public interface ContestEventService {
     List<ContestEventDao> fetchFutureEventsForContest(ContestDao contest);
 
     int fetchCountOfEvents(ContestDao contest);
+
+    ContestEventDao fetchEventLinkNext(ContestEventDao contestEvent);
+
+    ContestEventDao fetchEventLinkPrevious(ContestEventDao contestEvent);
+
+    ContestEventDao fetchEventLinkUp(ContestEventDao contestEvent);
+
+    ContestEventDao fetchEventLinkDown(ContestEventDao contestEvent);
 }
