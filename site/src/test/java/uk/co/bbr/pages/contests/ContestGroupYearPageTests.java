@@ -153,7 +153,7 @@ class ContestGroupYearPageTests implements LoginMixin {
         assertEquals("Band 6", eventsForGroupAndYear.getContestEvents().get(0).getWinningBands().get(0).getBandName());
         assertEquals("Band 6", eventsForGroupAndYear.getContestEvents().get(0).getWinningBands().get(0).getBand().getName());
         assertEquals("D. Conductor", eventsForGroupAndYear.getContestEvents().get(0).getWinningBands().get(0).getOriginalConductorName());
-        assertEquals("D", eventsForGroupAndYear.getContestEvents().get(0).getWinningBands().get(0).getConductor().getFirstNames());
+        assertEquals("D.", eventsForGroupAndYear.getContestEvents().get(0).getWinningBands().get(0).getConductor().getFirstNames());
         assertEquals("Piece 5", eventsForGroupAndYear.getContestEvents().get(0).getTestPieces().get(0).getName());
 
         assertEquals("Test Contest Section B", eventsForGroupAndYear.getContestEvents().get(1).getContestEvent().getContest().getName());
@@ -161,7 +161,7 @@ class ContestGroupYearPageTests implements LoginMixin {
         assertEquals("Band 5", eventsForGroupAndYear.getContestEvents().get(1).getWinningBands().get(0).getBandName());
         assertEquals("Band 5", eventsForGroupAndYear.getContestEvents().get(1).getWinningBands().get(0).getBand().getName());
         assertEquals("B. Conductor", eventsForGroupAndYear.getContestEvents().get(1).getWinningBands().get(0).getOriginalConductorName());
-        assertEquals("B", eventsForGroupAndYear.getContestEvents().get(1).getWinningBands().get(0).getConductor().getFirstNames());
+        assertEquals("B.", eventsForGroupAndYear.getContestEvents().get(1).getWinningBands().get(0).getConductor().getFirstNames());
         assertEquals("Piece 6", eventsForGroupAndYear.getContestEvents().get(1).getTestPieces().get(0).getName());
         assertEquals("Piece 7", eventsForGroupAndYear.getContestEvents().get(1).getTestPieces().get(1).getName());
 
@@ -193,7 +193,7 @@ class ContestGroupYearPageTests implements LoginMixin {
         assertEquals("Band 1", eventsForGroupAndYear.getContestEvents().get(0).getWinningBands().get(0).getBandName());
         assertEquals("Band 1", eventsForGroupAndYear.getContestEvents().get(0).getWinningBands().get(0).getBand().getName());
         assertEquals("D. Conductor", eventsForGroupAndYear.getContestEvents().get(0).getWinningBands().get(0).getOriginalConductorName());
-        assertEquals("D", eventsForGroupAndYear.getContestEvents().get(0).getWinningBands().get(0).getConductor().getFirstNames());
+        assertEquals("D.", eventsForGroupAndYear.getContestEvents().get(0).getWinningBands().get(0).getConductor().getFirstNames());
         assertEquals("Piece 1", eventsForGroupAndYear.getContestEvents().get(0).getTestPieces().get(0).getName());
 
         assertEquals("Test Contest Section B", eventsForGroupAndYear.getContestEvents().get(1).getContestEvent().getContest().getName());
@@ -201,7 +201,7 @@ class ContestGroupYearPageTests implements LoginMixin {
         assertEquals("Band 2", eventsForGroupAndYear.getContestEvents().get(1).getWinningBands().get(0).getBandName());
         assertEquals("Band 2", eventsForGroupAndYear.getContestEvents().get(1).getWinningBands().get(0).getBand().getName());
         assertEquals("C. Conductor", eventsForGroupAndYear.getContestEvents().get(1).getWinningBands().get(0).getOriginalConductorName());
-        assertEquals("C", eventsForGroupAndYear.getContestEvents().get(1).getWinningBands().get(0).getConductor().getFirstNames());
+        assertEquals("C.", eventsForGroupAndYear.getContestEvents().get(1).getWinningBands().get(0).getConductor().getFirstNames());
         assertEquals("Piece 2", eventsForGroupAndYear.getContestEvents().get(1).getTestPieces().get(0).getName());
 
         assertEquals("Test Contest Section C", eventsForGroupAndYear.getContestEvents().get(2).getContestEvent().getContest().getName());
@@ -209,7 +209,7 @@ class ContestGroupYearPageTests implements LoginMixin {
         assertEquals("Band 3", eventsForGroupAndYear.getContestEvents().get(2).getWinningBands().get(0).getBandName());
         assertEquals("Band 3", eventsForGroupAndYear.getContestEvents().get(2).getWinningBands().get(0).getBand().getName());
         assertEquals("B. Conductor", eventsForGroupAndYear.getContestEvents().get(2).getWinningBands().get(0).getOriginalConductorName());
-        assertEquals("B", eventsForGroupAndYear.getContestEvents().get(2).getWinningBands().get(0).getConductor().getFirstNames());
+        assertEquals("B.", eventsForGroupAndYear.getContestEvents().get(2).getWinningBands().get(0).getConductor().getFirstNames());
         assertEquals("Piece 3", eventsForGroupAndYear.getContestEvents().get(2).getTestPieces().get(0).getName());
 
         assertEquals("Test Contest Section D", eventsForGroupAndYear.getContestEvents().get(3).getContestEvent().getContest().getName());
@@ -217,12 +217,12 @@ class ContestGroupYearPageTests implements LoginMixin {
         assertEquals("Band 4", eventsForGroupAndYear.getContestEvents().get(3).getWinningBands().get(0).getBandName());
         assertEquals("Band 4", eventsForGroupAndYear.getContestEvents().get(3).getWinningBands().get(0).getBand().getName());
         assertEquals("A. Conductor", eventsForGroupAndYear.getContestEvents().get(3).getWinningBands().get(0).getOriginalConductorName());
-        assertEquals("A", eventsForGroupAndYear.getContestEvents().get(3).getWinningBands().get(0).getConductor().getFirstNames());
+        assertEquals("A.", eventsForGroupAndYear.getContestEvents().get(3).getWinningBands().get(0).getConductor().getFirstNames());
 
         assertEquals("Band 5", eventsForGroupAndYear.getContestEvents().get(3).getWinningBands().get(1).getBandName());
         assertEquals("Band 5", eventsForGroupAndYear.getContestEvents().get(3).getWinningBands().get(1).getBand().getName());
         assertEquals("D. Conductor", eventsForGroupAndYear.getContestEvents().get(3).getWinningBands().get(1).getOriginalConductorName());
-        assertEquals("D", eventsForGroupAndYear.getContestEvents().get(3).getWinningBands().get(1).getConductor().getFirstNames());
+        assertEquals("D.", eventsForGroupAndYear.getContestEvents().get(3).getWinningBands().get(1).getConductor().getFirstNames());
 
         assertEquals("Piece 4", eventsForGroupAndYear.getContestEvents().get(3).getTestPieces().get(0).getName());
     }

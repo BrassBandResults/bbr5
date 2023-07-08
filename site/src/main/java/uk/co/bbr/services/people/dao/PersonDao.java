@@ -94,7 +94,9 @@ public class PersonDao extends AbstractDao implements NameTools {
 
     public void setFirstNames(String firstNames) {
         this.firstNames = simplifyFirstName(firstNames);
-
+        if (this.firstNames.length() == 1) {
+            this.firstNames += ".";
+        }
         this.setCombinedName();
     }
 
