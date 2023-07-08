@@ -1,9 +1,20 @@
 <div th:fragment="header(ContestEvent)" xmlns:sec="http://www.thymeleaf.org">
     <h2><span th:replace="links/contest-link.html :: contestLink(${ContestEvent.contest})"></span></h2>
     <h3 th:text="${ContestEvent.eventDateDisplayWithDay}"></h3>
-    <div sec:authorize="hasRole('BBR_SUPERUSER')">
-        <span th:replace="buttons/edit.html :: editEvent(${ContestEvent})"></span>
-        <span th:replace="buttons/edit.html :: editEventSetTests(${ContestEvent})"></span>
+
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div sec:authorize="hasRole('BBR_SUPERUSER')">
+                    <span th:replace="buttons/edit.html :: editEvent(${ContestEvent})"></span>
+                    <span th:replace="buttons/edit.html :: editEventSetTests(${ContestEvent})"></span>
+                </div>
+            </div>
+            <div class="col text-end">
+                <span th:replace="buttons/button.html :: greenButton(#{page.buttons.add-contest-history}, ${'/contests/' + ContestEvent.contest.slug + '/' + ContestEvent.eventDateForUrl + '/add-contest-history'})"></span>
+            </div>
+        </div>
     </div>
+    
     <br/>
 </div>
