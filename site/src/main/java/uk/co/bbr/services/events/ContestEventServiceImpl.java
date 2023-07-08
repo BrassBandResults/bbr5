@@ -108,8 +108,8 @@ public class ContestEventServiceImpl implements ContestEventService {
             event.setEventDateResolution(ContestEventDateResolution.EXACT_DATE);
         }
 
-        if (event.getOriginalOwner() == null) {
-            event.setOriginalOwner(this.securityService.getCurrentUsername());
+        if (event.getOwner() == null) {
+            event.setOwner(this.securityService.getCurrentUsername());
         }
     }
 

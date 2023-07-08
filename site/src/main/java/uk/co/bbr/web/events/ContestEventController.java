@@ -11,6 +11,8 @@ import uk.co.bbr.services.events.dao.ContestEventDao;
 import uk.co.bbr.services.events.dao.ContestResultDao;
 import uk.co.bbr.services.events.sql.dto.EventUpDownLeftRightSqlDto;
 import uk.co.bbr.services.framework.NotFoundException;
+import uk.co.bbr.services.security.UserService;
+import uk.co.bbr.services.security.dao.SiteUserDao;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -22,6 +24,7 @@ public class ContestEventController {
 
     private final ContestEventService contestEventService;
     private final ResultService contestResultService;
+    private final UserService userService;
 
     @GetMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}")
     public String contestEventDetails(Model model, @PathVariable String contestSlug, @PathVariable String contestEventDate) {
@@ -40,7 +43,19 @@ public class ContestEventController {
         ContestEventDao upEvent = this.contestEventService.fetchEventLinkUp(contestEvent.get());
         ContestEventDao downEvent = this.contestEventService.fetchEventLinkDown(contestEvent.get());
 
+        SiteUserDao contestOwner = null;
+        Optional<SiteUserDao> contestOwnerOptional = this.userService.fetchUserByUsercode(contestEvent.get().getOwner());
+        if (contestOwnerOptional.isPresent()) {
+            contestOwner = contestOwnerOptional.get();
+        } else {
+            Optional<SiteUserDao> tjsOwnerOptional = this.userService.fetchUserByUsercode("tjs");
+            if (tjsOwnerOptional.isPresent()) {
+                contestOwner = tjsOwnerOptional.get();
+            }
+        }
+
         model.addAttribute("ContestEvent", contestEvent.get());
+        model.addAttribute("ContestOwner", contestOwner);
         model.addAttribute("EventResults", eventResults);
         model.addAttribute("OwnerUserName", contestEvent.get().getCreatedBy());
         model.addAttribute("NextEvent", nextEvent);

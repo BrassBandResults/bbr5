@@ -65,7 +65,7 @@ public class ContestEventDao extends AbstractDao implements NameTools {
     private boolean noContest;
 
     @Column(name="original_owner", nullable=false)
-    private String originalOwner;
+    private String owner;
 
     @ManyToOne(fetch=FetchType.EAGER, optional=false)
     @JoinColumn(name="contest_type_id")
@@ -98,11 +98,11 @@ public class ContestEventDao extends AbstractDao implements NameTools {
         this.notes = value;
     }
 
-    public void setOriginalOwner(String value) {
+    public void setOwner(String value) {
         if (value != null) {
             value = value.trim();
         }
-        this.originalOwner = value;
+        this.owner = value;
     }
 
     public String getEventDateForUrl() {

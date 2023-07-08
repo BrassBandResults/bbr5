@@ -9,6 +9,9 @@ import uk.co.bbr.services.security.types.ContestHistoryVisibility;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.xml.bind.DatatypeConverter;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 
 @Getter
@@ -157,5 +160,21 @@ public class SiteUserDao extends AbstractDao {
             case "site" -> this.contestHistoryVisibility = ContestHistoryVisibility.SITE_ONLY;
             default -> this.contestHistoryVisibility = ContestHistoryVisibility.fromCode(value);
         }
+    }
+
+    public String getGravatarUrl() {
+        MessageDigest md = null;
+        try {
+            md = MessageDigest.getInstance("MD5");
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+        md.update(this.email.toLowerCase().getBytes());
+        byte[] digest = md.digest();
+        String emailMd5 = DatatypeConverter.printHexBinary(digest).toLowerCase();
+
+        return "https://gravatar.com/avatar/" +
+                emailMd5 +
+                "/?s=80&default=identicon";
     }
 }

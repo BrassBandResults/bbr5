@@ -91,10 +91,19 @@
                 </div>
             </div>
         </div>
+        <br/>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <span th:replace="links/tag-link.html :: tagCloudContest(${ContestEvent.contest})"></span>
+                </div>
+                <div class="col text-end">
+                    <span th:replace="components/gravatar.html :: icon(${ContestOwner})"></span>
+                </div>
+            </div>
+        </div>
 
         <p th:utext="${ContestEvent.notesSafe}">Notes</p>
-
-        <span th:replace="links/tag-link.html :: tagCloudContest(${ContestEvent.contest})"></span>
     </div>
 </div>
 </body>

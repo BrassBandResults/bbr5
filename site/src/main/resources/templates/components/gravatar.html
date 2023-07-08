@@ -1,0 +1,5 @@
+<span th:fragment="icon(user)">
+    <a th:href="${'/users/' + user.usercode}"><img th:if="${user != null}" th:src="${user.gravatarUrl}" th:alt="${'Avatar for ' + user.usercode}" height="40" width="40"/></a>
+    <br/>
+    <a th:href="${'/users/' + user.usercode}" th:text="${user.usercode}">tjs</a>
+</span>
