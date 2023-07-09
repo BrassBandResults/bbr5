@@ -14,7 +14,9 @@ import uk.co.bbr.services.events.ContestEventService;
 import uk.co.bbr.services.events.ResultService;
 import uk.co.bbr.services.events.dao.ContestEventDao;
 import uk.co.bbr.services.events.dao.ContestResultDao;
+import uk.co.bbr.services.events.types.ContestEventDateResolution;
 import uk.co.bbr.services.framework.NotFoundException;
+import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.services.security.UserService;
 import uk.co.bbr.services.security.dao.SiteUserDao;
 import uk.co.bbr.web.events.forms.EventEditForm;
@@ -32,6 +34,7 @@ import java.util.Optional;
 public class AddResultsController {
 
     private final ContestService contestService;
+    private final SecurityService securityService;
     private final ContestEventService contestEventService;
     private final ResultService contestResultService;
     private final UserService userService;
@@ -86,4 +89,61 @@ public class AddResultsController {
 
         return "results/add-results-2-event-date";
     }
+
+    @IsBbrMember
+    @PostMapping("/add-results/1/{contestSlug:[\\-a-z\\d]{2,}}")
+    public String addResultsDateStagePost(@Valid @ModelAttribute("Form") AddResultsDateForm submittedForm, BindingResult bindingResult, @PathVariable("contestSlug") String contestSlug) {
+        Optional<ContestDao> matchingContest = this.contestService.fetchBySlug(contestSlug);
+        if (matchingContest.isEmpty()) {
+            throw NotFoundException.contestNotFoundBySlug(contestSlug);
+        }
+
+        submittedForm.validate(bindingResult);
+
+        if (bindingResult.hasErrors()) {
+            return "results/add-results-2-event-date";
+        }
+
+        ContestEventDateResolution eventDateResolution = null;
+        LocalDate eventDate = null;
+        int slashCount = (int) submittedForm.getEventDate().chars().filter(ch -> ch == '/').count();
+        switch (slashCount) {
+            case 0 -> {
+                eventDateResolution = ContestEventDateResolution.YEAR;
+                int year1 = Integer.parseInt(submittedForm.getEventDate());
+                eventDate = LocalDate.of(year1, 1, 1);
+            }
+            case 1 -> {
+                eventDateResolution = ContestEventDateResolution.MONTH_AND_YEAR;
+                String[] dateSections2 = submittedForm.getEventDate().split("/");
+                int month2 = Integer.parseInt(dateSections2[0]);
+                int year2 = Integer.parseInt(dateSections2[1]);
+                eventDate = LocalDate.of(year2, month2, 1);
+            }
+            case 2 -> {
+                eventDateResolution = ContestEventDateResolution.EXACT_DATE;
+                String[] dateSections3 = submittedForm.getEventDate().split("/");
+                int day3 = Integer.parseInt(dateSections3[0]);
+                int month3 = Integer.parseInt(dateSections3[1]);
+                int year3 = Integer.parseInt(dateSections3[2]);
+                eventDate = LocalDate.of(year3, month3, day3);
+            }
+        }
+
+        // TODO does contest already exist?
+        // If it does, and has results, go there.
+        // If it does, but doesn't have results, just carry on
+
+        ContestEventDao contestEvent = new ContestEventDao();
+        contestEvent.setContest(matchingContest.get());
+        contestEvent.setName(matchingContest.get().getName());
+        contestEvent.setEventDate(eventDate);
+        contestEvent.setEventDateResolution(eventDateResolution);
+        contestEvent.setOwner(this.securityService.getCurrentUsername());
+
+        this.contestEventService.create(matchingContest.get(), contestEvent);
+
+        return "redirect:/add-results/2/{contestSlug}/" + contestEvent.getEventDateForUrl();
+    }
+
 }

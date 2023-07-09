@@ -36,8 +36,6 @@ Edit Test Pieces
 
 Deal with unique slug clash
 
-Get simple search working
-
 Event band map/geography
 Event competitors
 
