@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title th:text="@{#{page.search-results.title} + ' - Brass Band Results'}">Search Results - Brass Band Results</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h2>
+        <span th:text="#{page.search-results.page-header}">Search Results for</span>
+        <span th:text="${SearchString}">Search String</span>
+    </h2>
+
+   <p th:text="#{page.search-results.no-results-prompt}">Your search hasn't matched anything.  This is quite a simple search, it only shows where the search term features within one of our objects.</p>
+
+<div layout:fragment="feedback">
+</div>
+
+</body>
+</html>
