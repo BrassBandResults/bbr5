@@ -42,6 +42,8 @@ public class SearchController {
         matches.addAll(this.lookupService.lookupGroups(searchString));
         matches.addAll(this.lookupService.lookupContests(searchString));
         matches.addAll(this.lookupService.lookupVenues(searchString));
+        matches.addAll(this.lookupService.lookupPieces(searchString));
+        matches.addAll(this.lookupService.lookupTags(searchString));
 
         model.addAttribute("SearchString", searchString);
         model.addAttribute("SearchResults", matches);

@@ -49,6 +49,8 @@ public class LookupController {
             case "contest" -> this.lookupContest(searchString);
             case "venue" -> this.lookupVenue(searchString);
             case "group" -> this.lookupGroup(searchString);
+            case "piece" -> this.lookupPiece(searchString);
+            case "tags" -> this.lookupTag(searchString);
             default -> throw NotFoundException.lookupTypeNotFound(type);
         };
 
@@ -109,6 +111,32 @@ public class LookupController {
 
     private ObjectNode lookupGroup(String searchString) {
         List<LookupSqlDto> matchingGroups = this.lookupService.lookupGroups(searchString);
+
+        ObjectNode rootNode = objectMapper.createObjectNode();
+        ArrayNode groups = rootNode.putArray(MATCH_TAG_NAME);
+
+        for (LookupSqlDto eachGroup : matchingGroups) {
+            groups.add(eachGroup.asLookup(this.objectMapper));
+        }
+
+        return rootNode;
+    }
+
+    private ObjectNode lookupPiece(String searchString) {
+        List<LookupSqlDto> matchingGroups = this.lookupService.lookupPieces(searchString);
+
+        ObjectNode rootNode = objectMapper.createObjectNode();
+        ArrayNode groups = rootNode.putArray(MATCH_TAG_NAME);
+
+        for (LookupSqlDto eachGroup : matchingGroups) {
+            groups.add(eachGroup.asLookup(this.objectMapper));
+        }
+
+        return rootNode;
+    }
+
+    private ObjectNode lookupTag(String searchString) {
+        List<LookupSqlDto> matchingGroups = this.lookupService.lookupTags(searchString);
 
         ObjectNode rootNode = objectMapper.createObjectNode();
         ArrayNode groups = rootNode.putArray(MATCH_TAG_NAME);

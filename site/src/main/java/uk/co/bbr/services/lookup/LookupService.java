@@ -22,5 +22,9 @@ public interface LookupService {
     List<LookupSqlDto> lookupContests(String searchString);
 
     List<LookupSqlDto> lookupBands(String searchString);
+
+    List<LookupSqlDto> lookupPieces(String searchString);
+
+    List<LookupSqlDto> lookupTags(String searchString);
 }
 

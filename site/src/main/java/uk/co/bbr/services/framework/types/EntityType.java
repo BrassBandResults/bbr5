@@ -7,7 +7,9 @@ public enum EntityType {
     CONTEST("contests", "entity-type.contest"),
     GROUP("contest-groups", "entity-type.contest-group"),
     VENUE("venues","entity-type.venue"),
-    BAND("bands", "entity-type.band")
+    BAND("bands", "entity-type.band"),
+    PIECE("pieces", "entity-type.piece"),
+    TAG("tags", "entity-type.tags"),
     ;
 
     private final String offset;

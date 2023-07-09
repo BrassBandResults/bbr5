@@ -74,4 +74,14 @@ public class LookupServiceImpl implements LookupService, SlugTools {
     public List<LookupSqlDto> lookupBands(String searchString) {
         return LookupSql.lookupBands(this.entityManager, searchString);
     }
+
+    @Override
+    public List<LookupSqlDto> lookupPieces(String searchString) {
+        return LookupSql.lookupPieces(this.entityManager, searchString);
+    }
+
+    @Override
+    public List<LookupSqlDto> lookupTags(String searchString) {
+        return LookupSql.lookupTags(this.entityManager, searchString);
+    }
 }
