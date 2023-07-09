@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title th:text="@{#{page.search-results.title} + ' - Brass Band Results'}">Search Results - Brass Band Results</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h2>
+        <span th:text="#{page.search-results.page-header}">Search Results for</span>
+        <span th:text="${SearchString}">Search String</span>
+    </h2>
+
+    <table class="table table-hover sortable">
+        <thead>
+        <tr>
+            <th th:text="#{page.column-header.name}">Name</th>
+            <th th:text="#{page.column-header.type}">Type</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="result : ${SearchResults}">
+            <td>
+                <a th:href="${result.offset + '/' + result.slug}" th:text="${result.name}">Link</a>
+            </td>
+            <td th:text="${result.offset}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+<div layout:fragment="feedback">
+</div>
+
+</body>
+</html>

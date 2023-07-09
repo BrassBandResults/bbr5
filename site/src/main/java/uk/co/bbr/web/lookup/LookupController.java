@@ -17,6 +17,8 @@ import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.groups.ContestGroupService;
 import uk.co.bbr.services.groups.dao.ContestGroupDao;
+import uk.co.bbr.services.lookup.LookupService;
+import uk.co.bbr.services.lookup.sql.dto.LookupSqlDto;
 import uk.co.bbr.services.people.PersonService;
 import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.venues.VenueService;
@@ -29,12 +31,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class LookupController {
 
-    private final BandService bandService;
-    private final PersonService personService;
-    private final ContestService contestService;
-    private final ContestGroupService contestGroupService;
-    private final VenueService venueService;
     private final ObjectMapper objectMapper;
+    private final LookupService lookupService;
 
     private static final String MATCH_TAG_NAME = "matches";
 
@@ -58,12 +56,12 @@ public class LookupController {
     }
 
     private ObjectNode lookupPerson(String searchString) {
-        List<PersonDao> matchingPeople = this.personService.lookupByPrefix(searchString);
+        List<LookupSqlDto> matchingPeople = this.lookupService.lookupPeople(searchString);
 
         ObjectNode rootNode = objectMapper.createObjectNode();
         ArrayNode people = rootNode.putArray(MATCH_TAG_NAME);
 
-        for (PersonDao eachPerson : matchingPeople) {
+        for (LookupSqlDto eachPerson : matchingPeople) {
             people.add(eachPerson.asLookup(this.objectMapper));
         }
 
@@ -71,12 +69,12 @@ public class LookupController {
     }
 
     private ObjectNode lookupBand(String searchString) {
-        List<BandDao> matchingBands = this.bandService.lookupByPrefix(searchString);
+        List<LookupSqlDto> matchingBands = this.lookupService.lookupBands(searchString);
 
         ObjectNode rootNode = objectMapper.createObjectNode();
         ArrayNode people = rootNode.putArray(MATCH_TAG_NAME);
 
-        for (BandDao eachBand : matchingBands) {
+        for (LookupSqlDto eachBand : matchingBands) {
             people.add(eachBand.asLookup(this.objectMapper));
         }
 
@@ -84,12 +82,12 @@ public class LookupController {
     }
 
     private ObjectNode lookupContest(String searchString) {
-        List<ContestDao> matchingContests = this.contestService.lookupByPrefix(searchString);
+        List<LookupSqlDto> matchingContests = this.lookupService.lookupContests(searchString);
 
         ObjectNode rootNode = objectMapper.createObjectNode();
         ArrayNode people = rootNode.putArray(MATCH_TAG_NAME);
 
-        for (ContestDao eachContest : matchingContests) {
+        for (LookupSqlDto eachContest : matchingContests) {
             people.add(eachContest.asLookup(this.objectMapper));
         }
 
@@ -97,12 +95,12 @@ public class LookupController {
     }
 
     private ObjectNode lookupVenue(String searchString) {
-        List<VenueDao> matchingVenues = this.venueService.lookupByPrefix(searchString);
+        List<LookupSqlDto> matchingVenues = this.lookupService.lookupVenues(searchString);
 
         ObjectNode rootNode = objectMapper.createObjectNode();
         ArrayNode people = rootNode.putArray(MATCH_TAG_NAME);
 
-        for (VenueDao eachVenue : matchingVenues) {
+        for (LookupSqlDto eachVenue : matchingVenues) {
             people.add(eachVenue.asLookup(this.objectMapper));
         }
 
@@ -110,12 +108,12 @@ public class LookupController {
     }
 
     private ObjectNode lookupGroup(String searchString) {
-        List<ContestGroupDao> matchingGroups = this.contestGroupService.lookupByPrefix(searchString);
+        List<LookupSqlDto> matchingGroups = this.lookupService.lookupGroups(searchString);
 
         ObjectNode rootNode = objectMapper.createObjectNode();
         ArrayNode groups = rootNode.putArray(MATCH_TAG_NAME);
 
-        for (ContestGroupDao eachGroup : matchingGroups) {
+        for (LookupSqlDto eachGroup : matchingGroups) {
             groups.add(eachGroup.asLookup(this.objectMapper));
         }
 

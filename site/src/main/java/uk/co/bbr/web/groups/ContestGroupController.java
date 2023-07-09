@@ -47,6 +47,11 @@ public class ContestGroupController {
         return "groups/groups";
     }
 
+    @GetMapping("/contest-groups/{slug:[\\-A-Z\\d]{2,}}")
+    public String contestGroupRedirect(@PathVariable("slug") String groupSlug) {
+        return "redirect:/contests/{groupSlug}";
+    }
+
     @GetMapping("/contests/{slug:[\\-A-Z\\d]{2,}}")
     public String contestGroupDetails(Model model, @PathVariable("slug") String groupSlug) {
         Optional<ContestGroupDao> contestGroup = this.contestGroupService.fetchBySlug(groupSlug);
