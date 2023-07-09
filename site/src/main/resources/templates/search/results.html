@@ -22,7 +22,11 @@
             <td>
                 <a th:href="${result.offset + '/' + result.slug}" th:text="${result.name}">Link</a>
             </td>
-            <td th:text="#{${result.type.translationKey}}">Contest</td>
+            <td th:if="${!result.alias}" th:text="#{${result.type.translationKey}}">Contest</td>
+            <td th:if="${result.alias}">
+                <span th:text="#{page.search-results.alias-for}">Alias for</span>
+                <span th:text="${result.context}">name</span>
+            </td>
         </tr>
         </tbody>
     </table>

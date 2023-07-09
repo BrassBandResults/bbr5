@@ -84,4 +84,29 @@ public class LookupServiceImpl implements LookupService, SlugTools {
     public List<LookupSqlDto> lookupTags(String searchString) {
         return LookupSql.lookupTags(this.entityManager, searchString);
     }
+
+    @Override
+    public List<LookupSqlDto> lookupBandAlias(String searchString) {
+        return LookupSql.lookupBandAlias(this.entityManager, searchString);
+    }
+
+    @Override
+    public List<LookupSqlDto> lookupContestAlias(String searchString) {
+        return LookupSql.lookupContestAlias(this.entityManager, searchString);
+    }
+
+    @Override
+    public List<LookupSqlDto> lookupPeopleAlias(String searchString) {
+        return LookupSql.lookupPeopleAlias(this.entityManager, searchString);
+    }
+
+    @Override
+    public List<LookupSqlDto> lookupPieceAlias(String searchString) {
+        return LookupSql.lookupPieceAlias(this.entityManager, searchString);
+    }
+
+    @Override
+    public List<LookupSqlDto> lookupVenueAlias(String searchString) {
+        return LookupSql.lookupVenueAlias(this.entityManager, searchString);
+    }
 }

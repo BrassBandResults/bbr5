@@ -13,12 +13,18 @@ public class LookupSqlDto extends AbstractSqlDto {
     private final String slug;
     private final String context;
     private final String offset;
+    private final String aliasOrObject;
 
     public LookupSqlDto(Object[] columnList) {
         this.name = (String)columnList[0];
         this.slug = (String)columnList[1];
         this.context = (String)columnList[2];
         this.offset = (String)columnList[3];
+        this.aliasOrObject = (String)columnList[4];
+    }
+
+    public boolean isAlias() {
+        return this.aliasOrObject.equals("A");
     }
 
     public ObjectNode asLookup(ObjectMapper objectMapper) {
