@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.Getter;
 import uk.co.bbr.services.framework.sql.AbstractSqlDto;
+import uk.co.bbr.services.framework.types.EntityType;
 
 @Getter
 public class LookupSqlDto extends AbstractSqlDto {
@@ -26,5 +27,9 @@ public class LookupSqlDto extends AbstractSqlDto {
         person.put("name", this.name.replace("'", "`"));
         person.put("context", this.context);
         return person;
+    }
+
+    public EntityType getType() {
+        return EntityType.fromOffset(this.offset);
     }
 }

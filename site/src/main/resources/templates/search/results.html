@@ -22,7 +22,7 @@
             <td>
                 <a th:href="${result.offset + '/' + result.slug}" th:text="${result.name}">Link</a>
             </td>
-            <td th:text="${result.offset}"></td>
+            <td th:text="#{${result.type.translationKey}}">Contest</td>
         </tr>
         </tbody>
     </table>
