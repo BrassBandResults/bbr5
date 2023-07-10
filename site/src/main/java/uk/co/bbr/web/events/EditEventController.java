@@ -65,7 +65,7 @@ public class EditEventController {
 
     @IsBbrMember
     @PostMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}/edit")
-    public String editContestEventSave(@Valid @ModelAttribute("Form") EventEditForm submittedEvent, BindingResult bindingResult, @PathVariable String contestSlug, @PathVariable String contestEventDate) {
+    public String editContestEventSave(Model model, @Valid @ModelAttribute("Form") EventEditForm submittedEvent, BindingResult bindingResult, @PathVariable String contestSlug, @PathVariable String contestEventDate) {
         String[] dateSplit = contestEventDate.split("-");
         LocalDate eventDate = LocalDate.of(Integer.parseInt(dateSplit[0]), Integer.parseInt(dateSplit[1]), Integer.parseInt(dateSplit[2]));
         Optional<ContestEventDao> contestEvent = this.contestEventService.fetchEvent(contestSlug, eventDate);
@@ -76,7 +76,11 @@ public class EditEventController {
 
         submittedEvent.validate(bindingResult);
 
+        List<ContestTypeDao> contestTypes = this.contestTypeService.fetchAll();
+
         if (bindingResult.hasErrors()) {
+            model.addAttribute("ContestEvent", contestEvent.get());
+            model.addAttribute("ContestTypes", contestTypes);
             return "events/edit";
         }
 
@@ -106,6 +110,6 @@ public class EditEventController {
 
         this.contestEventService.update(existingEvent);
 
-        return "redirect:/contests/{contestSlug}/{contestEventDate}";
+        return "redirect:/contests/{contestSlug}/" + existingEvent.getEventDateForUrl();
     }
 }
