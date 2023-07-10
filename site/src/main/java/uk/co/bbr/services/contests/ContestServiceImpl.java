@@ -7,6 +7,7 @@ import uk.co.bbr.services.contests.dao.ContestAliasDao;
 import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.groups.dao.ContestGroupAliasDao;
 import uk.co.bbr.services.groups.dao.ContestGroupDao;
+import uk.co.bbr.services.regions.RegionService;
 import uk.co.bbr.services.tags.dao.ContestTagDao;
 import uk.co.bbr.services.contests.dto.ContestListContestDto;
 import uk.co.bbr.services.contests.dto.ContestListDto;
@@ -32,11 +33,12 @@ import java.util.stream.Collectors;
 public class ContestServiceImpl implements ContestService, SlugTools {
 
     private final SecurityService securityService;
+    private final RegionService regionService;
+
     private final ContestTypeService contestTypeService;
     private final ContestAliasRepository contestAliasRepository;
     private final ContestGroupRepository contestGroupRepository;
     private final ContestGroupAliasRepository contestGroupAliasRepository;
-
     private final ContestRepository contestRepository;
 
 
@@ -128,6 +130,10 @@ public class ContestServiceImpl implements ContestService, SlugTools {
 
         if (contest.getDefaultContestType() == null) {
             contest.setDefaultContestType(this.contestTypeService.fetchDefaultContestType());
+        }
+
+        if (contest.getRegion() == null) {
+            contest.setRegion(this.regionService.fetchUnknownRegion());
         }
 
         // does the slug already exist?
