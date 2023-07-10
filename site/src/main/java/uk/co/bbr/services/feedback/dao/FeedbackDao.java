@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 import uk.co.bbr.services.feedback.types.FeedbackStatus;
 import uk.co.bbr.services.framework.AbstractDao;
 import uk.co.bbr.services.security.dao.SiteUserDao;
-import uk.co.bbr.web.HtmlTools;
+import uk.co.bbr.web.Tools;
 import uk.co.bbr.web.security.annotations.IsBbrSuperuser;
 
 import javax.persistence.Column;
@@ -117,15 +117,15 @@ public class FeedbackDao extends AbstractDao {
     }
 
     public String getCommentHtmlSafe() {
-        return HtmlTools.format(this.comment);
+        return Tools.format(this.comment);
     }
 
     public String getCommentsAdditionalHtmlSafe() {
-        return HtmlTools.format(this.commentsAdditional);
+        return Tools.format(this.commentsAdditional);
     }
 
     public String getAuditLogHtmlSafe() {
-        return HtmlTools.format(this.auditLog);
+        return Tools.format(this.auditLog);
     }
 
     @IsBbrSuperuser

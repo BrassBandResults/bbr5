@@ -12,7 +12,6 @@ import uk.co.bbr.services.groups.dao.ContestGroupDao;
 import uk.co.bbr.services.regions.dao.RegionDao;
 import uk.co.bbr.services.sections.dao.SectionDao;
 import uk.co.bbr.services.tags.dao.ContestTagDao;
-import uk.co.bbr.web.HtmlTools;
 
 import javax.persistence.*;
 import java.util.HashSet;

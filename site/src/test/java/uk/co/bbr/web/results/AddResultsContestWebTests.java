@@ -104,7 +104,7 @@ class AddResultsContestWebTests implements LoginMixin {
         // assert
         assertEquals(HttpStatus.FOUND, response.getStatusCode());
 
-        assertTrue(Objects.requireNonNull(response.getHeaders().get("Location")).get(0).endsWith("/add-results/1/yorkshire-area-1"));
+        assertTrue(Objects.requireNonNull(response.getHeaders().get("Location")).get(0).endsWith("/add-results/2/yorkshire-area-1"));
 
         Optional<ContestDao> fetchedContest =  this.contestService.fetchBySlug("yorkshire-area-1");
         assertTrue(fetchedContest.isPresent());
@@ -137,7 +137,7 @@ class AddResultsContestWebTests implements LoginMixin {
         // assert
         assertEquals(HttpStatus.FOUND, response.getStatusCode());
 
-        assertTrue(Objects.requireNonNull(response.getHeaders().get("Location")).get(0).endsWith("/add-results/1/yorkshire-area-2"));
+        assertTrue(Objects.requireNonNull(response.getHeaders().get("Location")).get(0).endsWith("/add-results/2/yorkshire-area-2"));
     }
 
     @Test
@@ -166,6 +166,6 @@ class AddResultsContestWebTests implements LoginMixin {
         // assert
         assertEquals(HttpStatus.FOUND, response.getStatusCode());
 
-        assertTrue(Objects.requireNonNull(response.getHeaders().get("Location")).get(0).endsWith("/add-results/1/yorkshire-area-3"));
+        assertTrue(Objects.requireNonNull(response.getHeaders().get("Location")).get(0).endsWith("/add-results/2/yorkshire-area-3"));
     }
 }

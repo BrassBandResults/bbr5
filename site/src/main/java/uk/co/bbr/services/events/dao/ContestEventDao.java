@@ -9,7 +9,7 @@ import uk.co.bbr.services.events.types.ContestEventDateResolution;
 import uk.co.bbr.services.framework.AbstractDao;
 import uk.co.bbr.services.framework.mixins.NameTools;
 import uk.co.bbr.services.venues.dao.VenueDao;
-import uk.co.bbr.web.HtmlTools;
+import uk.co.bbr.web.Tools;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -136,6 +136,6 @@ public class ContestEventDao extends AbstractDao implements NameTools {
     }
 
     public String getNotesSafe() {
-        return HtmlTools.format(this.notes);
+        return Tools.format(this.notes);
     }
 }

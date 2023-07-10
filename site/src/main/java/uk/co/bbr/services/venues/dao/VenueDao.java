@@ -8,7 +8,6 @@ import lombok.Setter;
 import uk.co.bbr.services.framework.AbstractDao;
 import uk.co.bbr.services.framework.mixins.NameTools;
 import uk.co.bbr.services.regions.dao.RegionDao;
-import uk.co.bbr.web.HtmlTools;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

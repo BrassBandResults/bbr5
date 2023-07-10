@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import uk.co.bbr.services.contests.ContestService;
+import uk.co.bbr.services.contests.ContestTypeService;
 import uk.co.bbr.services.contests.dao.ContestDao;
+import uk.co.bbr.services.contests.dao.ContestTypeDao;
 import uk.co.bbr.services.events.ContestEventService;
 import uk.co.bbr.services.events.ResultService;
 import uk.co.bbr.services.events.dao.ContestEventDao;
@@ -19,8 +21,10 @@ import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.services.security.UserService;
 import uk.co.bbr.services.security.dao.SiteUserDao;
+import uk.co.bbr.web.Tools;
 import uk.co.bbr.web.events.forms.EventEditForm;
 import uk.co.bbr.web.results.forms.AddResultsContestForm;
+import uk.co.bbr.web.results.forms.AddResultsContestTypeForm;
 import uk.co.bbr.web.results.forms.AddResultsDateForm;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
@@ -35,6 +39,7 @@ public class AddResultsController {
 
     private final ContestService contestService;
     private final SecurityService securityService;
+    private final ContestTypeService contestTypeService;
     private final ContestEventService contestEventService;
     private final ResultService contestResultService;
     private final UserService userService;
@@ -61,21 +66,21 @@ public class AddResultsController {
         if (submittedForm.getContestSlug() != null && submittedForm.getContestSlug().trim().length() > 0) {
             Optional<ContestDao> matchingContest = this.contestService.fetchBySlug(submittedForm.getContestSlug());
             if (matchingContest.isPresent()){
-                return "redirect:/add-results/1/" + matchingContest.get().getSlug();
+                return "redirect:/add-results/2/" + matchingContest.get().getSlug();
             }
         }
 
         Optional<ContestDao> matchingContest = this.contestService.fetchByNameUpper(submittedForm.getContestName());
         if (matchingContest.isPresent()) {
-            return "redirect:/add-results/1/" + matchingContest.get().getSlug();
+            return "redirect:/add-results/2/" + matchingContest.get().getSlug();
         }
 
         ContestDao savedContest = this.contestService.create(submittedForm.getContestName());
-        return "redirect:/add-results/1/" + savedContest.getSlug();
+        return "redirect:/add-results/2/" + savedContest.getSlug();
     }
 
     @IsBbrMember
-    @GetMapping("/add-results/1/{contestSlug:[\\-a-z\\d]{2,}}")
+    @GetMapping("/add-results/2/{contestSlug:[\\-a-z\\d]{2,}}")
     public String addResultsDateStageGet(Model model, @PathVariable("contestSlug") String contestSlug) {
         Optional<ContestDao> matchingContest = this.contestService.fetchBySlug(contestSlug);
         if (matchingContest.isEmpty()) {
@@ -91,7 +96,7 @@ public class AddResultsController {
     }
 
     @IsBbrMember
-    @PostMapping("/add-results/1/{contestSlug:[\\-a-z\\d]{2,}}")
+    @PostMapping("/add-results/2/{contestSlug:[\\-a-z\\d]{2,}}")
     public String addResultsDateStagePost(@Valid @ModelAttribute("Form") AddResultsDateForm submittedForm, BindingResult bindingResult, @PathVariable("contestSlug") String contestSlug) {
         Optional<ContestDao> matchingContest = this.contestService.fetchBySlug(contestSlug);
         if (matchingContest.isEmpty()) {
@@ -130,20 +135,49 @@ public class AddResultsController {
             }
         }
 
-        // TODO does contest already exist?
-        // If it does, and has results, go there.
-        // If it does, but doesn't have results, just carry on
+        // does event already exist?
+        ContestEventDao contestEvent;
+        Optional<ContestEventDao> existingEvent = this.contestEventService.fetchEvent(matchingContest.get(), eventDate);
+        if (existingEvent.isPresent()) {
+            // does it have results?
+            List<ContestResultDao> existingResults = this.contestResultService.fetchForEvent(existingEvent.get());
+            if (!existingResults.isEmpty()) {
+                return "redirect:/contests/" + existingEvent.get().getContest().getSlug() + "/" +  existingEvent.get().getEventDateForUrl();
+            }
+            contestEvent = existingEvent.get();
+        } else {
+            contestEvent = new ContestEventDao();
+            contestEvent.setContest(matchingContest.get());
+            contestEvent.setName(matchingContest.get().getName());
+            contestEvent.setEventDate(eventDate);
+            contestEvent.setEventDateResolution(eventDateResolution);
+            contestEvent.setContestType(matchingContest.get().getDefaultContestType());
+            contestEvent.setOwner(this.securityService.getCurrentUsername());
 
-        ContestEventDao contestEvent = new ContestEventDao();
-        contestEvent.setContest(matchingContest.get());
-        contestEvent.setName(matchingContest.get().getName());
-        contestEvent.setEventDate(eventDate);
-        contestEvent.setEventDateResolution(eventDateResolution);
-        contestEvent.setOwner(this.securityService.getCurrentUsername());
+            this.contestEventService.create(matchingContest.get(), contestEvent);
+        }
 
-        this.contestEventService.create(matchingContest.get(), contestEvent);
+        return "redirect:/add-results/3/{contestSlug}/" + contestEvent.getEventDateForUrl();
+    }
 
-        return "redirect:/add-results/2/{contestSlug}/" + contestEvent.getEventDateForUrl();
+    @IsBbrMember
+    @GetMapping("/add-results/3/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}")
+    public String addResultsDateStageGet(Model model, @PathVariable("contestSlug") String contestSlug, @PathVariable String contestEventDate) {
+        LocalDate eventDate = Tools.parseEventDate(contestEventDate);
+        Optional<ContestEventDao> event = this.contestEventService.fetchEvent(contestSlug, eventDate);
+        if (event.isEmpty()) {
+            throw NotFoundException.eventNotFound(contestSlug, contestEventDate);
+        }
+        AddResultsContestTypeForm form = new AddResultsContestTypeForm();
+        form.setContestType(event.get().getContestType().getId());
+
+        List<ContestTypeDao> contestTypes = this.contestTypeService.fetchAll();
+
+        model.addAttribute("ContestEvent", event.get());
+        model.addAttribute("ContestTypes", contestTypes);
+        model.addAttribute("Form", form);
+
+        return "results/add-results-3-event-type";
     }
 
 }

@@ -180,6 +180,11 @@ public class ContestEventServiceImpl implements ContestEventService {
     }
 
     @Override
+    public Optional<ContestEventDao> fetchEvent(ContestDao contest, LocalDate contestEventDate) {
+        return this.fetchEvent(contest.getSlug(), contestEventDate);
+    }
+
+    @Override
     public List<ContestEventDao> fetchPastEventsForContest(ContestDao contest) {
         List<ContestEventDao> returnEvents = new ArrayList<>();
 

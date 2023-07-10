@@ -11,7 +11,6 @@ import uk.co.bbr.services.tags.dao.ContestTagDao;
 import uk.co.bbr.services.groups.types.ContestGroupType;
 import uk.co.bbr.services.framework.AbstractDao;
 import uk.co.bbr.services.framework.mixins.NameTools;
-import uk.co.bbr.web.HtmlTools;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
