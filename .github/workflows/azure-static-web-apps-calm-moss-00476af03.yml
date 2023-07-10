@@ -8,6 +8,8 @@ on:
       - 'static/**'
   pull_request:
     types: [opened, synchronize, reopened, closed]
+    paths:
+      - 'static/**'
     branches:
       - main
 

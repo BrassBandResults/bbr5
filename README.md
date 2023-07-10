@@ -21,11 +21,16 @@ The following environment variables are used by the site.
 * BBR_STRIPE_PRIVATE_API_KEY - Stripe private key, starts with sk_
 
 ## Running Locally
-Close the git repository to your local machine.  From here the unit test suite can be run.
+Clone the git repository to your local machine.  From here the unit test suite can be run.
 In order to run the application locally, you'll need a running sql server database.  The easiest way to do this is to deploy the `mcr.microsoft.com/azure-sql-edge:latest` image using docker.
 Specify the `MSSQL_SA_PASSWORD` environment variable to be a password, and then put this password in `site/src/main/resources/application.properties`
 You'll also need to change `timpi` in this file to point at the hostname that you are running your database server on.
 Startup the server by running the `site/run.sh` script, designed for a mac.  If you'r using Windows, you'll need to write your own. :-)
+It is now possible to run the app locally with docker compose:-
+```bash
+cd site
+docker-compose up
+```
 
 ### Exporting Data
 Run the following extract commands on the old bbr4 server, from the ~/bbr4/web/site directory

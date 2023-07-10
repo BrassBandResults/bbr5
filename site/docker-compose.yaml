@@ -1,0 +1,26 @@
+services:
+  bbr5:
+    build: .
+    ports:
+      - 8080:8080
+    environment:
+      - BBR_SMTP_SERVER_PASSWORD=password
+      - BBR_SMTP_SERVER_USERNAME=username
+      - BBR_SMTP_SERVER_HOST=smtp.sendgrid.net
+      - BBR_DATABASE_URL=jdbc:sqlserver://db;database=master;trustServerCertificate=true
+      - BBR_DATABASE_USERNAME=sa
+      - BBR_DATABASE_PASSWORD=admin9552Password
+    networks:
+      - site-network
+  db:
+    image: mcr.microsoft.com/azure-sql-edge:latest
+    restart: always
+    environment:
+      - MSSQL_SA_PASSWORD=admin9552Password
+      - ACCEPT_EULA=1
+    networks:
+      - site-network
+    expose:
+      - 1433
+networks:
+  site-network:
