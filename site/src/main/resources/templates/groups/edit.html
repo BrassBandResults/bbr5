@@ -8,7 +8,7 @@
     <h2><span th:text="#{page.edit-header-prefix}" th:remove="tag">Edit</span> <span th:text="${Group.name}" th:remove="tag">Group Name</span></h2>
 
     <form th:object="${Form}"
-          th:action = "${'/contests/' + Group.slug + '/edit'}"
+          th:action="${'/contests/' + Group.slug + '/edit'}"
           method="post">
         <div class="alert alert-danger" th:if="${#fields.hasErrors('*')}">
             <ul>

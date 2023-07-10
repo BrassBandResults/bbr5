@@ -65,6 +65,7 @@ public class EditGroupController {
         submittedGroup.validate(bindingResult);
 
         if (bindingResult.hasErrors()) {
+            model.addAttribute("Group", group.get());
             return "groups/edit";
         }
 

@@ -113,6 +113,12 @@ class PieceWebTests implements LoginMixin {
     }
 
     @Test
+    void testSinglePieceDetailsPageFailsWithInvalidSlug() {
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/pieces/not-a-real-piece", String.class));
+        assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
+    }
+
+    @Test
     void testSinglePieceOwnChoicePageWorksWithResultPieceSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/pieces/contest-music/own-choice", String.class);
         assertNotNull(response);
@@ -124,8 +130,25 @@ class PieceWebTests implements LoginMixin {
     }
 
     @Test
-    void testGetPersonDetailsPageFailsWithInvalidSlug() {
-        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/pieces/not-a-real-piece", String.class));
+    void testSinglePieceOwnChoiceDetailsPageFailsWithInvalidSlug() {
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/pieces/not-a-real-piece/own-choice", String.class));
+        assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
+    }
+
+    @Test
+    void testSinglePiecePerformancesPageWorksWithResultPieceSuccessfully() {
+        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/pieces/contest-music/performances", String.class);
+        assertNotNull(response);
+
+        assertTrue(response.contains("<title>Contest Music - Piece - Brass Band Results</title>"));
+        assertTrue(response.contains("Contest Music"));
+
+        assertFalse(response.contains(">Midlands Area<"));
+    }
+
+    @Test
+    void testSinglePiecePerformancesDetailsPageFailsWithInvalidSlug() {
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/pieces/not-a-real-piece/performances", String.class));
         assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
     }
 }

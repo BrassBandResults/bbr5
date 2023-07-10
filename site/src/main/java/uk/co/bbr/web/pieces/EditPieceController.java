@@ -51,7 +51,7 @@ public class EditPieceController {
 
     @IsBbrMember
     @PostMapping("/pieces/{pieceSlug:[\\-a-z\\d]{2,}}/edit")
-    public String editContestGroupSave(@Valid @ModelAttribute("Form") PieceEditForm submittedPiece, BindingResult bindingResult, @PathVariable("pieceSlug") String pieceSlug) {
+    public String editContestGroupSave(Model model, @Valid @ModelAttribute("Form") PieceEditForm submittedPiece, BindingResult bindingResult, @PathVariable("pieceSlug") String pieceSlug) {
         Optional<PieceDao> piece = this.pieceService.fetchBySlug(pieceSlug);
         if (piece.isEmpty()) {
             throw NotFoundException.pieceNotFoundBySlug(pieceSlug);
@@ -60,6 +60,7 @@ public class EditPieceController {
         submittedPiece.validate(bindingResult);
 
         if (bindingResult.hasErrors()) {
+            model.addAttribute("Piece", piece.get());
             return "pieces/edit";
         }
 
