@@ -21,11 +21,13 @@ import uk.co.bbr.services.events.types.ContestEventDateResolution;
 import uk.co.bbr.services.groups.ContestGroupService;
 import uk.co.bbr.services.people.PersonService;
 import uk.co.bbr.services.people.dao.PersonDao;
+import uk.co.bbr.services.pieces.PieceService;
 import uk.co.bbr.services.regions.RegionService;
 import uk.co.bbr.services.regions.dao.RegionDao;
 import uk.co.bbr.services.security.JwtService;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.services.security.ex.AuthenticationFailedException;
+import uk.co.bbr.services.tags.ContestTagService;
 import uk.co.bbr.services.venues.VenueService;
 import uk.co.bbr.web.LoginMixin;
 import uk.co.bbr.web.security.support.TestUser;
@@ -55,6 +57,8 @@ class LookupWebTests implements LoginMixin {
     @Autowired private ResultService contestResultService;
     @Autowired private PersonService personService;
     @Autowired private VenueService venueService;
+    @Autowired private PieceService pieceService;
+    @Autowired private ContestTagService contestTagService;
     @Autowired private ContestGroupService contestGroupService;
     @Autowired private RestTemplate restTemplate;
     @Autowired private CsrfTokenRepository csrfTokenRepository;
@@ -121,6 +125,15 @@ class LookupWebTests implements LoginMixin {
         this.venueService.create("Venue Two");
         this.venueService.create("Another Venue");
         this.venueService.create("St. George's Hall");
+
+        this.pieceService.create("A Dragon Tale");
+        this.pieceService.create("Year of the Dragon");
+        this.pieceService.create("Dragon in the Hole");
+        this.pieceService.create("Contest Music");
+
+        this.contestTagService.create("This is a tag");
+        this.contestTagService.create("This is another tag");
+        this.contestTagService.create("Yorkshire Contests");
 
         logoutTestUser();
     }
@@ -230,6 +243,53 @@ class LookupWebTests implements LoginMixin {
         HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/lookup/group/data.json?s=ro", String.class));
         assertTrue(Objects.requireNonNull(ex.getMessage()).contains("404"));
     }
+
+
+    @Test
+    void testLookupPieceWorksSuccessfully() {
+        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/lookup/piece/data.json?s=drago", String.class);
+        assertNotNull(response);
+
+        assertTrue(response.contains("Dragon Tale"));
+        assertTrue(response.contains("Year of the Dragon"));
+        assertFalse(response.contains("Contest Music"));
+    }
+
+    @Test
+    void testLookupPieceFailsWithNoParameter() {
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/lookup/piece/data.json", String.class));
+        assertTrue(Objects.requireNonNull(ex.getMessage()).contains("400"));
+    }
+
+    @Test
+    void testLookupPieceFailsWithTwoCharParameter() {
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/lookup/piece/data.json?s=ro", String.class));
+        assertTrue(Objects.requireNonNull(ex.getMessage()).contains("404"));
+    }
+
+    @Test
+    void testLookupTagWorksSuccessfully() {
+        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/lookup/tag/data.json?s=this", String.class);
+        assertNotNull(response);
+
+        assertTrue(response.contains("This is a tag"));
+        assertTrue(response.contains("This is another tag"));
+        assertFalse(response.contains("Yorkshire Contests"));
+    }
+
+    @Test
+    void testLookupTagFailsWithNoParameter() {
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/lookup/tag/data.json", String.class));
+        assertTrue(Objects.requireNonNull(ex.getMessage()).contains("400"));
+    }
+
+    @Test
+    void testLookupTagFailsWithTwoCharParameter() {
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/lookup/tag/data.json?s=ro", String.class));
+        assertTrue(Objects.requireNonNull(ex.getMessage()).contains("404"));
+    }
+
+
 
     @Test
     void testLookupIncorrectTypeFailsAsExpected() {

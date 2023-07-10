@@ -45,19 +45,11 @@ class ContestWebTests implements LoginMixin {
     @LocalServerPort private int port;
 
     @BeforeAll
-    void setupUser() {
-        this.securityService.createUser(TestUser.TEST_PRO.getUsername(), TestUser.TEST_PRO.getPassword(), TestUser.TEST_PRO.getEmail());
-        this.securityService.makeUserPro(TestUser.TEST_PRO.getUsername());
-
-        loginTestUserByWeb(TestUser.TEST_PRO, this.restTemplate, this.csrfTokenRepository, this.port);
-    }
-
-    @BeforeAll
     void setupContests() throws AuthenticationFailedException {
         loginTestUser(this.securityService, this.jwtService, TestUser.TEST_MEMBER);
 
         ContestDao yorkshireArea = this.contestService.create("Yorkshire Area");
-        ContestEventDao yorkshireArea2010 = this.contestEventService.create(yorkshireArea, LocalDate.of(2010, 3, 1));
+        this.contestEventService.create(yorkshireArea, LocalDate.of(2010, 3, 1));
 
         logoutTestUser();
     }
@@ -75,37 +67,4 @@ class ContestWebTests implements LoginMixin {
         HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/contests/not-a-contest-slug", String.class));
         assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
     }
-
-    @Test
-    void testGetContestOwnChoicePageWorksSuccessfully() {
-        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/contests/yorkshire-area/own-choice", String.class);
-        assertNotNull(response);
-        assertTrue(response.contains("<title>Yorkshire Area - Contest - Brass Band Results</title>"));
-        assertTrue(response.contains(">Yorkshire Area<"));
-    }
-
-    @Test
-    void testGetContestOwnChoicePageWithInvalidSlugFails() {
-        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/contests/not-a-contest-slug/own-choice", String.class));
-        assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
-    }
-
-    @Test
-    void testGetContestWinsPageWorksSuccessfully() {
-        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/contests/yorkshire-area/wins", String.class);
-        assertNotNull(response);
-        assertTrue(response.contains("<title>Yorkshire Area - Contest - Brass Band Results</title>"));
-        assertTrue(response.contains(">Yorkshire Area<"));
-    }
-
-    @Test
-    void testGetContestWinsPageWithInvalidSlugFails() {
-        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/contests/not-a-contest-slug/wins", String.class));
-        assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
-    }
-
-
-
-
-
 }

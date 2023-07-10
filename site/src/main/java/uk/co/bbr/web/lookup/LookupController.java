@@ -50,7 +50,7 @@ public class LookupController {
             case "venue" -> this.lookupVenue(searchString);
             case "group" -> this.lookupGroup(searchString);
             case "piece" -> this.lookupPiece(searchString);
-            case "tags" -> this.lookupTag(searchString);
+            case "tag" -> this.lookupTag(searchString);
             default -> throw NotFoundException.lookupTypeNotFound(type);
         };
 

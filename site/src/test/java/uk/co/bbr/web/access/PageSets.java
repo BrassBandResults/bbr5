@@ -181,6 +181,7 @@ public abstract class PageSets {
         pageList.add("/regions/yorkshire/contests");
         pageList.add("/regions/yorkshire/links");
         pageList.add("/regions/yorkshire/championship/bands.json");
+        pageList.add("/search?q=rothwell");
         pageList.add("/statistics");
         pageList.add("/tags");
         pageList.add("/tags/Y");

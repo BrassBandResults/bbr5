@@ -22,7 +22,6 @@ public class SearchController {
 
     private static final String MATCH_TAG_NAME = "matches";
 
-    @IsBbrMember
     @GetMapping("/search")
     public String search(Model model, @RequestParam("q") String searchString) {
         List<LookupSqlDto> matches = new ArrayList<>();

@@ -34,4 +34,6 @@ public interface ResultService {
     List<ContestResultDao> fetchResultsForContestAndPosition(ContestDao contestDao, String position);
 
     List<ContestResultDao> fetchResultsForContestAndDraw(ContestDao contestDao, int draw);
+
+    void update(ContestResultDao result);
 }
