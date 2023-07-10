@@ -162,12 +162,13 @@ public class AddResultsController {
 
     @IsBbrMember
     @GetMapping("/add-results/3/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}")
-    public String addResultsDateStageGet(Model model, @PathVariable("contestSlug") String contestSlug, @PathVariable String contestEventDate) {
+    public String addResultsContestTypeStageGet(Model model, @PathVariable("contestSlug") String contestSlug, @PathVariable String contestEventDate) {
         LocalDate eventDate = Tools.parseEventDate(contestEventDate);
         Optional<ContestEventDao> event = this.contestEventService.fetchEvent(contestSlug, eventDate);
         if (event.isEmpty()) {
             throw NotFoundException.eventNotFound(contestSlug, contestEventDate);
         }
+
         AddResultsContestTypeForm form = new AddResultsContestTypeForm();
         form.setContestType(event.get().getContestType().getId());
 
@@ -178,6 +179,35 @@ public class AddResultsController {
         model.addAttribute("Form", form);
 
         return "results/add-results-3-event-type";
+    }
+
+    @IsBbrMember
+    @PostMapping("/add-results/3/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}")
+    public String addResultsContestTypeStagePost(Model model, @Valid @ModelAttribute("Form") AddResultsContestTypeForm submittedForm, BindingResult bindingResult, @PathVariable("contestSlug") String contestSlug, @PathVariable String contestEventDate) {
+        LocalDate eventDate = Tools.parseEventDate(contestEventDate);
+        Optional<ContestEventDao> event = this.contestEventService.fetchEvent(contestSlug, eventDate);
+        if (event.isEmpty()) {
+            throw NotFoundException.eventNotFound(contestSlug, contestEventDate);
+        }
+
+        submittedForm.validate(bindingResult);
+
+        if (bindingResult.hasErrors()) {
+            List<ContestTypeDao> contestTypes = this.contestTypeService.fetchAll();
+            model.addAttribute("ContestEvent", event.get());
+            model.addAttribute("ContestTypes", contestTypes);
+            return "results/add-results-3-event-type";
+        }
+
+        Optional<ContestTypeDao> contestType = this.contestTypeService.fetchById(submittedForm.getContestType());
+        if (contestType.isEmpty()) {
+            throw NotFoundException.contestTypeNotFoundForId(submittedForm.getContestType());
+        }
+
+        event.get().setContestType(contestType.get());
+        this.contestEventService.update(event.get());
+
+        return "redirect:/add-results/4/{contestSlug}/{contestEventDate}";
     }
 
 }

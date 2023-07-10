@@ -100,4 +100,8 @@ public class NotFoundException extends RuntimeException {
     public static NotFoundException userNotFoundByRandomString() {
         return new NotFoundException("Couldn't find a user to opt out for with that key");
     }
+
+    public static NotFoundException contestTypeNotFoundForId(Long contestTypeId) {
+        return new NotFoundException("Contest type with id " + contestTypeId + " not found");
+    }
 }
