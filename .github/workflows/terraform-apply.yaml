@@ -1,12 +1,16 @@
-name: terraform-plan
+name: terraform-apply
 
 on:
-  pull_request:
+  push:
+    branches:
+      - main
     paths:
       - 'terraform/**'
+  release:
+    types: [created]
  
 jobs:
-  terraform-plan:
+  terraform-apply:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -36,7 +40,7 @@ jobs:
         name: Terraform Validate
         run: terraform validate
       -
-        name: Terraform Plan
+        name: Terraform Apply
         env:
           ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
           ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
@@ -45,4 +49,4 @@ jobs:
           ARM_ACCESS_KEY: ${{ secrets.ARM_ACCESS_KEY }}
           TF_VAR_database_admin_username: ${{ secrets.TF_VAR_database_admin_username }}
           TF_VAR_database_admin_password: ${{ secrets.TF_VAR_database_admin_password }}
-        run: cd terraform && terraform plan
+        run: cd terraform && terraform apply -auto-approve
