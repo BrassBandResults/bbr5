@@ -5,3 +5,9 @@ resource "azurerm_static_site" "apps" {
   sku_tier            = "Free"
   sku_size            = "Free"
 }
+
+resource "azurerm_static_site_custom_domain" "static" {
+  static_site_id  = azurerm_static_site.apps.id
+  domain_name     = "static.brassbandresults.co.uk"
+  validation_type = "cname-delegation"
+}
