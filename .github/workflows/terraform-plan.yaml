@@ -1,4 +1,4 @@
-name: infra
+name: terraform-plan
 
 on:
   pull_request:
@@ -18,16 +18,13 @@ jobs:
         name: Checkout
         uses: actions/checkout@v3
       -
-        name: Switch to Terraform directory
-        run: cd terraform
-      -
         name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: 1.5.2
       -
         name: Terraform fmt
-        run: terraform fmt -check
+        run: cd terraform && terraform fmt -check
       -
         name: Terraform Init
         env:
@@ -36,7 +33,7 @@ jobs:
           ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
           ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
           ARM_ACCESS_KEY: ${{ secrets.ARM_ACCESS_KEY }}
-        run: terraform init
+        run: cd terraform && terraform init
       -
         name: Terraform Validate
         run: terraform validate
@@ -50,4 +47,4 @@ jobs:
           ARM_ACCESS_KEY: ${{ secrets.ARM_ACCESS_KEY }}
           TF_VAR_database_admin_username: ${{ secrets.TF_VAR_database_admin_username }}
           TF_VAR_database_admin_password: ${{ secrets.TF_VAR_database_admin_password }}
-        run: terraform plan
+        run: cd terraform && terraform plan
