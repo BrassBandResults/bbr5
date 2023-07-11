@@ -22,7 +22,7 @@ resource "azurerm_linux_web_app" "bbr5" {
     BBR_SMTP_SERVER_USERNAME = "${var.smtp_username}"
     BBR_SMTP_SERVER_PASSWORD = "${var.smtp_password}"
     BBR_SMTP_SERVER_HOST     = "${var.smtp_hostname}"
-    BBR_DATABASE_URL         = "jdbc:sqlserver://${azurerm_mssql_database.bbr.fully_qualified_domain_name};database=${azurerm_mssql_database.bbr.name}"
+    BBR_DATABASE_URL         = "jdbc:sqlserver://${azurerm_mssql_database.bbr[each.key].fully_qualified_domain_name};database=${azurerm_mssql_database.bbr[each.key].name}"
     BBR_DATABASE_USERNAME    = "${var.database_admin_username}"
     BBR_DATABASE_PASSWORD    = "${var.database_admin_password}"
   }
