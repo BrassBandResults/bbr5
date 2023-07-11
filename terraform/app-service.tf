@@ -13,12 +13,13 @@ resource "azurerm_linux_web_app" "bbr5" {
   location            = azurerm_service_plan.bbr5plan[each.key].location
   service_plan_id     = azurerm_service_plan.bbr5plan[each.key].id
 
-  site_config {}
-
-  application_stack {
-    docker_image_name   = "brassbandresults/bbr5:pr-5"
-    docker_registry_url = "http://ghcr.io"
+  site_config {
+    application_stack {
+      docker_image_name   = "brassbandresults/bbr5:pr-5"
+      docker_registry_url = "http://ghcr.io"
+    }
   }
+
 
   app_settings = {
     BBR_SMTP_SERVER_USERNAME = "${var.smtp_username}"
