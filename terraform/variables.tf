@@ -22,3 +22,16 @@ variable "database_admin_password" {
   default     = "DefaultPa$$word8337612"
   sensitive   = true
 }
+
+variable "smtp_username" {
+  description = "Username to use for smtp server"
+  type        = string
+  default     = "username"
+}
+
+variable "smtp_password" {
+  description = "Password to use for smtp server"
+  type        = string
+  default     = "DefaultPa$$word9841285"
+  sensitive   = true
+}

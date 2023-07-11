@@ -55,4 +55,7 @@ jobs:
           ARM_ACCESS_KEY: ${{ secrets.ARM_ACCESS_KEY }}
           TF_VAR_database_admin_username: ${{ secrets.TF_VAR_database_admin_username }}
           TF_VAR_database_admin_password: ${{ secrets.TF_VAR_database_admin_password }}
+          TF_VAR_smtp_hostname: ${{ secrets.TF_VAR_smtp_hostname }}
+          TF_VAR_smtp_username: ${{ secrets.TF_VAR_smtp_username }}
+          TF_VAR_smtp_password: ${{ secrets.TF_VAR_smtp_password }}
         run: cd terraform && terraform plan
