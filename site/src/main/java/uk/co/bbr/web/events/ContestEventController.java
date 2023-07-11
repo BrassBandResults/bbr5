@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import uk.co.bbr.services.events.ContestEventService;
 import uk.co.bbr.services.events.ResultService;
 import uk.co.bbr.services.events.dao.ContestEventDao;
+import uk.co.bbr.services.events.dao.ContestEventTestPieceDao;
 import uk.co.bbr.services.events.dao.ContestResultDao;
 import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.security.UserService;
@@ -54,10 +55,12 @@ public class ContestEventController {
             }
         }
 
+        List<ContestEventTestPieceDao> eventTestPieces = this.contestEventService.listTestPieces(contestEvent.get());
+
         model.addAttribute("ContestEvent", contestEvent.get());
+        model.addAttribute("EventTestPieces", eventTestPieces);
         model.addAttribute("ContestOwner", contestOwner);
         model.addAttribute("EventResults", eventResults);
-        model.addAttribute("OwnerUserName", contestEvent.get().getCreatedBy());
         model.addAttribute("NextEvent", nextEvent);
         model.addAttribute("PreviousEvent", previousEvent);
         model.addAttribute("SectionUp", upEvent);

@@ -26,4 +26,10 @@
     <span th:replace="links/piece-link.html :: pieceLink(${resultPiece.piece})"></span><br/>
 </span>
 
+<span th:fragment="eventPiecesLink(pieces)">
+   <span th:each="contestEventPiece : ${pieces}">
+        <span th:replace="links/piece-link.html :: pieceLink(${contestEventPiece.piece})"></span>
+    </span>
+</span>
+
 

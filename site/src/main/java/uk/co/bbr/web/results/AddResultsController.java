@@ -15,17 +15,25 @@ import uk.co.bbr.services.contests.dao.ContestTypeDao;
 import uk.co.bbr.services.events.ContestEventService;
 import uk.co.bbr.services.events.ResultService;
 import uk.co.bbr.services.events.dao.ContestEventDao;
+import uk.co.bbr.services.events.dao.ContestEventTestPieceDao;
 import uk.co.bbr.services.events.dao.ContestResultDao;
 import uk.co.bbr.services.events.types.ContestEventDateResolution;
 import uk.co.bbr.services.framework.NotFoundException;
+import uk.co.bbr.services.pieces.PieceService;
+import uk.co.bbr.services.pieces.dao.PieceDao;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.services.security.UserService;
 import uk.co.bbr.services.security.dao.SiteUserDao;
+import uk.co.bbr.services.venues.VenueService;
+import uk.co.bbr.services.venues.dao.VenueDao;
 import uk.co.bbr.web.Tools;
 import uk.co.bbr.web.events.forms.EventEditForm;
+import uk.co.bbr.web.results.forms.AddResultsBandsForm;
 import uk.co.bbr.web.results.forms.AddResultsContestForm;
 import uk.co.bbr.web.results.forms.AddResultsContestTypeForm;
 import uk.co.bbr.web.results.forms.AddResultsDateForm;
+import uk.co.bbr.web.results.forms.AddResultsTestPieceForm;
+import uk.co.bbr.web.results.forms.AddResultsVenueForm;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
 import javax.validation.Valid;
@@ -43,6 +51,8 @@ public class AddResultsController {
     private final ContestEventService contestEventService;
     private final ResultService contestResultService;
     private final UserService userService;
+    private final PieceService pieceService;
+    private final VenueService venueService;
 
     @IsBbrMember
     @GetMapping("/add-results")
@@ -210,4 +220,152 @@ public class AddResultsController {
         return "redirect:/add-results/4/{contestSlug}/{contestEventDate}";
     }
 
+    @IsBbrMember
+    @GetMapping("/add-results/4/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}")
+    public String addTestPieceStageGet(Model model, @PathVariable("contestSlug") String contestSlug, @PathVariable String contestEventDate) {
+        LocalDate eventDate = Tools.parseEventDate(contestEventDate);
+        Optional<ContestEventDao> event = this.contestEventService.fetchEvent(contestSlug, eventDate);
+        if (event.isEmpty()) {
+            throw NotFoundException.eventNotFound(contestSlug, contestEventDate);
+        }
+
+        if (!event.get().getContestType().isTestPiece()) {
+            return "redirect:/add-results/5/{contestSlug}/{contestEventDate}";
+        }
+
+        AddResultsTestPieceForm form = new AddResultsTestPieceForm();
+        model.addAttribute("ContestEvent", event.get());
+        model.addAttribute("Form", form);
+
+        return "results/add-results-4-test-piece";
+    }
+
+    @IsBbrMember
+    @PostMapping("/add-results/4/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}")
+    public String addTestPieceStagePost(Model model, @Valid @ModelAttribute("Form") AddResultsTestPieceForm submittedForm, BindingResult bindingResult, @PathVariable("contestSlug") String contestSlug, @PathVariable String contestEventDate) {
+        LocalDate eventDate = Tools.parseEventDate(contestEventDate);
+        Optional<ContestEventDao> event = this.contestEventService.fetchEvent(contestSlug, eventDate);
+        if (event.isEmpty()) {
+            throw NotFoundException.eventNotFound(contestSlug, contestEventDate);
+        }
+
+        submittedForm.validate(bindingResult);
+
+        if (bindingResult.hasErrors()) {
+            List<ContestTypeDao> contestTypes = this.contestTypeService.fetchAll();
+            model.addAttribute("ContestEvent", event.get());
+            return "results/add-results-4-test-piece";
+        }
+
+        PieceDao pieceToLink = null;
+        Optional<PieceDao> testPiece = this.pieceService.fetchBySlug(submittedForm.getTestPieceSlug());
+        if (testPiece.isEmpty()) {
+            pieceToLink = this.pieceService.create(submittedForm.getTestPieceName());
+        } else {
+            pieceToLink = testPiece.get();
+        }
+
+        if (pieceToLink != null) {
+            this.contestEventService.addTestPieceToContest(event.get(), pieceToLink);
+        }
+
+        return "redirect:/add-results/5/{contestSlug}/{contestEventDate}";
+    }
+
+    @IsBbrMember
+    @GetMapping("/add-results/5/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}")
+    public String addVenueStageGet(Model model, @PathVariable("contestSlug") String contestSlug, @PathVariable String contestEventDate) {
+        LocalDate eventDate = Tools.parseEventDate(contestEventDate);
+        Optional<ContestEventDao> event = this.contestEventService.fetchEvent(contestSlug, eventDate);
+        if (event.isEmpty()) {
+            throw NotFoundException.eventNotFound(contestSlug, contestEventDate);
+        }
+
+        List<ContestEventTestPieceDao> pieces = this.contestEventService.listTestPieces(event.get());
+
+        AddResultsVenueForm form = new AddResultsVenueForm();
+        model.addAttribute("TestPieces", pieces);
+        model.addAttribute("ContestEvent", event.get());
+        model.addAttribute("Form", form);
+
+        return "results/add-results-5-venue";
+    }
+
+    @IsBbrMember
+    @PostMapping("/add-results/5/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}")
+    public String addVenueStagePost(Model model, @Valid @ModelAttribute("Form") AddResultsVenueForm submittedForm, BindingResult bindingResult, @PathVariable("contestSlug") String contestSlug, @PathVariable String contestEventDate) {
+        LocalDate eventDate = Tools.parseEventDate(contestEventDate);
+        Optional<ContestEventDao> event = this.contestEventService.fetchEvent(contestSlug, eventDate);
+        if (event.isEmpty()) {
+            throw NotFoundException.eventNotFound(contestSlug, contestEventDate);
+        }
+
+        submittedForm.validate(bindingResult);
+
+        List<ContestEventTestPieceDao> pieces = this.contestEventService.listTestPieces(event.get());
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("TestPieces", pieces);
+            model.addAttribute("ContestEvent", event.get());
+            return "results/add-results-5-venue";
+        }
+
+        VenueDao venueToLink = null;
+        Optional<VenueDao> venue = this.venueService.fetchBySlug(submittedForm.getVenueSlug());
+        if (venue.isEmpty()) {
+            venueToLink = this.venueService.create(submittedForm.getVenueName());
+        } else {
+            venueToLink = venue.get();
+        }
+
+        if (venueToLink != null) {
+            event.get().setVenue(venueToLink);
+            this.contestEventService.update(event.get());
+        }
+
+        return "redirect:/add-results/6/{contestSlug}/{contestEventDate}";
+    }
+
+    @IsBbrMember
+    @GetMapping("/add-results/6/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}")
+    public String addBandsStageGet(Model model, @PathVariable("contestSlug") String contestSlug, @PathVariable String contestEventDate) {
+        LocalDate eventDate = Tools.parseEventDate(contestEventDate);
+        Optional<ContestEventDao> event = this.contestEventService.fetchEvent(contestSlug, eventDate);
+        if (event.isEmpty()) {
+            throw NotFoundException.eventNotFound(contestSlug, contestEventDate);
+        }
+
+        List<ContestEventTestPieceDao> pieces = this.contestEventService.listTestPieces(event.get());
+
+        AddResultsBandsForm form = new AddResultsBandsForm();
+        model.addAttribute("TestPieces", pieces);
+        model.addAttribute("ContestEvent", event.get());
+        model.addAttribute("Form", form);
+
+        return "results/add-results-6-bands";
+    }
+
+    @IsBbrMember
+    @PostMapping("/add-results/6/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}")
+    public String addBandsStagePost(Model model, @Valid @ModelAttribute("Form") AddResultsBandsForm submittedForm, BindingResult bindingResult, @PathVariable("contestSlug") String contestSlug, @PathVariable String contestEventDate) {
+        LocalDate eventDate = Tools.parseEventDate(contestEventDate);
+        Optional<ContestEventDao> event = this.contestEventService.fetchEvent(contestSlug, eventDate);
+        if (event.isEmpty()) {
+            throw NotFoundException.eventNotFound(contestSlug, contestEventDate);
+        }
+
+        submittedForm.validate(bindingResult);
+
+        List<ContestEventTestPieceDao> pieces = this.contestEventService.listTestPieces(event.get());
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("TestPieces", pieces);
+            model.addAttribute("ContestEvent", event.get());
+            return "results/add-results-6-bands";
+        }
+
+        // TODO deal with results
+
+        return "redirect:/add-results/7/{contestSlug}/{contestEventDate}";
+    }
 }

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title th:text="@{#{page.add-results.title} + ' - Brass Band Results'}">Add Results - Brass Band Results</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h2 th:text="#{page.add-results.title}">Add Results</h2>
+
+    <form th:object="${Form}"
+          th:action="${'/add-results/4/' + ContestEvent.contest.slug} + '/' + ${ContestEvent.eventDateForUrl}"
+          method="post">
+        <div class="alert alert-danger" th:if="${#fields.hasErrors('*')}">
+            <ul>
+                <li th:each="err : ${#fields.errors('*')}" th:text="@{#{${err}}}"></li>
+            </ul>
+        </div>
+        <div>
+            <span class="form-label fw-bold" th:text="#{page.field-prompt.contest}">Contest:</span>
+            <span th:text="${ContestEvent.name}">Yorkshire Area</span>
+        </div>
+        <div>
+            <label class="form-label fw-bold" th:text="#{page.field-prompt.event-date}">Event Date:</label>
+            <span th:text="${ContestEvent.eventDateDisplayWithDay}">Monday 5th Sept 2023</span>
+        </div>
+        <div>
+            <label class="form-label fw-bold" th:text="#{page.field-prompt.contest-type}">Contest Type:</label>
+            <span th:text="#{'contest-types.' + ${ContestEvent.contestType.slug}}">Contest Type</span>
+        </div>
+        <div class="mb-3">
+            <label class="form-label fw-bold" for="test-piece" th:text="#{page.field-prompt.test-piece}">Test Piece:</label>
+            <input id="test-piece" th:field="*{testPieceName}" autocomplete="off" class="form-control" type="text" maxlength="100" onkeyup="lookup('test-piece', 'piece');"/>
+            <input type="hidden" th:field="*{testPieceSlug}" id="test-piece-slug"/>
+        </div>
+
+        <input type="submit" th:value="#{page.buttons.submit}" class="btn btn-outline-success"/>
+    </form>
+</div>
+
+<div layout:fragment="scriptfooter">
+    <script th:src="@{${STATIC_HOST} + '/js2023/lookup.js'}"></script>
+    <script>
+        function fill(inputId, matchSlug, matchName) {
+            let inputElement = document.getElementById(inputId);
+            let inputSlugElement = document.getElementById(inputId + '-slug');
+            inputElement.value = matchName;
+            inputSlugElement.value = matchSlug;
+            inputElement.classList.remove("bg-warning-subtle");
+            inputElement.classList.add("bg-success-subtle");
+
+            document.getElementById('list-' + inputId).remove();
+        }
+    </script>
+</div>
+
+<div layout:fragment="feedback">
+</div>
+
+</body>
+</html>
