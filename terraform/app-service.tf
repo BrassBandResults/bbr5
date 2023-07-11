@@ -14,16 +14,16 @@ resource "azurerm_linux_web_app" "bbr5" {
   site_config {}
 
   application_stack {
-    docker_image_name = "brassbandresults/bbr5:pr-5"
+    docker_image_name   = "brassbandresults/bbr5:pr-5"
     docker_registry_url = "http://ghcr.io"
   }
 
   app_settings = {
-    BBR_SMTP_SERVER_USERNAME="${var.smtp_username}"
-    BBR_SMTP_SERVER_PASSWORD="${var.smtp_password}"
-    BBR_SMTP_SERVER_HOST="${var.smtp_hostname}"
-    BBR_DATABASE_URL="jdbc:sqlserver://${azurerm_mssql_database.bbr.fully_qualified_domain_name};database=${azurerm_mssql_database.bbr.name}"
-    BBR_DATABASE_USERNAME="${var.database_admin_username}"
-    BBR_DATABASE_PASSWORD="${var.database_admin_password}"
+    BBR_SMTP_SERVER_USERNAME = "${var.smtp_username}"
+    BBR_SMTP_SERVER_PASSWORD = "${var.smtp_password}"
+    BBR_SMTP_SERVER_HOST     = "${var.smtp_hostname}"
+    BBR_DATABASE_URL         = "jdbc:sqlserver://${azurerm_mssql_database.bbr.fully_qualified_domain_name};database=${azurerm_mssql_database.bbr.name}"
+    BBR_DATABASE_USERNAME    = "${var.database_admin_username}"
+    BBR_DATABASE_PASSWORD    = "${var.database_admin_password}"
   }
 }
