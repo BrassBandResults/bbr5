@@ -49,4 +49,4 @@ jobs:
           ARM_ACCESS_KEY: ${{ secrets.ARM_ACCESS_KEY }}
           TF_VAR_database_admin_username: ${{ secrets.TF_VAR_database_admin_username }}
           TF_VAR_database_admin_password: ${{ secrets.TF_VAR_database_admin_password }}
-        run: cd terraform && terraform plan
+        run: cd terraform && terraform apply -auto-approve
