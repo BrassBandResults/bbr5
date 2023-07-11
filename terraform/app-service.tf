@@ -1,5 +1,6 @@
 resource "azurerm_service_plan" "bbr5plan" {
   name                = "bbr5-plan"
+  for_each            = toset(var.environments)
   resource_group_name = azurerm_resource_group.this.name
   location            = azurerm_resource_group.this.location
   os_type             = "Linux"
@@ -7,9 +8,10 @@ resource "azurerm_service_plan" "bbr5plan" {
 }
 resource "azurerm_linux_web_app" "bbr5" {
   name                = "bbr5"
+  for_each            = toset(var.environments)
   resource_group_name = azurerm_resource_group.this.name
-  location            = azurerm_service_plan.bbr5plan.location
-  service_plan_id     = azurerm_service_plan.bbr5plan.id
+  location            = azurerm_service_plan.bbr5plan[each.key].location
+  service_plan_id     = azurerm_service_plan.bbr5plan[each.key].id
 
   site_config {}
 

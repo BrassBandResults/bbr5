@@ -23,6 +23,12 @@ variable "database_admin_password" {
   sensitive   = true
 }
 
+variable "smtp_hostname" {
+  description = "SMTP server to use to send emails"
+  type        = string
+  default     = "smtp.sendgrid.net"
+}
+
 variable "smtp_username" {
   description = "Username to use for smtp server"
   type        = string
