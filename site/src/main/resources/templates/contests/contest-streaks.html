@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
 <head>
-    <title th:text="@{#{page.contest-wins.title(${Contest.name})} + ' - Brass Band Results'}">Yorkshire Area (Championship Section) - Brass Band Results</title>
+    <title th:text="@{#{page.contest-streaks.title(${Contest.name})} + ' - Brass Band Results'}">Yorkshire Area (Championship Section) - Brass Band Results</title>
 </head>
 <body>
 <div layout:fragment="content">
@@ -9,14 +9,14 @@
 
     <ul class="nav nav-tabs">
         <li class="nav-item">
-            <a class="nav-link" th:href="${'/contests/' + Contest.slug}" th:text="#{page.contest-wins.tab.results(${PastEventsCount})}">Results</a>
+            <a class="nav-link" th:href="${'/contests/' + Contest.slug}" th:text="#{page.contest.tab.results(${PastEventsCount})}">Results</a>
         </li>
         <li class="nav-item" th:if="${OwnChoicePieceCount > 0}">
-            <a class="nav-link " th:href="${'/contests/' + Contest.slug + '/own-choice'}" th:text="#{page.contest-wins.tab.own-choice(${OwnChoicePieceCount})}">Own Choice Pieces Used</a>
+            <a class="nav-link " th:href="${'/contests/' + Contest.slug + '/own-choice'}" th:text="#{page.contest.tab.own-choice(${OwnChoicePieceCount})}">Own Choice Pieces Used</a>
         </li>
 
         <li class="nav-item">
-            <a class="nav-link active" th:href="${'/contests/' + Contest.slug + '/wins'}" th:text="#{page.contest-wins.tab.wins}">Wins</a>
+            <a class="nav-link active" th:href="${'/contests/' + Contest.slug + '/wins'}" th:text="#{page.contest.tab.wins}">Wins</a>
         </li>
     </ul>
     <br/>

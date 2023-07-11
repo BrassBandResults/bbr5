@@ -9,13 +9,13 @@
 
     <ul class="nav nav-tabs">
         <li class="nav-item">
-            <a class="nav-link" th:href="${'/contests/' + Contest.slug}" th:text="#{page.contest-own-choice.tab.results(${PastEventsCount})}">Results</span></a>
+            <a class="nav-link" th:href="${'/contests/' + Contest.slug}" th:text="#{page.contest.tab.results(${PastEventsCount})}">Results</a>
         </li>
         <li class="nav-item"  th:if="${OwnChoiceResults.size() > 0}">
-            <a class="nav-link active" th:href="${'/contests/' + Contest.slug + '/own-choice'}" th:text="#{page.contest-own-choice.tab.own-choice(${OwnChoiceResults.size})}">Own Choice Pieces Used</span></a>
+            <a class="nav-link active" th:href="${'/contests/' + Contest.slug + '/own-choice'}" th:text="#{page.contest.tab.own-choice(${OwnChoiceResults.size})}">Own Choice Pieces Used</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" th:href="${'/contests/' + Contest.slug + '/wins'}" th:text="#{page.contest-own-choice.tab.wins}">Wins</span></a>
+            <a class="nav-link" th:href="${'/contests/' + Contest.slug + '/wins'}" th:text="#{page.contest.tab.wins}">Wins</a>
         </li>
     </ul>
     <br/>
