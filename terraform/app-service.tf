@@ -40,6 +40,6 @@ resource "azurerm_linux_web_app" "bbr5" {
 
 resource "azurerm_app_service_custom_hostname_binding" "bbr5" {
   hostname            = "bbr5.brassbandresults.co.uk"
-  app_service_name    = "${azurerm_linux_web_app.bbr5.name}"
-  resource_group_name = "${azurerm_resource_group.this.name}"
+  app_service_name    = azurerm_linux_web_app.bbr5.name
+  resource_group_name = azurerm_resource_group.this.name
 }
