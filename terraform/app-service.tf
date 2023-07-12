@@ -22,6 +22,7 @@ resource "azurerm_linux_web_app" "bbr5" {
 
 
   app_settings = {
+    WEBSITE_PORT             = "8080"
     BBR_SMTP_SERVER_USERNAME = "${var.smtp_username}"
     BBR_SMTP_SERVER_PASSWORD = "${var.smtp_password}"
     BBR_SMTP_SERVER_HOST     = "${var.smtp_hostname}"
