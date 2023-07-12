@@ -43,3 +43,13 @@ resource "azurerm_app_service_custom_hostname_binding" "bbr5" {
   app_service_name    = azurerm_linux_web_app.bbr5["prod"].name
   resource_group_name = azurerm_resource_group.this.name
 }
+
+resource "azurerm_app_service_managed_certificate" "bbr5cert" {
+  custom_hostname_binding_id = azurerm_app_service_custom_hostname_binding.bbr5.id
+}
+
+resource "azurerm_app_service_certificate_binding" "bbr5cert" {
+  hostname_binding_id = azurerm_app_service_custom_hostname_binding.bbr5.id
+  certificate_id      = azurerm_app_service_managed_certificate.bbr5cert.id
+  ssl_state           = "SniEnabled"
+}
