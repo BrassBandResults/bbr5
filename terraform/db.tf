@@ -18,3 +18,11 @@ resource "azurerm_mssql_database" "bbr" {
   sku_name       = "Basic"
   zone_redundant = false
 }
+
+resource "azurerm_mssql_firewall_rule" "this" {
+  for_each         = toset(azurerm_linux_web_app.bbr5.possible_outbound_ip_address_list)
+  name             = "bbr-app-${each.key}"
+  server_id        = azurerm_mssql_server.this["prod"].id
+  start_ip_address = each.key
+  end_ip_address   = each.key
+}
