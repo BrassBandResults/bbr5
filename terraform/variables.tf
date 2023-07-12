@@ -41,3 +41,9 @@ variable "smtp_password" {
   default     = "DefaultPa$$word9841285"
   sensitive   = true
 }
+
+variable "docker_image_tag" {
+  description = "Docker image tag to deploy"
+  type        = string
+  default     = "new-docker-tag"
+}

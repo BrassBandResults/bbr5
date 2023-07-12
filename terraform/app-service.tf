@@ -15,7 +15,7 @@ resource "azurerm_linux_web_app" "bbr5" {
 
   site_config {
     application_stack {
-      docker_image_name   = "brassbandresults/bbr5:pr-5"
+      docker_image_name   = "brassbandresults/bbr5:${var.docker_image_tag}"
       docker_registry_url = "http://ghcr.io"
     }
   }
