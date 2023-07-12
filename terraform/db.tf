@@ -19,10 +19,24 @@ resource "azurerm_mssql_database" "bbr" {
   zone_redundant = false
 }
 
+locals {
+  fw_rules_per_environment = merge(flatten([[
+    for env in var.environments :
+    {
+      for ip in azurerm_linux_web_app.bbr5[env].possible_outbound_ip_address_list :
+      format("%s-%s", env, ip) => {
+        env = env
+        ip  = ip
+      }
+    }
+  ]])...)
+
+}
+
 resource "azurerm_mssql_firewall_rule" "this" {
-  for_each         = toset(azurerm_linux_web_app.bbr5.possible_outbound_ip_address_list)
-  name             = "bbr-app-${each.key}"
-  server_id        = azurerm_mssql_server.this["prod"].id
+  for_each         = local.fw_rules_per_environment
+  name             = "bbr-app-${each.value.ip}"
+  server_id        = azurerm_mssql_server.this[each.value.env].id
   start_ip_address = each.key
   end_ip_address   = each.key
 }
