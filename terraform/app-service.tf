@@ -15,13 +15,22 @@ resource "azurerm_linux_web_app" "bbr5" {
 
   site_config {
     application_stack {
+<<<<<<< HEAD
       docker_image_name   = "brassbandresults/bbr5:pr-5"
+=======
+      docker_image_name   = "brassbandresults/bbr5:${var.docker_image_tag}"
+>>>>>>> main
       docker_registry_url = "http://ghcr.io"
     }
   }
 
+<<<<<<< HEAD
   app_settings = {
     WEBSITE_PORT             = "8080"
+=======
+
+  app_settings = {
+>>>>>>> main
     BBR_SMTP_SERVER_USERNAME = "${var.smtp_username}"
     BBR_SMTP_SERVER_PASSWORD = "${var.smtp_password}"
     BBR_SMTP_SERVER_HOST     = "${var.smtp_hostname}"

@@ -4,8 +4,6 @@ on:
   pull_request_target:
     paths:
       - 'site/**'
-  release:
-    types: [created]
 
 env:
   REGISTRY: ghcr.io
