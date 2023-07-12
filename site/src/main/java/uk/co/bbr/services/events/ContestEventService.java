@@ -37,6 +37,7 @@ public interface ContestEventService {
 
     Optional<ContestEventDao> fetchEvent(String contestSlug, LocalDate contestEventDate);
     Optional<ContestEventDao> fetchEvent(ContestDao contest, LocalDate contestEventDate);
+    Optional<ContestEventDao> fetchEventWithinWiderDateRange(String contestSlug, LocalDate eventDate);
 
     List<ContestEventDao> fetchPastEventsForContest(ContestDao contest);
 

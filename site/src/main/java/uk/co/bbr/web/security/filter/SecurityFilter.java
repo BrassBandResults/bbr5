@@ -39,7 +39,7 @@ public class SecurityFilter extends GenericFilterBean {
         HttpServletRequest servletRequest = (HttpServletRequest)request;
 
         String nextPage = servletRequest.getServletPath();
-        if (!SecurityFilter.URL_SIGN_IN.equals(nextPage)) {
+        if (!nextPage.startsWith("/acc/")) {
             servletRequest.getSession().setAttribute(SessionKeys.LOGIN_NEXT_PAGE, nextPage);
         }
 

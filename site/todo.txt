@@ -3,9 +3,6 @@ csrf
 Azure Function receives band and venue changes and updates cosmosdb
 Azure Function updates points on a user, by calling api on site
 
-if event not found, look a day either side
-if event not found, look through entire year
-
 Add results - add results parse block
 Add results - add results fix unknown band
 Add results - add results fix unknown conductor
@@ -13,6 +10,9 @@ Add results - add adjudicators
 Add results - add notes
 
 Security on who can edit result
+
+tests for finding event in 14 days either side of the actual date
+tests for finding event in 366 days either side of the actual date
 
 Edit result
 Edit adjudicators
