@@ -37,3 +37,9 @@ resource "azurerm_linux_web_app" "bbr5" {
     BBR_DATABASE_PASSWORD    = "${var.database_admin_password}"
   }
 }
+
+resource "azurerm_app_service_custom_hostname_binding" "bbr5" {
+  hostname            = "bbr5.brassbandresults.co.uk"
+  app_service_name    = azurerm_linux_web_app.bbr5["prod"].name
+  resource_group_name = azurerm_resource_group.this.name
+}
