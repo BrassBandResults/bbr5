@@ -20,6 +20,12 @@ resource "azurerm_linux_web_app" "bbr5" {
     }
   }
 
+  logs {
+    application_logs {
+      file_system_level = "Verbose"
+    }
+  }
+
 
   app_settings = {
     WEBSITES_PORT            = "8080"
