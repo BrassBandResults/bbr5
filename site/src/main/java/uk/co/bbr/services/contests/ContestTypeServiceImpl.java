@@ -19,7 +19,7 @@ public class ContestTypeServiceImpl implements ContestTypeService, SlugTools {
 
     @Override
     public ContestTypeDao fetchDefaultContestType() {
-        return this.contestTypeRepository.fetchBySlug(DEFAULT_SLUG);
+        return this.contestTypeRepository.fetchBySlug(DEFAULT_SLUG).get();
     }
 
     @Override
@@ -35,5 +35,10 @@ public class ContestTypeServiceImpl implements ContestTypeService, SlugTools {
     @Override
     public Optional<ContestTypeDao> fetchById(Long contestTypeId) {
         return this.contestTypeRepository.findById(contestTypeId);
+    }
+
+    @Override
+    public Optional<ContestTypeDao> fetchBySlug(String contestTypeSlug) {
+        return this.contestTypeRepository.fetchBySlug(contestTypeSlug);
     }
 }

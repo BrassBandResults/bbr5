@@ -50,7 +50,6 @@ public class AddResultsController {
     private final ContestTypeService contestTypeService;
     private final ContestEventService contestEventService;
     private final ResultService contestResultService;
-    private final UserService userService;
     private final PieceService pieceService;
     private final VenueService venueService;
 

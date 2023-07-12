@@ -333,5 +333,44 @@ class VenueEditWebTests implements LoginMixin {
         assertNotNull(response.getBody());
         assertTrue(response.getBody().contains("A venue must have a name"));
     }
+
+    @Test
+    void testEditVenueWithRegionWorksSuccessfully() throws AuthenticationFailedException {
+        // arrange
+        loginTestUser(this.securityService, this.jwtService, TestUser.TEST_MEMBER);
+        Optional<RegionDao> region = this.regionService.fetchBySlug("yorkshire");
+        assertTrue(region.isPresent());
+        VenueDao testVenue = this.venueService.create("Test Venue 4");
+        testVenue.setRegion(region.get());
+        this.venueService.update(testVenue);
+
+        // act
+        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/venues/test-venue-4/edit", String.class);
+
+        // assert
+        assertNotNull(response);
+        assertTrue(response.contains("Edit Test Venue 4"));
+        assertTrue(response.contains("<form action = \"/venues/test-venue-4/edit\""));
+        assertTrue(response.contains("Yorkshire"));
+    }
+
+    @Test
+    void testEditVenueWithParentWorksSuccessfully() throws AuthenticationFailedException {
+        // arrange
+        loginTestUser(this.securityService, this.jwtService, TestUser.TEST_MEMBER);
+        VenueDao parent = this.venueService.create("Parent 5");
+        VenueDao testVenue = this.venueService.create("Test Venue 5");
+        testVenue.setParent(parent);
+        this.venueService.update(testVenue);
+
+        // act
+        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/venues/test-venue-5/edit", String.class);
+
+        // assert
+        assertNotNull(response);
+        assertTrue(response.contains("Edit Test Venue 5"));
+        assertTrue(response.contains("<form action = \"/venues/test-venue-5/edit\""));
+        assertTrue(response.contains("Parent"));
+    }
 }
 
