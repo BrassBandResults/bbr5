@@ -14,4 +14,6 @@ public interface ContestTypeService {
     List<ContestTypeDao> fetchAll();
 
     Optional<ContestTypeDao> fetchById(Long contestTypeId);
+
+    Optional<ContestTypeDao> fetchBySlug(String contestTypeSlug);
 }

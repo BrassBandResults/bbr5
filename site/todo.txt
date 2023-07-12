@@ -11,12 +11,12 @@ Add results - add notes
 
 Security on who can edit result
 
-tests for finding event in 14 days either side of the actual date
-tests for finding event in 366 days either side of the actual date
-
 Edit result
 Edit adjudicators
 Edit Test Pieces
+
+Have dynamic site name in the emails service
+Make it work with bbr5 prefix for this site
 
 Deal with unique slug clash
 
@@ -39,7 +39,7 @@ Add owned feedback to users profile page
 Add classifieds to users profile page
 Show user's performances of pieces on piece page tab
 
-Upgrade to pro support
+Upgrade to pro
 
 Something on the homepage
 Blog on the homepage

@@ -75,17 +75,18 @@ public class EditPieceController {
             Optional<PersonDao> composer = this.personService.fetchBySlug(submittedPiece.getComposerSlug());
             if (composer.isPresent()) {
                 existingPiece.setComposer(composer.get());
-            } else {
-                existingPiece.setComposer(null);
             }
+        }
+        else {
+            existingPiece.setComposer(null);
         }
         if (submittedPiece.getArrangerSlug() != null) {
             Optional<PersonDao> arranger = this.personService.fetchBySlug(submittedPiece.getArrangerSlug());
             if (arranger.isPresent()) {
                 existingPiece.setArranger(arranger.get());
-            } else {
-                existingPiece.setArranger(null);
             }
+        } else {
+            existingPiece.setArranger(null);
         }
 
         this.pieceService.update(existingPiece);

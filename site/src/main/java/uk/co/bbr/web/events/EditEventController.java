@@ -103,9 +103,9 @@ public class EditEventController {
             Optional<VenueDao> venue = this.venueService.fetchBySlug(submittedEvent.getVenueSlug());
             if (venue.isPresent()) {
                 existingEvent.setVenue(venue.get());
-            } else {
-                existingEvent.setVenue(null);
             }
+        } else {
+            existingEvent.setVenue(null);
         }
 
         this.contestEventService.update(existingEvent);
