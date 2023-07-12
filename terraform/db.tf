@@ -30,13 +30,12 @@ locals {
       }
     }
   ]])...)
-
 }
 
 resource "azurerm_mssql_firewall_rule" "this" {
   for_each         = local.fw_rules_per_environment
   name             = "bbr-app-${each.value.ip}"
   server_id        = azurerm_mssql_server.this[each.value.env].id
-  start_ip_address = each.key
-  end_ip_address   = each.key
+  start_ip_address = each.value.ip
+  end_ip_address   = each.value.ip
 }
