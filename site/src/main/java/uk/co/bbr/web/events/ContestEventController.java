@@ -33,8 +33,10 @@ public class ContestEventController {
         Optional<ContestEventDao> contestEvent = this.contestEventService.fetchEvent(contestSlug, eventDate);
 
         if (contestEvent.isEmpty()) {
-            // TODO look 14 days either way before giving up
+          contestEvent = this.contestEventService.fetchEventWithinWiderDateRange(contestSlug, eventDate);
+          if (contestEvent.isEmpty()) {
             throw NotFoundException.eventNotFound(contestSlug, contestEventDate);
+          }
         }
 
         List<ContestResultDao> eventResults = this.contestResultService.fetchForEvent(contestEvent.get());
