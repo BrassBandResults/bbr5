@@ -6,7 +6,7 @@ resource "azurerm_service_plan" "bbr5plan" {
   sku_name            = "B1"
 }
 resource "azurerm_linux_web_app" "bbr5" {
-  name                = "bbr5"
+  name                = terraform.workspace == "prod" ? "bbr5" : "bbr5-${terraform.workspace}"
   resource_group_name = azurerm_resource_group.this.name
   location            = azurerm_service_plan.bbr5plan.location
   service_plan_id     = azurerm_service_plan.bbr5plan.id
