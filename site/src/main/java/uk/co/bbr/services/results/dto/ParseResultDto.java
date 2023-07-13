@@ -57,7 +57,9 @@ public class ParseResultDto implements NameTools {
         contestResult.setContestEvent(contestEvent);
         contestResult.setPosition(this.rawPosition);
         contestResult.setBand(this.matchedBand);
+        contestResult.setBandName(this.rawBandName);
         contestResult.setConductor(this.matchedConductor);
+        contestResult.setOriginalConductorName(this.rawConductorName);
         contestResult.setDraw(this.rawDraw);
 
         return contestResult;

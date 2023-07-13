@@ -1,4 +1,6 @@
 csrf
+refresh tfstate storage account access key
+refresh service principal password
 
 Azure Function receives band and venue changes and updates cosmosdb
 Azure Function updates points on a user, by calling api on site
@@ -29,7 +31,7 @@ Initial User's profile page at /users/<username>
 Change password for user
 Add contest history to users profile page
 Support for instruments on contest history for pro users
-Add /myresults/<username> page for personal contest history
+? Add /myresults/<username> page for personal contest history
 Add privacy settings for personal contest history
 Add date ranges for personal contest history
 "I played at this contest" link from event

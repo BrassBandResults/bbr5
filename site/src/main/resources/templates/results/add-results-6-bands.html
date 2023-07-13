@@ -35,7 +35,7 @@
         </div>
         <div>
             <label class="form-label fw-bold" th:text="#{page.field-prompt.venue}">Venue:</label>
-            <span th:text="${ContestEvent.venue.name}">Venue</span>
+            <span th:if="${ContestEvent.venue != null}" th:text="${ContestEvent.venue.name}">Venue</span>
         </div>
 
         <div class="mb-3">

@@ -1,5 +1,6 @@
 package uk.co.bbr.web.results;
 
+import groovyjarjarpicocli.CommandLine;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +22,9 @@ import uk.co.bbr.services.events.types.ContestEventDateResolution;
 import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.pieces.PieceService;
 import uk.co.bbr.services.pieces.dao.PieceDao;
+import uk.co.bbr.services.results.ParseResultService;
+import uk.co.bbr.services.results.dto.ParseResultDto;
+import uk.co.bbr.services.results.dto.ParsedResultsDto;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.services.security.UserService;
 import uk.co.bbr.services.security.dao.SiteUserDao;
@@ -52,6 +56,7 @@ public class AddResultsController {
     private final ResultService contestResultService;
     private final PieceService pieceService;
     private final VenueService venueService;
+    private final ParseResultService parseResultService;
 
     @IsBbrMember
     @GetMapping("/add-results")
@@ -363,8 +368,21 @@ public class AddResultsController {
             return "results/add-results-6-bands";
         }
 
-        // TODO deal with results
+        String resultsBlock = submittedForm.getResultBlock();
+        ParsedResultsDto parsedResults = this.parseResultService.parseBlock(resultsBlock, event.get().getEventDate());
+        if (parsedResults.allGreen()) {
+            for (ParseResultDto eachParsedResult : parsedResults.getResultLines()) {
+                ContestResultDao eachResult = eachParsedResult.buildContestResult(event.get());
+                this.contestResultService.addResult(event.get(), eachResult);
 
-        return "redirect:/add-results/7/{contestSlug}/{contestEventDate}";
+            }
+
+            return "redirect:/add-results/7/{contestSlug}/{contestEventDate}";
+        }
+
+        model.addAttribute("TestPieces", pieces);
+        model.addAttribute("ContestEvent", event.get());
+        model.addAttribute("ParsedResults", parsedResults.getResultLines());
+        return "results/add-results-6-bands";
     }
 }
