@@ -27,22 +27,23 @@ resource "azurerm_linux_web_app" "bbr5" {
 
   app_settings = {
     WEBSITES_PORT            = "8080"
-    BBR_SMTP_SERVER_USERNAME = "${var.smtp_username}"
-    BBR_SMTP_SERVER_PASSWORD = "${var.smtp_password}"
-    BBR_SMTP_SERVER_HOST     = "${var.smtp_hostname}"
+    BBR_SMTP_SERVER_USERNAME = var.smtp_username
+    BBR_SMTP_SERVER_PASSWORD = var.smtp_password
+    BBR_SMTP_SERVER_HOST     = var.smtp_hostname
     BBR_DATABASE_URL         = "jdbc:sqlserver://${azurerm_mssql_server.this.fully_qualified_domain_name};database=${azurerm_mssql_database.bbr.name}"
-    BBR_DATABASE_USERNAME    = "${var.database_admin_username}"
-    BBR_DATABASE_PASSWORD    = "${var.database_admin_password}"
+    BBR_DATABASE_USERNAME    = random_password.mssql_username.result
+    BBR_DATABASE_PASSWORD    = random_password.mssql_password.result
   }
 }
 
 resource "azurerm_app_service_custom_hostname_binding" "bbr5" {
-  hostname            = "bbr5.brassbandresults.co.uk"
+  hostname            = terraform.workspace == "prod" ? "bbr5.brassbandresults.co.uk" : "bbr5-${terraform.workspace}.brassbandresults.co.uk"
   app_service_name    = azurerm_linux_web_app.bbr5.name
   resource_group_name = azurerm_resource_group.this.name
 }
 
 resource "azurerm_app_service_managed_certificate" "bbr5cert" {
+  depends_on                 = [cloudflare_record.app_service]
   custom_hostname_binding_id = azurerm_app_service_custom_hostname_binding.bbr5.id
 }
 
