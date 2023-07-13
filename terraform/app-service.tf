@@ -1,6 +1,5 @@
 resource "azurerm_service_plan" "bbr5plan" {
   name                = "bbr5-plan"
-  for_each            = toset(var.environments)
   resource_group_name = azurerm_resource_group.this.name
   location            = azurerm_resource_group.this.location
   os_type             = "Linux"
@@ -8,10 +7,9 @@ resource "azurerm_service_plan" "bbr5plan" {
 }
 resource "azurerm_linux_web_app" "bbr5" {
   name                = "bbr5"
-  for_each            = toset(var.environments)
   resource_group_name = azurerm_resource_group.this.name
-  location            = azurerm_service_plan.bbr5plan[each.key].location
-  service_plan_id     = azurerm_service_plan.bbr5plan[each.key].id
+  location            = azurerm_service_plan.bbr5plan.location
+  service_plan_id     = azurerm_service_plan.bbr5plan.id
 
   site_config {
     application_stack {
@@ -32,7 +30,7 @@ resource "azurerm_linux_web_app" "bbr5" {
     BBR_SMTP_SERVER_USERNAME = "${var.smtp_username}"
     BBR_SMTP_SERVER_PASSWORD = "${var.smtp_password}"
     BBR_SMTP_SERVER_HOST     = "${var.smtp_hostname}"
-    BBR_DATABASE_URL         = "jdbc:sqlserver://${azurerm_mssql_server.this[each.key].fully_qualified_domain_name};database=${azurerm_mssql_database.bbr[each.key].name}"
+    BBR_DATABASE_URL         = "jdbc:sqlserver://${azurerm_mssql_server.this.fully_qualified_domain_name};database=${azurerm_mssql_database.bbr.name}"
     BBR_DATABASE_USERNAME    = "${var.database_admin_username}"
     BBR_DATABASE_PASSWORD    = "${var.database_admin_password}"
   }
@@ -40,7 +38,7 @@ resource "azurerm_linux_web_app" "bbr5" {
 
 resource "azurerm_app_service_custom_hostname_binding" "bbr5" {
   hostname            = "bbr5.brassbandresults.co.uk"
-  app_service_name    = azurerm_linux_web_app.bbr5["prod"].name
+  app_service_name    = azurerm_linux_web_app.bbr5.name
   resource_group_name = azurerm_resource_group.this.name
 }
 

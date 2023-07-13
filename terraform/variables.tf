@@ -4,10 +4,10 @@ variable "region" {
   default     = "ukwest"
 }
 
-variable "environments" {
-  description = "List of environments to configure"
-  type        = list(string)
-  default     = ["prod"]
+variable "environment" {
+  description = "Name of the environment to configure"
+  type        = string
+  default     = "prod"
 }
 
 variable "database_admin_username" {
