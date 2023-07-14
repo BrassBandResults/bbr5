@@ -12,3 +12,8 @@ resource "azurerm_static_site_custom_domain" "static" {
   domain_name     = terraform.workspace == "prod" ? "static.brassbandresults.co.uk" : "static-${terraform.workspace}.brassbandresults.co.uk"
   validation_type = "cname-delegation"
 }
+
+output "static_site_api_key" {
+  value     = azurerm_static_site.apps.api_key
+  sensitive = true
+}
