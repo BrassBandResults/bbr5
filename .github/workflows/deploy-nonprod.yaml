@@ -91,6 +91,7 @@ jobs:
         run: terraform validate
       -
         name: Terraform Apply
+        id: tfoutputs
         env:
           ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
           ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
@@ -103,12 +104,9 @@ jobs:
           TF_VAR_smtp_password: ${{ secrets.TF_VAR_smtp_password }}
           TF_VAR_docker_image_tag: pr-${{ github.event.number }}
           TF_VAR_cloudflare_zone_id: ${{ secrets.TF_VAR_cloudflare_zone_id }}
-        run: cd terraform && terraform apply -auto-approve
-      -
-        name: Terraform Outputs
-        id: tfoutputs
         run: |
-          printf "static_site_api_key=%s\n" $(terraform -chdir="./terraform" output -raw static_site_api_key) >> "$GITHUB_OUTPUT"
+          cd terraform && terraform apply -auto-approve
+          printf "static_site_api_key=%s\n" $(terraform output -raw static_site_api_key) >> "$GITHUB_OUTPUT"
       -
         name: Upload Static Site
         uses: Azure/static-web-apps-deploy@v1
