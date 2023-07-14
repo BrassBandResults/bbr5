@@ -90,6 +90,7 @@ jobs:
         run: terraform validate
       -
         name: Terraform Apply
+        id: tfapply
         env:
           ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
           ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
@@ -103,3 +104,11 @@ jobs:
           TF_VAR_docker_image_tag: pr-${{ github.event.number }}
           TF_VAR_cloudflare_zone_id: ${{ secrets.TF_VAR_cloudflare_zone_id }}
         run: cd terraform && terraform apply -auto-approve
+      -
+        name: Upload Static Site
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ steps.tfapply.outputs.static_site_api_key }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          action: "upload"
+          app_location: "/static"
