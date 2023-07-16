@@ -1,16 +1,19 @@
-name: terraform-apply
+name: destroy
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - 'terraform/**'
-  release:
-    types: [created]
- 
+  pull_request_target:
+    types: [closed]
+
 jobs:
-  terraform-apply:
+  authorize:
+    environment:
+      ${{ github.event_name == 'pull_request_target' && github.event.pull_request.head.repo.full_name != github.repository && 'external' || 'internal' }}
+    runs-on: ubuntu-latest
+    steps:
+      - run: true
+
+  destroy:
+    needs: [authorize]
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -35,18 +38,22 @@ jobs:
           ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
           ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
           ARM_ACCESS_KEY: ${{ secrets.ARM_ACCESS_KEY }}
-        run: cd terraform && terraform init
+        run: cd terraform && terraform init && terraform workspace select pr-${{ github.event.number }} || terraform workspace new pr-${{ github.event.number }}
       -
         name: Terraform Validate
         run: terraform validate
       -
-        name: Terraform Apply
+        name: Terraform Destroy
         env:
           ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
           ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
           ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
           ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
           ARM_ACCESS_KEY: ${{ secrets.ARM_ACCESS_KEY }}
-          TF_VAR_database_admin_username: ${{ secrets.TF_VAR_database_admin_username }}
-          TF_VAR_database_admin_password: ${{ secrets.TF_VAR_database_admin_password }}
-        run: cd terraform && terraform apply -auto-approve
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          TF_VAR_smtp_hostname: ${{ secrets.TF_VAR_smtp_hostname }}
+          TF_VAR_smtp_username: ${{ secrets.TF_VAR_smtp_username }}
+          TF_VAR_smtp_password: ${{ secrets.TF_VAR_smtp_password }}
+          TF_VAR_docker_image_tag: pr-${{ github.event.number }}
+          TF_VAR_cloudflare_zone_id: ${{ secrets.TF_VAR_cloudflare_zone_id }}
+        run: cd terraform && terraform destroy -auto-approve

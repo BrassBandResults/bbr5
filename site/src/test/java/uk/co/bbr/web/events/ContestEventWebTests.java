@@ -102,6 +102,101 @@ class ContestEventWebTests implements LoginMixin {
         assertFalse(response.contains(">David Childs<"));
     }
 
+  @Test
+  void testGetContestEvent14DaysBeforeWorksSuccessfully() {
+    String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/contests/yorkshire-area/2010-02-20", String.class);
+    assertNotNull(response);
+    assertTrue(response.contains("<title>Yorkshire Area - 01 Mar 2010 - Brass Band Results</title>"));
+    assertTrue(response.contains(">Yorkshire Area<"));
+    assertTrue(response.contains("<h3>Mon 01 Mar 2010</h3>"));
+
+    assertTrue(response.contains(">1<"));
+    assertTrue(response.contains(">2<"));
+    assertTrue(response.contains(">3<"));
+    assertFalse(response.contains(">4<"));
+
+    assertTrue(response.contains(">Rothwell Temperance Band<"));
+    assertTrue(response.contains(">Black Dyke<"));
+    assertTrue(response.contains(">Grimethorpe<"));
+    assertFalse(response.contains(">YBS Band<"));
+
+    assertTrue(response.contains(">David Roberts<"));
+    assertTrue(response.contains(">John Roberts<"));
+    assertTrue(response.contains(">Duncan Beckley<"));
+    assertFalse(response.contains(">David Childs<"));
+  }
+
+  @Test
+  void testGetContestEvent14DaysAfterWorksSuccessfully() {
+    String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/contests/yorkshire-area/2010-03-14", String.class);
+    assertNotNull(response);
+    assertTrue(response.contains("<title>Yorkshire Area - 01 Mar 2010 - Brass Band Results</title>"));
+    assertTrue(response.contains(">Yorkshire Area<"));
+    assertTrue(response.contains("<h3>Mon 01 Mar 2010</h3>"));
+
+    assertTrue(response.contains(">1<"));
+    assertTrue(response.contains(">2<"));
+    assertTrue(response.contains(">3<"));
+    assertFalse(response.contains(">4<"));
+
+    assertTrue(response.contains(">Rothwell Temperance Band<"));
+    assertTrue(response.contains(">Black Dyke<"));
+    assertTrue(response.contains(">Grimethorpe<"));
+    assertFalse(response.contains(">YBS Band<"));
+
+    assertTrue(response.contains(">David Roberts<"));
+    assertTrue(response.contains(">John Roberts<"));
+    assertTrue(response.contains(">Duncan Beckley<"));
+    assertFalse(response.contains(">David Childs<"));
+  }
+
+  @Test
+  void testGetContestEvent2MonthsAfterWorksSuccessfully() {
+    String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/contests/yorkshire-area/2010-05-01", String.class);
+    assertNotNull(response);
+    assertTrue(response.contains("<title>Yorkshire Area - 01 Mar 2010 - Brass Band Results</title>"));
+    assertTrue(response.contains(">Yorkshire Area<"));
+    assertTrue(response.contains("<h3>Mon 01 Mar 2010</h3>"));
+
+    assertTrue(response.contains(">1<"));
+    assertTrue(response.contains(">2<"));
+    assertTrue(response.contains(">3<"));
+    assertFalse(response.contains(">4<"));
+
+    assertTrue(response.contains(">Rothwell Temperance Band<"));
+    assertTrue(response.contains(">Black Dyke<"));
+    assertTrue(response.contains(">Grimethorpe<"));
+    assertFalse(response.contains(">YBS Band<"));
+
+    assertTrue(response.contains(">David Roberts<"));
+    assertTrue(response.contains(">John Roberts<"));
+    assertTrue(response.contains(">Duncan Beckley<"));
+    assertFalse(response.contains(">David Childs<"));
+  }
+
+  @Test
+  void testGetContestEvent2MonthsBeforeWorksSuccessfully() {
+    String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/contests/yorkshire-area/2010-01-01", String.class);
+    assertNotNull(response);
+    assertTrue(response.contains("<title>Yorkshire Area - 01 Mar 2010 - Brass Band Results</title>"));
+    assertTrue(response.contains(">Yorkshire Area<"));
+    assertTrue(response.contains("<h3>Mon 01 Mar 2010</h3>"));
+
+    assertTrue(response.contains(">1<"));
+    assertTrue(response.contains(">2<"));
+    assertTrue(response.contains(">3<"));
+    assertFalse(response.contains(">4<"));
+
+    assertTrue(response.contains(">Rothwell Temperance Band<"));
+    assertTrue(response.contains(">Black Dyke<"));
+    assertTrue(response.contains(">Grimethorpe<"));
+    assertFalse(response.contains(">YBS Band<"));
+
+    assertTrue(response.contains(">David Roberts<"));
+    assertTrue(response.contains(">John Roberts<"));
+    assertTrue(response.contains(">Duncan Beckley<"));
+    assertFalse(response.contains(">David Childs<"));
+  }
 
     @Test
     void testGetContestEventWithIncorrectSlugReturns404() {

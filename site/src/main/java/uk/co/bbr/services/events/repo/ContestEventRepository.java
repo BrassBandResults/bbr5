@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ContestEventRepository extends JpaRepository<ContestEventDao, Long> {
-    @Query("SELECT e FROM ContestEventDao e WHERE e.contest.id = :contestId and e.eventDate = :eventDate")
+    @Query("SELECT e FROM ContestEventDao e WHERE e.contest.id = :contestId AND e.eventDate = :eventDate")
     Optional<ContestEventDao> fetchByContestAndDate(Long contestId, LocalDate eventDate);
 
     @Query("SELECT r FROM ContestResultDao r " +
@@ -54,4 +54,7 @@ public interface ContestEventRepository extends JpaRepository<ContestEventDao, L
 
     @Query("SELECT e FROM ContestEventDao e WHERE e.id = (SELECT MAX(e1.id) FROM ContestEventDao e1)")
     ContestEventDao fetchLatestEvent();
+
+    @Query("SELECT e FROM ContestEventDao e WHERE e.contest.id = :contestId AND e.eventDate >= :startDate AND e.eventDate <= :endDate")
+    Optional<ContestEventDao> fetchByContestAndDateRange(Long contestId, LocalDate startDate, LocalDate endDate);
 }

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.client.HttpClientErrorException;
@@ -23,6 +24,7 @@ import uk.co.bbr.web.LoginMixin;
 import uk.co.bbr.web.security.support.TestUser;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -143,6 +145,20 @@ class ContestGroupWebTests implements LoginMixin {
     @Test
     void testFetchGroupDetailsPageWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/contests/YORKSHIRE-GROUP", String.class);
+        assertNotNull(response);
+        assertTrue(response.contains("<title>Yorkshire Group - Group - Brass Band Results</title>"));
+        assertTrue(response.contains("<h2>Yorkshire Group</h2>"));
+
+        assertTrue(response.contains("Yorkshire Area (Championship Section"));
+        assertTrue(response.contains("Yorkshire Area (First Section"));
+        assertTrue(response.contains("Yorkshire Area (Second Section"));
+        assertTrue(response.contains("Yorkshire Area (Third Section"));
+        assertFalse(response.contains("Yorkshire Area (Fourth Section"));
+    }
+
+    @Test
+    void testFetchGroupDetailsPageRedirectWorksSuccessfully() {
+        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/contest-groups/YORKSHIRE-GROUP", String.class);
         assertNotNull(response);
         assertTrue(response.contains("<title>Yorkshire Group - Group - Brass Band Results</title>"));
         assertTrue(response.contains("<h2>Yorkshire Group</h2>"));

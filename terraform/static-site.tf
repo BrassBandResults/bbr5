@@ -7,7 +7,13 @@ resource "azurerm_static_site" "apps" {
 }
 
 resource "azurerm_static_site_custom_domain" "static" {
+  depends_on      = [cloudflare_record.static_site]
   static_site_id  = azurerm_static_site.apps.id
-  domain_name     = "static.brassbandresults.co.uk"
+  domain_name     = terraform.workspace == "prod" ? "static.brassbandresults.co.uk" : "static-${terraform.workspace}.brassbandresults.co.uk"
   validation_type = "cname-delegation"
+}
+
+output "static_site_api_key" {
+  value     = azurerm_static_site.apps.api_key
+  sensitive = true
 }

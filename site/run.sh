@@ -7,5 +7,6 @@ export BBR_SMTP_SERVER_HOST=smtp.sendgrid.net
 export BBR_DATABASE_URL="jdbc:sqlserver://timpi;database=bbr;trustServerCertificate=true"
 export BBR_DATABASE_USERNAME=sa
 export BBR_DATABASE_PASSWORD=admin9552Password
+export BBR_STATIC_FILES_HOST=static.brassbandresults.co.uk
 env | grep BBR_
 ./mvnw spring-boot:run

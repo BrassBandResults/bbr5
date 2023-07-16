@@ -1,0 +1,117 @@
+name: deploy
+
+on:
+  pull_request_target:
+    types: [opened, edited, reopened]
+
+env:
+  REGISTRY: ghcr.io
+
+jobs:
+  authorize:
+    environment:
+      ${{ github.event_name == 'pull_request_target' && github.event.pull_request.head.repo.full_name != github.repository && 'external' || 'internal' }}
+    runs-on: ubuntu-latest
+    steps:
+      - run: true
+
+  build:
+    needs: authorize
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      pull-requests: read
+
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.ref }}
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      -
+        name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: ${{ env.REGISTRY }}/${{ github.repository }}
+      -
+        name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      -
+        name: Build and push
+        uses: docker/build-push-action@v4
+        with:
+          context: site/.
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          platforms: linux/amd64
+          provenance: false
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  deploy:
+    needs: [authorize, build]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v3
+      -
+        name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_wrapper: false
+          terraform_version: 1.5.2
+      -
+        name: Terraform fmt
+        run: cd terraform && terraform fmt -check
+      -
+        name: Terraform Init
+        env:
+          ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+          ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+          ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+          ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+          ARM_ACCESS_KEY: ${{ secrets.ARM_ACCESS_KEY }}
+        run: cd terraform && terraform init && terraform workspace select pr-${{ github.event.number }} || terraform workspace new pr-${{ github.event.number }}
+      -
+        name: Terraform Validate
+        run: terraform validate
+      -
+        name: Terraform Apply
+        id: tfoutputs
+        env:
+          ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+          ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+          ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+          ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+          ARM_ACCESS_KEY: ${{ secrets.ARM_ACCESS_KEY }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          TF_VAR_smtp_hostname: ${{ secrets.TF_VAR_smtp_hostname }}
+          TF_VAR_smtp_username: ${{ secrets.TF_VAR_smtp_username }}
+          TF_VAR_smtp_password: ${{ secrets.TF_VAR_smtp_password }}
+          TF_VAR_docker_image_tag: pr-${{ github.event.number }}
+          TF_VAR_cloudflare_zone_id: ${{ secrets.TF_VAR_cloudflare_zone_id }}
+        run: |
+          cd terraform && terraform apply -auto-approve
+          printf "static_site_api_key=%s\n" $(terraform output -raw static_site_api_key) >> "$GITHUB_OUTPUT"
+      -
+        name: Upload Static Site
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ steps.tfoutputs.outputs.static_site_api_key }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          action: "upload"
+          app_location: "/static"

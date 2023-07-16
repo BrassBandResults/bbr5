@@ -47,8 +47,8 @@ public class ContestGroupController {
         return "groups/groups";
     }
 
-    @GetMapping("/contest-groups/{slug:[\\-A-Z\\d]{2,}}")
-    public String contestGroupRedirect(@PathVariable("slug") String groupSlug) {
+    @GetMapping("/contest-groups/{groupSlug:[\\-A-Z\\d]{2,}}")
+    public String contestGroupRedirect(@PathVariable("groupSlug") String groupSlug) {
         return "redirect:/contests/{groupSlug}";
     }
 

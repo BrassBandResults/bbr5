@@ -4,8 +4,7 @@ Terraform is used to deploy resources onto the Microsoft Cloud, Azure.
 This provides
 * Resource Group for resources
 * A static site that hosts the static resources used by the site such as flags and icons
-* a static site that hosts some documentation about how to work with the source and make app changes
-* A SQL Database server + database to host the data, this is generated 1 per environment and managed via the Terraform variable __`environments`__
+* A SQL Database server + database to host the data, this is generated 1 per environment and managed via the Terraform variable __`environment`__
 
 The following environment variables need to be set for this terraform run to work:
 * __`ARM_TENANT_ID`__ - This is your Azure tenant ID

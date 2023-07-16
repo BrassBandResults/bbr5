@@ -29,6 +29,7 @@ import uk.co.bbr.web.security.annotations.IsBbrMember;
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -184,7 +185,27 @@ public class ContestEventServiceImpl implements ContestEventService {
         return this.fetchEvent(contest.getSlug(), contestEventDate);
     }
 
-    @Override
+  @Override
+  public Optional<ContestEventDao> fetchEventWithinWiderDateRange(String contestSlug, LocalDate eventDate) {
+    Optional<ContestDao> contest = this.contestRepository.fetchBySlug(contestSlug);
+    if (contest.isEmpty()) {
+      return Optional.empty();
+    }
+    LocalDate startDate = eventDate.minus(14, ChronoUnit.DAYS);
+    LocalDate endDate = eventDate.plus(14, ChronoUnit.DAYS);
+
+    Optional<ContestEventDao> foundEvent = this.contestEventRepository.fetchByContestAndDateRange(contest.get().getId(), startDate, endDate);
+    if (foundEvent.isPresent()) {
+      return foundEvent;
+    }
+
+    LocalDate yearStart = LocalDate.of(eventDate.getYear(), 1, 1);
+    LocalDate yearEnd = LocalDate.of(eventDate.getYear(), 12, 31);
+
+    return this.contestEventRepository.fetchByContestAndDateRange(contest.get().getId(), yearStart, yearEnd);
+  }
+
+  @Override
     public List<ContestEventDao> fetchPastEventsForContest(ContestDao contest) {
         List<ContestEventDao> returnEvents = new ArrayList<>();
 
