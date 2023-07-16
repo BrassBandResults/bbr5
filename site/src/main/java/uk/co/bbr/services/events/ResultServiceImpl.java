@@ -2,8 +2,11 @@ package uk.co.bbr.services.events;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import uk.co.bbr.services.bands.BandService;
 import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.contests.dao.ContestDao;
+import uk.co.bbr.services.contests.dto.ContestStreakContainerDto;
+import uk.co.bbr.services.contests.dto.ContestStreakDto;
 import uk.co.bbr.services.contests.sql.ContestResultSql;
 import uk.co.bbr.services.contests.sql.dto.ContestResultPieceSqlDto;
 import uk.co.bbr.services.contests.sql.dto.ContestWinsSqlDto;
@@ -25,8 +28,10 @@ import uk.co.bbr.web.security.annotations.IsBbrMember;
 import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -36,6 +41,7 @@ public class ResultServiceImpl implements ResultService {
 
     private final ContestResultRepository contestResultRepository;
     private final ContestResultPieceRepository contestResultPieceRepository;
+    private final BandService bandService;
     private final SecurityService securityService;
     private final EntityManager entityManager;
 
@@ -209,6 +215,31 @@ public class ResultServiceImpl implements ResultService {
         result.setUpdatedBy(this.securityService.getCurrentUsername());
         result.setUpdated(LocalDateTime.now());
         this.contestResultRepository.saveAndFlush(result);
+    }
+
+    @Override
+    public List<ContestStreakDto> fetchStreaksForContest(ContestDao contest) {
+        Map<String, List<Integer>> streaksBandSlugToYear = this.fetchStreakData(contest);
+
+        ContestStreakContainerDto streaks = new ContestStreakContainerDto();
+        streaks.populate(streaksBandSlugToYear, this.bandService);
+        return streaks.getStreaks();
+    }
+
+    private Map<String, List<Integer>> fetchStreakData(ContestDao contest) {
+        Map<String, List<Integer>> streaksBandSlugToYear = new HashMap<>();
+
+        List<ContestResultDrawPositionSqlDto> wins = ResultFilterSql.selectContestResultsForPosition(this.entityManager, contest.getSlug(), "1");
+        for (ContestResultDrawPositionSqlDto win : wins) {
+            String currentBandSlug = win.getResult().getBand().getSlug();
+            List<Integer> existingRecord = streaksBandSlugToYear.get(currentBandSlug);
+            if (existingRecord == null) {
+                existingRecord = new ArrayList<>();
+            }
+            existingRecord.add(win.getResult().getContestEvent().getEventDate().getYear());
+            streaksBandSlugToYear.put(currentBandSlug, existingRecord);
+        }
+        return streaksBandSlugToYear;
     }
 
     @Override
