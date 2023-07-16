@@ -93,7 +93,7 @@ public class ContestController {
     }
 
     @IsBbrPro
-    @GetMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}/wins")
+    @GetMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}/streaks")
     public String contestStreaks(Model model, @PathVariable String contestSlug) {
         Optional<ContestDao> contest = this.contestService.fetchBySlug(contestSlug);
 
@@ -111,7 +111,7 @@ public class ContestController {
         model.addAttribute("PastEventsCount", pastEventsCount);
         model.addAttribute("OwnChoicePieceCount", ownChoicePieceCount);
 
-        return "contests/streaks";
+        return "contests/contest-streaks";
     }
 
 

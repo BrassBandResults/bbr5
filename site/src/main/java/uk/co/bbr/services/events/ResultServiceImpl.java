@@ -2,8 +2,10 @@ package uk.co.bbr.services.events;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import uk.co.bbr.services.bands.BandService;
 import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.contests.dao.ContestDao;
+import uk.co.bbr.services.contests.dto.ContestStreakContainerDto;
 import uk.co.bbr.services.contests.dto.ContestStreakDto;
 import uk.co.bbr.services.contests.sql.ContestResultSql;
 import uk.co.bbr.services.contests.sql.dto.ContestResultPieceSqlDto;
@@ -39,6 +41,7 @@ public class ResultServiceImpl implements ResultService {
 
     private final ContestResultRepository contestResultRepository;
     private final ContestResultPieceRepository contestResultPieceRepository;
+    private final BandService bandService;
     private final SecurityService securityService;
     private final EntityManager entityManager;
 
@@ -216,6 +219,14 @@ public class ResultServiceImpl implements ResultService {
 
     @Override
     public List<ContestStreakDto> fetchStreaksForContest(ContestDao contest) {
+        Map<String, List<Integer>> streaksBandSlugToYear = this.fetchStreakData(contest);
+
+        ContestStreakContainerDto streaks = new ContestStreakContainerDto();
+        streaks.populate(streaksBandSlugToYear, this.bandService);
+        return streaks.getStreaks();
+    }
+
+    private Map<String, List<Integer>> fetchStreakData(ContestDao contest) {
         Map<String, List<Integer>> streaksBandSlugToYear = new HashMap<>();
 
         List<ContestResultDrawPositionSqlDto> wins = ResultFilterSql.selectContestResultsForPosition(this.entityManager, contest.getSlug(), "1");
@@ -228,14 +239,7 @@ public class ResultServiceImpl implements ResultService {
             existingRecord.add(win.getResult().getContestEvent().getEventDate().getYear());
             streaksBandSlugToYear.put(currentBandSlug, existingRecord);
         }
-
-        for (String eachBandSlug : streaksBandSlugToYear.keySet()) {
-            if (streaksBandSlugToYear.get(eachBandSlug).size() >= 3) {
-                // potential streak - does it have sequential numbers
-            }
-        }
-
-        return null;
+        return streaksBandSlugToYear;
     }
 
     @Override
