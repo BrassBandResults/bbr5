@@ -43,7 +43,7 @@ resource "azurerm_mssql_firewall_rule" "prod" {
 }
 
 resource "azurerm_mssql_firewall_rule" "nonprod" {
-  count            = terraform.workspace == "nonprod" ? 1 : 0
+  count            = terraform.workspace == "prod" ? 0 : 1
   name             = "bbr-app-nonprod"
   server_id        = azurerm_mssql_server.this.id
   start_ip_address = "0.0.0.0"

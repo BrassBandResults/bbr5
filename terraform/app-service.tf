@@ -1,5 +1,5 @@
 resource "azurerm_service_plan" "bbr5plan" {
-  name                = "bbr5-plan"
+  name                = terraform.workspace == "prod" ? "bbr5-plan" : "bbr5-plan-${terraform.workspace}"
   resource_group_name = azurerm_resource_group.this.name
   location            = azurerm_resource_group.this.location
   os_type             = "Linux"

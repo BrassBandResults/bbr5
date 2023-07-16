@@ -40,8 +40,10 @@ public class ContestStreakContainerDto {
                 int previousYear = streakBands.getYears().get(i-1).getYear();
 
                 if (thisYear == previousYear + 1) {
-                    streakBands.getYears().get(i).markInStreak();
                     streakBands.getYears().get(i-1).markInStreak();
+                    streakBands.getYears().get(i).markInStreak();
+                } else {
+                    streakBands.getYears().get(i-1).markStreakEnd();
                 }
             }
         }
