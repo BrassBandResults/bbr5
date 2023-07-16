@@ -40,6 +40,7 @@
                     <span th:each="year : ${streak.getYears()}" th:remove="tag">
                         <span th:if="${year.inStreak}" class="badge bg-success" th:text="${year.year}">1980</span>
                         <span th:if="${!year.inStreak}"><small><span class="text-muted fw-light" th:text="${year.year}">1980</span></small></span>
+                        <span th:if="${year.streakEnd}">&nbsp;</span>
                     </span>
                 </td>
             </tr>
