@@ -33,7 +33,7 @@ resource "azurerm_linux_web_app" "bbr5" {
     BBR_DATABASE_USERNAME    = random_password.mssql_username.result
     BBR_DATABASE_PASSWORD    = random_password.mssql_password.result
     BBR_STATIC_FILES_HOST    = azurerm_static_site_custom_domain.static.domain_name
-    BBR_WEB_SITE_HOST        = azurerm_app_service_custom_hostname_binding.bbr5.hostname
+    BBR_WEB_SITE_PREFIX      = terraform.workspace == "prod" ? "bbr5" : "bbr5-${terraform.workspace}"
   }
 }
 
