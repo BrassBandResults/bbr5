@@ -16,6 +16,7 @@ The following environment variables are used by the site.
 * BBR_SMTP_SERVER_HOST - hostname for the SMTP server to use, probably __`smtp.sendgrid.net`__
 * BBR_SMTP_SERVER_USERNAME - username for SMTP server
 * BBR_SMTP_SERVER_PASSWORD - password for SMTP server
+* BBR_STATIC_HOST_HOST - hostname for static files, probably __`static.brassbandresults.co.uk`__
 * BBR_STRIPE_PUBLIC_BUY_BUTTON - Stripe buy button, starts with buy_btn_
 * BBR_STRIPE_PUBLIC_PUBLISHABLE_KEY - Stripe publishable key, starts with pk_
 * BBR_STRIPE_PRIVATE_API_KEY - Stripe private key, starts with sk_
