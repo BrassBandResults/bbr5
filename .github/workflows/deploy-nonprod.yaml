@@ -2,8 +2,7 @@ name: deploy
 
 on:
   pull_request_target:
-    types:
-      - '!closed'
+    types: [opened, synchronize, reopened]
 
 env:
   REGISTRY: ghcr.io
