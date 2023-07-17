@@ -8,6 +8,6 @@ public class GlobalModelAttribute {
 
     @ModelAttribute("STATIC_HOST")
     public String staticHost() {
-        return GlobalConstants.STATIC_HOST;
+        return "https://" + System.getenv("BBR_STATIC_FILES_HOST");
     }
 }

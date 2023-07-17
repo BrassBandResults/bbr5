@@ -2,6 +2,7 @@ package uk.co.bbr.services.events;
 
 import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.contests.dao.ContestDao;
+import uk.co.bbr.services.contests.dto.ContestStreakDto;
 import uk.co.bbr.services.contests.sql.dto.ContestWinsSqlDto;
 import uk.co.bbr.services.events.dao.ContestEventDao;
 import uk.co.bbr.services.events.dao.ContestResultDao;
@@ -36,4 +37,6 @@ public interface ResultService {
     List<ContestResultDao> fetchResultsForContestAndDraw(ContestDao contestDao, int draw);
 
     void update(ContestResultDao result);
+
+    List<ContestStreakDto> fetchStreaksForContest(ContestDao contest);
 }

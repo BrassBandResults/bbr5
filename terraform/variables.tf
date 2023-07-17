@@ -34,3 +34,9 @@ variable "cloudflare_zone_id" {
   type        = string
   default     = ""
 }
+
+variable "home_ip" {
+  description = "home ip address for database access"
+  type        = string
+  default     = "82.69.23.82"
+}

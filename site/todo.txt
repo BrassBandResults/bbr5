@@ -1,9 +1,3 @@
-csrf
-
-Azure Function receives band and venue changes and updates cosmosdb
-Azure Function updates points on a user, by calling api on site
-
-Add results - add results parse block
 Add results - add results fix unknown band
 Add results - add results fix unknown conductor
 Add results - add adjudicators
@@ -15,13 +9,7 @@ Edit result
 Edit adjudicators
 Edit Test Pieces
 
-Have dynamic site name in the emails service
-Make it work with bbr5 prefix for this site
-
 Deal with unique slug clash
-
-Event band map/geography
-Event competitors
 
 Person profile support
 
@@ -40,9 +28,23 @@ Add classifieds to users profile page
 Show user's performances of pieces on piece page tab
 
 Upgrade to pro
+Ads for non-pro users
+
+csrf
+
+Event band map/geography
+Event competitors
+
+CosmosDB
+Storage Account for queues
+Push band and venue location changes to queue
+Azure Function receives band and venue changes and updates cosmosdb
+Push events that trigger a points aware to a queue
+Azure Function updates points on a user, by calling api on site
 
 Something on the homepage
 Blog on the homepage
+On this day in history
 Assign points
 
 Search for location on map and give bands and venues within specific range of it
@@ -55,5 +57,3 @@ Download conductor csv
 
 Member can add missing conductor
 Member can add missing points etc on a result
-
-contest streaks
