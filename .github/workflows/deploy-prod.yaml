@@ -130,12 +130,15 @@ jobs:
       -
         name: Upload Static Site
         uses: Azure/static-web-apps-deploy@v1
+        env:
+          DEPLOYMENT_PROVIDER: "Custom"
+          REPOSITORY_URL: ${{github.event.repository.html_url}}
+          BRANCH: ${{github.event.pull_request.head.ref}}
         with:
           azure_static_web_apps_api_token: ${{ steps.tfoutputs.outputs.static_site_api_key }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: "upload"
           app_location: "/static"
-          skip_app_build: true
-          skip_api_build: true
-          deployment_environment: "Production"
+          skip_app_build: "true"
+          skip_api_build: "true"
 
