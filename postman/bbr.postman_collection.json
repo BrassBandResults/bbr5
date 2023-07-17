@@ -91,12 +91,5 @@
 				]
 			}
 		}
-	],
-	"variable": [
-		{
-			"key": "SITE_URL",
-			"value": "https://bbr5.brassbandresults.co.uk",
-			"type": "default"
-		}
 	]
 }
