@@ -5,22 +5,22 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import uk.co.bbr.services.people.PersonService;
-import uk.co.bbr.services.people.dao.PersonDao;
+import uk.co.bbr.services.regions.RegionService;
+import uk.co.bbr.services.regions.dao.RegionDao;
 import uk.co.bbr.services.venues.VenueService;
 import uk.co.bbr.services.venues.dao.VenueDao;
 
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/venues")
+@RequestMapping("/api/regions")
 @RequiredArgsConstructor
-public class VenueApiController {
+public class RegionApiController {
 
-    private final VenueService venueService;
+    private final RegionService regionService;
 
     @GetMapping("/{slug}")
-    public Optional<VenueDao> getVenue(@PathVariable("slug") String slug) {
-        return this.venueService.fetchBySlug(slug);
+    public Optional<RegionDao> getRegion(@PathVariable("slug") String slug) {
+        return this.regionService.fetchBySlug(slug);
     }
 }

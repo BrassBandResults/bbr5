@@ -137,4 +137,9 @@ jobs:
           app_location: "/static"
           skip_app_build: "true"
           skip_api_build: "true"
-
+      -
+        name: Install newman
+        run: npm install -g newman
+      -
+        name: Run newman tests
+        run: newman run "postman/bbr.postman_collection.json" --global-var SITE_URL="https://bbr5.brassbandresults.co.uk"
