@@ -2,7 +2,8 @@ name: terraform-plan
 
 on:
   pull_request_target:
-    types: [opened, edited, reopened]
+    types:
+      - '!closed'
  
 jobs:
   authorize:
