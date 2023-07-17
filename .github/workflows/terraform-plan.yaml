@@ -2,7 +2,7 @@ name: terraform-plan
 
 on:
   pull_request_target:
-    types: [opened, synchronize, edited, reopened]
+    types: [opened, synchronize, reopened]
  
 jobs:
   authorize:
@@ -57,4 +57,4 @@ jobs:
           TF_VAR_smtp_username: ${{ secrets.TF_VAR_smtp_username }}
           TF_VAR_smtp_password: ${{ secrets.TF_VAR_smtp_password }}
           TF_VAR_cloudflare_zone_id: ${{ secrets.TF_VAR_cloudflare_zone_id }}
-        run: cd terraform && terraform plan
+        run: cd terraform && terraform plan -lock=false
