@@ -16,6 +16,6 @@ public class PeopleApiController {
 
     @GetMapping("/{slug}")
     public Optional<PersonDao> getPerson(@PathVariable("slug") String slug) {
-        return personService.fetchBySlug(slug);
+        return this.personService.fetchBySlug(slug);
     }
 }
