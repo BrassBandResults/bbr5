@@ -51,7 +51,7 @@ jobs:
         with:
           context: site/.
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: ${{ env.REGISTRY }}/brassbandresults/bbr5:pr-${{ github.event.number }}-${{ github.run_number }}
           labels: ${{ steps.meta.outputs.labels }}
           platforms: linux/amd64
           provenance: false
@@ -85,7 +85,7 @@ jobs:
           ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
           ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
           ARM_ACCESS_KEY: ${{ secrets.ARM_ACCESS_KEY }}
-        run: cd terraform && terraform init && terraform workspace select pr-${{ github.event.number }}-${{ github.run_number }} || terraform workspace new pr-${{ github.event.number }}-${{ github.run_number }}
+        run: cd terraform && terraform init && terraform workspace select pr-${{ github.event.number }} || terraform workspace new pr-${{ github.event.number }}
       -
         name: Terraform Validate
         run: terraform validate
