@@ -5,22 +5,22 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import uk.co.bbr.services.pieces.PieceService;
-import uk.co.bbr.services.pieces.dao.PieceDao;
+import uk.co.bbr.services.contests.ContestService;
+import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.venues.VenueService;
 import uk.co.bbr.services.venues.dao.VenueDao;
 
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/pieces")
+@RequestMapping("/api/contests")
 @RequiredArgsConstructor
-public class PieceApiController {
+public class ContestApiController {
 
-    private final PieceService pieceService;
+    private final ContestService contestService;
 
     @GetMapping("/{slug}")
-    public Optional<PieceDao> getPiece(@PathVariable("slug") String slug) {
-        return this.pieceService.fetchBySlug(slug);
+    public Optional<ContestDao> getContest(@PathVariable("slug") String slug) {
+        return this.contestService.fetchBySlug(slug);
     }
 }
