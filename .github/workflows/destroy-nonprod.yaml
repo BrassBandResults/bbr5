@@ -58,4 +58,5 @@ jobs:
           TF_VAR_cloudflare_zone_id: ${{ secrets.TF_VAR_cloudflare_zone_id }}
         run: |
           cd terraform && terraform destroy -auto-approve
+          terraform workspace select default
           terraform workspace delete pr-${{ github.event.number }}
