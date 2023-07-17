@@ -6,9 +6,14 @@ import com.auth0.jwt.exceptions.SignatureVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.GenericFilterBean;
+import uk.co.bbr.SwaggerConfiguration;
+import uk.co.bbr.api.security.ApiKeyAuthentication;
 import uk.co.bbr.services.security.JwtService;
 import uk.co.bbr.web.SessionKeys;
 
@@ -20,6 +25,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -38,11 +44,6 @@ public class SecurityFilter extends GenericFilterBean {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest servletRequest = (HttpServletRequest)request;
 
-        String nextPage = servletRequest.getServletPath();
-        if (!nextPage.startsWith("/acc/")) {
-            servletRequest.getSession().setAttribute(SessionKeys.LOGIN_NEXT_PAGE, nextPage);
-        }
-
         if (servletRequest.getServletPath().startsWith(SecurityFilter.URL_SIGN_IN)) {
             chain.doFilter(request, response);
             return;
@@ -51,6 +52,45 @@ public class SecurityFilter extends GenericFilterBean {
         if (servletRequest.getServletPath().startsWith("/error")) {
             chain.doFilter(request, response);
             return;
+        }
+
+        if (servletRequest.getServletPath().startsWith("/api/")) {
+            this.authApiRequest(servletRequest, response, chain);
+        } else {
+            this.authWebRequest(servletRequest, response, chain);
+        }
+    }
+
+    private void authApiRequest(HttpServletRequest servletRequest, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+        try {
+            Authentication authentication = SecurityFilter.getApiAuthentication(servletRequest);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+        } catch (Exception exp) {
+            HttpServletResponse httpResponse = (HttpServletResponse) response;
+            httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            httpResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
+            PrintWriter writer = httpResponse.getWriter();
+            writer.print(exp.getMessage());
+            writer.flush();
+            writer.close();
+        }
+
+        chain.doFilter(servletRequest, response);
+    }
+
+    private static Authentication getApiAuthentication(HttpServletRequest request) {
+        String apiKey = request.getHeader(SwaggerConfiguration.API_KEY_HEADER);
+        if (apiKey == null || !apiKey.equals("ABC123")) {
+            throw new BadCredentialsException("Invalid API Key");
+        }
+
+        return new ApiKeyAuthentication(apiKey, AuthorityUtils.NO_AUTHORITIES);
+    }
+
+    private void authWebRequest(HttpServletRequest servletRequest, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+        String nextPage = servletRequest.getServletPath();
+        if (!nextPage.startsWith("/acc/")) {
+            servletRequest.getSession().setAttribute(SessionKeys.LOGIN_NEXT_PAGE, nextPage);
         }
 
         Cookie[] cookies = servletRequest.getCookies();
@@ -68,20 +108,19 @@ public class SecurityFilter extends GenericFilterBean {
                     SecurityContextHolder.getContext().setAuthentication(auth);
 
                     // proceed to next filter in chain
-                    chain.doFilter(request, response);
-                } catch (final SignatureVerificationException | InvalidClaimException | JWTDecodeException ex ) {
+                    chain.doFilter(servletRequest, response);
+                } catch (final SignatureVerificationException | InvalidClaimException | JWTDecodeException ex) {
                     // Token failed validation
                     ((HttpServletResponse) response).setStatus(HttpStatus.FORBIDDEN.value());
                     response.getWriter().write("Invalid user session");
                 }
             } else {
                 // no token, pass request on
-                chain.doFilter(request, response);
+                chain.doFilter(servletRequest, response);
             }
-        }
-        else {
+        } else {
             // no cookies, pass request on
-            chain.doFilter(request, response);
+            chain.doFilter(servletRequest, response);
         }
     }
 }
