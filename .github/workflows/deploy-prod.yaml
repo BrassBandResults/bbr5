@@ -125,7 +125,7 @@ jobs:
           TF_VAR_docker_image_tag: ${{ needs.create-release.outputs.tag }}
           TF_VAR_cloudflare_zone_id: ${{ secrets.TF_VAR_cloudflare_zone_id }}
         run: |
-          cd terraform && terraform apply -auto-approve
+          cd terraform && terraform apply -auto-approve -lock-timeout=5m
           printf "static_site_api_key=%s\n" $(terraform output -raw static_site_api_key) >> "$GITHUB_OUTPUT"
       -
         name: Upload Static Site
