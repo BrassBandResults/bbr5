@@ -30,3 +30,5 @@ spring:
           auth: true
           starttls:
             enable: true
+springdoc:
+    packagesToScan=uk.co.bbr.api
