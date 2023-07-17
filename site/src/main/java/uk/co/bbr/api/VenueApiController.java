@@ -20,7 +20,7 @@ public class VenueApiController {
     private final VenueService venueService;
 
     @GetMapping("/{slug}")
-    public Optional<VenueDao> getPerson(@PathVariable("slug") String slug) {
+    public Optional<VenueDao> getVenue(@PathVariable("slug") String slug) {
         return this.venueService.fetchBySlug(slug);
     }
 }
