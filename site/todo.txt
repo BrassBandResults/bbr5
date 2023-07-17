@@ -31,6 +31,7 @@ Upgrade to pro
 Ads for non-pro users
 
 csrf
+Validate api key
 
 Event band map/geography
 Event competitors
