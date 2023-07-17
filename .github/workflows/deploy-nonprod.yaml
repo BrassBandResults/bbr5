@@ -2,7 +2,8 @@ name: deploy
 
 on:
   pull_request_target:
-    types: [opened, edited, reopened]
+    types:
+      - '!closed'
 
 env:
   REGISTRY: ghcr.io
@@ -85,7 +86,7 @@ jobs:
           ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
           ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
           ARM_ACCESS_KEY: ${{ secrets.ARM_ACCESS_KEY }}
-        run: cd terraform && terraform init && terraform workspace select pr-${{ github.event.number }} || terraform workspace new pr-${{ github.event.number }}
+        run: cd terraform && terraform init && terraform workspace select pr-${{ github.event.number }}-${{ github.run_number }} || terraform workspace new pr-${{ github.event.number }}-${{ github.run_number }}
       -
         name: Terraform Validate
         run: terraform validate
@@ -102,7 +103,7 @@ jobs:
           TF_VAR_smtp_hostname: ${{ secrets.TF_VAR_smtp_hostname }}
           TF_VAR_smtp_username: ${{ secrets.TF_VAR_smtp_username }}
           TF_VAR_smtp_password: ${{ secrets.TF_VAR_smtp_password }}
-          TF_VAR_docker_image_tag: pr-${{ github.event.number }}
+          TF_VAR_docker_image_tag: pr-${{ github.event.number }}-${{ github.run_number }}
           TF_VAR_cloudflare_zone_id: ${{ secrets.TF_VAR_cloudflare_zone_id }}
         run: |
           cd terraform && terraform apply -auto-approve
@@ -115,3 +116,4 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: "upload"
           app_location: "/static"
+          deployment_environment: Production
