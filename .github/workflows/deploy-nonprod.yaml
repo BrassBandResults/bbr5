@@ -116,3 +116,4 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: "upload"
           app_location: "/static"
+          deployment_environment: Production
