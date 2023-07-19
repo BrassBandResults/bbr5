@@ -4,12 +4,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import uk.co.bbr.services.framework.AbstractDao;
-import uk.co.bbr.services.security.types.ContestHistoryVisibility;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import java.time.LocalDateTime;
 
 @Getter
 @Setter

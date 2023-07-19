@@ -10,6 +10,7 @@ import uk.co.bbr.services.contests.ContestService;
 import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.events.PersonResultService;
 import uk.co.bbr.services.events.ResultService;
+import uk.co.bbr.services.events.dao.ContestAdjudicatorDao;
 import uk.co.bbr.services.events.dto.ResultDetailsDto;
 import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.groups.ContestGroupService;
@@ -121,6 +122,33 @@ public class PersonController {
         model.addAttribute("Pieces", personPieces);
 
         return "people/person-pieces";
+    }
+
+    @GetMapping("/people/{personSlug:[\\-a-z\\d]{2,}}/adjudicator")
+    public String personAdjudications(Model model, @PathVariable("personSlug") String personSlug) {
+        Optional<PersonDao> person = this.personService.fetchBySlug(personSlug);
+        if (person.isEmpty()) {
+            throw NotFoundException.personNotFoundBySlug(personSlug);
+        }
+
+        List<PersonAliasDao> previousNames = this.personAliasService.findVisibleAliases(person.get());
+        List<ContestAdjudicatorDao> adjudications = this.personService.fetchAdjudications(person.get());
+        ResultDetailsDto personConductingResults = this.personResultService.findResultsForConductor(person.get(), ResultSetCategory.ALL);
+        int adjudicationsCount = this.personService.fetchAdjudicationCount(person.get());
+        int composerCount = this.personService.fetchComposerCount(person.get());
+        int arrangerCount = this.personService.fetchArrangerCount(person.get());
+        List<PersonRelationshipDao> personRelationships = this.personRelationshipService.fetchRelationshipsForPerson(person.get());
+
+        model.addAttribute("Person", person.get());
+        model.addAttribute("PreviousNames", previousNames);
+        model.addAttribute("ResultsCount", personConductingResults.getBandNonWhitResults().size());
+        model.addAttribute("WhitCount", personConductingResults.getBandWhitResults().size());
+        model.addAttribute("AdjudicationsCount", adjudicationsCount);
+        model.addAttribute("PieceCount", composerCount + arrangerCount);
+        model.addAttribute("PersonRelationships", personRelationships);
+        model.addAttribute("Adjudications", adjudications);
+
+        return "people/person-adjudications";
     }
 
     @IsBbrPro

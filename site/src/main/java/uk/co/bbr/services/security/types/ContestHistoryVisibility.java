@@ -25,8 +25,11 @@ public enum ContestHistoryVisibility {
     }
 
     public static ContestHistoryVisibility fromCode(String code) {
+        if (code == null) {
+            return ContestHistoryVisibility.SITE_ONLY;
+        }
         return Stream.of(ContestHistoryVisibility.values())
-                .filter(c -> c.getCode().equals(code))
+                .filter(c -> c.getCode().equals(code.trim().toUpperCase()))
                 .findFirst()
                 .orElseThrow(IllegalArgumentException::new);
     }

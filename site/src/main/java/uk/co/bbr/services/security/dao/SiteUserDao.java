@@ -3,6 +3,7 @@ package uk.co.bbr.services.security.dao;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.apache.commons.lang3.RandomStringUtils;
 import uk.co.bbr.services.framework.AbstractDao;
 import uk.co.bbr.services.security.types.ContestHistoryVisibility;
 
@@ -176,5 +177,12 @@ public class SiteUserDao extends AbstractDao {
         return "https://gravatar.com/avatar/" +
                 emailMd5 +
                 "/?s=80&default=identicon";
+    }
+
+    public String getUuid() {
+        if (this.uuid.length() < 40) {
+            this.uuid = RandomStringUtils.randomAlphanumeric(40);
+        }
+        return this.uuid;
     }
 }

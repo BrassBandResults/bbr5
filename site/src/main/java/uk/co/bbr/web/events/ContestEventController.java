@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import uk.co.bbr.services.events.ContestEventService;
 import uk.co.bbr.services.events.ResultService;
+import uk.co.bbr.services.events.dao.ContestAdjudicatorDao;
 import uk.co.bbr.services.events.dao.ContestEventDao;
 import uk.co.bbr.services.events.dao.ContestEventTestPieceDao;
 import uk.co.bbr.services.events.dao.ContestResultDao;
@@ -58,9 +59,11 @@ public class ContestEventController {
         }
 
         List<ContestEventTestPieceDao> eventTestPieces = this.contestEventService.listTestPieces(contestEvent.get());
+        List<ContestAdjudicatorDao> adjudicators = this.contestEventService.fetchAdjudicators(contestEvent.get());
 
         model.addAttribute("ContestEvent", contestEvent.get());
         model.addAttribute("EventTestPieces", eventTestPieces);
+        model.addAttribute("Adjudicators", adjudicators);
         model.addAttribute("ContestOwner", contestOwner);
         model.addAttribute("EventResults", eventResults);
         model.addAttribute("NextEvent", nextEvent);

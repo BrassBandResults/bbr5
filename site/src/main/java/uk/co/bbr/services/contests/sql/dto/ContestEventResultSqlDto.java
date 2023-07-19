@@ -28,6 +28,8 @@ public class ContestEventResultSqlDto extends AbstractSqlDto {
     private final String conductor3Slug;
     private final String conductor3FirstNames;
     private final String conductor3Surname;
+    private final String eventNotes;
+    private final Boolean noContest;
 
 
     public ContestEventResultSqlDto(Object[] columnList) {
@@ -52,5 +54,7 @@ public class ContestEventResultSqlDto extends AbstractSqlDto {
         this.conductor3Slug = (String)columnList[17];
         this.conductor3FirstNames = (String)columnList[18];
         this.conductor3Surname = (String)columnList[19];
+        this.eventNotes = (String)columnList[20];
+        this.noContest = (Boolean)columnList[21];
     }
 }

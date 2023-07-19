@@ -3,6 +3,7 @@ package uk.co.bbr.services.events.dao;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.framework.AbstractDao;
 import uk.co.bbr.services.framework.mixins.NameTools;
 import uk.co.bbr.services.people.dao.PersonDao;
@@ -13,6 +14,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Getter
 @Entity
@@ -34,6 +36,9 @@ public class ContestAdjudicatorDao extends AbstractDao implements NameTools {
     @JoinColumn(name="person_id")
     @Setter
     private PersonDao adjudicator;
+
+    @Transient
+    private BandDao winner;
 
     public void setName(String value){
         this.name = simplifyPersonFullName(value);

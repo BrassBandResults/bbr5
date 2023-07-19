@@ -1,9 +1,9 @@
-<span th:fragment="personLink(person, surnameFirst, showKnownFor)">
+<span th:fragment="personLink(person, surnameFirst, showKnownFor)" th:remove="tag">
     <span th:if="${person != null}" th:remove="tag">
-        <span th:if="${person.slug == 'unknown'}">
+        <span th:if="${person.slug == 'unknown'}" th:remove="tag">
             <span class="text-danger">Unknown</span>
         </span>
-        <span th:if="${person.slug != 'unknown'}">
+        <span th:if="${person.slug != 'unknown'}" th:remove="tag">
             <span th:if="${surnameFirst}" th:remove="tag">
                 <a th:if="${person != null}" th:href="${'/people/' + person.slug}" th:text="${person.nameSurnameFirst}" class="bbr-person">Childs, Bob</a>
             </span>
@@ -26,6 +26,12 @@
         <span th:if="${result.conductorThird != null}" th:remove="tag">
             <br/><span th:replace="links/person-link.html :: personLink(${result.conductorThird}, false, false)">Bob Childs</span>
         </span>
+    </span>
+</span>
+
+<span th:fragment="adjudicatorsLink(adjudicators)">
+    <span th:each="adjudicator, iStat : ${Adjudicators}" th:remove="tag">
+        <span th:remove="tag" th:replace="links/person-link.html :: personLink(${adjudicator.adjudicator}, false, false)">Bob Childs</span><span th:if="${!iStat.last}" th:remove="tag">, </span>
     </span>
 </span>
 

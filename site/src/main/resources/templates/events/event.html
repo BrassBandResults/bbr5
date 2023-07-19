@@ -28,7 +28,9 @@
             </tr>
             <tr>
                 <th th:text="#{page.field-prompt.adjudicators}">Adjudicators:</th>
-                <td></td>
+                <td>
+                    <span th:replace="links/person-link.html :: adjudicatorsLink(${Adjudicators})">Bob Childs</span>
+                </td>
             </tr>
             <tr>
                 <th th:text="#{page.field-prompt.venue}">Venue:</th>

@@ -216,6 +216,8 @@ public class ContestEventServiceImpl implements ContestEventService {
             currentEvent.setContest(new ContestDao());
             currentEvent.setEventDate(eachSqlEvent.getEventDate());
             currentEvent.setEventDateResolution(ContestEventDateResolution.fromCode(eachSqlEvent.getEventDateResolution()));
+            currentEvent.setNotes(eachSqlEvent.getEventNotes());
+            currentEvent.setNoContest(eachSqlEvent.getNoContest());
             currentEvent.getContest().setSlug(eachSqlEvent.getContestSlug());
             if (!returnEvents.isEmpty()) {
                 ContestEventDao previousEvent = returnEvents.get(returnEvents.size() - 1);

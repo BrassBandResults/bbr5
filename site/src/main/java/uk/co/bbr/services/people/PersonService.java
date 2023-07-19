@@ -1,6 +1,7 @@
 package uk.co.bbr.services.people;
 
 import uk.co.bbr.services.bands.dao.BandDao;
+import uk.co.bbr.services.events.dao.ContestAdjudicatorDao;
 import uk.co.bbr.services.people.dao.PersonAliasDao;
 import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.people.dto.ConductorCompareDto;
@@ -25,6 +26,8 @@ public interface PersonService {
     PeopleListDto listPeopleStartingWith(String prefix);
 
     int fetchAdjudicationCount(PersonDao person);
+
+    List<ContestAdjudicatorDao> fetchAdjudications(PersonDao person);
 
     int fetchComposerCount(PersonDao person);
 

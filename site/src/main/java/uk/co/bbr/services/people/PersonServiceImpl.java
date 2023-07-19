@@ -5,6 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.events.ResultService;
+import uk.co.bbr.services.events.dao.ContestAdjudicatorDao;
 import uk.co.bbr.services.events.repo.ContestAdjudicatorRepository;
 import uk.co.bbr.services.framework.ValidationException;
 import uk.co.bbr.services.framework.mixins.SlugTools;
@@ -170,6 +171,11 @@ public class PersonServiceImpl implements PersonService, SlugTools {
      @Override
     public int fetchAdjudicationCount(PersonDao person) {
         return this.contestAdjudicatorRepository.fetchAdjudicationCountForPerson(person.getId());
+    }
+
+    @Override
+    public List<ContestAdjudicatorDao> fetchAdjudications(PersonDao person) {
+        return this.contestAdjudicatorRepository.fetchAdjudicationsForPerson(person.getId());
     }
 
     @Override
