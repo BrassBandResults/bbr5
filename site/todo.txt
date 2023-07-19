@@ -13,6 +13,9 @@ Deal with unique slug clash
 
 Person profile support
 
+Your adjudications
+Winner in adjudicators list
+
 Initial User's profile page at /users/<username>
 Change password for user
 Add contest history to users profile page

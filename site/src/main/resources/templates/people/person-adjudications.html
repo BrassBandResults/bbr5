@@ -35,8 +35,8 @@
             <tbody>
                 <tr th:each="adjudication : ${Adjudications}">
                     <td class="bbr-event" nowrap><span th:replace="links/event-link.html :: eventLink(${adjudication.contestEvent})">9th Sep 2023</span></td>
-                    <td class="bbr-contest"><span th:text="${adjudication.contestEvent.contest.name}">Yorkshire Area</span></td>
-                    <td class="bbr-band"><span th:replace="links/band-link.html :: bandLinkWithOverride(${adjudication.winner})"></span></td>
+                    <td class="bbr-contest"><span th:text="${adjudication.contestEvent.name}">Yorkshire Area</span></td>
+                    <td class="bbr-band"><span th:replace="links/band-link.html :: bandLink(${adjudication.winner},true,false)"></span></td>
                 </tr>
             </tbody>
         </table>

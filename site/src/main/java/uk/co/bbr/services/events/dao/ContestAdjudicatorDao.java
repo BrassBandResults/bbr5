@@ -38,6 +38,7 @@ public class ContestAdjudicatorDao extends AbstractDao implements NameTools {
     private PersonDao adjudicator;
 
     @Transient
+    @Setter
     private BandDao winner;
 
     public void setName(String value){
