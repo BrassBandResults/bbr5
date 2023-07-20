@@ -13,7 +13,7 @@ public interface ContestResultRepository extends JpaRepository<ContestResultDao,
             "LEFT OUTER JOIN PersonDao c1 ON c1.id = r.conductor.id " +
             "LEFT OUTER JOIN PersonDao c2 ON c2.id = r.conductorSecond.id " +
             "LEFT OUTER JOIN PersonDao c3 ON c3.id = r.conductorThird.id " +
-            "WHERE r.contestEvent.id = :eventId")
+            "WHERE r.contestEvent.id = :eventId ORDER BY r.position")
     List<ContestResultDao> findAllForEvent(Long eventId);
 
     @Query("SELECT r FROM ContestResultDao r WHERE r.contestEvent.id = :eventId AND r.band.id = :bandId")
