@@ -13,12 +13,9 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
-import uk.co.bbr.services.bands.BandService;
-import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.groups.ContestGroupService;
 import uk.co.bbr.services.groups.dao.ContestGroupDao;
 import uk.co.bbr.services.groups.types.ContestGroupType;
-import uk.co.bbr.services.migrate.GroupMigrationService;
 import uk.co.bbr.services.regions.RegionService;
 import uk.co.bbr.services.regions.dao.RegionDao;
 import uk.co.bbr.services.security.JwtService;
@@ -27,7 +24,6 @@ import uk.co.bbr.web.LoginMixin;
 import uk.co.bbr.web.security.filter.SecurityFilter;
 import uk.co.bbr.web.security.support.TestUser;
 
-import java.time.LocalDate;
 import java.util.Objects;
 import java.util.Optional;
 
