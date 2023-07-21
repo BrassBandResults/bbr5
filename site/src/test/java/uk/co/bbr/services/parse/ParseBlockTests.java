@@ -85,7 +85,7 @@ class ParseBlockTests implements LoginMixin {
         String testEntry = "1. Black Dyke Band, Robert Childs, 5, 123";
 
         // act
-        List<ParseResultDto> parseResult = this.parseResultService.parseBlock(testEntry, LocalDate.now());
+        List<ParseResultDto> parseResult = this.parseResultService.parseBlock(testEntry, LocalDate.now()).getResultLines();
 
         // assert
         assertEquals(1, parseResult.size());
@@ -113,7 +113,7 @@ class ParseBlockTests implements LoginMixin {
                   5. Rothwell Temperance, David Roberts, 26""";
 
         // act
-        List<ParseResultDto> parseResult = this.parseResultService.parseBlock(testEntry, LocalDate.now());
+        List<ParseResultDto> parseResult = this.parseResultService.parseBlock(testEntry, LocalDate.now()).getResultLines();
 
         // assert
         assertEquals(2, parseResult.size());

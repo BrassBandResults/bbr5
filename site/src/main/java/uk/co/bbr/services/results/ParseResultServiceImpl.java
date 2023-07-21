@@ -3,6 +3,7 @@ package uk.co.bbr.services.results;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import uk.co.bbr.services.results.dto.ParseResultDto;
+import uk.co.bbr.services.results.dto.ParsedResultsDto;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ public class ParseResultServiceImpl implements ParseResultService {
     private final FinderService finderService;
 
     @Override
-    public List<ParseResultDto> parseBlock(String resultBlock, LocalDate dateContext) {
+    public ParsedResultsDto parseBlock(String resultBlock, LocalDate dateContext) {
         List<ParseResultDto> parsedResults = new ArrayList<>();
 
         String[] lines = resultBlock.split("\n");
@@ -26,7 +27,7 @@ public class ParseResultServiceImpl implements ParseResultService {
             parsedResults.add(this.parseLine(line, dateContext));
         }
 
-        return parsedResults;
+        return new ParsedResultsDto(parsedResults);
     }
 
     @Override
