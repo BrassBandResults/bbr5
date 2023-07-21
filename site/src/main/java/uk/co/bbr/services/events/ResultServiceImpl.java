@@ -15,8 +15,11 @@ import uk.co.bbr.services.events.dao.ContestResultDao;
 import uk.co.bbr.services.events.dao.ContestResultPieceDao;
 import uk.co.bbr.services.events.repo.ContestResultPieceRepository;
 import uk.co.bbr.services.events.repo.ContestResultRepository;
+import uk.co.bbr.services.events.sql.EventSql;
 import uk.co.bbr.services.events.sql.ResultFilterSql;
 import uk.co.bbr.services.events.sql.dto.ContestResultDrawPositionSqlDto;
+import uk.co.bbr.services.events.sql.dto.EventResultSqlDto;
+import uk.co.bbr.services.events.sql.dto.ResultPieceSqlDto;
 import uk.co.bbr.services.events.types.ContestEventDateResolution;
 import uk.co.bbr.services.events.types.ResultPositionType;
 import uk.co.bbr.services.people.dao.PersonDao;
@@ -84,7 +87,23 @@ public class ResultServiceImpl implements ResultService {
 
     @Override
     public List<ContestResultDao> fetchForEvent(ContestEventDao event) {
-        return this.contestResultRepository.findAllForEvent(event.getId());
+        List<ContestResultDao> returnResults = new ArrayList<>();
+        List<EventResultSqlDto> resultsSql = EventSql.selectEventResults(this.entityManager, event.getId());
+        for (EventResultSqlDto eachResultSql : resultsSql) {
+            returnResults.add(eachResultSql.getResult());
+        }
+
+        List<ResultPieceSqlDto> resultsPieces = EventSql.selectEventResultPieces(this.entityManager, event.getId());
+        for (ResultPieceSqlDto eachResultPiece : resultsPieces) {
+            for (ContestResultDao eachResult : returnResults) {
+                if (eachResult.getId().equals(eachResultPiece.getResultId())) {
+                    eachResult.getPieces().add(eachResultPiece.asResultPiece());
+                    break;
+                }
+            }
+        }
+
+        return returnResults;
     }
 
     @Override

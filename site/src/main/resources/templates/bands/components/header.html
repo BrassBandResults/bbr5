@@ -17,15 +17,15 @@
             <th th:text="#{page.field-prompt.section}">Section:</th>
             <td th:text="#{${Band.section.translationKey}}"></td>
         </tr>
-        <tr>
+        <tr th:if="${Band.website != null && Band.website.length > 0}">
             <th th:text="#{page.field-prompt.website}">Website:</th>
-            <td><a th:if="${Band.website != null && Band.website.length > 0}" th:href="${Band.website}" th:text="${Band.website}">link</a></td>
+            <td><a th:href="${Band.website}" th:text="${Band.website}">link</a></td>
         </tr>
         <tr>
             <th th:text="#{page.field-prompt.region}">Region:</th>
             <td><span th:replace="links/region-link.html :: regionLink(${Band.region})"></span></td>
         </tr>
-        <tr>
+        <tr th:if="${BandRehearsalDays.size() > 0}">
             <th th:text="#{page.field-prompt.rehearsals}">Rehearsals:</th>
             <td>
                 <span th:each="rehearsalDay : ${BandRehearsalDays}" th:remove="tag">
@@ -34,13 +34,15 @@
             </td>
         </tr>
     </table>
-    <b th:text="#{page.field-prompt.relationships}">Relationships:</b>
-    <ul>
-        <li th:each="relationship : ${BandRelationships}">
-            <span th:text="#{${relationship.relationshipName(Band)}}">relationship</span>
-            <span th:replace="links/band-link.html :: bandLinkWithNameOverride(${relationship.otherBand(Band)}, ${relationship.otherBandName(Band)})">Band Name</span>
-        </li>
-    </ul>
+    <span th:if="${BandRelationships.size() > 0}">
+        <b th:text="#{page.field-prompt.relationships}">Relationships:</b>
+        <ul>
+            <li th:each="relationship : ${BandRelationships}">
+                <span th:text="#{${relationship.relationshipName(Band)}}">relationship</span>
+                <span th:replace="links/band-link.html :: bandLinkWithNameOverride(${relationship.otherBand(Band)}, ${relationship.otherBandName(Band)})">Band Name</span>
+            </li>
+        </ul>
+    </span>
     <br/>
     <div style="white-space: pre-line" th:text="${#strings.escapeXml(Band.notes)}">Notes</div>
     <br/>

@@ -17,6 +17,9 @@ public class ContestTypeDao extends AbstractDao implements NameTools {
     @Column(name="name", nullable=false)
     private String name;
 
+    @Column(name="translation_key", nullable=false)
+    private String translationKey;
+
     @Column(name="old_id")
     private String oldId;
 

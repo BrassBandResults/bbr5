@@ -293,11 +293,7 @@ public class ContestEventServiceImpl implements ContestEventService {
 
     @Override
     public ContestEventDao fetchEventLinkNext(ContestEventDao contestEventDao) {
-        if (contestEventDao.getContest().getContestGroup() == null) {
-            return null;
-        }
-
-        EventUpDownLeftRightSqlDto linkEvent = EventSql.selectLinkedNextEvent(this.entityManager, contestEventDao.getContest().getContestGroup().getSlug(), contestEventDao.getContest().getOrdering(), contestEventDao.getEventDate().getYear());
+        EventUpDownLeftRightSqlDto linkEvent = EventSql.selectLinkedNextEvent(this.entityManager, contestEventDao.getContest().getSlug(), contestEventDao.getEventDate().getYear());
         if (linkEvent == null) {
             return null;
         }
@@ -306,11 +302,7 @@ public class ContestEventServiceImpl implements ContestEventService {
 
     @Override
     public ContestEventDao fetchEventLinkPrevious(ContestEventDao contestEventDao) {
-        if (contestEventDao.getContest().getContestGroup() == null) {
-            return null;
-        }
-
-        EventUpDownLeftRightSqlDto linkEvent = EventSql.selectLinkedPreviousEvent(this.entityManager, contestEventDao.getContest().getContestGroup().getSlug(), contestEventDao.getContest().getOrdering(), contestEventDao.getEventDate().getYear());
+        EventUpDownLeftRightSqlDto linkEvent = EventSql.selectLinkedPreviousEvent(this.entityManager, contestEventDao.getContest().getSlug(), contestEventDao.getEventDate().getYear());
         if (linkEvent == null) {
             return null;
         }
