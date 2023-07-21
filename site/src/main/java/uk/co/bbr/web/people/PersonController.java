@@ -179,6 +179,7 @@ public class PersonController {
         return "people/person-adjudications";
     }
 
+    @IsBbrPro
     @GetMapping("/people/{personSlug:[\\-a-z\\d]{2,}}/user-adjudications")
     public String personAdjudicationsForCurrentUser(Model model, @PathVariable("personSlug") String personSlug) {
         Optional<PersonDao> person = this.personService.fetchBySlug(personSlug);
