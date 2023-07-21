@@ -3,6 +3,11 @@ Add results - add results fix unknown conductor
 Add results - add adjudicators
 Add results - add notes
 
+Data migrate - Tag links to group
+Data migrate - Tag links to contest
+Data migrate - pro users
+Data migrate - superusers
+
 Security on who can edit result
 
 Edit result
