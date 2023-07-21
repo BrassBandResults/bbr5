@@ -31,7 +31,7 @@
             <tbody>
             <tr th:each="bandPerson : ${BandsConducted}">
                 <td class="person">
-                    <span th:replace="links/person-link.html :: personLink(${bandPerson.person}, false, true)"></span>
+                    <span th:replace="links/person-link.html :: personLinkWithKnownFor(${bandPerson.person})"></span>
                 </td>
                 <td th:text="${bandPerson.bands}">250</td>
             </tr>
