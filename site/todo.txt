@@ -6,11 +6,6 @@ Add results - add notes
 red background for select "must already exist" thing
 yellow background for select "might create this" thing
 
-Data migrate - Tag links to group
-Data migrate - Tag links to contest
-Data migrate - pro users
-Data migrate - superusers
-
 Security on who can edit result
 
 Edit result
@@ -20,9 +15,6 @@ Edit Test Pieces
 Deal with unique slug clash
 
 Person profile support
-
-Your adjudications
-Winner in adjudicators list
 
 Initial User's profile page at /users/<username>
 Change password for user

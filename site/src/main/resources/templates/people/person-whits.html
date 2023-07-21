@@ -17,6 +17,9 @@
         <li class="nav-item" th:if="${AdjudicationsCount > 0}">
             <a class="nav-link" th:href="${'/people/' + Person.slug + '/adjudicator'}" th:text="#{page.person.tab.adjudicating(${AdjudicationsCount})}">Adjudicating</span></a>
         </li>
+        <li class="nav-item" th:if="${UserAdjudicationsCount > 0}">
+            <a class="nav-link" th:href="${'/people/' + Person.slug + '/user-adjudications'}" th:text="#{page.person.tab.user-adjudications(${UserAdjudicationsCount})}">Your Adjudications</a>
+        </li>
         <li class="nav-item" th:if="${PieceCount > 0}">
             <a class="nav-link" th:href="${'/people/' + Person.slug + '/pieces'}" th:text="#{page.person.tab.compositions(${PieceCount})}">Compositions</span></a>
         </li>

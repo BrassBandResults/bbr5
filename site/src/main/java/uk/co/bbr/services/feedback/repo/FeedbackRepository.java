@@ -11,7 +11,7 @@ public interface FeedbackRepository extends JpaRepository<FeedbackDao, Long> {
     @Query("SELECT f FROM FeedbackDao f WHERE f.url = :offset ORDER BY f.id DESC")
     List<FeedbackDao> fetchFeedbackForOffset(String offset);
 
-    @Query("SELECT f FROM FeedbackDao f WHERE f.status = :statusCode")
+    @Query("SELECT f FROM FeedbackDao f WHERE f.status = :statusCode ORDER BY f.id DESC")
     List<FeedbackDao> fetchForType(FeedbackStatus statusCode);
 
     @Query("SELECT COUNT(f) FROM FeedbackDao f WHERE f.status = :statusCode")

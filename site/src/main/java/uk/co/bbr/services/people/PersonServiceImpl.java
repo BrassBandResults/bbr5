@@ -5,6 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import uk.co.bbr.services.events.ResultService;
 import uk.co.bbr.services.events.dao.ContestAdjudicatorDao;
+import uk.co.bbr.services.events.dao.ContestResultDao;
 import uk.co.bbr.services.events.repo.ContestAdjudicatorRepository;
 import uk.co.bbr.services.framework.ValidationException;
 import uk.co.bbr.services.framework.mixins.SlugTools;
@@ -22,8 +23,10 @@ import uk.co.bbr.services.people.sql.dto.AdjudicationsSqlDto;
 import uk.co.bbr.services.people.sql.dto.CompareConductorsSqlDto;
 import uk.co.bbr.services.people.sql.dto.PeopleBandsSqlDto;
 import uk.co.bbr.services.people.sql.dto.PeopleWinnersSqlDto;
+import uk.co.bbr.services.people.sql.dto.UserAdjudicationsSqlDto;
 import uk.co.bbr.services.pieces.repo.PieceRepository;
 import uk.co.bbr.services.security.SecurityService;
+import uk.co.bbr.services.security.dao.SiteUserDao;
 import uk.co.bbr.web.security.annotations.IsBbrAdmin;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
@@ -232,6 +235,25 @@ public class PersonServiceImpl implements PersonService, SlugTools {
     public ConductorCompareDto compareConductors(PersonDao leftPerson, PersonDao rightPerson) {
         List<CompareConductorsSqlDto> results = PeopleCompareSql.compareConductors(this.entityManager, leftPerson.getId(), rightPerson.getId());
         return new ConductorCompareDto(results);
+    }
+
+    @Override
+    public List<ContestResultDao> fetchPersonalAdjudications(SiteUserDao currentUser, PersonDao person) {
+        List<UserAdjudicationsSqlDto> adjudicationsSql = AdjudicatorSql.fetchUserAdjudications(this.entityManager, currentUser.getUsercode(), person.getId());
+
+        List<ContestResultDao> result = new ArrayList<>();
+        for (UserAdjudicationsSqlDto adjudication : adjudicationsSql) {
+            result.add(adjudication.buildContestResultDao());
+        }
+        return result;
+    }
+
+    @Override
+    public int fetchUserAdjudicationsCount(SiteUserDao user, PersonDao person) {
+        if (user == null) {
+            return 0;
+        }
+        return this.fetchPersonalAdjudications(user, person).size();
     }
 
 
