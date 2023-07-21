@@ -2,6 +2,7 @@ package uk.co.bbr.services.security;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,14 @@ public class SecurityServiceImpl implements SecurityService {
 
     @Override
     public SiteUserDao getCurrentUser() {
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        if (securityContext.getAuthentication() == null) {
+            return null;
+        }
+        if (securityContext.getAuthentication() instanceof AnonymousAuthenticationToken) {
+            return null;
+        }
+
         Optional<SiteUserDao> user = this.bbrUserRepository.fetchByUsercode(this.getCurrentUsername());
         if (user.isEmpty()) {
             throw new NotFoundException("Current user not found");

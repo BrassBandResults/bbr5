@@ -250,6 +250,9 @@ public class PersonServiceImpl implements PersonService, SlugTools {
 
     @Override
     public int fetchUserAdjudicationsCount(SiteUserDao user, PersonDao person) {
+        if (user == null) {
+            return 0;
+        }
         return this.fetchPersonalAdjudications(user, person).size();
     }
 
