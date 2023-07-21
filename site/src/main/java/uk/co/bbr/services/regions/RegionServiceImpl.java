@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import uk.co.bbr.services.bands.dao.BandDao;
+import uk.co.bbr.services.bands.sql.BandMapSql;
+import uk.co.bbr.services.bands.sql.dto.RegionBandSqlDto;
 import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.contests.repo.ContestRepository;
 import uk.co.bbr.services.framework.NotFoundException;
@@ -17,6 +19,7 @@ import uk.co.bbr.services.sections.dao.SectionDao;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
+import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -31,6 +34,7 @@ public class RegionServiceImpl implements RegionService, SlugTools {
     private final RegionRepository regionRepository;
     private final ContestRepository contestRepository;
     private final SecurityService securityService;
+    private final EntityManager entityManager;
 
     @Override
     public List<RegionDao> findAll() {
@@ -95,7 +99,12 @@ public class RegionServiceImpl implements RegionService, SlugTools {
 
     @Override
     public List<BandDao> findBandsWithMapLocation(RegionDao region) {
-        return this.regionRepository.fetchBandsForMapForRegion(region.getId());
+        List<BandDao> bandData = new ArrayList<>();
+        List<RegionBandSqlDto> sqlData = BandMapSql.selectBandsForRegionMap(this.entityManager, region.getId());
+        for (RegionBandSqlDto eachRow : sqlData) {
+            bandData.add(eachRow.getBand());
+        }
+        return bandData;
     }
 
     @Override
