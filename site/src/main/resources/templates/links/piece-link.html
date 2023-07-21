@@ -11,7 +11,7 @@
     </span>
 </span>
 
-<span th:fragment="resultPieceLink(result)">
+<span th:fragment="resultPieceWithSetTestIfNone(result)">
     <span th:if="${result.pieces.size > 0}" th:remove="tag">
         <span th:replace="links/piece-link.html :: resultPieces(${result})"></span><br/>
     </span>
