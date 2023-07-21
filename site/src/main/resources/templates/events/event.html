@@ -23,6 +23,10 @@
     <div class="tab-content">
         <table>
             <tr>
+                <th th:text="#{page.field-prompt.format}">Format:</th>
+                <td th:text="#{${ContestEvent.contestType.translationKey}}">Type Name</td>
+            </tr>
+            <tr th:if="${EventTestPieces.size > 0}">
                 <th th:text="#{page.field-prompt.test-piece}">Test Piece:</th>
                 <td><span th:replace="links/piece-link.html :: eventPiecesLink(${EventTestPieces})"></td>
             </tr>
@@ -64,8 +68,16 @@
                     <th th:text="#{page.column-header.position}" class="result">Position</th>
                     <th th:text="#{page.column-header.band}">Band</th>
                     <th th:text="#{page.column-header.conductor}">Conductor</th>
-                    <th th:text="#{page.column-header.test-piece}">Test Piece</th>
-                    <th th:text="#{page.column-header.draw}" class="number">Draw</th>
+                    <th th:text="#{page.column-header.music}">Music</th>
+                    <th th:if="${ContestEvent.contestType.drawOneTitle != null}" th:text="#{${ContestEvent.contestType.drawOneTitle}}" class="number">Draw 1</th>
+                    <th th:if="${ContestEvent.contestType.drawTwoTitle != null}" th:text="#{${ContestEvent.contestType.drawTwoTitle}}" class="number">Draw 2</th>
+                    <th th:if="${ContestEvent.contestType.drawThreeTitle != null}" th:text="#{${ContestEvent.contestType.drawThreeTitle}}" class="number">Draw 3</th>
+                    <th th:if="${ContestEvent.contestType.pointsOneTitle != null}" th:text="#{${ContestEvent.contestType.pointsOneTitle}}" class="number">Points 1</th>
+                    <th th:if="${ContestEvent.contestType.pointsTwoTitle != null}" th:text="#{${ContestEvent.contestType.pointsTwoTitle}}" class="number">Points 2</th>
+                    <th th:if="${ContestEvent.contestType.pointsThreeTitle != null}" th:text="#{${ContestEvent.contestType.pointsThreeTitle}}" class="number">Points 3</th>
+                    <th th:if="${ContestEvent.contestType.pointsFourTitle != null}" th:text="#{${ContestEvent.contestType.pointsFourTitle}}" class="number">Points 4</th>
+                    <th th:if="${ContestEvent.contestType.pointsPenaltyTitle != null}" th:text="#{${ContestEvent.contestType.pointsPenaltyTitle}}" class="number">Points Penalty</th>
+                    <th th:if="${ContestEvent.contestType.pointsTotalTitle != null}" th:text="#{${ContestEvent.contestType.pointsTotalTitle}}" class="number">Points Total</th>
                 </tr>
             </thead>
             <tbody>
@@ -73,12 +85,22 @@
                     <td class="bbr-position"><span th:replace="components/results-position.html :: resultsPosition(${result})">1</span></td>
                     <td class="bbr-band"><span th:replace="links/band-link.html :: bandLinkWithOverride(${result})"></span></td>
                     <td class="bbr-conductor"><span th:replace="links/person-link.html :: conductorsLink(${result})">Bob Childs</span></td>
-                    <td class="bbr-piece"></td>
-                    <td class="bbr-draw">
+                    <td class="bbr-piece">
+                        <span th:replace="links/piece-link.html :: resultPieces(${result})">Bob Childs</span>
+                    </td>
+                    <td class="bbr-draw" th:if="${ContestEvent.contestType.drawOneTitle != null}">
                         <span th:if="${result.draw != 0}">
                           <span th:replace="links/contest-link.html :: contestLinkDraw(${ContestEvent.contest}, ${result.draw})"></span>
                         </span>
                     </td>
+                    <td class="bbr-draw" th:if="${ContestEvent.contestType.drawTwoTitle != null}" th:text="${result.drawSecond}"></td>
+                    <td class="bbr-draw" th:if="${ContestEvent.contestType.drawThreeTitle != null}" th:text="${result.drawThird}"></td>
+                    <td class="bbr-draw" th:if="${ContestEvent.contestType.pointsOneTitle != null}" th:text="${result.pointsFirst}"></td>
+                    <td class="bbr-draw" th:if="${ContestEvent.contestType.pointsTwoTitle != null}" th:text="${result.pointsSecond}"></td>
+                    <td class="bbr-draw" th:if="${ContestEvent.contestType.pointsThreeTitle != null}" th:text="${result.pointsThird}"></td>
+                    <td class="bbr-draw" th:if="${ContestEvent.contestType.pointsFourTitle != null}" th:text="${result.pointsFourth}"></td>
+                    <td class="bbr-draw" th:if="${ContestEvent.contestType.pointsPenaltyTitle != null}" th:text="${result.pointsPenalty}"></td>
+                    <td class="bbr-draw" th:if="${ContestEvent.contestType.pointsTotalTitle != null}" th:text="${result.pointsTotal}"></td>
                 </tr>
             </tbody>
         </table>

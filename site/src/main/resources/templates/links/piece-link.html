@@ -12,13 +12,19 @@
 </span>
 
 <span th:fragment="resultPieceLink(result)">
-    <span th:if="${result.pieces.size > 0}" th:each="resultPiece : ${result.pieces}">
-        <span th:replace="links/piece-link.html :: pieceLink(${resultPiece.piece})"></span><br/>
+    <span th:if="${result.pieces.size > 0}" th:remove="tag">
+        <span th:replace="links/piece-link.html :: resultPieces(${result})"></span><br/>
     </span>
     <span th:if="${result.pieces.size == 0}" th:remove="tag">
         <span th:each="contestEventPiece : ${result.contestEvent.pieces}">
             <span th:replace="links/piece-link.html :: pieceLink(${contestEventPiece.piece})"></span>
         </span>
+    </span>
+</span>
+
+<span th:fragment="resultPieces(result)">
+    <span th:each="resultPiece : ${result.pieces}">
+        <span th:replace="links/piece-link.html :: pieceLink(${resultPiece.piece})"></span><br/>
     </span>
 </span>
 

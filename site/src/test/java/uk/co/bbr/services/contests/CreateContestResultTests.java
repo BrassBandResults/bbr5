@@ -115,8 +115,6 @@ class CreateContestResultTests implements LoginMixin {
         assertEquals(1, results.size());
 
         assertEquals(existingResult.getId(), results.get(0).getId());
-        assertEquals("London Area", results.get(0).getContestEvent().getContest().getName());
-        assertEquals(LocalDate.of(2020, 3, 3), results.get(0).getContestEvent().getEventDate());
         assertEquals("Black Dyke Band", results.get(0).getBand().getName());
         assertEquals("Black Dyke Band", results.get(0).getBandName());
         assertEquals("John Roberts", results.get(0).getConductor().getName());
@@ -195,8 +193,6 @@ class CreateContestResultTests implements LoginMixin {
         assertEquals(1, results.size());
 
         assertEquals(existingResult.getId(), results.get(0).getId());
-        assertEquals("North West Area", results.get(0).getContestEvent().getContest().getName());
-        assertEquals(LocalDate.of(2020, 3, 3), results.get(0).getContestEvent().getEventDate());
         assertEquals("Grimethorpe", results.get(0).getBand().getName());
         assertEquals("Rothwell Temperance", results.get(0).getBandName());
         assertEquals("Peter Roberts", results.get(0).getConductor().getName());

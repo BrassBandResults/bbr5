@@ -10,10 +10,12 @@ import uk.co.bbr.services.framework.sql.AbstractSqlDto;
 import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.regions.dao.RegionDao;
 
+import java.math.BigInteger;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
-public class ContestResultDrawPositionSqlDto  extends AbstractSqlDto {
+public class EventResultSqlDto extends AbstractSqlDto {
 
     private final LocalDate eventDate;
     private final String eventDateResolution;
@@ -37,8 +39,18 @@ public class ContestResultDrawPositionSqlDto  extends AbstractSqlDto {
     private final String bandRegionSlug;
     private final String bandCountryCode;
     private final String pointsTotal;
+    private final Integer drawSecond;
+    private final Integer drawThird;
+    private final String pointsFirst;
+    private final String pointsSecond;
+    private final String pointsThird;
+    private final String pointsFourth;
+    private final String pointsPenalty;
+    private final Long resultId;
+    private final String notes;
 
-    public ContestResultDrawPositionSqlDto(Object[] columnList) {
+
+    public EventResultSqlDto(Object[] columnList) {
         Date tempEventDate = (Date)columnList[0];
         this.eventDate = tempEventDate.toLocalDate();
         this.eventDateResolution = (String)columnList[1];
@@ -62,15 +74,27 @@ public class ContestResultDrawPositionSqlDto  extends AbstractSqlDto {
         this.conductor3Slug = (String)columnList[19];
         this.conductor3FirstNames = (String)columnList[20];
         this.conductor3Surname = (String)columnList[21];
+        this.drawSecond = (Integer)columnList[22];
+        this.drawThird = (Integer)columnList[23];
+        this.pointsFirst = (String)columnList[24];
+        this.pointsSecond = (String)columnList[25];
+        this.pointsThird = (String)columnList[26];
+        this.pointsFourth = (String)columnList[27];
+        this.pointsPenalty = (String)columnList[28];
+        BigInteger resultSerial = (BigInteger)columnList[29];
+        this.resultId = resultSerial.longValue();
+        this.notes = (String)columnList[30];
     }
 
     public ContestResultDao getResult() {
         ContestResultDao result = new ContestResultDao();
         result.setContestEvent(new ContestEventDao());
         result.getContestEvent().setContest(new ContestDao());
+        result.setPieces(new ArrayList<>());
         result.setBand(new BandDao());
         result.getBand().setRegion(new RegionDao());
 
+        result.setId(this.resultId);
         result.getContestEvent().setEventDate(this.eventDate);
         result.getContestEvent().setEventDateResolution(ContestEventDateResolution.fromCode(this.eventDateResolution));
         result.getContestEvent().getContest().setSlug(this.contestSlug);
@@ -84,7 +108,15 @@ public class ContestResultDrawPositionSqlDto  extends AbstractSqlDto {
         result.getBand().getRegion().setSlug(this.bandRegionSlug);
         result.getBand().getRegion().setCountryCode(this.bandCountryCode);
         result.setDraw(this.draw);
+        result.setDrawSecond(this.drawSecond);
+        result.setDrawThird(this.drawThird);
         result.setPointsTotal(this.pointsTotal);
+        result.setPointsFirst(this.pointsFirst);
+        result.setPointsSecond(this.pointsSecond);
+        result.setPointsThird(this.pointsThird);
+        result.setPointsFourth(this.pointsFourth);
+        result.setPointsPenalty(this.pointsPenalty);
+        result.setNotes(this.notes);
 
         if (this.conductor1Slug != null) {
             PersonDao conductor1 = new PersonDao();

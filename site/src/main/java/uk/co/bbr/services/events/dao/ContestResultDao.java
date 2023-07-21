@@ -287,6 +287,9 @@ public class ContestResultDao extends AbstractDao implements NameTools {
     }
 
     public void setNotes(String notes) {
-        this.notes = notes.trim();
+        if (notes != null) {
+            notes = notes.trim();
+        }
+        this.notes = notes;
     }
 }
