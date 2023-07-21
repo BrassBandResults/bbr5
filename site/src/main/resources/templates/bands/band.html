@@ -50,7 +50,7 @@
                         </div>
                     </td>
                     <td class="bbr-position"><span th:replace="components/results-position.html :: resultsPosition(${result})">1</span></td>
-                    <td class="bbr-piece"><span th:replace="links/piece-link.html :: resultPieceLink(${result})">Test Piece</span></td>
+                    <td class="bbr-piece"><span th:replace="links/piece-link.html :: resultPieceWithSetTestIfNone(${result})">Test Piece</span></td>
                     <td class="bbr-draw"><span th:if="${result.draw != 0}" th:text="${result.draw}">1</span></td>
                     <td class="bbr-conductor"><span th:replace="links/person-link.html :: conductorsLinkWithUnknown(${result})">Bob Childs</span></td>
                 </tr>

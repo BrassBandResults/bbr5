@@ -26,6 +26,18 @@
     <div class="tab-content">
         <div th:if="${FutureEvents.size() > 0}">
             <h3 th:text="#{page.contest.header.future-events}">Future Events</h3>
+
+            <ul>
+                <li th:each="event : ${FutureEvents}">
+                    <span th:text="#{page.contest.future-event-prompt}">We believe this contest will be run on</span>
+                    <span th:replace="links/event-link.html :: eventLink(${event})">9th Sep 2023</span>
+                    <span th:if="${event.venue != null}">
+                        <span th:text="#{page.contest.future-event-prompt-at}">at</span>
+                        <span th:replace="links/venue-link.html :: venueLink(${event.venue})"></span>
+                    </span>
+
+                </li>
+            </ul>
         </div>
 
         <div th:if="${PastEvents.size() > 0}">
@@ -38,7 +50,6 @@
                     <th th:text="#{page.column-header.winner}">Winner</th>
                     <th th:text="#{page.column-header.conductor}">Conductor</th>
                     <th th:text="#{page.column-header.test-piece}">Test Piece</th>
-
                 </tr>
                 </thead>
                 <tbody>
@@ -59,7 +70,7 @@
                         </td>
                         <td class="bbr-piece">
                             <span th:each="result : ${event.winners}">
-                                <span th:replace="links/piece-link.html :: resultPieceLink(${result})">Test Piece</span>
+                                <span th:replace="links/piece-link.html :: resultPieceWithSetTestIfNone(${result})">Test Piece</span>
                             </span>
                         </td>
                     </span>

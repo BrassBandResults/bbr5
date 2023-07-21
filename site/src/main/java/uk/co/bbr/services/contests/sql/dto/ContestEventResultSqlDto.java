@@ -15,8 +15,6 @@ public class ContestEventResultSqlDto extends AbstractSqlDto {
     private final String bandSlug;
     private final String bandName;
     private final String bandRegionCountryCode;
-    private final String resultPieceSlug;
-    private final String resultPieceName;
     private final String setPieceSlug;
     private final String setPieceName;
     private final String conductor1Slug;
@@ -41,20 +39,18 @@ public class ContestEventResultSqlDto extends AbstractSqlDto {
         this.bandSlug = (String)columnList[4];
         this.bandName = (String)columnList[5];
         this.bandRegionCountryCode = (String)columnList[6];
-        this.resultPieceSlug = (String)columnList[7];
-        this.resultPieceName = (String)columnList[8];
-        this.setPieceSlug = (String)columnList[9];
-        this.setPieceName = (String)columnList[10];
-        this.conductor1Slug = (String)columnList[11];
-        this.conductor1FirstNames = (String)columnList[12];
-        this.conductor1Surname = (String)columnList[13];
-        this.conductor2Slug = (String)columnList[14];
-        this.conductor2FirstNames = (String)columnList[15];
-        this.conductor2Surname = (String)columnList[16];
-        this.conductor3Slug = (String)columnList[17];
-        this.conductor3FirstNames = (String)columnList[18];
-        this.conductor3Surname = (String)columnList[19];
-        this.eventNotes = (String)columnList[20];
-        this.noContest = (Boolean)columnList[21];
+        this.setPieceSlug = (String)columnList[7];
+        this.setPieceName = (String)columnList[8];
+        this.conductor1Slug = (String)columnList[9];
+        this.conductor1FirstNames = (String)columnList[10];
+        this.conductor1Surname = (String)columnList[11];
+        this.conductor2Slug = (String)columnList[12];
+        this.conductor2FirstNames = (String)columnList[13];
+        this.conductor2Surname = (String)columnList[14];
+        this.conductor3Slug = (String)columnList[15];
+        this.conductor3FirstNames = (String)columnList[16];
+        this.conductor3Surname = (String)columnList[17];
+        this.eventNotes = (String)columnList[18];
+        this.noContest = (Boolean)columnList[19];
     }
 }

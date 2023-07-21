@@ -3,6 +3,9 @@ Add results - add results fix unknown conductor
 Add results - add adjudicators
 Add results - add notes
 
+red background for select "must already exist" thing
+yellow background for select "might create this" thing
+
 Data migrate - Tag links to group
 Data migrate - Tag links to contest
 Data migrate - pro users
@@ -66,3 +69,5 @@ Download conductor csv
 
 Member can add missing conductor
 Member can add missing points etc on a result
+
+sitemap?

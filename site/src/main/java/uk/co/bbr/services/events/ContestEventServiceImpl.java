@@ -8,7 +8,6 @@ import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.events.dao.ContestEventDao;
 import uk.co.bbr.services.events.dao.ContestEventTestPieceDao;
 import uk.co.bbr.services.events.dao.ContestResultDao;
-import uk.co.bbr.services.events.dao.ContestResultPieceDao;
 import uk.co.bbr.services.events.repo.ContestAdjudicatorRepository;
 import uk.co.bbr.services.events.repo.ContestEventRepository;
 import uk.co.bbr.services.events.repo.ContestEventTestPieceRepository;
@@ -209,7 +208,7 @@ public class ContestEventServiceImpl implements ContestEventService {
     public List<ContestEventDao> fetchPastEventsForContest(ContestDao contest) {
         List<ContestEventDao> returnEvents = new ArrayList<>();
 
-        List<ContestEventResultSqlDto> eventsSql = ContestResultSql.selectEventListForContest(this.entityManager, contest.getId());
+        List<ContestEventResultSqlDto> eventsSql = ContestResultSql.selectPastEventListForContest(this.entityManager, contest.getId());
 
         for (ContestEventResultSqlDto eachSqlEvent : eventsSql) {
             ContestEventDao currentEvent = new ContestEventDao();
@@ -240,13 +239,6 @@ public class ContestEventServiceImpl implements ContestEventService {
             eachWinner.getBand().setSlug(eachSqlEvent.getBandSlug());
             eachWinner.getBand().setName(eachSqlEvent.getBandName());
             eachWinner.getBand().getRegion().setCountryCode(eachSqlEvent.getBandRegionCountryCode());
-
-            if (eachSqlEvent.getResultPieceSlug() != null && eachSqlEvent.getResultPieceSlug().length() > 0) {
-                eachWinner.getPieces().add(new ContestResultPieceDao());
-                eachWinner.getPieces().get(0).setPiece(new PieceDao());
-                eachWinner.getPieces().get(0).getPiece().setSlug((eachSqlEvent.getResultPieceSlug()));
-                eachWinner.getPieces().get(0).getPiece().setName((eachSqlEvent.getResultPieceName()));
-            }
 
             if (eachSqlEvent.getSetPieceSlug() != null && eachSqlEvent.getSetPieceSlug().length() > 0) {
                 eachWinner.getContestEvent().getPieces().add(new ContestEventTestPieceDao());
