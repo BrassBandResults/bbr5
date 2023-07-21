@@ -1,20 +1,18 @@
 <span th:fragment="personLink(person, surnameFirst, showKnownFor)" th:remove="tag">
-    <span th:if="${person != null}" th:remove="tag">
-        <span th:if="${person.slug == 'unknown'}" th:remove="tag">
+        <span th:if="${person == null}" th:remove="tag">
             <span class="text-danger">Unknown</span>
         </span>
-        <span th:if="${person.slug != 'unknown'}" th:remove="tag">
+        <span th:if="${person != null && person.slug != 'unknown'}" th:remove="tag">
             <span th:if="${surnameFirst}" th:remove="tag">
-                <a th:if="${person != null}" th:href="${'/people/' + person.slug}" th:text="${person.nameSurnameFirst}" class="bbr-person">Childs, Bob</a>
+                <a th:href="${'/people/' + person.slug}" th:text="${person.nameSurnameFirst}" class="bbr-person">Childs, Bob</a>
             </span>
             <span th:if="${!surnameFirst}" th:remove="tag">
-                <a th:if="${person != null}" th:href="${'/people/' + person.slug}" th:text="${person.name}" class="bbr-person">Bob Childs</a>
+                <a th:href="${'/people/' + person.slug}" th:text="${person.name}" class="bbr-person">Bob Childs</a>
             </span>
             <span th:if="${showKnownFor}" th:remove="tag">
                 <small th:if="${person.knownFor != null && person.knownFor.length > 0}"><span th:text="${person.knownFor}" th:remove="tag">Rothwell Temperance</span></small>
             </span>
         </span>
-    </span>
 </span>
 
 <span th:fragment="conductorsLink(result)">
