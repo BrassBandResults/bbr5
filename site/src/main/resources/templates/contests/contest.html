@@ -26,6 +26,49 @@
     <div class="tab-content">
         <div th:if="${FutureEvents.size() > 0}">
             <h3 th:text="#{page.contest.header.future-events}">Future Events</h3>
+
+            <ul>
+                <li th:each="event : ${FutureEvents}">
+                    <span th:text="#{page.contest.future-event-prompt}">We believe this contest will be run on</span>
+                    <span th:replace="links/event-link.html :: eventLink(${event})">9th Sep 2023</span>
+                    <span th:if="${event.venue != null}">
+                        <span th:text="#{page.contest.future-event-prompt-at}">at</span>
+                        <span th:replace="links/venue-link.html :: venueLink(${event.venue})"></span>
+                    </span>
+
+                </li>
+            </ul>
+            <table class="table table-hover sortable">
+                <thead>
+                <tr>
+                    <th th:text="#{page.column-header.date}" class="date">Date</th>
+                    <th th:text="#{page.column-header.winner}">Winner</th>
+                    <th th:text="#{page.column-header.conductor}">Conductor</th>
+                </tr>
+                </thead>
+                <tbody>
+                <t th:each="event : ${PastEvents}"r>
+                    <td class="bbr-event" nowrap><span th:replace="links/event-link.html :: eventLink(${event})">9th Sep 2023</span></td>
+                    <span th:if="${!event.noContest}" th:remove="tag">
+                        <td class="bbr-band">
+                            <span th:each="result, iStat : ${event.winners}">
+                                <span th:if="${iStat.index > 0}"><br/></span>
+                                <span th:replace="links/band-link.html :: bandLinkWithOverride(${result})"></span>
+                            </span>
+                        </td>
+                        <td class="bbr-conductor">
+                            <span th:each="result, iStat : ${event.winners}">
+                                <span th:if="${iStat.index > 0}"><br/></span>
+                                <span th:replace="links/person-link.html :: conductorsLink(${result})">Bob Childs</span>
+                            </span>
+                        </td>
+                    </span>
+                    <td th:if="${event.noContest}" colspan="3" th:text="${event.notes}">No Contest Notes</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
         </div>
 
         <div th:if="${PastEvents.size() > 0}">
@@ -37,8 +80,6 @@
                     <th th:text="#{page.column-header.date}" class="date">Date</th>
                     <th th:text="#{page.column-header.winner}">Winner</th>
                     <th th:text="#{page.column-header.conductor}">Conductor</th>
-                    <th th:text="#{page.column-header.test-piece}">Test Piece</th>
-
                 </tr>
                 </thead>
                 <tbody>
@@ -55,11 +96,6 @@
                             <span th:each="result, iStat : ${event.winners}">
                                 <span th:if="${iStat.index > 0}"><br/></span>
                                 <span th:replace="links/person-link.html :: conductorsLink(${result})">Bob Childs</span>
-                            </span>
-                        </td>
-                        <td class="bbr-piece">
-                            <span th:each="result : ${event.winners}">
-                                <span th:replace="links/piece-link.html :: resultPieceLink(${result})">Test Piece</span>
                             </span>
                         </td>
                     </span>
