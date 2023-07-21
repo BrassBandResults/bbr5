@@ -34,7 +34,7 @@
             <span th:text="${#numbers.formatDecimal(Statistics.peopleCount, 0, 'COMMA', 0, 'POINT')}" th:remove="tag">123</span>
             <span th:text="#{page.statistics.people}" th:remove="tag">people</span>,
             <span sec:authorize="hasRole('BBR_PRO')" th:text="#{page.statistics.latest-is}" th:remove="tag">latest is</span>
-            <span sec:authorize="hasRole('BBR_PRO')" th:replace="links/person-link.html :: personLink(${Statistics.latestPerson}, false, false)"></span>
+            <span sec:authorize="hasRole('BBR_PRO')" th:replace="links/person-link.html :: personLink(${Statistics.latestPerson})"></span>
         </li>
         <li>
             <span th:text="${#numbers.formatDecimal(Statistics.resultCount, 0, 'COMMA', 0, 'POINT')}" th:remove="tag">123</span>

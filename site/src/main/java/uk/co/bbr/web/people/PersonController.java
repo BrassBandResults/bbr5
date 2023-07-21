@@ -57,6 +57,18 @@ public class PersonController {
         int arrangerCount = this.personService.fetchArrangerCount(person.get());
         List<PersonRelationshipDao> personRelationships = this.personRelationshipService.fetchRelationshipsForPerson(person.get());
 
+        if (personConductingResults.getBandAllResults().size() == 0 && adjudicationsCount > 0) {
+            return "redirect:/people/{personSlug}/adjudicator";
+        }
+
+        if (personConductingResults.getBandAllResults().size() == 0 && (composerCount + arrangerCount) > 0) {
+            return "redirect:/people/{personSlug}/pieces";
+        }
+
+        if (personConductingResults.getBandAllResults().size() == 0 && (personConductingResults.getBandWhitResults().size()) > 0) {
+            return "redirect:/people/{personSlug}/whits";
+        }
+
         model.addAttribute("Person", person.get());
         model.addAttribute("PreviousNames", previousNames);
         model.addAttribute("ConductingResults", personConductingResults.getBandNonWhitResults());

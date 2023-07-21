@@ -11,11 +11,11 @@
     <table>
         <tr th:if="${Piece.composer != null}">
             <th th:text="#{page.field-prompt.composer}">Composer:</th>
-            <td class="bbr-composer"><span th:replace="links/person-link.html :: personLink(${Piece.composer}, false, false)">Bob Childs</span></td>
+            <td class="bbr-composer"><span th:replace="links/person-link.html :: personLinkWithUnknown(${Piece.composer})">Bob Childs</span></td>
         </tr>
         <tr th:if="${Piece.arranger != null}">
             <th th:text="#{page.field-prompt.arranger}">Arranger:</th>
-            <td class="bbr-arranger"><span th:replace="links/person-link.html :: personLink(${Piece.arranger}, false, false)">Bob Childs</span></td>
+            <td class="bbr-arranger"><span th:replace="links/person-link.html :: personLink(${Piece.arranger})">Bob Childs</span></td>
         </tr>
         <tr>
             <th th:text="#{page.field-prompt.type}">Type:</th>
