@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+<head>
+    <title th:text="@{#{page.contest-streaks.title(${Contest.name})} + ' - Brass Band Results'}">Yorkshire Area (Championship Section) - Brass Band Results</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <span th:replace="contests/components/header.html :: header(${Contest},${PreviousNames})"></span>
+
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link" th:href="${'/contests/' + Contest.slug}" th:text="#{page.contest.tab.results(${PastEventsCount})}">Results</a>
+        </li>
+        <li class="nav-item" th:if="${OwnChoicePieceCount > 0}">
+            <a class="nav-link " th:href="${'/contests/' + Contest.slug + '/own-choice'}" th:text="#{page.contest.tab.own-choice(${OwnChoicePieceCount})}">Own Choice Pieces Used</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" th:href="${'/contests/' + Contest.slug + '/wins'}" th:text="#{page.contest.tab.wins}">Wins</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" th:href="${'/contests/' + Contest.slug + '/streaks'}" th:text="#{page.contest.tab.streaks}">Streaks</a>
+        </li>
+    </ul>
+    <br/>
+
+    <div class="tab-content">
+        <table class="table table-hover sortable">
+            <thead>
+            <tr>
+                <th th:text="#{page.column-header.band}">Band</th>
+                <th th:text="#{page.column-header.streaks}">Streak</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="streak : ${Streaks}">
+                <td class="bbr-band">
+                    <a th:href="${'/bands/' + streak.bandSlug + '/filter/' + Contest.slug}" th:text="${streak.bandName}">Band Name</a>
+                </td>
+                <td>
+                    <span th:each="year : ${streak.getYears()}" th:remove="tag">
+                        <span th:if="${year.inStreak}" class="badge bg-success" th:text="${year.year}">1980</span>
+                        <span th:if="${!year.inStreak}"><small><span class="text-muted fw-light" th:text="${year.year}">1980</span></small></span>
+                        <span th:if="${year.streakEnd}">&nbsp;</span>
+                    </span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

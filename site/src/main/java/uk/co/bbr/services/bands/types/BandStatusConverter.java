@@ -15,6 +15,9 @@ public class BandStatusConverter implements AttributeConverter<BandStatus, Integ
 
     @Override
     public BandStatus convertToEntityAttribute(Integer code) {
+        if (code == null) {
+            return null;
+        }
         return BandStatus.fromCode(code);
     }
 }

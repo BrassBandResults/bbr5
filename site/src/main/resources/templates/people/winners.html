@@ -37,7 +37,7 @@
             <tbody>
                 <tr th:each="winningPerson : ${WinningPeople}">
                     <td class="person">
-                        <span th:replace="links/person-link.html :: personLink(${winningPerson.person}, false, true)"></span>
+                        <span th:replace="links/person-link.html :: personLinkWithKnownFor(${winningPerson.person})"></span>
                     </td>
                     <td th:text="${winningPerson.wins}">250</td>
                     <td><span th:text="${winningPerson.percentage}">41</span>%</td>

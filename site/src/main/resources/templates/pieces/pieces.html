@@ -28,8 +28,8 @@
             <td class="piece">
                 <span th:replace="links/piece-link.html :: pieceLink(${piece})"></span>
             </td>
-            <td class="composer person"><span th:replace="links/person-link.html :: personLink(${piece.composer}, false, false)"></span></td>
-            <td class="arranger person"><span th:replace="links/person-link.html :: personLink(${piece.arranger}, false, false)"></span></td>
+            <td class="composer person"><span th:replace="links/person-link.html :: personLinkWithUnknown(${piece.composer})"></span></td>
+            <td class="arranger person"><span th:replace="links/person-link.html :: personLink(${piece.arranger})"></span></td>
             <td th:text="${piece.setTestCount}"></td>
             <td th:text="${piece.ownChoiceCount}"></td>
         </tr>

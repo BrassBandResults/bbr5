@@ -26,6 +26,10 @@ public class EmailServiceImpl implements EmailService {
     private final MessageSource messageSource;
     private final JavaMailSender javaMailSender;
 
+    private String getSiteUrl() {
+        return "https://" + System.getenv("BBR_WEB_SITE_PREFIX") + ".brassbandresults.co.uk";
+    }
+
     @Override
     public void sendFeedbackEmail(SiteUserDao user, String feedbackComment, String feedbackOffset) {
         String destinationEmail = user.getEmail();
@@ -42,10 +46,10 @@ public class EmailServiceImpl implements EmailService {
         messageText.append("\n\n");
         messageText.append(feedbackComment);
         messageText.append("\n\n");
-        messageText.append("https://www.brassbandresults.co.uk").append(feedbackOffset);
+        messageText.append(this.getSiteUrl()).append(feedbackOffset);
         messageText.append("\n\n");
         messageText.append(this.messageSource.getMessage("email.feedback.opt-out", null, LocaleContextHolder.getLocale()));
-        messageText.append("https://www.brassbandresults.co.uk/acc/feedback/opt-out/").append(user.getUuid());
+        messageText.append(this.getSiteUrl() + "/acc/feedback/opt-out/").append(user.getUuid());
         messageText.append("\n\n");
         messageText.append(this.messageSource.getMessage("email.sign-off", null, LocaleContextHolder.getLocale()));
 
@@ -62,7 +66,7 @@ public class EmailServiceImpl implements EmailService {
         messageText.append("\n\n");
         messageText.append(this.messageSource.getMessage("email.reset-password.prompt1", null, LocaleContextHolder.getLocale()));
         messageText.append("\n\n");
-        messageText.append("https://www.brassbandresults.co.uk/acc/forgotten-password/reset/").append(user.getResetPasswordKey());
+        messageText.append(this.getSiteUrl() + "/acc/forgotten-password/reset/").append(user.getResetPasswordKey());
         messageText.append("\n\n");
         messageText.append(this.messageSource.getMessage("email.reset-password.username-prompt", null, LocaleContextHolder.getLocale())).append(" ").append(user.getUsercode());
         messageText.append("\n\n");
@@ -77,7 +81,7 @@ public class EmailServiceImpl implements EmailService {
         StringBuilder messageText = new StringBuilder();
         messageText.append(this.messageSource.getMessage("email.account-activation.line1", null, LocaleContextHolder.getLocale())).append("\n\n");
         messageText.append(this.messageSource.getMessage("email.account-activation.line2", null, LocaleContextHolder.getLocale())).append("\n\n");
-        messageText.append("https://brassbandresults.co.uk/acc/activate/").append(activationKey).append("\n\n");
+        messageText.append(this.getSiteUrl() + "/acc/activate/").append(activationKey).append("\n\n");
         messageText.append(this.messageSource.getMessage("email.sign-off", null, LocaleContextHolder.getLocale()));
 
         String subject = this.messageSource.getMessage("email.account-activation.subject", null, LocaleContextHolder.getLocale());

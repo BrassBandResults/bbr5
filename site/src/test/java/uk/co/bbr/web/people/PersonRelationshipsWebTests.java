@@ -100,7 +100,7 @@ class PersonRelationshipsWebTests implements LoginMixin {
         assertNotNull(response);
         assertTrue(response.contains("<title>David Roberts - Person Relationships - Brass Person Results</title>"));
         assertTrue(response.contains(">David Roberts</a>"));
-        assertTrue(response.contains("> Relationships<"));
+        assertTrue(response.contains("Relationships<"));
 
         assertTrue(response.contains(">Gordon Roberts<"));
     }

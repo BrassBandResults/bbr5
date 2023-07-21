@@ -101,6 +101,9 @@ public class BandDao extends AbstractDao implements NameTools {
                 latitude = latitude.trim().substring(0, 15);
             }
             latitude = latitude.trim();
+            if (latitude.length() == 0) {
+                latitude = null;
+            }
         }
         this.latitude = latitude;
     }
@@ -111,6 +114,9 @@ public class BandDao extends AbstractDao implements NameTools {
                 longitude = longitude.trim().substring(0, 15);
             }
             longitude = longitude.trim();
+            if (longitude.length() == 0) {
+                longitude = null;
+            }
         }
         this.longitude = longitude;
     }
@@ -125,6 +131,9 @@ public class BandDao extends AbstractDao implements NameTools {
     public void setWebsite(String website) {
         if (website != null) {
             website = website.trim();
+            if (website.length() == 0 || website.equalsIgnoreCase("http://") || website.equalsIgnoreCase("https://")) {
+                website = null;
+            }
         }
         this.website = website;
     }

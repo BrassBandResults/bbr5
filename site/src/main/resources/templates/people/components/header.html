@@ -11,7 +11,7 @@
     <ul>
         <li th:each="relationship : ${PersonRelationships}">
             <span th:text="#{${relationship.relationshipName(Person)}}">relationship</span>
-            <span th:replace="links/person-link.html :: personLink(${relationship.otherPerson(Person)},false,false)">Person Name</span>
+            <span th:replace="links/person-link.html :: personLink(${relationship.otherPerson(Person)})">Person Name</span>
         </li>
     </ul>
     <br/>

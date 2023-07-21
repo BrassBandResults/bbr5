@@ -483,6 +483,7 @@ INSERT INTO contest_type(old_id, updated, created, updated_by, created_by, name,
 INSERT INTO contest_type(old_id, updated, created, updated_by, created_by, name, slug, translation_key, draw_one_title, draw_two_title, draw_three_title, points_total_title, points_one_title, points_two_title, points_three_title, points_four_title, points_penalty_title, has_test_piece, has_own_choice, has_entertainments, statistics_show, statistics_limit) VALUES (28, '20220601 20:41:20', '20220601 20:41:20', 'owner', 'owner', 'Sacred, Set Test and Own Choice Contest', 'sacred-set-test-and-own-choice-contest', 'contest-types.sacred-set-test-and-own-choice-contest','Draw', null, null, 'Total', 'Test Piece', 'Sacred', 'Own Choice', null, null, 1, 1, 0, 0, '0');
 INSERT INTO contest_type(old_id, updated, created, updated_by, created_by, name, slug, translation_key, draw_one_title, draw_two_title, draw_three_title, points_total_title, points_one_title, points_two_title, points_three_title, points_four_title, points_penalty_title, has_test_piece, has_own_choice, has_entertainments, statistics_show, statistics_limit) VALUES (29, '20220703 11:06:26', '20220703 11:06:26', 'owner', 'owner', 'March and Entertainments', 'march-and-entertainments', 'contest-types.march-and-entertainments','Draw', null, null, 'Points', 'March', 'Entertainment', 'Music', null, null, 0, 0, 1, 0, '0');
 INSERT INTO contest_type(old_id, updated, created, updated_by, created_by, name, slug, translation_key, draw_one_title, draw_two_title, draw_three_title, points_total_title, points_one_title, points_two_title, points_three_title, points_four_title, points_penalty_title, has_test_piece, has_own_choice, has_entertainments, statistics_show, statistics_limit) VALUES (30, '20230531 17:00:35', '20340531 17:00:35', 'owner', 'owner', 'Own Choice and Two Concert Item (Separate Points)', 'own-choice-and-two-concert-item-separate-points', 'contest-types.own-choice-and-two-concert-item-separate-points','Draw', null, null, 'Total Points', 'Own Choice', 'Concert Item 1', 'Concert Item 2', null, null, 0, 1, 0, 0, '0');
+INSERT INTO contest_type(old_id, updated, created, updated_by, created_by, name, slug, translation_key, draw_one_title, draw_two_title, draw_three_title, points_total_title, points_one_title, points_two_title, points_three_title, points_four_title, points_penalty_title, has_test_piece, has_own_choice, has_entertainments, statistics_show, statistics_limit) VALUES (31, '20230531 17:00:35', '20340531 17:00:35', 'owner', 'owner', 'March, Hymn and Deportment Contest (Separate Points)', 'march-hymn-deportment-contest-separate-points', 'contest-types.march-hymn-deportment-contest-separate-points','Draw', null, null, 'Total', 'March', 'Hymn', 'Deportment', null, null, 0, 0, 0, 0, '0');
 
 CREATE TABLE contest (
     id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
@@ -497,6 +498,7 @@ CREATE TABLE contest (
     default_contest_type_id BIGINT NOT NULL CONSTRAINT fk_contest_default_type REFERENCES contest_type(id),
     region_id BIGINT CONSTRAINT fk_contest_region REFERENCES region(id),
     section_id BIGINT CONSTRAINT fk_contest_section REFERENCES section(id),
+    qualifies_for BIGINT CONSTRAINT fk_contest_qualifies_for REFERENCES contest(id),
     ordering INT,
     description TEXT,
     notes TEXT,
@@ -626,11 +628,12 @@ CREATE TABLE contest_result_test_piece (
     suffix VARCHAR(50)
 );
 
-CREATE UNIQUE INDEX idx_contest_result_test_piece ON contest_result_test_piece(contest_result_id, piece_id);
+CREATE UNIQUE INDEX idx_contest_result_test_piece ON contest_result_test_piece(contest_result_id, piece_id, suffix);
 
 -- FEEDBACK
 CREATE TABLE site_feedback (
     id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    old_id BIGINT,
     updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     url VARCHAR(255) NOT NULL,
@@ -649,12 +652,13 @@ CREATE TABLE site_feedback (
 -- USER PERFORMANCE HISTORY
 CREATE TABLE personal_contest_history (
     id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    old_id BIGINT,
     updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_by VARCHAR(50) NOT NULL CONSTRAINT fk_personal_contest_history_updated REFERENCES site_user(usercode),
     created_by VARCHAR(50) NOT NULL CONSTRAINT fk_personal_contest_history_owner REFERENCES site_user(usercode),
     result_id BIGINT NOT NULL CONSTRAINT fk_personal_contest_history_result REFERENCES contest_result(id),
-    status VARCHAR(1) NOT NULL DEFAULT 'P',
+    status VARCHAR(1) NOT NULL DEFAULT 'S',
     instrument INTEGER
 );
 
@@ -662,6 +666,7 @@ CREATE INDEX idx_personal_history_owner ON personal_contest_history(created_by);
 
 CREATE TABLE personal_contest_history_date_range (
     id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    old_id BIGINT,
     updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_by VARCHAR(50) NOT NULL CONSTRAINT fk_personal_contest_history_date_range_updated REFERENCES site_user(usercode),

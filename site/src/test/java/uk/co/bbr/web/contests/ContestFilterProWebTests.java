@@ -153,13 +153,27 @@ class ContestFilterProWebTests implements LoginMixin {
     void testGetContestWinsPageWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/contests/yorkshire-area/wins", String.class);
         assertNotNull(response);
-        assertTrue(response.contains("<title>Yorkshire Area - Contest - Brass Band Results</title>"));
+        assertTrue(response.contains("<title>Yorkshire Area - Contest Wins - Brass Band Results</title>"));
         assertTrue(response.contains(">Yorkshire Area<"));
     }
 
     @Test
     void testGetContestWinsPageWithInvalidSlugFails() {
         HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/contests/not-a-contest-slug/wins", String.class));
+        assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
+    }
+
+    @Test
+    void testGetContestStreaksPageWorksSuccessfully() {
+        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/contests/yorkshire-area/streaks", String.class);
+        assertNotNull(response);
+        assertTrue(response.contains("<title>Yorkshire Area - Contest Streaks - Brass Band Results</title>"));
+        assertTrue(response.contains(">Yorkshire Area<"));
+    }
+
+    @Test
+    void testGetContestStreaksPageWithInvalidSlugFails() {
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/contests/not-a-contest-slug/streaks", String.class));
         assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
     }
 

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import uk.co.bbr.services.contests.dto.ContestStreakDto;
 import uk.co.bbr.services.events.ContestEventService;
 import uk.co.bbr.services.events.ResultService;
 import uk.co.bbr.services.contests.ContestService;
@@ -89,6 +90,28 @@ public class ContestController {
         model.addAttribute("OwnChoicePieceCount", ownChoicePieceCount);
 
         return "contests/contest-wins";
+    }
+
+    @IsBbrPro
+    @GetMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}/streaks")
+    public String contestStreaks(Model model, @PathVariable String contestSlug) {
+        Optional<ContestDao> contest = this.contestService.fetchBySlug(contestSlug);
+
+        if (contest.isEmpty()) {
+            throw NotFoundException.contestNotFoundBySlug(contestSlug);
+        }
+
+        List<ContestStreakDto> streaks = this.contestResultService.fetchStreaksForContest(contest.get());
+
+        int pastEventsCount = this.contestEventService.fetchCountOfEvents(contest.get());
+        int ownChoicePieceCount = this.contestResultService.fetchCountOfOwnChoiceForContest(contest.get());
+
+        model.addAttribute("Contest", contest.get());
+        model.addAttribute("Streaks", streaks);
+        model.addAttribute("PastEventsCount", pastEventsCount);
+        model.addAttribute("OwnChoicePieceCount", ownChoicePieceCount);
+
+        return "contests/contest-streaks";
     }
 
 

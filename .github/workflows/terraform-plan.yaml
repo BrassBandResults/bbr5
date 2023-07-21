@@ -2,8 +2,7 @@ name: terraform-plan
 
 on:
   pull_request_target:
-    paths:
-      - 'terraform/**'
+    types: [opened, synchronize, reopened]
  
 jobs:
   authorize:
@@ -41,7 +40,7 @@ jobs:
           ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
           ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
           ARM_ACCESS_KEY: ${{ secrets.ARM_ACCESS_KEY }}
-        run: cd terraform && terraform init
+        run: cd terraform && terraform init && terraform workspace select prod
       -
         name: Terraform Validate
         run: terraform validate
@@ -53,9 +52,9 @@ jobs:
           ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
           ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
           ARM_ACCESS_KEY: ${{ secrets.ARM_ACCESS_KEY }}
-          TF_VAR_database_admin_username: ${{ secrets.TF_VAR_database_admin_username }}
-          TF_VAR_database_admin_password: ${{ secrets.TF_VAR_database_admin_password }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           TF_VAR_smtp_hostname: ${{ secrets.TF_VAR_smtp_hostname }}
           TF_VAR_smtp_username: ${{ secrets.TF_VAR_smtp_username }}
           TF_VAR_smtp_password: ${{ secrets.TF_VAR_smtp_password }}
-        run: cd terraform && terraform plan
+          TF_VAR_cloudflare_zone_id: ${{ secrets.TF_VAR_cloudflare_zone_id }}
+        run: cd terraform && terraform plan -lock=false
