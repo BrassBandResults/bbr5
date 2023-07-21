@@ -11,6 +11,7 @@ import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.events.PersonResultService;
 import uk.co.bbr.services.events.ResultService;
 import uk.co.bbr.services.events.dao.ContestAdjudicatorDao;
+import uk.co.bbr.services.events.dao.ContestResultDao;
 import uk.co.bbr.services.events.dto.ResultDetailsDto;
 import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.groups.ContestGroupService;
@@ -23,6 +24,8 @@ import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.people.dao.PersonRelationshipDao;
 import uk.co.bbr.services.pieces.PieceService;
 import uk.co.bbr.services.pieces.dao.PieceDao;
+import uk.co.bbr.services.security.SecurityService;
+import uk.co.bbr.services.security.dao.SiteUserDao;
 import uk.co.bbr.services.tags.ContestTagService;
 import uk.co.bbr.services.tags.dao.ContestTagDao;
 import uk.co.bbr.web.security.annotations.IsBbrPro;
@@ -42,6 +45,7 @@ public class PersonController {
     private final PersonRelationshipService personRelationshipService;
     private final PersonResultService personResultService;
     private final PieceService pieceService;
+    private final SecurityService securityService;
 
     @GetMapping("/people/{personSlug:[\\-a-z\\d]{2,}}")
     public String personConducting(Model model, @PathVariable("personSlug") String personSlug) {
@@ -50,11 +54,13 @@ public class PersonController {
             throw NotFoundException.personNotFoundBySlug(personSlug);
         }
 
+        SiteUserDao currentUser = this.securityService.getCurrentUser();
         List<PersonAliasDao> previousNames = this.personAliasService.findVisibleAliases(person.get());
         ResultDetailsDto personConductingResults = this.personResultService.findResultsForConductor(person.get(), ResultSetCategory.ALL);
         int adjudicationsCount = this.personService.fetchAdjudicationCount(person.get());
         int composerCount = this.personService.fetchComposerCount(person.get());
         int arrangerCount = this.personService.fetchArrangerCount(person.get());
+        int userAdjudicationsCount = this.personService.fetchUserAdjudicationsCount(currentUser, person.get());
         List<PersonRelationshipDao> personRelationships = this.personRelationshipService.fetchRelationshipsForPerson(person.get());
 
         if (personConductingResults.getBandAllResults().size() == 0 && adjudicationsCount > 0) {
@@ -76,6 +82,7 @@ public class PersonController {
         model.addAttribute("ResultsCount", personConductingResults.getBandNonWhitResults().size());
         model.addAttribute("WhitCount", personConductingResults.getBandWhitResults().size());
         model.addAttribute("AdjudicationsCount", adjudicationsCount);
+        model.addAttribute("UserAdjudicationsCount", userAdjudicationsCount);
         model.addAttribute("PieceCount", composerCount + arrangerCount);
         model.addAttribute("PersonRelationships", personRelationships);
 
@@ -89,11 +96,13 @@ public class PersonController {
             throw NotFoundException.personNotFoundBySlug(personSlug);
         }
 
+        SiteUserDao currentUser = this.securityService.getCurrentUser();
         List<PersonAliasDao> previousNames = this.personAliasService.findVisibleAliases(person.get());
         ResultDetailsDto personConductingResults = this.personResultService.findResultsForConductor(person.get(), ResultSetCategory.ALL);
         int adjudicationsCount = this.personService.fetchAdjudicationCount(person.get());
         int composerCount = this.personService.fetchComposerCount(person.get());
         int arrangerCount = this.personService.fetchArrangerCount(person.get());
+        int userAdjudicationsCount = this.personService.fetchUserAdjudicationsCount(currentUser, person.get());
         List<PersonRelationshipDao> personRelationships = this.personRelationshipService.fetchRelationshipsForPerson(person.get());
 
         model.addAttribute("Person", person.get());
@@ -103,6 +112,7 @@ public class PersonController {
         model.addAttribute("ResultsCount", personConductingResults.getBandNonWhitResults().size());
         model.addAttribute("WhitCount", personConductingResults.getBandWhitResults().size());
         model.addAttribute("AdjudicationsCount", adjudicationsCount);
+        model.addAttribute("UserAdjudicationsCount", userAdjudicationsCount);
         model.addAttribute("PieceCount", composerCount + arrangerCount);
         model.addAttribute("PersonRelationships", personRelationships);
 
@@ -116,12 +126,14 @@ public class PersonController {
             throw NotFoundException.personNotFoundBySlug(personSlug);
         }
 
+        SiteUserDao currentUser = this.securityService.getCurrentUser();
         List<PersonAliasDao> previousNames = this.personAliasService.findVisibleAliases(person.get());
         List<PieceDao> personPieces = this.pieceService.findPiecesForPerson(person.get());
         ResultDetailsDto personConductingResults = this.personResultService.findResultsForConductor(person.get(), ResultSetCategory.ALL);
         int adjudicationsCount = this.personService.fetchAdjudicationCount(person.get());
         int composerCount = this.personService.fetchComposerCount(person.get());
         int arrangerCount = this.personService.fetchArrangerCount(person.get());
+        int userAdjudicationsCount = this.personService.fetchUserAdjudicationsCount(currentUser, person.get());
         List<PersonRelationshipDao> personRelationships = this.personRelationshipService.fetchRelationshipsForPerson(person.get());
 
         model.addAttribute("Person", person.get());
@@ -129,6 +141,7 @@ public class PersonController {
         model.addAttribute("ResultsCount", personConductingResults.getBandNonWhitResults().size());
         model.addAttribute("WhitCount", personConductingResults.getBandWhitResults().size());
         model.addAttribute("AdjudicationsCount", adjudicationsCount);
+        model.addAttribute("UserAdjudicationsCount", userAdjudicationsCount);
         model.addAttribute("PieceCount", composerCount + arrangerCount);
         model.addAttribute("PersonRelationships", personRelationships);
         model.addAttribute("Pieces", personPieces);
@@ -143,8 +156,39 @@ public class PersonController {
             throw NotFoundException.personNotFoundBySlug(personSlug);
         }
 
+        SiteUserDao currentUser = this.securityService.getCurrentUser();
         List<PersonAliasDao> previousNames = this.personAliasService.findVisibleAliases(person.get());
         List<ContestAdjudicatorDao> adjudications = this.personService.fetchAdjudications(person.get());
+        ResultDetailsDto personConductingResults = this.personResultService.findResultsForConductor(person.get(), ResultSetCategory.ALL);
+        int adjudicationsCount = this.personService.fetchAdjudicationCount(person.get());
+        int composerCount = this.personService.fetchComposerCount(person.get());
+        int arrangerCount = this.personService.fetchArrangerCount(person.get());
+        int userAdjudicationsCount = this.personService.fetchUserAdjudicationsCount(currentUser, person.get());
+        List<PersonRelationshipDao> personRelationships = this.personRelationshipService.fetchRelationshipsForPerson(person.get());
+
+        model.addAttribute("Person", person.get());
+        model.addAttribute("PreviousNames", previousNames);
+        model.addAttribute("ResultsCount", personConductingResults.getBandNonWhitResults().size());
+        model.addAttribute("WhitCount", personConductingResults.getBandWhitResults().size());
+        model.addAttribute("AdjudicationsCount", adjudicationsCount);
+        model.addAttribute("UserAdjudicationsCount", userAdjudicationsCount);
+        model.addAttribute("PieceCount", composerCount + arrangerCount);
+        model.addAttribute("PersonRelationships", personRelationships);
+        model.addAttribute("Adjudications", adjudications);
+
+        return "people/person-adjudications";
+    }
+
+    @GetMapping("/people/{personSlug:[\\-a-z\\d]{2,}}/user-adjudications")
+    public String personAdjudicationsForCurrentUser(Model model, @PathVariable("personSlug") String personSlug) {
+        Optional<PersonDao> person = this.personService.fetchBySlug(personSlug);
+        if (person.isEmpty()) {
+            throw NotFoundException.personNotFoundBySlug(personSlug);
+        }
+
+        List<PersonAliasDao> previousNames = this.personAliasService.findVisibleAliases(person.get());
+        SiteUserDao currentUser = this.securityService.getCurrentUser();
+        List<ContestResultDao> userAdjudications = this.personService.fetchPersonalAdjudications(currentUser, person.get());
         ResultDetailsDto personConductingResults = this.personResultService.findResultsForConductor(person.get(), ResultSetCategory.ALL);
         int adjudicationsCount = this.personService.fetchAdjudicationCount(person.get());
         int composerCount = this.personService.fetchComposerCount(person.get());
@@ -156,11 +200,12 @@ public class PersonController {
         model.addAttribute("ResultsCount", personConductingResults.getBandNonWhitResults().size());
         model.addAttribute("WhitCount", personConductingResults.getBandWhitResults().size());
         model.addAttribute("AdjudicationsCount", adjudicationsCount);
+        model.addAttribute("UserAdjudicationsCount", userAdjudications.size());
         model.addAttribute("PieceCount", composerCount + arrangerCount);
         model.addAttribute("PersonRelationships", personRelationships);
-        model.addAttribute("Adjudications", adjudications);
+        model.addAttribute("UserAdjudications", userAdjudications);
 
-        return "people/person-adjudications";
+        return "people/user-adjudications";
     }
 
     @IsBbrPro

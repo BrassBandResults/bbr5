@@ -6,11 +6,6 @@ Add results - add notes
 red background for select "must already exist" thing
 yellow background for select "might create this" thing
 
-Data migrate - Tag links to group
-Data migrate - Tag links to contest
-Data migrate - pro users
-Data migrate - superusers
-
 Security on who can edit result
 
 Edit result

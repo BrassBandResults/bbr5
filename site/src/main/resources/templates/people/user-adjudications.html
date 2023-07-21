@@ -15,11 +15,10 @@
             <a class="nav-link" th:href="${'/people/' + Person.slug + '/whits'}" th:text="#{page.person.tab.whits(${WhitCount})}">Whit Friday</a>
         </li>
         <li class="nav-item" th:if="${AdjudicationsCount > 0}">
-            <a class="nav-link active" th:href="${'/people/' + Person.slug + '/adjudicator'}" th:text="#{page.person.tab.adjudicating(${AdjudicationsCount})}">Adjudicating</a>
+            <a class="nav-link" th:href="${'/people/' + Person.slug + '/adjudicator'}" th:text="#{page.person.tab.adjudicating(${AdjudicationsCount})}">Adjudicating</a>
         </li>
-
         <li class="nav-item" th:if="${UserAdjudicationsCount > 0}">
-            <a class="nav-link" th:href="${'/people/' + Person.slug + '/user-adjudications'}" th:text="#{page.person.tab.user-adjudications(${UserAdjudicationsCount})}">Your Adjudications</a>
+            <a class="nav-link active" th:href="${'/people/' + Person.slug + '/user-adjudications'}" th:text="#{page.person.tab.user-adjudications(${UserAdjudicationsCount})}">Your Adjudications</a>
         </li>
         <li class="nav-item" th:if="${PieceCount > 0}">
             <a class="nav-link" th:href="${'/people/' + Person.slug + '/pieces'}" th:text="#{page.person.tab.compositions(${PieceCount})}">Compositions</a>
@@ -33,14 +32,16 @@
                 <tr>
                     <th th:text="#{page.column-header.date}" class="date">Date</th>
                     <th th:text="#{page.column-header.contest}">Contest</th>
-                    <th th:text="#{page.column-header.winner}">Winner</th>
+                    <th th:text="#{page.column-header.band}">Band</th>
+                    <th th:text="#{page.column-header.position}">Position</th>
                 </tr>
             </thead>
             <tbody>
-                <tr th:each="adjudication : ${Adjudications}">
-                    <td class="bbr-event" nowrap><span th:replace="links/event-link.html :: eventLink(${adjudication.contestEvent})">9th Sep 2023</span></td>
-                    <td class="bbr-contest"><span th:text="${adjudication.contestEvent.name}">Yorkshire Area</span></td>
-                    <td class="bbr-band"><span th:replace="links/band-link.html :: bandLink(${adjudication.winner},true,false)"></span></td>
+                <tr th:each="result : ${UserAdjudications}">
+                    <td class="bbr-event" nowrap><span th:replace="links/event-link.html :: eventLink(${result.contestEvent})">9th Sep 2023</span></td>
+                    <td class="bbr-contest"><span th:text="${result.contestEvent.name}">Yorkshire Area</span></td>
+                    <td class="bbr-band"><span th:replace="links/band-link.html :: bandLink(${result.band},true,false)"></span></td>
+                    <td><span th:replace="components/results-position.html :: resultsPosition(${result})">1</span></td>
                 </tr>
             </tbody>
         </table>
