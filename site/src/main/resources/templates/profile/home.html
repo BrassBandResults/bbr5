@@ -31,22 +31,174 @@
     </ul>
     <br/>
 
-    <p th:if="${User.accessLevel == 'P'}">Thanks for being a pro member.</p>
-    <p th:if="${User.proUserForFree}">Congratulations, you have a free pro account.  Thanks for your support.</p>
-
     <div class="tab-content">
         <p th:if="${User.accessLevel == 'P'}">Thanks for being a pro member.</p>
+        <p th:if="${User.accessLevel == 'S'}">Thanks for being a superuser.  You get the pro features for free.</p>
+        <p th:if="${User.accessLevel == 'A'}">Welcome Administrator!</p>
         <p th:if="${User.proUserForFree}">Congratulations, you have a free pro account.  Thanks for your support.</p>
 
         <script async
                 src="https://js.stripe.com/v3/buy-button.js">
         </script>
 
-        <stripe-buy-button
-                th:buy-button-id="${StripeBuyButtonId}"
-                th:publishable-key="${StripePublishableKey}"
-        >
-        </stripe-buy-button>
+        <span th:if="${User.accessLevel == 'M' || User.accessLevel == 'A'}">
+
+            <p th:text="#{page.profile.pro-upgrade.prompt-1}">BrassBandResults is becoming an ever more complex site, with ever increasing visitor numbers.  We're reaching many thousands of people a month.</p>
+            <p th:text="#{page.profile.pro-upgrade.prompt-2}">In order to pay for the hosting and continuing development of the site, we have a pro account.  This will give you full access to all the functionality in the site for a small yearly payment.</p>
+            <p th:text="#{page.profile.pro-upgrade.prompt-3}">Generally, raw data is available without an account, you can add more data with a member account, and the pro-account adds data analysis, including the most successful bands and adjudicators.</p>
+            <p th:text="#{page.profile.pro-upgrade.prompt-4}">The table below lists the features of the site that are available to you with public access, after signing up for a free account, and after upgrading to a pro account.</p>
+            <p th:text="#{page.profile.pro-upgrade.prompt-5('£19.99')}">Pro Accounts cost just £19.99 per year and will auto-renew each year.  Use the button below to upgrade today!</p>
+
+            <script async
+                    src="https://js.stripe.com/v3/buy-button.js">
+            </script>
+
+            <stripe-buy-button
+                    th:buy-button-id="${StripeBuyButtonId}"
+                    th:publishable-key="${StripePublishableKey}"
+            >
+            </stripe-buy-button>
+
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th width="85%"></th>
+                  <th width="5%">Public</th>
+                  <th width="5%">Free</th>
+                  <th width="5%">Pro</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td th:text="#{page.profile.pro-upgrade.table-1}">View contest results from lots of different perspectives including by contest, band, conductor and adjudicator</td>
+                  <td><img th:src="@{${STATIC_HOST} + '/images/tick.png'}"/></td>
+                  <td><img th:src="@{${STATIC_HOST} + '/images/tick.png'}"/></td>
+                  <td><img th:src="@{${STATIC_HOST} + '/images/tick.png'}"/></td>
+                </tr>
+                <tr>
+                  <td th:text="#{page.profile.pro-upgrade.table-2}">View our comprehensive list of worldwide brass bands, including their location on our map</td>
+                  <td><img th:src="@{${STATIC_HOST} + '/images/tick.png'}"/></td>
+                  <td><img th:src="@{${STATIC_HOST} + '/images/tick.png'}"/></td>
+                  <td><img th:src="@{${STATIC_HOST} + '/images/tick.png'}"/></td>
+                </tr>
+                <tr>
+                  <td th:text="#{page.profile.pro-upgrade.table-3}">View our comprehensive contest calendar going back to the 19th century</td>
+                  <td><img th:src="@{${STATIC_HOST} + '/images/tick.png'}"/></td>
+                  <td><img th:src="@{${STATIC_HOST} + '/images/tick.png'}"/></td>
+                  <td><img th:src="@{${STATIC_HOST} + '/images/tick.png'}"/></td>
+                </tr>
+                <tr>
+                  <td th:text="#{page.profile.pro-upgrade.table-4}">View our comprehensive test piece database</td>
+                  <td><img th:src="@{${STATIC_HOST} + '/images/tick.png'}"/></td>
+                  <td><img th:src="@{${STATIC_HOST} + '/images/tick.png'}"/></td>
+                  <td><img th:src="@{${STATIC_HOST} + '/images/tick.png'}"/></td>
+                </tr>
+                <tr>
+                  <td th:text="#{page.profile.pro-upgrade.table-5}">Add results into our database yourself, gaining badges and points</td>
+                  <td></td>
+                  <td><img th:src="@{${STATIC_HOST} + '/images/tick.png'}"/></td>
+                  <td><img th:src="@{${STATIC_HOST} + '/images/tick.png'}"/></td>
+                </tr>
+                <tr>
+                  <td th:text="#{page.profile.pro-upgrade.table-6}">Suggest merges of duplicate bands, conductors etc in the database</td>
+                  <td></td>
+                  <td><img th:src="@{${STATIC_HOST} + '/images/tick.png'}"/></td>
+                  <td><img th:src="@{${STATIC_HOST} + '/images/tick.png'}"/></td>
+                </tr>
+                <tr>
+                  <td th:text="#{page.profile.pro-upgrade.table-7}">Create your own contest results history</td>
+                  <td></td>
+                  <td><img th:src="@{${STATIC_HOST} + '/images/tick.png'}"/></td>
+                  <td><img th:src="@{${STATIC_HOST} + '/images/tick.png'}"/></td>
+                </tr>
+                <tr>
+                  <td th:text="#{page.profile.pro-upgrade.table-8}">Add the instrument you played to your contest performance history</td>
+                  <td></td>
+                  <td></td>
+                  <td><img th:src="@{${STATIC_HOST} + '/images/tick.png'}"/></td>
+                </tr>
+                 <tr>
+                  <td th:text="#{page.profile.pro-upgrade.table-9}">See users who took part in a contest</td>
+                  <td></td>
+                  <td></td>
+                  <td><img th:src="@{${STATIC_HOST} + '/images/tick.png'}"/></td>
+                </tr>
+                <tr>
+                  <td th:text="#{page.profile.pro-upgrade.table-10}">Compare results between two bands or two conductors</td>
+                  <td></td>
+                  <td></td>
+                  <td><img th:src="@{${STATIC_HOST} + '/images/tick.png'}"/></td>
+                </tr>
+                <tr>
+                  <td th:text="#{page.profile.pro-upgrade.table-11}">See a ranking of the most successful bands and conductors</td>
+                  <td></td>
+                  <td></td>
+                  <td><img th:src="@{${STATIC_HOST} + '/images/tick.png'}"/></td>
+                </tr>
+                <tr>
+                  <td th:text="#{page.profile.pro-upgrade.table-12}">Search the map for bands near a given location</td>
+                  <td></td>
+                  <td></td>
+                  <td><img th:src="@{${STATIC_HOST} + '/images/tick.png'}"/></td>
+                </tr>
+                <tr>
+                  <td th:text="#{page.profile.pro-upgrade.table-13}">View test pieces by section and by their success at own choice contests</td>
+                  <td></td>
+                  <td></td>
+                  <td><img th:src="@{${STATIC_HOST} + '/images/tick.png'}"/></td>
+                </tr>
+                <tr>
+                  <td th:text="#{page.profile.pro-upgrade.table-14}">Advert free browsing experience</td>
+                  <td></td>
+                  <td></td>
+                  <td><img th:src="@{${STATIC_HOST} + '/images/tick.png'}"/></td>
+                </tr>
+                <tr>
+                  <td th:text="#{page.profile.pro-upgrade.table-15}">Add a profile for yourself (if you're a conductor, composer or adjudicator)</td>
+                  <td></td>
+                  <td></td>
+                  <td><img th:src="@{${STATIC_HOST} + '/images/tick.png'}"/></td>
+                </tr>
+                <tr>
+                  <td th:text="#{page.profile.pro-upgrade.table-16}">Filter contest results lists by contest and tag</td>
+                  <td></td>
+                  <td></td>
+                  <td><img th:src="@{${STATIC_HOST} + '/images/tick.png'}"/></td>
+                </tr>
+                <tr>
+                  <td th:text="#{page.profile.pro-upgrade.table-17}">View contest results by draw and position</td>
+                  <td></td>
+                  <td></td>
+                  <td><img th:src="@{${STATIC_HOST} + '/images/tick.png'}"/></td>
+                </tr>
+                <tr>
+                  <td th:text="#{page.profile.pro-upgrade.table-18}">Statistics, charts and filtering</td>
+                  <td></td>
+                  <td></td>
+                  <td><img th:src="@{${STATIC_HOST} + '/images/tick.png'}"/></td>
+                </tr>
+                <tr>
+                  <td th:text="#{page.profile.pro-upgrade.table-19}">Drill into the year statistics by region</td>
+                  <td></td>
+                  <td></td>
+                  <td><img th:src="@{${STATIC_HOST} + '/images/tick.png'}"/></td>
+                </tr>
+                <tr>
+                  <td th:text="#{page.profile.pro-upgrade.table-20}">Download results as CSV files for bands and conductors</td>
+                  <td></td>
+                  <td></td>
+                  <td><img th:src="@{${STATIC_HOST} + '/images/tick.png'}"/></td>
+                </tr>
+                <tr>
+                  <td th:text="#{page.profile.pro-upgrade.table-21}">See a full list of own choice pieces that have been used at a particular contest</td>
+                  <td></td>
+                  <td></td>
+                  <td><img th:src="@{${STATIC_HOST} + '/images/tick.png'}"/></td>
+                </tr>
+              </tbody>
+            </table>
+
+        </span>
     </div>
 </div>
 </body>

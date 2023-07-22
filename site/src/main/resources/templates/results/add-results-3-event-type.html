@@ -34,6 +34,7 @@
         </div>
 
         <input type="submit" th:value="#{page.buttons.submit}" class="btn btn-outline-success"/>
+        <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
     </form>
 </div>
 

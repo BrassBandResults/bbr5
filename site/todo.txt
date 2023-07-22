@@ -12,6 +12,7 @@ Ads for non-pro users
 Do tags better, and don't link direct to the contest and contestgroup objects.
 
 Performances shows pieces played
+Fetch pending performances works out ones that aren't in history and aren't rejected
 Fix formula numbers
 
 red background for select "must already exist" thing

@@ -15,6 +15,7 @@
         </div>
 
         <input type="submit" th:value="#{page.buttons.reset-password}" class="btn btn-outline-success btn-sm rounded"/>
+        <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
     </form>
 </div>
 

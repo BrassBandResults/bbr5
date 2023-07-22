@@ -65,6 +65,7 @@
         </div>
 
         <input type="submit" th:value="#{page.buttons.create}" class="btn btn-outline-success"/>
+        <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
         <a href="/bands" th:text="#{page.buttons.cancel-without-saving}" class="btn btn-light">Cancel wout saving</a>
     </form>
 </div>
