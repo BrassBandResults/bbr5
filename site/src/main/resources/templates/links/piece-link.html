@@ -12,10 +12,10 @@
 </span>
 
 <span th:fragment="resultPieceWithSetTestIfNone(result)">
-    <span th:if="${result.pieces.size > 0}" th:remove="tag">
+    <span th:if="${result.pieces != null && result.pieces.size > 0}" th:remove="tag">
         <span th:replace="links/piece-link.html :: resultPieces(${result})"></span><br/>
     </span>
-    <span th:if="${result.pieces.size == 0}" th:remove="tag">
+    <span th:if="${result.pieces != null && result.pieces.size == 0}" th:remove="tag">
         <span th:each="contestEventPiece : ${result.contestEvent.pieces}">
             <span th:replace="links/piece-link.html :: pieceLink(${contestEventPiece.piece})"></span>
         </span>

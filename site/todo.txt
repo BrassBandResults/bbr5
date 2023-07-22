@@ -2,7 +2,16 @@ Add results - add results fix unknown band
 Add results - add results fix unknown conductor
 Add results - add adjudicators
 Add results - add notes
+Add results - create contest
+Add results - create test piece
+Add results - create adjudicator
 
+Upgrade to pro
+Ads for non-pro users
+
+Do tags better, and don't link direct to the contest and contestgroup objects.
+
+Performances shows pieces played
 Fix formula numbers
 
 red background for select "must already exist" thing
@@ -14,32 +23,39 @@ Edit Test Pieces
 
 Security on who can edit result
 
-Deal with unique slug clash
-
 Person profile support
 
-Initial User's profile page at /users/<username>
 Change password for user
-Add contest history to users profile page
 Support for instruments on contest history for pro users
-? Add /myresults/<username> page for personal contest history
-Add privacy settings for personal contest history
-Add date ranges for personal contest history
+
 "I played at this contest" link from event
 Add pro status to users profile page
-Add points and avatar to users profile page
+
 Add owned feedback to users profile page
 Add classifieds to users profile page
 Show user's performances of pieces on piece page tab
 
-Upgrade to pro
-Ads for non-pro users
+? Add /myresults/<username> page for personal contest history
+Add privacy settings for personal contest history
+Add date ranges for personal contest history
 
-csrf
-Validate api key
+
+Something on the homepage
+Blog on the homepage
+On this day in history
+
+Fix formula numbers
 
 Event band map/geography
 Event competitors
+
+red background for select "must already exist" thing
+yellow background for select "might create this" thing
+
+Deal with unique slug clash
+
+csrf
+Validate api key
 
 CosmosDB
 Storage Account for queues
@@ -48,9 +64,6 @@ Azure Function receives band and venue changes and updates cosmosdb
 Push events that trigger a points aware to a queue
 Azure Function updates points on a user, by calling api on site
 
-Something on the homepage
-Blog on the homepage
-On this day in history
 Assign points
 
 Search for location on map and give bands and venues within specific range of it
