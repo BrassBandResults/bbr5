@@ -12,6 +12,10 @@ Ads for non-pro users
 Do tags better, and don't link direct to the contest and contestgroup objects.
 
 Performances shows pieces played
+Fix formula numbers
+
+red background for select "must already exist" thing
+yellow background for select "might create this" thing
 
 Edit result
 Edit adjudicators

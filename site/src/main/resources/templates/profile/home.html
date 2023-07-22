@@ -31,6 +31,9 @@
     </ul>
     <br/>
 
+    <p th:if="${User.accessLevel == 'P'}">Thanks for being a pro member.</p>
+    <p th:if="${User.proUserForFree}">Congratulations, you have a free pro account.  Thanks for your support.</p>
+
     <div class="tab-content">
         <p th:if="${User.accessLevel == 'P'}">Thanks for being a pro member.</p>
         <p th:if="${User.proUserForFree}">Congratulations, you have a free pro account.  Thanks for your support.</p>
