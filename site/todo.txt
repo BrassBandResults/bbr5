@@ -1,9 +1,9 @@
-get rid of @Formula
-
 Add results - add results fix unknown band
 Add results - add results fix unknown conductor
 Add results - add adjudicators
 Add results - add notes
+
+Fix formula numbers
 
 red background for select "must already exist" thing
 yellow background for select "might create this" thing
