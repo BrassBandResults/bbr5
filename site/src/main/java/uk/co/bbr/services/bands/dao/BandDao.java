@@ -18,6 +18,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.time.LocalDate;
 
 @Getter
@@ -76,7 +77,7 @@ public class BandDao extends AbstractDao implements NameTools {
     @Column(name="twitter_name")
     private String twitterName;
 
-    @Formula("(SELECT COUNT(*) FROM contest_result r WHERE r.band_id = id)")
+    @Transient
     private int resultsCount;
 
     public void setName(String sourceName) {

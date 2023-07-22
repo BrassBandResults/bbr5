@@ -10,6 +10,7 @@ import uk.co.bbr.services.framework.mixins.NameTools;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Getter
 @Entity
@@ -40,23 +41,22 @@ public class RegionDao extends AbstractDao implements NameTools {
     @Setter
     private Integer defaultMapZoom;
 
-    @Formula("(SELECT COUNT(*) FROM band b WHERE b.region_id = id)")
+    @Transient
     private int bandsCount;
 
-    @Formula("(SELECT COUNT(*) FROM band b WHERE b.region_id = id AND b.status = 0)")
+    @Transient
     private int extinctBandsCount;
 
-    @Formula("(SELECT COUNT(*) FROM band b WHERE b.region_id = id AND b.status <> 0)")
+    @Transient
     private int activeBandsCount;
 
-
-    @Formula("(SELECT COUNT(*) FROM band b WHERE b.region_id IN (SELECT r.id FROM region r WHERE r.container_id = id))")
+    @Transient
     private int subRegionBandsCount;
 
-    @Formula("(SELECT COUNT(*) FROM band b WHERE b.region_id IN (SELECT r.id FROM region r WHERE r.container_id = id) AND b.status = 0)")
+    @Transient
     private int subRegionExtinctBandsCount;
 
-    @Formula("(SELECT COUNT(*) FROM band b WHERE b.region_id IN (SELECT r.id FROM region r WHERE r.container_id = id) AND b.status <> 0)")
+    @Transient
     private int subRegionActiveBandsCount;
 
     public void setName(String name){
