@@ -6,7 +6,6 @@ public enum PerformanceStatus {
     ACCEPTED("A", "performance-status.accepted"),
     PENDING("P", "performance-status.pending"),
     DECLINED("D", "performance-status.declined"),
-
     ;
 
     private final String code;
