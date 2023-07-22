@@ -56,7 +56,7 @@ jobs:
           TF_VAR_smtp_password: ${{ secrets.TF_VAR_smtp_password }}
           TF_VAR_docker_image_tag: pr-${{ github.event.number }}-${{ github.run_number }}
           TF_VAR_cloudflare_zone_id: ${{ secrets.TF_VAR_cloudflare_zone_id }}
-          TF_VAR_stripe_public_buy_button: ${{ secrets.TF_VAR_stripe_public_buy_button }}
+          TF_VAR_stripe_public_buy_button: ${{ secrets.TF_VAR_stripe_TEST_public_buy_button }}
           TF_VAR_stripe_public_publishable_key: ${{ secrets.TF_VAR_stripe_TEST_public_publishable_key }}
           TF_VAR_stripe_private_api_key: ${{ secrets.TF_VAR_stripe_TEST_private_api_key }}      
         run: |
