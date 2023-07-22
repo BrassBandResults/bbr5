@@ -7,17 +7,34 @@
 <div layout:fragment="content">
     <h2 th:text="${User.usercode}">Profile</h2>
 
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <p>
+                    <span th:text="#{page.profile.member-since}" th:remove="tag">Member since</span>
+                    <span th:text="${#temporals.format(User.created, 'dd MMM yyyy')}">date</span>
+                </p>
+            </div>
+            <div class="col text-end">
+                <span th:replace="components/gravatar.html :: icon(${User})"></span>
+            </div>
+        </div>
+    </div>
+
     <ul class="nav nav-tabs">
         <li class="nav-item">
-            <a class="nav-link active" th:href="${'/users/' + User.usercode}" th:text="#{page.profile.tab.pro}">Pro Account</a>
+            <a class="nav-link active" href="/profile" th:text="#{page.profile.tab.pro}">Pro Account</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/profile/performances"  th:text="#{page.profile.tab.performances}">Performances</a>
         </li>
     </ul>
     <br/>
 
-    <p th:if="${User.accessLevel == 'P'}">Thanks for being a pro member.</p>
-    <p th:if="${User.proUserForFree}">Congratulations, you have a free pro account.  Thanks for your support.</p>
-
     <div class="tab-content">
+        <p th:if="${User.accessLevel == 'P'}">Thanks for being a pro member.</p>
+        <p th:if="${User.proUserForFree}">Congratulations, you have a free pro account.  Thanks for your support.</p>
+
         <script async
                 src="https://js.stripe.com/v3/buy-button.js">
         </script>

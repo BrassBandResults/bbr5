@@ -68,18 +68,4 @@ public class UserController {
         model.addAttribute("Users", users);
         return "users/list-unactivated";
     }
-
-    @GetMapping("/users/{usercode:[a-zA-Z0-9@_\\-.]+}")
-    public String publicUserPage(Model model, @PathVariable("usercode") String usercode) {
-
-        Optional<SiteUserDao> user = this.userService.fetchUserByUsercode(usercode);
-        if (user.isEmpty()) {
-            throw NotFoundException.userNotFoundByUsercode(usercode);
-        }
-
-        model.addAttribute("User", user.get());
-
-        return "users/public-user";
-    }
-
 }
