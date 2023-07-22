@@ -41,6 +41,7 @@
     <form method="POST" th:action="${'/bands/' + Band.slug + '/edit-aliases/add'}">
         <input type="text" maxlength="100" size="50" id="oldName" name="oldName" th:placeholder="#{page.form.placeholder.alias-name}"/>
         <input type="submit" th:value="#{page.buttons.save-new-alias}" class="btn btn-outline-success btn-sm rounded"/>
+        <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
     </form>
 </div>
 

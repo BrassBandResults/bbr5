@@ -159,7 +159,7 @@
                         Copy the URL in your browser's address bar and paste it here.<br>
                         <input type="text" name="x_url" size="19">
                         <br>
-                    </noscript>
+                    </noscript><input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
                     <br/><span class="shhh"><input type="text" name="url"/></span><input type="submit" value="Send Feedback" /></p>
                 </form>
             </div>

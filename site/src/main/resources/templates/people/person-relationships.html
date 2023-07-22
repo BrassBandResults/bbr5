@@ -36,6 +36,7 @@
         <br/>
         <input type="hidden" id="right-person-slug" name="RightPersonSlug"/>
         <input type="submit" th:value="#{page.buttons.save-new-relationship}" class="btn btn-outline-success btn-sm rounded"/>
+        <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
     </form>
 </div>
 

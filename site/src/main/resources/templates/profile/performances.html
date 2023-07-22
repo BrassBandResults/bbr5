@@ -45,7 +45,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="performance : ${Performances}">
+            <tr th:each="performance : ${ApprovedPerformances}">
                 <td class="bbr-event" nowrap><span th:replace="links/event-link.html :: eventLink(${performance.result.contestEvent})">9th Sep 2023</span></td>
                 <td th:text="${performance.result.contestEvent.name}"></td>
                 <td class="bbr-band"><span th:replace="links/band-link.html :: bandLinkWithOverride(${performance.result})"></span></td>

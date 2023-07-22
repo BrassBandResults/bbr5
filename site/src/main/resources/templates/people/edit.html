@@ -54,8 +54,9 @@
             <label class="form-label" for="notes" th:text="#{page.field-prompt.notes}">Notes:</label>
             <textarea id="notes" class="form-control" th:field="*{notes}" cols="80" rows="10"></textarea>
         </div>
-        
+
         <input type="submit" th:value="#{page.buttons.save-changes}" class="btn btn-outline-success"/>
+        <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
         <a th:href="${'/people/' + Person.slug}" th:text="#{page.buttons.cancel-without-saving}" class="btn btn-light">Cancel wout saving</a>
     </form>
 </div>
