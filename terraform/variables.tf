@@ -44,14 +44,17 @@ variable "home_ip" {
 variable "stripe_public_buy_button" {
   description = "Stripe buy button code, starts with buy_btn_"
   type        = string
+  default     = ""
 }
 
 variable "stripe_public_publishable_key" {
   description = "Stripe publishable key, starts with pk_"
   type        = string
+  default     = ""
 }
 
 variable "stripe_private_api_key" {
   description = "Stripe private key, starts with sk_"
   type        = string
+  default     = ""
 }
