@@ -57,4 +57,7 @@ jobs:
           TF_VAR_smtp_username: ${{ secrets.TF_VAR_smtp_username }}
           TF_VAR_smtp_password: ${{ secrets.TF_VAR_smtp_password }}
           TF_VAR_cloudflare_zone_id: ${{ secrets.TF_VAR_cloudflare_zone_id }}
+          TF_VAR_stripe_public_buy_button: ${{ secrets.TF_VAR_stripe_public_buy_button }}
+          TF_VAR_stripe_public_publishable_key: ${{ secrets.TF_VAR_stripe_LIVE_public_publishable_key }}
+          TF_VAR_stripe_private_api_key: ${{ secrets.TF_VAR_stripe_LIVE_private_api_key }}
         run: cd terraform && terraform plan -lock=false

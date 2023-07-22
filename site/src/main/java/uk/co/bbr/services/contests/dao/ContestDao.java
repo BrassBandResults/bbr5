@@ -94,7 +94,7 @@ public class ContestDao extends AbstractDao implements NameTools {
             inverseJoinColumns = @JoinColumn(name = "contest_tag_id"))
     private Set<ContestTagDao> tags = new HashSet<>();
 
-    @Formula("(SELECT COUNT(*) FROM contest_event e WHERE e.contest_id = id)")
+    @Transient
     private int eventsCount;
 
     public void setName(String name){

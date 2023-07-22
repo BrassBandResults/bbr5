@@ -19,6 +19,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -51,10 +52,10 @@ public class ContestGroupDao extends AbstractDao implements NameTools {
             inverseJoinColumns = @JoinColumn(name = "contest_tag_id"))
     private Set<ContestTagDao> tags = new HashSet<>();
 
-    @Formula("(SELECT COUNT(*) FROM contest c WHERE c.contest_group_id = id)")
+    @Transient
     private int contestCount;
 
-    @Formula("(SELECT COUNT(*) FROM contest_event e INNER JOIN contest c ON e.contest_id = c.id WHERE c.contest_group_id = id)")
+    @Transient
     private int eventsCount;
 
     public void setName(String name){

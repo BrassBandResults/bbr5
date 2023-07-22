@@ -25,15 +25,18 @@ resource "azurerm_linux_web_app" "bbr5" {
   }
 
   app_settings = {
-    WEBSITES_PORT            = "8080"
-    BBR_SMTP_SERVER_USERNAME = var.smtp_username
-    BBR_SMTP_SERVER_PASSWORD = var.smtp_password
-    BBR_SMTP_SERVER_HOST     = var.smtp_hostname
-    BBR_DATABASE_URL         = "jdbc:sqlserver://${azurerm_mssql_server.this.fully_qualified_domain_name};database=${azurerm_mssql_database.bbr.name}"
-    BBR_DATABASE_USERNAME    = random_password.mssql_username.result
-    BBR_DATABASE_PASSWORD    = random_password.mssql_password.result
-    BBR_STATIC_FILES_HOST    = azurerm_static_site_custom_domain.static.domain_name
-    BBR_WEB_SITE_PREFIX      = terraform.workspace == "prod" ? "bbr5" : "bbr5-${terraform.workspace}"
+    WEBSITES_PORT                     = "8080"
+    BBR_SMTP_SERVER_USERNAME          = var.smtp_username
+    BBR_SMTP_SERVER_PASSWORD          = var.smtp_password
+    BBR_SMTP_SERVER_HOST              = var.smtp_hostname
+    BBR_DATABASE_URL                  = "jdbc:sqlserver://${azurerm_mssql_server.this.fully_qualified_domain_name};database=${azurerm_mssql_database.bbr.name}"
+    BBR_DATABASE_USERNAME             = random_password.mssql_username.result
+    BBR_DATABASE_PASSWORD             = random_password.mssql_password.result
+    BBR_STATIC_FILES_HOST             = azurerm_static_site_custom_domain.static.domain_name
+    BBR_WEB_SITE_PREFIX               = terraform.workspace == "prod" ? "bbr5" : "bbr5-${terraform.workspace}"
+    BBR_STRIPE_PUBLIC_BUY_BUTTON      = var.stripe_public_buy_button
+    BBR_STRIPE_PUBLIC_PUBLISHABLE_KEY = var.stripe_public_publishable_key
+    BBR_STRIPE_PRIVATE_API_KEY        = var.stripe_private_api_key
   }
 }
 

@@ -1,3 +1,5 @@
+get rid of @Formula
+
 Add results - add results fix unknown band
 Add results - add results fix unknown conductor
 Add results - add adjudicators
@@ -6,11 +8,11 @@ Add results - add notes
 red background for select "must already exist" thing
 yellow background for select "might create this" thing
 
-Security on who can edit result
-
 Edit result
 Edit adjudicators
 Edit Test Pieces
+
+Security on who can edit result
 
 Deal with unique slug clash
 
