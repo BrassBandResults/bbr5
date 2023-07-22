@@ -35,7 +35,6 @@
         <p th:if="${User.accessLevel == 'P'}">Thanks for being a pro member.</p>
         <p th:if="${User.accessLevel == 'S'}">Thanks for being a superuser.  You get the pro features for free.</p>
         <p th:if="${User.accessLevel == 'A'}">Welcome Administrator!</p>
-        <p th:if="${User.proUserForFree}">Congratulations, you have a free pro account.  Thanks for your support.</p>
 
         <script async
                 src="https://js.stripe.com/v3/buy-button.js">
