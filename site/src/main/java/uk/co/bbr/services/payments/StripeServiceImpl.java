@@ -1,6 +1,7 @@
 package uk.co.bbr.services.payments;
 
 import com.stripe.Stripe;
+import com.stripe.exception.AuthenticationException;
 import com.stripe.exception.StripeException;
 import com.stripe.model.Subscription;
 import com.stripe.model.SubscriptionCollection;
