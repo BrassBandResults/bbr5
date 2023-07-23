@@ -42,7 +42,6 @@ Show user's performances of pieces on piece page tab
 Add privacy settings for personal contest history
 Add date ranges for personal contest history
 
-
 Blog on the homepage
 On this day in history
 

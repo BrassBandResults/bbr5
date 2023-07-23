@@ -41,6 +41,24 @@ public class StripeServiceImpl implements StripeService {
     }
 
     @Override
+    public Subscription fetchSubscription(SiteUserDao user) {
+        Stripe.apiKey = EnvVar.getEnv("BBR_STRIPE_PRIVATE_API_KEY", "sk_test_abc123");
+
+        try {
+            Map<String, Object> params = new HashMap<>();
+            params.put("customer", user.getStripeCustomer());
+            SubscriptionCollection subscriptions = Subscription.list(params);
+            if (subscriptions.getData().isEmpty()) {
+                return null;
+            }
+            return subscriptions.getData().get(0);
+        } catch (StripeException ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
     public boolean isSubscriptionActive(SiteUserDao user) {
         Optional<Subscription> subscription = this.getActiveSubscription(user);
         return subscription.isPresent();
@@ -55,4 +73,6 @@ public class StripeServiceImpl implements StripeService {
         Long endDateTime = subscription.get().getCurrentPeriodEnd();
         return Instant.ofEpochMilli(endDateTime).atZone(ZoneId.systemDefault()).toLocalDate();
     }
+
+
 }
