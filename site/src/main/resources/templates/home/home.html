@@ -5,7 +5,71 @@
 </head>
 <body>
 <div layout:fragment="content">
-    <h1>Home Page</h1>
+    <header class="container border border-info bg-light rounded-bottom mb-2">
+        <p th:text="#{page.home.lead-1}" class="lead">This site is an archive of brass band competition results, covering the entire world.  It provides links between the various bands where they share conductors, test pieces etc., so it can easily be seen when a piece has been used and which band it was played by.</p>
+        <p th:utext="#{page.home.lead-2}"><strong>We need your help!</strong> Do you have contest results that are not in the database?  Then please register and add them!  Make <i>your</i> contribution to this unique project today.  You can add results from any contest in any country, this isn't just restricted to the big contests, and not just to the top bands.</p>
+    </header>
+
+    <div class="container" th:if="${LastWeekendEvents.size() > 0}">
+        <h3 th:text="#{page.home.last-weekend}">Last Weekend</h3>
+        <ul>
+            <li th:each="result : ${LastWeekendEvents}">
+                <span th:replace="links/event-link.html :: eventLink(${result.contestEvent})">9th Sep 2023</span>
+                <span th:text="${result.contestEvent.name}">Yorkshire Area</span>
+                <span th:if="${result.band != null}">
+                    <br/>- <span th:text="#{page.home.won-by}">won by</span>
+                    <span th:replace="links/band-link.html :: bandLinkWithOverride(${result})"></span>
+                </span>
+            </li>
+        </ul>
+    </div>
+    <div class="container" th:if="${ThisWeekendEvents.size() > 0}">
+        <h3 th:text="#{page.home.this-weekend}">This Weekend</h3>
+        <ul>
+            <li th:each="result : ${ThisWeekendEvents}">
+                <span th:replace="links/event-link.html :: eventLink(${result.contestEvent})">9th Sep 2023</span>
+                <span th:text="${result.contestEvent.name}">Yorkshire Area</span>
+                <span th:if="${result.band != null}">
+                    <br/>- <span th:text="#{page.home.won-by}">won by</span>
+                    <span th:replace="links/band-link.html :: bandLinkWithOverride(${result})"></span>
+                </span>
+            </li>
+        </ul>
+    </div>
+    <div class="container" th:if="${NextWeekendEvents.size() > 0}">
+        <h3 th:text="#{page.home.next-weekend}">Next Weekend</h3>
+        <ul>
+            <li th:each="result : ${NextWeekendEvents}">
+                <span th:replace="links/event-link.html :: eventLink(${result.contestEvent})">9th Sep 2023</span>
+                <span th:text="${result.contestEvent.name}">Yorkshire Area</span>
+                <span th:if="${result.band != null}">
+                    <br/>- <span th:text="#{page.home.won-by}">won by</span>
+                    <span th:replace="links/band-link.html :: bandLinkWithOverride(${result})"></span>
+                </span>
+            </li>
+        </ul>
+    </div>
+
+    <div class="container">
+        <h3>Disclaimer</h3>
+        <p>The contents of this site are not affiliated with any other website, and we provide no guarantee of accuracy of any of the information on here.
+            We think most of them are right, but if you find mistakes please fill in the feedback form and we'll endeavour to get them corrected.</p>
+        <p>We use cookies.  For more details see the <a href="/privacy/">Privacy Policy</a></p>
+        <p>Event information is not guaranteed to be correct.  Please check with the venue or band before travelling.</p>
+    </div>
+    <div class="container">
+        <h3>Links</h3>
+        <p>Other websites that might be of interest include <a href="http://www.ibew.org.uk/">http://www.ibew.org.uk/</a> and <a href="https://www.bbe.org.uk/">Brass Bands England</a>.</p>
+    </div>
+    <div class="container">
+        <h3>Contact Us</h3>
+        <p>If you want to contact the site owners, either put your message into the feedback box on any page, or email us at <script type="text/javascript"><!--
+    var name='owner';
+    var domain='brassbandresults.co.uk';
+    var addy=name+'@'+domain;
+    document.write('<'+'a href="mailto:'+addy+'">'+addy+'<'+'/a'+'>'); //-->
+    </script>.</p>
+    </div>
 </div>
 </body>
 </html>

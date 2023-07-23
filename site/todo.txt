@@ -6,10 +6,12 @@ Add results - create contest
 Add results - create test piece
 Add results - create adjudicator
 
-Upgrade to pro
+Upgrade to pro - subscribe link on 403 page
+Upgrade to pro - call back, how's that going to work?
+Upgrade to pro - how do we check that pro is still active?
 Ads for non-pro users
 
-Do tags better, and don't link direct to the contest and contestgroup objects.
+Do tags better, and don't link direct to the contest and contestGroup objects.
 
 Performances shows pieces played
 Fetch pending performances works out ones that aren't in history and aren't rejected
@@ -41,7 +43,6 @@ Add privacy settings for personal contest history
 Add date ranges for personal contest history
 
 
-Something on the homepage
 Blog on the homepage
 On this day in history
 

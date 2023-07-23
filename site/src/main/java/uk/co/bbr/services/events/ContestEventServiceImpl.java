@@ -15,6 +15,7 @@ import uk.co.bbr.services.contests.repo.ContestRepository;
 import uk.co.bbr.services.contests.sql.ContestResultSql;
 import uk.co.bbr.services.contests.sql.dto.ContestEventResultSqlDto;
 import uk.co.bbr.services.events.sql.EventSql;
+import uk.co.bbr.services.events.sql.dto.EventResultSqlDto;
 import uk.co.bbr.services.events.sql.dto.EventUpDownLeftRightSqlDto;
 import uk.co.bbr.services.events.types.ContestEventDateResolution;
 import uk.co.bbr.services.events.types.TestPieceAndOr;
@@ -24,12 +25,14 @@ import uk.co.bbr.services.regions.dao.RegionDao;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.web.security.annotations.IsBbrAdmin;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
+import uk.co.bbr.services.framework.DateTools;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -325,6 +328,42 @@ public class ContestEventServiceImpl implements ContestEventService {
             return null;
         }
         return linkEvent.getEvent();
+    }
+
+    @Override
+    public List<ContestResultDao> fetchLastWeekend() {
+        LocalDate previousSunday = DateTools.previousSundayDate();
+        if (previousSunday == null) {
+            return Collections.emptyList();
+        }
+        return this.fetchEventsForWeekend(previousSunday);
+    }
+
+    @Override
+    public List<ContestResultDao> fetchThisWeekend() {
+        LocalDate thisSunday = DateTools.thisWeekendSundayDate();
+        if (thisSunday == null) {
+            return Collections.emptyList();
+        }
+        return this.fetchEventsForWeekend(thisSunday);
+    }
+
+    @Override
+    public List<ContestResultDao> fetchNextWeekend() {
+        LocalDate nextSunday = DateTools.nextSundayDate();
+
+        return this.fetchEventsForWeekend(nextSunday);
+    }
+
+    private List<ContestResultDao> fetchEventsForWeekend(LocalDate sunday) {
+
+        List<EventResultSqlDto> weekendResults = EventSql.eventsForWeekend(this.entityManager, sunday);
+
+        List<ContestResultDao> returnResults = new ArrayList<>();
+        for (EventResultSqlDto eachResultSql : weekendResults) {
+            returnResults.add(eachResultSql.getResult());
+        }
+        return returnResults;
     }
 
 }
