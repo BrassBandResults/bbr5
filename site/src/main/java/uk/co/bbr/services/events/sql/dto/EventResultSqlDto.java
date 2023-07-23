@@ -48,6 +48,7 @@ public class EventResultSqlDto extends AbstractSqlDto {
     private final String pointsPenalty;
     private final Long resultId;
     private final String notes;
+    private final String contestName;
 
 
     public EventResultSqlDto(Object[] columnList) {
@@ -84,6 +85,7 @@ public class EventResultSqlDto extends AbstractSqlDto {
         BigInteger resultSerial = (BigInteger)columnList[29];
         this.resultId = resultSerial.longValue();
         this.notes = (String)columnList[30];
+        this.contestName = (String)columnList[31];
     }
 
     public ContestResultDao getResult() {
@@ -95,9 +97,11 @@ public class EventResultSqlDto extends AbstractSqlDto {
         result.getBand().setRegion(new RegionDao());
 
         result.setId(this.resultId);
+        result.getContestEvent().setName(this.contestName);
         result.getContestEvent().setEventDate(this.eventDate);
         result.getContestEvent().setEventDateResolution(ContestEventDateResolution.fromCode(this.eventDateResolution));
         result.getContestEvent().getContest().setSlug(this.contestSlug);
+        result.getContestEvent().getContest().setName(this.contestName);
         result.setPosition(String.valueOf(this.resultPosition));
         result.setResultPositionType(ResultPositionType.fromCode(this.resultPositionType));
         result.setBandName(this.competedAs);
