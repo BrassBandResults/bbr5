@@ -44,9 +44,8 @@ public class UserController {
 
         List<SiteUserDao> users = this.userService.findAllPro();
         for (SiteUserDao user : users) {
-            Subscription sub = this.stripeService.fetchSubscription(user);
-
-            proUsers.add(new SiteUserProDao(user, sub));
+            SiteUserProDao pro = this.stripeService.markupUser(user);
+            proUsers.add(pro);
         }
 
         model.addAttribute("ProUsers", proUsers);

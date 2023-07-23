@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import uk.co.bbr.services.framework.EnvVar;
 import uk.co.bbr.services.security.dao.SiteUserDao;
+import uk.co.bbr.services.security.dao.SiteUserProDao;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -27,7 +28,6 @@ public class StripeServiceImpl implements StripeService {
         try {
             Map<String, Object> params = new HashMap<>();
             params.put("customer", user.getStripeCustomer());
-            params.put("status", "active");
 
             SubscriptionCollection subscriptions = Subscription.list(params);
             if (subscriptions.getData().isEmpty()) {
@@ -38,24 +38,6 @@ public class StripeServiceImpl implements StripeService {
             ex.printStackTrace();
         }
         return Optional.empty();
-    }
-
-    @Override
-    public Subscription fetchSubscription(SiteUserDao user) {
-        Stripe.apiKey = EnvVar.getEnv("BBR_STRIPE_PRIVATE_API_KEY", "sk_test_abc123");
-
-        try {
-            Map<String, Object> params = new HashMap<>();
-            params.put("customer", user.getStripeCustomer());
-            SubscriptionCollection subscriptions = Subscription.list(params);
-            if (subscriptions.getData().isEmpty()) {
-                return null;
-            }
-            return subscriptions.getData().get(0);
-        } catch (StripeException ex) {
-            ex.printStackTrace();
-        }
-        return null;
     }
 
     @Override
@@ -72,6 +54,17 @@ public class StripeServiceImpl implements StripeService {
         }
         Long endDateTime = subscription.get().getCurrentPeriodEnd();
         return Instant.ofEpochMilli(endDateTime).atZone(ZoneId.systemDefault()).toLocalDate();
+    }
+
+    @Override
+    public SiteUserProDao markupUser(SiteUserDao user) {
+        Optional<Subscription> subscription = this.getActiveSubscription(user);
+        if (subscription.isPresent()) {
+            LocalDate endedAt = Instant.ofEpochMilli(subscription.get().getEndedAt()).atZone(ZoneId.systemDefault()).toLocalDate();
+            LocalDate endDateTime = Instant.ofEpochMilli(subscription.get().getCurrentPeriodEnd()).atZone(ZoneId.systemDefault()).toLocalDate();
+            return new SiteUserProDao(user, endDateTime != null, endDateTime, endedAt);
+        }
+        return new SiteUserProDao(user, false, null, null);
     }
 
 

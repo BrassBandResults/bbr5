@@ -2,6 +2,7 @@ package uk.co.bbr.services.payments;
 
 import com.stripe.model.Subscription;
 import uk.co.bbr.services.security.dao.SiteUserDao;
+import uk.co.bbr.services.security.dao.SiteUserProDao;
 
 import java.time.LocalDate;
 
@@ -10,5 +11,5 @@ public interface StripeService {
 
     LocalDate subscriptionExpiryDate(SiteUserDao user);
 
-    Subscription fetchSubscription(SiteUserDao user);
+    SiteUserProDao markupUser(SiteUserDao user);
 }
