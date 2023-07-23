@@ -57,12 +57,12 @@ public class EventSql {
            LEFT OUTER JOIN person con1 ON con1.id = r.conductor_id
            LEFT OUTER JOIN person con2 ON con2.id = r.conductor_two_id
            LEFT OUTER JOIN person con3 ON con3.id = r.conductor_three_id
-           WHERE e.date_of_event > DATEADD(day, -4, ?1)
-           AND e.date_of_event < DATEADD(day, 2, ?1)
+           WHERE e.date_of_event > ?1
+           AND e.date_of_event < ?2
            ORDER BY e.date_of_event""";
 
-    public static List<EventResultSqlDto> eventsForWeekend(EntityManager entityManager, LocalDate sunday) {
-        return SqlExec.execute(entityManager, WEEKEND_RESULTS_SQL, sunday, EventResultSqlDto.class);
+    public static List<EventResultSqlDto> eventsForWeekend(EntityManager entityManager, LocalDate start, LocalDate end) {
+        return SqlExec.execute(entityManager, WEEKEND_RESULTS_SQL, start, end, EventResultSqlDto.class);
     }
 
     private static final String EVENT_RESULT_PIECES_SQL = """
