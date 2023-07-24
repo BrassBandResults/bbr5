@@ -2,6 +2,7 @@ package uk.co.bbr.services.security.dao;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDate;
 
@@ -9,7 +10,8 @@ import java.time.LocalDate;
 @RequiredArgsConstructor
 public class SiteUserProDao {
     private final SiteUserDao siteUser;
-    private final boolean subscriptionActive;
-    private final LocalDate currentSubscriptionEndDate;
-    private final LocalDate endedAt;
+
+    @Setter private boolean subscriptionActive;
+    @Setter private LocalDate currentSubscriptionEndDate;
+    @Setter private LocalDate endedAt;
 }

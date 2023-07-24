@@ -2,6 +2,8 @@ FROM openjdk:17-slim-bullseye as builder
 
 COPY . /app
 
+RUN cp /app/src/main/resources/application-prod.yml /app/src/main/resources/application.yml
+
 WORKDIR /app
 
 RUN ./mvnw --batch-mode package -DskipTests

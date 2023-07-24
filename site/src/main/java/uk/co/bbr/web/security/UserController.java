@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.payments.StripeService;
+import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.services.security.UserService;
 import uk.co.bbr.services.security.dao.SiteUserDao;
 import uk.co.bbr.services.security.dao.PendingUserDao;
@@ -25,6 +26,7 @@ import java.util.concurrent.Flow;
 public class UserController {
 
     private final UserService userService;
+    private final SecurityService securityService;
     private final StripeService stripeService;
 
     @IsBbrAdmin
@@ -40,17 +42,24 @@ public class UserController {
     @IsBbrAdmin
     @GetMapping("/user-list/pro")
     public String proUserList(Model model) {
-        List<SiteUserProDao> proUsers = new ArrayList<>();
-
-        List<SiteUserDao> users = this.userService.findAllPro();
-        for (SiteUserDao user : users) {
-            SiteUserProDao pro = this.stripeService.markupUser(user);
-            proUsers.add(pro);
-        }
+List<SiteUserDao> users = this.userService.findAllPro();
+        List<SiteUserProDao> proUsers = this.stripeService.markupUsers(users);
 
         model.addAttribute("ProUsers", proUsers);
         model.addAttribute("Type", "pro");
         return "users/list-pro";
+    }
+
+    @IsBbrAdmin
+    @GetMapping("user-list/pro/{usercode:[\\-@A-Za-z.\\d]+}/remove")
+    public String proUserDisable(@PathVariable("usercode") String usercode) {
+        Optional<SiteUserDao> user = this.userService.fetchUserByUsercode(usercode);
+        if (user.isEmpty()) {
+            throw NotFoundException.userNotFoundByUsercode(usercode);
+        }
+
+        this.securityService.removeProFlag(user.get());
+        return "redirect:/user-list/pro";
     }
 
     @IsBbrAdmin

@@ -18,6 +18,8 @@ public interface SecurityService {
 
     void makeUserPro(String usercode);
 
+    void removeProFlag(SiteUserDao siteUserDao);
+
     void makeUserSuperuser(String usercode);
 
     boolean userExists(String username);

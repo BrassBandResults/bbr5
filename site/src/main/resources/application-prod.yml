@@ -1,0 +1,26 @@
+spring:
+  datasource:
+    url: ${BBR_DATABASE_URL}
+    driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    username: ${BBR_DATABASE_USERNAME}
+    password: ${BBR_DATABASE_PASSWORD}
+  jpa:
+    open-in-view: false
+    # show-sql: true
+    database-platform: org.hibernate.dialect.SQLServerDialect
+    hibernate:
+      ddl-auto: none
+  mail:
+    password: ${BBR_SMTP_SERVER_PASSWORD}
+    username: ${BBR_SMTP_SERVER_USERNAME}
+    host: ${BBR_SMTP_SERVER_HOST}
+    port: 587
+    protocol: smtp
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+springdoc:
+    packagesToScan=uk.co.bbr.api

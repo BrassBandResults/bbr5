@@ -151,6 +151,12 @@ public class SecurityServiceImpl implements SecurityService {
     }
 
     @Override
+    public void removeProFlag(SiteUserDao siteUserDao) {
+        siteUserDao.setAccessLevel(UserRole.MEMBER.getCode());
+        this.bbrUserRepository.saveAndFlush(siteUserDao);
+    }
+
+    @Override
     public void makeUserSuperuser(String usercode) {
         Optional<SiteUserDao> matchingUserOptional = this.bbrUserRepository.fetchByUsercode(usercode);
         if (matchingUserOptional.isEmpty()){
