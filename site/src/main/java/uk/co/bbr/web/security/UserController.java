@@ -1,7 +1,5 @@
 package uk.co.bbr.web.security;
 
-import com.stripe.Stripe;
-import com.stripe.model.Subscription;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,22 +7,22 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.payments.StripeService;
+import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.services.security.UserService;
-import uk.co.bbr.services.security.dao.SiteUserDao;
 import uk.co.bbr.services.security.dao.PendingUserDao;
+import uk.co.bbr.services.security.dao.SiteUserDao;
 import uk.co.bbr.services.security.dao.SiteUserProDao;
 import uk.co.bbr.web.security.annotations.IsBbrAdmin;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.Flow;
 
 @Controller
 @RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
+    private final SecurityService securityService;
     private final StripeService stripeService;
 
     @IsBbrAdmin
@@ -40,17 +38,24 @@ public class UserController {
     @IsBbrAdmin
     @GetMapping("/user-list/pro")
     public String proUserList(Model model) {
-        List<SiteUserProDao> proUsers = new ArrayList<>();
-
         List<SiteUserDao> users = this.userService.findAllPro();
-        for (SiteUserDao user : users) {
-            SiteUserProDao pro = this.stripeService.markupUser(user);
-            proUsers.add(pro);
-        }
+        List<SiteUserProDao> proUsers = this.stripeService.markupUsers(users);
 
         model.addAttribute("ProUsers", proUsers);
         model.addAttribute("Type", "pro");
         return "users/list-pro";
+    }
+
+    @IsBbrAdmin
+    @GetMapping("user-list/pro/{usercode:[\\-@A-Za-z.\\d]+}/remove")
+    public String proUserDisable(@PathVariable("usercode") String usercode) {
+        Optional<SiteUserDao> user = this.userService.fetchUserByUsercode(usercode);
+        if (user.isEmpty()) {
+            throw NotFoundException.userNotFoundByUsercode(usercode);
+        }
+
+        this.securityService.removeProFlag(user.get());
+        return "redirect:/user-list/pro";
     }
 
     @IsBbrAdmin

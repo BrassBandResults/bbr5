@@ -5,11 +5,12 @@ import uk.co.bbr.services.security.dao.SiteUserDao;
 import uk.co.bbr.services.security.dao.SiteUserProDao;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public interface StripeService {
     boolean isSubscriptionActive(SiteUserDao user);
 
     LocalDate subscriptionExpiryDate(SiteUserDao user);
 
-    SiteUserProDao markupUser(SiteUserDao user);
+    List<SiteUserProDao> markupUsers(List<SiteUserDao> users);
 }
