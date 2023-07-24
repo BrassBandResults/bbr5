@@ -1,7 +1,5 @@
 package uk.co.bbr.web.security;
 
-import com.stripe.Stripe;
-import com.stripe.model.Subscription;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,15 +9,13 @@ import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.payments.StripeService;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.services.security.UserService;
-import uk.co.bbr.services.security.dao.SiteUserDao;
 import uk.co.bbr.services.security.dao.PendingUserDao;
+import uk.co.bbr.services.security.dao.SiteUserDao;
 import uk.co.bbr.services.security.dao.SiteUserProDao;
 import uk.co.bbr.web.security.annotations.IsBbrAdmin;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.Flow;
 
 @Controller
 @RequiredArgsConstructor
@@ -42,7 +38,7 @@ public class UserController {
     @IsBbrAdmin
     @GetMapping("/user-list/pro")
     public String proUserList(Model model) {
-List<SiteUserDao> users = this.userService.findAllPro();
+        List<SiteUserDao> users = this.userService.findAllPro();
         List<SiteUserProDao> proUsers = this.stripeService.markupUsers(users);
 
         model.addAttribute("ProUsers", proUsers);
