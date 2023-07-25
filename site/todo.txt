@@ -1,3 +1,5 @@
+"I played at this contest" link from event
+
 Add results - add results fix unknown band
 Add results - add results fix unknown conductor
 Add results - add adjudicators
@@ -9,12 +11,12 @@ Add results - create adjudicator
 Upgrade to pro - subscribe link on 403 page
 Upgrade to pro - call back, how's that going to work?
 Upgrade to pro - how do we check that pro is still active?
+Upgrade to pro - how do we record stripe details on user?
 Ads for non-pro users
 
-Do tags better, and don't link direct to the contest and contestGroup objects.
-
 Performances shows pieces played
-Fetch pending performances works out ones that aren't in history and aren't rejected
+Fetch pending performances works out ones that aren't in history and aren't rejected#
+
 Fix formula numbers
 
 red background for select "must already exist" thing
@@ -31,7 +33,6 @@ Person profile support
 Change password for user
 Support for instruments on contest history for pro users
 
-"I played at this contest" link from event
 Add pro status to users profile page
 
 Add owned feedback to users profile page
@@ -67,6 +68,9 @@ Azure Function updates points on a user, by calling api on site
 
 Assign points
 
+robots.txt
+sitemap.xml
+
 Search for location on map and give bands and venues within specific range of it
 Filter map by section
 Filter map by band rehearsal night
@@ -77,5 +81,7 @@ Download conductor csv
 
 Member can add missing conductor
 Member can add missing points etc on a result
+
+Do tags better, and don't link direct to the contest and contestGroup objects.
 
 sitemap?

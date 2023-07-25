@@ -21,4 +21,6 @@ public interface PerformanceService {
 
     List<PerformanceDao> fetchPendingPerformancesForUser(SiteUserDao user);
     List<PerformanceDao> fetchApprovedPerformancesForUser(SiteUserDao user);
+
+    void linkUserPerformance(SiteUserDao user, ContestResultDao contestResult);
 }
