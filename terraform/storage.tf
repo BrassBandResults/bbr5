@@ -1,5 +1,5 @@
 resource "azurerm_storage_account" "bbr5" {
-  name                     = terraform.workspace == "prod" ? "bbr5-storage" : "bbr5-storage-${terraform.workspace}"
+  name                     = terraform.workspace == "prod" ? "bbr5storage" : "bbr5storage${terraform.workspace}"
   resource_group_name      = azurerm_resource_group.this.name
   location                 = azurerm_resource_group.this.location
   account_tier             = "Standard"
