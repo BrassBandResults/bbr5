@@ -7,6 +7,6 @@ resource "azurerm_storage_account" "bbr5" {
 }
 
 resource "azurerm_storage_queue" "location-updates" {
-  name                  = "location-updates"
-  storage_account_name  = azurerm_storage_account.bbr5.name
+  name                 = "location-updates"
+  storage_account_name = azurerm_storage_account.bbr5.name
 }
