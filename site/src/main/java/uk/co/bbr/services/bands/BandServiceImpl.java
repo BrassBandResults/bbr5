@@ -5,7 +5,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.bands.dto.BandCompareDto;
-import uk.co.bbr.services.bands.dto.BandListBandDto;
 import uk.co.bbr.services.bands.dto.BandListDto;
 import uk.co.bbr.services.bands.repo.BandPreviousNameRepository;
 import uk.co.bbr.services.bands.repo.BandRepository;
@@ -23,7 +22,6 @@ import uk.co.bbr.web.security.annotations.IsBbrAdmin;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
 import javax.persistence.EntityManager;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -144,12 +142,7 @@ public class BandServiceImpl implements BandService, SlugTools {
         }
 
         long allBandsCount = this.bandRepository.count();
-
-        List<BandListBandDto> returnedBands = new ArrayList<>();
-        for (BandDao eachBand : bandsToReturn) {
-            returnedBands.add(new BandListBandDto(eachBand.getSlug(), eachBand.getName(), eachBand.getRegion(), eachBand.getResultsCount(), eachBand.getDateRange()));
-        }
-        return new BandListDto(bandsToReturn.size(), allBandsCount, prefix, returnedBands);
+        return new BandListDto(bandsToReturn.size(), allBandsCount, prefix, bandsToReturn);
     }
 
     @Override

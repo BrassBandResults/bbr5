@@ -7,6 +7,8 @@ logging:
       apache:
         http: INFO
 spring:
+  profiles:
+    active: prod
   datasource:
     url: ${BBR_DATABASE_URL}
     driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
@@ -31,4 +33,9 @@ spring:
           starttls:
             enable: true
 springdoc:
-    packagesToScan=uk.co.bbr.api
+    packagesToScan: uk.co.bbr.api
+azure:
+  cosmosdb:
+    uri: ${BBR_COSMOS_DB_URI}
+    access-key: ${BBR_COSMOS_DB_ACCESS_KEY}
+    database: ${BBR_COSMOS_DB_NAME}

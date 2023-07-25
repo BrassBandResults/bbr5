@@ -1,37 +1,19 @@
 package uk.co.bbr.services.bands;
 
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.bands.dao.BandRehearsalDayDao;
-import uk.co.bbr.services.bands.dao.BandRelationshipDao;
-import uk.co.bbr.services.bands.dao.BandRelationshipTypeDao;
-import uk.co.bbr.services.bands.dto.BandListBandDto;
-import uk.co.bbr.services.bands.dto.BandListDto;
-import uk.co.bbr.services.bands.repo.BandPreviousNameRepository;
 import uk.co.bbr.services.bands.repo.BandRehearsalNightRepository;
-import uk.co.bbr.services.bands.repo.BandRelationshipRepository;
-import uk.co.bbr.services.bands.repo.BandRelationshipTypeRepository;
-import uk.co.bbr.services.bands.repo.BandRepository;
-import uk.co.bbr.services.bands.sql.BandSql;
-import uk.co.bbr.services.bands.sql.dto.BandWinnersSqlDto;
-import uk.co.bbr.services.bands.types.BandStatus;
 import uk.co.bbr.services.bands.types.RehearsalDay;
-import uk.co.bbr.services.framework.ValidationException;
 import uk.co.bbr.services.framework.mixins.SlugTools;
-import uk.co.bbr.services.regions.RegionService;
-import uk.co.bbr.services.regions.dao.RegionDao;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.web.security.annotations.IsBbrAdmin;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
-import javax.persistence.EntityManager;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

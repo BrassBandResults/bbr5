@@ -6,13 +6,17 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import uk.co.bbr.services.bands.BandService;
+import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.bands.dto.BandListDto;
+import uk.co.bbr.map.LocationService;
+import uk.co.bbr.web.security.annotations.IsBbrAdmin;
 
 @Controller
 @RequiredArgsConstructor
 public class BandListController {
 
     private final BandService bandService;
+    private final LocationService locationService;
 
     @GetMapping("/bands")
     public String bandListHome(Model model) {
@@ -26,6 +30,20 @@ public class BandListController {
         model.addAttribute("BandPrefixLetter", letter);
         model.addAttribute("Bands", bands);
         return "bands/bands";
+    }
+
+    @IsBbrAdmin
+    @GetMapping("/bands/{letter:[0A-Z]}/upload-locations")
+    public String uploadBandLocations(Model model, @PathVariable("letter") String letter) {
+        BandListDto bands = this.bandService.listBandsStartingWith(letter);
+
+        for (BandDao band : bands.getReturnedBands()) {
+            if (band.hasLocation()) {
+                this.locationService.updateBandLocation(band);
+            }
+        }
+
+        return "redirect:/bands";
     }
 
     @GetMapping("/bands/ALL")

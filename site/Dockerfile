@@ -2,7 +2,7 @@ FROM openjdk:17-slim-bullseye as builder
 
 COPY . /app
 
-RUN cp /app/src/main/resources/application-prod.yml /app/src/main/resources/application.yml
+RUN cp /app/src/main/resources/docker-application.yml /app/src/main/resources/application.yml
 
 WORKDIR /app
 
