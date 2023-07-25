@@ -1,16 +1,16 @@
 package uk.co.bbr;
 
-import com.icegreen.greenmail.configuration.GreenMailConfiguration;
-import com.icegreen.greenmail.junit5.GreenMailExtension;
-import com.icegreen.greenmail.util.ServerSetupTest;
-import org.junit.jupiter.api.extension.RegisterExtension;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
+import uk.co.bbr.map.LocationService;
+import uk.co.bbr.mocks.TestLocationService;
 
+@Profile("test")
 @Configuration
 public class TestConfiguration {
     @Bean
@@ -18,5 +18,10 @@ public class TestConfiguration {
         RestTemplate restTemplate = templateBuilder.build();
         ClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
         return restTemplate;
+    }
+
+    @Bean
+    public LocationService locationService() {
+        return new TestLocationService();
     }
 }

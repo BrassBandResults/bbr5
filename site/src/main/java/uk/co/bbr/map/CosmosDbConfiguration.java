@@ -9,10 +9,12 @@ import com.azure.spring.data.cosmos.repository.config.EnableCosmosRepositories;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
 import java.time.Duration;
 
 @Configuration
+@Profile("prod")
 @EnableCosmosRepositories(basePackages = "uk.co.bbr.map.repo")
 public class CosmosDbConfiguration extends AbstractCosmosConfiguration {
 

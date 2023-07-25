@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.geo.Point;
+import uk.co.bbr.map.dto.LocationPoint;
 import uk.co.bbr.services.bands.types.BandStatus;
 import uk.co.bbr.services.framework.AbstractDao;
 import uk.co.bbr.services.framework.mixins.NameTools;
@@ -201,6 +202,10 @@ public class BandDao extends AbstractDao implements NameTools {
     }
 
     public Location asLocation() {
+        if (!this.hasLocation()) {
+            return null;
+        }
+
         String stringToHash = this.getSlug() + "/" + this.getId();
         String sha1Hash = null;
         MessageDigest md = null;
@@ -219,9 +224,7 @@ public class BandDao extends AbstractDao implements NameTools {
         newLocation.setSlug(this.getSlug());
         newLocation.setType(this.getSectionType());
         newLocation.setObject("Band"); // TODO use a constant
-        double longitudeDouble = Double.parseDouble(this.longitude);
-        double latitudeDouble = Double.parseDouble(this.latitude);
-        newLocation.setLocation(new Point(longitudeDouble, latitudeDouble));
+        newLocation.setPoint(new LocationPoint(this.longitude, this.latitude));
 
         return newLocation;
     }

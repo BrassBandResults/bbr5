@@ -20,7 +20,5 @@ public class Location {
     @PartitionKey
     private String slug;
     private String type; // band type, e.g. status.extinct or section.first
-    private LocationPoint location;
-
-
+    private LocationPoint point;
 }

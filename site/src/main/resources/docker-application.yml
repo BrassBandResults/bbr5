@@ -1,4 +1,6 @@
 spring:
+  profiles:
+    active: prod
   datasource:
     url: ${BBR_DATABASE_URL}
     driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver

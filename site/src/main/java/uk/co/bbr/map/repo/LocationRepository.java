@@ -1,6 +1,7 @@
 package uk.co.bbr.map.repo;
 
 import com.azure.spring.data.cosmos.repository.CosmosRepository;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 import uk.co.bbr.map.dto.Location;
 
