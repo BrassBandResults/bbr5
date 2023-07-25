@@ -34,7 +34,6 @@ resource "azurerm_cosmosdb_sql_container" "band-locations" {
   database_name         = azurerm_cosmosdb_sql_database.locations.name
   partition_key_path    = "/band/slug"
   partition_key_version = 1
-
   indexing_policy {
     indexing_mode = "consistent"
 
