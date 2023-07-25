@@ -29,8 +29,8 @@ resource "azurerm_cosmosdb_sql_database" "locations" {
 
 resource "azurerm_cosmosdb_sql_container" "band-locations" {
   name                  = "band-locations"
-  resource_group_name   = data.azurerm_cosmosdb_account.bbr5.resource_group_name
-  account_name          = data.azurerm_cosmosdb_account.bbr5.name
+  resource_group_name   = azurerm_cosmosdb_account.bbr5.resource_group_name
+  account_name          = azurerm_cosmosdb_account.bbr5.name
   database_name         = azurerm_cosmosdb_sql_database.locations.name
   partition_key_path    = "/band/slug"
   partition_key_version = 1
