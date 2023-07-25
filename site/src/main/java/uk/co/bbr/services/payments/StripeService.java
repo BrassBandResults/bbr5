@@ -11,6 +11,4 @@ public interface StripeService {
     boolean isSubscriptionActive(SiteUserDao user);
 
     LocalDate subscriptionExpiryDate(SiteUserDao user);
-
-    List<SiteUserProDao> markupUsers(List<SiteUserDao> users);
 }
