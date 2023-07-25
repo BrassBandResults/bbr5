@@ -3,7 +3,7 @@ resource "cloudflare_record" "static_site" {
   name    = terraform.workspace == "prod" ? "static" : "static-${terraform.workspace}"
   value   = azurerm_static_site.apps.default_host_name
   type    = "CNAME"
-  ttl     = 60
+  ttl     = 1
   proxied = true
 }
 
@@ -12,6 +12,6 @@ resource "cloudflare_record" "app_service" {
   name    = terraform.workspace == "prod" ? "bbr5" : "bbr5-${terraform.workspace}"
   value   = azurerm_linux_web_app.bbr5.default_hostname
   type    = "CNAME"
-  ttl     = 60
+  ttl     = 1
   proxied = true
 }
