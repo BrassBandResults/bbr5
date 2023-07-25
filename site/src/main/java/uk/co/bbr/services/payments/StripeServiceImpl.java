@@ -52,26 +52,6 @@ public class StripeServiceImpl implements StripeService {
         return Optional.empty();
     }
 
-    private List<Subscription> getActiveSubscriptions() {
-        Stripe.apiKey = EnvVar.getEnv("BBR_STRIPE_PRIVATE_API_KEY", "sk_test_abc123");
-
-        try {
-            SubscriptionSearchParams params =
-                SubscriptionSearchParams
-                    .builder()
-                    .setQuery("status:'active'")
-                    .setLimit(100L)
-                    .addExpand("data.customer")
-                    .build();
-
-            SubscriptionSearchResult result = Subscription.search(params);
-            return result.getData();
-        } catch (StripeException ex) {
-            ex.printStackTrace();
-        }
-        return Collections.emptyList();
-    }
-
     @Override
     public boolean isSubscriptionActive(SiteUserDao user) {
         Optional<Subscription> subscription = this.getActiveSubscription(user);
@@ -86,28 +66,5 @@ public class StripeServiceImpl implements StripeService {
         }
         Long endDateTime = subscription.get().getCurrentPeriodEnd();
         return Instant.ofEpochMilli(endDateTime).atZone(ZoneId.systemDefault()).toLocalDate();
-    }
-
-    @Override
-    public List<SiteUserProDao> markupUsers(List<SiteUserDao> users) {
-        List<Subscription> subscriptions = this.getActiveSubscriptions();
-
-        List<SiteUserProDao> returnData = new ArrayList<>();
-        for (SiteUserDao user : users) {
-            SiteUserProDao wrappedUser = new SiteUserProDao(user);
-            for (Subscription sub : subscriptions) {
-                if (user.getStripeEmail() != null && user.getStripeEmail().equals(sub.getCustomerObject().getEmail())) {
-                    if (sub.getCurrentPeriodEnd() != null) {
-                        wrappedUser.setSubscriptionActive(true);
-                        LocalDate endDateTime = Instant.ofEpochSecond(sub.getCurrentPeriodEnd()).atZone(ZoneId.systemDefault()).toLocalDate();
-                        wrappedUser.setCurrentSubscriptionEndDate(endDateTime);
-                        break;
-                    }
-                }
-            }
-            returnData.add(wrappedUser);
-        }
-
-        return returnData;
     }
 }

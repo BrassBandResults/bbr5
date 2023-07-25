@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import uk.co.bbr.services.framework.NotFoundException;
+import uk.co.bbr.services.payments.PaymentsService;
 import uk.co.bbr.services.payments.StripeService;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.services.security.UserService;
@@ -23,7 +24,7 @@ public class UserController {
 
     private final UserService userService;
     private final SecurityService securityService;
-    private final StripeService stripeService;
+    private final PaymentsService paymentsService;
 
     @IsBbrAdmin
     @GetMapping("/user-list")
@@ -39,7 +40,7 @@ public class UserController {
     @GetMapping("/user-list/pro")
     public String proUserList(Model model) {
         List<SiteUserDao> users = this.userService.findAllPro();
-        List<SiteUserProDao> proUsers = this.stripeService.markupUsers(users);
+        List<SiteUserProDao> proUsers = this.paymentsService.markupUsers(users);
 
         model.addAttribute("ProUsers", proUsers);
         model.addAttribute("Type", "pro");
