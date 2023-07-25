@@ -11,6 +11,7 @@ import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.pieces.dao.PieceDao;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 public interface ResultService {
@@ -39,4 +40,6 @@ public interface ResultService {
     void update(ContestResultDao result);
 
     List<ContestStreakDto> fetchStreaksForContest(ContestDao contest);
+
+    Optional<ContestResultDao> fetchById(Long resultId);
 }

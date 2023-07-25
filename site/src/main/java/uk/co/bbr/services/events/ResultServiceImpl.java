@@ -245,6 +245,11 @@ public class ResultServiceImpl implements ResultService {
         return streaks.getStreaks();
     }
 
+    @Override
+    public Optional<ContestResultDao> fetchById(Long resultId) {
+        return this.contestResultRepository.findById(resultId);
+    }
+
     private Map<String, List<Integer>> fetchStreakData(ContestDao contest) {
         Map<String, List<Integer>> streaksBandSlugToYear = new HashMap<>();
 

@@ -104,4 +104,8 @@ public class NotFoundException extends RuntimeException {
     public static NotFoundException contestTypeNotFoundForId(Long contestTypeId) {
         return new NotFoundException("Contest type with id " + contestTypeId + " not found");
     }
+
+    public static NotFoundException resultNotFoundById(Long resultId) {
+        return new NotFoundException("Result with id " + resultId + " not found");
+    }
 }

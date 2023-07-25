@@ -1,6 +1,7 @@
 package uk.co.bbr.services.performances;
 
 import lombok.RequiredArgsConstructor;
+import net.bytebuddy.asm.Advice;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import uk.co.bbr.services.bands.dao.BandDao;
@@ -17,6 +18,7 @@ import uk.co.bbr.services.framework.mixins.SlugTools;
 import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.performances.dao.PerformanceDao;
 import uk.co.bbr.services.performances.repo.PerformanceRepository;
+import uk.co.bbr.services.performances.types.PerformanceStatus;
 import uk.co.bbr.services.pieces.dao.PieceAliasDao;
 import uk.co.bbr.services.pieces.dao.PieceDao;
 import uk.co.bbr.services.pieces.dto.BestOwnChoiceDto;
@@ -49,6 +51,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class PerformanceServiceImpl implements PerformanceService, SlugTools {
 
+    private final SecurityService securityService;
     private final PerformanceRepository performanceRepository;
 
     @Override
@@ -59,5 +62,19 @@ public class PerformanceServiceImpl implements PerformanceService, SlugTools {
     @Override
     public List<PerformanceDao> fetchApprovedPerformancesForUser(SiteUserDao user) {
         return this.performanceRepository.fetchApprovedUserPerformances(user.getUsercode());
+    }
+
+    @Override
+    public void linkUserPerformance(SiteUserDao user, ContestResultDao contestResult) {
+        PerformanceDao newPerformance = new PerformanceDao();
+        newPerformance.setCreated(LocalDateTime.now());
+        newPerformance.setCreatedBy(user.getUsercode());
+        newPerformance.setUpdated(LocalDateTime.now());
+        newPerformance.setUpdatedBy(this.securityService.getCurrentUsername());
+        newPerformance.setResult(contestResult);
+        newPerformance.setStatus(PerformanceStatus.ACCEPTED);
+        newPerformance.setInstrument(null);
+
+        this.performanceRepository.saveAndFlush(newPerformance);
     }
 }

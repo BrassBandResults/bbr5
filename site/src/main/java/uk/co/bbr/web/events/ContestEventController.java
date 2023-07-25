@@ -12,6 +12,8 @@ import uk.co.bbr.services.events.dao.ContestEventDao;
 import uk.co.bbr.services.events.dao.ContestEventTestPieceDao;
 import uk.co.bbr.services.events.dao.ContestResultDao;
 import uk.co.bbr.services.framework.NotFoundException;
+import uk.co.bbr.services.performances.PerformanceService;
+import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.services.security.UserService;
 import uk.co.bbr.services.security.dao.SiteUserDao;
 import uk.co.bbr.web.Tools;
@@ -26,6 +28,8 @@ public class ContestEventController {
 
     private final ContestEventService contestEventService;
     private final ResultService contestResultService;
+    private final PerformanceService performanceService;
+    private final SecurityService securityService;
     private final UserService userService;
 
     @GetMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}")
@@ -72,5 +76,46 @@ public class ContestEventController {
         model.addAttribute("SectionDown", downEvent);
 
         return "events/event";
+    }
+
+    @GetMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}/performer")
+    public String eventPerformerSelectBand(Model model, @PathVariable("contestSlug")  String contestSlug, @PathVariable("contestEventDate") String contestEventDate) {
+        LocalDate eventDate = Tools.parseEventDate(contestEventDate);
+        Optional<ContestEventDao> contestEvent = this.contestEventService.fetchEvent(contestSlug, eventDate);
+        if (contestEvent.isEmpty()) {
+            throw NotFoundException.eventNotFound(contestSlug, contestEventDate);
+        }
+
+        SiteUserDao currentUser = this.securityService.getCurrentUser();
+
+        List<ContestResultDao> eventResults = this.contestResultService.fetchForEvent(contestEvent.get());
+
+        model.addAttribute("ContestEvent", contestEvent.get());
+        model.addAttribute("EventResults", eventResults);
+        model.addAttribute("User", currentUser);
+
+        return "events/performer-bands";
+    }
+
+    @GetMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}/performer/{resultId:\\d+}")
+    public String eventPerformerSelectBand(Model model, @PathVariable("contestSlug") String contestSlug, @PathVariable("contestEventDate") String contestEventDate, @PathVariable("resultId") Long resultId) {
+        LocalDate eventDate = Tools.parseEventDate(contestEventDate);
+        Optional<ContestEventDao> contestEvent = this.contestEventService.fetchEvent(contestSlug, eventDate);
+        if (contestEvent.isEmpty()) {
+            System.out.println("Event not found");
+            throw NotFoundException.eventNotFound(contestSlug, contestEventDate);
+        }
+
+        SiteUserDao currentUser = this.securityService.getCurrentUser();
+
+        Optional<ContestResultDao> result = this.contestResultService.fetchById(resultId);
+        if (result.isEmpty()) {
+            System.out.println("Result not found");
+            throw NotFoundException.resultNotFoundById(resultId);
+        }
+
+        this.performanceService.linkUserPerformance(currentUser, result.get());
+
+        return "redirect:/profile/performances";
     }
 }
