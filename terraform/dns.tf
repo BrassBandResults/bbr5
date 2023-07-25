@@ -4,6 +4,7 @@ resource "cloudflare_record" "static_site" {
   value   = azurerm_static_site.apps.default_host_name
   type    = "CNAME"
   ttl     = 60
+  proxied = true
 }
 
 resource "cloudflare_record" "app_service" {
@@ -12,4 +13,5 @@ resource "cloudflare_record" "app_service" {
   value   = azurerm_linux_web_app.bbr5.default_hostname
   type    = "CNAME"
   ttl     = 60
+  proxied = true
 }

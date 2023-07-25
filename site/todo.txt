@@ -59,8 +59,6 @@ Deal with unique slug clash
 csrf
 Validate api key
 
-CosmosDB
-Storage Account for queues
 Push band and venue location changes to queue
 Azure Function receives band and venue changes and updates cosmosdb
 Push events that trigger a points aware to a queue
