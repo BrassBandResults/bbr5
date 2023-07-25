@@ -1,7 +1,7 @@
 resource "random_string" "pr-storage-account-name" {
-  length           = 10
-  special          = false
-  upper            = false
+  length  = 10
+  special = false
+  upper   = false
 }
 
 resource "azurerm_storage_account" "bbr5" {
