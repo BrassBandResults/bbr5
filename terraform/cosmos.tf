@@ -1,11 +1,6 @@
 data "azurerm_cosmosdb_account" "bbr5" {
   name                = terraform.workspace == "prod" ? "bbr5" : "bbr5-${terraform.workspace}"
   resource_group_name = azurerm_resource_group.this.name
-  offer_type          = "Standard"
-  kind                = "GlobalDocumentDB"
-  capabilities {
-    name = "EnableServerless"
-  }
 }
 
 resource "azurerm_cosmosdb_sql_database" "example" {
