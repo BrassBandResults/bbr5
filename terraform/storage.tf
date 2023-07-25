@@ -11,7 +11,7 @@ resource "azurerm_storage_queue" "location-updates" {
   storage_account_name = azurerm_storage_account.bbr5.name
 }
 
-resource "azurerm_storage_queue" "location-updates" {
+resource "azurerm_storage_queue" "point-awards" {
   name                 = "point-awards"
   storage_account_name = azurerm_storage_account.bbr5.name
 }
