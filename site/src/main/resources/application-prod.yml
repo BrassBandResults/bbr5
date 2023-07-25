@@ -10,6 +10,10 @@ spring:
     database-platform: org.hibernate.dialect.SQLServerDialect
     hibernate:
       ddl-auto: none
+  cloud:
+    azure:
+      cosmos:
+        endpoint: ${BBR_COSMOS_DB_ENDPOINT}
   mail:
     password: ${BBR_SMTP_SERVER_PASSWORD}
     username: ${BBR_SMTP_SERVER_USERNAME}
@@ -23,4 +27,9 @@ spring:
           starttls:
             enable: true
 springdoc:
-    packagesToScan=uk.co.bbr.api
+    packagesToScan: uk.co.bbr.api
+azure:
+  cosmosdb:
+    uri: ${BBR_COSMOS_DB_URI}
+    access-key: ${BBR_COSMOS_DB_ACCESS_KEY}
+    database: ${BBR_COSMOS_DB_NAME}

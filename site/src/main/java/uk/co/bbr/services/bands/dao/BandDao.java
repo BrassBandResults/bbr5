@@ -5,20 +5,18 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.Formula;
+import org.springframework.data.geo.Point;
 import uk.co.bbr.services.bands.types.BandStatus;
 import uk.co.bbr.services.framework.AbstractDao;
 import uk.co.bbr.services.framework.mixins.NameTools;
+import uk.co.bbr.map.dto.Location;
 import uk.co.bbr.services.regions.dao.RegionDao;
 import uk.co.bbr.services.sections.dao.SectionDao;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
+import javax.xml.bind.DatatypeConverter;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
 
 @Getter
@@ -79,6 +77,9 @@ public class BandDao extends AbstractDao implements NameTools {
 
     @Transient
     private int resultsCount;
+
+    @Transient
+    private int contestCount;
 
     public void setName(String sourceName) {
 
@@ -199,6 +200,32 @@ public class BandDao extends AbstractDao implements NameTools {
         return bandNode;
     }
 
+    public Location asLocation() {
+        String stringToHash = this.getSlug() + "/" + this.getId();
+        String sha1Hash = null;
+        MessageDigest md = null;
+        try {
+            md = MessageDigest.getInstance("SHA-1");
+            md.update(stringToHash.getBytes());
+            sha1Hash = DatatypeConverter.printHexBinary(md.digest()).toLowerCase();
+        }
+        catch(NoSuchAlgorithmException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        Location newLocation = new Location();
+        newLocation.setId(sha1Hash);
+        newLocation.setName(this.getName());
+        newLocation.setSlug(this.getSlug());
+        newLocation.setType(this.getSectionType());
+        newLocation.setObject("Band"); // TODO use a constant
+        double longitudeDouble = Double.parseDouble(this.longitude);
+        double latitudeDouble = Double.parseDouble(this.latitude);
+        newLocation.setLocation(new Point(longitudeDouble, latitudeDouble));
+
+        return newLocation;
+    }
+
     public ObjectNode asLookup(ObjectMapper objectMapper) {
         ObjectNode person = objectMapper.createObjectNode();
         person.put("slug", this.getSlug());
@@ -209,5 +236,9 @@ public class BandDao extends AbstractDao implements NameTools {
 
     public String getSlugWithUnderscores() {
         return this.slug.replace("-", "_");
+    }
+
+    public boolean hasLocation() {
+        return this.latitude != null && this.latitude.trim().length() > 0 && this.longitude != null && this.longitude.trim().length() > 0;
     }
 }
