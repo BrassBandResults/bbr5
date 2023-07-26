@@ -37,6 +37,9 @@ resource "azurerm_linux_web_app" "bbr5" {
     BBR_STRIPE_PUBLIC_BUY_BUTTON      = var.stripe_public_buy_button
     BBR_STRIPE_PUBLIC_PUBLISHABLE_KEY = var.stripe_public_publishable_key
     BBR_STRIPE_PRIVATE_API_KEY        = var.stripe_private_api_key
+    BBR_COSMOS_DB_URI                 = terraform.workspace == "prod" ? "https://bbr5.documents.azure.com:443/" : "https://bbr5-${terraform.workspace}.documents.azure.com:443/"
+    BBR_COSMOS_DB_ACCESS_KEY          = azurerm_cosmosdb_account.bbr5.primary_key
+    BBR_COSMOS_DB_NAME                = azurerm_cosmosdb_sql_database.locations.name
   }
 }
 

@@ -6,7 +6,7 @@ import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import uk.co.bbr.services.bands.dto.BandListBandDto;
+import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.bands.dto.BandListDto;
 import uk.co.bbr.services.regions.RegionService;
 import uk.co.bbr.services.regions.dao.RegionDao;
@@ -129,7 +129,7 @@ class ListBandServiceTests implements LoginMixin {
         assertEquals("0", bandsStartingWithNumber.getSearchPrefix());
         assertEquals(2, bandsStartingWithNumber.getReturnedBands().size());
 
-        List<BandListBandDto> bands = bandsStartingWithNumber.getReturnedBands();
+        List<BandDao> bands = bandsStartingWithNumber.getReturnedBands();
 
         // TODO check that results are correct order
         assertEquals("102 (Cheshire) Transport Column R.A.S.C. (T.A.)", bands.get(0).getName());
@@ -142,7 +142,6 @@ class ListBandServiceTests implements LoginMixin {
         assertEquals("Midlands", bands.get(1).getRegion().getName());
         assertEquals("england", bands.get(1).getRegion().getCountryCode());
         assertEquals(0, bands.get(1).getContestCount());
-
     }
 }
 
