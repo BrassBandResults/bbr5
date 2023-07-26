@@ -1,5 +1,3 @@
-"I played at this contest" link from event
-
 Add results - add results fix unknown band
 Add results - add results fix unknown conductor
 Add results - add adjudicators
@@ -51,18 +49,10 @@ Fix formula numbers
 Event band map/geography
 Event competitors
 
-red background for select "must already exist" thing
-yellow background for select "might create this" thing
-
 Deal with unique slug clash
 
 csrf
 Validate api key
-
-Push band and venue location changes to queue
-Azure Function receives band and venue changes and updates cosmosdb
-Push events that trigger a points aware to a queue
-Azure Function updates points on a user, by calling api on site
 
 Assign points
 

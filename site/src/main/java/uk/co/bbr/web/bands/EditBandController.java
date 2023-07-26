@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import uk.co.bbr.map.LocationService;
 import uk.co.bbr.services.bands.BandService;
 import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.bands.types.BandStatus;
@@ -27,6 +28,7 @@ public class EditBandController {
 
     private final BandService bandService;
     private final RegionService regionService;
+    private final LocationService locationService;
 
     @IsBbrMember
     @GetMapping("/bands/{bandSlug:[\\-a-z\\d]{2,}}/edit")
@@ -87,6 +89,7 @@ public class EditBandController {
         existingBand.setStatus(newStatus);
 
         this.bandService.update(existingBand);
+        this.locationService.updateBandLocation(existingBand);
 
         return "redirect:/bands/{bandSlug}";
     }

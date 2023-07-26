@@ -7,6 +7,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import uk.co.bbr.map.LocationService;
 import uk.co.bbr.services.bands.BandService;
 import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.bands.types.BandStatus;
@@ -24,6 +25,7 @@ import java.util.Optional;
 public class CreateBandController {
     private final BandService bandService;
     private final RegionService regionService;
+    private final LocationService locationService;
 
 
     @IsBbrMember
@@ -72,6 +74,7 @@ public class CreateBandController {
         newBand.setNotes(submittedForm.getNotes());
 
         this.bandService.create(newBand);
+        this.locationService.updateBandLocation(newBand);
 
         return "redirect:/bands";
     }
