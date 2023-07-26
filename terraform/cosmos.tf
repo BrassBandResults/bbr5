@@ -21,23 +21,27 @@ resource "azurerm_cosmosdb_account" "bbr5" {
   }
 }
 
-resource "azurerm_cosmosdb_sql_database" "locations" {
-  name                = "locations"
+resource "azurerm_cosmosdb_sql_database" "map" {
+  name                = "map"
   resource_group_name = azurerm_cosmosdb_account.bbr5.resource_group_name
   account_name        = azurerm_cosmosdb_account.bbr5.name
 }
 
 resource "azurerm_cosmosdb_sql_container" "band-locations" {
-  name                  = "band-locations"
+  name                  = "locations"
   resource_group_name   = azurerm_cosmosdb_account.bbr5.resource_group_name
   account_name          = azurerm_cosmosdb_account.bbr5.name
-  database_name         = azurerm_cosmosdb_sql_database.locations.name
+  database_name         = azurerm_cosmosdb_sql_database.map.name
   partition_key_path    = "/slug"
   partition_key_version = 1
   indexing_policy {
     indexing_mode = "consistent"
 
     included_path {
+      path = "/*"
+    }
+
+    spacial_index {
       path = "/*"
     }
   }

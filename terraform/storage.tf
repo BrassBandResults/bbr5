@@ -12,11 +12,6 @@ resource "azurerm_storage_account" "bbr5" {
   account_replication_type = "GRS"
 }
 
-resource "azurerm_storage_queue" "location-updates" {
-  name                 = "location-updates"
-  storage_account_name = azurerm_storage_account.bbr5.name
-}
-
 resource "azurerm_storage_queue" "point-awards" {
   name                 = "point-awards"
   storage_account_name = azurerm_storage_account.bbr5.name
