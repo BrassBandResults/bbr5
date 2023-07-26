@@ -1,4 +1,4 @@
-package uk.co.bbr.map;
+package uk.co.bbr.services.map;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.cosmos.*;
@@ -15,7 +15,7 @@ import java.time.Duration;
 
 @Configuration
 @Profile("prod")
-@EnableCosmosRepositories(basePackages = "uk.co.bbr.map.repo")
+@EnableCosmosRepositories(basePackages = "uk.co.bbr.services.map.repo")
 public class CosmosDbConfiguration extends AbstractCosmosConfiguration {
 
     @Value("${azure.cosmosdb.uri}")

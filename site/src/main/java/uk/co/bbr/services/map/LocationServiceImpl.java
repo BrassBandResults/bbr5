@@ -1,4 +1,4 @@
-package uk.co.bbr.map;
+package uk.co.bbr.services.map;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
@@ -6,8 +6,8 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.framework.mixins.SlugTools;
-import uk.co.bbr.map.dto.Location;
-import uk.co.bbr.map.repo.LocationRepository;
+import uk.co.bbr.services.map.dto.Location;
+import uk.co.bbr.services.map.repo.LocationRepository;
 import uk.co.bbr.services.venues.dao.VenueDao;
 
 @Service

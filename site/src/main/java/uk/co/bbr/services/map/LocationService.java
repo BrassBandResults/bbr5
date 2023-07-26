@@ -1,4 +1,4 @@
-package uk.co.bbr.map;
+package uk.co.bbr.services.map;
 
 import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.lookup.sql.dto.LookupSqlDto;
