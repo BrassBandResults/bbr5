@@ -34,7 +34,7 @@ public class BandListController {
 
     @IsBbrAdmin
     @GetMapping("/bands/{letter:[0A-Z]}/upload-locations")
-    public String uploadBandLocations(Model model, @PathVariable("letter") String letter) {
+    public String uploadBandLocations(@PathVariable("letter") String letter) {
         BandListDto bands = this.bandService.listBandsStartingWith(letter);
 
         for (BandDao band : bands.getReturnedBands()) {
@@ -53,5 +53,19 @@ public class BandListController {
         model.addAttribute("BandPrefixLetter", "ALL");
         model.addAttribute("Bands", bands);
         return "bands/bands";
+    }
+
+    @IsBbrAdmin
+    @GetMapping("/bands/ALL/upload-locations")
+    public String uploadBandLocations() {
+        BandListDto bands = this.bandService.listBandsStartingWith("ALL");
+
+        for (BandDao band : bands.getReturnedBands()) {
+            if (band.hasLocation()) {
+                this.locationService.updateBandLocation(band);
+            }
+        }
+
+        return "redirect:/bands";
     }
 }
