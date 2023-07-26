@@ -17,7 +17,9 @@ public class LocationServiceImpl implements LocationService, SlugTools {
 
     @Override
     public void updateBandLocation(BandDao band) {
-        Location location = band.asLocation();
-       this.locationRepository.save(location);
+        if (band.hasLocation()) {
+            Location location = band.asLocation();
+            this.locationRepository.save(location);
+        }
     }
 }
