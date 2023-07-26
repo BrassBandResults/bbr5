@@ -3,6 +3,7 @@ package uk.co.bbr.services.bands;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import uk.co.bbr.map.LocationService;
 import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.bands.dto.BandCompareDto;
 import uk.co.bbr.services.bands.dto.BandListDto;
@@ -31,10 +32,9 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class BandServiceImpl implements BandService, SlugTools {
     private final RegionService regionService;
-    private final BandRepository bandRepository;
     private final SecurityService securityService;
 
-    private final BandPreviousNameRepository bandPreviousNameRepository;
+    private final BandRepository bandRepository;
 
     private final EntityManager entityManager;
 
@@ -100,6 +100,11 @@ public class BandServiceImpl implements BandService, SlugTools {
         }
 
         this.validateMandatory(band);
+
+        Optional<BandDao> existingBand = this.bandRepository.fetchById(band.getId());
+        if (existingBand.isEmpty()) {
+            throw new UnsupportedOperationException("Can't find existing band to update");
+        }
 
         band.setUpdated(LocalDateTime.now());
         band.setUpdatedBy(this.securityService.getCurrentUsername());
