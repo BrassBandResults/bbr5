@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import uk.co.bbr.map.dto.Location;
+import uk.co.bbr.map.dto.LocationPoint;
 import uk.co.bbr.services.framework.AbstractDao;
 import uk.co.bbr.services.framework.mixins.NameTools;
 import uk.co.bbr.services.regions.dao.RegionDao;
@@ -16,6 +18,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.xml.bind.DatatypeConverter;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 @Getter
 @Entity
@@ -113,5 +118,37 @@ public class VenueDao extends AbstractDao implements NameTools {
         venue.put("name", this.escapeJson(this.name));
         venue.put("context", "");
         return venue;
+    }
+
+    public Location asLocation() {
+        if (!this.hasLocation()) {
+            return null;
+        }
+
+        String stringToHash = this.getSlug() + "/" + this.getId();
+        String sha1Hash = null;
+        MessageDigest md = null;
+        try {
+            md = MessageDigest.getInstance("SHA-1");
+            md.update(stringToHash.getBytes());
+            sha1Hash = DatatypeConverter.printHexBinary(md.digest()).toLowerCase();
+        }
+        catch(NoSuchAlgorithmException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        Location newLocation = new Location();
+        newLocation.setId(sha1Hash);
+        newLocation.setName(this.getName());
+        newLocation.setSlug(this.getSlug());
+        newLocation.setType(null);
+        newLocation.setObject("Venue"); // TODO use a constant
+        newLocation.setPoint(new LocationPoint(this.longitude, this.latitude));
+
+        return newLocation;
+    }
+
+    public boolean hasLocation() {
+        return this.latitude != null && this.latitude.trim().length() > 0 && this.longitude != null && this.longitude.trim().length() > 0;
     }
 }

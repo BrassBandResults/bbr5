@@ -7,6 +7,7 @@ import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.framework.mixins.SlugTools;
 import uk.co.bbr.map.dto.Location;
 import uk.co.bbr.map.repo.LocationRepository;
+import uk.co.bbr.services.venues.dao.VenueDao;
 
 @Service
 @Profile("prod")
@@ -19,6 +20,14 @@ public class LocationServiceImpl implements LocationService, SlugTools {
     public void updateBandLocation(BandDao band) {
         if (band.hasLocation()) {
             Location location = band.asLocation();
+            this.locationRepository.save(location);
+        }
+    }
+
+    @Override
+    public void updateVenueLocation(VenueDao venue) {
+        if (venue.hasLocation()) {
+            Location location = venue.asLocation();
             this.locationRepository.save(location);
         }
     }
