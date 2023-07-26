@@ -3,11 +3,9 @@ package uk.co.bbr.services.bands;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
-import uk.co.bbr.map.LocationService;
 import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.bands.dto.BandCompareDto;
 import uk.co.bbr.services.bands.dto.BandListDto;
-import uk.co.bbr.services.bands.repo.BandPreviousNameRepository;
 import uk.co.bbr.services.bands.repo.BandRepository;
 import uk.co.bbr.services.bands.sql.BandCompareSql;
 import uk.co.bbr.services.bands.sql.BandSql;
@@ -24,7 +22,6 @@ import uk.co.bbr.web.security.annotations.IsBbrMember;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 

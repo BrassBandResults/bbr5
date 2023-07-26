@@ -1,4 +1,4 @@
-package uk.co.bbr.map.dto;
+package uk.co.bbr.services.map.dto;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,6 +1,6 @@
 package uk.co.bbr.mocks;
 
-import uk.co.bbr.map.LocationService;
+import uk.co.bbr.services.map.LocationService;
 import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.venues.dao.VenueDao;
 

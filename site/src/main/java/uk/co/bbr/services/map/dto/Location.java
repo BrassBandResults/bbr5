@@ -1,10 +1,9 @@
-package uk.co.bbr.map.dto;
+package uk.co.bbr.services.map.dto;
 
 import com.azure.spring.data.cosmos.core.mapping.Container;
 import com.azure.spring.data.cosmos.core.mapping.PartitionKey;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.geo.Point;
 
 import javax.persistence.Id;
 

@@ -7,12 +7,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import uk.co.bbr.map.LocationService;
+import uk.co.bbr.services.map.LocationService;
 import uk.co.bbr.services.regions.RegionService;
 import uk.co.bbr.services.regions.dao.RegionDao;
 import uk.co.bbr.services.venues.VenueService;
 import uk.co.bbr.services.venues.dao.VenueDao;
-import uk.co.bbr.web.people.forms.PersonEditForm;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 import uk.co.bbr.web.venues.forms.VenueEditForm;
 

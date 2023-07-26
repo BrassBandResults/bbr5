@@ -5,12 +5,11 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.geo.Point;
-import uk.co.bbr.map.dto.LocationPoint;
+import uk.co.bbr.services.map.dto.LocationPoint;
 import uk.co.bbr.services.bands.types.BandStatus;
 import uk.co.bbr.services.framework.AbstractDao;
 import uk.co.bbr.services.framework.mixins.NameTools;
-import uk.co.bbr.map.dto.Location;
+import uk.co.bbr.services.map.dto.Location;
 import uk.co.bbr.services.regions.dao.RegionDao;
 import uk.co.bbr.services.sections.dao.SectionDao;
 

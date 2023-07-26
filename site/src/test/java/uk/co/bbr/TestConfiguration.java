@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
-import uk.co.bbr.map.LocationService;
+import uk.co.bbr.services.map.LocationService;
 import uk.co.bbr.mocks.TestLocationService;
 
 @Profile("test")

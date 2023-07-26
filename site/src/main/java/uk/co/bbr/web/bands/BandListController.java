@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import uk.co.bbr.services.bands.BandService;
 import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.bands.dto.BandListDto;
-import uk.co.bbr.map.LocationService;
+import uk.co.bbr.services.map.LocationService;
 import uk.co.bbr.web.security.annotations.IsBbrAdmin;
 
 @Controller
