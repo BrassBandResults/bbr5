@@ -8,10 +8,10 @@ import javax.persistence.EntityManager;
 import java.util.List;
 
 @UtilityClass
-public class VenueSql {
+public class VenueListSql {
 
     private static final String VENUE_LIST_PREFIX_SQL = """
-        SELECT v.slug as venue_slug, v.name as venue_name, r.slug as region_slug, r.name as region_name, r.country_code, (SELECT count(*) FROM contest_event e WHERE e.venue_id = v.id) as event_count
+        SELECT v.slug as venue_slug, v.name as venue_name, r.slug as region_slug, r.name as region_name, r.country_code, (SELECT count(*) FROM contest_event e WHERE e.venue_id = v.id) as event_count, v.latitude, v.longitude, v.id
         FROM venue v
         LEFT OUTER JOIN region r ON r.id = v.region_id
         WHERE UPPER(v.name) LIKE ?1
@@ -22,7 +22,7 @@ public class VenueSql {
     }
 
     private static final String VENUE_LIST_NUMBERS_SQL = """
-        SELECT v.slug as venue_slug, v.name as venue_name, r.slug as region_slug, r.name as region_name, r.country_code, (SELECT count(*) FROM contest_event e WHERE e.venue_id = v.id) as event_count
+        SELECT v.slug as venue_slug, v.name as venue_name, r.slug as region_slug, r.name as region_name, r.country_code, (SELECT count(*) FROM contest_event e WHERE e.venue_id = v.id) as event_count, v.latitude, v.longitude, v.id
         FROM venue v
         LEFT OUTER JOIN region r ON r.id = v.region_id
         WHERE v.name LIKE '0%'
@@ -42,7 +42,7 @@ public class VenueSql {
     }
 
     private static final String VENUE_LIST_ALL_SQL = """
-        SELECT v.slug as venue_slug, v.name as venue_name, r.slug as region_slug, r.name as region_name, r.country_code, (SELECT count(*) FROM contest_event e WHERE e.venue_id = v.id) as event_count
+        SELECT v.slug as venue_slug, v.name as venue_name, r.slug as region_slug, r.name as region_name, r.country_code, (SELECT count(*) FROM contest_event e WHERE e.venue_id = v.id) as event_count, v.latitude, v.longitude, v.id
         FROM venue v
         LEFT OUTER JOIN region r ON r.id = v.region_id
         ORDER BY v.name""";

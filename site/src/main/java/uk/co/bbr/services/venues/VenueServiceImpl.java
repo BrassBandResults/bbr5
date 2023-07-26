@@ -17,7 +17,7 @@ import uk.co.bbr.services.venues.dto.VenueContestYearDto;
 import uk.co.bbr.services.venues.dto.VenueListDto;
 import uk.co.bbr.services.venues.repo.VenueAliasRepository;
 import uk.co.bbr.services.venues.repo.VenueRepository;
-import uk.co.bbr.services.venues.sql.VenueSql;
+import uk.co.bbr.services.venues.sql.VenueListSql;
 import uk.co.bbr.services.venues.sql.dto.VenueListSqlDto;
 import uk.co.bbr.web.security.annotations.IsBbrAdmin;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
@@ -137,16 +137,16 @@ public class VenueServiceImpl implements VenueService, SlugTools {
         String prefixDisplay = prefix;
 
         switch (prefix.toUpperCase()) {
-            case "ALL" -> venuesToReturn = VenueSql.venueListAll(this.entityManager);
+            case "ALL" -> venuesToReturn = VenueListSql.venueListAll(this.entityManager);
             case "0" -> {
                 prefixDisplay = "0-9";
-                venuesToReturn = VenueSql.venueListNumber(this.entityManager);
+                venuesToReturn = VenueListSql.venueListNumber(this.entityManager);
             }
             default -> {
                 if (prefix.trim().length() != 1) {
                     throw new UnsupportedOperationException("Prefix must be a single character");
                 }
-                venuesToReturn = VenueSql.venueListPrefix(this.entityManager, prefix.trim().toUpperCase());
+                venuesToReturn = VenueListSql.venueListPrefix(this.entityManager, prefix.trim().toUpperCase());
             }
         }
 
@@ -154,19 +154,7 @@ public class VenueServiceImpl implements VenueService, SlugTools {
 
         List<VenueDao> returnedVenues = new ArrayList<>();
         for (VenueListSqlDto eachVenue : venuesToReturn) {
-            VenueDao venue = new VenueDao();
-            venue.setName(eachVenue.getVenueName());
-            venue.setSlug(eachVenue.getVenueSlug());
-            venue.setEventCount(eachVenue.getEventCount());
-
-            if (eachVenue.getRegionSlug() != null && eachVenue.getRegionSlug().length() > 0) {
-                RegionDao region = new RegionDao();
-                region.setSlug(eachVenue.getRegionSlug());
-                region.setName(eachVenue.getRegionName());
-                region.setCountryCode(eachVenue.getCountryCode());
-                venue.setRegion(region);
-            }
-
+            VenueDao venue = eachVenue.asVenue();
             returnedVenues.add(venue);
         }
         return new VenueListDto(venuesToReturn.size(), allVenuesCount, prefixDisplay, returnedVenues);
