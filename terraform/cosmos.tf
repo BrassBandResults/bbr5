@@ -21,13 +21,13 @@ resource "azurerm_cosmosdb_account" "bbr5" {
   }
 }
 
-resource "azurerm_cosmosdb_sql_database" "map" {
-  name                = "map"
+resource "azurerm_cosmosdb_sql_database" "locations" {
+  name                = "locations"
   resource_group_name = azurerm_cosmosdb_account.bbr5.resource_group_name
   account_name        = azurerm_cosmosdb_account.bbr5.name
 }
 
-resource "azurerm_cosmosdb_sql_container" "band-locations" {
+resource "azurerm_cosmosdb_sql_container" "locations" {
   name                  = "locations"
   resource_group_name   = azurerm_cosmosdb_account.bbr5.resource_group_name
   account_name          = azurerm_cosmosdb_account.bbr5.name
