@@ -39,7 +39,7 @@
         <ul>
             <li th:each="relationship : ${BandRelationships}">
                 <span th:text="#{${relationship.relationshipName(Band)}}">relationship</span>
-                <span th:replace="links/band-link.html :: bandLinkWithNameOverride(${relationship.otherBand(Band)}, ${relationship.otherBandName(Band)})">Band Name</span>
+                <span th:replace="links/band-link.html :: bandLink(${relationship.otherBand(Band)},true,true)">Band Name</span>
             </li>
         </ul>
     </span>

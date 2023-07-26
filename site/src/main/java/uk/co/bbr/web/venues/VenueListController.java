@@ -5,14 +5,20 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import uk.co.bbr.map.LocationService;
+import uk.co.bbr.services.bands.dao.BandDao;
+import uk.co.bbr.services.bands.dto.BandListDto;
 import uk.co.bbr.services.venues.VenueService;
+import uk.co.bbr.services.venues.dao.VenueDao;
 import uk.co.bbr.services.venues.dto.VenueListDto;
+import uk.co.bbr.web.security.annotations.IsBbrAdmin;
 
 @Controller
 @RequiredArgsConstructor
 public class VenueListController {
 
     private final VenueService venueService;
+    private final LocationService locationService;
 
     @GetMapping("/venues")
     public String venueListHome(Model model) {
@@ -28,6 +34,22 @@ public class VenueListController {
         return "venues/venues";
     }
 
+    @IsBbrAdmin
+    @GetMapping("/venues/{letter:[0A-Z]}/upload-locations")
+    public String uploadVenueLocations( @PathVariable("letter") String letter) {
+        VenueListDto venues = this.venueService.listVenuesStartingWith(letter);
+
+        for (VenueDao venue : venues.getReturnedVenues()) {
+            if (venue.hasLocation()) {
+                this.locationService.updateVenueLocation(venue);
+            }
+        }
+
+        return "redirect:/venues";
+    }
+
+
+
     @GetMapping("/venues/ALL")
     public String venuesListAll(Model model) {
         VenueListDto venues = this.venueService.listVenuesStartingWith("ALL");
@@ -35,5 +57,19 @@ public class VenueListController {
         model.addAttribute("VenuePrefixLetter", "ALL");
         model.addAttribute("Venues", venues);
         return "venues/venues";
+    }
+
+    @IsBbrAdmin
+    @GetMapping("/venues/ALL/upload-locations")
+    public String uploadAllVenueLocations() {
+        VenueListDto venues = this.venueService.listVenuesStartingWith("ALL");
+
+        for (VenueDao venue : venues.getReturnedVenues()) {
+            if (venue.hasLocation()) {
+                this.locationService.updateVenueLocation(venue);
+            }
+        }
+
+        return "redirect:/venues";
     }
 }

@@ -57,7 +57,7 @@ public class BandListController {
 
     @IsBbrAdmin
     @GetMapping("/bands/ALL/upload-locations")
-    public String uploadBandLocations() {
+    public String uploadAllBandLocations() {
         BandListDto bands = this.bandService.listBandsStartingWith("ALL");
 
         for (BandDao band : bands.getReturnedBands()) {
