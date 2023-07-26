@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import uk.co.bbr.map.LocationService;
 import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.regions.RegionService;
 import uk.co.bbr.services.regions.dao.RegionDao;
@@ -26,6 +27,7 @@ public class EditVenueController {
 
     private final VenueService venueService;
     private final RegionService regionService;
+    private final LocationService locationService;
 
     @IsBbrMember
     @GetMapping("/venues/{venueSlug:[\\-a-z\\d]{2,}}/edit")
@@ -81,6 +83,7 @@ public class EditVenueController {
         }
 
         this.venueService.update(existingVenue);
+        this.locationService.updateVenueLocation(existingVenue);
 
         return "redirect:/venues/{venueSlug}";
     }
