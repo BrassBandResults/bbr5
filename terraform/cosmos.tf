@@ -41,7 +41,7 @@ resource "azurerm_cosmosdb_sql_container" "band-locations" {
       path = "/*"
     }
 
-    spacial_index {
+    spatial_index {
       path = "/*"
     }
   }
