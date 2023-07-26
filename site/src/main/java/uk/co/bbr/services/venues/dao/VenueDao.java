@@ -125,7 +125,7 @@ public class VenueDao extends AbstractDao implements NameTools {
             return null;
         }
 
-        String stringToHash = this.getSlug() + "/" + this.getId();
+        String stringToHash = this.getSlug();
         String sha1Hash = null;
         MessageDigest md = null;
         try {
