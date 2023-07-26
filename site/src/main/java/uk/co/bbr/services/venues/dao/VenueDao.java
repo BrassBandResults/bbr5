@@ -141,7 +141,7 @@ public class VenueDao extends AbstractDao implements NameTools {
         newLocation.setId(sha1Hash);
         newLocation.setName(this.getName());
         newLocation.setSlug(this.getSlug());
-        newLocation.setType(null);
+        newLocation.setType(this.exact ? "exact" : "area");
         newLocation.setObject("Venue"); // TODO use a constant
         newLocation.setPoint(new LocationPoint(this.longitude, this.latitude));
 
