@@ -29,7 +29,6 @@ public class ContestListController {
         return "contests/contests";
     }
 
-    @IsBbrMember
     @GetMapping("/contests/ALL")
     public String contestListAll(Model model) {
         ContestListDto contests = this.contestService.listContestsStartingWith("ALL");

@@ -49,7 +49,6 @@ public class VenueListController {
 
 
 
-    @IsBbrMember
     @GetMapping("/venues/ALL")
     public String venuesListAll(Model model) {
         VenueListDto venues = this.venueService.listVenuesStartingWith("ALL");
