@@ -42,6 +42,7 @@ import uk.co.bbr.web.security.annotations.IsBbrMember;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -256,21 +257,22 @@ public class AddResultsController {
         submittedForm.validate(bindingResult);
 
         if (bindingResult.hasErrors()) {
-            List<ContestTypeDao> contestTypes = this.contestTypeService.fetchAll();
             model.addAttribute("ContestEvent", event.get());
             return "results/add-results-4-test-piece";
         }
 
-        PieceDao pieceToLink = null;
-        Optional<PieceDao> testPiece = this.pieceService.fetchBySlug(submittedForm.getTestPieceSlug());
-        if (testPiece.isEmpty()) {
-            pieceToLink = this.pieceService.create(submittedForm.getTestPieceName());
-        } else {
-            pieceToLink = testPiece.get();
-        }
+        if (submittedForm.getTestPieceName() != null && submittedForm.getTestPieceName().trim().length() > 0) {
+            PieceDao pieceToLink = null;
+            Optional<PieceDao> testPiece = this.pieceService.fetchBySlug(submittedForm.getTestPieceSlug());
+            if (testPiece.isEmpty()) {
+                pieceToLink = this.pieceService.create(submittedForm.getTestPieceName());
+            } else {
+                pieceToLink = testPiece.get();
+            }
 
-        if (pieceToLink != null) {
-            this.contestEventService.addTestPieceToContest(event.get(), pieceToLink);
+            if (pieceToLink != null) {
+                this.contestEventService.addTestPieceToContest(event.get(), pieceToLink);
+            }
         }
 
         return "redirect:/add-results/5/{contestSlug}/{contestEventDate}";
@@ -314,17 +316,19 @@ public class AddResultsController {
             return "results/add-results-5-venue";
         }
 
-        VenueDao venueToLink = null;
-        Optional<VenueDao> venue = this.venueService.fetchBySlug(submittedForm.getVenueSlug());
-        if (venue.isEmpty()) {
-            venueToLink = this.venueService.create(submittedForm.getVenueName());
-        } else {
-            venueToLink = venue.get();
-        }
+        if (submittedForm.getVenueName() != null && submittedForm.getVenueName().trim().length() > 0) {
+            VenueDao venueToLink = null;
+            Optional<VenueDao> venue = this.venueService.fetchBySlug(submittedForm.getVenueSlug());
+            if (venue.isEmpty()) {
+                venueToLink = this.venueService.create(submittedForm.getVenueName());
+            } else {
+                venueToLink = venue.get();
+            }
 
-        if (venueToLink != null) {
-            event.get().setVenue(venueToLink);
-            this.contestEventService.update(event.get());
+            if (venueToLink != null) {
+                event.get().setVenue(venueToLink);
+                this.contestEventService.update(event.get());
+            }
         }
 
         return "redirect:/add-results/6/{contestSlug}/{contestEventDate}";
@@ -344,6 +348,7 @@ public class AddResultsController {
         AddResultsBandsForm form = new AddResultsBandsForm();
         model.addAttribute("TestPieces", pieces);
         model.addAttribute("ContestEvent", event.get());
+        model.addAttribute("ParsedResults", Collections.emptyList());
         model.addAttribute("Form", form);
 
         return "results/add-results-6-bands";
@@ -365,6 +370,7 @@ public class AddResultsController {
         if (bindingResult.hasErrors()) {
             model.addAttribute("TestPieces", pieces);
             model.addAttribute("ContestEvent", event.get());
+            model.addAttribute("ParsedResults", Collections.emptyList());
             return "results/add-results-6-bands";
         }
 
@@ -374,7 +380,6 @@ public class AddResultsController {
             for (ParseResultDto eachParsedResult : parsedResults.getResultLines()) {
                 ContestResultDao eachResult = eachParsedResult.buildContestResult(event.get());
                 this.contestResultService.addResult(event.get(), eachResult);
-
             }
 
             return "redirect:/add-results/7/{contestSlug}/{contestEventDate}";
