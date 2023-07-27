@@ -78,6 +78,7 @@
                     <th th:if="${ContestEvent.contestType.pointsFourTitle != null}" th:text="#{${ContestEvent.contestType.pointsFourTitle}}" class="number">Points 4</th>
                     <th th:if="${ContestEvent.contestType.pointsPenaltyTitle != null}" th:text="#{${ContestEvent.contestType.pointsPenaltyTitle}}" class="number">Points Penalty</th>
                     <th th:if="${ContestEvent.contestType.pointsTotalTitle != null}" th:text="#{${ContestEvent.contestType.pointsTotalTitle}}" class="number">Points Total</th>
+                    <th th:if="${ContestEvent.canEdit}"></th>
                 </tr>
             </thead>
             <tbody>
@@ -101,6 +102,9 @@
                     <td class="bbr-draw" th:if="${ContestEvent.contestType.pointsFourTitle != null}" th:text="${result.pointsFourth}"></td>
                     <td class="bbr-draw" th:if="${ContestEvent.contestType.pointsPenaltyTitle != null}" th:text="${result.pointsPenalty}"></td>
                     <td class="bbr-draw" th:if="${ContestEvent.contestType.pointsTotalTitle != null}" th:text="${result.pointsTotal}"></td>
+                    <td th:if="${ContestEvent.canEdit}">
+                        <span th:if="${result.canEdit}"<span th:replace="buttons/edit.html :: editResult(${ContestEvent}, ${result})"></span>
+                    </td>
                 </tr>
             </tbody>
         </table>
