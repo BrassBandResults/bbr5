@@ -38,6 +38,7 @@ public class ContestGroupController {
         return "groups/groups";
     }
 
+    @IsBbrMember
     @GetMapping("/contest-groups/ALL")
     public String contestGroupsListAll(Model model) {
         GroupListDto groups = this.contestGroupService.listGroupsStartingWith("ALL");

@@ -10,6 +10,7 @@ import uk.co.bbr.services.venues.VenueService;
 import uk.co.bbr.services.venues.dao.VenueDao;
 import uk.co.bbr.services.venues.dto.VenueListDto;
 import uk.co.bbr.web.security.annotations.IsBbrAdmin;
+import uk.co.bbr.web.security.annotations.IsBbrMember;
 
 @Controller
 @RequiredArgsConstructor
@@ -48,6 +49,7 @@ public class VenueListController {
 
 
 
+    @IsBbrMember
     @GetMapping("/venues/ALL")
     public String venuesListAll(Model model) {
         VenueListDto venues = this.venueService.listVenuesStartingWith("ALL");

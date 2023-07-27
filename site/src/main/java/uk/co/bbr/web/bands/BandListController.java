@@ -10,6 +10,7 @@ import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.bands.dto.BandListDto;
 import uk.co.bbr.services.map.LocationService;
 import uk.co.bbr.web.security.annotations.IsBbrAdmin;
+import uk.co.bbr.web.security.annotations.IsBbrMember;
 
 @Controller
 @RequiredArgsConstructor
@@ -46,6 +47,7 @@ public class BandListController {
         return "redirect:/bands";
     }
 
+    @IsBbrMember
     @GetMapping("/bands/ALL")
     public String bandListAll(Model model) {
         BandListDto bands = this.bandService.listBandsStartingWith("ALL");

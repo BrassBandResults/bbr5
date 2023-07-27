@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+<head>
+    <title th:text="@{#{page.result-edit.title(${ContestEvent.name}, ${ContestEvent.eventDateDisplay})} + ' - Brass Band Results'}">Edit Result - Brass Band Results</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h2><span th:text="#{page.result-edit.header}" th:remove="tag">Edit Result</span></h2>
+
+    <form th:object="${Form}"
+          th:action="${'/contests/' + ContestEvent.contest.slug + '/' + ContestEvent.eventDateForUrl + '/result/' + Result.id + '/edit'}"
+          method="post">
+        <div class="alert alert-danger" th:if="${#fields.hasErrors('*')}">
+            <ul>
+                <li th:each="err : ${#fields.errors('*')}" th:text="@{#{${err}}}"></li>
+            </ul>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="position" th:text="#{page.field-prompt.position}">Position:</label>
+            <input id="position" class="form-control" type="number" th:field="*{position}"/>
+            <input id="withdrawn" class="form-check-input" type="checkbox" th:field="*{withdrawn}"/>
+            <label class="form-label" for="withdrawn" th:text="#{page.checkbox-prompt.withdrawn}">Withdrawn</label><br/>
+            <input id="disqualified" class="form-check-input" type="checkbox" th:field="*{disqualified}"/>
+            <label class="form-label" for="disqualified" th:text="#{page.checkbox-prompt.disqualified}">Disqualified</label><br/>
+            <small class="form-text" th:text="#{page.result-edit.hint.position}">Enter the placing that the band were given.</small>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="competed-as" th:text="#{page.field-prompt.competed-as}">Name:</label>
+            <input id="competed-as" class="form-control" type="text" th:field="*{competedAs}" maxlength="100" size="80"/>
+            <small class="form-text" th:text="#{page.result-edit.hint.competed-as}">The name the band competed under.</small>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="band" th:text="#{page.field-prompt.band}">Band:</label>
+            <input id="band" th:field="*{bandName}" autocomplete="off" class="form-control" type="text" maxlength="100" onkeyup="lookup('band', 'band');"/>
+            <input type="hidden" th:field="*{bandSlug}" id="band-slug"/>
+            <small class="form-text" th:text="#{page.result-edit.hint.band}">The band that competed.</small>
+        </div>
+        <div th:if="${ContestEvent.contestType.drawOneTitle != null}" class="mb-3">
+            <label class="form-label" for="draw"><span th:text="#{${ContestEvent.contestType.drawOneTitle}}">Prompt</span>:</label>
+            <input id="draw" class="form-control" type="number" th:field="*{draw}" maxlength="5" size="80"/>
+        </div>
+        <div th:if="${ContestEvent.contestType.drawTwoTitle != null}" class="mb-3">
+            <label class="form-label" for="drawTwo"><span th:text="#{${ContestEvent.contestType.drawTwoTitle}}">Prompt</span>:</label>
+            <input id="drawTwo" class="form-control" type="number" th:field="*{drawTwo}" maxlength="5" size="80"/>
+        </div>
+        <div th:if="${ContestEvent.contestType.drawThreeTitle != null}" class="mb-3">
+            <label class="form-label" for="drawThree"><span th:text="#{${ContestEvent.contestType.drawThreeTitle}}}">Prompt</span>:</label>
+            <input id="drawThree" class="form-control" type="number" th:field="*{drawThree}" maxlength="5" size="80"/>
+        </div>
+        <div th:if="${ContestEvent.contestType.pointsOneTitle != null}" class="mb-3">
+            <label class="form-label" for="points-one"><span th:text="#{${ContestEvent.contestType.pointsOneTitle}}">Prompt</span>:</label>
+            <input id="points-one" class="form-control" type="text" th:field="*{pointsOne}" maxlength="100" size="80"/>
+        </div>
+        <div th:if="${ContestEvent.contestType.pointsTwoTitle != null}" class="mb-3">
+            <label class="form-label" for="points-two"><span th:text="#{${ContestEvent.contestType.pointsTwoTitle}}">Prompt</span>:</label>
+            <input id="points-two" class="form-control" type="text" th:field="*{pointsTwo}" maxlength="100" size="80"/>
+        </div>
+        <div th:if="${ContestEvent.contestType.pointsThreeTitle != null}" class="mb-3">
+            <label class="form-label" for="points-three"><span th:text="#{${ContestEvent.contestType.pointsThreeTitle}}">Prompt</span>:</label>
+            <input id="points-three" class="form-control" type="text" th:field="*{pointsThree}" maxlength="100" size="80"/>
+        </div>
+        <div th:if="${ContestEvent.contestType.pointsFourTitle != null}" class="mb-3">
+            <label class="form-label" for="points-four"><span th:text="#{${ContestEvent.contestType.pointsFourTitle}}">Prompt</span>:</label>
+            <input id="points-four" class="form-control" type="text" th:field="*{pointsFour}" maxlength="100" size="80"/>
+        </div>
+        <div th:if="${ContestEvent.contestType.pointsPenaltyTitle != null}" class="mb-3">
+            <label class="form-label" for="points-penalty"><span th:text="#{${ContestEvent.contestType.pointsPenaltyTitle}}">Prompt</span>:</label>
+            <input id="points-penalty" class="form-control" type="text" th:field="*{pointsPenalty}" maxlength="100" size="80"/>
+        </div>
+        <div th:if="${ContestEvent.contestType.pointsTotalTitle != null}" class="mb-3">
+            <label class="form-label" for="points-total"><span th:text="#{${ContestEvent.contestType.pointsTotalTitle}}">Prompt</span>:</label>
+            <input id="points-total" class="form-control" type="text" th:field="*{pointsTotal}" maxlength="100" size="80"/>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="conductor" th:text="#{page.field-prompt.conductor}">Conductor:</label>
+            <input id="conductor" th:field="*{conductorName}" autocomplete="off" class="form-control" type="text" maxlength="100" onkeyup="lookup('conductor', 'person');"/>
+            <input type="hidden" th:field="*{conductorSlug}" id="conductor-slug"/>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="conductor-two" th:text="#{page.field-prompt.conductor-two}">Second Conductor:</label>
+            <input id="conductor-two" th:field="*{conductorTwoName}" autocomplete="off" class="form-control" type="text" maxlength="100" onkeyup="lookup('conductor-two', 'person');"/>
+            <input type="hidden" th:field="*{conductorTwoSlug}" id="conductor-two-slug"/>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="conductor-three" th:text="#{page.field-prompt.conductor-three}">Third Conductor:</label>
+            <input id="conductor-three" th:field="*{conductorThreeName}" autocomplete="off" class="form-control" type="text" maxlength="100" onkeyup="lookup('conductor-three', 'person');"/>
+            <input type="hidden" th:field="*{conductorThreeSlug}" id="conductor-three-slug"/>
+        </div>
+
+        <input type="submit" th:value="#{page.buttons.save-changes}" class="btn btn-outline-success"/>
+        <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+        <a th:href="${'/contests/' + ContestEvent.contest.slug + '/' + ContestEvent.eventDateForUrl}" th:text="#{page.buttons.cancel-without-saving}" class="btn btn-light">Cancel wout saving</a>
+    </form>
+</div>
+
+<div layout:fragment="feedback">
+</div>
+
+<div layout:fragment="scriptfooter">
+    <script th:src="@{${STATIC_HOST} + '/js2023/lookup.js'}"></script>
+    <script>
+        function fill(inputId, matchSlug, matchName) {
+            let inputElement = document.getElementById(inputId);
+            let inputSlugElement = document.getElementById(inputId + '-slug');
+            inputElement.value = matchName;
+            inputSlugElement.value = matchSlug;
+            inputElement.classList.remove("bg-warning-subtle");
+            inputElement.classList.add("bg-success-subtle");
+
+            document.getElementById('list-' + inputId).remove();
+        }
+    </script>
+</div>
+
+</body>
+</html>
