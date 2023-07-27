@@ -15,6 +15,8 @@ public class ParseResultDto implements NameTools {
 
     private ParseOutcome outcome = ParseOutcome.RED_FAILED_PARSE;
 
+    private String rawLine;
+
     private String rawPosition;
     private String rawBandName;
     private String rawConductorName;
@@ -63,5 +65,17 @@ public class ParseResultDto implements NameTools {
         contestResult.setDraw(this.rawDraw);
 
         return contestResult;
+    }
+
+    public boolean isRed() {
+        return this.outcome.equals(ParseOutcome.RED_FAILED_PARSE);
+    }
+
+    public boolean isAmber() {
+        return this.outcome.equals(ParseOutcome.AMBER_PARSE_SUCCEEDED);
+    }
+
+    public boolean isGreen() {
+        return this.outcome.equals(ParseOutcome.GREEN_MATCHES_FOUND_IN_DATABASE);
     }
 }

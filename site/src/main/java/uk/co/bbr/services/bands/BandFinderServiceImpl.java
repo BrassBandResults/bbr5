@@ -24,8 +24,8 @@ public class BandFinderServiceImpl implements BandFinderService, SlugTools {
     public BandDao findMatchByName(String searchBandName, LocalDate dateContext) {
         String bandName = searchBandName.toUpperCase().trim();
         String bandNameLessBand = null;
-        if (bandName.toLowerCase().endsWith("band")) {
-            bandNameLessBand = bandName.substring(0, bandName.length() - "band".length()).trim();
+        if (bandName.endsWith("BAND")) {
+            bandNameLessBand = bandName.substring(0, bandName.length() - "BAND".length()).trim();
         }
 
         List<BandDao> bandMatches = this.bandRepository.findExactNameMatch(bandName);

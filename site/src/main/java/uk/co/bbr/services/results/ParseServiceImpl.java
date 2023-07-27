@@ -21,6 +21,8 @@ public class ParseServiceImpl implements ParseService {
         Pattern pattern1 = Pattern.compile(REGEX_RESULT_BAND_CONDUCTOR_DRAW_POINTS);
         Matcher matcher1 = pattern1.matcher(resultLine);
 
+        parsedResult.setRawLine(resultLine);
+
         if (matcher1.matches()) {
             parsedResult.setRawPosition(matcher1.group(1).toUpperCase());
             parsedResult.setRawBandName(matcher1.group(2));

@@ -69,6 +69,7 @@ class AddResults4TestPieceWebTests implements LoginMixin {
         ContestDao yorkshireArea = this.contestService.create("Yorkshire Area");
         this.contestEventService.create(yorkshireArea, LocalDate.of(2000, 3, 15));
         this.contestEventService.create(yorkshireArea, LocalDate.of(2000, 3, 16));
+        this.contestEventService.create(yorkshireArea, LocalDate.of(2000, 3, 17));
 
         this.pieceService.create("Contest Music");
 
@@ -156,5 +157,37 @@ class AddResults4TestPieceWebTests implements LoginMixin {
         assertEquals("a-new-piece", pieces.get(0).getPiece().getSlug());
         assertEquals("A New Piece", pieces.get(0).getPiece().getName());
         assertEquals(fetchedContestEvent.get().getId(), pieces.get(0).getContestEvent().getId());
+    }
+
+    @Test
+    void testBlankPieceWorksSuccessfully() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+        CsrfToken csrfToken = csrfTokenRepository.generateToken(null);
+        headers.add(csrfToken.getHeaderName(), csrfToken.getToken());
+        headers.add("Cookie", SecurityFilter.CSRF_HEADER_NAME + "=" + csrfToken.getToken());
+
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+        map.add("testPieceName", " ");
+        map.add("testPieceSlug", "");
+        map.add("_csrf", csrfToken.getToken());
+        map.add("_csrf_header", SecurityFilter.CSRF_HEADER_NAME);
+
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
+
+        // act
+        ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/add-results/4/yorkshire-area/2000-03-17", request, String.class);
+
+        // assert
+        assertEquals(HttpStatus.FOUND, response.getStatusCode());
+
+        assertTrue(Objects.requireNonNull(response.getHeaders().get("Location")).get(0).endsWith("/add-results/5/yorkshire-area/2000-03-17"));
+
+        Optional<ContestEventDao> fetchedContestEvent =  this.contestEventService.fetchEvent("yorkshire-area", LocalDate.of(2000,3,17));
+        assertTrue(fetchedContestEvent.isPresent());
+
+        List<ContestEventTestPieceDao> pieces = this.contestEventService.listTestPieces(fetchedContestEvent.get());
+        assertEquals(0, pieces.size());
     }
 }

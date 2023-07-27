@@ -28,6 +28,7 @@
         <table id="bands" class="table table-hover sortable">
             <thead>
                 <tr>
+                    <th></th>
                     <th th:text="#{page.column-header.name}">Name</th>
                     <th th:text="#{page.column-header.wins}">Wins</th>
                     <th th:text="#{page.column-header.percentage}" class="percent">Percentage</th>
@@ -35,7 +36,8 @@
                 </tr>
             </thead>
             <tbody>
-                <tr th:each="winningPerson : ${WinningPeople}">
+                <tr th:each="winningPerson, iStat : ${WinningPeople}">
+                    <td th:text="${iStat.count}">1</td>
                     <td class="person">
                         <span th:replace="links/person-link.html :: personLinkWithKnownFor(${winningPerson.person})"></span>
                     </td>

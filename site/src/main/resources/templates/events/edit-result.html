@@ -18,7 +18,7 @@
         <div class="row mb-3">
             <div class="col">
                 <label class="form-label" for="position" th:text="#{page.field-prompt.position}">Position:</label>
-                <input id="position" class="form-control" type="number" maxlength="3" th:field="*{position}"/><br/>
+                <input id="position" class="form-control" type="number" max="999" min="0" th:field="*{position}"/><br/>
             </div>
             <div class="col">
                 <br/>
