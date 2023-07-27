@@ -65,6 +65,11 @@ public class ContestEventController {
         List<ContestEventTestPieceDao> eventTestPieces = this.contestEventService.listTestPieces(contestEvent.get());
         List<ContestAdjudicatorDao> adjudicators = this.contestEventService.fetchAdjudicators(contestEvent.get());
 
+        contestEvent.get().setCanEdit(this.securityService.getCurrentUser() != null);
+        for (ContestResultDao result : eventResults){
+            result.setCanEdit(this.securityService.getCurrentUser() != null);
+        }
+
         model.addAttribute("ContestEvent", contestEvent.get());
         model.addAttribute("EventTestPieces", eventTestPieces);
         model.addAttribute("Adjudicators", adjudicators);

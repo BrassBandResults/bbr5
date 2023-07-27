@@ -80,6 +80,10 @@ public class ContestEventDao extends AbstractDao implements NameTools {
     @Setter
     private List<ContestResultDao> winners = new ArrayList<>();
 
+    @Transient
+    @Setter
+    private boolean canEdit = false;
+
     public void setName(String name){
         this.name = simplifyContestName(name);
     }

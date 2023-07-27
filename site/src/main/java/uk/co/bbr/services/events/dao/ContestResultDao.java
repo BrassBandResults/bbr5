@@ -105,6 +105,10 @@ public class ContestResultDao extends AbstractDao implements NameTools {
     @Setter
     private List<ContestTagSqlDto> tags = new ArrayList<>();
 
+    @Transient
+    @Setter
+    private boolean canEdit = false;
+
     public void populateFrom(ContestResultDao result) {
         if (this.getConductor() == null && result.getConductor() != null) {
             this.setConductor(result.getConductor());
