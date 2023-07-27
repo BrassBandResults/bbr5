@@ -43,7 +43,7 @@ public class EditResultController {
 
     @IsBbrMember
     @GetMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}/result/{resultId:\\d+}/edit")
-    public String editContestResultForm(Model model, @PathVariable("contestSlug") String contestSlug, @PathVariable("contetEventDate") String contestEventDate, @PathVariable("resultId") Long resultId) {
+    public String editContestResultForm(Model model, @PathVariable("contestSlug") String contestSlug, @PathVariable("contestEventDate") String contestEventDate, @PathVariable("resultId") Long resultId) {
         String[] dateSplit = contestEventDate.split("-");
         LocalDate eventDate = LocalDate.of(Integer.parseInt(dateSplit[0]), Integer.parseInt(dateSplit[1]), Integer.parseInt(dateSplit[2]));
         Optional<ContestEventDao> contestEvent = this.contestEventService.fetchEvent(contestSlug, eventDate);
@@ -72,7 +72,7 @@ public class EditResultController {
 
     @IsBbrMember
     @PostMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}/result/{resultId:\\d+}/edit")
-    public String editContestResultSave(Model model, @Valid @ModelAttribute("Form") ResultEditForm submittedResult, BindingResult bindingResult, @PathVariable String contestSlug, @PathVariable String contestEventDate, @PathVariable("resultId") Long resultId) {
+    public String editContestResultSave(Model model, @Valid @ModelAttribute("Form") ResultEditForm submittedResult, BindingResult bindingResult, @PathVariable("contestSlug") String contestSlug, @PathVariable("contestEventDate") String contestEventDate, @PathVariable("resultId") Long resultId) {
         String[] dateSplit = contestEventDate.split("-");
         LocalDate eventDate = LocalDate.of(Integer.parseInt(dateSplit[0]), Integer.parseInt(dateSplit[1]), Integer.parseInt(dateSplit[2]));
         Optional<ContestEventDao> contestEvent = this.contestEventService.fetchEvent(contestSlug, eventDate);
