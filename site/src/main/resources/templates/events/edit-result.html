@@ -15,14 +15,18 @@
                 <li th:each="err : ${#fields.errors('*')}" th:text="@{#{${err}}}"></li>
             </ul>
         </div>
-        <div class="mb-3">
-            <label class="form-label" for="position" th:text="#{page.field-prompt.position}">Position:</label>
-            <input id="position" class="form-control" type="number" th:field="*{position}"/>
-            <input id="withdrawn" class="form-check-input" type="checkbox" th:field="*{withdrawn}"/>
-            <label class="form-label" for="withdrawn" th:text="#{page.checkbox-prompt.withdrawn}">Withdrawn</label><br/>
-            <input id="disqualified" class="form-check-input" type="checkbox" th:field="*{disqualified}"/>
-            <label class="form-label" for="disqualified" th:text="#{page.checkbox-prompt.disqualified}">Disqualified</label><br/>
-            <small class="form-text" th:text="#{page.result-edit.hint.position}">Enter the placing that the band were given.</small>
+        <div class="row mb-3">
+            <div class="col">
+                <label class="form-label" for="position" th:text="#{page.field-prompt.position}">Position:</label>
+                <input id="position" class="form-control" type="number" maxlength="3" th:field="*{position}"/><br/>
+            </div>
+            <div class="col">
+                <br/>
+                <input id="withdrawn" class="form-check-input" type="checkbox" th:field="*{withdrawn}"/>
+                <label class="form-label" for="withdrawn" th:text="#{page.checkbox-prompt.withdrawn}">Withdrawn</label><br/>
+                <input id="disqualified" class="form-check-input" type="checkbox" th:field="*{disqualified}"/>
+                <label class="form-label" for="disqualified" th:text="#{page.checkbox-prompt.disqualified}">Disqualified</label><br/>
+            </div>
         </div>
         <div class="mb-3">
             <label class="form-label" for="competed-as" th:text="#{page.field-prompt.competed-as}">Name:</label>
@@ -75,6 +79,7 @@
             <label class="form-label" for="conductor" th:text="#{page.field-prompt.conductor}">Conductor:</label>
             <input id="conductor" th:field="*{conductorName}" autocomplete="off" class="form-control" type="text" maxlength="100" onkeyup="lookup('conductor', 'person');"/>
             <input type="hidden" th:field="*{conductorSlug}" id="conductor-slug"/>
+            <small th:text="#{page.field-prompt.original-conductor}">Original Conductor:</small> <small th:text="${Result.originalConductorName}">Original Conductor Name</small>
         </div>
         <div class="mb-3">
             <label class="form-label" for="conductor-two" th:text="#{page.field-prompt.conductor-two}">Second Conductor:</label>
@@ -109,6 +114,22 @@
 
             document.getElementById('list-' + inputId).remove();
         }
+
+        document.getElementById("withdrawn").addEventListener('change', checkboxChanged);;
+        document.getElementById("disqualified").addEventListener('change', checkboxChanged);;
+
+        function checkboxChanged() {
+            let withdrawnCheckbox = document.getElementById("withdrawn");
+            let disqualifiedCheckbox = document.getElementById("disqualified");
+            if (withdrawnCheckbox.checked || disqualifiedCheckbox.checked) {
+                document.getElementById("position").disabled = true;
+            } else {
+                document.getElementById("position").disabled = false;
+            }
+        }
+
+        checkboxChanged();
+
     </script>
 </div>
 

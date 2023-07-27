@@ -1,4 +1,5 @@
 #!/bin/bash
+source ~/.bash_profile
 ./mvnw clean install -Dmaven.test.skip=true
 export JAVA_OPTS="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"
 export BBR_SMTP_SERVER_PASSWORD=password
