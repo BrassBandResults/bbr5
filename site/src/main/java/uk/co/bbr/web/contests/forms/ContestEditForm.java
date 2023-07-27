@@ -41,8 +41,12 @@ public class ContestEditForm {
             this.contestGroupName = contest.getContestGroup().getName();
             this.contestGroupSlug = contest.getContestGroup().getSlug();
         }
-        this.contestType = contest.getDefaultContestType().getId();
-        this.region = contest.getRegion().getId();
+        if (contest.getDefaultContestType() != null) {
+            this.contestType = contest.getDefaultContestType().getId();
+        }
+        if (contest.getRegion() != null) {
+            this.region = contest.getRegion().getId();
+        }
         if (contest.getSection() != null) {
             this.section = contest.getSection().getId();
         }
