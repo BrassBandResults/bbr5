@@ -108,4 +108,8 @@ public class NotFoundException extends RuntimeException {
     public static NotFoundException resultNotFoundById(Long resultId) {
         return new NotFoundException("Result with id " + resultId + " not found");
     }
+
+    public static NotFoundException resultNotOnCorrectContest(String contestSlug, String contestEventDate) {
+        return new NotFoundException("Result not found on event with slug " + contestSlug + " and date " + contestEventDate);
+    }
 }
