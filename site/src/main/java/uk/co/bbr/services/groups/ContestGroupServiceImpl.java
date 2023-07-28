@@ -284,11 +284,4 @@ public class ContestGroupServiceImpl implements ContestGroupService, SlugTools {
     public List<ContestGroupAliasDao> fetchAliases(ContestGroupDao contestGroup) {
         return this.contestGroupAliasRepository.findByGroup(contestGroup.getId());
     }
-
-    @Override
-    public List<ContestGroupDao> lookupByPrefix(String searchString) {
-        return this.contestGroupRepository.lookupByPrefix("%" + searchString.toUpperCase() + "%");
-    }
-
-
 }

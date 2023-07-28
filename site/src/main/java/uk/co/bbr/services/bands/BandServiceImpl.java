@@ -163,11 +163,6 @@ public class BandServiceImpl implements BandService, SlugTools {
     }
 
     @Override
-    public List<BandDao> lookupByPrefix(String searchString) {
-        return this.bandRepository.lookupByPrefix("%" + searchString.toUpperCase() + "%");
-    }
-
-    @Override
     public BandCompareDto compareBands(BandDao leftBand, BandDao rightBand) {
         List<CompareBandsSqlDto> results = BandCompareSql.compareBands(this.entityManager, leftBand.getId(), rightBand.getId());
         return new BandCompareDto(results);

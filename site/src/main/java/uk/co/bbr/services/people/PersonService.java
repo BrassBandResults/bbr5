@@ -49,8 +49,6 @@ public interface PersonService {
 
     List<PeopleBandsSqlDto> fetchBandsConductedListAfter(int year);
 
-    List<PersonDao> lookupByPrefix(String searchString);
-
     ConductorCompareDto compareConductors(PersonDao leftPerson, PersonDao rightPerson);
 
     List<ContestResultDao> fetchPersonalAdjudications(SiteUserDao currentUser, PersonDao person);

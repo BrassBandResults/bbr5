@@ -18,16 +18,6 @@ public interface BandPreviousNameRepository extends JpaRepository<BandAliasDao, 
     @Query("SELECT a FROM BandAliasDao a WHERE a.band.id = :bandId ORDER BY a.startDate, a.oldName")
     List<BandAliasDao> findAllForBandOrderByName(Long bandId);
 
-    @Query("SELECT b FROM BandDao b " +
-            "INNER JOIN BandAliasDao a ON a.band.id = b.id " +
-            "WHERE UPPER(a.oldName) = :bandNameUpper")
-    List<BandDao> findAliasExactNameMatch(String bandNameUpper);
-
-    @Query("SELECT b FROM BandDao b " +
-            "INNER JOIN BandAliasDao a ON a.band.id = b.id " +
-            "WHERE UPPER(a.oldName) LIKE :bandNameUpper")
-    List<BandDao> findContainsNameMatch(String bandNameUpper);
-
     @Query("SELECT a FROM BandAliasDao a WHERE a.band.id = :bandId AND a.id = :aliasId")
     Optional<BandAliasDao> fetchByIdForBand(Long bandId, Long aliasId);
 }

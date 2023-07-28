@@ -34,8 +34,6 @@ public interface ContestService {
 
     List<ContestAliasDao> fetchAliases(ContestDao contest);
 
-    List<ContestDao> lookupByPrefix(String searchString);
-
     Optional<ContestDao> fetchByExactName(String contestName);
 
     Optional<ContestDao> fetchByNameUpper(String contestName);

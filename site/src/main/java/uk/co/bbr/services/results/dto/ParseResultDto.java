@@ -2,12 +2,16 @@ package uk.co.bbr.services.results.dto;
 
 import lombok.Getter;
 import lombok.Setter;
+import uk.co.bbr.services.bands.BandService;
 import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.events.dao.ContestEventDao;
 import uk.co.bbr.services.events.dao.ContestResultDao;
 import uk.co.bbr.services.framework.mixins.NameTools;
+import uk.co.bbr.services.people.PersonService;
 import uk.co.bbr.services.results.types.ParseOutcome;
 import uk.co.bbr.services.people.dao.PersonDao;
+
+import java.util.Optional;
 
 @Getter
 @Setter
@@ -23,8 +27,8 @@ public class ParseResultDto implements NameTools {
     private Integer rawDraw;
     private String rawPoints;
 
-    private BandDao matchedBand;
-    private PersonDao matchedConductor;
+    private String matchedBandSlug;
+    private String matchedConductorSlug;
 
     public void setRawBandName(String value) {
         this.rawBandName = simplifyBandName(value);
@@ -35,32 +39,42 @@ public class ParseResultDto implements NameTools {
         this.rawConductorName = simplifyPersonFullName(value);
     }
 
-    public void setMatchedBand(BandDao matchedBand) {
-        this.matchedBand = matchedBand;
-        if (this.matchedBand != null && this.matchedConductor != null) {
+    public void setMatchedBand(String matchedBandSlug) {
+        this.matchedBandSlug = matchedBandSlug;
+        if (this.matchedBandSlug != null && this.matchedConductorSlug != null) {
             this.outcome = ParseOutcome.GREEN_MATCHES_FOUND_IN_DATABASE;
         }
     }
 
 
-    public void setMatchedConductor(PersonDao matchedConductor) {
-        this.matchedConductor = matchedConductor;
-        if (this.matchedBand != null && this.matchedConductor != null) {
+    public void setMatchedConductor(String matchedConductorSlug) {
+        this.matchedConductorSlug = matchedConductorSlug;
+        if (this.matchedBandSlug != null && this.matchedConductorSlug != null) {
             this.outcome = ParseOutcome.GREEN_MATCHES_FOUND_IN_DATABASE;
         }
     }
 
-    public ContestResultDao buildContestResult(ContestEventDao contestEvent) {
+    public ContestResultDao buildContestResult(ContestEventDao contestEvent, BandService bandService, PersonService personService) {
         if (this.outcome != ParseOutcome.GREEN_MATCHES_FOUND_IN_DATABASE) {
+            return null;
+        }
+
+        Optional<BandDao> matchedBand = bandService.fetchBySlug(this.matchedBandSlug);
+        if (matchedBand.isEmpty()) {
+            return null;
+        }
+
+        Optional<PersonDao> matchedConductor = personService.fetchBySlug(this.matchedConductorSlug);
+        if (matchedConductor.isEmpty()) {
             return null;
         }
 
         ContestResultDao contestResult = new ContestResultDao();
         contestResult.setContestEvent(contestEvent);
         contestResult.setPosition(this.rawPosition);
-        contestResult.setBand(this.matchedBand);
+        contestResult.setBand(matchedBand.get());
         contestResult.setBandName(this.rawBandName);
-        contestResult.setConductor(this.matchedConductor);
+        contestResult.setConductor(matchedConductor.get());
         contestResult.setOriginalConductorName(this.rawConductorName);
         contestResult.setDraw(this.rawDraw);
 
