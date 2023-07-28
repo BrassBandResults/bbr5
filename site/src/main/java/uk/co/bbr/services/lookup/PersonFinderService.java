@@ -1,4 +1,4 @@
-package uk.co.bbr.services.people;
+package uk.co.bbr.services.lookup;
 
 import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.people.dao.PersonDao;

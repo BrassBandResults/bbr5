@@ -1,4 +1,4 @@
-package uk.co.bbr.services.bands;
+package uk.co.bbr.services.lookup;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

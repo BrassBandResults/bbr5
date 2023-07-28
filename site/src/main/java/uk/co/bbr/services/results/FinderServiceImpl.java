@@ -2,11 +2,9 @@ package uk.co.bbr.services.results;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import uk.co.bbr.services.bands.BandFinderService;
-import uk.co.bbr.services.bands.dao.BandDao;
-import uk.co.bbr.services.people.PersonFinderService;
+import uk.co.bbr.services.lookup.BandFinderService;
+import uk.co.bbr.services.lookup.PersonFinderService;
 import uk.co.bbr.services.results.dto.ParseResultDto;
-import uk.co.bbr.services.people.dao.PersonDao;
 
 import java.time.LocalDate;
 
