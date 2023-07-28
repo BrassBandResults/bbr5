@@ -31,11 +31,4 @@ public interface RegionRepository  extends JpaRepository<RegionDao, Long> {
 
     @Query("SELECT r FROM RegionDao r WHERE r.containerRegionId = ?1")
     List<RegionDao> fetchSubRegionsOf(Long parentRegionId);
-
-    @Query("SELECT b FROM BandDao b " +
-            "INNER JOIN b.region r " +
-            "WHERE r.id = ?1 " +
-            "AND b.latitude IS NOT NULL " +
-            "AND b.longitude IS NOT NULL")
-    List<BandDao> fetchBandsForMapForRegion(Long regionId);
 }
