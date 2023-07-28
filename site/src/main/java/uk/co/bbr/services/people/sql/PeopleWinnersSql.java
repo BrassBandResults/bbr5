@@ -72,6 +72,7 @@ public class PeopleWinnersSql {
                AND r.result_position_type = 'R'
                AND c.name NOT LIKE '%Whit Friday%'
                AND p.slug != 'unknown'
+               AND e.date_of_event < ?1
                GROUP BY conductor_id)
            SELECT p.slug, p.surname, p.first_names, p.known_for, w.winners, t.contests
            FROM person p
@@ -106,6 +107,7 @@ public class PeopleWinnersSql {
                AND r.result_position_type = 'R'
                AND c.name NOT LIKE '%Whit Friday%'
                AND p.slug != 'unknown'
+               AND e.date_of_event > ?1
                GROUP BY conductor_id)
            SELECT p.slug, p.surname, p.first_names, p.known_for, w.winners, t.contests
            FROM person p
