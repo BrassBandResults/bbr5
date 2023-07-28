@@ -140,4 +140,57 @@ class ParseBlockTests implements LoginMixin {
 
         assertNotNull(parseResult.get(1).buildContestResult(null, this.bandService, this.personService));
     }
+
+    @Test
+    void testParsedResultsAreSameOrderAsInput() {
+        // arrange
+        String testEntry = """
+
+                  gibberish
+                  5. Black Dyke Band, Robert Childs, 5, 123
+                  band, conductor
+
+                  23 White Rose Concert Band, David Roberts, 1
+
+
+                  10. Rothwell Temperance, David Roberts, 26""";
+
+        // act
+        List<ParseResultDto> parseResult = this.parseResultService.parseBlock(testEntry, LocalDate.now()).getResultLines();
+
+        // assert
+        assertEquals(5, parseResult.size());
+        assertEquals(ParseOutcome.RED_FAILED_PARSE, parseResult.get(0).getOutcome());
+        assertEquals(ParseOutcome.GREEN_MATCHES_FOUND_IN_DATABASE, parseResult.get(1).getOutcome());
+        assertEquals(ParseOutcome.AMBER_PARSE_SUCCEEDED, parseResult.get(2).getOutcome());
+        assertEquals(ParseOutcome.AMBER_PARSE_SUCCEEDED, parseResult.get(3).getOutcome());
+        assertEquals(ParseOutcome.GREEN_MATCHES_FOUND_IN_DATABASE, parseResult.get(4).getOutcome());
+
+        assertEquals("gibberish", parseResult.get(0).getRawLine());
+
+        assertEquals("5. Black Dyke Band, Robert Childs, 5, 123", parseResult.get(1).getRawLine());
+        assertEquals("5", parseResult.get(1).getRawPosition());
+        assertEquals("Black Dyke Band", parseResult.get(1).getRawBandName());
+        assertEquals("Robert Childs", parseResult.get(1).getRawConductorName());
+        assertEquals(5, parseResult.get(1).getRawDraw());
+        assertEquals("123", parseResult.get(1).getRawPoints());
+
+        assertEquals("black-dyke-band", parseResult.get(1).getMatchedBandSlug());
+        assertEquals("robert-childs", parseResult.get(1).getMatchedConductorSlug());
+
+        assertEquals("band, conductor", parseResult.get(2).getRawLine());
+
+        assertEquals("23 White Rose Concert Band, David Roberts, 1", parseResult.get(3).getRawLine());
+
+        assertEquals("10. Rothwell Temperance, David Roberts, 26", parseResult.get(4).getRawLine());
+        assertEquals(ParseOutcome.GREEN_MATCHES_FOUND_IN_DATABASE, parseResult.get(4).getOutcome());
+        assertEquals("10", parseResult.get(4).getRawPosition());
+        assertEquals("Rothwell Temperance", parseResult.get(4).getRawBandName());
+        assertEquals("David Roberts", parseResult.get(4).getRawConductorName());
+        assertEquals(26, parseResult.get(4).getRawDraw());
+        assertEquals("", parseResult.get(4).getRawPoints());
+
+        assertEquals("rothwell-temperance-b", parseResult.get(4).getMatchedBandSlug());
+        assertEquals("david-roberts", parseResult.get(4).getMatchedConductorSlug());
+    }
 }

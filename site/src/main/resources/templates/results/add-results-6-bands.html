@@ -39,23 +39,25 @@
         </div>
 
         <table>
-            <tr th:each="parsedResult : ${ParsedResults}" th:if="${parsedResult.green}" class="bg-success-subtle">
+            <span th:each="parsedResult : ${ParsedResults}" th:remove="tag">
+                <tr th:if="${parsedResult.green}" class="bg-success-subtle">
+                  <td th:text="${parsedResult.rawPosition}"></td>
+                  <td th:text="${parsedResult.rawBandName}"></td>
+                  <td th:text="${parsedResult.rawConductorName}"></td>
+                  <td th:text="${parsedResult.rawDraw}">/td>
+                  <td th:text="${parsedResult.rawPoints}"></td>
+                </tr>
+                <tr th:if="${parsedResult.amber}" class="bg-warning-subtle">
                 <td th:text="${parsedResult.rawPosition}"></td>
                 <td th:text="${parsedResult.rawBandName}"></td>
                 <td th:text="${parsedResult.rawConductorName}"></td>
                 <td th:text="${parsedResult.rawDraw}">/td>
                 <td th:text="${parsedResult.rawPoints}"></td>
-            </tr>
-            <tr th:each="parsedResult : ${ParsedResults}" th:if="${parsedResult.amber}" class="bg-warning-subtle">
-                <td th:text="${parsedResult.rawPosition}"></td>
-                <td th:text="${parsedResult.rawBandName}"></td>
-                <td th:text="${parsedResult.rawConductorName}"></td>
-                <td th:text="${parsedResult.rawDraw}">/td>
-                <td th:text="${parsedResult.rawPoints}"></td>
-            </tr>
-            <tr th:each="parsedResult : ${ParsedResults}" th:if="${parsedResult.red}" class="bg-danger-subtle">
-                <td colspan="5" th:text="${parsedResult.rawLine}"></td>
-            </tr>
+                </tr>
+                <tr th:if="${parsedResult.red}" class="bg-danger-subtle">
+                    <td colspan="5" th:text="${parsedResult.rawLine}"></td>
+                </tr>
+            </span>
         </table>
 
         <div class="mb-3">
