@@ -48,7 +48,7 @@
             <input id="drawTwo" class="form-control" type="number" th:field="*{drawTwo}" maxlength="5" size="80"/>
         </div>
         <div th:if="${ContestEvent.contestType.drawThreeTitle != null}" class="mb-3">
-            <label class="form-label" for="drawThree"><span th:text="#{${ContestEvent.contestType.drawThreeTitle}}}">Prompt</span>:</label>
+            <label class="form-label" for="drawThree"><span th:text="#{${ContestEvent.contestType.drawThreeTitle}}">Prompt</span>:</label>
             <input id="drawThree" class="form-control" type="number" th:field="*{drawThree}" maxlength="5" size="80"/>
         </div>
         <div th:if="${ContestEvent.contestType.pointsOneTitle != null}" class="mb-3">

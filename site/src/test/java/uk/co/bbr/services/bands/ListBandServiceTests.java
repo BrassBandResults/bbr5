@@ -91,7 +91,7 @@ class ListBandServiceTests implements LoginMixin {
         assertEquals("yorkshire", bandsStartWithB.getReturnedBands().get(0).getRegion().getSlug());
         assertEquals("Yorkshire", bandsStartWithB.getReturnedBands().get(0).getRegion().getName());
         assertEquals("england", bandsStartWithB.getReturnedBands().get(0).getRegion().getCountryCode());
-        assertEquals(0, bandsStartWithB.getReturnedBands().get(0).getContestCount());
+        assertEquals(0, bandsStartWithB.getReturnedBands().get(0).getResultsCount());
     }
 
     @Test
@@ -136,12 +136,12 @@ class ListBandServiceTests implements LoginMixin {
         assertEquals("north-west", bands.get(0).getRegion().getSlug());
         assertEquals("North West", bands.get(0).getRegion().getName());
         assertEquals("england", bands.get(0).getRegion().getCountryCode());
-        assertEquals(0, bands.get(0).getContestCount());
+        assertEquals(0, bands.get(0).getResultsCount());
         assertEquals("48th Div. R.E. T.A", bands.get(1).getName());
         assertEquals("midlands", bands.get(1).getRegion().getSlug());
         assertEquals("Midlands", bands.get(1).getRegion().getName());
         assertEquals("england", bands.get(1).getRegion().getCountryCode());
-        assertEquals(0, bands.get(1).getContestCount());
+        assertEquals(0, bands.get(1).getResultsCount());
     }
 }
 

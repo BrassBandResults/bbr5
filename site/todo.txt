@@ -10,8 +10,6 @@ Edit Test pieces for contest event
 
 Security on who can edit result
 
-Fix formula numbers
-
 red background for select "must already exist" thing
 yellow background for select "might create this" thing
 
