@@ -79,9 +79,6 @@ public class BandDao extends AbstractDao implements NameTools {
     @Setter
     private int resultsCount;
 
-    @Transient
-    private int contestCount;
-
     public void setName(String sourceName) {
 
         if (sourceName == null) {
