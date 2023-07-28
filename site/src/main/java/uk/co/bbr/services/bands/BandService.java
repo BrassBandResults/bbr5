@@ -35,8 +35,6 @@ public interface BandService {
 
     List<BandWinnersSqlDto> fetchContestWinningBands();
 
-    List<BandDao> lookupByPrefix(String searchString);
-
     BandCompareDto compareBands(BandDao leftBand, BandDao rightBand);
 
     int countBandsCompetedInYear(int year);

@@ -258,11 +258,6 @@ public class ContestServiceImpl implements ContestService, SlugTools {
     }
 
     @Override
-    public List<ContestDao> lookupByPrefix(String searchString) {
-        return this.contestRepository.lookupByPrefix("%" + searchString.toUpperCase() + "%");
-    }
-
-    @Override
     public Optional<ContestDao> fetchByExactName(String contestName) {
         return this.contestRepository.fetchByExactName(contestName);
     }

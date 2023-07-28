@@ -227,11 +227,6 @@ public class PersonServiceImpl implements PersonService, SlugTools {
     }
 
     @Override
-    public List<PersonDao> lookupByPrefix(String searchString) {
-        return this.personRepository.lookupByPrefix("%" + searchString.toUpperCase() + "%");
-    }
-
-    @Override
     public ConductorCompareDto compareConductors(PersonDao leftPerson, PersonDao rightPerson) {
         List<CompareConductorsSqlDto> results = PeopleCompareSql.compareConductors(this.entityManager, leftPerson.getId(), rightPerson.getId());
         return new ConductorCompareDto(results);

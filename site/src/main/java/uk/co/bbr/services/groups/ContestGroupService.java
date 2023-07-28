@@ -33,7 +33,5 @@ public interface ContestGroupService {
     ContestGroupYearDto fetchEventsByGroupSlugAndYear(String groupSlug, Integer year);
 
     List<ContestGroupAliasDao> fetchAliases(ContestGroupDao contestGroup);
-
-    List<ContestGroupDao> lookupByPrefix(String searchString);
 }
 

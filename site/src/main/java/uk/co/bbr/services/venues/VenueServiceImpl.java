@@ -226,9 +226,4 @@ public class VenueServiceImpl implements VenueService, SlugTools {
     public List<ContestEventDao> fetchVenueContestYear(VenueDao venue, int year) {
         return this.contestEventRepository.fetchEventsForVenueInYear(venue.getId(), year);
     }
-
-    @Override
-    public List<VenueDao> lookupByPrefix(String searchString) {
-        return this.venueRepository.lookupByPrefix("%" + searchString.toUpperCase() + "%");
-    }
 }

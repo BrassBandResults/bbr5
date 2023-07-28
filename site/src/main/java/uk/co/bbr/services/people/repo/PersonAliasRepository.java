@@ -17,9 +17,6 @@ public interface PersonAliasRepository extends JpaRepository<PersonAliasDao, Lon
     @Query("SELECT a FROM PersonAliasDao a WHERE a.person.id = :personId AND a.hidden = false ORDER BY a.oldName")
     List<PersonAliasDao> findVisibleForPersonId(Long personId);
 
-    @Query("SELECT a FROM PersonAliasDao a WHERE UPPER(a.oldName) = :upperCaseName")
-    List<PersonAliasDao> fetchByUpperName(String upperCaseName);
-
     @Query("SELECT a FROM PersonAliasDao a WHERE a.person.id = :personId AND a.id = :aliasId")
     Optional<PersonAliasDao> fetchByIdForPerson(Long personId, Long aliasId);
 }

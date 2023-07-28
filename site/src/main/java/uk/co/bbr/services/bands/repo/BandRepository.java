@@ -36,15 +36,6 @@ public interface BandRepository extends JpaRepository<BandDao, Long> {
     @Query("SELECT b FROM BandDao b WHERE b.id = :bandId")
     Optional<BandDao> fetchById(Long bandId);
 
-    @Query("SELECT b FROM BandDao b WHERE UPPER(b.name) = :bandNameUpper")
-    List<BandDao> findExactNameMatch(String bandNameUpper);
-
-    @Query("SELECT b FROM BandDao b WHERE UPPER(b.name) LIKE :bandNameUpper")
-    List<BandDao> findContainsNameMatch(String bandNameUpper);
-
-    @Query("SELECT b FROM BandDao b WHERE UPPER(b.name) LIKE :searchStringUpper")
-    List<BandDao> lookupByPrefix(String searchStringUpper);
-
     @Query("SELECT COUNT(b) FROM BandDao b")
     int countBands();
 

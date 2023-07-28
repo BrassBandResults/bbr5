@@ -38,6 +38,4 @@ public interface VenueService {
     List<VenueContestYearDto> fetchVenueContestYears(VenueDao venue);
 
     List<ContestEventDao> fetchVenueContestYear(VenueDao venue, int year);
-
-    List<VenueDao> lookupByPrefix(String searchString);
 }

@@ -31,9 +31,6 @@ public interface ContestRepository extends JpaRepository<ContestDao, Long> {
             "WHERE c.region.id = :regionId")
     List<ContestDao> findContestsForRegion(Long regionId);
 
-    @Query("SELECT c FROM ContestDao c WHERE UPPER(c.name) LIKE :searchStringUpper")
-    List<ContestDao> lookupByPrefix(String searchStringUpper);
-
     @Query("SELECT COUNT(c) FROM ContestDao c")
     int countContests();
 
