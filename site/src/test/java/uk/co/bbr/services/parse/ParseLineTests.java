@@ -97,10 +97,10 @@ class ParseLineTests implements LoginMixin {
         assertNull(parseResult.getRawDraw());
         assertNull(parseResult.getRawPoints());
 
-        assertNull(parseResult.getMatchedBand());
-        assertNull(parseResult.getMatchedConductor());
+        assertNull(parseResult.getMatchedBandSlug());
+        assertNull(parseResult.getMatchedConductorSlug());
 
-        assertNull(parseResult.buildContestResult(null));
+        assertNull(parseResult.buildContestResult(null, this.bandService, this.personService));
    }
 
     @Test
@@ -120,12 +120,10 @@ class ParseLineTests implements LoginMixin {
         assertEquals(5, parseResult.getRawDraw());
         assertEquals("123", parseResult.getRawPoints());
 
-        assertEquals("black-dyke-band", parseResult.getMatchedBand().getSlug());
-        assertEquals("robert-childs", parseResult.getMatchedConductor().getSlug());
-        assertEquals("Childs", parseResult.getMatchedConductor().getSurname());
-        assertEquals("Robert", parseResult.getMatchedConductor().getFirstNames());
+        assertEquals("black-dyke-band", parseResult.getMatchedBandSlug());
+        assertEquals("robert-childs", parseResult.getMatchedConductorSlug());
 
-        assertNotNull(parseResult.buildContestResult(null));
+        assertNotNull(parseResult.buildContestResult(null, this.bandService, this.personService));
     }
 
     @Test
@@ -145,12 +143,10 @@ class ParseLineTests implements LoginMixin {
         assertEquals(26, parseResult.getRawDraw());
         assertEquals("", parseResult.getRawPoints());
 
-        assertEquals("rothwell-temperance-b", parseResult.getMatchedBand().getSlug());
-        assertEquals("david-roberts", parseResult.getMatchedConductor().getSlug());
-        assertEquals("Roberts", parseResult.getMatchedConductor().getSurname());
-        assertEquals("David", parseResult.getMatchedConductor().getFirstNames());
+        assertEquals("rothwell-temperance-b", parseResult.getMatchedBandSlug());
+        assertEquals("david-roberts", parseResult.getMatchedConductorSlug());
 
-        assertNotNull(parseResult.buildContestResult(null));
+        assertNotNull(parseResult.buildContestResult(null, this.bandService, this.personService));
     }
 
     @Test
@@ -170,12 +166,10 @@ class ParseLineTests implements LoginMixin {
         assertEquals(1, parseResult.getRawDraw());
         assertEquals("", parseResult.getRawPoints());
 
-        assertEquals("11th-suffolk-volunteer-rifles-sudbury", parseResult.getMatchedBand().getSlug());
-        assertEquals("david-roberts", parseResult.getMatchedConductor().getSlug());
-        assertEquals("Roberts", parseResult.getMatchedConductor().getSurname());
-        assertEquals("David", parseResult.getMatchedConductor().getFirstNames());
+        assertEquals("11th-suffolk-volunteer-rifles-sudbury", parseResult.getMatchedBandSlug());
+        assertEquals("david-roberts", parseResult.getMatchedConductorSlug());
 
-        assertNotNull(parseResult.buildContestResult(null));
+        assertNotNull(parseResult.buildContestResult(null, this.bandService, this.personService));
     }
 
     @Test
@@ -195,12 +189,10 @@ class ParseLineTests implements LoginMixin {
         assertEquals(1, parseResult.getRawDraw());
         assertEquals("", parseResult.getRawPoints());
 
-        assertEquals("brighouse-rastrick", parseResult.getMatchedBand().getSlug());
-        assertEquals("david-roberts", parseResult.getMatchedConductor().getSlug());
-        assertEquals("Roberts", parseResult.getMatchedConductor().getSurname());
-        assertEquals("David", parseResult.getMatchedConductor().getFirstNames());
+        assertEquals("brighouse-rastrick", parseResult.getMatchedBandSlug());
+        assertEquals("david-roberts", parseResult.getMatchedConductorSlug());
 
-        assertNotNull(parseResult.buildContestResult(null));
+        assertNotNull(parseResult.buildContestResult(null, this.bandService, this.personService));
     }
 
     @Test
@@ -220,12 +212,10 @@ class ParseLineTests implements LoginMixin {
         assertEquals(111, parseResult.getRawDraw());
         assertEquals("", parseResult.getRawPoints());
 
-        assertEquals("rothwell-temperance-b", parseResult.getMatchedBand().getSlug());
-        assertEquals("david-roberts", parseResult.getMatchedConductor().getSlug());
-        assertEquals("Roberts", parseResult.getMatchedConductor().getSurname());
-        assertEquals("David", parseResult.getMatchedConductor().getFirstNames());
+        assertEquals("rothwell-temperance-b", parseResult.getMatchedBandSlug());
+        assertEquals("david-roberts", parseResult.getMatchedConductorSlug());
 
-        assertNotNull(parseResult.buildContestResult(null));
+        assertNotNull(parseResult.buildContestResult(null, this.bandService, this.personService));
     }
 
     @Test
@@ -245,12 +235,10 @@ class ParseLineTests implements LoginMixin {
         assertEquals(111, parseResult.getRawDraw());
         assertEquals("", parseResult.getRawPoints());
 
-        assertEquals("rothwell-temperance-b", parseResult.getMatchedBand().getSlug());
-        assertEquals("david-roberts", parseResult.getMatchedConductor().getSlug());
-        assertEquals("Roberts", parseResult.getMatchedConductor().getSurname());
-        assertEquals("David", parseResult.getMatchedConductor().getFirstNames());
+        assertEquals("rothwell-temperance-b", parseResult.getMatchedBandSlug());
+        assertEquals("david-roberts", parseResult.getMatchedConductorSlug());
 
-        assertNotNull(parseResult.buildContestResult(null));
+        assertNotNull(parseResult.buildContestResult(null, this.bandService, this.personService));
     }
 
     @Test
@@ -270,12 +258,10 @@ class ParseLineTests implements LoginMixin {
         assertEquals(0, parseResult.getRawDraw());
         assertEquals("", parseResult.getRawPoints());
 
-        assertEquals("rothwell-temperance-b", parseResult.getMatchedBand().getSlug());
-        assertEquals("david-roberts", parseResult.getMatchedConductor().getSlug());
-        assertEquals("Roberts", parseResult.getMatchedConductor().getSurname());
-        assertEquals("David", parseResult.getMatchedConductor().getFirstNames());
+        assertEquals("rothwell-temperance-b", parseResult.getMatchedBandSlug());
+        assertEquals("david-roberts", parseResult.getMatchedConductorSlug());
 
-        assertNotNull(parseResult.buildContestResult(null));
+        assertNotNull(parseResult.buildContestResult(null, this.bandService, this.personService));
     }
 
     @Test
@@ -295,12 +281,10 @@ class ParseLineTests implements LoginMixin {
         assertEquals(0, parseResult.getRawDraw());
         assertEquals("", parseResult.getRawPoints());
 
-        assertEquals("rothwell-temperance-b", parseResult.getMatchedBand().getSlug());
-        assertEquals("david-roberts", parseResult.getMatchedConductor().getSlug());
-        assertEquals("Roberts", parseResult.getMatchedConductor().getSurname());
-        assertEquals("David", parseResult.getMatchedConductor().getFirstNames());
+        assertEquals("rothwell-temperance-b", parseResult.getMatchedBandSlug());
+        assertEquals("david-roberts", parseResult.getMatchedConductorSlug());
 
-        assertNotNull(parseResult.buildContestResult(null));
+        assertNotNull(parseResult.buildContestResult(null, this.bandService, this.personService));
     }
 
     @Test
@@ -320,12 +304,10 @@ class ParseLineTests implements LoginMixin {
         assertEquals(0, parseResult.getRawDraw());
         assertEquals("", parseResult.getRawPoints());
 
-        assertEquals("rothwell-temperance-b", parseResult.getMatchedBand().getSlug());
-        assertEquals("david-roberts", parseResult.getMatchedConductor().getSlug());
-        assertEquals("Roberts", parseResult.getMatchedConductor().getSurname());
-        assertEquals("David", parseResult.getMatchedConductor().getFirstNames());
+        assertEquals("rothwell-temperance-b", parseResult.getMatchedBandSlug());
+        assertEquals("david-roberts", parseResult.getMatchedConductorSlug());
 
-        assertNotNull(parseResult.buildContestResult(null));
+        assertNotNull(parseResult.buildContestResult(null, this.bandService, this.personService));
     }
 
     @Test
@@ -344,12 +326,10 @@ class ParseLineTests implements LoginMixin {
         assertEquals("Robert Childs", parseResult.getRawConductorName());
         assertEquals(5, parseResult.getRawDraw());
         assertEquals("321", parseResult.getRawPoints());
-        assertEquals("black-dyke-band", parseResult.getMatchedBand().getSlug());
-        assertEquals("robert-childs", parseResult.getMatchedConductor().getSlug());
-        assertEquals("Childs", parseResult.getMatchedConductor().getSurname());
-        assertEquals("Robert", parseResult.getMatchedConductor().getFirstNames());
+        assertEquals("black-dyke-band", parseResult.getMatchedBandSlug());
+        assertEquals("robert-childs", parseResult.getMatchedConductorSlug());
 
-        assertNotNull(parseResult.buildContestResult(null));
+        assertNotNull(parseResult.buildContestResult(null, this.bandService, this.personService));
     }
 
     @Test
@@ -369,12 +349,10 @@ class ParseLineTests implements LoginMixin {
         assertEquals(5, parseResult.getRawDraw());
         assertEquals("321", parseResult.getRawPoints());
 
-        assertEquals("black-dyke-band", parseResult.getMatchedBand().getSlug());
-        assertEquals("theo-q-whigley", parseResult.getMatchedConductor().getSlug());
-        assertEquals("Whigley", parseResult.getMatchedConductor().getSurname());
-        assertEquals("Theo Q.", parseResult.getMatchedConductor().getFirstNames());
+        assertEquals("black-dyke-band", parseResult.getMatchedBandSlug());
+        assertEquals("theo-q-whigley", parseResult.getMatchedConductorSlug());
 
-        assertNotNull(parseResult.buildContestResult(null));
+        assertNotNull(parseResult.buildContestResult(null, this.bandService, this.personService));
     }
 
     @Test
@@ -394,12 +372,10 @@ class ParseLineTests implements LoginMixin {
         assertEquals(5, parseResult.getRawDraw());
         assertEquals("321", parseResult.getRawPoints());
 
-        assertEquals("black-dyke-band", parseResult.getMatchedBand().getSlug());
-        assertEquals("theo-q-p-whigley", parseResult.getMatchedConductor().getSlug());
-        assertEquals("Whigley", parseResult.getMatchedConductor().getSurname());
-        assertEquals("Theo Q. P.", parseResult.getMatchedConductor().getFirstNames());
+        assertEquals("black-dyke-band", parseResult.getMatchedBandSlug());
+        assertEquals("theo-q-p-whigley", parseResult.getMatchedConductorSlug());
 
-        assertNotNull(parseResult.buildContestResult(null));
+        assertNotNull(parseResult.buildContestResult(null, this.bandService, this.personService));
     }
 
     @Test
@@ -419,12 +395,10 @@ class ParseLineTests implements LoginMixin {
         assertEquals(13, parseResult.getRawDraw());
         assertEquals("", parseResult.getRawPoints());
 
-        assertEquals("wallace-arnold-rothwell-band", parseResult.getMatchedBand().getSlug());
-        assertEquals("john-roberts", parseResult.getMatchedConductor().getSlug());
-        assertEquals("Roberts", parseResult.getMatchedConductor().getSurname());
-        assertEquals("John", parseResult.getMatchedConductor().getFirstNames());
+        assertEquals("wallace-arnold-rothwell-band", parseResult.getMatchedBandSlug());
+        assertEquals("john-roberts", parseResult.getMatchedConductorSlug());
 
-        assertNotNull(parseResult.buildContestResult(null));
+        assertNotNull(parseResult.buildContestResult(null, this.bandService, this.personService));
     }
 
     @Test
@@ -444,12 +418,10 @@ class ParseLineTests implements LoginMixin {
         assertEquals(11, parseResult.getRawDraw());
         assertEquals("", parseResult.getRawPoints());
 
-        assertEquals("black-dyke-band", parseResult.getMatchedBand().getSlug());
-        assertEquals("john-roberts", parseResult.getMatchedConductor().getSlug());
-        assertEquals("Roberts", parseResult.getMatchedConductor().getSurname());
-        assertEquals("John", parseResult.getMatchedConductor().getFirstNames());
+        assertEquals("black-dyke-band", parseResult.getMatchedBandSlug());
+        assertEquals("john-roberts", parseResult.getMatchedConductorSlug());
 
-        assertNotNull(parseResult.buildContestResult(null));
+        assertNotNull(parseResult.buildContestResult(null, this.bandService, this.personService));
     }
 
     @Test
@@ -469,12 +441,10 @@ class ParseLineTests implements LoginMixin {
         assertEquals(11, parseResult.getRawDraw());
         assertEquals("", parseResult.getRawPoints());
 
-        assertEquals("wallace-arnold-rothwell-band", parseResult.getMatchedBand().getSlug());
-        assertEquals("john-roberts", parseResult.getMatchedConductor().getSlug());
-        assertEquals("Roberts", parseResult.getMatchedConductor().getSurname());
-        assertEquals("John", parseResult.getMatchedConductor().getFirstNames());
+        assertEquals("wallace-arnold-rothwell-band", parseResult.getMatchedBandSlug());
+        assertEquals("john-roberts", parseResult.getMatchedConductorSlug());
 
-        assertNotNull(parseResult.buildContestResult(null));
+        assertNotNull(parseResult.buildContestResult(null, this.bandService, this.personService));
     }
 
     @Test
@@ -494,12 +464,10 @@ class ParseLineTests implements LoginMixin {
         assertEquals(2, parseResult.getRawDraw());
         assertEquals("", parseResult.getRawPoints());
 
-        assertEquals("rothwell-temperance-b", parseResult.getMatchedBand().getSlug());
-        assertEquals("david-roberts", parseResult.getMatchedConductor().getSlug());
-        assertEquals("Roberts", parseResult.getMatchedConductor().getSurname());
-        assertEquals("David", parseResult.getMatchedConductor().getFirstNames());
+        assertEquals("rothwell-temperance-b", parseResult.getMatchedBandSlug());
+        assertEquals("david-roberts", parseResult.getMatchedConductorSlug());
 
-        assertNotNull(parseResult.buildContestResult(null));
+        assertNotNull(parseResult.buildContestResult(null, this.bandService, this.personService));
     }
 
     @Test
@@ -519,10 +487,10 @@ class ParseLineTests implements LoginMixin {
         assertNull(parseResult.getRawDraw());
         assertNull(parseResult.getRawPoints());
 
-        assertNull(parseResult.getMatchedBand());
-        assertNull(parseResult.getMatchedConductor());
+        assertNull(parseResult.getMatchedBandSlug());
+        assertNull(parseResult.getMatchedConductorSlug());
 
-        assertNull(parseResult.buildContestResult(null));
+        assertNull(parseResult.buildContestResult(null, this.bandService, this.personService));
     }
 
     @Test
@@ -542,12 +510,10 @@ class ParseLineTests implements LoginMixin {
         assertEquals(321, parseResult.getRawDraw());
         assertEquals("", parseResult.getRawPoints());
 
-        assertEquals("wallace-arnold-rothwell-band", parseResult.getMatchedBand().getSlug());
-        assertEquals("robert-childs", parseResult.getMatchedConductor().getSlug());
-        assertEquals("Childs", parseResult.getMatchedConductor().getSurname());
-        assertEquals("Robert", parseResult.getMatchedConductor().getFirstNames());
+        assertEquals("wallace-arnold-rothwell-band", parseResult.getMatchedBandSlug());
+        assertEquals("robert-childs", parseResult.getMatchedConductorSlug());
 
-        assertNotNull(parseResult.buildContestResult(null));
+        assertNotNull(parseResult.buildContestResult(null, this.bandService, this.personService));
     }
 
     @Test
@@ -567,12 +533,10 @@ class ParseLineTests implements LoginMixin {
         assertEquals(11, parseResult.getRawDraw());
         assertEquals("", parseResult.getRawPoints());
 
-        assertEquals("rothwell-temperance-b", parseResult.getMatchedBand().getSlug());
-        assertEquals("john-roberts", parseResult.getMatchedConductor().getSlug());
-        assertEquals("Roberts", parseResult.getMatchedConductor().getSurname());
-        assertEquals("John", parseResult.getMatchedConductor().getFirstNames());
+        assertEquals("rothwell-temperance-b", parseResult.getMatchedBandSlug());
+        assertEquals("john-roberts", parseResult.getMatchedConductorSlug());
 
-        assertNotNull(parseResult.buildContestResult(null));
+        assertNotNull(parseResult.buildContestResult(null, this.bandService, this.personService));
     }
 
     @Test
@@ -592,10 +556,10 @@ class ParseLineTests implements LoginMixin {
         assertEquals(2, parseResult.getRawDraw());
         assertEquals("", parseResult.getRawPoints());
 
-        assertEquals("rothwell-temperance-b", parseResult.getMatchedBand().getSlug());
-        assertNull(parseResult.getMatchedConductor());
+        assertEquals("rothwell-temperance-b", parseResult.getMatchedBandSlug());
+        assertNull(parseResult.getMatchedConductorSlug());
 
-        assertNull(parseResult.buildContestResult(null));
+        assertNull(parseResult.buildContestResult(null, this.bandService, this.personService));
     }
 
     @Test
@@ -617,12 +581,10 @@ class ParseLineTests implements LoginMixin {
 
         assertEquals(ParseOutcome.AMBER_PARSE_SUCCEEDED, parseResult.getOutcome());
 
-        assertNull(parseResult.getMatchedBand());
-        assertEquals("john-roberts", parseResult.getMatchedConductor().getSlug());
-        assertEquals("Roberts", parseResult.getMatchedConductor().getSurname());
-        assertEquals("John", parseResult.getMatchedConductor().getFirstNames());
+        assertNull(parseResult.getMatchedBandSlug());
+        assertEquals("john-roberts", parseResult.getMatchedConductorSlug());
 
-        assertNull(parseResult.buildContestResult(null));
+        assertNull(parseResult.buildContestResult(null, this.bandService, this.personService));
     }
 
     @Test
@@ -642,12 +604,10 @@ class ParseLineTests implements LoginMixin {
         assertEquals(11, parseResult.getRawDraw());
         assertEquals("", parseResult.getRawPoints());
 
-        assertEquals("rothwell-temperance-b", parseResult.getMatchedBand().getSlug());
-        assertEquals("john-roberts", parseResult.getMatchedConductor().getSlug());
-        assertEquals("Roberts", parseResult.getMatchedConductor().getSurname());
-        assertEquals("John", parseResult.getMatchedConductor().getFirstNames());
+        assertEquals("rothwell-temperance-b", parseResult.getMatchedBandSlug());
+        assertEquals("john-roberts", parseResult.getMatchedConductorSlug());
 
-        assertNotNull(parseResult.buildContestResult(null));
+        assertNotNull(parseResult.buildContestResult(null, this.bandService, this.personService));
     }
 
     @Test
@@ -667,12 +627,10 @@ class ParseLineTests implements LoginMixin {
         assertNull(parseResult.getRawDraw());
         assertEquals("", parseResult.getRawPoints());
 
-        assertEquals("rothwell-temperance-b", parseResult.getMatchedBand().getSlug());
-        assertEquals("john-roberts", parseResult.getMatchedConductor().getSlug());
-        assertEquals("Roberts", parseResult.getMatchedConductor().getSurname());
-        assertEquals("John", parseResult.getMatchedConductor().getFirstNames());
+        assertEquals("rothwell-temperance-b", parseResult.getMatchedBandSlug());
+        assertEquals("john-roberts", parseResult.getMatchedConductorSlug());
 
-        assertNotNull(parseResult.buildContestResult(null));
+        assertNotNull(parseResult.buildContestResult(null, this.bandService, this.personService));
     }
 
     @Test
@@ -692,11 +650,9 @@ class ParseLineTests implements LoginMixin {
         assertNull(parseResult.getRawDraw());
         assertEquals("", parseResult.getRawPoints());
 
-        assertEquals("rothwell-temperance-b", parseResult.getMatchedBand().getSlug());
-        assertEquals("john-roberts", parseResult.getMatchedConductor().getSlug());
-        assertEquals("Roberts", parseResult.getMatchedConductor().getSurname());
-        assertEquals("John", parseResult.getMatchedConductor().getFirstNames());
+        assertEquals("rothwell-temperance-b", parseResult.getMatchedBandSlug());
+        assertEquals("john-roberts", parseResult.getMatchedConductorSlug());
 
-        assertNotNull(parseResult.buildContestResult(null));
+        assertNotNull(parseResult.buildContestResult(null, this.bandService, this.personService));
     }
 }

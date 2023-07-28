@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import uk.co.bbr.services.bands.BandService;
 import uk.co.bbr.services.contests.ContestService;
 import uk.co.bbr.services.contests.ContestTypeService;
 import uk.co.bbr.services.contests.dao.ContestDao;
@@ -20,6 +21,7 @@ import uk.co.bbr.services.events.dao.ContestEventTestPieceDao;
 import uk.co.bbr.services.events.dao.ContestResultDao;
 import uk.co.bbr.services.events.types.ContestEventDateResolution;
 import uk.co.bbr.services.framework.NotFoundException;
+import uk.co.bbr.services.people.PersonService;
 import uk.co.bbr.services.pieces.PieceService;
 import uk.co.bbr.services.pieces.dao.PieceDao;
 import uk.co.bbr.services.results.ParseResultService;
@@ -56,6 +58,8 @@ public class AddResultsController {
     private final ContestEventService contestEventService;
     private final ResultService contestResultService;
     private final PieceService pieceService;
+    private final PersonService personService;
+    private final BandService bandService;
     private final VenueService venueService;
     private final ParseResultService parseResultService;
 
@@ -378,7 +382,7 @@ public class AddResultsController {
         ParsedResultsDto parsedResults = this.parseResultService.parseBlock(resultsBlock, event.get().getEventDate());
         if (parsedResults.allGreen()) {
             for (ParseResultDto eachParsedResult : parsedResults.getResultLines()) {
-                ContestResultDao eachResult = eachParsedResult.buildContestResult(event.get());
+                ContestResultDao eachResult = eachParsedResult.buildContestResult(event.get(), this.bandService, this.personService);
                 this.contestResultService.addResult(event.get(), eachResult);
             }
 

@@ -21,7 +21,7 @@ public class BandFinderServiceImpl implements BandFinderService, SlugTools {
 
 
     @Override
-    public BandDao findMatchByName(String searchBandName, LocalDate dateContext) {
+    public String findMatchByName(String searchBandName, LocalDate dateContext) {
         String bandName = searchBandName.toUpperCase().trim();
         String bandNameLessBand = null;
         if (bandName.endsWith("BAND")) {
@@ -91,6 +91,6 @@ public class BandFinderServiceImpl implements BandFinderService, SlugTools {
             return null;
         }
 
-        return returnList.get(0);
+        return returnList.get(0).getSlug();
     }
 }

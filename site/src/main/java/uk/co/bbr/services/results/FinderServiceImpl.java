@@ -19,12 +19,12 @@ public class FinderServiceImpl implements FinderService {
     @Override
     public ParseResultDto findMatches(ParseResultDto parsedResult, LocalDate dateContext) {
         if (parsedResult.getRawBandName() != null) {
-            BandDao matchedBand = this.bandFinderService.findMatchByName(parsedResult.getRawBandName(), dateContext);
-            parsedResult.setMatchedBand(matchedBand);
+            String matchedBandSlug = this.bandFinderService.findMatchByName(parsedResult.getRawBandName(), dateContext);
+            parsedResult.setMatchedBand(matchedBandSlug);
 
             if (parsedResult.getRawConductorName() != null) {
-                PersonDao matchedConductor = this.personFinderService.findMatchByName(parsedResult.getRawConductorName(), matchedBand, dateContext);
-                parsedResult.setMatchedConductor(matchedConductor);
+                String matchedConductorSlug = this.personFinderService.findMatchByName(parsedResult.getRawConductorName(), matchedBandSlug, dateContext);
+                parsedResult.setMatchedConductor(matchedConductorSlug);
             }
         }
 

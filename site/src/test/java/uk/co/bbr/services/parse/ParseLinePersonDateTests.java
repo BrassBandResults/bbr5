@@ -106,12 +106,10 @@ class ParseLinePersonDateTests implements LoginMixin {
 
         assertEquals(ParseOutcome.GREEN_MATCHES_FOUND_IN_DATABASE, parseResult.getOutcome());
 
-        assertEquals("rothwell-temperance-b", parseResult.getMatchedBand().getSlug());
-        assertEquals("derek-childs", parseResult.getMatchedConductor().getSlug());
-        assertEquals("Childs", parseResult.getMatchedConductor().getSurname());
-        assertEquals("Derek", parseResult.getMatchedConductor().getFirstNames());
+        assertEquals("rothwell-temperance-b", parseResult.getMatchedBandSlug());
+        assertEquals("derek-childs", parseResult.getMatchedConductorSlug());
 
-        assertNotNull(parseResult.buildContestResult(null));
+        assertNotNull(parseResult.buildContestResult(null, this.bandService, this.personService));
     }
 
     @Test
@@ -128,12 +126,10 @@ class ParseLinePersonDateTests implements LoginMixin {
 
         assertEquals(ParseOutcome.GREEN_MATCHES_FOUND_IN_DATABASE, parseResult.getOutcome());
 
-        assertEquals("rothwell-temperance-b", parseResult.getMatchedBand().getSlug());
-        assertEquals("david-childs", parseResult.getMatchedConductor().getSlug());
-        assertEquals("Childs", parseResult.getMatchedConductor().getSurname());
-        assertEquals("David", parseResult.getMatchedConductor().getFirstNames());
+        assertEquals("rothwell-temperance-b", parseResult.getMatchedBandSlug());
+        assertEquals("david-childs", parseResult.getMatchedConductorSlug());
 
-        assertNotNull(parseResult.buildContestResult(null));
+        assertNotNull(parseResult.buildContestResult(null, this.bandService, this.personService));
     }
 
     @Test
@@ -150,12 +146,10 @@ class ParseLinePersonDateTests implements LoginMixin {
 
         assertEquals(ParseOutcome.GREEN_MATCHES_FOUND_IN_DATABASE, parseResult.getOutcome());
 
-        assertEquals("rothwell-temperance-b", parseResult.getMatchedBand().getSlug());
-        assertEquals("david-roberts", parseResult.getMatchedConductor().getSlug());
-        assertEquals("Roberts", parseResult.getMatchedConductor().getSurname());
-        assertEquals("David", parseResult.getMatchedConductor().getFirstNames());
+        assertEquals("rothwell-temperance-b", parseResult.getMatchedBandSlug());
+        assertEquals("david-roberts", parseResult.getMatchedConductorSlug());
 
-        assertNotNull(parseResult.buildContestResult(null));
+        assertNotNull(parseResult.buildContestResult(null, this.bandService, this.personService));
     }
 
     @Test
@@ -172,12 +166,10 @@ class ParseLinePersonDateTests implements LoginMixin {
 
         assertEquals(ParseOutcome.GREEN_MATCHES_FOUND_IN_DATABASE, parseResult.getOutcome());
 
-        assertEquals("rothwell-temperance-b", parseResult.getMatchedBand().getSlug());
-        assertEquals("peter-parkes", parseResult.getMatchedConductor().getSlug());
-        assertEquals("Parkes", parseResult.getMatchedConductor().getSurname());
-        assertEquals("Peter", parseResult.getMatchedConductor().getFirstNames());
+        assertEquals("rothwell-temperance-b", parseResult.getMatchedBandSlug());
+        assertEquals("peter-parkes", parseResult.getMatchedConductorSlug());
 
-        assertNotNull(parseResult.buildContestResult(null));
+        assertNotNull(parseResult.buildContestResult(null, this.bandService, this.personService));
     }
 
     @Test
@@ -194,12 +186,10 @@ class ParseLinePersonDateTests implements LoginMixin {
 
         assertEquals(ParseOutcome.GREEN_MATCHES_FOUND_IN_DATABASE, parseResult.getOutcome());
 
-        assertEquals("rothwell-temperance-b", parseResult.getMatchedBand().getSlug());
-        assertEquals("theo-q-p-whigley", parseResult.getMatchedConductor().getSlug());
-        assertEquals("Whigley", parseResult.getMatchedConductor().getSurname());
-        assertEquals("Theo Q. P.", parseResult.getMatchedConductor().getFirstNames());
+        assertEquals("rothwell-temperance-b", parseResult.getMatchedBandSlug());
+        assertEquals("theo-q-p-whigley", parseResult.getMatchedConductorSlug());
 
-        assertNotNull(parseResult.buildContestResult(null));
+        assertNotNull(parseResult.buildContestResult(null, this.bandService, this.personService));
     }
 
 }

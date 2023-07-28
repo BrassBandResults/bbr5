@@ -97,12 +97,10 @@ class ParseBlockTests implements LoginMixin {
         assertEquals(5, parseResult.get(0).getRawDraw());
         assertEquals("123", parseResult.get(0).getRawPoints());
 
-        assertEquals("black-dyke-band", parseResult.get(0).getMatchedBand().getSlug());
-        assertEquals("robert-childs", parseResult.get(0).getMatchedConductor().getSlug());
-        assertEquals("Childs", parseResult.get(0).getMatchedConductor().getSurname());
-        assertEquals("Robert", parseResult.get(0).getMatchedConductor().getFirstNames());
+        assertEquals("black-dyke-band", parseResult.get(0).getMatchedBandSlug());
+        assertEquals("robert-childs", parseResult.get(0).getMatchedConductorSlug());
 
-        assertNotNull(parseResult.get(0).buildContestResult(null));
+        assertNotNull(parseResult.get(0).buildContestResult(null, this.bandService, this.personService));
     }
 
     @Test
@@ -125,12 +123,10 @@ class ParseBlockTests implements LoginMixin {
         assertEquals(5, parseResult.get(0).getRawDraw());
         assertEquals("123", parseResult.get(0).getRawPoints());
 
-        assertEquals("black-dyke-band", parseResult.get(0).getMatchedBand().getSlug());
-        assertEquals("robert-childs", parseResult.get(0).getMatchedConductor().getSlug());
-        assertEquals("Childs", parseResult.get(0).getMatchedConductor().getSurname());
-        assertEquals("Robert", parseResult.get(0).getMatchedConductor().getFirstNames());
+        assertEquals("black-dyke-band", parseResult.get(0).getMatchedBandSlug());
+        assertEquals("robert-childs", parseResult.get(0).getMatchedConductorSlug());
 
-        assertNotNull(parseResult.get(0).buildContestResult(null));
+        assertNotNull(parseResult.get(0).buildContestResult(null, this.bandService, this.personService));
 
         assertEquals(ParseOutcome.GREEN_MATCHES_FOUND_IN_DATABASE, parseResult.get(1).getOutcome());
         assertEquals("5", parseResult.get(1).getRawPosition());
@@ -139,11 +135,9 @@ class ParseBlockTests implements LoginMixin {
         assertEquals(26, parseResult.get(1).getRawDraw());
         assertEquals("", parseResult.get(1).getRawPoints());
 
-        assertEquals("rothwell-temperance-b", parseResult.get(1).getMatchedBand().getSlug());
-        assertEquals("david-roberts", parseResult.get(1).getMatchedConductor().getSlug());
-        assertEquals("Roberts", parseResult.get(1).getMatchedConductor().getSurname());
-        assertEquals("David", parseResult.get(1).getMatchedConductor().getFirstNames());
+        assertEquals("rothwell-temperance-b", parseResult.get(1).getMatchedBandSlug());
+        assertEquals("david-roberts", parseResult.get(1).getMatchedConductorSlug());
 
-        assertNotNull(parseResult.get(1).buildContestResult(null));
+        assertNotNull(parseResult.get(1).buildContestResult(null, this.bandService, this.personService));
     }
 }
