@@ -42,12 +42,15 @@ public class RegionDao extends AbstractDao implements NameTools {
     private Integer defaultMapZoom;
 
     @Transient
+    @Setter
     private int bandsCount;
 
     @Transient
+    @Setter
     private int extinctBandsCount;
 
     @Transient
+    @Setter
     private int activeBandsCount;
 
     @Transient

@@ -15,6 +15,8 @@ import uk.co.bbr.services.regions.dao.RegionDao;
 import uk.co.bbr.services.regions.repo.RegionRepository;
 import uk.co.bbr.services.regions.dto.LinkSectionDto;
 import uk.co.bbr.services.regions.dto.RegionPageDto;
+import uk.co.bbr.services.regions.sql.RegionSql;
+import uk.co.bbr.services.regions.sql.dto.RegionListSqlDto;
 import uk.co.bbr.services.sections.dao.SectionDao;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
@@ -38,7 +40,22 @@ public class RegionServiceImpl implements RegionService, SlugTools {
 
     @Override
     public List<RegionDao> findAll() {
-        return this.regionRepository.findAllOrderByName();
+        List<RegionDao> returnRegions = new ArrayList<>();
+        List<RegionListSqlDto> regions = RegionSql.listAll(this.entityManager);
+        for (RegionListSqlDto region : regions) {
+            returnRegions.add(region.asRegion());
+        }
+        return returnRegions;
+    }
+
+    @Override
+    public List<RegionDao> findAllWithCounts() {
+        List<RegionDao> returnRegions = new ArrayList<>();
+        List<RegionListSqlDto> regions = RegionSql.listAllWithCounts(this.entityManager);
+        for (RegionListSqlDto region : regions) {
+            returnRegions.add(region.asRegion());
+        }
+        return returnRegions;
     }
 
     @Override

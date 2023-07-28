@@ -18,10 +18,10 @@ public class BandListSqlDto extends AbstractSqlDto {
     private final Integer resultCount;
 
     public BandListSqlDto(Object[] columnList) {
-        this.bandSlug = (String)columnList[0];
-        this.bandName = (String)columnList[1];
-        this.regionSlug = (String)columnList[2];
-        this.regionName = (String)columnList[3];
+        this.bandName = (String)columnList[0];
+        this.bandSlug = (String)columnList[1];
+        this.regionName = (String)columnList[2];
+        this.regionSlug = (String)columnList[3];
         this.countryCode = (String)columnList[4];
         if (columnList[5] != null) {
             this.resultCount = columnList[5] instanceof BigInteger ? ((BigInteger) columnList[5]).intValue() : (Integer) columnList[5];
