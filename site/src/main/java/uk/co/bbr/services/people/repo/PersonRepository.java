@@ -25,7 +25,4 @@ public interface PersonRepository extends JpaRepository<PersonDao, Long> {
 
     @Query("SELECT p FROM PersonDao p WHERE p.id = (SELECT MAX(p1.id) FROM PersonDao p1)")
     PersonDao fetchLatestPerson();
-
-    @Query("SELECT p FROM PersonDao p WHERE UPPER(p.surname) = :surnameUpper AND UPPER(p.firstNames) LIKE :initialUpper")
-    List<PersonDao> fetchByInitialAndSurname(String initialUpper, String surnameUpper);
 }

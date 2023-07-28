@@ -12,7 +12,4 @@ public interface ContestAdjudicatorRepository extends JpaRepository<ContestAdjud
 
     @Query("SELECT count(a) FROM ContestAdjudicatorDao a WHERE a.adjudicator.id = :personId")
     int fetchAdjudicationCountForPerson(Long personId);
-
-    @Query("SELECT a FROM ContestAdjudicatorDao a WHERE a.adjudicator.id = :personId ORDER BY a.contestEvent.eventDate DESC")
-    List<ContestAdjudicatorDao> fetchAdjudicationsForPerson(Long personId);
 }
