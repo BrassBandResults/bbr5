@@ -228,10 +228,10 @@ public class ContestServiceImpl implements ContestService, SlugTools {
             returnedContests.add(new ContestListContestDto(eachContestAlias.getContest().getSlug(), eachContestAlias.getName(), eachContestAlias.getContest().getEventsCount()));
         }
         for (ContestGroupDao eachContestGroup : contestGroupsToReturn) {
-            returnedContests.add(new ContestListContestDto(eachContestGroup.getSlug(), eachContestGroup.getName(), eachContestGroup.getEventsCount()));
+            returnedContests.add(new ContestListContestDto(eachContestGroup.getSlug(), eachContestGroup.getName(), eachContestGroup.getEventCount()));
         }
         for (ContestGroupAliasDao eachContestGroupAlias : contestGroupAliasesToReturn) {
-            returnedContests.add(new ContestListContestDto(eachContestGroupAlias.getContestGroup().getSlug(), eachContestGroupAlias.getName(), eachContestGroupAlias.getContestGroup().getEventsCount()));
+            returnedContests.add(new ContestListContestDto(eachContestGroupAlias.getContestGroup().getSlug(), eachContestGroupAlias.getName(), eachContestGroupAlias.getContestGroup().getEventCount()));
         }
         List<ContestListContestDto> sortedContests = returnedContests.stream().sorted(Comparator.comparing(ContestListContestDto::getName)).collect(Collectors.toList());
 
