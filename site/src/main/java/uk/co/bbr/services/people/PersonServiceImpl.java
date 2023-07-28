@@ -19,11 +19,7 @@ import uk.co.bbr.services.people.sql.PeopleBandsSql;
 import uk.co.bbr.services.people.sql.PeopleCompareSql;
 import uk.co.bbr.services.people.sql.PeopleCountSql;
 import uk.co.bbr.services.people.sql.PeopleWinnersSql;
-import uk.co.bbr.services.people.sql.dto.AdjudicationsSqlDto;
-import uk.co.bbr.services.people.sql.dto.CompareConductorsSqlDto;
-import uk.co.bbr.services.people.sql.dto.PeopleBandsSqlDto;
-import uk.co.bbr.services.people.sql.dto.PeopleWinnersSqlDto;
-import uk.co.bbr.services.people.sql.dto.UserAdjudicationsSqlDto;
+import uk.co.bbr.services.people.sql.dto.*;
 import uk.co.bbr.services.pieces.repo.PieceRepository;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.services.security.dao.SiteUserDao;
@@ -136,33 +132,15 @@ public class PersonServiceImpl implements PersonService, SlugTools {
 
     @Override
     public PeopleListDto listPeopleStartingWith(String prefix) {
-        Map<Long,Integer> conductingCounts = PeopleCountSql.selectConductorCounts(this.entityManager);
-        Map<Long,Integer> conductor2Counts = PeopleCountSql.selectConductorTwoCounts(this.entityManager);
-        Map<Long,Integer> conductor3Counts = PeopleCountSql.selectConductorThreeCounts(this.entityManager);
-        Map<Long,Integer> adjudicatorCounts = PeopleCountSql.selectAdjudicatorCounts(this.entityManager);
-        Map<Long,Integer> composerCounts = PeopleCountSql.selectComposerCounts(this.entityManager);
-        Map<Long,Integer> arrangerCounts = PeopleCountSql.selectArrangerCounts(this.entityManager);
-
-        List<PersonDao> peopleToReturn;
-
-        if (prefix.equalsIgnoreCase("ALL")) {
-            peopleToReturn = this.personRepository.findAllOrderBySurname();
-        } else {
-            if (prefix.trim().length() != 1) {
-                throw new UnsupportedOperationException("Prefix must be a single character");
-            }
-            peopleToReturn = this.personRepository.findByPrefixOrderBySurname(prefix.trim().toUpperCase());
+        if (prefix.trim().length() != 1) {
+            throw new UnsupportedOperationException("Prefix must be a single character");
         }
 
-        // populate counts
-        for (PersonDao eachPerson : peopleToReturn) {
-            int conducting1 = conductingCounts.getOrDefault(eachPerson.getId(), 0);
-            int conducting2 = conductor2Counts.getOrDefault(eachPerson.getId(), 0);
-            int conducting3 = conductor3Counts.getOrDefault(eachPerson.getId(), 0);
-            eachPerson.setConductingCount(conducting1 + conducting2 + conducting3);
-            eachPerson.setAdjudicationsCount(adjudicatorCounts.getOrDefault(eachPerson.getId(), 0));
-            eachPerson.setCompositionsCount(composerCounts.getOrDefault(eachPerson.getId(), 0));
-            eachPerson.setArrangementsCount(arrangerCounts.getOrDefault(eachPerson.getId(), 0));
+        List<PeopleListSqlDto> sqlResults = PeopleCountSql.selectPeopleWhereSurnameStartsWithLetterForList(this.entityManager, prefix);
+
+        List<PersonDao> peopleToReturn = new ArrayList<>();
+        for (PeopleListSqlDto eachPerson : sqlResults) {
+            peopleToReturn.add(eachPerson.asPerson());
         }
 
         long allBandsCount = this.personRepository.count();
