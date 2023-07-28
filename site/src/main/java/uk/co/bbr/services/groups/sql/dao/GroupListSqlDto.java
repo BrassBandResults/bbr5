@@ -37,7 +37,7 @@ public class GroupListSqlDto extends AbstractSqlDto {
     public ContestGroupDao asGroup() {
         ContestGroupDao returnGroup = new ContestGroupDao();
         returnGroup.setName(this.groupName);
-        returnGroup.setSlug(this.groupSlug);
+        returnGroup.setSlug(this.groupSlug.toUpperCase());
         returnGroup.setEventCount(this.eventCount);
         returnGroup.setContestCount(this.contestCount);
 

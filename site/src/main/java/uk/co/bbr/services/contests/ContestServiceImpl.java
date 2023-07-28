@@ -5,6 +5,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import uk.co.bbr.services.contests.dao.ContestAliasDao;
 import uk.co.bbr.services.contests.dao.ContestDao;
+import uk.co.bbr.services.contests.sql.ContestListSql;
+import uk.co.bbr.services.contests.sql.dto.ContestListSqlDto;
 import uk.co.bbr.services.groups.dao.ContestGroupAliasDao;
 import uk.co.bbr.services.groups.dao.ContestGroupDao;
 import uk.co.bbr.services.regions.RegionService;
@@ -21,6 +23,7 @@ import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.web.security.annotations.IsBbrAdmin;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
+import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -41,6 +44,7 @@ public class ContestServiceImpl implements ContestService, SlugTools {
     private final ContestGroupAliasRepository contestGroupAliasRepository;
     private final ContestRepository contestRepository;
 
+    private final EntityManager entityManager;
 
     @Override
     @IsBbrMember
@@ -198,44 +202,20 @@ public class ContestServiceImpl implements ContestService, SlugTools {
     }
 
     @Override
-    public ContestListDto listContestsStartingWith(String prefix) {
-        List<ContestDao> contestsToReturn;
-        List<ContestAliasDao> contestAliasesToReturn;
-        List<ContestGroupDao> contestGroupsToReturn;
-        List<ContestGroupAliasDao> contestGroupAliasesToReturn;
+    public List<ContestListSqlDto> listContestsStartingWith(String prefix) {
+
+        List<ContestListSqlDto> contests;
 
         if (prefix.equalsIgnoreCase("ALL")) {
-            contestsToReturn = this.contestRepository.findAllOutsideGroupsOrderByName();
-            contestAliasesToReturn = this.contestAliasRepository.findAllOutsideGroupsOrderByName();
-            contestGroupsToReturn = this.contestGroupRepository.findAllOrderByName();
-            contestGroupAliasesToReturn = this.contestGroupAliasRepository.findAllOrderByName();
+            contests = ContestListSql.listAllForContestList(this.entityManager);
         } else {
             if (prefix.trim().length() != 1) {
                 throw new UnsupportedOperationException("Prefix must be a single character");
             }
             String upperPrefix = prefix.trim().toUpperCase();
-            contestsToReturn = this.contestRepository.findByPrefixOutsideGroupsOrderByName(upperPrefix);
-            contestAliasesToReturn = this.contestAliasRepository.findByPrefixOutsideGroupsOrderByName(upperPrefix);
-            contestGroupsToReturn = this.contestGroupRepository.findByPrefixOrderByName(upperPrefix);
-            contestGroupAliasesToReturn = this.contestGroupAliasRepository.findByPrefixOrderByName(upperPrefix);
+            contests = ContestListSql.listByPrefixForContestList(this.entityManager, upperPrefix);
         }
-
-        List<ContestListContestDto> returnedContests = new ArrayList<>();
-        for (ContestDao eachContest : contestsToReturn) {
-            returnedContests.add(new ContestListContestDto(eachContest.getSlug(), eachContest.getName(), eachContest.getEventsCount()));
-        }
-        for (ContestAliasDao eachContestAlias : contestAliasesToReturn) {
-            returnedContests.add(new ContestListContestDto(eachContestAlias.getContest().getSlug(), eachContestAlias.getName(), eachContestAlias.getContest().getEventsCount()));
-        }
-        for (ContestGroupDao eachContestGroup : contestGroupsToReturn) {
-            returnedContests.add(new ContestListContestDto(eachContestGroup.getSlug(), eachContestGroup.getName(), eachContestGroup.getEventCount()));
-        }
-        for (ContestGroupAliasDao eachContestGroupAlias : contestGroupAliasesToReturn) {
-            returnedContests.add(new ContestListContestDto(eachContestGroupAlias.getContestGroup().getSlug(), eachContestGroupAlias.getName(), eachContestGroupAlias.getContestGroup().getEventCount()));
-        }
-        List<ContestListContestDto> sortedContests = returnedContests.stream().sorted(Comparator.comparing(ContestListContestDto::getName)).collect(Collectors.toList());
-
-        return new ContestListDto(prefix, sortedContests);
+        return contests;
     }
 
     @Override

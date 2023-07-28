@@ -16,11 +16,11 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="contest : ${Contests.returnedContests}">
+        <tr th:each="contest : ${Contests}">
             <td class="contest">
                 <span th:replace="links/contest-link.html :: contestLink(${contest})"></span>
             </td>
-            <td class="contest-event-count" th:text="${contest.contestResultsCount}">0</td>
+            <td class="contest-event-count" th:text="${contest.eventCount}">0</td>
         </tr>
         </tbody>
     </table>

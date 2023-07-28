@@ -6,6 +6,7 @@ import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import uk.co.bbr.services.contests.sql.dto.ContestListSqlDto;
 import uk.co.bbr.services.groups.ContestGroupService;
 import uk.co.bbr.services.contests.ContestService;
 import uk.co.bbr.services.contests.dao.ContestDao;
@@ -16,6 +17,8 @@ import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.services.security.ex.AuthenticationFailedException;
 import uk.co.bbr.web.LoginMixin;
 import uk.co.bbr.web.security.support.TestUser;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -66,85 +69,83 @@ class ContestListPageContestGroupAliasTests implements LoginMixin {
     @Test
     void testFetchContestListWithPrefixWorksSuccessfullyForGroupAliases() {
         // act
-        ContestListDto pageData = this.contestService.listContestsStartingWith("A");
+        List<ContestListSqlDto> pageData = this.contestService.listContestsStartingWith("A");
 
         // assert
-        assertEquals("A", pageData.getSearchPrefix());
-        assertEquals(6, pageData.getReturnedContests().size());
+        assertEquals(6, pageData.size());
 
-        assertEquals("Aa Alias 7", pageData.getReturnedContests().get(0).getName());
-        assertEquals("aa-contest-6", pageData.getReturnedContests().get(0).getSlug());
-        assertEquals(0, pageData.getReturnedContests().get(0).getContestResultsCount());
+        assertEquals("Aa Alias 7", pageData.get(0).getName());
+        assertEquals("aa-contest-6", pageData.get(0).getSlug());
+        assertEquals(0, pageData.get(0).getEventCount());
 
-        assertEquals("Aa Contest 6", pageData.getReturnedContests().get(1).getName());
-        assertEquals("aa-contest-6", pageData.getReturnedContests().get(1).getSlug());
-        assertEquals(0, pageData.getReturnedContests().get(1).getContestResultsCount());
+        assertEquals("Aa Contest 6", pageData.get(1).getName());
+        assertEquals("aa-contest-6", pageData.get(1).getSlug());
+        assertEquals(0, pageData.get(1).getEventCount());
 
-        assertEquals("Ac Contest 2", pageData.getReturnedContests().get(2).getName());
-        assertEquals("ac-contest-2", pageData.getReturnedContests().get(2).getSlug());
-        assertEquals(0, pageData.getReturnedContests().get(2).getContestResultsCount());
+        assertEquals("Ac Contest 2", pageData.get(2).getName());
+        assertEquals("ac-contest-2", pageData.get(2).getSlug());
+        assertEquals(0, pageData.get(2).getEventCount());
 
-        assertEquals("Af Group 1", pageData.getReturnedContests().get(3).getName());
-        assertEquals("AF-GROUP-1", pageData.getReturnedContests().get(3).getSlug());
-        assertEquals(0, pageData.getReturnedContests().get(3).getContestResultsCount());
+        assertEquals("Af Group 1", pageData.get(3).getName());
+        assertEquals("AF-GROUP-1", pageData.get(3).getSlug());
+        assertEquals(0, pageData.get(3).getEventCount());
 
-        assertEquals("Ah Group Alias 1", pageData.getReturnedContests().get(4).getName());
-        assertEquals("AF-GROUP-1", pageData.getReturnedContests().get(4).getSlug());
-        assertEquals(0, pageData.getReturnedContests().get(4).getContestResultsCount());
+        assertEquals("Ah Group Alias 1", pageData.get(4).getName());
+        assertEquals("AF-GROUP-1", pageData.get(4).getSlug());
+        assertEquals(0, pageData.get(4).getEventCount());
 
-        assertEquals("Az Alias 8", pageData.getReturnedContests().get(5).getName());
-        assertEquals("aa-contest-6", pageData.getReturnedContests().get(5).getSlug());
-        assertEquals(0, pageData.getReturnedContests().get(5).getContestResultsCount());
+        assertEquals("Az Alias 8", pageData.get(5).getName());
+        assertEquals("aa-contest-6", pageData.get(5).getSlug());
+        assertEquals(0, pageData.get(5).getEventCount());
     }
 
     @Test
     void testFetchContestListLAllWorksSuccessfullyForGroupAliases() {
         // act
-        ContestListDto pageData = this.contestService.listContestsStartingWith("ALL");
+        List<ContestListSqlDto>  pageData = this.contestService.listContestsStartingWith("ALL");
 
         // assert
-        assertEquals("ALL", pageData.getSearchPrefix());
-        assertEquals(10, pageData.getReturnedContests().size());
+        assertEquals(10, pageData.size());
 
-        assertEquals("Aa Alias 7", pageData.getReturnedContests().get(0).getName());
-        assertEquals("aa-contest-6", pageData.getReturnedContests().get(0).getSlug());
-        assertEquals(0, pageData.getReturnedContests().get(0).getContestResultsCount());
+        assertEquals("Aa Alias 7", pageData.get(0).getName());
+        assertEquals("aa-contest-6", pageData.get(0).getSlug());
+        assertEquals(0, pageData.get(0).getEventCount());
 
-        assertEquals("Aa Contest 6", pageData.getReturnedContests().get(1).getName());
-        assertEquals("aa-contest-6", pageData.getReturnedContests().get(1).getSlug());
-        assertEquals(0, pageData.getReturnedContests().get(1).getContestResultsCount());
+        assertEquals("Aa Contest 6", pageData.get(1).getName());
+        assertEquals("aa-contest-6", pageData.get(1).getSlug());
+        assertEquals(0, pageData.get(1).getEventCount());
 
-        assertEquals("Ac Contest 2", pageData.getReturnedContests().get(2).getName());
-        assertEquals("ac-contest-2", pageData.getReturnedContests().get(2).getSlug());
-        assertEquals(0, pageData.getReturnedContests().get(2).getContestResultsCount());
+        assertEquals("Ac Contest 2", pageData.get(2).getName());
+        assertEquals("ac-contest-2", pageData.get(2).getSlug());
+        assertEquals(0, pageData.get(2).getEventCount());
 
-        assertEquals("Af Group 1", pageData.getReturnedContests().get(3).getName());
-        assertEquals("AF-GROUP-1", pageData.getReturnedContests().get(3).getSlug());
-        assertEquals(0, pageData.getReturnedContests().get(3).getContestResultsCount());
+        assertEquals("Af Group 1", pageData.get(3).getName());
+        assertEquals("AF-GROUP-1", pageData.get(3).getSlug());
+        assertEquals(0, pageData.get(3).getEventCount());
 
-        assertEquals("Ah Group Alias 1", pageData.getReturnedContests().get(4).getName());
-        assertEquals("AF-GROUP-1", pageData.getReturnedContests().get(4).getSlug());
-        assertEquals(0, pageData.getReturnedContests().get(4).getContestResultsCount());
+        assertEquals("Ah Group Alias 1", pageData.get(4).getName());
+        assertEquals("AF-GROUP-1", pageData.get(4).getSlug());
+        assertEquals(0, pageData.get(4).getEventCount());
 
-        assertEquals("Az Alias 8", pageData.getReturnedContests().get(5).getName());
-        assertEquals("aa-contest-6", pageData.getReturnedContests().get(5).getSlug());
-        assertEquals(0, pageData.getReturnedContests().get(5).getContestResultsCount());
+        assertEquals("Az Alias 8", pageData.get(5).getName());
+        assertEquals("aa-contest-6", pageData.get(5).getSlug());
+        assertEquals(0, pageData.get(5).getEventCount());
 
-        assertEquals("Bx Alias 5", pageData.getReturnedContests().get(6).getName());
-        assertEquals("cx-contest-5", pageData.getReturnedContests().get(6).getSlug());
-        assertEquals(0, pageData.getReturnedContests().get(6).getContestResultsCount());
+        assertEquals("Bx Alias 5", pageData.get(6).getName());
+        assertEquals("cx-contest-5", pageData.get(6).getSlug());
+        assertEquals(0, pageData.get(6).getEventCount());
 
-        assertEquals("Bx Group 2", pageData.getReturnedContests().get(7).getName());
-        assertEquals("BX-GROUP-2", pageData.getReturnedContests().get(7).getSlug());
-        assertEquals(0, pageData.getReturnedContests().get(7).getContestResultsCount());
+        assertEquals("Bx Group 2", pageData.get(7).getName());
+        assertEquals("BX-GROUP-2", pageData.get(7).getSlug());
+        assertEquals(0, pageData.get(7).getEventCount());
 
-        assertEquals("Cx Alias 6", pageData.getReturnedContests().get(8).getName());
-        assertEquals("aa-contest-6", pageData.getReturnedContests().get(8).getSlug());
-        assertEquals(0, pageData.getReturnedContests().get(8).getContestResultsCount());
+        assertEquals("Cx Alias 6", pageData.get(8).getName());
+        assertEquals("aa-contest-6", pageData.get(8).getSlug());
+        assertEquals(0, pageData.get(8).getEventCount());
 
-        assertEquals("Cx Contest 5", pageData.getReturnedContests().get(9).getName());
-        assertEquals("cx-contest-5", pageData.getReturnedContests().get(9).getSlug());
-        assertEquals(0, pageData.getReturnedContests().get(9).getContestResultsCount());
+        assertEquals("Cx Contest 5", pageData.get(9).getName());
+        assertEquals("cx-contest-5", pageData.get(9).getSlug());
+        assertEquals(0, pageData.get(9).getEventCount());
     }
 }
 
