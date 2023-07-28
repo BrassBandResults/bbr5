@@ -8,11 +8,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import uk.co.bbr.services.contests.ContestService;
 import uk.co.bbr.services.contests.dto.ContestListDto;
+import uk.co.bbr.services.contests.sql.dto.ContestListSqlDto;
 import uk.co.bbr.services.security.JwtService;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.services.security.ex.AuthenticationFailedException;
 import uk.co.bbr.web.LoginMixin;
 import uk.co.bbr.web.security.support.TestUser;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -47,46 +50,44 @@ class ContestListPageContestTests implements LoginMixin {
     @Test
     void testFetchContestListWithPrefixWorksSuccessfullyForContests() {
         // act
-        ContestListDto pageData = this.contestService.listContestsStartingWith("A");
+        List<ContestListSqlDto> pageData = this.contestService.listContestsStartingWith("A");
 
         // assert
-        assertEquals("A", pageData.getSearchPrefix());
-        assertEquals(3, pageData.getReturnedContests().size());
-        assertEquals("Aa Contest 6", pageData.getReturnedContests().get(0).getName());
-        assertEquals(0, pageData.getReturnedContests().get(0).getContestResultsCount());
+        assertEquals(3, pageData.size());
+        assertEquals("Aa Contest 6", pageData.get(0).getName());
+        assertEquals(0, pageData.get(0).getEventCount());
 
-        assertEquals("Ab Contest 1", pageData.getReturnedContests().get(1).getName());
-        assertEquals(0, pageData.getReturnedContests().get(1).getContestResultsCount());
+        assertEquals("Ab Contest 1", pageData.get(1).getName());
+        assertEquals(0, pageData.get(1).getEventCount());
 
-        assertEquals("Ac Contest 2", pageData.getReturnedContests().get(2).getName());
-        assertEquals(0, pageData.getReturnedContests().get(2).getContestResultsCount());
+        assertEquals("Ac Contest 2", pageData.get(2).getName());
+        assertEquals(0, pageData.get(2).getEventCount());
     }
 
     @Test
     void testFetchContestListLAllWorksSuccessfullyForContests() {
         // act
-        ContestListDto pageData = this.contestService.listContestsStartingWith("ALL");
+        List<ContestListSqlDto> pageData = this.contestService.listContestsStartingWith("ALL");
 
         // assert
-        assertEquals("ALL", pageData.getSearchPrefix());
-        assertEquals(6, pageData.getReturnedContests().size());
-        assertEquals("Aa Contest 6", pageData.getReturnedContests().get(0).getName());
-        assertEquals(0, pageData.getReturnedContests().get(0).getContestResultsCount());
+        assertEquals(6, pageData.size());
+        assertEquals("Aa Contest 6", pageData.get(0).getName());
+        assertEquals(0, pageData.get(0).getEventCount());
 
-        assertEquals("Ab Contest 1", pageData.getReturnedContests().get(1).getName());
-        assertEquals(0, pageData.getReturnedContests().get(1).getContestResultsCount());
+        assertEquals("Ab Contest 1", pageData.get(1).getName());
+        assertEquals(0, pageData.get(1).getEventCount());
 
-        assertEquals("Ac Contest 2", pageData.getReturnedContests().get(2).getName());
-        assertEquals(0, pageData.getReturnedContests().get(2).getContestResultsCount());
+        assertEquals("Ac Contest 2", pageData.get(2).getName());
+        assertEquals(0, pageData.get(2).getEventCount());
 
-        assertEquals("Bx Contest 3", pageData.getReturnedContests().get(3).getName());
-        assertEquals(0, pageData.getReturnedContests().get(3).getContestResultsCount());
+        assertEquals("Bx Contest 3", pageData.get(3).getName());
+        assertEquals(0, pageData.get(3).getEventCount());
 
-        assertEquals("Bx Contest 4", pageData.getReturnedContests().get(4).getName());
-        assertEquals(0, pageData.getReturnedContests().get(4).getContestResultsCount());
+        assertEquals("Bx Contest 4", pageData.get(4).getName());
+        assertEquals(0, pageData.get(4).getEventCount());
 
-        assertEquals("Cx Contest 5", pageData.getReturnedContests().get(5).getName());
-        assertEquals(0, pageData.getReturnedContests().get(5).getContestResultsCount());
+        assertEquals("Cx Contest 5", pageData.get(5).getName());
+        assertEquals(0, pageData.get(5).getEventCount());
     }
 }
 
