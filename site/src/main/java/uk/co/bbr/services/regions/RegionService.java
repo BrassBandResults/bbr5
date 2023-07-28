@@ -11,6 +11,7 @@ import java.util.Optional;
 
 public interface RegionService {
     List<RegionDao> findAll();
+    List<RegionDao> findAllWithCounts();
 
     RegionDao fetchUnknownRegion();
 

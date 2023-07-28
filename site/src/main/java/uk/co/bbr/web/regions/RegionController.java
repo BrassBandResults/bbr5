@@ -38,7 +38,7 @@ public class RegionController {
 
     @GetMapping("/regions")
     public String regionList(Model model) {
-        List<RegionDao> regions = this.regionService.findAll();
+        List<RegionDao> regions = this.regionService.findAllWithCounts();
 
         model.addAttribute("Regions", regions);
         return "regions/regions";
