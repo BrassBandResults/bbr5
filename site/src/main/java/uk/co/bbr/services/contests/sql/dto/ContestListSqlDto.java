@@ -13,8 +13,8 @@ public class ContestListSqlDto extends AbstractSqlDto {
     private final Integer eventCount;
 
     public ContestListSqlDto(Object[] columnList) {
-        this.slug = (String)columnList[0];
-        this.name = (String)columnList[1];
+        this.name = (String)columnList[0];
+        this.slug = (String)columnList[1];
         if (columnList[2] != null) {
             this.eventCount = columnList[2] instanceof BigInteger ? ((BigInteger) columnList[2]).intValue() : (Integer) columnList[2];
         }
