@@ -8,6 +8,7 @@
                 <div sec:authorize="hasRole('BBR_SUPERUSER')">
                     <span th:replace="buttons/edit.html :: editEvent(${ContestEvent})"></span>
                     <span th:replace="buttons/edit.html :: editEventSetTests(${ContestEvent})"></span>
+                    <span th:replace="buttons/edit.html :: editEventAdjudicators(${ContestEvent})"></span>
                 </div>
             </div>
             <div class="col text-end">

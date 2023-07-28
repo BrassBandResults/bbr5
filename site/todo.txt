@@ -10,6 +10,8 @@ Edit Test pieces for contest event
 
 Security on who can edit result
 
+Fix formula numbers
+
 red background for select "must already exist" thing
 yellow background for select "might create this" thing
 
@@ -22,10 +24,10 @@ Upgrade to pro - call back, how's that going to work?
 Upgrade to pro - how do we record stripe details on user?
 Ads for non-pro users
 
-Fix formula numbers
-
 Add privacy settings for personal contest history
 Add date ranges for personal contest history
+
+Make /ALL lists member only
 
 Assign points
 

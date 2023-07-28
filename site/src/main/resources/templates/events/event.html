@@ -103,7 +103,12 @@
                     <td class="bbr-draw" th:if="${ContestEvent.contestType.pointsPenaltyTitle != null}" th:text="${result.pointsPenalty}"></td>
                     <td class="bbr-draw" th:if="${ContestEvent.contestType.pointsTotalTitle != null}" th:text="${result.pointsTotal}"></td>
                     <td th:if="${ContestEvent.canEdit}">
-                        <span th:if="${result.canEdit}"<span th:replace="buttons/edit.html :: editResult(${ContestEvent}, ${result})"></span>
+                        <span th:if="${result.canEdit}">
+                            <span th:replace="buttons/edit.html :: editResult(${ContestEvent}, ${result})"></span>
+                            <span th:if="${ContestEvent.contestType.ownChoice || ContestEvent.contestType.entertainments}">
+                                <span th:replace="buttons/edit.html :: editResultPieces(${ContestEvent}, ${result})"></span>
+                            </span>
+                        </span>
                     </td>
                 </tr>
             </tbody>
