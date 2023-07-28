@@ -9,6 +9,7 @@ import uk.co.bbr.services.bands.dto.BandListDto;
 import uk.co.bbr.services.bands.repo.BandRepository;
 import uk.co.bbr.services.bands.sql.BandCompareSql;
 import uk.co.bbr.services.bands.sql.BandSql;
+import uk.co.bbr.services.bands.sql.dto.BandListSqlDto;
 import uk.co.bbr.services.bands.sql.dto.BandWinnersSqlDto;
 import uk.co.bbr.services.bands.sql.dto.CompareBandsSqlDto;
 import uk.co.bbr.services.bands.types.BandStatus;
@@ -22,6 +23,7 @@ import uk.co.bbr.web.security.annotations.IsBbrMember;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -130,21 +132,25 @@ public class BandServiceImpl implements BandService, SlugTools {
 
     @Override
     public BandListDto listBandsStartingWith(String prefix) {
-        List<BandDao> bandsToReturn;
+        List<BandListSqlDto> bandsToReturn;
 
         switch (prefix.toUpperCase()) {
-            case "ALL" -> bandsToReturn = this.bandRepository.findAll();
-            case "0" -> bandsToReturn = this.bandRepository.findWithNumberPrefixOrderByName();
+            case "ALL" -> bandsToReturn = BandSql.selectAllBandsForList(this.entityManager);
+            case "0" -> bandsToReturn = BandSql.selectBandsStartingWithNumbersForList(this.entityManager);
             default -> {
                 if (prefix.trim().length() != 1) {
                     throw new UnsupportedOperationException("Prefix must be a single character");
                 }
-                bandsToReturn = this.bandRepository.findByPrefixOrderByName(prefix.trim().toUpperCase());
+                bandsToReturn = BandSql.selectBandsStartingWithLetterForList(this.entityManager, prefix.trim().toUpperCase());
             }
         }
 
         long allBandsCount = this.bandRepository.count();
-        return new BandListDto(bandsToReturn.size(), allBandsCount, prefix, bandsToReturn);
+        List<BandDao> bands = new ArrayList<>();
+        for (BandListSqlDto band : bandsToReturn) {
+            bands.add(band.asBand());
+        }
+        return new BandListDto(bandsToReturn.size(), allBandsCount, prefix, bands);
     }
 
     @Override

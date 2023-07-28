@@ -76,6 +76,7 @@ public class BandDao extends AbstractDao implements NameTools {
     private String twitterName;
 
     @Transient
+    @Setter
     private int resultsCount;
 
     @Transient
