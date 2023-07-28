@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
-import org.hibernate.annotations.Formula;
 import uk.co.bbr.services.tags.dao.ContestTagDao;
 import uk.co.bbr.services.groups.types.ContestGroupType;
 import uk.co.bbr.services.framework.AbstractDao;
@@ -53,10 +52,12 @@ public class ContestGroupDao extends AbstractDao implements NameTools {
     private Set<ContestTagDao> tags = new HashSet<>();
 
     @Transient
-    private int contestCount;
+    @Setter
+    private int eventCount;
 
     @Transient
-    private int eventsCount;
+    @Setter
+    private int contestCount;
 
     public void setName(String name){
         this.name = simplifyContestName(name);

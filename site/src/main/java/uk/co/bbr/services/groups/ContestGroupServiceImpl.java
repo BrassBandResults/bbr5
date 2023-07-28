@@ -11,6 +11,8 @@ import uk.co.bbr.services.groups.dao.ContestGroupAliasDao;
 import uk.co.bbr.services.groups.dao.ContestGroupDao;
 import uk.co.bbr.services.events.dao.ContestResultDao;
 import uk.co.bbr.services.events.dao.ContestResultPieceDao;
+import uk.co.bbr.services.groups.sql.GroupSql;
+import uk.co.bbr.services.groups.sql.dao.GroupListSqlDto;
 import uk.co.bbr.services.tags.dao.ContestTagDao;
 import uk.co.bbr.services.events.dto.ContestEventSummaryDto;
 import uk.co.bbr.services.groups.dto.ContestGroupDetailsDto;
@@ -18,7 +20,6 @@ import uk.co.bbr.services.groups.dto.ContestGroupYearDto;
 import uk.co.bbr.services.groups.dto.ContestGroupYearsDetailsDto;
 import uk.co.bbr.services.groups.dto.ContestGroupYearsDetailsYearDto;
 import uk.co.bbr.services.events.dto.GroupListDto;
-import uk.co.bbr.services.events.dto.GroupListGroupDto;
 import uk.co.bbr.services.events.repo.ContestEventRepository;
 import uk.co.bbr.services.groups.repo.ContestGroupAliasRepository;
 import uk.co.bbr.services.groups.repo.ContestGroupRepository;
@@ -32,6 +33,7 @@ import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.web.security.annotations.IsBbrAdmin;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
+import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -50,6 +52,7 @@ public class ContestGroupServiceImpl implements ContestGroupService, SlugTools {
     private final ContestGroupAliasRepository contestGroupAliasRepository;
     private final ContestResultPieceRepository contestResultPieceRepository;
     private final SecurityService securityService;
+    private final EntityManager entityManager;
 
     @Override
     @IsBbrMember
@@ -167,24 +170,25 @@ public class ContestGroupServiceImpl implements ContestGroupService, SlugTools {
 
     @Override
     public GroupListDto listGroupsStartingWith(String prefix) {
-        List<ContestGroupDao> groupsToReturn;
+        List<GroupListSqlDto> groups;
 
         if (prefix.equalsIgnoreCase("ALL")) {
-            groupsToReturn = this.contestGroupRepository.findAll();
+            groups = GroupSql.findAllForList(this.entityManager);
         } else {
             if (prefix.trim().length() != 1) {
                 throw new UnsupportedOperationException("Prefix must be a single character");
             }
-            groupsToReturn = this.contestGroupRepository.findByPrefixOrderByName(prefix.trim().toUpperCase());
+            groups = GroupSql.findByPrefixForList(this.entityManager, prefix.trim().toUpperCase());
+        }
+
+        List<ContestGroupDao> groupsToReturn = new ArrayList<>();
+        for (GroupListSqlDto eachGroup : groups) {
+            groupsToReturn.add(eachGroup.asGroup());
         }
 
         long allGroupsCount = this.contestGroupRepository.count();
 
-        List<GroupListGroupDto> returnedBands = new ArrayList<>();
-        for (ContestGroupDao eachGroup : groupsToReturn) {
-            returnedBands.add(new GroupListGroupDto(eachGroup.getSlug(), eachGroup.getName(), eachGroup.getContestCount()));
-        }
-        return new GroupListDto(groupsToReturn.size(), allGroupsCount, prefix, returnedBands);
+        return new GroupListDto(groupsToReturn.size(), allGroupsCount, prefix, groupsToReturn);
     }
 
     @Override

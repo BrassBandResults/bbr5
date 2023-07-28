@@ -18,6 +18,7 @@
         <tr>
             <th th:text="#{page.column-header.name}">Name</th>
             <th th:text="#{page.column-header.contests}">Contests</th>
+            <th th:text="#{page.column-header.events}">Events</th>
         </tr>
         </thead>
         <tbody>
@@ -26,6 +27,7 @@
                 <span th:replace="links/group-link.html :: groupLink(${group})"></span>
             </td>
             <td class="group-contest-count" th:text="${group.contestCount}">0</td>
+            <td class="group-event-count" th:text="${group.eventCount}">0</td>
         </tr>
         </tbody>
     </table>
