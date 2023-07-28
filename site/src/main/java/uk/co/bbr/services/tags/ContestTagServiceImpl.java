@@ -12,9 +12,13 @@ import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.framework.ValidationException;
 import uk.co.bbr.services.framework.mixins.SlugTools;
 import uk.co.bbr.services.security.SecurityService;
+import uk.co.bbr.services.tags.sql.ContestTagSql;
+import uk.co.bbr.services.tags.sql.dto.TagListSqlDto;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
+import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,8 +27,8 @@ import java.util.Optional;
 public class ContestTagServiceImpl implements ContestTagService, SlugTools {
 
     private final ContestTagRepository contestTagRepository;
-
     private final SecurityService securityService;
+    private final EntityManager entityManager;
 
     @Override
     @IsBbrMember
@@ -48,18 +52,22 @@ public class ContestTagServiceImpl implements ContestTagService, SlugTools {
 
     @Override
     public List<ContestTagDao> listTagsStartingWith(String prefix) {
-        List<ContestTagDao> groupsToReturn;
-
+        List<TagListSqlDto> tagsSql;
         if (prefix.equalsIgnoreCase("ALL")) {
-            groupsToReturn = this.contestTagRepository.findAllOrderByName();
+            tagsSql = ContestTagSql.selectAllTagsWithCounts(this.entityManager);
         } else {
             if (prefix.trim().length() != 1) {
                 throw new UnsupportedOperationException("Prefix must be a single character");
             }
-            groupsToReturn = this.contestTagRepository.findByPrefixOrderByName(prefix.trim().toUpperCase());
+            tagsSql = ContestTagSql.selectTagsForPrefixWithCount(this.entityManager, prefix.trim().toUpperCase());
         }
 
-        return groupsToReturn;
+        List<ContestTagDao> tagsToReturn = new ArrayList<>();
+        for (TagListSqlDto eachTag : tagsSql) {
+            tagsToReturn.add(eachTag.asContestTag());
+        }
+
+        return tagsToReturn;
     }
 
     @Override
