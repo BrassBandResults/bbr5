@@ -6,6 +6,8 @@ import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.bands.repo.BandPreviousNameRepository;
 import uk.co.bbr.services.bands.repo.BandRepository;
 import uk.co.bbr.services.framework.mixins.SlugTools;
+import uk.co.bbr.services.lookup.sql.FinderSql;
+import uk.co.bbr.services.lookup.sql.dto.FinderSqlDto;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
@@ -22,56 +24,56 @@ public class BandFinderServiceImpl implements BandFinderService, SlugTools {
 
     @Override
     public String findMatchByName(String searchBandName, LocalDate dateContext) {
-        String bandName = searchBandName.toUpperCase().trim();
-        String bandNameLessBand = null;
-        if (bandName.endsWith("BAND")) {
-            bandNameLessBand = bandName.substring(0, bandName.length() - "BAND".length()).trim();
+        String bandNameUpper = searchBandName.toUpperCase().trim();
+        String bandNameUpperLessBand = null;
+        if (bandNameUpper.endsWith("BAND")) {
+            bandNameUpperLessBand = bandNameUpper.substring(0, bandNameUpper.length() - "BAND".length()).trim();
         }
 
-        List<BandDao> bandMatches = this.bandRepository.findExactNameMatch(bandName);
+        List<FinderSqlDto> bandMatches = FinderSql.bandFindExactNameMatch(this.entityManager, bandNameUpper);
 
         if (bandMatches.isEmpty()) {
-            bandMatches = this.bandPreviousNameRepository.findAliasExactNameMatch(bandName);
-        }
-
-        if (bandMatches.isEmpty()) {
-            bandMatches = this.bandRepository.findExactNameMatch(bandName + " Band");
+            bandMatches = FinderSql.bandAliasFindExactNameMatch(this.entityManager, bandNameUpper);
         }
 
         if (bandMatches.isEmpty()) {
-            bandMatches = this.bandPreviousNameRepository.findAliasExactNameMatch(bandName + " Band");
+            bandMatches = FinderSql.bandFindExactNameMatch(this.entityManager, bandNameUpper + " BAND");
         }
 
         if (bandMatches.isEmpty()) {
-            bandMatches = this.bandRepository.findContainsNameMatch("%" + bandName + "% ");
+            bandMatches = FinderSql.bandAliasFindExactNameMatch(this.entityManager, bandNameUpper + " BAND");
         }
 
         if (bandMatches.isEmpty()) {
-            bandMatches = this.bandPreviousNameRepository.findContainsNameMatch("%" + bandName + "% ");
+            bandMatches = FinderSql.bandFindContainsNameMatch(this.entityManager, bandNameUpper + " ");
         }
 
         if (bandMatches.isEmpty()) {
-            bandMatches = this.bandRepository.findContainsNameMatch("%" + bandName + "%") ;
+            bandMatches = FinderSql.bandAliasFindContainsNameMatch(this.entityManager, bandNameUpper + " ");
         }
 
         if (bandMatches.isEmpty()) {
-            bandMatches = this.bandPreviousNameRepository.findContainsNameMatch("%" + bandName + "%");
+            bandMatches = FinderSql.bandFindContainsNameMatch(this.entityManager, bandNameUpper) ;
         }
 
-        if (bandNameLessBand != null) {
+        if (bandMatches.isEmpty()) {
+            bandMatches = FinderSql.bandAliasFindContainsNameMatch(this.entityManager, bandNameUpper);
+        }
+
+        if (bandNameUpperLessBand != null) {
             if (bandMatches.isEmpty()) {
-                bandMatches = this.bandRepository.findContainsNameMatch("%" + bandNameLessBand + "%");
+                bandMatches = FinderSql.bandFindContainsNameMatch(this.entityManager, bandNameUpperLessBand);
             }
 
             if (bandMatches.isEmpty()) {
-                bandMatches = this.bandPreviousNameRepository.findContainsNameMatch("%" + bandNameLessBand + "%");
+                bandMatches = FinderSql.bandAliasFindContainsNameMatch(this.entityManager, bandNameUpperLessBand);
             }
         }
 
-        List<BandDao> returnList = new ArrayList<>();
+        List<FinderSqlDto> returnList = new ArrayList<>();
 
         // remove any matches that fall outside the date context
-        for (BandDao match : bandMatches) {
+        for (FinderSqlDto match : bandMatches) {
             if (match.getStartDate() != null) {
                 if (match.getStartDate().isAfter(dateContext)) {
                     continue;
