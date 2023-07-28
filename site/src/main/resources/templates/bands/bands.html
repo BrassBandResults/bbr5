@@ -27,7 +27,7 @@
                     <span th:replace="links/band-link.html :: bandLink(${band}, false, true)"></span>
                 </td>
                 <td class="region"><span th:replace="links/region-link.html :: regionLink(${band.region})"></span></td>
-                <td class="band-contest-count" th:text="${band.contestCount}">0</td>
+                <td class="band-contest-count" th:text="${band.resultsCount}">0</td>
             </tr>
         </tbody>
     </table>
