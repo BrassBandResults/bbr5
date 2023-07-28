@@ -2,6 +2,7 @@ package uk.co.bbr.services.tags.dao;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.Formula;
 import uk.co.bbr.services.framework.AbstractDao;
 import uk.co.bbr.services.framework.mixins.NameTools;
@@ -26,9 +27,11 @@ public class ContestTagDao extends AbstractDao implements NameTools {
     private String slug;
 
     @Transient
+    @Setter
     private int groupCount;
 
     @Transient
+    @Setter
     private int contestCount;
 
     public void setName(String name){

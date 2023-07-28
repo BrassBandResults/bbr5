@@ -16,9 +16,6 @@ public interface ContestTagRepository extends JpaRepository<ContestTagDao, Long>
     @Query("SELECT t FROM ContestTagDao t WHERE LOWER(t.name) = LOWER(?1)")
     Optional<ContestTagDao> fetchByName(String name);
 
-    @Query("SELECT t FROM ContestTagDao t WHERE UPPER(t.name) LIKE UPPER(CONCAT(:prefix, '%')) ORDER BY t.name")
-    List<ContestTagDao> findByPrefixOrderByName(String prefix);
-
     @Query("SELECT t FROM ContestTagDao t ORDER BY t.name")
     List<ContestTagDao> findAllOrderByName();
 

@@ -4,6 +4,10 @@ Add results - add adjudicators
 Add results - add notes
 Add results - create adjudicator
 
+Contests list page - use sql and fix counts
+Groups list page - use sql and fix counts
+Tags list page - use sql and fix counts
+
 Edit adjudicators
 Edit Test Pieces for result
 Edit Test pieces for contest event
@@ -26,6 +30,8 @@ Add privacy settings for personal contest history
 Add date ranges for personal contest history
 
 Make /ALL lists member only
+
+Calendar page
 
 Assign points
 
