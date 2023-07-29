@@ -7,6 +7,7 @@ import uk.co.bbr.services.events.dao.ContestResultDao;
 import uk.co.bbr.services.events.types.ContestEventDateResolution;
 import uk.co.bbr.services.events.types.ResultPositionType;
 import uk.co.bbr.services.framework.sql.AbstractSqlDto;
+import uk.co.bbr.services.groups.dao.ContestGroupDao;
 import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.regions.dao.RegionDao;
 
@@ -49,6 +50,8 @@ public class EventResultSqlDto extends AbstractSqlDto {
     private final Long resultId;
     private final String notes;
     private final String contestName;
+    private final String groupName;
+    private final String groupSlug;
 
 
     public EventResultSqlDto(Object[] columnList) {
@@ -86,6 +89,8 @@ public class EventResultSqlDto extends AbstractSqlDto {
         this.resultId = resultSerial.longValue();
         this.notes = (String)columnList[30];
         this.contestName = (String)columnList[31];
+        this.groupName = (String)columnList[32];
+        this.groupSlug = (String)columnList[33];
     }
 
     public ContestResultDao getResult() {
@@ -144,6 +149,13 @@ public class EventResultSqlDto extends AbstractSqlDto {
             conductor3.setFirstNames(this.conductor3FirstNames);
             conductor3.setSlug(this.conductor3Slug);
             result.setConductorThird(conductor3);
+        }
+
+        if (this.groupSlug != null) {
+            ContestGroupDao contestGroup = new ContestGroupDao();
+            contestGroup.setSlug(this.groupSlug);
+            contestGroup.setName(this.groupName);
+            result.getContestEvent().getContest().setContestGroup(contestGroup);
         }
 
         return result;

@@ -19,7 +19,8 @@ public class EventSql {
                                   con3.slug as c3_slug, con3.first_names as c3_first_names, con3.surname as c3_surname,
                                   r.draw_second, r.draw_third,
                                   r.points_first, r.points_second, r.points_third, r.points_fourth, r.points_penalty,
-                                  r.id, r.notes, e.name
+                                  r.id, r.notes, e.name,
+                                  g.name as group_name, g.slug as group_slug
                            FROM contest_result r
                            INNER JOIN contest_event e on e.id = r.contest_event_id
                            INNER JOIN contest c ON c.id = e.contest_id
@@ -28,6 +29,7 @@ public class EventSql {
                            LEFT OUTER JOIN person con1 ON con1.id = r.conductor_id
                            LEFT OUTER JOIN person con2 ON con2.id = r.conductor_two_id
                            LEFT OUTER JOIN person con3 ON con3.id = r.conductor_three_id
+                           LEFT OUTER JOIN contest_group g ON g.id = c.contest_group_id
                            WHERE e.id = ?1
                            ORDER BY CASE
                              WHEN r.result_position_type = 'U' THEN 10000
@@ -48,7 +50,8 @@ public class EventSql {
                   con3.slug as c3_slug, con3.first_names as c3_first_names, con3.surname as c3_surname,
                   r.draw_second, r.draw_third,
                   r.points_first, r.points_second, r.points_third, r.points_fourth, r.points_penalty,
-                  r.id, r.notes, e.name
+                  r.id, r.notes, e.name,
+                  g.name as group_name, g.slug as group_slug
            FROM contest_event e
            LEFT OUTER JOIN contest_result r ON r.contest_event_id = e.id AND r.result_position_type = 'R' AND r.result_position = 1
            INNER JOIN contest c ON c.id = e.contest_id
@@ -57,6 +60,7 @@ public class EventSql {
            LEFT OUTER JOIN person con1 ON con1.id = r.conductor_id
            LEFT OUTER JOIN person con2 ON con2.id = r.conductor_two_id
            LEFT OUTER JOIN person con3 ON con3.id = r.conductor_three_id
+           LEFT OUTER JOIN contest_group g ON g.id = c.contest_group_id
            WHERE e.date_of_event > ?1
            AND e.date_of_event < ?2
            ORDER BY e.date_of_event""";

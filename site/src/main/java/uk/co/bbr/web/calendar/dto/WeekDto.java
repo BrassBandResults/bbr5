@@ -165,7 +165,11 @@ public class WeekDto {
     public void assignEvent(ContestEventDao contestEvent) {
         for (DayDto day : this.days) {
             if (contestEvent.getEventDate().equals(day.getDay())) {
-                day.addEvent(contestEvent);
+                if (contestEvent.getContest().getContestGroup() != null) {
+                    day.addGroup(contestEvent.getContest().getContestGroup());
+                } else {
+                    day.addEvent(contestEvent);
+                }
             }
         }
     }
