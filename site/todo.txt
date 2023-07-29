@@ -29,8 +29,6 @@ Add date ranges for personal contest history
 
 Make /ALL lists member only
 
-Calendar page - reduce set of contests in same group to just a group entry on day
-
 Assign points
 
 Performances shows pieces played
