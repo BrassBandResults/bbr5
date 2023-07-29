@@ -8,6 +8,8 @@ Edit adjudicators
 Edit Test Pieces for result
 Edit Test pieces for contest event
 
+Show contest result notes
+
 Security on who can edit result
 
 red background for select "must already exist" thing

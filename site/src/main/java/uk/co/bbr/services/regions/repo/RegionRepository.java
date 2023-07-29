@@ -11,10 +11,9 @@ import java.util.Optional;
 public interface RegionRepository  extends JpaRepository<RegionDao, Long> {
     @Query("SELECT r FROM RegionDao r WHERE r.slug = 'unknown'")
     RegionDao fetchUnknownRegion();
+
     @Query("SELECT r FROM RegionDao r WHERE r.slug = ?1")
     Optional<RegionDao> fetchBySlug(String slug);
-    @Query("SELECT r FROM RegionDao r ORDER BY r.name")
-    List<RegionDao> findAllOrderByName();
 
     @Query("SELECT b FROM BandDao b " +
             "LEFT OUTER JOIN b.section s " +

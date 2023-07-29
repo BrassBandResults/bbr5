@@ -14,7 +14,7 @@ public class YearSql {
     private static final String YEAR_LIST_SQL = """
             SELECT YEAR(e.date_of_event) as event_year, count(distinct(r.band_id)) as band_count, count(distinct(e.id)) as event_count
             FROM contest_event e
-            INNER JOIN contest_result r ON r.contest_event_id = e.id
+            LEFT OUTER JOIN contest_result r ON r.contest_event_id = e.id
             GROUP BY YEAR(e.date_of_event)
             ORDER BY YEAR(e.date_of_event) DESC
             """;

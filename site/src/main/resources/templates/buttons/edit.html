@@ -59,5 +59,5 @@
 </span>
 
 <span th:fragment="editResultPieces(event, result)" th:remove="tag">
-    <span th:replace="buttons/button.html :: button(#{page.buttons.edit}, ${'/contests/' + event.contest.slug + '/' + event.eventDateForUrl + '/result/' + result.id + '/edit-pieces'})"></span>
+    <span th:replace="buttons/button.html :: button(#{page.buttons.edit-pieces}, ${'/contests/' + event.contest.slug + '/' + event.eventDateForUrl + '/result/' + result.id + '/edit-pieces'})"></span>
 </span>

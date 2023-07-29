@@ -14,12 +14,6 @@ public interface PersonRepository extends JpaRepository<PersonDao, Long> {
     @Query("SELECT p FROM PersonDao p WHERE p.id = ?1")
     Optional<PersonDao> fetchById(long personId);
 
-    @Query("SELECT p FROM PersonDao p ORDER BY p.surname, p.firstNames")
-    List<PersonDao> findAllOrderBySurname();
-
-    @Query("SELECT p FROM PersonDao p WHERE UPPER(p.surname) LIKE UPPER(CONCAT(:prefix, '%'))  ORDER BY p.surname, p.firstNames")
-    List<PersonDao> findByPrefixOrderBySurname(String prefix);
-
     @Query("SELECT COUNT(p) FROM PersonDao p")
     int countPeople();
 
