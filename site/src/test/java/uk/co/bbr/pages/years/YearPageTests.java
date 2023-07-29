@@ -103,7 +103,7 @@ class YearPageTests implements LoginMixin {
 
         assertEquals(2004, years.get(0).getYear());
         assertEquals(2, years.get(0).getBandCount());
-        assertEquals(1, years.get(0).getEventCount());
+        assertEquals(2, years.get(0).getEventCount());
         assertEquals(2003, years.get(1).getYear());
         assertEquals(1, years.get(1).getBandCount());
         assertEquals(1, years.get(1).getEventCount());

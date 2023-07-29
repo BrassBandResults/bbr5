@@ -17,16 +17,6 @@ public interface ContestRepository extends JpaRepository<ContestDao, Long> {
     @Query("SELECT c FROM ContestDao c WHERE UPPER(c.name) = ?1")
     Optional<ContestDao> fetchByNameUpper(String nameUpper);
 
-    @Query("SELECT c FROM ContestDao c WHERE UPPER(c.name) LIKE UPPER(CONCAT(:prefix, '%')) ORDER BY c.name")
-    List<ContestDao> findByPrefixOrderByName(String prefix);
-
-    @Query("SELECT c FROM ContestDao c WHERE c.contestGroup IS NULL ORDER BY c.name")
-    List<ContestDao> findAllOutsideGroupsOrderByName();
-
-    @Query("SELECT c FROM ContestDao c " +
-            "WHERE UPPER(c.name) LIKE UPPER(CONCAT(:prefix, '%')) AND c.contestGroup IS NULL ORDER BY c.name")
-    List<ContestDao> findByPrefixOutsideGroupsOrderByName(String prefix);
-
     @Query("SELECT c FROM ContestDao c " +
             "WHERE c.region.id = :regionId")
     List<ContestDao> findContestsForRegion(Long regionId);
