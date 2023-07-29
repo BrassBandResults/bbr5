@@ -1,0 +1,11 @@
+<span th:fragment="week(days)" th:remove="tag">
+    <div class="row text-start" style="height: 120px">
+        <span th:replace="calendar/components/day.html :: day(${days.get(0)})"></span>
+        <span th:replace="calendar/components/day.html :: day(${days.get(1)})"></span>
+        <span th:replace="calendar/components/day.html :: day(${days.get(2)})"></span>
+        <span th:replace="calendar/components/day.html :: day(${days.get(3)})"></span>
+        <span th:replace="calendar/components/day.html :: day(${days.get(4)})"></span>
+        <span th:replace="calendar/components/day.html :: day(${days.get(5)})"></span>
+        <span th:replace="calendar/components/day.html :: day(${days.get(6)})"></span>
+    </div>
+</span>

@@ -112,4 +112,8 @@ public class NotFoundException extends RuntimeException {
     public static NotFoundException resultNotOnCorrectContest(String contestSlug, String contestEventDate) {
         return new NotFoundException("Result not found on event with slug " + contestSlug + " and date " + contestEventDate);
     }
+
+    public static NotFoundException yearOutsideRange(int year) {
+        return new NotFoundException("Year " + year + " is outside the valid range for the calendar");
+    }
 }

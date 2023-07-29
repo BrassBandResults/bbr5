@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+<head>
+    <title th:text="@{#{page.calendar.title} + ' - Brass Band Results'}">Calendar - Brass Band Results</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h2 th:text="#{page.calendar.title}">Calendar</h2>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                &lt;&lt;
+                <a th:if="${PreviousYear != null}" th:href="${'/calendar/' + PreviousYear.year + '/' + PreviousYear.monthValue}" th:text="${#temporals.format(PreviousYear, 'MMMM yyyy')}"></a>
+            </div>
+            <div class="col">
+                &lt;&lt;
+                <a th:if="${PreviousMonth != null}" th:href="${'/calendar/' + PreviousMonth.year + '/' + PreviousMonth.monthValue}" th:text="${#temporals.format(PreviousMonth, 'MMMM yyyy')}"></a>
+            </div>
+            <div class="col text-center">
+                <a th:href="${'/calendar/' + ActualMonth.year + '/' + ActualMonth.monthValue}" th:text="#{page.calendar.today}">Today</a>
+            </div>
+            <div class="col text-end">
+                <a th:if="${NextMonth != null}" th:href="${'/calendar/' + NextMonth.year + '/' + NextMonth.monthValue}" th:text="${#temporals.format(NextMonth, 'MMMM yyyy')}"></a>
+                &gt;&gt;
+            </div>
+            <div class="col text-end">
+                <a th:if="${NextYear != null}" th:href="${'/calendar/' + NextYear.year + '/' + NextYear.monthValue}" th:text="${#temporals.format(NextYear, 'MMMM yyyy')}"></a>
+                &gt;&gt;
+            </div>
+        </div>
+    </div>
+    <br/>
+
+    <div class="container">
+        <div class="container text-center border border-1 border-dark-subtle">
+            <div class="row">
+                <div class="col border border-1 border-dark-subtle bg-primary text-white">
+                    <span th:text="${#temporals.format(DisplayMonth, 'MMMM yyyy')}">July 2023</span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col border border-1 border-dark-subtle bg-primary text-white">
+                    <span th:text="#{day.monday-short}">Mon</span>
+                </div>
+                <div class="col border border-1 border-dark-subtle bg-primary text-white">
+                    <span th:text="#{day.tuesday-short}">Tue</span>
+                </div>
+                <div class="col border border-1 border-dark-subtle bg-primary text-white">
+                    <span th:text="#{day.wednesday-short}">Wed</span>
+                </div>
+                <div class="col border border-1 border-dark-subtle bg-primary text-white">
+                    <span th:text="#{day.thursday-short}">Thu</span>
+                </div>
+                <div class="col border border-1 border-dark-subtle bg-primary text-white">
+                    <span th:text="#{day.friday-short}">Fri</span>
+                </div>
+                <div class="col border border-1 border-dark-subtle bg-primary text-white">
+                    <span th:text="#{day.saturday-short}">Sat</span>
+                </div>
+                <div class="col border border-1 border-dark-subtle bg-primary text-white">
+                    <span th:text="#{day.sunday-short}">Sun</span>
+                </div>
+            </div>
+
+            <span th:each="week : ${Weeks}">
+                <span th:replace="calendar/components/week.html :: week(${week})"></span>
+            </span>
+        </div>
+    </div>
+</div>
+</body>
+</html>

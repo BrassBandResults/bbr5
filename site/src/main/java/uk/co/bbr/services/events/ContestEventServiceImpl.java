@@ -355,12 +355,24 @@ public class ContestEventServiceImpl implements ContestEventService {
         return this.fetchEventsForWeekend(nextSunday);
     }
 
-    private List<ContestResultDao> fetchEventsForWeekend(LocalDate sunday) {
+    @Override
+    public List<ContestResultDao> fetchEventsForMonth(LocalDate start) {
+        LocalDate end = start.plus(1, ChronoUnit.MONTHS).minus(1, ChronoUnit.DAYS);
 
+        List<EventResultSqlDto> weekendResults = EventSql.eventsForDateRange(this.entityManager, start, end);
+
+        List<ContestResultDao> returnResults = new ArrayList<>();
+        for (EventResultSqlDto eachResultSql : weekendResults) {
+            returnResults.add(eachResultSql.getResult());
+        }
+        return returnResults;
+    }
+
+    private List<ContestResultDao> fetchEventsForWeekend(LocalDate sunday) {
         LocalDate start = sunday.minus(4, ChronoUnit.DAYS);
         LocalDate end = sunday.plus(2, ChronoUnit.DAYS);
 
-        List<EventResultSqlDto> weekendResults = EventSql.eventsForWeekend(this.entityManager, start, end);
+        List<EventResultSqlDto> weekendResults = EventSql.eventsForDateRange(this.entityManager, start, end);
 
         List<ContestResultDao> returnResults = new ArrayList<>();
         for (EventResultSqlDto eachResultSql : weekendResults) {

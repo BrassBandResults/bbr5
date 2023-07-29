@@ -1,0 +1,8 @@
+<span th:fragment="day(dayData)" th:remove="tag">
+    <div th:class="'col border border-1' + ${dayData.dayNumber == null ? 'bg-secondary-subtle' : ''} + ${dayData.today ? 'border-danger' : 'border-dark-subtle'}">
+        <b><span th:remove="tag" th:text="${dayData.dayNumber}"></span></b>
+        <span th:remove="tag" th:each="event : ${dayData.events}">
+            <small><small><span th:replace="links/event-link.html :: calendarEventLink(${event})"></span></small></small>
+        </span>
+    </div>
+</span>

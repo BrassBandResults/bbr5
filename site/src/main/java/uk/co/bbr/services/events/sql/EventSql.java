@@ -40,7 +40,7 @@ public class EventSql {
         return SqlExec.execute(entityManager, EVENT_RESULTS_SQL, eventId, EventResultSqlDto.class);
     }
 
-    private static final String WEEKEND_RESULTS_SQL = """
+    private static final String EVENTS_AND_RESULTS_FOR_DATE_RANGE = """
             SELECT e.date_of_event, e.date_resolution, c.slug, r.result_position, r.result_position_type, r.band_name, b.name as actual_band_name, b.slug as band_slug, reg.name as region_name, reg.slug as region_slug, reg.country_code,
                   r.draw, r.points_total,
                   con1.slug as c1_slug, con1.first_names as c1_first_names, con1.surname as c1_surname,
@@ -61,8 +61,8 @@ public class EventSql {
            AND e.date_of_event < ?2
            ORDER BY e.date_of_event""";
 
-    public static List<EventResultSqlDto> eventsForWeekend(EntityManager entityManager, LocalDate start, LocalDate end) {
-        return SqlExec.execute(entityManager, WEEKEND_RESULTS_SQL, start, end, EventResultSqlDto.class);
+    public static List<EventResultSqlDto> eventsForDateRange(EntityManager entityManager, LocalDate start, LocalDate end) {
+        return SqlExec.execute(entityManager, EVENTS_AND_RESULTS_FOR_DATE_RANGE, start, end, EventResultSqlDto.class);
     }
 
     private static final String EVENT_RESULT_PIECES_SQL = """
