@@ -113,6 +113,8 @@ public abstract class PageSets {
         List<String> pageList = new ArrayList<>();
         pageList.add("/bands/not-a-band");
         pageList.add("/bands/not-a-band/whits");
+        pageList.add("/calendar/1799/1");
+        pageList.add("/calendar/2101/12");
         pageList.add("/contests/not-a-contest");
         pageList.add("/contests/not-a-contest/2000-03-01");
         pageList.add("/contests/NOT-A-GROUP");
@@ -148,6 +150,8 @@ public abstract class PageSets {
         pageList.add("/bands/rothwell-temperance/embed");
         pageList.add("/bands/rothwell-temperance/embed/non_whit");
         pageList.add("/bands/rothwell-temperance/embed/whit");
+        pageList.add("/calendar");
+        pageList.add("/calendar/2000/12");
         pageList.add("/contests");
         pageList.add("/contests/Y");
         pageList.add("/contests/ALL");

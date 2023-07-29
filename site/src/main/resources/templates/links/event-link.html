@@ -30,3 +30,9 @@
     </span>
 </span>
 
+<span th:fragment="calendarEventLink(event)">
+    <span th:if="${event != null}" th:remove="tag">
+        <a th:href="${'/contests/' + event.contest.slug + '/' + event.eventDateForUrl}" class="bbr-event" th:text="${event.name}"></a>
+    </span>
+</span>
+
