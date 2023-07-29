@@ -28,7 +28,7 @@
 
 <span th:fragment="conductorsLink(result)">
     <span th:if="${result != null && result.band != null && result.band.name != null && result.band.name.length > 0}" th:remove="tag">
-        <span th:if="${result.resultPositionType != 'W' && result.resultPositionType != 'D'}" th:remove="tag">
+        <span th:if="${result.resultPositionType.code != 'W' && result.resultPositionType.code != 'D'}" th:remove="tag">
             <span th:replace="links/person-link.html :: personLinkWithUnknown(${result.conductor})">Bob Childs</span>
             <span th:if="${result.conductorSecond != null}" th:remove="tag">
               <br/><span th:replace="links/person-link.html :: personLink(${result.conductorSecond})">Bob Childs</span>
