@@ -65,9 +65,11 @@ public class ContestEventController {
         List<ContestEventTestPieceDao> eventTestPieces = this.contestEventService.listTestPieces(contestEvent.get());
         List<ContestAdjudicatorDao> adjudicators = this.contestEventService.fetchAdjudicators(contestEvent.get());
 
-        contestEvent.get().setCanEdit(this.securityService.getCurrentUser() != null);
+        SiteUserDao currentUser = this.securityService.getCurrentUser();
+
+        contestEvent.get().setCanEdit(currentUser != null);
         for (ContestResultDao result : eventResults){
-            result.setCanEdit(this.securityService.getCurrentUser() != null);
+            result.setCanEdit(currentUser != null);
         }
 
         model.addAttribute("ContestEvent", contestEvent.get());
@@ -111,14 +113,13 @@ public class ContestEventController {
             throw NotFoundException.eventNotFound(contestSlug, contestEventDate);
         }
 
-        SiteUserDao currentUser = this.securityService.getCurrentUser();
-
         Optional<ContestResultDao> result = this.contestResultService.fetchById(resultId);
         if (result.isEmpty()) {
             System.out.println("Result not found");
             throw NotFoundException.resultNotFoundById(resultId);
         }
 
+        SiteUserDao currentUser = this.securityService.getCurrentUser();
         this.performanceService.linkUserPerformance(currentUser, result.get());
 
         return "redirect:/profile/performances";
