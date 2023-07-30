@@ -116,4 +116,8 @@ public class NotFoundException extends RuntimeException {
     public static NotFoundException yearOutsideRange(int year) {
         return new NotFoundException("Year " + year + " is outside the valid range for the calendar");
     }
+
+    public static NotFoundException setTestPieceNotFoundById() {
+        return new NotFoundException("Contest Set Test Piece not found by id");
+    }
 }

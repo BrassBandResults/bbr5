@@ -61,4 +61,8 @@ public interface ContestEventService {
     List<ContestResultDao> fetchNextWeekend();
 
     List<ContestResultDao> fetchEventsForMonth(LocalDate month);
+
+    Optional<ContestEventTestPieceDao> fetchSetTestById(ContestEventDao contestEvent, Long eventPieceId);
+
+    void removeSetTestPiece(ContestEventTestPieceDao eventPiece);
 }
