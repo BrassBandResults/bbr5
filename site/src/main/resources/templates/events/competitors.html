@@ -22,19 +22,21 @@
 
     <div class="tab-content">
         <span th:each="band : ${Competitors}" th:remove="tag">
-            <h5>
-                <span th:text="${band.bandPosition}">1</span>
-                <span th:text="${band.bandName}">Band Name</span>
-            </h5>
-            <ul>
-                <li th:each="competitor : ${band.competitors}">
-                    <span th:if="${!competitor.privateUser}" th:remove="tag">
-                        <a th:href="${'/users/' + competitor.getUsercode()}" th:text="${competitor.getUsercode()}">User</a>
-                        <span th:if="${competitor.getPosition() != null}">(<span th:text="#{${competitor.getPosition()}}">)</span></span>
-                    </span>
-                    <span th:if="${competitor.privateUser}" th:text="#{page.competitors.private-user}">Private User</span>
-               </li>
-            </ul>
+            <span th:if="${band.hasCompetitors()}">
+                <h5>
+                    <span th:text="${band.bandPosition}">1</span>
+                    <span th:text="${band.bandName}">Band Name</span>
+                </h5>
+                <ul>
+                    <li th:each="competitor : ${band.competitors}">
+                        <span th:if="${!competitor.privateUser}" th:remove="tag">
+                            <a th:href="${'/users/' + competitor.getUsercode()}" th:text="${competitor.getUsercode()}">User</a>
+                            <span th:if="${competitor.getPosition() != null}">(<span th:text="#{${competitor.getPosition()}}">)</span></span>
+                        </span>
+                        <span th:if="${competitor.privateUser}" th:text="#{page.competitors.private-user}">Private User</span>
+                   </li>
+                </ul>
+            </span>
         </span>
     </div>
 </div>

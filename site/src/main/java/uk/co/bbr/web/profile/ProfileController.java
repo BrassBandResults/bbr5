@@ -43,6 +43,22 @@ public class ProfileController {
         return "users/public-user";
     }
 
+    @GetMapping("/myresults/{usercode:[a-zA-Z0-9@_\\-.]+}")
+    public String publicMyResultsPage(Model model, @PathVariable("usercode") String usercode) {
+
+        Optional<SiteUserDao> user = this.userService.fetchUserByUsercode(usercode);
+        if (user.isEmpty()) {
+            throw NotFoundException.userNotFoundByUsercode(usercode);
+        }
+
+        List<PerformanceDao> performances = this.performanceService.fetchApprovedPerformancesForUser(user.get());
+
+        model.addAttribute("User", user.get());
+        model.addAttribute("Performances", performances);
+
+        return "users/myresults";
+    }
+
     @IsBbrMember
     @GetMapping("/profile")
     public String profileHome(Model model) {
