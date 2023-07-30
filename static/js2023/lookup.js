@@ -1,8 +1,8 @@
-function lookup(inputId, entity) {
+function _lookup(inputId, entity, invalidClass) {
     let inputElement = document.getElementById(inputId);
     let inputValue = inputElement.value;
     inputElement.classList.remove("bg-success-subtle");
-    inputElement.classList.add("bg-warning-subtle");
+    inputElement.classList.add(invalidClass);
 
     let inputElementSlug = document.getElementById(inputId + '-slug');
     if (inputElementSlug) {
@@ -36,4 +36,12 @@ function lookup(inputId, entity) {
         httpRequest.open("GET", "/lookup/" + entity + "/data.json?s=" + inputValue, true);
         httpRequest.send();
     }
+}
+
+function lookup(inputId, entity) {
+    _lookup(inputId, entity, 'bg-warning-subtle');
+}
+
+function lookupMandatory(inputId, entity) {
+    _lookup(inputId, entity, 'bg-danger-subtle');
 }

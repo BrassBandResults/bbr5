@@ -21,7 +21,7 @@
         </div>
         <div class="mb-3">
             <label class="form-label" for="contest-group" th:text="#{page.field-prompt.group}">Group:</label>
-            <input id="contest-group" autocomplete="off" class="form-control" type="text" maxlength="100" onkeyup="lookup('contest-group', 'group');"/>
+            <input id="contest-group" autocomplete="off" class="form-control" type="text" maxlength="100" onkeyup="lookupMandatory('contest-group', 'group');"/>
         </div>
         <div class="mb-3">
             <label class="form-label" for="contest-type" th:text="#{page.field-prompt.contest-type}">Contest Type:</label>
@@ -35,7 +35,7 @@
         </div>
         <div class="mb-3">
             <label class="form-label" for="qualifies-for" th:text="#{page.field-prompt.qualifies-for}">Qualifies For:</label>
-            <input id="qualifies-for" autocomplete="off" class="form-control" type="text" maxlength="100" onkeyup="lookup('qualifies-for', 'contest');"/>
+            <input id="qualifies-for" autocomplete="off" class="form-control" type="text" maxlength="100" onkeyup="lookupMandatory('qualifies-for', 'contest');"/>
             <small class="form-text" th:text="#{page.contest-edit.hint.qualifies-for}">Contest that bands who do well here qualify through to.</small>
         </div>
         <div class="mb-3">

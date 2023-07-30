@@ -36,7 +36,7 @@
         </div>
         <div class="mb-3">
             <label class="form-label" for="venue" th:text="#{page.field-prompt.venue}">Venue:</label>
-            <input id="venue" th:field="*{venueName}" autocomplete="off" class="form-control" type="text" maxlength="100" onkeyup="lookup('venue', 'venue');"/>
+            <input id="venue" th:field="*{venueName}" autocomplete="off" class="form-control" type="text" maxlength="100" onkeyup="lookupMandatory('venue', 'venue');"/>
             <input type="hidden" th:field="*{venueSlug}" id="venue-slug"/>
             <small class="form-text" th:text="#{page.event-edit.hint.venue}">The location the contest event took place.</small>
         </div>
