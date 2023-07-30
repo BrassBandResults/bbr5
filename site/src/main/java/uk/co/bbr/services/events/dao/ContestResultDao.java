@@ -296,4 +296,8 @@ public class ContestResultDao extends AbstractDao implements NameTools {
         }
         this.notes = notes;
     }
+
+    public boolean getHasNotes() {
+        return this.notes != null && this.notes.trim().length() > 0;
+    }
 }

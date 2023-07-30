@@ -83,7 +83,10 @@
             </thead>
             <tbody>
                 <tr th:each="result : ${EventResults}" th:class="${'result-' + result.position}">
-                    <td class="bbr-position"><span th:replace="components/results-position.html :: resultsPosition(${result})">1</span></td>
+                    <td class="bbr-position">
+                        <span th:replace="components/results-position.html :: resultsPosition(${result})">1</span>
+                        <img th:if="${result.hasNotes}" th:title="${result.notes}" th:src="@{${STATIC_HOST} + '/icons/comment.png'}"/>
+                    </td>
                     <td class="bbr-band"><span th:replace="links/band-link.html :: bandLinkWithOverride(${result})"></span></td>
                     <td class="bbr-conductor"><span th:replace="links/person-link.html :: conductorsLink(${result})">Bob Childs</span></td>
                     <td class="bbr-piece" th:if="${ContestEvent.contestType.ownChoice || ContestEvent.contestType.entertainments}">
