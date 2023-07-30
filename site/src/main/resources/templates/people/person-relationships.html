@@ -32,7 +32,7 @@
         <select name="RelationshipTypeId" id="relationship-type-dropdown" class="form-select">
             <option th:each="relationshipType : ${RelationshipTypes}" th:value="${relationshipType.id}" th:text="#{${relationshipType.name}}"></option>
         </select><br/><br/>
-        <input id="right-person" th:placeholder="#{page.person-relationships.add-person-placeholder}" autocomplete="off" class="form-control" type="text" maxlength="100" onkeyup="lookup('right-person', 'person');"/>
+        <input id="right-person" th:placeholder="#{page.person-relationships.add-person-placeholder}" autocomplete="off" class="form-control" type="text" maxlength="100" onkeyup="lookupMandatory('right-person', 'person');"/>
         <br/>
         <input type="hidden" id="right-person-slug" name="RightPersonSlug"/>
         <input type="submit" th:value="#{page.buttons.save-new-relationship}" class="btn btn-outline-success btn-sm rounded"/>

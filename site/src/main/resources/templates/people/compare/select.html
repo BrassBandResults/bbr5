@@ -8,11 +8,11 @@
     <h2 th:text="#{page.compare-people.page-header}">Compare People</h2>
     <div class="mb-3">
         <label class="form-label" for="first" th:text="#{page.field-prompt.first-conductor}">First Person:</label>
-        <input id="first" autocomplete="off" class="form-control" type="text" maxlength="100" onkeyup="lookup('first', 'person');"/>
+        <input id="first" autocomplete="off" class="form-control" type="text" maxlength="100" onkeyup="lookupMandatory('first', 'person');"/>
     </div>
     <div class="mb-3">
         <label class="form-label" for="second" th:text="#{page.field-prompt.second-conductor}">Second person:</label>
-        <input id="second" autocomplete="off" class="form-control" type="text" maxlength="100" onkeyup="lookup('second', 'person');"/>
+        <input id="second" autocomplete="off" class="form-control" type="text" maxlength="100" onkeyup="lookupMandatory('second', 'person');"/>
     </div>
     <button id="compare-button" th:text="#{page.buttons.compare}" class="btn btn-outline-success disabled" onclick="showComparison()"></button>
 </div>

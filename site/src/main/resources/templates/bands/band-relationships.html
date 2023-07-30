@@ -32,7 +32,7 @@
         <select name="RelationshipTypeId" id="relationship-type-dropdown" class="form-select">
             <option th:each="relationshipType : ${RelationshipTypes}" th:value="${relationshipType.id}" th:text="#{${relationshipType.name}}"></option>
         </select><br/><br/>
-        <input id="right-band" th:placeholder="#{page.band-relationships.add-band-placeholder}" autocomplete="off" class="form-control" type="text" maxlength="100" onkeyup="lookup('right-band', 'band');"/>
+        <input id="right-band" th:placeholder="#{page.band-relationships.add-band-placeholder}" autocomplete="off" class="form-control" type="text" maxlength="100" onkeyup="lookupMandatory('right-band', 'band');"/>
         <br/>
         <input type="hidden" id="right-band-slug" name="RightBandSlug"/>
         <input type="submit" th:value="#{page.buttons.save-new-relationship}" class="btn btn-outline-success btn-sm rounded"/>
