@@ -24,7 +24,7 @@ public class ContestTagSql {
     }
 
     private static final String GROUP_TAGS_SQL = """
-            SELECT g.slug as group_slug, t.slug as tag_slug, t.name as tag_name,
+            SELECT g.slug as group_slug, t.slug as tag_slug, t.name as tag_name
             FROM contest_group_tag_link tl
             INNER JOIN contest_group g ON tl.contest_group_id = g.id
             INNER JOIN contest_tag t ON tl.contest_tag_id = t.id
