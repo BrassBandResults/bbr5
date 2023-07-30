@@ -120,4 +120,8 @@ public class NotFoundException extends RuntimeException {
     public static NotFoundException setTestPieceNotFoundById() {
         return new NotFoundException("Contest Set Test Piece not found by id");
     }
+
+    public static NotFoundException resultPieceNotFoundById() {
+        return new NotFoundException("Contest Result Piece not found by id");
+    }
 }

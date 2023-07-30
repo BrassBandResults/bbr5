@@ -1,32 +1,36 @@
 <!DOCTYPE html>
 <html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
 <head>
-    <title th:text="@{#{page.add-set-tests.title} + ' - Brass Band Results'}">Edit Set Tests - Brass Band Results</title>
+    <title th:text="@{#{page.edit-result-pieces.title} + ' - Brass Band Results'}">Edit Result Pieces - Brass Band Results</title>
 </head>
 <body>
 <div layout:fragment="content">
     <h2>
-        <span th:text="#{page.add-set-tests.title}">Edit Set Test Pieces</span>
+        <span th:text="#{page.edit-result-pieces.title}">Edit Result Pieces</span>
         <span th:replace="links/contest-link.html :: contestLink(${ContestEvent.contest})"></span>
     </h2>
     <h3><a th:href="${'/contests/' + ContestEvent.contest.slug + '/' + ContestEvent.eventDateForUrl}" th:text="${ContestEvent.eventDateDisplayWithDay}"></a></h3>
 
     <table class="table table-hover">
-        <tr th:each="eventPiece, iStat : ${TestPieces}">
+        <tr th:each="resultPiece : ${Pieces}">
             <td>
-                <span th:if="${!iStat.first}" th:text="#{${eventPiece.andOr.translationKey}}"></span>
-                <span th:replace="links/piece-link.html :: pieceLink(${eventPiece.piece})"></span>
+                <span th:replace="links/piece-link.html :: pieceLink(${resultPiece.piece})"></span>
             </td>
-            <td><span th:replace="buttons/delete.html :: removeTestPiece(${ContestEvent}, ${eventPiece})"></span></td>
+            <td>
+                <span th:text="${resultPiece.suffix}">Suffix</span>
+            </td>
+            <td>
+                <span th:replace="buttons/delete.html :: removeResultPiece(${ContestEvent}, ${ContestResult}, ${resultPiece})"></span>
+            </td>
         </tr>
     </table>
 
     <br/>
     <br/>
 
-    <h4 th:text="#{page.add-set-tests.add-another}">Add Another Set Test Piece</h4>
+    <h4 th:text="#{page.edit-result-pieces.add-another}">Add Another Piece</h4>
     <form th:object="${Form}"
-          th:action="${'/contests/' + ContestEvent.contest.slug + '/' + ContestEvent.eventDateForUrl + '/edit-set-tests'}"
+          th:action="${'/contests/' + ContestEvent.contest.slug + '/' + ContestEvent.eventDateForUrl + '/result/' + ContestResult.id + '/edit-pieces'}"
           method="post">
         <div class="alert alert-danger" th:if="${#fields.hasErrors('*')}">
             <ul>
@@ -34,23 +38,18 @@
             </ul>
         </div>
         <div class="mb-3">
-            <label class="form-label" for="and-or" th:text="#{page.field-prompt.and-or}">And/Or:</label>
-            <select id="and-or" class="form-select" th:field="*{andOr}">
-                <option th:each="state : ${T(uk.co.bbr.services.events.types.TestPieceAndOr).values()}"
-                        th:value="${state.code}"
-                        th:text="#{${state.translationKey}}">
-                </option>
-            </select>
-        </div>
-        <div class="mb-3">
             <label class="form-label" for="piece" th:text="#{page.field-prompt.test-piece}">Piece:</label>
             <input id="piece" th:field="*{pieceName}" autocomplete="off" class="form-control" type="text" maxlength="100" onkeyup="lookup('piece', 'piece');"/>
             <input type="hidden" th:field="*{pieceSlug}" id="piece-slug"/>
         </div>
+        <div class="mb-3">
+            <label class="form-label" for="suffix" th:text="#{page.field-prompt.suffix}">Suffix:</label>
+            <input id="suffix" th:field="*{suffix}" autocomplete="off" class="form-control" type="text" maxlength="100"/>
+        </div>
 
         <input type="submit" th:value="#{page.buttons.add-test-piece}" class="btn btn-outline-success"/>
         <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
-        <a th:href="${'/contests/' + ContestEvent.contest.slug + '/' + ContestEvent.eventDateForUrl}" th:text="#{page.buttons.cancel}" class="btn btn-light">Cancel wout saving</a>
+        <a th:href="${'/contests/' + ContestEvent.contest.slug + '/' + ContestEvent.eventDateForUrl + '/result/' + ContestResult.id + '/edit-pieces'}" th:text="#{page.buttons.cancel}" class="btn btn-light">Cancel wout saving</a>
     </form>
 </div>
 

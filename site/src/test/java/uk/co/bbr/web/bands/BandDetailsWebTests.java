@@ -56,7 +56,7 @@ class BandDetailsWebTests implements LoginMixin {
     @Autowired private BandRehearsalsService bandRehearsalsService;
     @Autowired private ContestService contestService;
     @Autowired private ContestEventService contestEventService;
-    @Autowired private ResultService contestResultService;
+    @Autowired private ResultService resultService;
     @Autowired private ContestGroupService contestGroupService;
     @Autowired private ContestTagService contestTagService;
     @Autowired private PersonService personService;
@@ -96,22 +96,22 @@ class BandDetailsWebTests implements LoginMixin {
 
         ContestEventDao broadoakWhitFriday2010 = this.contestEventService.create(broadoakWhitFriday, LocalDate.of(2010, 5, 1));
 
-        this.contestResultService.addResult(yorkshireArea2000, "1", rtb, davidRoberts);
-        this.contestResultService.addResult(yorkshireArea2000, "2", notRtb, johnRoberts);
+        this.resultService.addResult(yorkshireArea2000, "1", rtb, davidRoberts);
+        this.resultService.addResult(yorkshireArea2000, "2", notRtb, johnRoberts);
 
-        this.contestResultService.addResult(yorkshireArea2001, "2", rtb, davidRoberts);
-        this.contestResultService.addResult(yorkshireArea2001, "1", notRtb, johnRoberts);
+        this.resultService.addResult(yorkshireArea2001, "2", rtb, davidRoberts);
+        this.resultService.addResult(yorkshireArea2001, "1", notRtb, johnRoberts);
 
-        this.contestResultService.addResult(yorkshireArea2002, "5", rtb, johnRoberts);
-        this.contestResultService.addResult(yorkshireArea2002, "2", notRtb, davidRoberts);
+        this.resultService.addResult(yorkshireArea2002, "5", rtb, johnRoberts);
+        this.resultService.addResult(yorkshireArea2002, "2", notRtb, davidRoberts);
 
-        this.contestResultService.addResult(yorkshireArea2003, "3", notRtb, davidRoberts);
+        this.resultService.addResult(yorkshireArea2003, "3", notRtb, davidRoberts);
 
-        this.contestResultService.addResult(yorkshireArea2004, "1", rtb, davidRoberts);
-        this.contestResultService.addResult(yorkshireArea2004, "1", notRtb, duncanBeckley);
+        this.resultService.addResult(yorkshireArea2004, "1", rtb, davidRoberts);
+        this.resultService.addResult(yorkshireArea2004, "1", notRtb, duncanBeckley);
 
-        this.contestResultService.addResult(broadoakWhitFriday2010, "3", rtb, davidRoberts);
-        this.contestResultService.addResult(broadoakWhitFriday2010, "4", whitOnlyBand, duncanBeckley);
+        this.resultService.addResult(broadoakWhitFriday2010, "3", rtb, davidRoberts);
+        this.resultService.addResult(broadoakWhitFriday2010, "4", whitOnlyBand, duncanBeckley);
 
         ContestTagDao yorkshireTag = this.contestTagService.create("Yorkshire Tag");
         yorkshireArea = this.contestService.addContestTag(yorkshireArea, yorkshireTag);

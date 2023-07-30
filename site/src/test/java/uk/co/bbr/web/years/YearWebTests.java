@@ -52,7 +52,7 @@ class YearWebTests implements LoginMixin {
     @Autowired private PersonService personService;
     @Autowired private PieceService pieceService;
     @Autowired private ContestEventService contestEventService;
-    @Autowired private ResultService contestResultService;
+    @Autowired private ResultService resultService;
     @Autowired private RestTemplate restTemplate;
     @Autowired private CsrfTokenRepository csrfTokenRepository;
     @LocalServerPort private int port;
@@ -94,16 +94,16 @@ class YearWebTests implements LoginMixin {
         yorkshireArea2004 = this.contestEventService.update(yorkshireArea2004);
         this.contestEventService.addTestPieceToContest(yorkshireArea2004, contestMusic);
 
-        this.contestResultService.addResult(yorkshireArea2000, "1", rtb, davidRoberts);
-        this.contestResultService.addResult(yorkshireArea2000, "2", notRtb, johnRoberts);
+        this.resultService.addResult(yorkshireArea2000, "1", rtb, davidRoberts);
+        this.resultService.addResult(yorkshireArea2000, "2", notRtb, johnRoberts);
 
-        this.contestResultService.addResult(yorkshireArea2001, "2", rtb, davidRoberts);
-        this.contestResultService.addResult(yorkshireArea2001, "1", notRtb, johnRoberts);
+        this.resultService.addResult(yorkshireArea2001, "2", rtb, davidRoberts);
+        this.resultService.addResult(yorkshireArea2001, "1", notRtb, johnRoberts);
 
-        this.contestResultService.addResult(yorkshireArea2002, "5", rtb, johnRoberts);
-        this.contestResultService.addResult(yorkshireArea2002, "2", notRtb, davidRoberts);
+        this.resultService.addResult(yorkshireArea2002, "5", rtb, johnRoberts);
+        this.resultService.addResult(yorkshireArea2002, "2", notRtb, davidRoberts);
 
-        this.contestResultService.addResult(yorkshireArea2003, "3", notRtb, davidRoberts);
+        this.resultService.addResult(yorkshireArea2003, "3", notRtb, davidRoberts);
 
         ContestResultDao result = new ContestResultDao();
         result.setDraw(1);
@@ -114,10 +114,10 @@ class YearWebTests implements LoginMixin {
         result.setConductorSecond(johnRoberts);
         result.setConductorThird(duncanBeckley);
 
-        result = this.contestResultService.addResult(yorkshireArea2004, result);
-        this.contestResultService.addPieceToResult(result, fraternity);
+        result = this.resultService.addResult(yorkshireArea2004, result);
+        this.resultService.addPieceToResult(result, fraternity);
 
-        this.contestResultService.addResult(yorkshireArea2004, "1", notRtb, duncanBeckley);
+        this.resultService.addResult(yorkshireArea2004, "1", notRtb, duncanBeckley);
 
         logoutTestUser();
     }

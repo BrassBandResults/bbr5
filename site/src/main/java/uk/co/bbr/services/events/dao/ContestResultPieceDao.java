@@ -3,6 +3,7 @@ package uk.co.bbr.services.events.dao;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.security.core.parameters.P;
 import uk.co.bbr.services.framework.AbstractDao;
 import uk.co.bbr.services.framework.mixins.NameTools;
 import uk.co.bbr.services.pieces.dao.PieceDao;
@@ -36,4 +37,12 @@ public class ContestResultPieceDao extends AbstractDao implements NameTools {
 
     @Column(name="suffix")
     private String suffix;
+
+    public void setSuffix(String suffix) {
+        if (suffix == null) {
+            this.suffix = null;
+        } else {
+            this.suffix = suffix.trim();
+        }
+    }
 }

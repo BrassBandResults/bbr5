@@ -24,6 +24,7 @@ public interface ResultService {
 
     ContestResultPieceDao addPieceToResult(ContestResultDao contestResult, ContestResultPieceDao contestResultTestPiece);
     ContestResultPieceDao addPieceToResult(ContestResultDao contestResult, PieceDao piece);
+    ContestResultPieceDao addPieceToResult(ContestResultDao contestResult, PieceDao piece, String suffix);
 
     List<ContestResultPieceDao> fetchResultsWithOwnChoicePieces(ContestDao contest);
 
@@ -42,4 +43,10 @@ public interface ResultService {
     List<ContestStreakDto> fetchStreaksForContest(ContestDao contest);
 
     Optional<ContestResultDao> fetchById(Long resultId);
+
+    List<ContestResultPieceDao> listResultPieces(ContestResultDao result);
+
+    Optional<ContestResultPieceDao> fetchResultPieceById(ContestResultDao contestResult, Long resultPieceId);
+
+    void removePiece(ContestEventDao contestEvent, ContestResultDao contestResult, ContestResultPieceDao contestResultPiece);
 }

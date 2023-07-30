@@ -51,7 +51,7 @@ class PieceWebTests implements LoginMixin {
     @Autowired private PieceService pieceService;
     @Autowired private ContestService contestService;
     @Autowired private ContestEventService contestEventService;
-    @Autowired private ResultService contestResultService;
+    @Autowired private ResultService resultService;
     @Autowired private RestTemplate restTemplate;
     @LocalServerPort private int port;
 
@@ -78,14 +78,14 @@ class PieceWebTests implements LoginMixin {
 
         ContestDao yorkshireArea = this.contestService.create("Yorkshire Area");
         ContestEventDao yorkshireArea2011 = this.contestEventService.create(yorkshireArea, LocalDate.of(2011, 3, 1));
-        ContestResultDao yorkshireResult = this.contestResultService.addResult(yorkshireArea2011, "1", rtb, davidRoberts);
+        ContestResultDao yorkshireResult = this.resultService.addResult(yorkshireArea2011, "1", rtb, davidRoberts);
 
         ContestDao midlandsArea = this.contestService.create("Midlands Area");
         ContestEventDao midlandsArea2011 = this.contestEventService.create(midlandsArea, LocalDate.of(2011, 3, 1));
-        ContestResultDao midlandsResult = this.contestResultService.addResult(midlandsArea2011, "1", rtb, davidRoberts);
+        ContestResultDao midlandsResult = this.resultService.addResult(midlandsArea2011, "1", rtb, davidRoberts);
 
 
-        this.contestResultService.addPieceToResult(midlandsResult, contestMusic);
+        this.resultService.addPieceToResult(midlandsResult, contestMusic);
         this.contestEventService.addTestPieceToContest(yorkshireArea2011, hootenanny);
 
         logoutTestUser();

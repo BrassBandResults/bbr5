@@ -32,7 +32,7 @@ class CreateContestResultTests implements LoginMixin {
 
     @Autowired private ContestService contestService;
     @Autowired private ContestEventService contestEventService;
-    @Autowired private ResultService contestResultService;
+    @Autowired private ResultService resultService;
     @Autowired private BandService bandService;
     @Autowired private PersonService personService;
     @Autowired private SecurityService securityService;
@@ -56,7 +56,7 @@ class CreateContestResultTests implements LoginMixin {
         newResult.setDraw(2);
 
         // act
-        ContestResultDao result = this.contestResultService.addResult(event, newResult);
+        ContestResultDao result = this.resultService.addResult(event, newResult);
 
         // assert
         assertEquals("Yorkshire Area", result.getContestEvent().getContest().getName());
@@ -87,7 +87,7 @@ class CreateContestResultTests implements LoginMixin {
         ContestResultDao existingResult = new ContestResultDao();
         existingResult.setBand(band);
         existingResult.setBandName(band.getName());
-        this.contestResultService.addResult(event, existingResult);
+        this.resultService.addResult(event, existingResult);
 
         // act
         ContestResultDao replaceResult = new ContestResultDao();
@@ -107,11 +107,11 @@ class CreateContestResultTests implements LoginMixin {
         replaceResult.setConductor(conductor1);
         replaceResult.setConductorSecond(conductor2);
         replaceResult.setConductorThird(conductor3);
-        ContestResultDao result = this.contestResultService.addResult(event, replaceResult);
+        ContestResultDao result = this.resultService.addResult(event, replaceResult);
 
         // assert
         ContestEventDao fetchedEvent = this.contestEventService.fetchEvent(event.getContest().getSlug(), event.getEventDate()).get();
-        List<ContestResultDao> results = this.contestResultService.fetchForEvent(fetchedEvent);
+        List<ContestResultDao> results = this.resultService.fetchForEvent(fetchedEvent);
         assertEquals(1, results.size());
 
         assertEquals(existingResult.getId(), results.get(0).getId());
@@ -166,7 +166,7 @@ class CreateContestResultTests implements LoginMixin {
         existingResult.setConductor(conductor1);
         existingResult.setConductorSecond(conductor2);
         existingResult.setConductorThird(conductor3);
-        this.contestResultService.addResult(event, existingResult);
+        this.resultService.addResult(event, existingResult);
 
         // act
         ContestResultDao replaceResult = new ContestResultDao();
@@ -185,11 +185,11 @@ class CreateContestResultTests implements LoginMixin {
         replaceResult.setConductor(conductor3);
         replaceResult.setConductorSecond(conductor1);
         replaceResult.setConductorThird(conductor2);
-        ContestResultDao result = this.contestResultService.addResult(event, replaceResult);
+        ContestResultDao result = this.resultService.addResult(event, replaceResult);
 
         // assert
         ContestEventDao fetchedEvent = this.contestEventService.fetchEvent(event.getContest().getSlug(), event.getEventDate()).get();
-        List<ContestResultDao> results = this.contestResultService.fetchForEvent(fetchedEvent);
+        List<ContestResultDao> results = this.resultService.fetchForEvent(fetchedEvent);
         assertEquals(1, results.size());
 
         assertEquals(existingResult.getId(), results.get(0).getId());

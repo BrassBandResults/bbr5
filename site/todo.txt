@@ -5,7 +5,6 @@ Add results - add notes
 Add results - create adjudicator
 
 Edit adjudicators
-Edit Test Pieces for result
 
 Delete result
 Delete event
@@ -34,7 +33,11 @@ Add date ranges for personal contest history
 
 Assign points
 
+Add placeholders to form fields
+
 Performances shows pieces played
+
+Result piece move up/down buttons to reorder
 
 Fetch pending performances works out ones that aren't in history and aren't rejected
 

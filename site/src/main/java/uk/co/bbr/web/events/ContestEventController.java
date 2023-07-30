@@ -14,7 +14,6 @@ import uk.co.bbr.services.events.dao.ContestResultDao;
 import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.performances.PerformanceService;
 import uk.co.bbr.services.performances.dto.CompetitorBandDto;
-import uk.co.bbr.services.performances.dto.CompetitorDto;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.services.security.UserService;
 import uk.co.bbr.services.security.dao.SiteUserDao;
@@ -31,7 +30,7 @@ import java.util.Optional;
 public class ContestEventController {
 
     private final ContestEventService contestEventService;
-    private final ResultService contestResultService;
+    private final ResultService resultService;
     private final PerformanceService performanceService;
     private final SecurityService securityService;
     private final UserService userService;
@@ -48,7 +47,7 @@ public class ContestEventController {
           }
         }
 
-        List<ContestResultDao> eventResults = this.contestResultService.fetchForEvent(contestEvent.get());
+        List<ContestResultDao> eventResults = this.resultService.fetchForEvent(contestEvent.get());
 
         ContestEventDao nextEvent = this.contestEventService.fetchEventLinkNext(contestEvent.get());
         ContestEventDao previousEvent = this.contestEventService.fetchEventLinkPrevious(contestEvent.get());
@@ -121,7 +120,7 @@ public class ContestEventController {
 
         SiteUserDao currentUser = this.securityService.getCurrentUser();
 
-        List<ContestResultDao> eventResults = this.contestResultService.fetchForEvent(contestEvent.get());
+        List<ContestResultDao> eventResults = this.resultService.fetchForEvent(contestEvent.get());
 
         model.addAttribute("ContestEvent", contestEvent.get());
         model.addAttribute("EventResults", eventResults);
@@ -139,7 +138,7 @@ public class ContestEventController {
             throw NotFoundException.eventNotFound(contestSlug, contestEventDate);
         }
 
-        Optional<ContestResultDao> result = this.contestResultService.fetchById(resultId);
+        Optional<ContestResultDao> result = this.resultService.fetchById(resultId);
         if (result.isEmpty()) {
             throw NotFoundException.resultNotFoundById(resultId);
         }
