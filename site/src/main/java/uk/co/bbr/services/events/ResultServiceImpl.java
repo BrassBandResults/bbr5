@@ -112,7 +112,10 @@ public class ResultServiceImpl implements ResultService {
     public ContestResultPieceDao addPieceToResult(ContestResultDao contestResult, ContestResultPieceDao contestResultTestPiece) {
         contestResultTestPiece.setContestResult(contestResult);
 
-        int maxOrdering = this.contestResultPieceRepository.fetchMaxOrdering(contestResult.getId());
+        Integer maxOrdering = this.contestResultPieceRepository.fetchMaxOrdering(contestResult.getId());
+        if (maxOrdering == null) {
+            maxOrdering = 10;
+        }
         contestResultTestPiece.setOrdering(maxOrdering + 2);
 
         contestResultTestPiece.setCreated(LocalDateTime.now());

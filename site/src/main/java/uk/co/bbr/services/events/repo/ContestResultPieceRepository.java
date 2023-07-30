@@ -20,5 +20,5 @@ public interface ContestResultPieceRepository extends JpaRepository<ContestResul
     Optional<ContestResultPieceDao> fetchForContestAndResultPieceId(Long contestResultId, Long resultPieceId);
 
     @Query("SELECT MAX(p.ordering) FROM ContestResultPieceDao p WHERE p.contestResult.id = :contestResultId")
-    int fetchMaxOrdering(Long contestResultId);
+    Integer fetchMaxOrdering(Long contestResultId);
 }

@@ -96,7 +96,7 @@ public class EditTestPiecesController {
 
         this.contestEventService.addTestPieceToContest(contestEvent.get(), piece.get(), andOr);
 
-        return "redirect:/contests/{contestSlug}/{contestEventDate}/edit-set-tests";
+        return "redirect:/contests/{contestSlug}/" + contestEvent.get().getEventDateForUrl() + "/edit-set-tests";
     }
 
     @IsBbrMember
@@ -116,6 +116,6 @@ public class EditTestPiecesController {
 
         this.contestEventService.removeSetTestPiece(piece.get());
 
-        return "redirect:/contests/{contestSlug}/{contestEventDate}/edit-set-tests";
+        return "redirect:/contests/{contestSlug}/" + contestEvent.get().getEventDateForUrl() + "/edit-set-tests";
     }
 }
