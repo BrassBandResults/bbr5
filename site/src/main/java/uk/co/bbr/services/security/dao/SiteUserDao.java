@@ -163,6 +163,10 @@ public class SiteUserDao extends AbstractDao {
         }
     }
 
+    public void setContestHistoryVisibility(ContestHistoryVisibility contestHistoryVisibility) {
+        this.contestHistoryVisibility = contestHistoryVisibility;
+    }
+
     public String getGravatarUrl() {
         MessageDigest md = null;
         try {

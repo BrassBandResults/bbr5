@@ -173,4 +173,12 @@ public class SecurityServiceImpl implements SecurityService {
     public boolean userExists(String usercode) {
         return this.userService.fetchUserByUsercode(usercode).isPresent();
     }
+
+    @Override
+    public void update(SiteUserDao user) {
+        user.setUpdated(LocalDateTime.now());
+        user.setUpdatedBy(this.getCurrentUsername());
+
+        this.bbrUserRepository.saveAndFlush(user);
+    }
 }

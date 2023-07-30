@@ -13,10 +13,14 @@ import uk.co.bbr.services.events.dao.ContestEventTestPieceDao;
 import uk.co.bbr.services.events.dao.ContestResultDao;
 import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.performances.PerformanceService;
+import uk.co.bbr.services.performances.dto.CompetitorBandDto;
+import uk.co.bbr.services.performances.dto.CompetitorDto;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.services.security.UserService;
 import uk.co.bbr.services.security.dao.SiteUserDao;
 import uk.co.bbr.web.Tools;
+import uk.co.bbr.web.security.annotations.IsBbrMember;
+import uk.co.bbr.web.security.annotations.IsBbrPro;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -85,6 +89,28 @@ public class ContestEventController {
         return "events/event";
     }
 
+    @IsBbrPro
+    @GetMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}/competitors")
+    public String contestEventCompetitors(Model model, @PathVariable String contestSlug, @PathVariable String contestEventDate) {
+        LocalDate eventDate = Tools.parseEventDate(contestEventDate);
+        Optional<ContestEventDao> contestEvent = this.contestEventService.fetchEvent(contestSlug, eventDate);
+
+        if (contestEvent.isEmpty()) {
+            contestEvent = this.contestEventService.fetchEventWithinWiderDateRange(contestSlug, eventDate);
+            if (contestEvent.isEmpty()) {
+                throw NotFoundException.eventNotFound(contestSlug, contestEventDate);
+            }
+        }
+
+        List<CompetitorBandDto> competitors = this.performanceService.fetchPerformancesForEvent(contestEvent.get());
+
+        model.addAttribute("ContestEvent", contestEvent.get());
+        model.addAttribute("Competitors", competitors);
+
+        return "events/competitors";
+    }
+
+
     @GetMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}/performer")
     public String eventPerformerSelectBand(Model model, @PathVariable("contestSlug")  String contestSlug, @PathVariable("contestEventDate") String contestEventDate) {
         LocalDate eventDate = Tools.parseEventDate(contestEventDate);
@@ -104,18 +130,17 @@ public class ContestEventController {
         return "events/performer-bands";
     }
 
+    @IsBbrMember
     @GetMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}/performer/{resultId:\\d+}")
     public String eventPerformerSelectBand(Model model, @PathVariable("contestSlug") String contestSlug, @PathVariable("contestEventDate") String contestEventDate, @PathVariable("resultId") Long resultId) {
         LocalDate eventDate = Tools.parseEventDate(contestEventDate);
         Optional<ContestEventDao> contestEvent = this.contestEventService.fetchEvent(contestSlug, eventDate);
         if (contestEvent.isEmpty()) {
-            System.out.println("Event not found");
             throw NotFoundException.eventNotFound(contestSlug, contestEventDate);
         }
 
         Optional<ContestResultDao> result = this.contestResultService.fetchById(resultId);
         if (result.isEmpty()) {
-            System.out.println("Result not found");
             throw NotFoundException.resultNotFoundById(resultId);
         }
 

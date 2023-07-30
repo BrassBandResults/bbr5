@@ -24,5 +24,5 @@ public interface SecurityService {
 
     boolean userExists(String username);
 
-
+    void update(SiteUserDao user);
 }
