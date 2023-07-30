@@ -227,6 +227,5 @@ class BandEditWebTests implements LoginMixin {
         // assert
         assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
     }
-
 }
 

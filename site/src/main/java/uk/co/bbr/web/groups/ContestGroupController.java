@@ -24,29 +24,6 @@ public class ContestGroupController {
 
     private final ContestGroupService contestGroupService;
 
-    @GetMapping("/contest-groups")
-    public String contestGroupsListHome(Model model) {
-        return contestGroupsListLetter(model, "A");
-    }
-
-    @GetMapping("/contest-groups/{letter:[A-Z0-9]}")
-    public String contestGroupsListLetter(Model model, @PathVariable("letter") String letter) {
-        GroupListDto groups = this.contestGroupService.listGroupsStartingWith(letter);
-
-        model.addAttribute("GroupPrefixLetter", letter);
-        model.addAttribute("Groups", groups);
-        return "groups/groups";
-    }
-
-    @GetMapping("/contest-groups/ALL")
-    public String contestGroupsListAll(Model model) {
-        GroupListDto groups = this.contestGroupService.listGroupsStartingWith("ALL");
-
-        model.addAttribute("GroupPrefixLetter", "ALL");
-        model.addAttribute("Groups", groups);
-        return "groups/groups";
-    }
-
     @GetMapping("/contest-groups/{groupSlug:[\\-A-Z\\d]{2,}}")
     public String contestGroupRedirectUpperCase(@PathVariable("groupSlug") String groupSlug) {
         return "redirect:/contests/{groupSlug}";

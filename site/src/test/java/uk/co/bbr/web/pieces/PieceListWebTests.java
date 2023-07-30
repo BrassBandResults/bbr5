@@ -6,6 +6,7 @@ import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.client.RestTemplate;
 import uk.co.bbr.services.bands.BandService;
@@ -49,7 +50,13 @@ class PieceListWebTests implements LoginMixin {
     @Autowired private ContestEventService contestEventService;
     @Autowired private ResultService contestResultService;
     @Autowired private RestTemplate restTemplate;
+    @Autowired private CsrfTokenRepository csrfTokenRepository;
     @LocalServerPort private int port;
+
+    @BeforeAll
+    void setupUser() {
+        loginTestUserByWeb(TestUser.TEST_MEMBER, this.restTemplate, this.csrfTokenRepository, this.port);
+    }
 
     @BeforeAll
     void setupPieces() throws AuthenticationFailedException {

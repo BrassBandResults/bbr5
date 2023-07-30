@@ -201,6 +201,5 @@ class ContestEditWebTests implements LoginMixin {
         // assert
         assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
     }
-
 }
 

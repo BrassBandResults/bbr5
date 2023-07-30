@@ -20,29 +20,6 @@ public class ContestTagsController {
 
     private final ContestTagService contestTagService;
 
-    @GetMapping("/tags")
-    public String contestTagsListHome(Model model) {
-        return contestTagsListLetter(model, "A");
-    }
-
-    @GetMapping("/tags/{letter:[A-Z0-9]}")
-    public String contestTagsListLetter(Model model, @PathVariable("letter") String letter) {
-        List<ContestTagDao> tags = this.contestTagService.listTagsStartingWith(letter);
-
-        model.addAttribute("TagPrefixLetter", letter);
-        model.addAttribute("Tags", tags);
-        return "tags/tags";
-    }
-
-    @GetMapping("/tags/ALL")
-    public String contestTagsListAll(Model model) {
-        List<ContestTagDao> tags = this.contestTagService.listTagsStartingWith("ALL");
-
-        model.addAttribute("TagPrefixLetter", "ALL");
-        model.addAttribute("Tags", tags);
-        return "tags/tags";
-    }
-
     @GetMapping("/tags/{slug:[\\-a-z\\d]{2,}}")
     public String showSpecificContestTag(Model model, @PathVariable("slug") String slug) {
         ContestTagDetailsDto tagDetails = this.contestTagService.fetchDetailsBySlug(slug);
