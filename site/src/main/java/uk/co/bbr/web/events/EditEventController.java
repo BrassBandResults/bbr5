@@ -69,9 +69,9 @@ public class EditEventController {
 
         submittedEvent.validate(bindingResult);
 
-        List<ContestTypeDao> contestTypes = this.contestTypeService.fetchAll();
-
         if (bindingResult.hasErrors()) {
+            List<ContestTypeDao> contestTypes = this.contestTypeService.fetchAll();
+
             model.addAttribute("ContestEvent", contestEvent.get());
             model.addAttribute("ContestTypes", contestTypes);
             return "events/edit-event";
