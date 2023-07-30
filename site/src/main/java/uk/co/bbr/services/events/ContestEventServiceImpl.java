@@ -368,6 +368,16 @@ public class ContestEventServiceImpl implements ContestEventService {
         return returnResults;
     }
 
+    @Override
+    public Optional<ContestEventTestPieceDao> fetchSetTestById(ContestEventDao contestEvent, Long eventPieceId) {
+        return this.contestTestPieceRepository.fetchPieceForEventById(contestEvent.getId(), eventPieceId);
+    }
+
+    @Override
+    public void removeSetTestPiece(ContestEventTestPieceDao eventPiece) {
+        this.contestTestPieceRepository.delete(eventPiece);
+    }
+
     private List<ContestResultDao> fetchEventsForWeekend(LocalDate sunday) {
         LocalDate start = sunday.minus(4, ChronoUnit.DAYS);
         LocalDate end = sunday.plus(2, ChronoUnit.DAYS);

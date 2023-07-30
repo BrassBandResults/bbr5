@@ -56,7 +56,6 @@ Blog on the homepage
 On this day in history
 
 Event band map/geography
-Event competitors
 
 Deal with unique slug clash
 
