@@ -184,6 +184,5 @@ class PieceEditWebTests implements LoginMixin {
         // assert
         assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
     }
-
 }
 

@@ -6,6 +6,7 @@ import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.client.RestTemplate;
 import uk.co.bbr.services.contests.ContestService;
@@ -31,7 +32,13 @@ class VenueListWebTests implements LoginMixin {
     @Autowired private JwtService jwtService;
     @Autowired private VenueService venueService;
     @Autowired private RestTemplate restTemplate;
+    @Autowired private CsrfTokenRepository csrfTokenRepository;
     @LocalServerPort private int port;
+
+    @BeforeAll
+    void setupUser() {
+        loginTestUserByWeb(TestUser.TEST_MEMBER, this.restTemplate, this.csrfTokenRepository, this.port);
+    }
 
     @BeforeAll
     void setupContests() throws AuthenticationFailedException {
@@ -75,7 +82,7 @@ class VenueListWebTests implements LoginMixin {
     }
 
     @Test
-    void testGetAllContestsListWorksSuccessfully() {
+    void testGetAllVenuesListWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/venues/ALL", String.class);
         assertNotNull(response);
         assertTrue(response.contains("<title>Venues - Brass Band Results</title>"));

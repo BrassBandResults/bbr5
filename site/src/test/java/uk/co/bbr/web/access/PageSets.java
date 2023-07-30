@@ -143,7 +143,6 @@ public abstract class PageSets {
         pageList.add("/bands/");
         pageList.add("/bands/R");
         pageList.add("/bands/0");
-        pageList.add("/bands/ALL");
         pageList.add("/bands/MAP");
         pageList.add("/bands/rothwell-temperance");
         pageList.add("/bands/rothwell-temperance/whits");
@@ -154,13 +153,11 @@ public abstract class PageSets {
         pageList.add("/calendar/2000/12");
         pageList.add("/contests");
         pageList.add("/contests/Y");
-        pageList.add("/contests/ALL");
         pageList.add("/contests/yorkshire-area");
         pageList.add("/contests/yorkshire-area/2000-03-01");
         pageList.add("/contests/YORKSHIRE-GROUP");
         pageList.add("/contest-groups");
         pageList.add("/contest-groups/Y");
-        pageList.add("/contest-groups/ALL");
         pageList.add("/embed/band/rothwell-temperance/results/1");
         pageList.add("/embed/band/rothwell-temperance/results/2");
         pageList.add("/embed/band/rothwell-temperance/results-all/2023");
@@ -177,7 +174,6 @@ public abstract class PageSets {
         pageList.add("/pieces");
         pageList.add("/pieces/C");
         pageList.add("/pieces/0");
-        pageList.add("/pieces/ALL");
         pageList.add("/pieces/contest-music");
         pageList.add("/privacy");
         pageList.add("/regions");
@@ -189,13 +185,11 @@ public abstract class PageSets {
         pageList.add("/statistics");
         pageList.add("/tags");
         pageList.add("/tags/Y");
-        pageList.add("/tags/ALL");
         pageList.add("/tags/yorkshire");
         pageList.add("/users/owner");
         pageList.add("/venues");
         pageList.add("/venues/S");
         pageList.add("/venues/0");
-        pageList.add("/venues/ALL");
         pageList.add("/venues/MAP");
         pageList.add("/venues/st-george-s-hall");
         return pageList;
@@ -204,6 +198,7 @@ public abstract class PageSets {
     protected List<String> memberPages() {
         List<String> pageList = new ArrayList<>();
         pageList.add("/add-results");
+        pageList.add("/bands/ALL");
         pageList.add("/bands/rothwell-temperance/edit");
         pageList.add("/bands/rothwell-temperance/edit-aliases");
         pageList.add("/bands/rothwell-temperance/edit-aliases/1/show");
@@ -213,6 +208,8 @@ public abstract class PageSets {
         pageList.add("/bands/rothwell-temperance/edit-rehearsals");
         pageList.add("/bands/rothwell-temperance/edit-relationships");
         pageList.add("/bands/rothwell-temperance/edit-relationships/1/delete");
+        pageList.add("/contest-groups/ALL");
+        pageList.add("/contests/ALL");
         pageList.add("/contests/YORKSHIRE-GROUP/years");
         pageList.add("/contests/YORKSHIRE-GROUP/2000");
         pageList.add("/create/band");
@@ -224,6 +221,7 @@ public abstract class PageSets {
         pageList.add("/lookup/band/data.json?s=abc");
         pageList.add("/lookup/contest/data.json?s=abc");
         pageList.add("/lookup/person/data.json?s=abc");
+        pageList.add("/pieces/ALL");
         pageList.add("/profile");
         pageList.add("/people/david-roberts/edit");
         pageList.add("/people/david-roberts/edit-aliases");
@@ -232,7 +230,9 @@ public abstract class PageSets {
         pageList.add("/people/david-roberts/edit-aliases/1/delete");
         pageList.add("/people/david-roberts/edit-relationships");
         pageList.add("/people/david-roberts/edit-relationships/1/delete");
+        pageList.add("/tags/ALL");
         pageList.add("/tags/tag-to-delete/delete");
+        pageList.add("/venues/ALL");
         pageList.add("/venues/st-george-s-hall/edit");
         pageList.add("/years");
         return pageList;

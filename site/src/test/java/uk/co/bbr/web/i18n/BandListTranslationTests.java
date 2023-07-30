@@ -27,36 +27,27 @@ class BandListTranslationTests {
         assertNotNull(responseTest);
         assertTrue(responseTest.contains("Bands For Test Starting With A"));
         assertTrue(responseTest.contains("This is a list of current or last known names, previous band names can be found by searching."));
+        assertTrue(responseTest.contains("Results de Contest"));
 
         String responseUk = this.restTemplate.getForObject("http://localhost:" + this.port + "/bands?lang=uk", String.class);
         assertNotNull(responseUk);
         assertTrue(responseUk.contains("Bands starting with A"));
         assertTrue(responseUk.contains("This is a list of current or last known names, previous band names can be found by searching."));
+        assertTrue(responseUk.contains("Contest Results"));
     }
 
     @Test
     void testGetBandListForSpecificLetterWorksSuccessfully() {
-        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/R?lang=test", String.class);
-        assertNotNull(response);
-        assertTrue(response.contains("Bands For Test Starting With R"));
-        assertTrue(response.contains("This is a list of current or last known names, previous band names can be found by searching."));
+        String responseTest = this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/R?lang=test", String.class);
+        assertNotNull(responseTest);
+        assertTrue(responseTest.contains("Bands For Test Starting With R"));
+        assertTrue(responseTest.contains("This is a list of current or last known names, previous band names can be found by searching."));
+        assertTrue(responseTest.contains("Results de Contest"));
 
         String responseUk = this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/R?lang=uk", String.class);
         assertNotNull(responseUk);
         assertTrue(responseUk.contains("Bands starting with R"));
         assertTrue(responseUk.contains("This is a list of current or last known names, previous band names can be found by searching."));
-    }
-
-    @Test
-    void testGetAllBandListWorksSuccessfully() {
-        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/ALL?lang=test", String.class);
-        assertNotNull(response);
-        assertTrue(response.contains("Test All Bands"));
-        assertTrue(response.contains("This is a list of current or last known names, previous band names can be found by searching."));
-
-        String responseUk = this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/ALL?lang=uk", String.class);
-        assertNotNull(responseUk);
-        assertTrue(responseUk.contains("All Bands"));
-        assertTrue(responseUk.contains("This is a list of current or last known names, previous band names can be found by searching."));
+        assertTrue(responseUk.contains("Contest Results"));
     }
 }

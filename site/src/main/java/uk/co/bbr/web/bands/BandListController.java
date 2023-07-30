@@ -47,6 +47,7 @@ public class BandListController {
         return "redirect:/bands";
     }
 
+    @IsBbrMember
     @GetMapping("/bands/ALL")
     public String bandListAll(Model model) {
         BandListDto bands = this.bandService.listBandsStartingWith("ALL");

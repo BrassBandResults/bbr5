@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import uk.co.bbr.services.contests.ContestService;
 import uk.co.bbr.services.contests.dto.ContestListDto;
 import uk.co.bbr.services.contests.sql.dto.ContestListSqlDto;
+import uk.co.bbr.web.security.annotations.IsBbrMember;
 
 import java.util.List;
 
@@ -31,6 +32,7 @@ public class ContestListController {
         return "contests/contests";
     }
 
+    @IsBbrMember
     @GetMapping("/contests/ALL")
     public String contestListAll(Model model) {
         List<ContestListSqlDto> contests = this.contestService.listContestsStartingWith("ALL");

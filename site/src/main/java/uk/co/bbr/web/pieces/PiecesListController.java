@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import uk.co.bbr.services.pieces.PieceService;
 import uk.co.bbr.services.pieces.dto.PieceListDto;
+import uk.co.bbr.web.security.annotations.IsBbrMember;
 
 @Controller
 @RequiredArgsConstructor
@@ -28,6 +29,7 @@ public class PiecesListController {
         return "pieces/pieces";
     }
 
+    @IsBbrMember
     @GetMapping("/pieces/ALL")
     public String peopleListAll(Model model) {
         PieceListDto pieces = this.pieceService.listPiecesStartingWith("ALL");

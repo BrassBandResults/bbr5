@@ -6,6 +6,7 @@ import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.client.RestTemplate;
 import uk.co.bbr.services.groups.ContestGroupService;
@@ -37,7 +38,13 @@ class TagWebTests implements LoginMixin {
     @Autowired private ContestTagService contestTagService;
     @Autowired private ContestGroupService contestGroupService;
     @Autowired private RestTemplate restTemplate;
+    @Autowired private CsrfTokenRepository csrfTokenRepository;
     @LocalServerPort private int port;
+
+    @BeforeAll
+    void setupUser() {
+        loginTestUserByWeb(TestUser.TEST_MEMBER, this.restTemplate, this.csrfTokenRepository, this.port);
+    }
 
     @BeforeAll
     void setupContests() throws AuthenticationFailedException {
@@ -113,19 +120,6 @@ class TagWebTests implements LoginMixin {
     }
 
     @Test
-    void testGetAllTagsListWorksSuccessfully() {
-        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/tags/ALL", String.class);
-        assertNotNull(response);
-        assertTrue(response.contains("<title>Tags - Brass Band Results</title>"));
-        assertTrue(response.contains("<h2>All Tags</h2>"));
-
-        assertTrue(response.contains("AA Tag"));
-        assertTrue(response.contains("AB Tag"));
-        assertTrue(response.contains("Yorkshire Tag"));
-        assertTrue(response.contains("North West Tag"));
-    }
-
-    @Test
     void testFetchTagDetailsPageWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/tags/yorkshire-tag", String.class);
         assertNotNull(response);
@@ -137,5 +131,18 @@ class TagWebTests implements LoginMixin {
         assertFalse(response.contains("North West Area"));
         assertFalse(response.contains("Aberdeen Contest"));
         assertFalse(response.contains("Abbey Hey Contest"));
+    }
+
+    @Test
+    void testGetAllTagsListWorksSuccessfully() {
+        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/tags/ALL", String.class);
+        assertNotNull(response);
+        assertTrue(response.contains("<title>Tags - Brass Band Results</title>"));
+        assertTrue(response.contains("<h2>All Tags</h2>"));
+
+        assertTrue(response.contains("AA Tag"));
+        assertTrue(response.contains("AB Tag"));
+        assertTrue(response.contains("Yorkshire Tag"));
+        assertTrue(response.contains("North West Tag"));
     }
 }
