@@ -81,3 +81,4 @@ Do tags better, and don't link direct to the contest and contestGroup objects.
 
 sitemap?
 
+Export results to files in git repo
