@@ -6,6 +6,7 @@ import lombok.Setter;
 import uk.co.bbr.services.events.dao.ContestResultDao;
 import uk.co.bbr.services.framework.AbstractDao;
 import uk.co.bbr.services.framework.mixins.NameTools;
+import uk.co.bbr.services.performances.dto.CompetitorDto;
 import uk.co.bbr.services.performances.types.Instrument;
 import uk.co.bbr.services.performances.types.PerformanceStatus;
 

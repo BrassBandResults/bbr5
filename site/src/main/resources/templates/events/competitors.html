@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+<head>
+    <title th:text="@{#{page.competitors.title(${ContestEvent.contest.name}, ${ContestEvent.eventDateDisplay})} + ' - Brass Band Results'}">Yorkshire Area (Championship Section) - 07 Mar 2010 - Brass Band Results</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <span th:replace="events/components/header.html :: header(${ContestEvent})"></span>
+
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link" th:href="${'/contests/' + ContestEvent.contest.slug + '/' + ContestEvent.eventDateForUrl}" th:text="#{page.contest-event.tab.results}">Results</span></a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" th:href="${'/contests/' + ContestEvent.contest.slug + '/' + ContestEvent.eventDateForUrl + '/geography'}" th:text="#{page.contest-event.tab.geography}">Geography</span></a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" th:href="${'/contests/' + ContestEvent.contest.slug + '/' + ContestEvent.eventDateForUrl + '/competitors'}" th:text="#{page.contest-event.tab.competitors}">Competitors</span></a>
+        </li>
+    </ul>
+    <br/>
+
+    <div class="tab-content">
+        <span th:each="band : ${Competitors}" th:remove="tag">
+            <h5>
+                <span th:text="${band.bandPosition}">1</span>
+                <span th:text="${band.bandName}">Band Name</span>
+            </h5>
+            <ul>
+                <li th:each="competitor : ${band.competitors}">
+                    <span th:if="${!competitor.privateUser}" th:remove="tag">
+                        <a th:href="${'/users/' + competitor.getUsercode()}" th:text="${competitor.getUsercode()}">User</a>
+                        <span th:if="${competitor.getPosition() != null}">(<span th:text="#{${competitor.getPosition()}}">)</span></span>
+                    </span>
+                    <span th:if="${competitor.privateUser}" th:text="#{page.competitors.private-user}">Private User</span>
+               </li>
+            </ul>
+        </span>
+    </div>
+</div>
+</body>
+</html>

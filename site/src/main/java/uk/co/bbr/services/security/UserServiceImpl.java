@@ -10,6 +10,7 @@ import uk.co.bbr.services.security.dao.PendingUserDao;
 import uk.co.bbr.services.security.dao.UserRole;
 import uk.co.bbr.services.security.repo.BbrUserRepository;
 import uk.co.bbr.services.security.repo.PendingUserRepository;
+import uk.co.bbr.web.security.annotations.IsBbrMember;
 
 import java.time.LocalDateTime;
 import java.util.List;

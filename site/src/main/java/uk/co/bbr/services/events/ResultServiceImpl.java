@@ -230,10 +230,10 @@ public class ResultServiceImpl implements ResultService {
     }
 
     @Override
-    public void update(ContestResultDao result) {
+    public ContestResultDao update(ContestResultDao result) {
         result.setUpdatedBy(this.securityService.getCurrentUsername());
         result.setUpdated(LocalDateTime.now());
-        this.contestResultRepository.saveAndFlush(result);
+        return this.contestResultRepository.saveAndFlush(result);
     }
 
     @Override

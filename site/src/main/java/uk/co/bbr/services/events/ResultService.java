@@ -37,7 +37,7 @@ public interface ResultService {
 
     List<ContestResultDao> fetchResultsForContestAndDraw(ContestDao contestDao, int draw);
 
-    void update(ContestResultDao result);
+    ContestResultDao update(ContestResultDao result);
 
     List<ContestStreakDto> fetchStreaksForContest(ContestDao contest);
 
