@@ -55,8 +55,8 @@ public class EventSql {
            FROM contest_event e
            LEFT OUTER JOIN contest_result r ON r.contest_event_id = e.id AND r.result_position_type = 'R' AND r.result_position = 1
            INNER JOIN contest c ON c.id = e.contest_id
-           INNER JOIN band b ON b.id = r.band_id
-           INNER JOIN region reg ON reg.id = b.region_id
+           LEFT OUTER JOIN band b ON b.id = r.band_id
+           LEFT OUTER JOIN region reg ON reg.id = b.region_id
            LEFT OUTER JOIN person con1 ON con1.id = r.conductor_id
            LEFT OUTER JOIN person con2 ON con2.id = r.conductor_two_id
            LEFT OUTER JOIN person con3 ON con3.id = r.conductor_three_id

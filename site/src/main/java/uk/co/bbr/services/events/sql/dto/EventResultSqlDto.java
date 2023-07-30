@@ -86,7 +86,11 @@ public class EventResultSqlDto extends AbstractSqlDto {
         this.pointsFourth = (String)columnList[27];
         this.pointsPenalty = (String)columnList[28];
         BigInteger resultSerial = (BigInteger)columnList[29];
-        this.resultId = resultSerial.longValue();
+        if (resultSerial != null) {
+            this.resultId = resultSerial.longValue();
+        } else {
+            this.resultId = null;
+        }
         this.notes = (String)columnList[30];
         this.contestName = (String)columnList[31];
         this.groupName = (String)columnList[32];
@@ -98,34 +102,36 @@ public class EventResultSqlDto extends AbstractSqlDto {
         result.setContestEvent(new ContestEventDao());
         result.getContestEvent().setContest(new ContestDao());
         result.setPieces(new ArrayList<>());
-        result.setBand(new BandDao());
-        result.getBand().setRegion(new RegionDao());
 
-        result.setId(this.resultId);
         result.getContestEvent().setName(this.contestName);
         result.getContestEvent().setEventDate(this.eventDate);
         result.getContestEvent().setEventDateResolution(ContestEventDateResolution.fromCode(this.eventDateResolution));
         result.getContestEvent().getContest().setSlug(this.contestSlug);
         result.getContestEvent().getContest().setName(this.contestName);
-        result.setPosition(String.valueOf(this.resultPosition));
-        result.setResultPositionType(ResultPositionType.fromCode(this.resultPositionType));
-        result.setBandName(this.competedAs);
-        result.getBand().setName(this.bandName);
-        result.getBand().setSlug(this.bandSlug);
-        result.getBand().setRegion(new RegionDao());
-        result.getBand().getRegion().setName(this.bandRegionName);
-        result.getBand().getRegion().setSlug(this.bandRegionSlug);
-        result.getBand().getRegion().setCountryCode(this.bandCountryCode);
-        result.setDraw(this.draw);
-        result.setDrawSecond(this.drawSecond);
-        result.setDrawThird(this.drawThird);
-        result.setPointsTotal(this.pointsTotal);
-        result.setPointsFirst(this.pointsFirst);
-        result.setPointsSecond(this.pointsSecond);
-        result.setPointsThird(this.pointsThird);
-        result.setPointsFourth(this.pointsFourth);
-        result.setPointsPenalty(this.pointsPenalty);
-        result.setNotes(this.notes);
+        if (this.resultPositionType != null) {
+            result.setId(this.resultId);
+            result.setPosition(String.valueOf(this.resultPosition));
+            result.setResultPositionType(ResultPositionType.fromCode(this.resultPositionType));
+            result.setBandName(this.competedAs);
+            result.setDraw(this.draw);
+            result.setDrawSecond(this.drawSecond);
+            result.setDrawThird(this.drawThird);
+            result.setPointsTotal(this.pointsTotal);
+            result.setPointsFirst(this.pointsFirst);
+            result.setPointsSecond(this.pointsSecond);
+            result.setPointsThird(this.pointsThird);
+            result.setPointsFourth(this.pointsFourth);
+            result.setPointsPenalty(this.pointsPenalty);
+            result.setNotes(this.notes);
+            result.setBand(new BandDao());
+            result.getBand().setName(this.bandName);
+            result.getBand().setSlug(this.bandSlug);
+            result.getBand().setRegion(new RegionDao());
+            result.getBand().getRegion().setName(this.bandRegionName);
+            result.getBand().getRegion().setSlug(this.bandRegionSlug);
+            result.getBand().getRegion().setCountryCode(this.bandCountryCode);
+        }
+
 
         if (this.conductor1Slug != null) {
             PersonDao conductor1 = new PersonDao();
