@@ -6,7 +6,6 @@ Add results - create adjudicator
 
 Edit adjudicators
 Edit Test Pieces for result
-Edit Test pieces for contest event
 
 Delete result
 Delete event

@@ -312,9 +312,9 @@ public class AddResultsController {
 
         submittedForm.validate(bindingResult);
 
-        List<ContestEventTestPieceDao> pieces = this.contestEventService.listTestPieces(event.get());
-
         if (bindingResult.hasErrors()) {
+            List<ContestEventTestPieceDao> pieces = this.contestEventService.listTestPieces(event.get());
+
             model.addAttribute("TestPieces", pieces);
             model.addAttribute("ContestEvent", event.get());
             return "results/add-results-5-venue";
@@ -369,9 +369,9 @@ public class AddResultsController {
 
         submittedForm.validate(bindingResult);
 
-        List<ContestEventTestPieceDao> pieces = this.contestEventService.listTestPieces(event.get());
-
         if (bindingResult.hasErrors()) {
+            List<ContestEventTestPieceDao> pieces = this.contestEventService.listTestPieces(event.get());
+
             model.addAttribute("TestPieces", pieces);
             model.addAttribute("ContestEvent", event.get());
             model.addAttribute("ParsedResults", Collections.emptyList());
@@ -389,6 +389,7 @@ public class AddResultsController {
             return "redirect:/add-results/7/{contestSlug}/{contestEventDate}";
         }
 
+        List<ContestEventTestPieceDao> pieces = this.contestEventService.listTestPieces(event.get());
         model.addAttribute("TestPieces", pieces);
         model.addAttribute("ContestEvent", event.get());
         model.addAttribute("ParsedResults", parsedResults.getResultLines());

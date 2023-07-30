@@ -17,8 +17,7 @@ import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 public class AddEventSetTestForm {
     private String pieceSlug;
     private String pieceName;
-    private Integer ordering;
-    private TestPieceAndOr andOr;
+    private String andOr;
 
     public AddEventSetTestForm() {
         super();

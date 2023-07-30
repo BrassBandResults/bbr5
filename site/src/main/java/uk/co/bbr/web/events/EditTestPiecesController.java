@@ -15,7 +15,10 @@ import uk.co.bbr.services.events.ContestEventService;
 import uk.co.bbr.services.events.dao.ContestEventDao;
 import uk.co.bbr.services.events.dao.ContestEventTestPieceDao;
 import uk.co.bbr.services.events.types.ContestEventDateResolution;
+import uk.co.bbr.services.events.types.TestPieceAndOr;
 import uk.co.bbr.services.framework.NotFoundException;
+import uk.co.bbr.services.pieces.PieceService;
+import uk.co.bbr.services.pieces.dao.PieceDao;
 import uk.co.bbr.services.venues.VenueService;
 import uk.co.bbr.services.venues.dao.VenueDao;
 import uk.co.bbr.web.events.forms.AddEventSetTestForm;
@@ -34,6 +37,7 @@ public class EditTestPiecesController {
     private final ContestService contestService;
     private final ContestEventService contestEventService;
     private final ContestTypeService contestTypeService;
+    private final PieceService pieceService;
     private final VenueService venueService;
 
     @IsBbrMember
@@ -60,7 +64,7 @@ public class EditTestPiecesController {
 
     @IsBbrMember
     @PostMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}/edit-set-tests")
-    public String editSetTestsAdd(Model model, @Valid @ModelAttribute("Form") EventEditForm submittedEvent, BindingResult bindingResult, @PathVariable String contestSlug, @PathVariable String contestEventDate) {
+    public String editSetTestsAdd(Model model, @Valid @ModelAttribute("Form") AddEventSetTestForm submittedForm, BindingResult bindingResult, @PathVariable String contestSlug, @PathVariable String contestEventDate) {
         String[] dateSplit = contestEventDate.split("-");
         LocalDate eventDate = LocalDate.of(Integer.parseInt(dateSplit[0]), Integer.parseInt(dateSplit[1]), Integer.parseInt(dateSplit[2]));
         Optional<ContestEventDao> contestEvent = this.contestEventService.fetchEvent(contestSlug, eventDate);
@@ -69,17 +73,28 @@ public class EditTestPiecesController {
             throw NotFoundException.eventNotFound(contestSlug, contestEventDate);
         }
 
-        submittedEvent.validate(bindingResult);
-
-        List<ContestEventTestPieceDao> setTestPieces = this.contestEventService.listTestPieces(contestEvent.get());
+        submittedForm.validate(bindingResult);
 
         if (bindingResult.hasErrors()) {
+            List<ContestEventTestPieceDao> setTestPieces = this.contestEventService.listTestPieces(contestEvent.get());
+
             model.addAttribute("ContestEvent", contestEvent.get());
             model.addAttribute("TestPieces", setTestPieces);
             return "events/edit-set-tests";
         }
 
-        // TODO add new set test to database
+        Optional<PieceDao> piece = this.pieceService.fetchBySlug(submittedForm.getPieceSlug());
+        if (piece.isEmpty()) {
+            List<ContestEventTestPieceDao> setTestPieces = this.contestEventService.listTestPieces(contestEvent.get());
+
+            model.addAttribute("ContestEvent", contestEvent.get());
+            model.addAttribute("TestPieces", setTestPieces);
+            return "events/edit-set-tests";
+        }
+
+        TestPieceAndOr andOr = TestPieceAndOr.fromCode(submittedForm.getAndOr());
+
+        this.contestEventService.addTestPieceToContest(contestEvent.get(), piece.get(), andOr);
 
         return "redirect:/contests/{contestSlug}/" + contestEvent.get().getEventDateForUrl() + "/edit-set-tests";
     }
