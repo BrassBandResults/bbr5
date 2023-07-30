@@ -17,6 +17,7 @@ import uk.co.bbr.services.events.ResultService;
 import uk.co.bbr.services.contests.ContestService;
 import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.events.dao.ContestEventDao;
+import uk.co.bbr.services.events.dao.ContestResultDao;
 import uk.co.bbr.services.people.PersonService;
 import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.regions.RegionService;
@@ -73,7 +74,9 @@ class ContestEventWebTests implements LoginMixin {
         ContestEventDao yorkshireArea2010 = this.contestEventService.create(yorkshireArea, LocalDate.of(2010, 3, 1));
         this.contestResultService.addResult(yorkshireArea2010, "1", blackDyke, davidRoberts);
         this.contestResultService.addResult(yorkshireArea2010, "2", rtb, johnRoberts);
-        this.contestResultService.addResult(yorkshireArea2010, "3", grimethorpe, duncanBeckley);
+        ContestResultDao result = this.contestResultService.addResult(yorkshireArea2010, "3", grimethorpe, duncanBeckley);
+        result.setNotes("Best Principal Cornet Award");
+        this.contestResultService.update(result);
 
         logoutTestUser();
     }
@@ -100,6 +103,8 @@ class ContestEventWebTests implements LoginMixin {
         assertTrue(response.contains(">John Roberts<"));
         assertTrue(response.contains(">Duncan Beckley<"));
         assertFalse(response.contains(">David Childs<"));
+
+        assertTrue(response.contains("Best Principal Cornet Award"));
     }
 
   @Test
