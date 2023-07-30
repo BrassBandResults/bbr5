@@ -1,6 +1,5 @@
 package uk.co.bbr.web.results;
 
-import groovyjarjarpicocli.CommandLine;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,12 +27,9 @@ import uk.co.bbr.services.results.ParseResultService;
 import uk.co.bbr.services.results.dto.ParseResultDto;
 import uk.co.bbr.services.results.dto.ParsedResultsDto;
 import uk.co.bbr.services.security.SecurityService;
-import uk.co.bbr.services.security.UserService;
-import uk.co.bbr.services.security.dao.SiteUserDao;
 import uk.co.bbr.services.venues.VenueService;
 import uk.co.bbr.services.venues.dao.VenueDao;
 import uk.co.bbr.web.Tools;
-import uk.co.bbr.web.events.forms.EventEditForm;
 import uk.co.bbr.web.results.forms.AddResultsBandsForm;
 import uk.co.bbr.web.results.forms.AddResultsContestForm;
 import uk.co.bbr.web.results.forms.AddResultsContestTypeForm;
@@ -56,7 +52,7 @@ public class AddResultsController {
     private final SecurityService securityService;
     private final ContestTypeService contestTypeService;
     private final ContestEventService contestEventService;
-    private final ResultService contestResultService;
+    private final ResultService resultService;
     private final PieceService pieceService;
     private final PersonService personService;
     private final BandService bandService;
@@ -159,7 +155,7 @@ public class AddResultsController {
         Optional<ContestEventDao> existingEvent = this.contestEventService.fetchEvent(matchingContest.get(), eventDate);
         if (existingEvent.isPresent()) {
             // does it have results?
-            List<ContestResultDao> existingResults = this.contestResultService.fetchForEvent(existingEvent.get());
+            List<ContestResultDao> existingResults = this.resultService.fetchForEvent(existingEvent.get());
             if (!existingResults.isEmpty()) {
                 return "redirect:/contests/" + existingEvent.get().getContest().getSlug() + "/" +  existingEvent.get().getEventDateForUrl();
             }
@@ -383,7 +379,7 @@ public class AddResultsController {
         if (parsedResults.allGreen()) {
             for (ParseResultDto eachParsedResult : parsedResults.getResultLines()) {
                 ContestResultDao eachResult = eachParsedResult.buildContestResult(event.get(), this.bandService, this.personService);
-                this.contestResultService.addResult(event.get(), eachResult);
+                this.resultService.addResult(event.get(), eachResult);
             }
 
             return "redirect:/add-results/7/{contestSlug}/{contestEventDate}";

@@ -27,7 +27,7 @@ public class ContestController {
 
     private final ContestService contestService;
     private final ContestEventService contestEventService;
-    private final ResultService contestResultService;
+    private final ResultService resultService;
 
     @GetMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}")
     public String contestDetails(Model model, @PathVariable String contestSlug) {
@@ -39,7 +39,7 @@ public class ContestController {
 
         List<ContestEventDao> futureEventsForContest = this.contestEventService.fetchFutureEventsForContest(contest.get());
         List<ContestEventDao> pastEventsForContest = this.contestEventService.fetchPastEventsForContest(contest.get());
-        int ownChoicePieceCount = this.contestResultService.fetchCountOfOwnChoiceForContest(contest.get());
+        int ownChoicePieceCount = this.resultService.fetchCountOfOwnChoiceForContest(contest.get());
         List<ContestAliasDao> contestAliases = this.contestService.fetchAliases(contest.get());
 
         model.addAttribute("Contest", contest.get());
@@ -60,7 +60,7 @@ public class ContestController {
             throw NotFoundException.contestNotFoundBySlug(contestSlug);
         }
 
-        List<ContestResultPieceDao> resultsWithOwnChoicePieces = this.contestResultService.fetchResultsWithOwnChoicePieces(contest.get());
+        List<ContestResultPieceDao> resultsWithOwnChoicePieces = this.resultService.fetchResultsWithOwnChoicePieces(contest.get());
         int pastEventsCount = this.contestEventService.fetchCountOfEvents(contest.get());
 
         model.addAttribute("Contest", contest.get());
@@ -79,10 +79,10 @@ public class ContestController {
             throw NotFoundException.contestNotFoundBySlug(contestSlug);
         }
 
-        List<ContestWinsSqlDto> wins = this.contestResultService.fetchWinsCounts(contest.get());
+        List<ContestWinsSqlDto> wins = this.resultService.fetchWinsCounts(contest.get());
 
         int pastEventsCount = this.contestEventService.fetchCountOfEvents(contest.get());
-        int ownChoicePieceCount = this.contestResultService.fetchCountOfOwnChoiceForContest(contest.get());
+        int ownChoicePieceCount = this.resultService.fetchCountOfOwnChoiceForContest(contest.get());
 
         model.addAttribute("Contest", contest.get());
         model.addAttribute("Wins", wins);
@@ -101,10 +101,10 @@ public class ContestController {
             throw NotFoundException.contestNotFoundBySlug(contestSlug);
         }
 
-        List<ContestStreakDto> streaks = this.contestResultService.fetchStreaksForContest(contest.get());
+        List<ContestStreakDto> streaks = this.resultService.fetchStreaksForContest(contest.get());
 
         int pastEventsCount = this.contestEventService.fetchCountOfEvents(contest.get());
-        int ownChoicePieceCount = this.contestResultService.fetchCountOfOwnChoiceForContest(contest.get());
+        int ownChoicePieceCount = this.resultService.fetchCountOfOwnChoiceForContest(contest.get());
 
         model.addAttribute("Contest", contest.get());
         model.addAttribute("Streaks", streaks);
@@ -124,7 +124,7 @@ public class ContestController {
             throw NotFoundException.contestNotFoundBySlug(contestSlug);
         }
 
-        List<ContestResultDao> results = this.contestResultService.fetchResultsForContestAndPosition(contest.get(), position);
+        List<ContestResultDao> results = this.resultService.fetchResultsForContestAndPosition(contest.get(), position);
 
         model.addAttribute("Contest", contest.get());
         model.addAttribute("ResultPosition", position);
@@ -142,7 +142,7 @@ public class ContestController {
             throw NotFoundException.contestNotFoundBySlug(contestSlug);
         }
 
-        List<ContestResultDao> results = this.contestResultService.fetchResultsForContestAndDraw(contest.get(), draw);
+        List<ContestResultDao> results = this.resultService.fetchResultsForContestAndDraw(contest.get(), draw);
 
         model.addAttribute("Contest", contest.get());
         model.addAttribute("DrawPosition", draw);

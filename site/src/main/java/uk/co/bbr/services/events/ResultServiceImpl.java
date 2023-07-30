@@ -22,6 +22,7 @@ import uk.co.bbr.services.events.sql.dto.EventResultSqlDto;
 import uk.co.bbr.services.events.sql.dto.ResultPieceSqlDto;
 import uk.co.bbr.services.events.types.ContestEventDateResolution;
 import uk.co.bbr.services.events.types.ResultPositionType;
+import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.pieces.dao.PieceDao;
 import uk.co.bbr.services.regions.dao.RegionDao;
@@ -111,6 +112,9 @@ public class ResultServiceImpl implements ResultService {
     public ContestResultPieceDao addPieceToResult(ContestResultDao contestResult, ContestResultPieceDao contestResultTestPiece) {
         contestResultTestPiece.setContestResult(contestResult);
 
+        int maxOrdering = this.contestResultPieceRepository.fetchMaxOrdering(contestResult.getId());
+        contestResultTestPiece.setOrdering(maxOrdering + 2);
+
         contestResultTestPiece.setCreated(LocalDateTime.now());
         contestResultTestPiece.setCreatedBy(this.securityService.getCurrentUsername());
         contestResultTestPiece.setUpdated(LocalDateTime.now());
@@ -124,6 +128,14 @@ public class ResultServiceImpl implements ResultService {
     public ContestResultPieceDao addPieceToResult(ContestResultDao contestResult, PieceDao piece) {
         ContestResultPieceDao newPiece = new ContestResultPieceDao();
         newPiece.setPiece(piece);
+        return this.addPieceToResult(contestResult, newPiece);
+    }
+
+    @Override
+    public ContestResultPieceDao addPieceToResult(ContestResultDao contestResult, PieceDao piece, String suffix) {
+        ContestResultPieceDao newPiece = new ContestResultPieceDao();
+        newPiece.setPiece(piece);
+        newPiece.setSuffix(suffix);
         return this.addPieceToResult(contestResult, newPiece);
     }
 
@@ -248,6 +260,26 @@ public class ResultServiceImpl implements ResultService {
     @Override
     public Optional<ContestResultDao> fetchById(Long resultId) {
         return this.contestResultRepository.findById(resultId);
+    }
+
+    @Override
+    public List<ContestResultPieceDao> listResultPieces(ContestResultDao result) {
+        return this.contestResultPieceRepository.fetchForResult(result.getId());
+    }
+
+    @Override
+    public Optional<ContestResultPieceDao> fetchResultPieceById(ContestResultDao contestResult, Long resultPieceId) {
+        return this.contestResultPieceRepository.fetchForContestAndResultPieceId(contestResult.getId(), resultPieceId);
+    }
+
+    @Override
+    public void removePiece(ContestEventDao contestEvent, ContestResultDao contestResult, ContestResultPieceDao contestResultPiece) {
+        Optional<ContestResultPieceDao> matchingPiece = this.contestResultPieceRepository.fetchForContestAndResultPieceId(contestResult.getId(), contestResultPiece.getId());
+        if (matchingPiece.isEmpty()) {
+            throw NotFoundException.resultPieceNotFoundById();
+        }
+
+        this.contestResultPieceRepository.delete(matchingPiece.get());
     }
 
     private Map<String, List<Integer>> fetchStreakData(ContestDao contest) {

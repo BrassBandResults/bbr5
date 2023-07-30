@@ -56,7 +56,7 @@ class BandFilterWebTests implements LoginMixin {
     @Autowired private ContestEventService contestEventService;
     @Autowired private ContestGroupService contestGroupService;
     @Autowired private ContestTagService contestTagService;
-    @Autowired private ResultService contestResultService;
+    @Autowired private ResultService resultService;
     @Autowired private PersonService personService;
 
     @Autowired private RestTemplate restTemplate;
@@ -111,24 +111,24 @@ class BandFilterWebTests implements LoginMixin {
 
         ContestEventDao broadoakWhitFriday2010 = this.contestEventService.create(broadoakWhitFriday, LocalDate.of(2010, 5, 1));
 
-        this.contestResultService.addResult(yorkshireArea2000, "1", rtb, davidRoberts);
-        this.contestResultService.addResult(yorkshireArea2000, "2", notRtb, johnRoberts);
+        this.resultService.addResult(yorkshireArea2000, "1", rtb, davidRoberts);
+        this.resultService.addResult(yorkshireArea2000, "2", notRtb, johnRoberts);
 
-        this.contestResultService.addResult(yorkshireArea2001, "2", rtb, davidRoberts);
-        this.contestResultService.addResult(yorkshireArea2001, "1", notRtb, johnRoberts);
-        this.contestResultService.addResult(hardrawScar2001, "5", rtb, johnRoberts);
+        this.resultService.addResult(yorkshireArea2001, "2", rtb, davidRoberts);
+        this.resultService.addResult(yorkshireArea2001, "1", notRtb, johnRoberts);
+        this.resultService.addResult(hardrawScar2001, "5", rtb, johnRoberts);
 
-        this.contestResultService.addResult(yorkshireArea2002, "5", rtb, johnRoberts);
-        this.contestResultService.addResult(yorkshireArea2002, "2", notRtb, davidRoberts);
+        this.resultService.addResult(yorkshireArea2002, "5", rtb, johnRoberts);
+        this.resultService.addResult(yorkshireArea2002, "2", notRtb, davidRoberts);
 
-        this.contestResultService.addResult(yorkshireArea2003, "3", notRtb, davidRoberts);
-        this.contestResultService.addResult(nationalFinals2003, "10", rtb, davidRoberts);
+        this.resultService.addResult(yorkshireArea2003, "3", notRtb, davidRoberts);
+        this.resultService.addResult(nationalFinals2003, "10", rtb, davidRoberts);
 
-        this.contestResultService.addResult(yorkshireArea2004, "1", rtb, davidRoberts);
-        this.contestResultService.addResult(yorkshireArea2004, "1", notRtb, duncanBeckley);
-        this.contestResultService.addResult(nationalFinals2004, "12", rtb, duncanBeckley);
+        this.resultService.addResult(yorkshireArea2004, "1", rtb, davidRoberts);
+        this.resultService.addResult(yorkshireArea2004, "1", notRtb, duncanBeckley);
+        this.resultService.addResult(nationalFinals2004, "12", rtb, duncanBeckley);
 
-        this.contestResultService.addResult(broadoakWhitFriday2010, "3", rtb, davidRoberts);
+        this.resultService.addResult(broadoakWhitFriday2010, "3", rtb, davidRoberts);
 
         logoutTestUser();
     }

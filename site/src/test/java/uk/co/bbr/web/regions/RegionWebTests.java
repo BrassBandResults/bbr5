@@ -54,7 +54,7 @@ class RegionWebTests implements LoginMixin {
     @Autowired private ContestService contestService;
     @Autowired private PersonService personService;
     @Autowired private ContestEventService contestEventService;
-    @Autowired private ResultService contestResultService;
+    @Autowired private ResultService resultService;
     @Autowired private RestTemplate restTemplate;
     @Autowired private CsrfTokenRepository csrfTokenRepository;
     @LocalServerPort private int port;
@@ -105,7 +105,7 @@ class RegionWebTests implements LoginMixin {
         result.setBandName("Rodill Temps");
         result.setPosition("1");
         result.setConductor(davidChilds);
-        this.contestResultService.addResult(yorkshireArea2001, result);
+        this.resultService.addResult(yorkshireArea2001, result);
 
         logoutTestUser();
     }

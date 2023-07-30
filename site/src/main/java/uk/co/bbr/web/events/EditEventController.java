@@ -103,6 +103,6 @@ public class EditEventController {
 
         this.contestEventService.update(existingEvent);
 
-        return "redirect:/contests/{contestSlug}/" + existingEvent.getEventDateForUrl();
+        return "redirect:/contests/{contestSlug}/{contestEventDate}";
     }
 }
