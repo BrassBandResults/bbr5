@@ -15,7 +15,6 @@ Delete band
 Delete piece
 
 Region/contests fix event count
-Region/links remove twitter
 
 Security on who can edit result
 

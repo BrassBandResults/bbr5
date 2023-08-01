@@ -32,10 +32,6 @@
               [
                 <a th:if="${band.website != null}" th:href="${band.website}" th:text="#{page.region-links.web-link}">xweb</a>
                 <span class="text-muted" th:if="${band.website == null}" th:text="#{page.region-links.web-link}">xweb</span>
-              ]
-              [
-                <a th:if="${band.twitterName != null}"  th:href="${'https://twitter.com/' + band.twitterName}" th:text="#{page.region-links.twitter-link}">twitter</a>
-                <span class="text-muted" th:if="${band.twitterName == null}" th:text="#{page.region-links.twitter-link}">txwitter</span>
               ]<span th:replace="links/band-link.html :: bandLink(${band}, false, true)"></span>
             </li>
         </ul>
