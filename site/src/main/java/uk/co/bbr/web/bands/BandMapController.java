@@ -14,12 +14,9 @@ import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.bands.dao.BandRehearsalDayDao;
 import uk.co.bbr.services.bands.types.RehearsalDay;
 import uk.co.bbr.services.framework.NotFoundException;
-import uk.co.bbr.services.regions.dao.RegionDao;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
@@ -33,10 +30,19 @@ public class BandMapController {
         return "bands/map/map";
     }
 
-    @GetMapping(value="/bands/MAP/for-day/{dayCode:\\d}/bands.json", produces="application/json")
-    public ResponseEntity<JsonNode> bandsByRehearsalDayMapJson(@PathVariable("dayCode") int dayCode) {
-        RehearsalDay day = RehearsalDay.fromCode(dayCode);
-        List<BandRehearsalDayDao> bandRehearsalDays = this.bandRehearsalsService.fetchBandsByDay(day);
+    @GetMapping(value="/bands/MAP/for-day/{dayCode:[a-z]{3}}/bands.json", produces="application/json")
+    public ResponseEntity<JsonNode> bandsByRehearsalDayMapJson(@PathVariable("dayCode") String dayCode) {
+        RehearsalDay day = switch (dayCode) {
+            case "mon" -> RehearsalDay.MONDAY;
+            case "tue" -> RehearsalDay.TUESDAY;
+            case "wed" -> RehearsalDay.WEDNESDAY;
+            case "thu" -> RehearsalDay.THURSDAY;
+            case "fri" -> RehearsalDay.FRIDAY;
+            case "sat" -> RehearsalDay.SATURDAY;
+            case "sun" -> RehearsalDay.SUNDAY;
+            default -> throw new NotFoundException("Day not found");
+        };
+        List<BandRehearsalDayDao> bandRehearsalDays = this.bandRehearsalsService.fetchBandsByDayForMap(day);
 
         List<BandDao> bandsForMap = new ArrayList<>();
         for (BandRehearsalDayDao eachRehearsalDay : bandRehearsalDays) {
@@ -54,4 +60,5 @@ public class BandMapController {
         return ResponseEntity.ok(objectNode);
     }
 }
+
 

@@ -35,6 +35,6 @@ public interface BandRehearsalNightRepository extends JpaRepository<BandRehearsa
     @Query("SELECT COUNT(DISTINCT rd.band) FROM BandRehearsalDayDao rd")
     int fetchBandCount();
 
-    @Query("SELECT rd FROM BandRehearsalDayDao  rd WHERE rd.day = :day")
+    @Query("SELECT rd FROM BandRehearsalDayDao rd WHERE rd.day = :day AND LEN(rd.band.latitude) > 0 AND LEN (rd.band.longitude) > 0")
     List<BandRehearsalDayDao> findForDay(RehearsalDay day);
 }

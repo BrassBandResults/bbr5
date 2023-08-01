@@ -16,15 +16,15 @@
     <br/>
 
     <div class="tab-content">
-        <div id="map" style="width: 100%; height: 1200px"></div>
-
-        <button class="dayButton btn btn-sm btn-success" type="button" th:id="day-1" th:text="#{day.monday}">Monday</button>
-        <button class="dayButton btn btn-sm btn-success" type="button" th:id="day-2" th:text="#{day.tuesday}">Tuesday</button>
-        <button class="dayButton btn btn-sm btn-success" type="button" th:id="day-3" th:text="#{day.wednesday}">Wednesday</button>
-        <button class="dayButton btn btn-sm btn-success" type="button" th:id="day-4" th:text="#{day.thursday}">Thursday</button>
-        <button class="dayButton btn btn-sm btn-success" type="button" th:id="day-5" th:text="#{day.friday}">Friday</button>
-        <button class="dayButton btn btn-sm btn-success" type="button" th:id="day-6" th:text="#{day.saturday}">Saturday</button>
-        <button class="dayButton btn btn-sm btn-success" type="button" th:id="day-0" th:text="#{day.sunday}">Sunday</button>
+        <div id="map" style="width: 100%; height: 800px"></div>
+        <br/>
+        <button class="dayButton btn btn-sm btn-success" type="button" th:id="mon" th:text="#{day.monday}">Monday</button>
+        <button class="dayButton btn btn-sm btn-success" type="button" th:id="tue" th:text="#{day.tuesday}">Tuesday</button>
+        <button class="dayButton btn btn-sm btn-success" type="button" th:id="wed" th:text="#{day.wednesday}">Wednesday</button>
+        <button class="dayButton btn btn-sm btn-success" type="button" th:id="thu" th:text="#{day.thursday}">Thursday</button>
+        <button class="dayButton btn btn-sm btn-success" type="button" th:id="fri" th:text="#{day.friday}">Friday</button>
+        <button class="dayButton btn btn-sm btn-success" type="button" th:id="sat" th:text="#{day.saturday}">Saturday</button>
+        <button class="dayButton btn btn-sm btn-success" type="button" th:id="sun" th:text="#{day.sunday}">Sunday</button>
     </div>
 </div>
 
@@ -48,6 +48,7 @@
             icons.set('status.youth', L.icon({iconUrl: basePath + '/youth.png'}));
             icons.set('section.youth', L.icon({iconUrl: basePath + '/youth.png'}));
             icons.set('status.non-competing', L.icon({iconUrl: basePath + '/non_competing.png'}));
+            icons.set('status.wind-band', L.icon({iconUrl: basePath + '/non_competing.png'}));
             icons.set('status.salvation-army', L.icon({iconUrl: basePath + '/sa.png'}));
             icons.set('section.a-grade', L.icon({iconUrl: basePath + '/a_grade.png'}));
             icons.set('section.b-grade', L.icon({iconUrl: basePath + '/b_grade.png'}));
@@ -87,12 +88,11 @@
             let eachButton = typeButtonsList[i];
             let id = eachButton.id;
             if (!layers.hasOwnProperty(id)) {
-                let dayCode = id.substring("day-".length);
                 layers[id] = L.geoJson(null, {
                     onEachFeature: onEachFeature,
                     pointToLayer: pointToLayer
                 }).addTo(map);
-                let url = '/bands/MAP/for-day' + dayCode + '/bands.json';
+                let url = '/bands/MAP/for-day/' + id + '/bands.json';
                 fetch(url)
                     .then(response => response.json())
                     .then(json => populateBandsOnMap(json, layers[id]));
@@ -110,10 +110,12 @@
                 if (button.classList.contains("btn-success")) {
                     button.classList.remove("btn-success");
                     button.classList.add("btn-outline-dark");
+                    console.log(button.id);
                     map.removeLayer(layers[button.id]);
                 } else {
                     button.classList.remove("btn-outline-dark");
                     button.classList.add("btn-success");
+                    console.log(button.id);
                     map.addLayer(layers[button.id]);
                 }
                 ev.preventDefault();

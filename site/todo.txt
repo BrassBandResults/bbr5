@@ -14,6 +14,9 @@ Delete person
 Delete band
 Delete piece
 
+Region/contests fix event count
+Region/links remove twitter
+
 Security on who can edit result
 
 Person profile support
@@ -29,9 +32,11 @@ Ads for non-pro users
 Add privacy settings for personal contest history
 Add date ranges for personal contest history
 
+Email on 500 error
+
 Assign points
 
-Add placeholders to form fields
+Add placeholder text to form fields
 
 Performances shows pieces played
 
@@ -48,7 +53,7 @@ Add owned feedback to users profile page
 
 Show user's performances of pieces on piece page tab
 
-? Add /myresults/<username> page for personal contest history
+Add /myresults/<username> page for personal contest history
 
 Upgrade to pro - how do we check that pro subscription is still active?
 
@@ -80,3 +85,5 @@ Do tags better, and don't link direct to the contest and contestGroup objects.
 sitemap?
 
 Export results to files in git repo
+
+Split Australian regions into states?

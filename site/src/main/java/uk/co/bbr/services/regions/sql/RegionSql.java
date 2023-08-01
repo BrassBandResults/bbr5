@@ -44,7 +44,7 @@ public class RegionSql {
             SELECT result.band_id as band_id, count(*) as result_count
             FROM contest_result result
             INNER JOIN band bnd ON bnd.id = result.band_id
-            WHERE UPPER(bnd.name) LIKE ?1
+            WHERE bnd.region_id = ?1
             GROUP BY result.band_id
         )
         SELECT b.name as band_name, b.slug as band_slug, r.name as region_name, r.slug as region_slug, r.country_code as region_code, c.result_count, b.status, s.slug, s.translation_key
