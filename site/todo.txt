@@ -16,9 +16,6 @@ Delete piece
 
 Security on who can edit result
 
-red background for select "must already exist" thing
-yellow background for select "might create this" thing
-
 Person profile support
 Migrate people profiles
 Add classifieds to users profile page
@@ -26,6 +23,7 @@ Add classifieds to users profile page
 Upgrade to pro - subscribe link on 403 page
 Upgrade to pro - call back, how's that going to work?
 Upgrade to pro - how do we record stripe details on user?
+
 Ads for non-pro users
 
 Add privacy settings for personal contest history
@@ -69,7 +67,6 @@ sitemap.xml
 
 Search for location on map and give bands and venues within specific range of it
 Filter map by section
-Filter map by band rehearsal night
 Other bands near band
 
 Download band csv

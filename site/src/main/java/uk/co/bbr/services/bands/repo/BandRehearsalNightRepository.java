@@ -3,6 +3,7 @@ package uk.co.bbr.services.bands.repo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import uk.co.bbr.services.bands.dao.BandRehearsalDayDao;
+import uk.co.bbr.services.bands.types.RehearsalDay;
 
 import java.util.List;
 
@@ -33,4 +34,7 @@ public interface BandRehearsalNightRepository extends JpaRepository<BandRehearsa
 
     @Query("SELECT COUNT(DISTINCT rd.band) FROM BandRehearsalDayDao rd")
     int fetchBandCount();
+
+    @Query("SELECT rd FROM BandRehearsalDayDao  rd WHERE rd.day = :day")
+    List<BandRehearsalDayDao> findForDay(RehearsalDay day);
 }

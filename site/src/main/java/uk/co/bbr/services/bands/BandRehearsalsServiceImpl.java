@@ -82,4 +82,9 @@ public class BandRehearsalsServiceImpl implements BandRehearsalsService, SlugToo
         List<BandRehearsalDayDao> daysForBand = this.fetchRehearsalDays(band);
         this.bandRehearsalNightRepository.deleteAll(daysForBand);
     }
+
+    @Override
+    public List<BandRehearsalDayDao> fetchBandsByDay(RehearsalDay day) {
+        return this.bandRehearsalNightRepository.findForDay(day);
+    }
 }

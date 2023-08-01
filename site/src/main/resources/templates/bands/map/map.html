@@ -1,12 +1,128 @@
 <!DOCTYPE html>
-<html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+<html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-    <title>Band Map</title>
+    <title th:text="@{#{page.band-map.title} + ' - Brass Band Results'}">Band Map - Brass Band Results</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin=""/>
 </head>
 <body>
 <div layout:fragment="content">
-    <h2>Band Map</h2>
-    <p>This page isn't done yet, but you can see the map of bands in a region on each <a href="/regions">Region</a> page.</p>
+    <h2 th:text="#{page.band-map.title}">Band Map</h2>
+
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link active" th:href="${'/regions/' + Region.slug}" th:text="#{page.band-map.tab.rehearsal-day}">By Rehearsal Day</a>
+        </li>
+    </ul>
+    <br/>
+
+    <div class="tab-content">
+        <div id="map" style="width: 100%; height: 1200px"></div>
+
+        <button class="dayButton btn btn-sm btn-success" type="button" th:id="day-1" th:text="#{day.monday}">Monday</button>
+        <button class="dayButton btn btn-sm btn-success" type="button" th:id="day-2" th:text="#{day.tuesday}">Tuesday</button>
+        <button class="dayButton btn btn-sm btn-success" type="button" th:id="day-3" th:text="#{day.wednesday}">Wednesday</button>
+        <button class="dayButton btn btn-sm btn-success" type="button" th:id="day-4" th:text="#{day.thursday}">Thursday</button>
+        <button class="dayButton btn btn-sm btn-success" type="button" th:id="day-5" th:text="#{day.friday}">Friday</button>
+        <button class="dayButton btn btn-sm btn-success" type="button" th:id="day-6" th:text="#{day.saturday}">Saturday</button>
+        <button class="dayButton btn btn-sm btn-success" type="button" th:id="day-0" th:text="#{day.sunday}">Sunday</button>
+    </div>
 </div>
+
+<div layout:fragment="scriptfooter">
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+    <script>
+        function buildIcons() {
+            let icons = new Map();
+            let basePath = "[[${STATIC_HOST} + '/map']]";
+            icons.set('section.championship', L.icon({iconUrl: basePath + '/championship.png'}));
+            icons.set('section.first', L.icon({iconUrl: basePath + '/first.png'}));
+            icons.set('section.second', L.icon({iconUrl: basePath + '/second.png'}));
+            icons.set('section.third', L.icon({iconUrl: basePath + '/third.png'}));
+            icons.set('section.fourth', L.icon({iconUrl: basePath + '/fourth.png'}));
+            icons.set('section.fifth', L.icon({iconUrl: basePath + '/fifth.png'}));
+            icons.set('section.elite', L.icon({iconUrl: basePath + '/elite.png'}));
+            icons.set('section.excellence', L.icon({iconUrl: basePath + '/excellence.png'}));
+            icons.set('status.competing', L.icon({iconUrl: basePath + '/band.png'}));
+            icons.set('status.scratch', L.icon({iconUrl: basePath + '/band.png'}));
+            icons.set('status.extinct', L.icon({iconUrl: basePath + '/extinct.png'}));
+            icons.set('status.youth', L.icon({iconUrl: basePath + '/youth.png'}));
+            icons.set('section.youth', L.icon({iconUrl: basePath + '/youth.png'}));
+            icons.set('status.non-competing', L.icon({iconUrl: basePath + '/non_competing.png'}));
+            icons.set('status.salvation-army', L.icon({iconUrl: basePath + '/sa.png'}));
+            icons.set('section.a-grade', L.icon({iconUrl: basePath + '/a_grade.png'}));
+            icons.set('section.b-grade', L.icon({iconUrl: basePath + '/b_grade.png'}));
+            icons.set('section.c-grade', L.icon({iconUrl: basePath + '/c_grade.png'}));
+            icons.set('section.d-grade', L.icon({iconUrl: basePath + '/d_grade.png'}));
+
+            return icons;
+        }
+
+        function onEachFeature(feature, layer) {
+            layer.bindPopup('<b>' + feature.properties.name + '</b><br/><br/>[<a href="/bands/' + feature.properties.slug + '/">More Details</a>]');
+        }
+        function pointToLayer(feature, latlng) {
+            return L.marker(latlng, {
+                icon: icon_markers.get(feature.properties.type)
+            });
+        }
+
+        function populateBandsOnMap(data, bandsLayer){
+            bandsLayer.addData(data);
+        }
+
+        let latitude = "53.703211";
+        let longitude = "-1.511536";
+        let mapZoom = "5";
+        var map = L.map('map').setView([latitude, longitude], mapZoom);
+        var icon_markers = buildIcons();
+        var layers = {};
+
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(map);
+
+        let typeButtonsList = document.querySelectorAll("button.dayButton");
+        for (let i=0; i<typeButtonsList.length; i++) {
+            let eachButton = typeButtonsList[i];
+            let id = eachButton.id;
+            if (!layers.hasOwnProperty(id)) {
+                let dayCode = id.substring("day-".length);
+                layers[id] = L.geoJson(null, {
+                    onEachFeature: onEachFeature,
+                    pointToLayer: pointToLayer
+                }).addTo(map);
+                let url = '/bands/MAP/for-day' + dayCode + '/bands.json';
+                fetch(url)
+                    .then(response => response.json())
+                    .then(json => populateBandsOnMap(json, layers[id]));
+            }
+        }
+
+        let typeButtons = document.querySelectorAll("button.dayButton");
+        for (let i=0; i<typeButtons.length; i++) {
+            let eachButton = typeButtons[i];
+            eachButton.addEventListener("click", toggleDisplayFunction(eachButton));
+        }
+
+        function toggleDisplayFunction(button) {
+            return function toggleTypeDisplay(ev) {
+                if (button.classList.contains("btn-success")) {
+                    button.classList.remove("btn-success");
+                    button.classList.add("btn-outline-dark");
+                    map.removeLayer(layers[button.id]);
+                } else {
+                    button.classList.remove("btn-outline-dark");
+                    button.classList.add("btn-success");
+                    map.addLayer(layers[button.id]);
+                }
+                ev.preventDefault();
+            }
+
+        }
+    </script>
+</div>
+
+
 </body>
 </html>
