@@ -13,14 +13,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import uk.co.bbr.services.bands.BandService;
 import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.bands.sql.dto.BandWinnersSqlDto;
-import uk.co.bbr.services.contests.ContestService;
 import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.regions.RegionService;
 import uk.co.bbr.services.regions.dao.RegionDao;
 import uk.co.bbr.services.regions.dto.LinkSectionDto;
 import uk.co.bbr.services.regions.dto.RegionPageDto;
-import uk.co.bbr.web.security.annotations.IsBbrMember;
 import uk.co.bbr.web.security.annotations.IsBbrPro;
 
 import java.util.ArrayList;
@@ -76,7 +74,7 @@ public class RegionController {
 
         model.addAttribute("Region", region.get());
         model.addAttribute("Sections", bandsBySection);
-        return "regions/regionLinks";
+        return "regions/region-links";
     }
 
     @IsBbrPro
