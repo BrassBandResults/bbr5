@@ -4,6 +4,7 @@ import lombok.experimental.UtilityClass;
 import uk.co.bbr.services.bands.sql.dto.BandListSqlDto;
 import uk.co.bbr.services.bands.sql.dto.BandWinnersSqlDto;
 import uk.co.bbr.services.framework.sql.SqlExec;
+import uk.co.bbr.services.regions.sql.dto.BandListForRegionSqlDto;
 import uk.co.bbr.services.regions.sql.dto.RegionListSqlDto;
 
 import javax.persistence.EntityManager;
@@ -38,6 +39,25 @@ public class RegionSql {
         return SqlExec.execute(entityManager, REGION_LIST_ALL_WITH_COUNTS_SQL, RegionListSqlDto.class);
     }
 
+    private static final String BANDS_FOR_REGION = """
+        WITH result_counts AS (
+            SELECT result.band_id as band_id, count(*) as result_count
+            FROM contest_result result
+            INNER JOIN band bnd ON bnd.id = result.band_id
+            WHERE bnd.region_id = ?1
+            GROUP BY result.band_id
+        )
+        SELECT b.name as band_name, b.slug as band_slug, r.name as region_name, r.slug as region_slug, r.country_code as region_code, c.result_count, b.status, s.slug, s.translation_key
+        FROM band b
+        LEFT OUTER JOIN region r ON r.id = b.region_id
+        LEFT OUTER JOIN result_counts c ON c.band_id = b.id
+        LEFT OUTER JOIN section s ON s.id = b.section_id
+        WHERE b.region_id = ?1
+        ORDER BY b.name""";
+
+    public static List<BandListForRegionSqlDto> listBandsForRegion(EntityManager entityManager, Long regionId) {
+        return SqlExec.execute(entityManager, BANDS_FOR_REGION, regionId, BandListForRegionSqlDto.class);
+    }
 
 }
 

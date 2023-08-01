@@ -14,10 +14,10 @@ Delete person
 Delete band
 Delete piece
 
-Security on who can edit result
+Region/contests fix event count
+Region/links remove twitter
 
-red background for select "must already exist" thing
-yellow background for select "might create this" thing
+Security on who can edit result
 
 Person profile support
 Migrate people profiles
@@ -26,14 +26,17 @@ Add classifieds to users profile page
 Upgrade to pro - subscribe link on 403 page
 Upgrade to pro - call back, how's that going to work?
 Upgrade to pro - how do we record stripe details on user?
+
 Ads for non-pro users
 
 Add privacy settings for personal contest history
 Add date ranges for personal contest history
 
+Email on 500 error
+
 Assign points
 
-Add placeholders to form fields
+Add placeholder text to form fields
 
 Performances shows pieces played
 
@@ -50,7 +53,7 @@ Add owned feedback to users profile page
 
 Show user's performances of pieces on piece page tab
 
-? Add /myresults/<username> page for personal contest history
+Add /myresults/<username> page for personal contest history
 
 Upgrade to pro - how do we check that pro subscription is still active?
 
@@ -69,7 +72,6 @@ sitemap.xml
 
 Search for location on map and give bands and venues within specific range of it
 Filter map by section
-Filter map by band rehearsal night
 Other bands near band
 
 Download band csv
@@ -83,3 +85,5 @@ Do tags better, and don't link direct to the contest and contestGroup objects.
 sitemap?
 
 Export results to files in git repo
+
+Split Australian regions into states?

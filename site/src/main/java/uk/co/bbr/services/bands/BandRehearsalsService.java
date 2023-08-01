@@ -17,4 +17,6 @@ public interface BandRehearsalsService {
     List<BandRehearsalDayDao> fetchRehearsalDays(BandDao band);
 
     void deleteRehearsalDays(BandDao band);
+
+    List<BandRehearsalDayDao> fetchBandsByDayForMap(RehearsalDay day);
 }

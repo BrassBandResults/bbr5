@@ -50,7 +50,7 @@
                 <tr th:each="band : ${Region.bands}">
                     <td class="band"><span th:replace="links/band-link.html :: bandLink(${band}, false, true)"></span></td>
                     <td class="bandType" th:text="#{${band.sectionType}}">Extinct</td>
-                    <td>0</td>
+                    <td th:text="${band.resultsCount}">9</td>
                 </tr>
             </tbody>
         </table>
@@ -77,6 +77,7 @@
             icons.set('status.youth', L.icon({iconUrl: basePath + '/youth.png'}));
             icons.set('section.youth', L.icon({iconUrl: basePath + '/youth.png'}));
             icons.set('status.non-competing', L.icon({iconUrl: basePath + '/non_competing.png'}));
+            icons.set('status.wind-band', L.icon({iconUrl: basePath + '/non_competing.png'}));
             icons.set('status.salvation-army', L.icon({iconUrl: basePath + '/sa.png'}));
             icons.set('section.a-grade', L.icon({iconUrl: basePath + '/a_grade.png'}));
             icons.set('section.b-grade', L.icon({iconUrl: basePath + '/b_grade.png'}));

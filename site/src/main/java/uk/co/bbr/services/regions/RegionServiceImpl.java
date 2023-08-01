@@ -5,6 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.bands.sql.BandMapSql;
+import uk.co.bbr.services.bands.sql.dto.BandListSqlDto;
 import uk.co.bbr.services.bands.sql.dto.RegionBandSqlDto;
 import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.contests.repo.ContestRepository;
@@ -16,6 +17,7 @@ import uk.co.bbr.services.regions.repo.RegionRepository;
 import uk.co.bbr.services.regions.dto.LinkSectionDto;
 import uk.co.bbr.services.regions.dto.RegionPageDto;
 import uk.co.bbr.services.regions.sql.RegionSql;
+import uk.co.bbr.services.regions.sql.dto.BandListForRegionSqlDto;
 import uk.co.bbr.services.regions.sql.dto.RegionListSqlDto;
 import uk.co.bbr.services.sections.dao.SectionDao;
 import uk.co.bbr.services.security.SecurityService;
@@ -75,7 +77,11 @@ public class RegionServiceImpl implements RegionService, SlugTools {
             throw NotFoundException.regionNotFoundBySlug(regionSlug);
         }
 
-        List<BandDao> bandsForThisRegion = this.regionRepository.findBandsForRegion(regionSlug);
+        List<BandListForRegionSqlDto> bandsForRegionSql = RegionSql.listBandsForRegion(this.entityManager, region.get().getId());
+        List<BandDao> bandsForThisRegion = new ArrayList<>();
+        for (BandListForRegionSqlDto band : bandsForRegionSql) {
+            bandsForThisRegion.add(band.asBand());
+        }
 
         return new RegionPageDto(region.get(), bandsForThisRegion);
     }
