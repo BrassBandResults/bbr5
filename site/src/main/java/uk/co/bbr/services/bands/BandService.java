@@ -38,4 +38,8 @@ public interface BandService {
     BandCompareDto compareBands(BandDao leftBand, BandDao rightBand);
 
     int countBandsCompetedInYear(int year);
+
+    List<BandDao> findBandsWithMapLocation(RegionDao region);
+
+    List<BandDao> findBandsWithMapLocation();
 }

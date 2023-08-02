@@ -102,7 +102,7 @@ public class RegionController {
             throw NotFoundException.regionNotFoundBySlug(regionSlug);
         }
 
-        List<BandDao> bandsForMap = this.regionService.findBandsWithMapLocation(region.get()).stream().filter(t -> t.getSectionType().equals(sectionType)).collect(Collectors.toList());
+        List<BandDao> bandsForMap = this.bandService.findBandsWithMapLocation(region.get()).stream().filter(t -> t.getSectionType().equals(sectionType)).collect(Collectors.toList());
 
         ObjectNode objectNode = objectMapper.createObjectNode();
         objectNode.put("type", "FeatureCollection");

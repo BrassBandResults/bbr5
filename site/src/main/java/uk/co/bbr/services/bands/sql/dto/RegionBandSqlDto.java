@@ -75,6 +75,14 @@ public class RegionBandSqlDto extends AbstractSqlDto {
             returnBand.getSection().setTranslationKey(this.sectionTranslationKey);
             returnBand.getSection().setMapShortCode(this.sectionMapShortCode);
         }
+        StringBuilder rehearsalsBinary = new StringBuilder();
+        rehearsalsBinary.append(this.monRehearsal ? "1" : "0");
+        rehearsalsBinary.append(this.tueRehearsal ? "1" : "0");
+        rehearsalsBinary.append(this.wedRehearsal ? "1" : "0");
+        rehearsalsBinary.append(this.thuRehearsal ? "1" : "0");
+        rehearsalsBinary.append(this.friRehearsal ? "1" : "0");
+        rehearsalsBinary.append(this.satRehearsal ? "1" : "0");
+        rehearsalsBinary.append(this.sunRehearsal ? "1" : "0");
         return returnBand;
     }
 }

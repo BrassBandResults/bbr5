@@ -151,4 +151,22 @@ public class VenueDao extends AbstractDao implements NameTools {
     public boolean hasLocation() {
         return this.latitude != null && this.latitude.trim().length() > 0 && this.longitude != null && this.longitude.trim().length() > 0;
     }
+
+    public ObjectNode asGeoJson(ObjectMapper objectMapper) {
+        ObjectNode venueGeometry = objectMapper.createObjectNode();
+        venueGeometry.put("type", "Point");
+        venueGeometry.putArray("coordinates").add(Float.parseFloat(this.getLongitude())).add(Float.parseFloat(this.getLatitude()));
+
+        ObjectNode venueProperties = objectMapper.createObjectNode();
+        venueProperties.put("name", this.getName());
+        venueProperties.put("slug", this.getSlug());
+        venueProperties.put("type", "");
+
+        ObjectNode venueNode = objectMapper.createObjectNode();
+        venueNode.put("type", "Feature");
+        venueNode.put("geometry", venueGeometry);
+        venueNode.put("properties", venueProperties);
+
+        return venueNode;
+    }
 }
