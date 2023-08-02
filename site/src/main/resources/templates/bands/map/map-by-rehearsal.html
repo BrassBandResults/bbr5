@@ -31,6 +31,8 @@
 <div layout:fragment="scriptfooter">
     <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
     <script>
+        let markers = [];
+
         function buildIcons() {
             let icons = new Map();
             let basePath = "[[${STATIC_HOST} + '/map']]";
@@ -62,9 +64,11 @@
             layer.bindPopup('<b>' + feature.properties.name + '</b><br/><br/>[<a href="/bands/' + feature.properties.slug + '/">More Details</a>]');
         }
         function pointToLayer(feature, latlng) {
-            return L.marker(latlng, {
+            let marker =  L.marker(latlng, {
                 icon: icon_markers.get(feature.properties.type)
             });
+            markers.push(marker);
+            return marker;
         }
 
         function populateBandsOnMap(data, bandsLayer){
@@ -74,9 +78,9 @@
         let latitude = "53.703211";
         let longitude = "-1.511536";
         let mapZoom = "5";
-        var map = L.map('map').setView([latitude, longitude], mapZoom);
-        var icon_markers = buildIcons();
-        var layers = {};
+        let map = L.map('map').setView([latitude, longitude], mapZoom);
+        let icon_markers = buildIcons();
+        let layers = {};
 
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
@@ -98,18 +102,23 @@
             eachButton.addEventListener("click", toggleDisplayFunction(eachButton));
         }
 
+        function toggleMarkers() {
+            for (let i in markers) {
+                let marker = markers[i];
+
+            }
+        }
+
         function toggleDisplayFunction(button) {
             return function toggleTypeDisplay(ev) {
                 if (button.classList.contains("btn-success")) {
                     button.classList.remove("btn-success");
                     button.classList.add("btn-outline-dark");
-                    console.log(button.id);
-                    map.removeLayer(layers[button.id]);
+                    toggleMarkers();
                 } else {
                     button.classList.remove("btn-outline-dark");
                     button.classList.add("btn-success");
-                    console.log(button.id);
-                    map.addLayer(layers[button.id]);
+                    toggleMarkers();
                 }
                 ev.preventDefault();
             }
