@@ -83,21 +83,14 @@
             attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         }).addTo(map);
 
-        let typeButtonsList = document.querySelectorAll("button.dayButton");
-        for (let i=0; i<typeButtonsList.length; i++) {
-            let eachButton = typeButtonsList[i];
-            let id = eachButton.id;
-            if (!layers.hasOwnProperty(id)) {
-                layers[id] = L.geoJson(null, {
-                    onEachFeature: onEachFeature,
-                    pointToLayer: pointToLayer
-                }).addTo(map);
-                let url = '/bands/MAP/for-day/' + id + '/bands.json';
-                fetch(url)
-                    .then(response => response.json())
-                    .then(json => populateBandsOnMap(json, layers[id]));
-            }
-        }
+        layers["base"] = L.geoJson(null, {
+            onEachFeature: onEachFeature,
+            pointToLayer: pointToLayer
+        }).addTo(map);
+        let url = '/bands/MAP/for-day/bands.json';
+        fetch(url)
+            .then(response => response.json())
+            .then(json => populateBandsOnMap(json, layers["base"]));
 
         let typeButtons = document.querySelectorAll("button.dayButton");
         for (let i=0; i<typeButtons.length; i++) {

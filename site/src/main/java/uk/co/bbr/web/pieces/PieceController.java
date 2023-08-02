@@ -9,6 +9,8 @@ import uk.co.bbr.services.events.dao.ContestEventTestPieceDao;
 import uk.co.bbr.services.events.dao.ContestResultDao;
 import uk.co.bbr.services.events.dao.ContestResultPieceDao;
 import uk.co.bbr.services.framework.NotFoundException;
+import uk.co.bbr.services.performances.PerformanceService;
+import uk.co.bbr.services.performances.dao.PerformanceDao;
 import uk.co.bbr.services.pieces.PieceService;
 import uk.co.bbr.services.pieces.dao.PieceAliasDao;
 import uk.co.bbr.services.pieces.dao.PieceDao;
@@ -16,6 +18,7 @@ import uk.co.bbr.services.pieces.dto.BestOwnChoiceDto;
 import uk.co.bbr.services.pieces.sql.dto.PiecesPerSectionSqlDto;
 import uk.co.bbr.services.sections.SectionService;
 import uk.co.bbr.services.sections.dao.SectionDao;
+import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.web.security.annotations.IsBbrPro;
 
 
@@ -29,6 +32,8 @@ public class PieceController {
 
     private final PieceService pieceService;
     private final SectionService sectionService;
+    private final SecurityService securityService;
+    private final PerformanceService performanceService;
 
     @GetMapping("/pieces/{slug:[\\-a-z\\d]{2,}}")
     public String pieceDetails(Model model, @PathVariable("slug") String slug) {
@@ -42,8 +47,8 @@ public class PieceController {
         List<ContestResultPieceDao> ownChoiceResults = this.pieceService.fetchOwnChoicePieceUsage(piece.get());
         List<ContestEventTestPieceDao> setTestContests = this.pieceService.fetchSetTestPieceUsage(piece.get());
 
-        List<ContestResultDao> performances = new ArrayList<>(); // TODO get real values for this
-
+        String currentUsername = this.securityService.getCurrentUsername();
+        List<ContestResultDao> performances = this.performanceService.fetchApprovedPerformancesForPiece(currentUsername, piece.get());
 
         model.addAttribute("Piece", piece.get());
         model.addAttribute("SetTestContests", setTestContests);
@@ -67,7 +72,8 @@ public class PieceController {
         List<ContestResultPieceDao> ownChoiceResults = this.pieceService.fetchOwnChoicePieceUsage(piece.get());
         List<ContestEventTestPieceDao> setTestContests = this.pieceService.fetchSetTestPieceUsage(piece.get());
 
-        List<ContestResultDao> performances = new ArrayList<>(); // TODO get real values for this
+        String currentUsername = this.securityService.getCurrentUsername();
+        List<ContestResultDao> performances = this.performanceService.fetchApprovedPerformancesForPiece(currentUsername, piece.get());
 
         model.addAttribute("Piece", piece.get());
         model.addAttribute("OwnChoiceResults", ownChoiceResults);
@@ -91,8 +97,8 @@ public class PieceController {
         List<ContestResultPieceDao> ownChoiceResults = this.pieceService.fetchOwnChoicePieceUsage(piece.get());
         List<ContestEventTestPieceDao> setTestContests = this.pieceService.fetchSetTestPieceUsage(piece.get());
 
-        List<ContestResultDao> performances = new ArrayList<>(); // TODO get real values for this
-
+        String currentUsername = this.securityService.getCurrentUsername();
+        List<ContestResultDao> performances = this.performanceService.fetchApprovedPerformancesForPiece(currentUsername, piece.get());
 
         model.addAttribute("Piece", piece.get());
         model.addAttribute("OwnChoiceResults", ownChoiceResults);

@@ -23,8 +23,6 @@ public interface RegionService {
 
     List<RegionDao> findSubRegions(RegionDao region);
 
-    List<BandDao> findBandsWithMapLocation(RegionDao region);
-
     RegionDao create(RegionDao region);
 
     RegionDao create(String regionName);

@@ -121,16 +121,6 @@ public class RegionServiceImpl implements RegionService, SlugTools {
     }
 
     @Override
-    public List<BandDao> findBandsWithMapLocation(RegionDao region) {
-        List<BandDao> bandData = new ArrayList<>();
-        List<RegionBandSqlDto> sqlData = BandMapSql.selectBandsForRegionMap(this.entityManager, region.getId());
-        for (RegionBandSqlDto eachRow : sqlData) {
-            bandData.add(eachRow.getBand());
-        }
-        return bandData;
-    }
-
-    @Override
     @IsBbrMember
     public RegionDao create(String regionName) {
         RegionDao region = new RegionDao();

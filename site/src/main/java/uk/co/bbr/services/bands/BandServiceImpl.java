@@ -8,10 +8,12 @@ import uk.co.bbr.services.bands.dto.BandCompareDto;
 import uk.co.bbr.services.bands.dto.BandListDto;
 import uk.co.bbr.services.bands.repo.BandRepository;
 import uk.co.bbr.services.bands.sql.BandCompareSql;
+import uk.co.bbr.services.bands.sql.BandMapSql;
 import uk.co.bbr.services.bands.sql.BandSql;
 import uk.co.bbr.services.bands.sql.dto.BandListSqlDto;
 import uk.co.bbr.services.bands.sql.dto.BandWinnersSqlDto;
 import uk.co.bbr.services.bands.sql.dto.CompareBandsSqlDto;
+import uk.co.bbr.services.bands.sql.dto.RegionBandSqlDto;
 import uk.co.bbr.services.bands.types.BandStatus;
 import uk.co.bbr.services.framework.ValidationException;
 import uk.co.bbr.services.framework.mixins.SlugTools;
@@ -177,5 +179,25 @@ public class BandServiceImpl implements BandService, SlugTools {
     @Override
     public int countBandsCompetedInYear(int year) {
         return BandSql.countBandsCompetedInYear(this.entityManager, year);
+    }
+
+    @Override
+    public List<BandDao> findBandsWithMapLocation(RegionDao region) {
+        List<BandDao> bandData = new ArrayList<>();
+        List<RegionBandSqlDto> sqlData = BandMapSql.selectBandsForRegionMap(this.entityManager, region.getId());
+        for (RegionBandSqlDto eachRow : sqlData) {
+            bandData.add(eachRow.getBand());
+        }
+        return bandData;
+    }
+
+    @Override
+    public List<BandDao> findBandsWithMapLocation() {
+        List<BandDao> bandData = new ArrayList<>();
+        List<RegionBandSqlDto> sqlData = BandMapSql.selectBandsForBandMap(this.entityManager);
+        for (RegionBandSqlDto eachRow : sqlData) {
+            bandData.add(eachRow.getBand());
+        }
+        return bandData;
     }
 }
