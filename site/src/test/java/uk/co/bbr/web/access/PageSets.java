@@ -12,6 +12,7 @@ import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.events.ContestEventService;
 import uk.co.bbr.services.events.ResultService;
 import uk.co.bbr.services.events.dao.ContestEventDao;
+import uk.co.bbr.services.events.dao.ContestResultDao;
 import uk.co.bbr.services.feedback.FeedbackService;
 import uk.co.bbr.services.feedback.dao.FeedbackDao;
 import uk.co.bbr.services.feedback.types.FeedbackStatus;
@@ -23,12 +24,14 @@ import uk.co.bbr.services.people.PersonService;
 import uk.co.bbr.services.people.dao.PersonAliasDao;
 import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.people.dao.PersonRelationshipDao;
+import uk.co.bbr.services.performances.PerformanceService;
 import uk.co.bbr.services.pieces.PieceService;
 import uk.co.bbr.services.pieces.dao.PieceDao;
 import uk.co.bbr.services.regions.RegionService;
 import uk.co.bbr.services.regions.dao.RegionDao;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.services.security.UserService;
+import uk.co.bbr.services.security.dao.SiteUserDao;
 import uk.co.bbr.services.tags.ContestTagService;
 import uk.co.bbr.services.tags.dao.ContestTagDao;
 import uk.co.bbr.services.venues.VenueService;
@@ -49,9 +52,11 @@ public abstract class PageSets {
                              PersonService personService, PersonRelationshipService personRelationshipService, PersonAliasService personAliasService,
                              VenueService venueService, PieceService pieceService,
                              ContestGroupService contestGroupService, ContestService contestService, ContestEventService contestEventService, ResultService contestResultService, ContestTagService contestTagService,
-                             FeedbackService feedbackService, SecurityService securityService) {
+                             FeedbackService feedbackService, SecurityService securityService, PerformanceService performanceService) {
         Optional<RegionDao> yorkshire = regionService.fetchBySlug("yorkshire");
         assertTrue(yorkshire.isPresent());
+
+        SiteUserDao owner = securityService.getCurrentUser();
 
         BandDao rtb = bandService.create("Rothwell Temperance", yorkshire.get());
         BandAliasDao alias = bandAliasService.createAlias(rtb, "Temps");
@@ -85,7 +90,10 @@ public abstract class PageSets {
         ContestEventDao yorkshireArea2010 = contestEventService.create(yorkshireArea, LocalDate.of(2000, 3, 1));
         yorkshireArea2010.setVenue(stGeorges);
         yorkshireArea2010 = contestEventService.update(yorkshireArea2010);
-        contestResultService.addResult(yorkshireArea2010, "1", rtb, davidRoberts);
+        ContestResultDao result = contestResultService.addResult(yorkshireArea2010, "1", rtb, davidRoberts);
+        assertEquals(1, result.getId());
+
+        performanceService.linkUserPerformance(owner, result);
 
         ContestGroupDao yorkshireGroup = contestGroupService.create("Yorkshire Group");
         yorkshireArea = contestService.addContestToGroup(yorkshireArea, yorkshireGroup);
@@ -166,6 +174,7 @@ public abstract class PageSets {
         pageList.add("/faq");
         pageList.add("/feedback/thanks?next=/");
         pageList.add("/leaderboard");
+        pageList.add("/myresults/owner");
         pageList.add("/people");
         pageList.add("/people/R");
         pageList.add("/people/david-roberts");
@@ -212,6 +221,9 @@ public abstract class PageSets {
         pageList.add("/contests/ALL");
         pageList.add("/contests/YORKSHIRE-GROUP/years");
         pageList.add("/contests/YORKSHIRE-GROUP/2000");
+        pageList.add("/contests/yorkshire-area/2000-03-01/edit-set-tests");
+        pageList.add("/contests/yorkshire-area/2000-03-01/result/1/edit");
+        pageList.add("/contests/yorkshire-area/2000-03-01/result/1/edit-pieces");
         pageList.add("/create/band");
         pageList.add("/create/group");
         pageList.add("/create/piece");
@@ -223,6 +235,7 @@ public abstract class PageSets {
         pageList.add("/lookup/person/data.json?s=abc");
         pageList.add("/pieces/ALL");
         pageList.add("/profile");
+        pageList.add("/profile/performances");
         pageList.add("/people/david-roberts/edit");
         pageList.add("/people/david-roberts/edit-aliases");
         pageList.add("/people/david-roberts/edit-aliases/1/hide");

@@ -11,12 +11,16 @@ import uk.co.bbr.services.performances.dao.PerformanceDao;
 import uk.co.bbr.services.performances.dto.CompetitorBandDto;
 import uk.co.bbr.services.performances.dto.CompetitorDto;
 import uk.co.bbr.services.performances.repo.PerformanceRepository;
+import uk.co.bbr.services.performances.sql.PerformancesSql;
+import uk.co.bbr.services.performances.sql.dto.PiecePerformanceSqlDto;
 import uk.co.bbr.services.performances.types.PerformanceStatus;
+import uk.co.bbr.services.pieces.dao.PieceDao;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.services.security.UserService;
 import uk.co.bbr.services.security.dao.SiteUserDao;
 import uk.co.bbr.services.security.types.ContestHistoryVisibility;
 
+import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +34,7 @@ public class PerformanceServiceImpl implements PerformanceService, SlugTools {
     private final UserService userService;
     private final ResultService resultService;
 
+    private final EntityManager entityManager;
     private final PerformanceRepository performanceRepository;
 
     @Override
@@ -82,6 +87,18 @@ public class PerformanceServiceImpl implements PerformanceService, SlugTools {
             }
             CompetitorBandDto band = new CompetitorBandDto(result.getBandName(), result.getPositionDisplay(), competitorsForThisResult);
             returnList.add(band);
+        }
+
+        return returnList;
+    }
+
+    @Override
+    public List<ContestResultDao> fetchApprovedPerformancesForPiece(String userCode, PieceDao piece) {
+        List<PiecePerformanceSqlDto> performances = PerformancesSql.selectPerformancesOfPiece(this.entityManager, userCode, piece.getId());
+
+        List<ContestResultDao> returnList = new ArrayList<>();
+        for (PiecePerformanceSqlDto performance : performances) {
+            returnList.add(performance.asResult());
         }
 
         return returnList;

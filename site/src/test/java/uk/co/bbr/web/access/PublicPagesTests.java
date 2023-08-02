@@ -23,6 +23,7 @@ import uk.co.bbr.services.groups.ContestGroupService;
 import uk.co.bbr.services.events.ResultService;
 import uk.co.bbr.services.contests.ContestService;
 import uk.co.bbr.services.people.PersonAliasService;
+import uk.co.bbr.services.performances.PerformanceService;
 import uk.co.bbr.services.tags.ContestTagService;
 import uk.co.bbr.services.people.PersonRelationshipService;
 import uk.co.bbr.services.people.PersonService;
@@ -67,6 +68,7 @@ class PublicPagesTests extends PageSets implements LoginMixin {
     @Autowired private PieceService pieceService;
     @Autowired private VenueService venueService;
     @Autowired private FeedbackService feedbackService;
+    @Autowired private PerformanceService performanceService;
     @Autowired private JwtService jwtService;
     @Autowired private RestTemplate restTemplate;
     @LocalServerPort private int port;
@@ -75,7 +77,7 @@ class PublicPagesTests extends PageSets implements LoginMixin {
     void setupData() throws AuthenticationFailedException {
         loginTestUser(this.securityService, this.jwtService, TestUser.TEST_MEMBER);
 
-        this.setupData(this.regionService, this.bandService, this.bandAliasService, this.bandRelationshipService, this.personService, this.personRelationshipService, this.personAliasService, this.venueService, this.pieceService, this.contestGroupService, this.contestService, this.contestEventService, this.contestResultService, this.contestTagService, this.feedbackService, this.securityService);
+        this.setupData(this.regionService, this.bandService, this.bandAliasService, this.bandRelationshipService, this.personService, this.personRelationshipService, this.personAliasService, this.venueService, this.pieceService, this.contestGroupService, this.contestService, this.contestEventService, this.contestResultService, this.contestTagService, this.feedbackService, this.securityService, this.performanceService);
 
         logoutTestUser();
     }

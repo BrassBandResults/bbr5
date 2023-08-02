@@ -27,4 +27,6 @@ public interface PerformanceService {
     void linkUserPerformance(SiteUserDao user, ContestResultDao contestResult);
 
     List<CompetitorBandDto> fetchPerformancesForEvent(ContestEventDao contestEvent);
+
+    List<ContestResultDao> fetchApprovedPerformancesForPiece(String userCode, PieceDao piece);
 }
