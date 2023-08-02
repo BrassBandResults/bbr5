@@ -182,7 +182,7 @@ public class BandServiceImpl implements BandService, SlugTools {
     }
 
     @Override
-    public List<BandDao> findBandsWithMapLocation(RegionDao region) {
+    public List<BandDao> findBandsWithMapLocationAndRehearsals(RegionDao region) {
         List<BandDao> bandData = new ArrayList<>();
         List<RegionBandSqlDto> sqlData = BandMapSql.selectBandsForRegionMap(this.entityManager, region.getId());
         for (RegionBandSqlDto eachRow : sqlData) {
@@ -192,10 +192,14 @@ public class BandServiceImpl implements BandService, SlugTools {
     }
 
     @Override
-    public List<BandDao> findBandsWithMapLocation() {
+    public List<BandDao> findBandsWithMapLocationAndRehearsals() {
         List<BandDao> bandData = new ArrayList<>();
-        List<RegionBandSqlDto> sqlData = BandMapSql.selectBandsForBandMap(this.entityManager);
+        List<RegionBandSqlDto> sqlData = BandMapSql.selectBandsWithRehearsalsForBandMap(this.entityManager);
         for (RegionBandSqlDto eachRow : sqlData) {
+            BandDao band = eachRow.getBand();
+            if (band.getRehearsalsBinary() == null || Integer.parseInt(band.getRehearsalsBinary(), 2) == 0) {
+                continue;
+            }
             bandData.add(eachRow.getBand());
         }
         return bandData;

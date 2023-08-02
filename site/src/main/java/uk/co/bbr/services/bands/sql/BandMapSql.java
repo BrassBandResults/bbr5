@@ -48,7 +48,7 @@ public class BandMapSql {
         WHERE b.status != 0
         AND LEN(b.latitude) > 0 AND LEN(b.longitude) > 0""";
 
-    public static List<RegionBandSqlDto> selectBandsForBandMap(EntityManager entityManager) {
+    public static List<RegionBandSqlDto> selectBandsWithRehearsalsForBandMap(EntityManager entityManager) {
         return SqlExec.execute(entityManager, MAP_BANDS_FOR_DAYS_MAP, RegionBandSqlDto.class);
     }
 }

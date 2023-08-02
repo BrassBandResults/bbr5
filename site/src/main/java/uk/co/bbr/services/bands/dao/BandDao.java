@@ -193,6 +193,7 @@ public class BandDao extends AbstractDao implements NameTools {
         bandProperties.put("name", this.getName());
         bandProperties.put("slug", this.getSlug());
         bandProperties.put("type", this.getSectionType());
+        bandProperties.put("rehearsals", this.rehearsalsBinary);
 
         ObjectNode bandNode = objectMapper.createObjectNode();
         bandNode.put("type", "Feature");

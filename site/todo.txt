@@ -52,8 +52,6 @@ Add owned feedback to users profile page
 
 Show user's performances of pieces on piece page tab
 
-Add /myresults/<username> page for personal contest history
-
 Upgrade to pro - how do we check that pro subscription is still active?
 
 Blog on the homepage

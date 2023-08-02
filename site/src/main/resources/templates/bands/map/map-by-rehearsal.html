@@ -18,6 +18,8 @@
     <div class="tab-content">
         <div id="map" style="width: 100%; height: 800px"></div>
         <br/>
+        <p th:text="#{page.band-map.rehearsals.prompt-1}">This map only shows bands where we have rehearsal days listed.</p>
+        <p th:text="#{page.band-map.rehearsals.prompt-2}">Turn off the buttons below for days you are unavailable, this will remove bands that rehearse on those days.</p>
         <button class="dayButton btn btn-sm btn-success" type="button" th:id="mon" th:text="#{day.monday}">Monday</button>
         <button class="dayButton btn btn-sm btn-success" type="button" th:id="tue" th:text="#{day.tuesday}">Tuesday</button>
         <button class="dayButton btn btn-sm btn-success" type="button" th:id="wed" th:text="#{day.wednesday}">Wednesday</button>
@@ -31,6 +33,8 @@
 <div layout:fragment="scriptfooter">
     <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
     <script>
+        let markers = [];
+
         function buildIcons() {
             let icons = new Map();
             let basePath = "[[${STATIC_HOST} + '/map']]";
@@ -62,9 +66,12 @@
             layer.bindPopup('<b>' + feature.properties.name + '</b><br/><br/>[<a href="/bands/' + feature.properties.slug + '/">More Details</a>]');
         }
         function pointToLayer(feature, latlng) {
-            return L.marker(latlng, {
+            let marker =  L.marker(latlng, {
                 icon: icon_markers.get(feature.properties.type)
             });
+            marker.bbr_props = feature.properties;
+            markers.push(marker);
+            return marker;
         }
 
         function populateBandsOnMap(data, bandsLayer){
@@ -73,10 +80,10 @@
 
         let latitude = "53.703211";
         let longitude = "-1.511536";
-        let mapZoom = "5";
-        var map = L.map('map').setView([latitude, longitude], mapZoom);
-        var icon_markers = buildIcons();
-        var layers = {};
+        let mapZoom = "8";
+        let map = L.map('map').setView([latitude, longitude], mapZoom);
+        let icon_markers = buildIcons();
+        let layers = {};
 
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
@@ -98,18 +105,46 @@
             eachButton.addEventListener("click", toggleDisplayFunction(eachButton));
         }
 
+        function toggleMarkers() {
+            let buttonsBinary = "";
+            buttonsBinary += document.getElementById("mon").classList.contains("btn-success") ? "1" : "0";
+            buttonsBinary += document.getElementById("tue").classList.contains("btn-success") ? "1" : "0";
+            buttonsBinary += document.getElementById("wed").classList.contains("btn-success") ? "1" : "0";
+            buttonsBinary += document.getElementById("thu").classList.contains("btn-success") ? "1" : "0";
+            buttonsBinary += document.getElementById("fri").classList.contains("btn-success") ? "1" : "0";
+            buttonsBinary += document.getElementById("sat").classList.contains("btn-success") ? "1" : "0";
+            buttonsBinary += document.getElementById("sun").classList.contains("btn-success") ? "1" : "0";
+            for (let i in markers) {
+                let marker = markers[i];
+                marker._icon.style.display = '';
+                let rehearsalsBinary = marker.bbr_props.rehearsals;
+
+                let visible = true;
+                for (let i=0;i<7;i++) {
+                    let buttonValue = buttonsBinary[i];
+                    let bandValue = rehearsalsBinary[i];
+
+                    if (buttonValue === '0' && bandValue === '1') {
+                        visible = false;
+                    }
+                }
+
+                if (!visible) {
+                    marker._icon.style.display = 'none';
+                }
+            }
+        }
+
         function toggleDisplayFunction(button) {
             return function toggleTypeDisplay(ev) {
                 if (button.classList.contains("btn-success")) {
                     button.classList.remove("btn-success");
                     button.classList.add("btn-outline-dark");
-                    console.log(button.id);
-                    map.removeLayer(layers[button.id]);
+                    toggleMarkers();
                 } else {
                     button.classList.remove("btn-outline-dark");
                     button.classList.add("btn-success");
-                    console.log(button.id);
-                    map.addLayer(layers[button.id]);
+                    toggleMarkers();
                 }
                 ev.preventDefault();
             }

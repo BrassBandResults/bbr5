@@ -83,6 +83,7 @@ public class RegionBandSqlDto extends AbstractSqlDto {
         rehearsalsBinary.append(this.friRehearsal ? "1" : "0");
         rehearsalsBinary.append(this.satRehearsal ? "1" : "0");
         rehearsalsBinary.append(this.sunRehearsal ? "1" : "0");
+        returnBand.setRehearsalsBinary(rehearsalsBinary.toString());
         return returnBand;
     }
 }
