@@ -14,4 +14,11 @@ public class LocationPoint {
         this.coordinates[0] = Double.parseDouble(longitude);
         this.coordinates[1] = Double.parseDouble(latitude);
     }
+
+    public Double getLongitude() {
+        return this.coordinates[0];
+    }
+    public Double getLatitude() {
+        return this.coordinates[1];
+    }
 }

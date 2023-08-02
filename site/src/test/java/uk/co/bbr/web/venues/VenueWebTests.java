@@ -234,11 +234,4 @@ class VenueWebTests implements LoginMixin {
         HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/venues/symfony-hall/invalid-slug", String.class));
         assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
     }
-
-    @Test
-    void testVenueMapReturnsPage() {
-        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/venues/MAP", String.class);
-        assertNotNull(response);
-    }
-
 }

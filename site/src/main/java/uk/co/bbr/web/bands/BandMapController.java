@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import uk.co.bbr.services.bands.BandService;
 import uk.co.bbr.services.bands.dao.BandDao;
+import uk.co.bbr.web.security.annotations.IsBbrMember;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,11 +22,13 @@ public class BandMapController {
     private final BandService bandService;
     private final ObjectMapper objectMapper;
 
+    @IsBbrMember
     @GetMapping("/bands/MAP")
     public String bandMap() {
         return "/bands/map/map-by-rehearsal";
     }
 
+    @IsBbrMember
     @GetMapping(value="/bands/MAP/for-day/bands.json", produces="application/json")
     public ResponseEntity<JsonNode> bandsByRehearsalDayMapJson() {
 

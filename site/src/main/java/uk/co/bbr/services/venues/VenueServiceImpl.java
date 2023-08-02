@@ -8,7 +8,6 @@ import uk.co.bbr.services.events.dao.ContestEventDao;
 import uk.co.bbr.services.events.repo.ContestEventRepository;
 import uk.co.bbr.services.framework.ValidationException;
 import uk.co.bbr.services.framework.mixins.SlugTools;
-import uk.co.bbr.services.regions.dao.RegionDao;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.services.venues.dao.VenueAliasDao;
 import uk.co.bbr.services.venues.dao.VenueDao;

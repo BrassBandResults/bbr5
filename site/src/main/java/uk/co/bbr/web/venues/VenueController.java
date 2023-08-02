@@ -1,14 +1,22 @@
 package uk.co.bbr.web.venues;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import uk.co.bbr.services.contests.ContestService;
 import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.events.dao.ContestEventDao;
 import uk.co.bbr.services.framework.NotFoundException;
+import uk.co.bbr.services.map.LocationService;
+import uk.co.bbr.services.map.dto.Location;
 import uk.co.bbr.services.venues.VenueService;
 import uk.co.bbr.services.venues.dao.VenueAliasDao;
 import uk.co.bbr.services.venues.dao.VenueDao;
@@ -26,6 +34,8 @@ public class VenueController {
 
     private final VenueService venueService;
     private final ContestService contestService;
+    private final LocationService locationService;
+    private final ObjectMapper objectMapper;
 
     @GetMapping("/venues/{venueSlug:[\\-a-z\\d]{2,}}")
     public String venue(Model model, @PathVariable("venueSlug") String venueSlug) {
@@ -80,6 +90,52 @@ public class VenueController {
         model.addAttribute("VenueYears", venueYears);
 
         return "venues/years";
+    }
+
+    @IsBbrMember
+    @GetMapping("/venues/{venueSlug:[\\-a-z\\d]{2,}}/map")
+    public String venueMap(Model model, @PathVariable("venueSlug") String venueSlug) {
+        Optional<VenueDao> venue = this.venueService.fetchBySlug(venueSlug);
+        if (venue.isEmpty()) {
+            throw NotFoundException.venueNotFoundBySlug(venueSlug);
+        }
+        List<VenueAliasDao> previousNames = this.venueService.fetchAliases(venue.get());
+
+        model.addAttribute("Venue", venue.get());
+        model.addAttribute("PreviousNames", previousNames);
+
+        return "venues/map";
+    }
+
+    @IsBbrMember
+    @GetMapping("/venues/{venueSlug:[\\-a-z\\d]{2,}}/map/nearby.json")
+    public ResponseEntity<JsonNode> venueMapIcons(@PathVariable("venueSlug") String venueSlug, @RequestParam(value= "distanceKm", required=false) Integer distance) {
+        Optional<VenueDao> venue = this.venueService.fetchBySlug(venueSlug);
+        if (venue.isEmpty()) {
+            throw NotFoundException.venueNotFoundBySlug(venueSlug);
+        }
+
+        Integer distanceKm = distance;
+        if (distanceKm == null) {
+            distanceKm = 25; // km
+        }
+
+        List<Location> locationsForMap = this.locationService.fetchLocationsNear(venue.get().getLatitude(), venue.get().getLongitude(), distanceKm);
+        System.out.println("Found " + locationsForMap.size() + " locations for map");
+        Location first = locationsForMap.get(0);
+        System.out.println(first.getName());
+        System.out.println(first.getType());
+        System.out.println(first.getSlug());
+
+        ObjectNode objectNode = objectMapper.createObjectNode();
+        objectNode.put("type", "FeatureCollection");
+        ArrayNode features = objectNode.putArray("features");
+
+        for (Location eachLocation : locationsForMap) {
+            features.add(eachLocation.asGeoJson(this.objectMapper));
+        }
+
+        return ResponseEntity.ok(objectNode);
     }
 
     @IsBbrPro
