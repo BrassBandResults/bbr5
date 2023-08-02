@@ -151,7 +151,6 @@ public abstract class PageSets {
         pageList.add("/bands/");
         pageList.add("/bands/R");
         pageList.add("/bands/0");
-        pageList.add("/bands/MAP");
         pageList.add("/bands/rothwell-temperance");
         pageList.add("/bands/rothwell-temperance/whits");
         pageList.add("/bands/rothwell-temperance/embed");
@@ -199,7 +198,6 @@ public abstract class PageSets {
         pageList.add("/venues");
         pageList.add("/venues/S");
         pageList.add("/venues/0");
-        pageList.add("/venues/MAP");
         pageList.add("/venues/st-george-s-hall");
         return pageList;
     }
@@ -208,6 +206,7 @@ public abstract class PageSets {
         List<String> pageList = new ArrayList<>();
         pageList.add("/add-results");
         pageList.add("/bands/ALL");
+        pageList.add("/bands/MAP");
         pageList.add("/bands/rothwell-temperance/edit");
         pageList.add("/bands/rothwell-temperance/edit-aliases");
         pageList.add("/bands/rothwell-temperance/edit-aliases/1/show");
