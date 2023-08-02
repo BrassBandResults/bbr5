@@ -35,6 +35,8 @@ Email on 500 error
 
 Assign points
 
+Multiple map icons on same location
+
 Add placeholder text to form fields
 
 Performances shows pieces played

@@ -109,7 +109,7 @@ public class VenueController {
 
     @IsBbrMember
     @GetMapping("/venues/{venueSlug:[\\-a-z\\d]{2,}}/map/nearby.json")
-    public ResponseEntity<JsonNode> venueMapIcons(@PathVariable("venueSlug") String venueSlug, @RequestParam(value= "distanceKm", required=false) Integer distance) {
+    public ResponseEntity<JsonNode> venueMapIcons(@PathVariable("venueSlug") String venueSlug, @RequestParam(value= "distance", required=false) Integer distance) {
         Optional<VenueDao> venue = this.venueService.fetchBySlug(venueSlug);
         if (venue.isEmpty()) {
             throw NotFoundException.venueNotFoundBySlug(venueSlug);
