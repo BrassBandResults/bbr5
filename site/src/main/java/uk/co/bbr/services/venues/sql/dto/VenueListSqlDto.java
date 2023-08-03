@@ -26,10 +26,10 @@ public class VenueListSqlDto  extends AbstractSqlDto {
         this.regionSlug = (String)columnList[2];
         this.regionName = (String)columnList[3];
         this.countryCode = (String)columnList[4];
-        this.eventCount = columnList[5] instanceof BigInteger ? ((BigInteger)columnList[5]).intValue() : (Integer)columnList[5];
+        this.eventCount = this.getInteger(columnList, 5);
         this.latitude = (String)columnList[6];
         this.longitude = (String)columnList[7];
-        this.venueId = columnList[8] instanceof BigInteger ? ((BigInteger)columnList[8]).longValue() : (Long)columnList[8];
+        this.venueId = this.getLong(columnList, 8);
     }
 
     public VenueDao asVenue() {

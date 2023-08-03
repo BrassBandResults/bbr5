@@ -24,7 +24,7 @@ public class BandListSqlDto extends AbstractSqlDto {
         this.regionSlug = (String)columnList[3];
         this.countryCode = (String)columnList[4];
         if (columnList[5] != null) {
-            this.resultCount = columnList[5] instanceof BigInteger ? ((BigInteger) columnList[5]).intValue() : (Integer) columnList[5];
+            this.resultCount = this.getInteger(columnList, 5);
         }
         else {
             this.resultCount = 0;

@@ -23,8 +23,7 @@ public class ContestResultPieceSqlDto extends AbstractSqlDto {
     private final String regionCountryCode;
 
     public ContestResultPieceSqlDto(Object[] columnList) {
-        Date tempEventDate = (Date)columnList[0];
-        this.eventDate = tempEventDate.toLocalDate();
+        this.eventDate = this.getLocalDate(columnList, 0);
         this.dateResolution = (String)columnList[1];
         this.contestSlug = (String)columnList[2];
         this.bandCompetedAs = (String)columnList[3];

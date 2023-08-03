@@ -34,7 +34,7 @@ public class RegionBandSqlDto extends AbstractSqlDto {
     public RegionBandSqlDto(Object[] columnList) {
         this.bandSlug = (String)columnList[0];
         this.bandName = (String)columnList[1];
-        this.bandStatus =  columnList[2] instanceof BigInteger ? ((BigInteger)columnList[2]).intValue() : (Integer)columnList[2];
+        this.bandStatus =  this.getInteger(columnList, 2);
         this.sectionSlug = (String)columnList[3];
         this.sectionName = (String)columnList[4];
         this.sectionTranslationKey = (String)columnList[5];

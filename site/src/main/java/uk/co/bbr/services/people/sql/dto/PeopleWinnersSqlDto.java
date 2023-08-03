@@ -21,8 +21,8 @@ public class PeopleWinnersSqlDto extends AbstractSqlDto {
         this.personSurname = (String)columnList[1];
         this.personFirstNames = (String)columnList[2];
         this.personKnownFor = (String)columnList[3];
-        this.wins = columnList[4] instanceof BigInteger ? ((BigInteger)columnList[4]).intValue() : (Integer)columnList[4];
-        this.contests = columnList[5] instanceof BigInteger ? ((BigInteger)columnList[5]).intValue() : (Integer)columnList[5];
+        this.wins = this.getInteger(columnList, 4);
+        this.contests = this.getInteger(columnList, 5);
     }
 
     public PersonDao getPerson() {

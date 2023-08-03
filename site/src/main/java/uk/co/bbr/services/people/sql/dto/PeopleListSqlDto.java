@@ -31,37 +31,37 @@ public class PeopleListSqlDto extends AbstractSqlDto {
         this.personSuffix = (String)columnList[3];
         this.personKnownFor = (String)columnList[4];
         if (columnList[5] != null) {
-            this.conductor1Count = columnList[5] instanceof BigInteger ? ((BigInteger) columnList[5]).intValue() : (Integer) columnList[5];
+            this.conductor1Count = this.getInteger(columnList, 5);
         }
         else {
             this.conductor1Count = 0;
         }
         if (columnList[6] != null) {
-            this.conductor2Count = columnList[6] instanceof BigInteger ? ((BigInteger) columnList[6]).intValue() : (Integer) columnList[6];
+            this.conductor2Count = this.getInteger(columnList, 6);
         }
         else {
             this.conductor2Count = 0;
         }
         if (columnList[7] != null) {
-            this.conductor3Count = columnList[7] instanceof BigInteger ? ((BigInteger) columnList[7]).intValue() : (Integer) columnList[7];
+            this.conductor3Count = this.getInteger(columnList, 7);
         }
         else {
             this.conductor3Count = 0;
         }
         if (columnList[8] != null) {
-            this.adjudicatorCount = columnList[8] instanceof BigInteger ? ((BigInteger) columnList[8]).intValue() : (Integer) columnList[8];
+            this.adjudicatorCount = this.getInteger(columnList, 8);
         }
         else {
             this.adjudicatorCount = 0;
         }
         if (columnList[9] != null) {
-            this.composerCount = columnList[9] instanceof BigInteger ? ((BigInteger) columnList[9]).intValue() : (Integer) columnList[9];
+            this.composerCount = this.getInteger(columnList, 9);
         }
         else {
             this.composerCount = 0;
         }
         if (columnList[10] != null) {
-            this.arrangerCount = columnList[10] instanceof BigInteger ? ((BigInteger) columnList[10]).intValue() : (Integer) columnList[10];
+            this.arrangerCount = this.getInteger(columnList, 10);
         }
         else {
             this.arrangerCount = 0;

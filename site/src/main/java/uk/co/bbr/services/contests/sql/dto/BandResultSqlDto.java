@@ -35,8 +35,7 @@ public class BandResultSqlDto extends AbstractSqlDto {
 
     public BandResultSqlDto(Object[] columnList) {
         this.contestResultId = (BigInteger)columnList[0];
-        Date tempEventDate = (Date)columnList[1];
-        this.eventDate = tempEventDate.toLocalDate();
+        this.eventDate = this.getLocalDate(columnList, 1);
         this.eventDateResolution = (String)columnList[2];
         this.contestSlug = (String)columnList[3];
         this.contestName = (String)columnList[4];

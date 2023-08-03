@@ -20,7 +20,7 @@ public class PeopleBandsSqlDto extends AbstractSqlDto {
         this.personSurname = (String)columnList[1];
         this.personFirstNames = (String)columnList[2];
         this.personKnownFor = (String)columnList[3];
-        this.bands = columnList[4] instanceof BigInteger ? ((BigInteger)columnList[4]).intValue() : (Integer)columnList[4];
+        this.bands = this.getInteger(columnList, 4);
     }
 
     public PersonDao getPerson() {
