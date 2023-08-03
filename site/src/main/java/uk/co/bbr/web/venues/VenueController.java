@@ -121,11 +121,6 @@ public class VenueController {
         }
 
         List<Location> locationsForMap = this.locationService.fetchLocationsNear(venue.get().getLatitude(), venue.get().getLongitude(), distanceKm);
-        System.out.println("Found " + locationsForMap.size() + " locations for map");
-        Location first = locationsForMap.get(0);
-        System.out.println(first.getName());
-        System.out.println(first.getType());
-        System.out.println(first.getSlug());
 
         ObjectNode objectNode = objectMapper.createObjectNode();
         objectNode.put("type", "FeatureCollection");
