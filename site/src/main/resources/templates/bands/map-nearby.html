@@ -1,22 +1,21 @@
 <!DOCTYPE html>
 <html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
 <head>
-    <title th:text="@{#{page.venue.title(${Venue.name})} + ' - Brass Band Results'}">{0} - Venue - Brass Band Results</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <title th:text="@{#{page.band.title(${Band.name})} + ' - Brass Band Results'}">Band - Brass Band Results</title>
 </head>
 <body>
 <div layout:fragment="content">
-    <span th:replace="venues/components/header.html :: header(${Venue},${PreviousNames})"></span>
+    <span th:replace="bands/components/header.html :: header(${Band},${PreviousNames})"></span>
 
     <ul class="nav nav-tabs">
         <li class="nav-item">
-            <a class="nav-link" th:href="${'/venues/' + Venue.slug}" th:text="#{page.venue.tab.contests}">Contests</a>
+            <a class="nav-link" th:href="${'/bands/' + Band.slug}" th:text="#{page.band.tab.contests(${ResultsCount})}">Contests</a>
+        </li>
+        <li class="nav-item" th:if="${WhitCount > 0}">
+            <a class="nav-link" th:href="${'/bands/' + Band.slug + '/whits'}" th:text="#{page.band.tab.whits(${WhitCount})}">Whit Friday</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" th:href="${'/venues/' + Venue.slug + '/years'}" th:text="#{page.venue.tab.years}">Years</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link active" th:href="${'/venues/' + Venue.slug + '/map'}" th:text="#{page.venue.tab.map}">Map</a>
+            <a class="nav-link active" th:href="${'/bands/' + Band.slug + '/map'}" th:text="#{page.band.tab.map}">Map</a>
         </li>
     </ul>
     <br/>
@@ -71,10 +70,10 @@
             bandsLayer.addData(data);
         }
 
-        let latitude = "[[${Venue.latitude}]]";
-        let longitude = "[[${Venue.longitude}]]";
+        let latitude = "[[${Band.latitude}]]";
+        let longitude = "[[${Band.longitude}]]";
         let mapZoom = "12";
-        let venueSlug = "[[${Venue.slug}]]";
+        let venueSlug = "[[${Band.slug}]]";
         let map = L.map('map').setView([latitude, longitude], mapZoom);
         let icon_markers = buildIcons();
         let layers = {};
@@ -88,7 +87,7 @@
             onEachFeature: onEachFeature,
             pointToLayer: pointToLayer
         }).addTo(map);
-        let url = '/venues/' + venueSlug + '/map/nearby.json?distance=10';
+        let url = '/bands/' + bandSlug + '/map/nearby.json?distance=10';
         fetch(url)
             .then(response => response.json())
             .then(json => populateBandsOnMap(json, layers['main']));

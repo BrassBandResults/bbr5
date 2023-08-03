@@ -109,6 +109,27 @@ public class ContestEventController {
         return "events/competitors";
     }
 
+    @IsBbrMember
+    @GetMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}/geography")
+    public String contestEventMap(Model model, @PathVariable String contestSlug, @PathVariable String contestEventDate) {
+        LocalDate eventDate = Tools.parseEventDate(contestEventDate);
+        Optional<ContestEventDao> contestEvent = this.contestEventService.fetchEvent(contestSlug, eventDate);
+
+        if (contestEvent.isEmpty()) {
+            contestEvent = this.contestEventService.fetchEventWithinWiderDateRange(contestSlug, eventDate);
+            if (contestEvent.isEmpty()) {
+                throw NotFoundException.eventNotFound(contestSlug, contestEventDate);
+            }
+        }
+
+        List<ContestResultDao> eventResults = this.resultService.fetchForEvent(contestEvent.get());
+
+        model.addAttribute("ContestEvent", contestEvent.get());
+        model.addAttribute("EventResults", eventResults);
+
+        return "events/map-competitors";
+    }
+
 
     @GetMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}/performer")
     public String eventPerformerSelectBand(Model model, @PathVariable("contestSlug")  String contestSlug, @PathVariable("contestEventDate") String contestEventDate) {

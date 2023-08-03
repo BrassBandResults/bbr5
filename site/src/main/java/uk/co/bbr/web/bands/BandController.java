@@ -24,6 +24,9 @@ import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.groups.dao.ContestGroupDao;
 import uk.co.bbr.services.tags.dao.ContestTagDao;
 import uk.co.bbr.services.framework.NotFoundException;
+import uk.co.bbr.services.venues.dao.VenueAliasDao;
+import uk.co.bbr.services.venues.dao.VenueDao;
+import uk.co.bbr.web.security.annotations.IsBbrMember;
 import uk.co.bbr.web.security.annotations.IsBbrPro;
 
 import java.util.List;
@@ -94,6 +97,30 @@ public class BandController {
         model.addAttribute("BandRehearsalDays", bandRehearsalDays);
         model.addAttribute("BandRelationships", bandRelationships);
         return "bands/band-whits";
+    }
+
+    @IsBbrMember
+    @GetMapping("/bands/{bandSlug:[\\-a-z\\d]{2,}}/map")
+    public String bandNearbyMap(Model model, @PathVariable("bandSlug") String bandSlug) {
+        Optional<BandDao> band = this.bandService.fetchBySlug(bandSlug);
+        if (band.isEmpty()) {
+            throw NotFoundException.bandNotFoundBySlug(bandSlug);
+        }
+
+        ResultDetailsDto bandResults = this.bandResultService.findResultsForBand(band.get(), ResultSetCategory.ALL);
+        List<BandRehearsalDayDao> bandRehearsalDays = this.bandRehearsalsService.fetchRehearsalDays(band.get());
+        List<BandAliasDao> previousNames = this.bandAliasService.findVisibleAliases(band.get());
+        List<BandRelationshipDao> bandRelationships = this.bandRelationshipService.fetchRelationshipsForBand(band.get());
+
+        model.addAttribute("Band", band.get());
+        model.addAttribute("PreviousNames", previousNames);
+        model.addAttribute("BandResults", bandResults.getBandWhitResults());
+        model.addAttribute("ResultsCount", bandResults.getBandNonWhitResults().size());
+        model.addAttribute("WhitCount", bandResults.getBandWhitResults().size());
+        model.addAttribute("BandRehearsalDays", bandRehearsalDays);
+        model.addAttribute("BandRelationships", bandRelationships);
+
+        return "bands/map-nearby";
     }
 
     @IsBbrPro
