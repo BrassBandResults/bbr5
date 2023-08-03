@@ -13,7 +13,7 @@ public class PieceUsageCountSqlDto extends AbstractSqlDto {
 
     public PieceUsageCountSqlDto(Object[] columnList) {
         this.pieceId = (BigInteger)columnList[0];
-        this.setTestCount = columnList[1] instanceof BigInteger ? ((BigInteger)columnList[1]).intValue() : (Integer)columnList[1];
-        this.ownChoiceCount = columnList[2] instanceof BigInteger ? ((BigInteger)columnList[2]).intValue() : (Integer)columnList[2];
+        this.setTestCount = this.getInteger(columnList, 1);
+        this.ownChoiceCount = this.getInteger(columnList, 2);
     }
 }

@@ -1,6 +1,11 @@
 package uk.co.bbr.web.events;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +17,7 @@ import uk.co.bbr.services.events.dao.ContestEventDao;
 import uk.co.bbr.services.events.dao.ContestEventTestPieceDao;
 import uk.co.bbr.services.events.dao.ContestResultDao;
 import uk.co.bbr.services.framework.NotFoundException;
+import uk.co.bbr.services.map.dto.Location;
 import uk.co.bbr.services.performances.PerformanceService;
 import uk.co.bbr.services.performances.dto.CompetitorBandDto;
 import uk.co.bbr.services.security.SecurityService;
@@ -34,6 +40,7 @@ public class ContestEventController {
     private final PerformanceService performanceService;
     private final SecurityService securityService;
     private final UserService userService;
+    private final ObjectMapper objectMapper;
 
     @GetMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}")
     public String contestEventDetails(Model model, @PathVariable String contestSlug, @PathVariable String contestEventDate) {
@@ -129,6 +136,35 @@ public class ContestEventController {
 
         return "events/map-competitors";
     }
+
+    @IsBbrMember
+    @GetMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}/map/geography.json")
+    public ResponseEntity<JsonNode> contestEventMapJson(@PathVariable String contestSlug, @PathVariable String contestEventDate) {
+        LocalDate eventDate = Tools.parseEventDate(contestEventDate);
+        Optional<ContestEventDao> contestEvent = this.contestEventService.fetchEvent(contestSlug, eventDate);
+        if (contestEvent.isEmpty()) {
+            throw NotFoundException.eventNotFound(contestSlug, contestEventDate);
+        }
+
+        List<ContestResultDao> eventResults = this.resultService.fetchForEvent(contestEvent.get());
+
+        ObjectNode objectNode = objectMapper.createObjectNode();
+        objectNode.put("type", "FeatureCollection");
+        ArrayNode features = objectNode.putArray("features");
+
+        for (ContestResultDao eachResult : eventResults) {
+            if (eachResult.getBand().hasLocation()) {
+                features.add(eachResult.getBand().asGeoJson(this.objectMapper));
+            }
+        }
+        if (contestEvent.get().getVenue().hasLocation()) {
+            features.add(contestEvent.get().getVenue().asGeoJson(this.objectMapper));
+        }
+
+        return ResponseEntity.ok(objectNode);
+    }
+
+
 
 
     @GetMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}/performer")

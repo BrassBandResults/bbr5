@@ -18,8 +18,7 @@ public class EventUpDownLeftRightSqlDto  extends AbstractSqlDto {
     public EventUpDownLeftRightSqlDto(Object[] columnList) {
         this.contestSlug = (String) columnList[0];
         this.contestName = (String) columnList[1];
-        Date tempDownDate = (Date) columnList[2];
-        this.contestDate = tempDownDate.toLocalDate();
+        this.contestDate = this.getLocalDate(columnList, 2);
     }
 
     public ContestEventDao getEvent() {

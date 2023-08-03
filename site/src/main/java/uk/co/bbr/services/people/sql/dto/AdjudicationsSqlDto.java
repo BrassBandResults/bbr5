@@ -30,8 +30,7 @@ public class AdjudicationsSqlDto  extends AbstractSqlDto {
 
     public AdjudicationsSqlDto(Object[] columnList) {
         this.eventName = (String) columnList[0];
-        Date tempEventDate = (Date) columnList[1];
-        this.eventDate = tempEventDate.toLocalDate();
+        this.eventDate = this.getLocalDate(columnList, 1);
         this.eventDateResolution = (String) columnList[2];
         this.contestSlug = (String) columnList[3];
         this.winnerCompetedAs = (String) columnList[4];

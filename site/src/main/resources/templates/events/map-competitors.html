@@ -33,12 +33,16 @@
             });
         }
 
+        function populateBandsOnMap(data, bandsLayer){
+            bandsLayer.addData(data);
+        }
+
         let latitude = "[[${ContestEvent.venue.latitude}]]";
         let longitude = "[[${ContestEvent.venue.longitude}]]";
         let mapZoom = "12";
-        var map = L.map('map').setView([latitude, longitude], mapZoom);
-        var icon_markers = buildIcons();
-        var layers = {};
+        let map = L.map('map').setView([latitude, longitude], mapZoom);
+        let icon_markers = buildIcons();
+        let layers = {};
 
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
@@ -50,10 +54,12 @@
             pointToLayer: pointToLayer
         }).addTo(map);
 
-        // add icon to map for venue
-        L.marker([latitude, longitude], {icon: icon_markers.get("venue")}).addTo(map);
-
-        // TODO add bands
+        let contestSlug = "[[${ContestEvent.contest.slug}]]";
+        let contestDateUrl = "[[${ContestEvent.eventDateForUrl}]]";
+        let url = '/contests/' + contestSlug + '/' + contestDateUrl + '/map/geography.json';
+        fetch(url)
+            .then(response => response.json())
+            .then(json => populateBandsOnMap(json, layers['main']));
     </script>
 </div>
 </body>

@@ -39,8 +39,7 @@ public class ContestResultDrawPositionSqlDto  extends AbstractSqlDto {
     private final String pointsTotal;
 
     public ContestResultDrawPositionSqlDto(Object[] columnList) {
-        Date tempEventDate = (Date)columnList[0];
-        this.eventDate = tempEventDate.toLocalDate();
+        this.eventDate = this.getLocalDate(columnList, 0);
         this.eventDateResolution = (String)columnList[1];
         this.contestSlug = (String)columnList[2];
         this.resultPosition = (Integer)columnList[3];

@@ -1,6 +1,7 @@
 package uk.co.bbr.services.events.sql.dto;
 
 import uk.co.bbr.services.bands.dao.BandDao;
+import uk.co.bbr.services.bands.types.BandStatus;
 import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.events.dao.ContestEventDao;
 import uk.co.bbr.services.events.dao.ContestResultDao;
@@ -10,6 +11,7 @@ import uk.co.bbr.services.framework.sql.AbstractSqlDto;
 import uk.co.bbr.services.groups.dao.ContestGroupDao;
 import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.regions.dao.RegionDao;
+import uk.co.bbr.services.sections.dao.SectionDao;
 
 import java.math.BigInteger;
 import java.sql.Date;
@@ -52,11 +54,15 @@ public class EventResultSqlDto extends AbstractSqlDto {
     private final String contestName;
     private final String groupName;
     private final String groupSlug;
+    private final String bandLatitude;
+    private final String bandLongitude;
+    private final Integer bandStatus;
+    private final String sectionSlug;
+    private final String sectionTranslationKey;
 
 
     public EventResultSqlDto(Object[] columnList) {
-        Date tempEventDate = (Date)columnList[0];
-        this.eventDate = tempEventDate.toLocalDate();
+        this.eventDate = this.getLocalDate(columnList, 0);
         this.eventDateResolution = (String)columnList[1];
         this.contestSlug = (String)columnList[2];
         this.resultPosition = (Integer)columnList[3];
@@ -95,6 +101,11 @@ public class EventResultSqlDto extends AbstractSqlDto {
         this.contestName = (String)columnList[31];
         this.groupName = (String)columnList[32];
         this.groupSlug = (String)columnList[33];
+        this.bandLatitude = (String)columnList[34];
+        this.bandLongitude = (String)columnList[35];
+        this.bandStatus = this.getInteger(columnList, 36);
+        this.sectionSlug = (String)columnList[37];
+        this.sectionTranslationKey = (String)columnList[38];
     }
 
     public ContestResultDao getResult() {
@@ -126,10 +137,20 @@ public class EventResultSqlDto extends AbstractSqlDto {
             result.setBand(new BandDao());
             result.getBand().setName(this.bandName);
             result.getBand().setSlug(this.bandSlug);
-            result.getBand().setRegion(new RegionDao());
-            result.getBand().getRegion().setName(this.bandRegionName);
-            result.getBand().getRegion().setSlug(this.bandRegionSlug);
-            result.getBand().getRegion().setCountryCode(this.bandCountryCode);
+            result.getBand().setLatitude(this.bandLatitude);
+            result.getBand().setLongitude(this.bandLongitude);
+            result.getBand().setStatus(BandStatus.EXTINCT.fromCode(this.bandStatus));
+            if (this.sectionSlug != null) {
+                result.getBand().setSection(new SectionDao());
+                result.getBand().getSection().setSlug(this.sectionSlug);
+                result.getBand().getSection().setTranslationKey(this.sectionTranslationKey);
+            }
+            if (this.bandRegionSlug != null) {
+                result.getBand().setRegion(new RegionDao());
+                result.getBand().getRegion().setName(this.bandRegionName);
+                result.getBand().getRegion().setSlug(this.bandRegionSlug);
+                result.getBand().getRegion().setCountryCode(this.bandCountryCode);
+            }
         }
 
 

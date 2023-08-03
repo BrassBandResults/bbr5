@@ -21,8 +21,8 @@ public class BandWinnersSqlDto extends AbstractSqlDto {
     public BandWinnersSqlDto(Object[] columnList) {
         this.bandSlug = (String)columnList[0];
         this.bandName = (String)columnList[1];
-        this.wins = columnList[2] instanceof BigInteger ? ((BigInteger)columnList[2]).intValue() : (Integer)columnList[2];
-        this.contests = columnList[3] instanceof BigInteger ? ((BigInteger)columnList[3]).intValue() : (Integer)columnList[3];
+        this.wins = this.getInteger(columnList, 2);
+        this.contests = this.getInteger(columnList, 3);
         this.regionSlug = (String)columnList[4];
         this.regionName = (String)columnList[5];
         this.countryCode = (String)columnList[6];

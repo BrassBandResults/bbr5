@@ -22,19 +22,19 @@ public class RegionListSqlDto extends AbstractSqlDto {
         this.regionName = (String)columnList[1];
         this.countryCode = (String)columnList[2];
         if (columnList[3] != null) {
-            this.activeBandsCount = columnList[3] instanceof BigInteger ? ((BigInteger) columnList[3]).intValue() : (Integer) columnList[3];
+            this.activeBandsCount = this.getInteger(columnList, 3);
         }
         else {
             this.activeBandsCount = 0;
         }
         if (columnList[4] != null) {
-            this.extinctBandsCount = columnList[4] instanceof BigInteger ? ((BigInteger) columnList[4]).intValue() : (Integer) columnList[4];
+            this.extinctBandsCount = this.getInteger(columnList, 4);
         }
         else {
             this.extinctBandsCount = 0;
         }
         if (columnList[5] != null) {
-            this.regionId = columnList[5] instanceof BigInteger ? ((BigInteger) columnList[5]).longValue() : (Integer) columnList[5];
+            this.regionId = this.getLong(columnList, 5);
         }
         else {
             this.regionId = null;

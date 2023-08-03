@@ -29,13 +29,13 @@ public class BandListForRegionSqlDto extends AbstractSqlDto {
         this.regionSlug = (String)columnList[3];
         this.countryCode = (String)columnList[4];
         if (columnList[5] != null) {
-            this.resultCount = columnList[5] instanceof BigInteger ? ((BigInteger) columnList[5]).intValue() : (Integer) columnList[5];
+            this.resultCount = this.getInteger(columnList, 5);
         }
         else {
             this.resultCount = 0;
         }
         if (columnList[6] != null) {
-            this.bandStatus = columnList[6] instanceof BigInteger ? ((BigInteger) columnList[6]).intValue() : (Integer) columnList[6];
+            this.bandStatus = this.getInteger(columnList, 6);
         }
         else {
             this.bandStatus = 0;

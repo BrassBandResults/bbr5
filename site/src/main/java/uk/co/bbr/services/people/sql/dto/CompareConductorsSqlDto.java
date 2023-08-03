@@ -40,8 +40,7 @@ public class CompareConductorsSqlDto extends AbstractSqlDto {
         this.leftResultType = (String)columnList[1];
         this.rightResult = (Integer)columnList[2];
         this.rightResultType = (String)columnList[3];
-        Date tempEventDate = (Date)columnList[4];
-        this.eventDate = tempEventDate.toLocalDate();
+        this.eventDate = this.getLocalDate(columnList, 4);
         this.contestSlug = (String)columnList[5];
         this.contestName = (String)columnList[6];
         this.eventDateResolution = (String)columnList[7];

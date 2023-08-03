@@ -20,13 +20,13 @@ public class GroupListSqlDto extends AbstractSqlDto {
         this.groupName = (String)columnList[0];
         this.groupSlug = (String)columnList[1];
         if (columnList[2] != null) {
-            this.eventCount = columnList[2] instanceof BigInteger ? ((BigInteger) columnList[2]).intValue() : (Integer) columnList[2];
+            this.eventCount = this.getInteger(columnList, 2);
         }
         else {
             this.eventCount = 0;
         }
         if (columnList[3] != null) {
-            this.contestCount = columnList[3] instanceof BigInteger ? ((BigInteger) columnList[3]).intValue() : (Integer) columnList[3];
+            this.contestCount = this.getInteger(columnList, 3);
         }
         else {
             this.contestCount = 0;

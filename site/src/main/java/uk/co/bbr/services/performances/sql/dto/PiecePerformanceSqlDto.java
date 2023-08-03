@@ -32,11 +32,10 @@ public class PiecePerformanceSqlDto extends AbstractSqlDto {
     private final String resultPositionType;
 
     public PiecePerformanceSqlDto(Object[] columnList) {
-        this.resultId = columnList[0] instanceof BigInteger ? ((BigInteger)columnList[0]).longValue() : (Integer)columnList[0];
+        this.resultId = this.getLong(columnList, 0);
         this.contestName = (String)columnList[1];
         this.contestSlug = (String)columnList[2];
-        Date tempEventDate = (Date)columnList[3];
-        this.eventDate = tempEventDate.toLocalDate();
+        this.eventDate = this.getLocalDate(columnList, 3);
         this.eventDateResolution = (String)columnList[4];
         this.competedAs = (String)columnList[5];
         this.bandName = (String)columnList[6];
@@ -44,7 +43,7 @@ public class PiecePerformanceSqlDto extends AbstractSqlDto {
         this.regionName = (String)columnList[8];
         this.regionSlug = (String)columnList[9];
         this.countryCode = (String)columnList[10];
-        this.resultPosition = columnList[11] instanceof BigInteger ? ((BigInteger)columnList[11]).intValue() : (Integer)columnList[11];
+        this.resultPosition = this.getInteger(columnList, 11);
         this.resultPositionType = (String)columnList[12];
     }
 

@@ -32,8 +32,7 @@ public class UserAdjudicationsSqlDto extends AbstractSqlDto {
 
     public UserAdjudicationsSqlDto(Object[] columnList) {
         this.eventName = (String) columnList[0];
-        Date tempEventDate = (Date) columnList[1];
-        this.eventDate = tempEventDate.toLocalDate();
+        this.eventDate = this.getLocalDate(columnList, 1);
         this.eventDateResolution = (String) columnList[2];
         this.contestSlug = (String) columnList[3];
         this.bandCompetedAs = (String) columnList[4];
@@ -43,7 +42,7 @@ public class UserAdjudicationsSqlDto extends AbstractSqlDto {
         this.bandRegionSlug = (String) columnList[8];
         this.bandRegionCode = (String) columnList[9];
         if (columnList[10] != null) {
-            this.resultPosition = columnList[10] instanceof BigInteger ? ((BigInteger) columnList[10]).intValue() : (Integer) columnList[10];
+            this.resultPosition = this.getInteger(columnList, 10);
         } else {
             this.resultPosition = null;
         }

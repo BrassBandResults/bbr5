@@ -18,13 +18,13 @@ public class TagListSqlDto extends AbstractSqlDto {
         this.tagSlug = (String)columnList[0];
         this.tagName = (String)columnList[1];
         if (columnList[2] != null) {
-            this.contestCount = columnList[2] instanceof BigInteger ? ((BigInteger) columnList[2]).intValue() : (Integer) columnList[2];
+            this.contestCount = this.getInteger(columnList, 2);
         }
         else {
             this.contestCount = 0;
         }
         if (columnList[3] != null) {
-            this.groupCount = columnList[3] instanceof BigInteger ? ((BigInteger) columnList[3]).intValue() : (Integer) columnList[3];
+            this.groupCount = this.getInteger(columnList, 3);
         }
         else {
             this.groupCount = 0;
