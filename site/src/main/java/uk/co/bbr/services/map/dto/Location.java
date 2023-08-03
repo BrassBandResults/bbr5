@@ -33,8 +33,10 @@ public class Location {
         locationProperties.put("slug", this.getSlug());
         if ("Venue".equals(this.object)) {
             locationProperties.put("type", "venue");
+            locationProperties.put("offset", "venues");
         } else {
             locationProperties.put("type", this.type);
+            locationProperties.put("offset", "bands");
         }
 
         ObjectNode bandNode = objectMapper.createObjectNode();
