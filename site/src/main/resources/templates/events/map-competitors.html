@@ -88,7 +88,10 @@
         // add icon to map for each band competing
         /*<![CDATA[*/
         /*[# th:each="result : ${EventResults}"]*/
-        L.marker([/*[[${result.band.latitude}]]*/, /*[[${result.band.longitude}]]*/], {icon: icon_markers.get("result.band.sectionType")}).addTo(map);
+        let latitude = "[[${result.band.latitude}]]";
+        let longitude = "[[${result.band.longitude}]]";
+        let sectionType = "[[${result.band.sectionType}]]";
+        L.marker(latitude, longitude, {icon: icon_markers.get(sectionType)}).addTo(map);
         /*[/]*/
         /*]]>*/
     </script>
