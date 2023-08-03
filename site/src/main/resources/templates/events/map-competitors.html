@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+<head>
+    <title th:text="@{#{page.contest-event.title(${ContestEvent.contest.name}, ${ContestEvent.eventDateDisplay})} + ' - Brass Band Results'}">Yorkshire Area (Championship Section) - 07 Mar 2010 - Brass Band Results</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <span th:replace="events/components/header.html :: header(${ContestEvent})"></span>
+
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link" th:href="${'/contests/' + ContestEvent.contest.slug + '/' + ContestEvent.eventDateForUrl}" th:text="#{page.contest-event.tab.results}">Results</span></a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" th:href="${'/contests/' + ContestEvent.contest.slug + '/' + ContestEvent.eventDateForUrl + '/geography'}" th:text="#{page.contest-event.tab.geography}">Geography</span></a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" th:href="${'/contests/' + ContestEvent.contest.slug + '/' + ContestEvent.eventDateForUrl + '/competitors'}" th:text="#{page.contest-event.tab.competitors}">Competitors</span></a>
+        </li>
+    </ul>
+    <br/>
+
+    <div class="tab-content">
+        <div  id="map" style="width: 100%; height: 600px"></div>
+    </div>
+</div>
+
+<div layout:fragment="scriptfooter">
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script>
+        function buildIcons() {
+            let icons = new Map();
+            let basePath = "[[${STATIC_HOST} + '/map']]";
+            icons.set('section.championship', L.icon({iconUrl: basePath + '/championship.png'}));
+            icons.set('section.first', L.icon({iconUrl: basePath + '/first.png'}));
+            icons.set('section.second', L.icon({iconUrl: basePath + '/second.png'}));
+            icons.set('section.third', L.icon({iconUrl: basePath + '/third.png'}));
+            icons.set('section.fourth', L.icon({iconUrl: basePath + '/fourth.png'}));
+            icons.set('section.fifth', L.icon({iconUrl: basePath + '/fifth.png'}));
+            icons.set('section.elite', L.icon({iconUrl: basePath + '/elite.png'}));
+            icons.set('section.excellence', L.icon({iconUrl: basePath + '/excellence.png'}));
+            icons.set('status.competing', L.icon({iconUrl: basePath + '/band.png'}));
+            icons.set('status.scratch', L.icon({iconUrl: basePath + '/band.png'}));
+            icons.set('status.extinct', L.icon({iconUrl: basePath + '/extinct.png'}));
+            icons.set('status.youth', L.icon({iconUrl: basePath + '/youth.png'}));
+            icons.set('section.youth', L.icon({iconUrl: basePath + '/youth.png'}));
+            icons.set('status.non-competing', L.icon({iconUrl: basePath + '/non_competing.png'}));
+            icons.set('status.wind-band', L.icon({iconUrl: basePath + '/non_competing.png'}));
+            icons.set('status.salvation-army', L.icon({iconUrl: basePath + '/sa.png'}));
+            icons.set('section.a-grade', L.icon({iconUrl: basePath + '/a_grade.png'}));
+            icons.set('section.b-grade', L.icon({iconUrl: basePath + '/b_grade.png'}));
+            icons.set('section.c-grade', L.icon({iconUrl: basePath + '/c_grade.png'}));
+            icons.set('section.d-grade', L.icon({iconUrl: basePath + '/d_grade.png'}));
+            icons.set('venue', L.icon({iconUrl: basePath + '/venue.png'}));
+
+            return icons;
+        }
+
+        function onEachFeature(feature, layer) {
+            layer.bindPopup('<b>' + feature.properties.name + '</b><br/><br/>[<a href="/bands/' + feature.properties.slug + '/">More Details</a>]');
+        }
+        function pointToLayer(feature, latlng) {
+            return L.marker(latlng, {
+                icon: icon_markers.get(feature.properties.type)
+            });
+        }
+
+        let latitude = "[[${ContestEvent.venue.latitude}]]";
+        let longitude = "[[${ContestEvent.venue.longitude}]]";
+        let mapZoom = "12";
+        let map = L.map('map').setView([latitude, longitude], mapZoom);
+        let icon_markers = buildIcons();
+        let layers = {};
+
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(map);
+
+        layers['main'] = L.geoJson(null, {
+            onEachFeature: onEachFeature,
+            pointToLayer: pointToLayer
+        }).addTo(map);
+
+        // add icon to map for venue
+        L.marker([latitude, longitude], {icon: icon_markers.get("venue")}).addTo(map);
+
+        // add icon to map for each band competing
+        /*<![CDATA[*/
+        /*[# th:each="result : ${EventResults}"]*/
+        L.marker([/*[[${result.band.latitude}]]*/, /*[[${result.band.longitude}]]*/], {icon: icon_markers.get("result.band.sectionType")}).addTo(map);
+        /*[/]*/
+        /*]]>*/
+    </script>
+
+</body>
+</html>

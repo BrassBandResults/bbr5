@@ -14,6 +14,8 @@ Delete person
 Delete band
 Delete piece
 
+Venue link on map/venue nearby map not right - links to band?
+
 Region/contests fix event count
 
 Security on who can edit result
@@ -35,7 +37,8 @@ Email on 500 error
 
 Assign points
 
-Multiple map icons on same location
+Multiple map icons on same location fix
+https://github.com/jawj/OverlappingMarkerSpiderfier-Leaflet/
 
 Add placeholder text to form fields
 
@@ -71,7 +74,6 @@ sitemap.xml
 
 Search for location on map and give bands and venues within specific range of it
 Filter map by section
-Other bands near band
 
 Download band csv
 Download conductor csv
