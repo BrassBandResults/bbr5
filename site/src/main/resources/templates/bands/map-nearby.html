@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+<html lang="en" layout:decorate="~{layout-map}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
 <head>
     <title th:text="@{#{page.band.title(${Band.name})} + ' - Brass Band Results'}">Band - Brass Band Results</title>
 </head>
@@ -27,39 +27,7 @@
 
 
 <div layout:fragment="scriptfooter">
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script>
-        function buildIcons() {
-            let icons = new Map();
-            let basePath = "[[${STATIC_HOST} + '/map']]";
-            icons.set('section.championship', L.icon({iconUrl: basePath + '/championship.png'}));
-            icons.set('section.first', L.icon({iconUrl: basePath + '/first.png'}));
-            icons.set('section.second', L.icon({iconUrl: basePath + '/second.png'}));
-            icons.set('section.third', L.icon({iconUrl: basePath + '/third.png'}));
-            icons.set('section.fourth', L.icon({iconUrl: basePath + '/fourth.png'}));
-            icons.set('section.fifth', L.icon({iconUrl: basePath + '/fifth.png'}));
-            icons.set('section.elite', L.icon({iconUrl: basePath + '/elite.png'}));
-            icons.set('section.excellence', L.icon({iconUrl: basePath + '/excellence.png'}));
-            icons.set('status.competing', L.icon({iconUrl: basePath + '/band.png'}));
-            icons.set('status.scratch', L.icon({iconUrl: basePath + '/band.png'}));
-            icons.set('status.extinct', L.icon({iconUrl: basePath + '/extinct.png'}));
-            icons.set('status.youth', L.icon({iconUrl: basePath + '/youth.png'}));
-            icons.set('section.youth', L.icon({iconUrl: basePath + '/youth.png'}));
-            icons.set('status.non-competing', L.icon({iconUrl: basePath + '/non_competing.png'}));
-            icons.set('status.wind-band', L.icon({iconUrl: basePath + '/non_competing.png'}));
-            icons.set('status.salvation-army', L.icon({iconUrl: basePath + '/sa.png'}));
-            icons.set('section.a-grade', L.icon({iconUrl: basePath + '/a_grade.png'}));
-            icons.set('section.b-grade', L.icon({iconUrl: basePath + '/b_grade.png'}));
-            icons.set('section.c-grade', L.icon({iconUrl: basePath + '/c_grade.png'}));
-            icons.set('section.d-grade', L.icon({iconUrl: basePath + '/d_grade.png'}));
-            icons.set('venue', L.icon({iconUrl: basePath + '/venue.png'}));
-
-            return icons;
-        }
-
-        function onEachFeature(feature, layer) {
-            layer.bindPopup('<b>' + feature.properties.name + '</b><br/><br/>[<a href="/bands/' + feature.properties.slug + '/">More Details</a>]');
-        }
         function pointToLayer(feature, latlng) {
             return L.marker(latlng, {
                 icon: icon_markers.get(feature.properties.type)

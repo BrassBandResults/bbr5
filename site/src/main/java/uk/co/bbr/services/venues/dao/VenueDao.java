@@ -160,6 +160,7 @@ public class VenueDao extends AbstractDao implements NameTools {
         ObjectNode venueProperties = objectMapper.createObjectNode();
         venueProperties.put("name", this.getName());
         venueProperties.put("slug", this.getSlug());
+        venueProperties.put("offset", "venues");
         venueProperties.put("type", "");
 
         ObjectNode venueNode = objectMapper.createObjectNode();
