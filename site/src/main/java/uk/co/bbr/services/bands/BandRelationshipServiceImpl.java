@@ -48,6 +48,15 @@ public class BandRelationshipServiceImpl implements BandRelationshipService, Slu
     }
 
     @Override
+    public BandRelationshipDao createRelationship(BandDao leftBand, BandDao rightBand, BandRelationshipTypeDao relationship) {
+        BandRelationshipDao newRelationship = new BandRelationshipDao();
+        newRelationship.setLeftBand(leftBand);
+        newRelationship.setRightBand(rightBand);
+        newRelationship.setRelationship(relationship);
+        return this.createRelationship(newRelationship);
+    }
+
+    @Override
     public BandRelationshipDao updateRelationship(BandRelationshipDao relationship) {
         if (relationship.getId() == null) {
             throw new ValidationException("ID required to update");

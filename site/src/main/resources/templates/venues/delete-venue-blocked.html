@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+<head>
+    <title th:text="@{#{page.delete-venue-blocked.title} + ' - Brass Band Results'}">Edit Result - Brass Band Results</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h2><span th:text="#{page.delete-venue-blocked.title}" th:remove="tag">Delete Venue Blocked</span></h2>
+    <p th:text="#{page.delete-venue-blocked.prompt}">This venue is used for events and cannot be deleted.</p>
+
+    <ul>
+        <li th:each="venueContest : ${Contests}">
+            <span th:replace="links/contest-link.html :: contestLink(${venueContest.contest})">Yorkshire Area</span>
+        </li>
+    </ul>
+
+    <p>
+        <span th:text="#{page.delete-prompt.return-to}">Return to</span>
+        <span th:replace="links/venue-link.html :: venueLink(${Venue})"></span>
+    </p>
+
+</div>
+
+</body>
+</html>

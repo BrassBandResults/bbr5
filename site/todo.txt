@@ -5,11 +5,6 @@ Add results - add notes
 Add results - create adjudicator
 Edit adjudicators
 
-Delete group
-Delete person
-Delete band
-Delete piece
-
 Deal with unique slug clash
 
 Security on who can edit result/event
@@ -64,7 +59,6 @@ Show user's performances of pieces on piece page tab
 Upgrade to pro - how do we check that pro subscription is still active?
 
 Blog on the homepage
-On this day in history
 
 csrf
 Validate api key

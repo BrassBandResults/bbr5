@@ -17,8 +17,8 @@ public class AdjudicatorSql {
         INNER JOIN contest c ON e.contest_id = c.id
         INNER JOIN contest_event_adjudicator cea on e.id = cea.contest_event_id
         LEFT OUTER JOIN contest_result w ON w.contest_event_id = e.id AND w.result_position = 1
-        INNER JOIN band b ON b.id = w.band_id
-        INNER JOIN region r ON r.id = b.region_id
+        LEFT OUTER JOIN band b ON b.id = w.band_id
+        LEFT OUTER JOIN region r ON r.id = b.region_id
         WHERE cea.person_id = ?1
         ORDER BY e.date_of_event DESC""";
     public static List<AdjudicationsSqlDto> fetchAdjudications(EntityManager entityManager, Long personId) {

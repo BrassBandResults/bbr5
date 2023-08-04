@@ -64,9 +64,18 @@
             <textarea id="notes" class="form-control" th:field="*{notes}" cols="80" rows="10"></textarea>
         </div>
 
-        <input type="submit" th:value="#{page.buttons.save-changes}" class="btn btn-outline-success"/>
         <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
-        <a th:href="${'/bands/' + Band.slug}" th:text="#{page.buttons.cancel-without-saving}" class="btn btn-light">Cancel wout saving</a>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <input type="submit" th:value="#{page.buttons.save-changes}" class="btn btn-outline-success"/>
+                    <a th:href="${'/bands/' + Band.slug}" th:text="#{page.buttons.cancel-without-saving}" class="btn btn-light">Cancel wout saving</a>
+                </div>
+                <div class="col text-end">
+                    <span th:replace="buttons/delete.html :: deleteBand(${Band})"></span>
+                </div>
+            </div>
+        </div>
     </form>
 </div>
 

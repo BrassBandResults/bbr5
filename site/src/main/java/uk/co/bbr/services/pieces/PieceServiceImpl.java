@@ -47,7 +47,7 @@ import java.util.stream.Collectors;
 public class PieceServiceImpl implements PieceService, SlugTools {
 
     private final PieceRepository pieceRepository;
-    private final PieceAliasRepository pieceAlternativeNameRepository;
+    private final PieceAliasRepository pieceAliasRepository;
     private final SecurityService securityService;
     private final EntityManager entityManager;
 
@@ -150,7 +150,7 @@ public class PieceServiceImpl implements PieceService, SlugTools {
             alternativeName.setUpdated(LocalDateTime.now());
             alternativeName.setUpdatedBy(this.securityService.getCurrentUsername());
         }
-        this.pieceAlternativeNameRepository.saveAndFlush(alternativeName);
+        this.pieceAliasRepository.saveAndFlush(alternativeName);
     }
 
     @Override
@@ -165,7 +165,7 @@ public class PieceServiceImpl implements PieceService, SlugTools {
 
     @Override
     public List<PieceAliasDao> fetchAlternateNames(PieceDao piece) {
-        return this.pieceAlternativeNameRepository.findForPieceId(piece.getId());
+        return this.pieceAliasRepository.findForPieceId(piece.getId());
     }
 
     @Override
@@ -322,5 +322,13 @@ public class PieceServiceImpl implements PieceService, SlugTools {
     @Override
     public List<PiecesPerSectionSqlDto> fetchPiecesForSection(SectionDao section) {
         return PieceSql.piecesForSection(this.entityManager, section.getSlug());
+    }
+
+    @Override
+    public void delete(PieceDao piece) {
+        List<PieceAliasDao> pieceAliases = this.pieceAliasRepository.findForPieceId(piece.getId());
+        this.pieceAliasRepository.deleteAll(pieceAliases);
+
+        this.pieceRepository.delete(piece);
     }
 }

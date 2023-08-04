@@ -35,4 +35,6 @@ public interface BandService {
     List<BandDao> findBandsWithMapLocationAndRehearsals(RegionDao region);
 
     List<BandDao> findBandsWithMapLocationAndRehearsals();
+
+    void delete(BandDao band);
 }

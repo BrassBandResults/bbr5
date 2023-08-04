@@ -9,10 +9,13 @@ import uk.co.bbr.services.events.dao.ContestResultDao;
 import uk.co.bbr.services.events.repo.ContestAdjudicatorRepository;
 import uk.co.bbr.services.framework.ValidationException;
 import uk.co.bbr.services.framework.mixins.SlugTools;
+import uk.co.bbr.services.people.dao.PersonAliasDao;
 import uk.co.bbr.services.people.dao.PersonDao;
+import uk.co.bbr.services.people.dao.PersonRelationshipDao;
 import uk.co.bbr.services.people.dto.ConductorCompareDto;
 import uk.co.bbr.services.people.dto.PeopleListDto;
 import uk.co.bbr.services.people.repo.PersonAliasRepository;
+import uk.co.bbr.services.people.repo.PersonRelationshipRepository;
 import uk.co.bbr.services.people.repo.PersonRepository;
 import uk.co.bbr.services.people.sql.AdjudicatorSql;
 import uk.co.bbr.services.people.sql.PeopleBandsSql;
@@ -40,6 +43,7 @@ public class PersonServiceImpl implements PersonService, SlugTools {
     private final ResultService contestResultService;
     private final PersonRepository personRepository;
     private final PersonAliasRepository personAliasRepository;
+    private final PersonRelationshipRepository personRelationshipRepository;
     private final ContestAdjudicatorRepository contestAdjudicatorRepository;
     private final PieceRepository pieceRepository;
     private final SecurityService securityService;
@@ -219,6 +223,17 @@ public class PersonServiceImpl implements PersonService, SlugTools {
             result.add(adjudication.buildContestResultDao());
         }
         return result;
+    }
+
+    @Override
+    public void delete(PersonDao person) {
+        List<PersonAliasDao> aliases = this.personAliasRepository.findForPersonId(person.getId());
+        this.personAliasRepository.deleteAll(aliases);
+
+        List<PersonRelationshipDao> relationships = this.personRelationshipRepository.findForPerson(person.getId());
+        this.personRelationshipRepository.deleteAll(relationships);
+
+        this.personRepository.delete(person);
     }
 
     @Override

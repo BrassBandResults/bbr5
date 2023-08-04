@@ -22,4 +22,7 @@ public interface VenueRepository extends JpaRepository<VenueDao, Long> {
 
     @Query("SELECT v FROM VenueDao v WHERE v.id = (SELECT MAX(v1.id) FROM VenueDao v1)")
     VenueDao fetchLatestVenue();
+
+    @Query("SELECT v FROM VenueDao v WHERE v.parent.id = :venueId")
+    List<VenueDao> findWhereParent(Long venueId);
 }

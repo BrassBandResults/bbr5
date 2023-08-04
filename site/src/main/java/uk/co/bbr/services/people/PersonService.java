@@ -52,4 +52,6 @@ public interface PersonService {
     ConductorCompareDto compareConductors(PersonDao leftPerson, PersonDao rightPerson);
 
     List<ContestResultDao> fetchPersonalAdjudications(SiteUserDao currentUser, PersonDao person);
+
+    void delete(PersonDao person);
 }

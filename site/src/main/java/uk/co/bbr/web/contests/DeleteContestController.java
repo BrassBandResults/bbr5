@@ -28,7 +28,7 @@ public class DeleteContestController {
 
     @IsBbrMember
     @GetMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}/delete")
-    public String deletContest(Model model, @PathVariable("contestSlug") String contestSlug) {
+    public String deleteContest(Model model, @PathVariable("contestSlug") String contestSlug) {
 
         Optional<ContestDao> contest = this.contestService.fetchBySlug(contestSlug);
 

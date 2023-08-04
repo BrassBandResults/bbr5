@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+<head>
+    <title th:text="@{#{page.delete-band-blocked.title} + ' - Brass Band Results'}">Edit Result - Brass Band Results</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h2><span th:text="#{page.delete-band-blocked.title}" th:remove="tag">Delete Band Blocked</span></h2>
+    <p th:text="#{page.delete-band-blocked.prompt}">This band has results and cannot be deleted.</p>
+
+    <ul>
+        <li th:each="result : ${Results}">
+            <span th:replace="links/event-link.html :: eventLink(${result.contestEvent})">9th Sep 2023</span>
+        </li>
+    </ul>
+
+    <p>
+        <span th:text="#{page.delete-prompt.return-to}">Return to</span>
+        <span th:replace="links/band-link.html :: bandLink(${Band}, false, false)"></span>
+    </p>
+
+</div>
+
+</body>
+</html>
