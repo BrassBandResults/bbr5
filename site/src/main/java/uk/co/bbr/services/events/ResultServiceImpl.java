@@ -91,7 +91,7 @@ public class ResultServiceImpl implements ResultService {
         List<ContestResultDao> returnResults = new ArrayList<>();
         List<EventResultSqlDto> resultsSql = EventSql.selectEventResults(this.entityManager, event.getId());
         for (EventResultSqlDto eachResultSql : resultsSql) {
-            returnResults.add(eachResultSql.getResult());
+            returnResults.add(eachResultSql.toResult());
         }
 
         List<ResultPieceSqlDto> resultsPieces = EventSql.selectEventResultPieces(this.entityManager, event.getId());

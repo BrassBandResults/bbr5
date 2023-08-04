@@ -28,9 +28,21 @@ public class HomeController {
         List<ContestResultDao> nextWeekendsEvents = this.contestEventService.fetchNextWeekend();
         List<ContestResultDao> thisWeekendsEvents = this.contestEventService.fetchThisWeekend();
 
+        ContestResultDao todayInHistory = null;
+        ContestResultDao thisWeekInHistory = null;
+
+        if (lastWeekendsEvents.isEmpty() && nextWeekendsEvents.isEmpty() && thisWeekendsEvents.isEmpty()) {
+            todayInHistory = this.contestEventService.fetchTodayInHistory();
+            if (todayInHistory == null) {
+               thisWeekInHistory = this.contestEventService.fetchThisWeekInHistory();
+            }
+        }
+
         model.addAttribute("LastWeekendEvents", lastWeekendsEvents);
         model.addAttribute("NextWeekendEvents", nextWeekendsEvents);
         model.addAttribute("ThisWeekendEvents", thisWeekendsEvents);
+        model.addAttribute("TodayInHistoryEvent", todayInHistory);
+        model.addAttribute("ThisWeekInHistoryEvent", thisWeekInHistory);
 
         return "home/home";
     }

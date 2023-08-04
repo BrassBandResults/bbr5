@@ -15,8 +15,10 @@ import uk.co.bbr.services.contests.repo.ContestRepository;
 import uk.co.bbr.services.contests.sql.ContestResultSql;
 import uk.co.bbr.services.contests.sql.dto.ContestEventResultSqlDto;
 import uk.co.bbr.services.events.sql.EventSql;
+import uk.co.bbr.services.events.sql.InHistorySql;
 import uk.co.bbr.services.events.sql.dto.EventResultSqlDto;
 import uk.co.bbr.services.events.sql.dto.EventUpDownLeftRightSqlDto;
+import uk.co.bbr.services.events.sql.dto.HistoricalEventSqlDto;
 import uk.co.bbr.services.events.types.ContestEventDateResolution;
 import uk.co.bbr.services.events.types.TestPieceAndOr;
 import uk.co.bbr.services.people.dao.PersonDao;
@@ -28,6 +30,7 @@ import uk.co.bbr.web.security.annotations.IsBbrMember;
 import uk.co.bbr.services.framework.DateTools;
 
 import javax.persistence.EntityManager;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -363,7 +366,7 @@ public class ContestEventServiceImpl implements ContestEventService {
 
         List<ContestResultDao> returnResults = new ArrayList<>();
         for (EventResultSqlDto eachResultSql : weekendResults) {
-            returnResults.add(eachResultSql.getResult());
+            returnResults.add(eachResultSql.toResult());
         }
         return returnResults;
     }
@@ -391,9 +394,37 @@ public class ContestEventServiceImpl implements ContestEventService {
 
         List<ContestResultDao> returnResults = new ArrayList<>();
         for (EventResultSqlDto eachResultSql : weekendResults) {
-            returnResults.add(eachResultSql.getResult());
+            returnResults.add(eachResultSql.toResult());
         }
         return returnResults;
     }
 
+    @Override
+    public ContestResultDao fetchTodayInHistory() {
+        List<HistoricalEventSqlDto> inHistory = null;
+        try {
+            inHistory = InHistorySql.eventsForToday(this.entityManager);
+        } catch (Exception ex) {
+            inHistory = Collections.emptyList();
+        }
+        if (inHistory.size() > 0) {
+            return inHistory.get(0).toResult();
+        }
+        return null;
+    }
+
+    @Override
+    public ContestResultDao fetchThisWeekInHistory() {
+        List<HistoricalEventSqlDto> inHistory = null;
+        try {
+            inHistory = InHistorySql.eventsForThisWeek(this.entityManager);
+        } catch (Exception ex) {
+            inHistory = Collections.emptyList();
+        }
+
+        if (inHistory.size() > 0) {
+            return inHistory.get(0).toResult();
+        }
+        return null;
+    }
 }
