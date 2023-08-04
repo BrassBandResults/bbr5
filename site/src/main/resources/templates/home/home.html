@@ -49,6 +49,28 @@
             </li>
         </ul>
     </div>
+    <div class="container" th:if="${TodayInHistoryEvent != null}">
+        <h3 th:text="#{page.home.today-in-history}">Today in History</h3>
+        <ul>
+            <li>
+                <span th:replace="links/event-link.html :: eventLink(${TodayInHistoryEvent.contestEvent})">9th Sep 2023</span>
+                <span th:text="${TodayInHistoryEvent.contestEvent.name}">Yorkshire Area</span>
+                <br/>- <span th:text="#{page.home.won-by}">won by</span>
+                <span th:replace="links/band-link.html :: bandLinkWithOverride(${TodayInHistoryEvent})"></span>
+            </li>
+        </ul>
+    </div>
+    <div class="container" th:if="${ThisWeekInHistoryEvent != null}">
+        <h3 th:text="#{page.home.this-week-in-history}">This Week in History</h3>
+        <ul>
+            <li>
+                <span th:replace="links/event-link.html :: eventLink(${ThisWeekInHistoryEvent.contestEvent})">9th Sep 2023</span>
+                <span th:text="${ThisWeekInHistoryEvent.contestEvent.name}">Yorkshire Area</span>
+                <br/>- <span th:text="#{page.home.won-by}">won by</span>
+                <span th:replace="links/band-link.html :: bandLinkWithOverride(${ThisWeekInHistoryEvent})"></span>
+            </li>
+        </ul>
+    </div>
 
     <div class="container">
         <h3>Disclaimer</h3>

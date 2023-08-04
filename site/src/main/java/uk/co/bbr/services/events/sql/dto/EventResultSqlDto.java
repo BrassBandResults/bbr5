@@ -14,7 +14,6 @@ import uk.co.bbr.services.regions.dao.RegionDao;
 import uk.co.bbr.services.sections.dao.SectionDao;
 
 import java.math.BigInteger;
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -108,7 +107,7 @@ public class EventResultSqlDto extends AbstractSqlDto {
         this.sectionTranslationKey = (String)columnList[38];
     }
 
-    public ContestResultDao getResult() {
+    public ContestResultDao toResult() {
         ContestResultDao result = new ContestResultDao();
         result.setContestEvent(new ContestEventDao());
         result.getContestEvent().setContest(new ContestDao());

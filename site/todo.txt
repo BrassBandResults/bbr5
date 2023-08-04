@@ -12,9 +12,11 @@ Delete piece
 
 Deal with unique slug clash
 
-Security on who can edit result
+Security on who can edit result/event
 - Any user for two weeks after event
 - Any user before event, but you can't add a result
+- Person who created it can edit it
+- Superusers can edit it
 
 Person profile support
 Migrate people profiles

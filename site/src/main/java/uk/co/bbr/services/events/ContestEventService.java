@@ -67,4 +67,8 @@ public interface ContestEventService {
     void removeSetTestPiece(ContestEventTestPieceDao eventPiece);
 
     void delete(ContestEventDao contestEvent);
+
+    ContestResultDao fetchTodayInHistory();
+
+    ContestResultDao fetchThisWeekInHistory();
 }
