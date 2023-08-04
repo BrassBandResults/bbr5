@@ -378,6 +378,11 @@ public class ContestEventServiceImpl implements ContestEventService {
         this.contestTestPieceRepository.delete(eventPiece);
     }
 
+    @Override
+    public void delete(ContestEventDao contestEvent) {
+        this.contestEventRepository.delete(contestEvent);
+    }
+
     private List<ContestResultDao> fetchEventsForWeekend(LocalDate sunday) {
         LocalDate start = sunday.minus(4, ChronoUnit.DAYS);
         LocalDate end = sunday.plus(2, ChronoUnit.DAYS);
