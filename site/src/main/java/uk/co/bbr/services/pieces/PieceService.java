@@ -43,4 +43,6 @@ public interface PieceService {
     List<BestOwnChoiceDto> fetchMostSuccessfulOwnChoice();
 
     List<PiecesPerSectionSqlDto> fetchPiecesForSection(SectionDao section);
+
+    void delete(PieceDao piece);
 }

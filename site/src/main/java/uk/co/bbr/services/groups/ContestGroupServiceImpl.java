@@ -288,4 +288,12 @@ public class ContestGroupServiceImpl implements ContestGroupService, SlugTools {
     public List<ContestGroupAliasDao> fetchAliases(ContestGroupDao contestGroup) {
         return this.contestGroupAliasRepository.findByGroup(contestGroup.getId());
     }
+
+    @Override
+    public void delete(ContestGroupDao contestGroup) {
+        List<ContestGroupAliasDao> aliases = this.contestGroupAliasRepository.findByGroup(contestGroup.getId());
+        this.contestGroupAliasRepository.deleteAll(aliases);
+
+        this.contestGroupRepository.delete(contestGroup);
+    }
 }

@@ -38,4 +38,6 @@ public interface VenueService {
     List<VenueContestYearDto> fetchVenueContestYears(VenueDao venue);
 
     List<ContestEventDao> fetchVenueContestYear(VenueDao venue, int year);
+
+    void delete(VenueDao venue);
 }

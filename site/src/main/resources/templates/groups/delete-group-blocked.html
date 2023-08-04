@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+<head>
+    <title th:text="@{#{page.delete-group-blocked.title} + ' - Brass Band Results'}">Edit Result - Brass Band Results</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h2><span th:text="#{page.delete-group-blocked.title}" th:remove="tag">Delete Group Blocked</span></h2>
+    <p th:text="#{page.delete-group-blocked.prompt}">This group has contests and cannot be deleted.</p>
+
+    <ul>
+        <li th:each="contest : ${ActiveContests}">
+            <span th:replace="links/contest-link.html :: contestLink(${contest})">Yorkshire Area</span>
+        </li>
+        <li th:each="contest : ${OldContests}">
+            <span th:replace="links/contest-link.html :: contestLink(${contest})">North West Area</span>
+        </li>
+    </ul>
+
+    <p>
+        <span th:text="#{page.delete-prompt.return-to}">Return to</span>
+        <span th:replace="links/group-link.html :: groupLink(${Group})"></span>
+    </p>
+
+</div>
+
+</body>
+</html>

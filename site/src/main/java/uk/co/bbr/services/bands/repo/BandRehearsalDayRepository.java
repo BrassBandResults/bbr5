@@ -7,7 +7,7 @@ import uk.co.bbr.services.bands.types.RehearsalDay;
 
 import java.util.List;
 
-public interface BandRehearsalNightRepository extends JpaRepository<BandRehearsalDayDao, Long> {
+public interface BandRehearsalDayRepository extends JpaRepository<BandRehearsalDayDao, Long> {
     @Query("SELECT rd FROM BandRehearsalDayDao rd WHERE rd.band.id = ?1 ORDER BY rd.day")
     List<BandRehearsalDayDao> findForBand(Long bandId);
 

@@ -11,7 +11,6 @@ import uk.co.bbr.services.people.dao.PersonRelationshipTypeDao;
 import uk.co.bbr.services.people.repo.PersonRelationshipRepository;
 import uk.co.bbr.services.people.repo.PersonRelationshipTypeRepository;
 import uk.co.bbr.services.security.SecurityService;
-import uk.co.bbr.web.security.annotations.IsBbrAdmin;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
 import java.time.LocalDateTime;
@@ -34,15 +33,8 @@ public class PersonRelationshipServiceImpl implements PersonRelationshipService,
             throw new ValidationException("ID must not be supplied to create");
         }
 
-        return this.createRelationship(relationship, false);
-    }
-
-    @Override
-    public PersonRelationshipDao updateRelationship(PersonRelationshipDao relationship) {
-        if (relationship.getId() == null) {
-            throw new ValidationException("ID required to update");
-        }
-
+        relationship.setCreated(LocalDateTime.now());
+        relationship.setCreatedBy(this.securityService.getCurrentUsername());
         relationship.setUpdated(LocalDateTime.now());
         relationship.setUpdatedBy(this.securityService.getCurrentUsername());
 
@@ -50,20 +42,12 @@ public class PersonRelationshipServiceImpl implements PersonRelationshipService,
     }
 
     @Override
-    @IsBbrAdmin
-    public PersonRelationshipDao migrateRelationship(PersonRelationshipDao relationship) {
-        return this.createRelationship(relationship, true);
-    }
-
-    private PersonRelationshipDao createRelationship(PersonRelationshipDao relationship, boolean migrating) {
-        if (!migrating) {
-            relationship.setCreated(LocalDateTime.now());
-            relationship.setCreatedBy(this.securityService.getCurrentUsername());
-            relationship.setUpdated(LocalDateTime.now());
-            relationship.setUpdatedBy(this.securityService.getCurrentUsername());
-        }
-
-        return this.saveRelationship(relationship);
+    public PersonRelationshipDao createRelationship(PersonDao leftPerson, PersonDao rightPerson, PersonRelationshipTypeDao relationship) {
+        PersonRelationshipDao newRelationship = new PersonRelationshipDao();
+        newRelationship.setLeftPerson(leftPerson);
+        newRelationship.setRightPerson(rightPerson);
+        newRelationship.setRelationship(relationship);
+        return this.createRelationship(newRelationship);
     }
 
     private PersonRelationshipDao saveRelationship(PersonRelationshipDao relationship){

@@ -3,26 +3,18 @@ package uk.co.bbr.services.statistics;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import uk.co.bbr.services.bands.BandService;
-import uk.co.bbr.services.bands.dao.BandDao;
-import uk.co.bbr.services.bands.repo.BandRehearsalNightRepository;
+import uk.co.bbr.services.bands.repo.BandRehearsalDayRepository;
 import uk.co.bbr.services.bands.repo.BandRepository;
-import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.contests.repo.ContestRepository;
 import uk.co.bbr.services.events.repo.ContestEventRepository;
 import uk.co.bbr.services.events.repo.ContestResultRepository;
-import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.people.repo.PersonRepository;
-import uk.co.bbr.services.pieces.dao.PieceDao;
 import uk.co.bbr.services.pieces.repo.PieceRepository;
-import uk.co.bbr.services.sections.dao.SectionDao;
-import uk.co.bbr.services.sections.repo.SectionRepository;
 import uk.co.bbr.services.statistics.dto.StatisticsDto;
-import uk.co.bbr.services.venues.dao.VenueDao;
 import uk.co.bbr.services.venues.repo.VenueRepository;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -30,7 +22,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 
     private final BandService bandService;
     private final BandRepository bandRepository;
-    private final BandRehearsalNightRepository bandRehearsalNightRepository;
+    private final BandRehearsalDayRepository bandRehearsalDayRepository;
     private final PersonRepository personRepository;
     private final ContestResultRepository contestResultRepository;
     private final ContestEventRepository contestEventRepository;
@@ -42,7 +34,7 @@ public class StatisticsServiceImpl implements StatisticsService {
     @Override
     public StatisticsDto fetchStatistics() {
         StatisticsDto stats = new StatisticsDto();
-        
+
         stats.setBandCount(this.bandRepository.countBands());
         stats.setLatestBand(this.bandRepository.fetchLatestBand());
         int lastYear = LocalDate.now().minus(1, ChronoUnit.YEARS).getYear();
@@ -64,15 +56,15 @@ public class StatisticsServiceImpl implements StatisticsService {
         stats.setVenuesOnMap(this.venueRepository.countVenuesOnMap());
         stats.setLatestVenue(this.venueRepository.fetchLatestVenue());
 
-        stats.setBandsRehearseOnMonday(this.bandRehearsalNightRepository.countBandsOnMonday());
-        stats.setBandsRehearseOnTuesday(this.bandRehearsalNightRepository.countBandsOnTuesday());
-        stats.setBandsRehearseOnWednesday(this.bandRehearsalNightRepository.countBandsOnWednesday());
-        stats.setBandsRehearseOnThursday(this.bandRehearsalNightRepository.countBandsOnThursday());
-        stats.setBandsRehearseOnFriday(this.bandRehearsalNightRepository.countBandsOnFriday());
-        stats.setBandsRehearseOnSaturday(this.bandRehearsalNightRepository.countBandsOnSaturday());
-        stats.setBandsRehearseOnSunday(this.bandRehearsalNightRepository.countBandsOnSunday());
+        stats.setBandsRehearseOnMonday(this.bandRehearsalDayRepository.countBandsOnMonday());
+        stats.setBandsRehearseOnTuesday(this.bandRehearsalDayRepository.countBandsOnTuesday());
+        stats.setBandsRehearseOnWednesday(this.bandRehearsalDayRepository.countBandsOnWednesday());
+        stats.setBandsRehearseOnThursday(this.bandRehearsalDayRepository.countBandsOnThursday());
+        stats.setBandsRehearseOnFriday(this.bandRehearsalDayRepository.countBandsOnFriday());
+        stats.setBandsRehearseOnSaturday(this.bandRehearsalDayRepository.countBandsOnSaturday());
+        stats.setBandsRehearseOnSunday(this.bandRehearsalDayRepository.countBandsOnSunday());
 
-        stats.setBandsWithRehearsalNight(this.bandRehearsalNightRepository.fetchBandCount());
+        stats.setBandsWithRehearsalNight(this.bandRehearsalDayRepository.fetchBandCount());
 
         return stats;
     }

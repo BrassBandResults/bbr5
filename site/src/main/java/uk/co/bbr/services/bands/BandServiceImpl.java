@@ -3,9 +3,15 @@ package uk.co.bbr.services.bands;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import uk.co.bbr.services.bands.dao.BandAliasDao;
 import uk.co.bbr.services.bands.dao.BandDao;
+import uk.co.bbr.services.bands.dao.BandRehearsalDayDao;
+import uk.co.bbr.services.bands.dao.BandRelationshipDao;
 import uk.co.bbr.services.bands.dto.BandCompareDto;
 import uk.co.bbr.services.bands.dto.BandListDto;
+import uk.co.bbr.services.bands.repo.BandPreviousNameRepository;
+import uk.co.bbr.services.bands.repo.BandRehearsalDayRepository;
+import uk.co.bbr.services.bands.repo.BandRelationshipRepository;
 import uk.co.bbr.services.bands.repo.BandRepository;
 import uk.co.bbr.services.bands.sql.BandCompareSql;
 import uk.co.bbr.services.bands.sql.BandMapSql;
@@ -36,6 +42,9 @@ public class BandServiceImpl implements BandService, SlugTools {
     private final SecurityService securityService;
 
     private final BandRepository bandRepository;
+    private final BandRehearsalDayRepository bandRehearsalDayRepository;
+    private final BandRelationshipRepository bandRelationshipRepository;
+    private final BandPreviousNameRepository bandPreviousNameRepository;
 
     private final EntityManager entityManager;
 
@@ -203,5 +212,19 @@ public class BandServiceImpl implements BandService, SlugTools {
             bandData.add(eachRow.getBand());
         }
         return bandData;
+    }
+
+    @Override
+    public void delete(BandDao band) {
+        List<BandRehearsalDayDao> days = this.bandRehearsalDayRepository.findForBand(band.getId());
+        this.bandRehearsalDayRepository.deleteAll(days);
+
+        List<BandRelationshipDao> relationships = this.bandRelationshipRepository.findForBand(band.getId());
+        this.bandRelationshipRepository.deleteAll(relationships);
+
+        List<BandAliasDao> aliases = this.bandPreviousNameRepository.findAllForBandOrderByName(band.getId());
+        this.bandPreviousNameRepository.deleteAll(aliases);
+
+        this.bandRepository.delete(band);
     }
 }

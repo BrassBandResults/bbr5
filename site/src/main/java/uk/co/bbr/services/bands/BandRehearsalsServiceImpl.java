@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.bands.dao.BandRehearsalDayDao;
-import uk.co.bbr.services.bands.repo.BandRehearsalNightRepository;
+import uk.co.bbr.services.bands.repo.BandRehearsalDayRepository;
 import uk.co.bbr.services.bands.types.RehearsalDay;
 import uk.co.bbr.services.framework.mixins.SlugTools;
 import uk.co.bbr.services.security.SecurityService;
@@ -19,7 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BandRehearsalsServiceImpl implements BandRehearsalsService, SlugTools {
     private final SecurityService securityService;
-    private final BandRehearsalNightRepository bandRehearsalNightRepository;
+    private final BandRehearsalDayRepository bandRehearsalDayRepository;
 
     @Override
     @IsBbrMember
@@ -56,12 +56,12 @@ public class BandRehearsalsServiceImpl implements BandRehearsalsService, SlugToo
             rehearsalNight.setUpdatedBy(band.getUpdatedBy());
         }
 
-        this.bandRehearsalNightRepository.saveAndFlush(rehearsalNight);
+        this.bandRehearsalDayRepository.saveAndFlush(rehearsalNight);
     }
 
     @Override
     public List<RehearsalDay> findRehearsalDays(BandDao band) {
-        List<BandRehearsalDayDao> rehearsalDays = this.bandRehearsalNightRepository.findForBand(band.getId());
+        List<BandRehearsalDayDao> rehearsalDays = this.bandRehearsalDayRepository.findForBand(band.getId());
 
         List<RehearsalDay> returnDays = new ArrayList<>();
         for (BandRehearsalDayDao bandDay : rehearsalDays) {
@@ -74,17 +74,17 @@ public class BandRehearsalsServiceImpl implements BandRehearsalsService, SlugToo
 
     @Override
     public List<BandRehearsalDayDao> fetchRehearsalDays(BandDao band) {
-        return this.bandRehearsalNightRepository.findForBand(band.getId());
+        return this.bandRehearsalDayRepository.findForBand(band.getId());
     }
 
     @Override
     public void deleteRehearsalDays(BandDao band) {
         List<BandRehearsalDayDao> daysForBand = this.fetchRehearsalDays(band);
-        this.bandRehearsalNightRepository.deleteAll(daysForBand);
+        this.bandRehearsalDayRepository.deleteAll(daysForBand);
     }
 
     @Override
     public List<BandRehearsalDayDao> fetchBandsByDayForMap(RehearsalDay day) {
-        return this.bandRehearsalNightRepository.findForDay(day);
+        return this.bandRehearsalDayRepository.findForDay(day);
     }
 }

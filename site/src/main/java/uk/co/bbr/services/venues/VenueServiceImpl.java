@@ -225,4 +225,18 @@ public class VenueServiceImpl implements VenueService, SlugTools {
     public List<ContestEventDao> fetchVenueContestYear(VenueDao venue, int year) {
         return this.contestEventRepository.fetchEventsForVenueInYear(venue.getId(), year);
     }
+
+    @Override
+    public void delete(VenueDao venue) {
+        List<VenueAliasDao> aliases = this.venueAliasRepository.findByVenue(venue.getId());
+        this.venueAliasRepository.deleteAll(aliases);
+
+        List<VenueDao> parentLinks = this.venueRepository.findWhereParent(venue.getId());
+        for (VenueDao link : parentLinks) {
+            link.setParent(null);
+            this.venueRepository.saveAndFlush(link);
+        }
+
+        this.venueRepository.delete(venue);
+    }
 }
