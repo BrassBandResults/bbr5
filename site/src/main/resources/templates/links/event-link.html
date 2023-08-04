@@ -36,3 +36,12 @@
     </span>
 </span>
 
+<span th:fragment="eventNameLink(event)">
+    <span th:if="${event != null}" th:remove="tag">
+        <a th:href="${'/contests/' + event.contest.slug + '/' + event.eventDateForUrl}" class="bbr-event">
+            <span th:text="${event.eventDateDisplay}" th:remove="tag"></span>
+            <span th:text="${event.name}" th:remove="tag"></span>
+        </a>
+    </span>
+</span>
+

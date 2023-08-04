@@ -20,4 +20,7 @@ public interface PerformanceRepository extends JpaRepository<PerformanceDao, Lon
 
     @Query("SELECT p FROM PerformanceDao p WHERE p.status = 'A' AND p.result.contestEvent.id = :eventId ORDER BY p.result.position")
     List<PerformanceDao> fetchForEvent(Long eventId);
+
+    @Query("SELECT p FROM PerformanceDao p WHERE p.result.id = :resultId")
+    List<PerformanceDao> fetchPerformancesForResult(Long resultId);
 }

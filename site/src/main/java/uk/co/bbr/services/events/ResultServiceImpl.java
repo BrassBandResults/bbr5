@@ -285,6 +285,11 @@ public class ResultServiceImpl implements ResultService {
         this.contestResultPieceRepository.delete(matchingPiece.get());
     }
 
+    @Override
+    public void delete(ContestResultDao contestResult) {
+        this.contestResultRepository.delete(contestResult);
+    }
+
     private Map<String, List<Integer>> fetchStreakData(ContestDao contest) {
         Map<String, List<Integer>> streaksBandSlugToYear = new HashMap<>();
 
