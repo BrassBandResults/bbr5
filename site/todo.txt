@@ -3,7 +3,6 @@ Add results - add results fix unknown conductor
 Add results - add adjudicators
 Add results - add notes
 Add results - create adjudicator
-
 Edit adjudicators
 
 Delete result
@@ -14,31 +13,38 @@ Delete person
 Delete band
 Delete piece
 
-Venue link on map/venue nearby map not right - links to band?
-
-Region/contests fix event count
+Deal with unique slug clash
 
 Security on who can edit result
+- Any user for two weeks after event
+- Any user before event, but you can't add a result
 
 Person profile support
 Migrate people profiles
 Add classifieds to users profile page
 
 Upgrade to pro - subscribe link on 403 page
-Upgrade to pro - call back, how's that going to work?
-Upgrade to pro - how do we record stripe details on user?
+Upgrade to pro - record stripe details on user
+
+Support for instruments on contest history for pro users
 
 Ads for non-pro users
+
+Region/contests fix event count
+Contest group fix event count
+
+Maps work where lat/lng is missing
+
+=== Go Live ===
 
 Add privacy settings for personal contest history
 Add date ranges for personal contest history
 
-Email on 500 error
+Record 500 error - send feedback?
 
 Assign points
 
-Multiple map icons on same location fix
-https://github.com/jawj/OverlappingMarkerSpiderfier-Leaflet/
+Multiple map icons on same location
 
 Add placeholder text to form fields
 
@@ -49,7 +55,6 @@ Result piece move up/down buttons to reorder
 Fetch pending performances works out ones that aren't in history and aren't rejected
 
 Change password for user
-Support for instruments on contest history for pro users
 
 Add pro status to users profile page
 
@@ -61,10 +66,6 @@ Upgrade to pro - how do we check that pro subscription is still active?
 
 Blog on the homepage
 On this day in history
-
-Event band map/geography
-
-Deal with unique slug clash
 
 csrf
 Validate api key
@@ -82,8 +83,6 @@ Member can add missing conductor
 Member can add missing points etc on a result
 
 Do tags better, and don't link direct to the contest and contestGroup objects.
-
-sitemap?
 
 Export results to files in git repo
 
