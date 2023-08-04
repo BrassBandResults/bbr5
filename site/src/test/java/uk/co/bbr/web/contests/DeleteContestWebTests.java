@@ -1,4 +1,4 @@
-package uk.co.bbr.web.events;
+package uk.co.bbr.web.contests;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -18,10 +18,8 @@ import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.events.ContestEventService;
 import uk.co.bbr.services.events.ResultService;
 import uk.co.bbr.services.events.dao.ContestEventDao;
-import uk.co.bbr.services.events.dao.ContestResultDao;
 import uk.co.bbr.services.people.PersonService;
 import uk.co.bbr.services.people.dao.PersonDao;
-import uk.co.bbr.services.performances.PerformanceService;
 import uk.co.bbr.services.regions.RegionService;
 import uk.co.bbr.services.regions.dao.RegionDao;
 import uk.co.bbr.services.security.JwtService;
@@ -39,19 +37,15 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @ActiveProfiles("test")
 @SpringBootTest(properties = {  "spring.config.location=classpath:test-application.yml",
-        "spring.datasource.url=jdbc:h2:mem:events-delete-event-web-tests-admin-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE"},
+        "spring.datasource.url=jdbc:h2:mem:contest-delete-contest-web-tests-admin-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE"},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class DeleteEventWebTests implements LoginMixin {
+class DeleteContestWebTests implements LoginMixin {
 
     @Autowired private SecurityService securityService;
     @Autowired private JwtService jwtService;
     @Autowired private ContestService contestService;
-    @Autowired private RegionService regionService;
-    @Autowired private BandService bandService;
-    @Autowired private PersonService personService;
     @Autowired private ContestEventService contestEventService;
-    @Autowired private ResultService contestResultService;
     @Autowired private UserService userService;
     @Autowired private CsrfTokenRepository csrfTokenRepository;
     @Autowired private RestTemplate restTemplate;
@@ -68,43 +62,55 @@ class DeleteEventWebTests implements LoginMixin {
         Optional<SiteUserDao> user = this.userService.fetchUserByUsercode(TestUser.TEST_MEMBER.getUsername());
         assertTrue(user.isPresent());
 
-        RegionDao yorkshire = this.regionService.fetchBySlug("yorkshire").get();
-        BandDao blackDyke = this.bandService.create("Black Dyke", yorkshire);
-        PersonDao davidRoberts = this.personService.create("Roberts", "David");
-
         ContestDao yorkshireArea = this.contestService.create("Yorkshire Area");
-        ContestEventDao yorkshireArea2010 = this.contestEventService.create(yorkshireArea, LocalDate.of(2010, 3, 1));
-        ContestEventDao yorkshireArea2011 = this.contestEventService.create(yorkshireArea, LocalDate.of(2011, 3, 2));
-        this.contestResultService.addResult(yorkshireArea2010, "1", blackDyke, davidRoberts);
+        this.contestEventService.create(yorkshireArea, LocalDate.of(2010, 3, 1));
+
+        ContestDao northWestArea = this.contestService.create("North West Area");
+
+        ContestDao LondonArea = this.contestService.create("London Area");
+        this.contestService.createAlias(LondonArea, "London & Southern Counties Area");
 
         logoutTestUser();
     }
 
     @Test
-    void testDeleteEventWithNoResultsSucceeds() {
-        Optional<ContestEventDao> eventBeforeDelete = this.contestEventService.fetchEvent("yorkshire-area", LocalDate.of(2011, 3, 2));
-        assertTrue(eventBeforeDelete.isPresent());
+    void testDeleteContestWithNoEventsSucceeds() {
+        Optional<ContestDao> beforeDelete = this.contestService.fetchBySlug("north-west-area");
+        assertTrue(beforeDelete.isPresent());
 
-        ResponseEntity<String> response = this.restTemplate.getForEntity("http://localhost:" + this.port + "/contests/yorkshire-area/2011-03-02/delete", String.class);
+        ResponseEntity<String> response = this.restTemplate.getForEntity("http://localhost:" + this.port + "/contests/north-west-area/delete", String.class);
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertTrue(response.getBody().contains("Yorkshire Area"));
-        assertFalse(response.getBody().contains("2011"));
+        assertTrue(response.getBody().contains(">Contests starting with A<"));
 
-        Optional<ContestEventDao> eventAfterDelete = this.contestEventService.fetchEvent("yorkshire-area", LocalDate.of(2011, 3, 2));
-        assertTrue(eventAfterDelete.isEmpty());
+        Optional<ContestDao> afterDelete = this.contestService.fetchBySlug("north-west-area");
+        assertTrue(afterDelete.isEmpty());
     }
 
     @Test
-    void testDeleteEventWithResultsFailsAsExpected() {
-        Optional<ContestEventDao> eventBeforeDelete = this.contestEventService.fetchEvent("yorkshire-area", LocalDate.of(2010, 3, 1));
-        assertTrue(eventBeforeDelete.isPresent());
+    void testDeleteContestWithAliasesSucceeds() {
+        Optional<ContestDao> beforeDelete = this.contestService.fetchBySlug("london-area");
+        assertTrue(beforeDelete.isPresent());
 
-        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/contests/yorkshire-area/2010-03-01/delete", String.class);
+        ResponseEntity<String> response = this.restTemplate.getForEntity("http://localhost:" + this.port + "/contests/london-area/delete", String.class);
         assertNotNull(response);
-        assertTrue(response.contains("This event has linked results and cannot be deleted."));
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertTrue(response.getBody().contains(">Contests starting with A<"));
 
-        Optional<ContestEventDao> eventAfterDelete = this.contestEventService.fetchEvent("yorkshire-area", LocalDate.of(2010, 3, 1));
-        assertFalse(eventAfterDelete.isEmpty());
+        Optional<ContestDao> afterDelete = this.contestService.fetchBySlug("london-area");
+        assertTrue(afterDelete.isEmpty());
+    }
+
+    @Test
+    void testDeleteContestWithEventsFailsAsExpected() {
+        Optional<ContestDao> beforeDelete = this.contestService.fetchBySlug("yorkshire-area");
+        assertTrue(beforeDelete.isPresent());
+
+        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/contests/yorkshire-area/delete", String.class);
+        assertNotNull(response);
+        assertTrue(response.contains("This contest has events and cannot be deleted."));
+
+        Optional<ContestDao> afterDelete = this.contestService.fetchBySlug("yorkshire-area");
+        assertFalse(afterDelete.isEmpty());
     }
 }
