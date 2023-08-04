@@ -65,4 +65,6 @@ public interface ContestEventService {
     Optional<ContestEventTestPieceDao> fetchSetTestById(ContestEventDao contestEvent, Long eventPieceId);
 
     void removeSetTestPiece(ContestEventTestPieceDao eventPiece);
+
+    void delete(ContestEventDao contestEvent);
 }

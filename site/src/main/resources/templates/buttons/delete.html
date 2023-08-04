@@ -9,3 +9,7 @@
 <span th:fragment="deleteResult(event, result)" th:remove="tag">
     <span th:replace="buttons/button.html :: dangerButton(#{page.buttons.delete}, ${'/contests/' + event.contest.slug + '/' + event.eventDateForUrl + '/result/' + result.id + '/delete'})"></span>
 </span>
+
+<span th:fragment="deleteEvent(event)" th:remove="tag">
+    <span th:replace="buttons/button.html :: dangerButton(#{page.buttons.delete}, ${'/contests/' + event.contest.slug + '/' + event.eventDateForUrl + '/delete'})"></span>
+</span>
