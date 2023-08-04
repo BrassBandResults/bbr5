@@ -102,9 +102,22 @@
             <small class="form-text" th:text="#{page.contest-edit.hint.prevent-future-bands}">If true, prevents bands being added to the contest event whilst it is still in the future.</small>
         </div>
 
-        <input type="submit" th:value="#{page.buttons.save-changes}" class="btn btn-outline-success"/>
+
+
+
+
         <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
-        <a th:href="${'/contests/' + Contest.slug}" th:text="#{page.buttons.cancel-without-saving}" class="btn btn-light">Cancel wout saving</a>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <input type="submit" th:value="#{page.buttons.save-changes}" class="btn btn-outline-success"/>
+                    <a th:href="${'/contests/' + Contest.slug}" th:text="#{page.buttons.cancel-without-saving}" class="btn btn-light">Cancel wout saving</a>
+                </div>
+                <div class="col text-end">
+                    <span th:replace="buttons/delete.html :: deleteContest(${Contest})"></span>
+                </div>
+            </div>
+        </div>
     </form>
 </div>
 

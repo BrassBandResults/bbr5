@@ -99,7 +99,7 @@ class DeleteResultWebTests implements LoginMixin {
     }
 
     @Test
-    void testDeleteEventWithNoPerformancesSucceeds() {
+    void testDeleteResultWithNoPerformancesSucceeds() {
         Optional<ContestResultDao> resultBeforeDelete = this.contestResultService.fetchById(1L);
         assertTrue(resultBeforeDelete.isPresent());
 
@@ -113,7 +113,7 @@ class DeleteResultWebTests implements LoginMixin {
     }
 
     @Test
-    void testDeleteEventWithLinkedUserPerformanceFailsAsExpected() {
+    void testDeleteResultWithLinkedUserPerformanceFailsAsExpected() {
         Optional<ContestResultDao> resultBeforeDelete = this.contestResultService.fetchById(2L);
         assertTrue(resultBeforeDelete.isPresent());
 

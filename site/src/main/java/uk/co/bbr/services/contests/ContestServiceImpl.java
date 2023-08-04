@@ -246,4 +246,13 @@ public class ContestServiceImpl implements ContestService, SlugTools {
     public Optional<ContestDao> fetchByNameUpper(String contestName) {
         return this.contestRepository.fetchByNameUpper(contestName.toUpperCase());
     }
+
+    @Override
+    public void delete(ContestDao contest) {
+        List<ContestAliasDao> aliases = this.fetchAliases(contest);
+        for (ContestAliasDao alias : aliases) {
+            this.contestAliasRepository.delete(alias);
+        }
+        this.contestRepository.delete(contest);
+    }
 }

@@ -5,8 +5,6 @@ Add results - add notes
 Add results - create adjudicator
 Edit adjudicators
 
-Delete event
-Delete contest
 Delete group
 Delete person
 Delete band

@@ -38,4 +38,6 @@ public interface ContestService {
     Optional<ContestDao> fetchByExactName(String contestName);
 
     Optional<ContestDao> fetchByNameUpper(String contestName);
+
+    void delete(ContestDao contest);
 }
