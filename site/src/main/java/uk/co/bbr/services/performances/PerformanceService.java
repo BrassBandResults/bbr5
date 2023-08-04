@@ -29,4 +29,6 @@ public interface PerformanceService {
     List<CompetitorBandDto> fetchPerformancesForEvent(ContestEventDao contestEvent);
 
     List<ContestResultDao> fetchApprovedPerformancesForPiece(String userCode, PieceDao piece);
+
+    List<PerformanceDao> fetchPerformancesForResult(ContestResultDao contestResult);
 }

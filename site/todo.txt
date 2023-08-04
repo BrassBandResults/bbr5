@@ -5,7 +5,6 @@ Add results - add notes
 Add results - create adjudicator
 Edit adjudicators
 
-Delete result
 Delete event
 Delete contest
 Delete group
@@ -33,7 +32,7 @@ Ads for non-pro users
 Region/contests fix event count
 Contest group fix event count
 
-Maps work where lat/lng is missing
+Maps don't 500 where lat/lng is missing
 
 === Go Live ===
 
@@ -87,3 +86,5 @@ Do tags better, and don't link direct to the contest and contestGroup objects.
 Export results to files in git repo
 
 Split Australian regions into states?
+
+Email for bands created in last month

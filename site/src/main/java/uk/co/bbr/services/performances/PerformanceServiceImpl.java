@@ -103,4 +103,9 @@ public class PerformanceServiceImpl implements PerformanceService, SlugTools {
 
         return returnList;
     }
+
+    @Override
+    public List<PerformanceDao> fetchPerformancesForResult(ContestResultDao contestResult) {
+        return this.performanceRepository.fetchPerformancesForResult(contestResult.getId());
+    }
 }

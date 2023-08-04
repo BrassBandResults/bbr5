@@ -49,4 +49,6 @@ public interface ResultService {
     Optional<ContestResultPieceDao> fetchResultPieceById(ContestResultDao contestResult, Long resultPieceId);
 
     void removePiece(ContestEventDao contestEvent, ContestResultDao contestResult, ContestResultPieceDao contestResultPiece);
+
+    void delete(ContestResultDao contestResult);
 }
