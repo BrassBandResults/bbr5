@@ -5,11 +5,14 @@
 </head>
 <body>
 <div layout:fragment="content">
-    <span th:replace="people/components/header.html :: header(${Person},${PreviousNames})"></span>
+    <span th:replace="people/components/header.html :: header(${Person},${PersonProfile},${PreviousNames})"></span>
 
     <ul class="nav nav-tabs">
+        <li class="nav-item" th:if="${PersonProfile != null}">
+            <a class="nav-link" th:href="${'/people/' + Person.slug + '/profile'}" th:text="#{page.person.tab.profile}">Profile</a>
+        </li>
         <li class="nav-item" th:if="${ResultsCount > 0}">
-            <a class="nav-link" th:href="${'/people/' + Person.slug}" th:text="#{page.person.tab.conducting(${ResultsCount})}">Conducting</span></a>
+            <a class="nav-link" th:href="${'/people/' + Person.slug + '/conductor'}" th:text="#{page.person.tab.conducting(${ResultsCount})}">Conducting</span></a>
         </li>
         <li class="nav-item" th:if="${WhitCount > 0}">
             <a class="nav-link active" th:href="${'/people/' + Person.slug + '/whits'}" th:text="#{page.person.tab.whits(${WhitCount})}">Whit Friday</span></a>

@@ -13,9 +13,8 @@ Security on who can edit result/event
 - Person who created it can edit it
 - Superusers can edit it
 
-Person profile support
-Migrate people profiles
 Add classifieds to users profile page
+Profile links working in text
 
 Upgrade to pro - subscribe link on 403 page
 Upgrade to pro - record stripe details on user

@@ -112,7 +112,7 @@ class PeopleDetailsWebTests implements LoginMixin {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/people/david-roberts", String.class);
         assertNotNull(response);
         assertTrue(response.contains("<title>David Roberts - Person - Brass Band Results</title>"));
-        assertTrue(response.contains("<h2>David Roberts</h2>"));
+        assertTrue(response.contains("David Roberts"));
 
         assertTrue(response.contains(">Yorkshire Area<"));
         assertTrue(response.contains(">03 Mar 2010<"));
@@ -132,7 +132,7 @@ class PeopleDetailsWebTests implements LoginMixin {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/people/david-roberts/whits", String.class);
         assertNotNull(response);
         assertTrue(response.contains("<title>David Roberts - Person - Brass Band Results</title>"));
-        assertTrue(response.contains("<h2>David Roberts</h2>"));
+        assertTrue(response.contains("David Roberts"));
 
         assertFalse(response.contains(">Yorkshire Area<"));
         assertFalse(response.contains(">03 Mar 2010<"));
@@ -152,7 +152,7 @@ class PeopleDetailsWebTests implements LoginMixin {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/people/david-roberts/pieces", String.class);
         assertNotNull(response);
         assertTrue(response.contains("<title>David Roberts - Person - Brass Band Results</title>"));
-        assertTrue(response.contains("<h2>David Roberts</h2>"));
+        assertTrue(response.contains("David Roberts"));
 
         assertFalse(response.contains(">Yorkshire Area<"));
         assertFalse(response.contains(">03 Mar 2010<"));

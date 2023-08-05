@@ -27,7 +27,7 @@ public class PersonProfileDao extends AbstractDao {
     private String title;
 
     @Column(name="qualifications")
-    private String qualification;
+    private String qualifications;
 
     @Column(name="email")
     private String email;
