@@ -52,16 +52,6 @@ public class PersonServiceImpl implements PersonService, SlugTools {
     @Override
     @IsBbrMember
     public PersonDao create(PersonDao person) {
-        return this.create(person, false);
-    }
-
-    @Override
-    @IsBbrAdmin
-    public PersonDao migrate(PersonDao person) {
-        return this.create(person, true);
-    }
-
-    private PersonDao create(PersonDao person, boolean migrating) {
         this.validateMandatory(person);
 
         // validation
@@ -75,12 +65,11 @@ public class PersonServiceImpl implements PersonService, SlugTools {
             throw new ValidationException("Person with slug " + person.getSlug() + " already exists.");
         }
 
-        if (!migrating) {
-            person.setCreated(LocalDateTime.now());
-            person.setCreatedBy(this.securityService.getCurrentUsername());
-            person.setUpdated(LocalDateTime.now());
-            person.setUpdatedBy(this.securityService.getCurrentUsername());
-        }
+        person.setCreated(LocalDateTime.now());
+        person.setCreatedBy(this.securityService.getCurrentUsername());
+        person.setUpdated(LocalDateTime.now());
+        person.setUpdatedBy(this.securityService.getCurrentUsername());
+
         return this.personRepository.saveAndFlush(person);
     }
 

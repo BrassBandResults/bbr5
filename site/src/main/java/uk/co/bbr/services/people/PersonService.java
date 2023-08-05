@@ -17,7 +17,6 @@ import java.util.Optional;
 
 public interface PersonService {
     PersonDao create(PersonDao person);
-    PersonDao migrate(PersonDao person);
     PersonDao create(String surname, String firstNames);
     PersonDao update(PersonDao person);
 
