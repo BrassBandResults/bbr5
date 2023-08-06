@@ -8,7 +8,11 @@ Edit adjudicators
 Deal with unique slug clash
 
 Add classifieds to users profile page
+Markdown edit?
 Profile links working in text
+
+Profile list
+Edit Profile
 
 Upgrade to pro - subscribe link on 403 page
 Upgrade to pro - record stripe details on user

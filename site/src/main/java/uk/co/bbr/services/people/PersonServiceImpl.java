@@ -11,10 +11,12 @@ import uk.co.bbr.services.framework.ValidationException;
 import uk.co.bbr.services.framework.mixins.SlugTools;
 import uk.co.bbr.services.people.dao.PersonAliasDao;
 import uk.co.bbr.services.people.dao.PersonDao;
+import uk.co.bbr.services.people.dao.PersonProfileDao;
 import uk.co.bbr.services.people.dao.PersonRelationshipDao;
 import uk.co.bbr.services.people.dto.ConductorCompareDto;
 import uk.co.bbr.services.people.dto.PeopleListDto;
 import uk.co.bbr.services.people.repo.PersonAliasRepository;
+import uk.co.bbr.services.people.repo.PersonProfileRepository;
 import uk.co.bbr.services.people.repo.PersonRelationshipRepository;
 import uk.co.bbr.services.people.repo.PersonRepository;
 import uk.co.bbr.services.people.sql.AdjudicatorSql;
@@ -40,14 +42,16 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class PersonServiceImpl implements PersonService, SlugTools {
 
-    private final ResultService contestResultService;
+    private final SecurityService securityService;
+
+    private final EntityManager entityManager;
+
     private final PersonRepository personRepository;
     private final PersonAliasRepository personAliasRepository;
     private final PersonRelationshipRepository personRelationshipRepository;
     private final ContestAdjudicatorRepository contestAdjudicatorRepository;
+    private final PersonProfileRepository personProfileRepository;
     private final PieceRepository pieceRepository;
-    private final SecurityService securityService;
-    private final EntityManager entityManager;
 
     @Override
     @IsBbrMember
@@ -223,6 +227,11 @@ public class PersonServiceImpl implements PersonService, SlugTools {
         this.personRelationshipRepository.deleteAll(relationships);
 
         this.personRepository.delete(person);
+    }
+
+    @Override
+    public List<PersonProfileDao> fetchAllProfiles() {
+        return this.personProfileRepository.fetchAll();
     }
 
     @Override
