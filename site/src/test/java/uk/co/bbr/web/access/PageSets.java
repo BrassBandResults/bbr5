@@ -299,6 +299,7 @@ public abstract class PageSets {
         pageList.add("/feedback/owner");
         pageList.add("/feedback/inconclusive");
         pageList.add("/feedback/spam");
+        pageList.add("/person-profiles");
         pageList.add("/user-list");
         pageList.add("/user-list/pro");
         pageList.add("/user-list/superuser");
