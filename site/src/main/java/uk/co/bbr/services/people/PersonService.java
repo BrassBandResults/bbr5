@@ -5,6 +5,7 @@ import uk.co.bbr.services.events.dao.ContestAdjudicatorDao;
 import uk.co.bbr.services.events.dao.ContestResultDao;
 import uk.co.bbr.services.people.dao.PersonAliasDao;
 import uk.co.bbr.services.people.dao.PersonDao;
+import uk.co.bbr.services.people.dao.PersonProfileDao;
 import uk.co.bbr.services.people.dto.ConductorCompareDto;
 import uk.co.bbr.services.people.dto.PeopleListDto;
 import uk.co.bbr.services.people.sql.dto.PeopleBandsSqlDto;
@@ -53,4 +54,6 @@ public interface PersonService {
     List<ContestResultDao> fetchPersonalAdjudications(SiteUserDao currentUser, PersonDao person);
 
     void delete(PersonDao person);
+
+    List<PersonProfileDao> fetchAllProfiles();
 }
