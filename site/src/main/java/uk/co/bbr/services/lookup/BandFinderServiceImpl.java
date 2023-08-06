@@ -23,51 +23,48 @@ public class BandFinderServiceImpl implements BandFinderService, SlugTools {
 
 
     @Override
-    public String findMatchByName(String searchBandName, LocalDate dateContext) {
+    public BandDao findMatchByName(String searchBandName, LocalDate dateContext) {
+        if (searchBandName == null || searchBandName.length() < 3) {
+            return null;
+        }
+
         String bandNameUpper = searchBandName.toUpperCase().trim();
         String bandNameUpperLessBand = null;
         if (bandNameUpper.endsWith("BAND")) {
             bandNameUpperLessBand = bandNameUpper.substring(0, bandNameUpper.length() - "BAND".length()).trim();
         }
 
+        System.out.println("Looking for " + bandNameUpper);
         List<FinderSqlDto> bandMatches = FinderSql.bandFindExactNameMatch(this.entityManager, bandNameUpper);
 
-        if (bandMatches.isEmpty()) {
-            bandMatches = FinderSql.bandAliasFindExactNameMatch(this.entityManager, bandNameUpper);
-        }
+        System.out.println("Looking for alias " + bandNameUpper);
+        bandMatches.addAll(FinderSql.bandAliasFindExactNameMatch(this.entityManager, bandNameUpper));
 
-        if (bandMatches.isEmpty()) {
-            bandMatches = FinderSql.bandFindExactNameMatch(this.entityManager, bandNameUpper + " BAND");
-        }
 
-        if (bandMatches.isEmpty()) {
-            bandMatches = FinderSql.bandAliasFindExactNameMatch(this.entityManager, bandNameUpper + " BAND");
-        }
+        System.out.println("Looking for " + bandNameUpper + " BAND");
+        bandMatches.addAll(FinderSql.bandFindExactNameMatch(this.entityManager, bandNameUpper + " BAND"));
 
-        if (bandMatches.isEmpty()) {
-            bandMatches = FinderSql.bandFindContainsNameMatch(this.entityManager, bandNameUpper + " ");
-        }
+        System.out.println("Looking for alias " + bandNameUpper + " BAND");
+        bandMatches.addAll(FinderSql.bandAliasFindExactNameMatch(this.entityManager, bandNameUpper + " BAND"));
 
-        if (bandMatches.isEmpty()) {
-            bandMatches = FinderSql.bandAliasFindContainsNameMatch(this.entityManager, bandNameUpper + " ");
-        }
+        System.out.println("Looking for contains " + bandNameUpper + " ");
+        bandMatches.addAll(FinderSql.bandFindContainsNameMatch(this.entityManager, bandNameUpper + " "));
 
-        if (bandMatches.isEmpty()) {
-            bandMatches = FinderSql.bandFindContainsNameMatch(this.entityManager, bandNameUpper) ;
-        }
+        System.out.println("Looking for alias contains " + bandNameUpper + " ");
+        bandMatches.addAll(FinderSql.bandAliasFindContainsNameMatch(this.entityManager, bandNameUpper + " "));
 
-        if (bandMatches.isEmpty()) {
-            bandMatches = FinderSql.bandAliasFindContainsNameMatch(this.entityManager, bandNameUpper);
-        }
+        System.out.println("Looking for contains " + bandNameUpper);
+        bandMatches.addAll(FinderSql.bandFindContainsNameMatch(this.entityManager, bandNameUpper));
+
+        System.out.println("Looking for contains alias " + bandNameUpper);
+        bandMatches.addAll(FinderSql.bandAliasFindContainsNameMatch(this.entityManager, bandNameUpper));
 
         if (bandNameUpperLessBand != null) {
-            if (bandMatches.isEmpty()) {
-                bandMatches = FinderSql.bandFindContainsNameMatch(this.entityManager, bandNameUpperLessBand);
-            }
+            System.out.println("Looking for contains " + bandNameUpperLessBand);
+            bandMatches.addAll(FinderSql.bandFindContainsNameMatch(this.entityManager, bandNameUpperLessBand));
 
-            if (bandMatches.isEmpty()) {
-                bandMatches = FinderSql.bandAliasFindContainsNameMatch(this.entityManager, bandNameUpperLessBand);
-            }
+            System.out.println("Looking for alias contains " + bandNameUpperLessBand);
+            bandMatches.addAll(FinderSql.bandAliasFindContainsNameMatch(this.entityManager, bandNameUpperLessBand));
         }
 
         List<FinderSqlDto> returnList = new ArrayList<>();
@@ -93,6 +90,9 @@ public class BandFinderServiceImpl implements BandFinderService, SlugTools {
             return null;
         }
 
-        return returnList.get(0).getSlug();
+        BandDao returnBand = new BandDao();
+        returnBand.setName(returnList.get(0).getName());
+        returnBand.setSlug(returnList.get(0).getSlug());
+        return returnBand;
     }
 }

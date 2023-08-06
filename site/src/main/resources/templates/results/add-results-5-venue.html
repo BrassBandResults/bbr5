@@ -20,22 +20,22 @@
             <span th:text="${ContestEvent.name}">Yorkshire Area</span>
         </div>
         <div>
-            <label class="form-label fw-bold" th:text="#{page.field-prompt.event-date}">Event Date:</label>
+            <span class="form-label fw-bold" th:text="#{page.field-prompt.event-date}">Event Date:</span>
             <span th:text="${ContestEvent.eventDateDisplayWithDay}">Monday 5th Sept 2023</span>
         </div>
         <div>
-            <label class="form-label fw-bold" th:text="#{page.field-prompt.contest-type}">Contest Type:</label>
+            <span class="form-label fw-bold" th:text="#{page.field-prompt.contest-type}">Contest Type:</span>
             <span th:text="#{'contest-types.' + ${ContestEvent.contestType.slug}}">Contest Type</span>
         </div>
         <div>
-            <label class="form-label fw-bold" th:text="#{page.field-prompt.test-piece}">Test Piece:</label>
+            <span class="form-label fw-bold" th:text="#{page.field-prompt.test-piece}">Test Piece:</span>
             <span th:each="contestEventPiece : ${TestPieces}">
                 <span th:text="${contestEventPiece.piece.name}">Piece Name</span>
             </span>
         </div>
         <div class="mb-3">
             <label class="form-label fw-bold" for="venue" th:text="#{page.field-prompt.venue}">Venue:</label>
-            <input id="venue" th:field="*{venueName}" autocomplete="off" class="form-control" type="text" maxlength="100" onkeyup="lookup('venue', 'venue');"/>
+            <input id="venue" th:field="*{venueName}" autocomplete="off" th:placeholder="#{page.add-results.placeholder.venue}" class="form-control" type="text" maxlength="100" onkeyup="lookup('venue', 'venue');"/>
             <input type="hidden" th:field="*{venueSlug}" id="venue-slug"/>
         </div>
 

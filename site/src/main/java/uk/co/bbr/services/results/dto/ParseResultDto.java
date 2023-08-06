@@ -28,7 +28,10 @@ public class ParseResultDto implements NameTools {
     private String rawPoints;
 
     private String matchedBandSlug;
+    private String matchedBandName;
     private String matchedConductorSlug;
+    private String matchedConductorName;
+
 
     public void setRawBandName(String value) {
         this.rawBandName = simplifyBandName(value);
@@ -39,16 +42,18 @@ public class ParseResultDto implements NameTools {
         this.rawConductorName = simplifyPersonFullName(value);
     }
 
-    public void setMatchedBand(String matchedBandSlug) {
+    public void setMatchedBand(String matchedBandSlug, String matchedBandName) {
         this.matchedBandSlug = matchedBandSlug;
+        this.matchedBandName = matchedBandName;
         if (this.matchedBandSlug != null && this.matchedConductorSlug != null) {
             this.outcome = ParseOutcome.GREEN_MATCHES_FOUND_IN_DATABASE;
         }
     }
 
 
-    public void setMatchedConductor(String matchedConductorSlug) {
+    public void setMatchedConductor(String matchedConductorSlug, String matchedConductorName) {
         this.matchedConductorSlug = matchedConductorSlug;
+        this.matchedConductorName = matchedConductorName;
         if (this.matchedBandSlug != null && this.matchedConductorSlug != null) {
             this.outcome = ParseOutcome.GREEN_MATCHES_FOUND_IN_DATABASE;
         }

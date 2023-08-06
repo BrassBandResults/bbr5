@@ -99,6 +99,10 @@ public class PersonDao extends AbstractDao implements NameTools {
         this.setCombinedName();
     }
 
+    public void setCombinedName(String combinedName) {
+        this.combinedName = combinedName;
+    }
+
     private void setCombinedName() {
         StringBuilder tempCombinedName = new StringBuilder();
         if (this.firstNames != null) {
