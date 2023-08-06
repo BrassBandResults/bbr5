@@ -21,7 +21,8 @@ public class EventSql {
                                   r.points_first, r.points_second, r.points_third, r.points_fourth, r.points_penalty,
                                   r.id, r.notes, e.name,
                                   g.name as group_name, g.slug as group_slug,
-                                  b.latitude, b.longitude, b.status as band_status, sect.slug as section_slug, sect.translation_key as section_translation_key
+                                  b.latitude, b.longitude, b.status as band_status, sect.slug as section_slug, sect.translation_key as section_translation_key,
+                                  b.created_by
                            FROM contest_result r
                            INNER JOIN contest_event e on e.id = r.contest_event_id
                            INNER JOIN contest c ON c.id = e.contest_id
@@ -54,7 +55,8 @@ public class EventSql {
                   r.points_first, r.points_second, r.points_third, r.points_fourth, r.points_penalty,
                   r.id, r.notes, e.name,
                   g.name as group_name, g.slug as group_slug,
-                  b.latitude, b.longitude, b.status as band_status, sect.slug as section_slug, sect.translation_key as section_translation_key
+                  b.latitude, b.longitude, b.status as band_status, sect.slug as section_slug, sect.translation_key as section_translation_key,
+                  r.created_by
            FROM contest_event e
            LEFT OUTER JOIN contest_result r ON r.contest_event_id = e.id AND r.result_position_type = 'R' AND r.result_position = 1
            INNER JOIN contest c ON c.id = e.contest_id

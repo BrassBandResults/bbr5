@@ -27,10 +27,13 @@ import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.pieces.dao.PieceDao;
 import uk.co.bbr.services.regions.dao.RegionDao;
 import uk.co.bbr.services.security.SecurityService;
+import uk.co.bbr.services.security.dao.SiteUserDao;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
 import javax.persistence.EntityManager;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -288,6 +291,30 @@ public class ResultServiceImpl implements ResultService {
     @Override
     public void delete(ContestResultDao contestResult) {
         this.contestResultRepository.delete(contestResult);
+    }
+
+    @Override
+    public void workOutCanEdit(ContestEventDao contestEvent, List<ContestResultDao> eventResults) {
+        SiteUserDao currentUser = this.securityService.getCurrentUser();
+        boolean canEditAnyResult = false;
+        for (ContestResultDao result : eventResults){
+            boolean canEditThisResult = false;
+            if (currentUser == null) {
+                continue;
+            }
+
+            LocalDate twoWeeksAgo = LocalDate.now().minus(15, ChronoUnit.DAYS);
+            if (currentUser.isSuperuser() ||
+                contestEvent.getEventDate().isAfter(twoWeeksAgo) ||
+                result.getCreatedBy().equals(currentUser.getUsercode())) {
+                canEditThisResult = true;
+                canEditAnyResult = true;
+            }
+
+            result.setCanEdit(canEditThisResult);
+        }
+
+        contestEvent.setCanEdit(canEditAnyResult);
     }
 
     private Map<String, List<Integer>> fetchStreakData(ContestDao contest) {

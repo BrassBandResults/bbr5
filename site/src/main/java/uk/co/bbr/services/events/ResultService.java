@@ -51,4 +51,6 @@ public interface ResultService {
     void removePiece(ContestEventDao contestEvent, ContestResultDao contestResult, ContestResultPieceDao contestResultPiece);
 
     void delete(ContestResultDao contestResult);
+
+    void workOutCanEdit(ContestEventDao contestEventDao, List<ContestResultDao> eventResults);
 }

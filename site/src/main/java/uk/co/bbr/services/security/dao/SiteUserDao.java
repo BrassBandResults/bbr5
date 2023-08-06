@@ -189,4 +189,8 @@ public class SiteUserDao extends AbstractDao {
         }
         return this.uuid;
     }
+
+    public boolean isSuperuser() {
+        return "S".equals(this.accessLevel);
+    }
 }
