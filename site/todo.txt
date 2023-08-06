@@ -28,14 +28,14 @@ Contest group fix event count
 
 Maps don't 500 where lat/lng is missing
 
+Assign points
+
 === Go Live ===
 
 Add privacy settings for personal contest history
 Add date ranges for personal contest history
 
-Record 500 error - send feedback?
-
-Assign points
+Record 500 error - send feedback to owner?
 
 Multiple map icons on same location
 

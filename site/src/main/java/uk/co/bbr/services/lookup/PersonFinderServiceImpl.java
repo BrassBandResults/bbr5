@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import uk.co.bbr.services.framework.mixins.SlugTools;
 import uk.co.bbr.services.lookup.sql.dto.FinderSqlDto;
 import uk.co.bbr.services.lookup.sql.FinderSql;
+import uk.co.bbr.services.people.dao.PersonDao;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
@@ -18,13 +19,13 @@ public class PersonFinderServiceImpl implements PersonFinderService, SlugTools {
 
 
     @Override
-    public String findMatchByName(String personName, String bandSlug, LocalDate dateContext) {
+    public PersonDao findMatchByName(String personName, String bandSlug, LocalDate dateContext) {
         String personNameUpper = personName.toUpperCase();
         if (bandSlug != null) {
            List<FinderSqlDto> previousConductorsForThisBand = FinderSql.fetchBandConductors(this.entityManager, bandSlug, personNameUpper);
             for (FinderSqlDto eachExistingConductor : previousConductorsForThisBand) {
                 if (this.withinDates(eachExistingConductor, dateContext)) {
-                    return eachExistingConductor.getSlug();
+                    return this.buildPerson(eachExistingConductor);
                 }
             }
         }
@@ -32,30 +33,37 @@ public class PersonFinderServiceImpl implements PersonFinderService, SlugTools {
         List<FinderSqlDto> matchingPeople = FinderSql.personFetchByCombinedNameUpper(this.entityManager, personNameUpper);
         for (FinderSqlDto eachPerson : matchingPeople) {
             if (this.withinDates(eachPerson, dateContext)) {
-                return eachPerson.getSlug();
+                return this.buildPerson(eachPerson);
             }
         }
 
         List<FinderSqlDto> matchingAliases = FinderSql.personAliasFetchByUpperName(this.entityManager, personNameUpper);
         for (FinderSqlDto eachAlias : matchingAliases) {
             if (this.withinDates(eachAlias, dateContext)) {
-                return eachAlias.getSlug();
+                return this.buildPerson(eachAlias);
             }
         }
 
-        if (personName.charAt(1) == '.') {
+        if (personName.length() > 3 && personName.charAt(1) == '.') {
             String initialUpper = personName.substring(0, 1).toUpperCase();
             String surnameUpper = personName.substring(personName.lastIndexOf(" ")).trim().toUpperCase();
 
             List<FinderSqlDto> matchingInitialPeople = FinderSql.personFetchByInitialAndSurname(this.entityManager, initialUpper, surnameUpper);
             for (FinderSqlDto eachPerson : matchingInitialPeople) {
                 if (this.withinDates(eachPerson, dateContext)) {
-                    return eachPerson.getSlug();
+                    return this.buildPerson(eachPerson);
                 }
             }
         }
 
         return null;
+    }
+
+    private PersonDao buildPerson(FinderSqlDto matchedPerson) {
+        PersonDao returnPerson = new PersonDao();
+        returnPerson.setCombinedName(matchedPerson.getName());
+        returnPerson.setSlug(matchedPerson.getSlug());
+        return returnPerson;
     }
 
     private boolean withinDates(FinderSqlDto matchingPerson, LocalDate dateContext) {

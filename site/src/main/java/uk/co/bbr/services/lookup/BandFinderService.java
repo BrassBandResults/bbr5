@@ -6,5 +6,5 @@ import java.time.LocalDate;
 
 public interface BandFinderService {
 
-    String findMatchByName(String bandName, LocalDate dateContext);
+    BandDao findMatchByName(String bandName, LocalDate dateContext);
 }

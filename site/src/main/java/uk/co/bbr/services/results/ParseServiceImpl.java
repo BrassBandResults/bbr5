@@ -17,11 +17,10 @@ public class ParseServiceImpl implements ParseService {
     @Override
     public ParseResultDto parseLine(String resultLine) {
         ParseResultDto parsedResult = new ParseResultDto();
+        parsedResult.setRawLine(resultLine);
 
         Pattern pattern1 = Pattern.compile(REGEX_RESULT_BAND_CONDUCTOR_DRAW_POINTS);
         Matcher matcher1 = pattern1.matcher(resultLine);
-
-        parsedResult.setRawLine(resultLine);
 
         if (matcher1.matches()) {
             parsedResult.setRawPosition(matcher1.group(1).toUpperCase());

@@ -21,7 +21,7 @@
         </div>
         <div class="mb-3">
             <label class="form-label fw-bold" for="event-date" th:text="#{page.field-prompt.event-date}">Event Date:</label>
-            <input id="event-date" th:field="*{eventDate}" autocomplete="off" class="form-control" type="text" maxlength="10"/>
+            <input id="event-date" th:field="*{eventDate}" autocomplete="off" th:placeholder="#{page.add-results.placeholder.event-date}" class="form-control" type="text" maxlength="10"/>
         </div>
 
         <input type="submit" th:value="#{page.buttons.submit}" class="btn btn-outline-success"/>
