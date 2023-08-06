@@ -58,6 +58,7 @@ public class EventResultSqlDto extends AbstractSqlDto {
     private final Integer bandStatus;
     private final String sectionSlug;
     private final String sectionTranslationKey;
+    private final String createdBy;
 
 
     public EventResultSqlDto(Object[] columnList) {
@@ -105,6 +106,7 @@ public class EventResultSqlDto extends AbstractSqlDto {
         this.bandStatus = this.getInteger(columnList, 36);
         this.sectionSlug = (String)columnList[37];
         this.sectionTranslationKey = (String)columnList[38];
+        this.createdBy = (String)columnList[39];
     }
 
     public ContestResultDao toResult() {
@@ -120,6 +122,7 @@ public class EventResultSqlDto extends AbstractSqlDto {
         result.getContestEvent().getContest().setName(this.contestName);
         if (this.resultPositionType != null) {
             result.setId(this.resultId);
+            result.setCreatedBy(this.createdBy);
             result.setPosition(String.valueOf(this.resultPosition));
             result.setResultPositionType(ResultPositionType.fromCode(this.resultPositionType));
             result.setBandName(this.competedAs);
