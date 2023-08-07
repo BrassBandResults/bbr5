@@ -17,14 +17,15 @@ Ads for non-pro users
 
 Assign points
 
+Add privacy settings for personal contest history
+Add date ranges for personal contest history
+Fetch pending performances works out ones that aren't in history and aren't rejected
+
+Record 500 error - send feedback to owner?
+
 === Go Live ===
 
 Maps don't 500 where lat/lng is missing
-
-Add privacy settings for personal contest history
-Add date ranges for personal contest history
-
-Record 500 error - send feedback to owner?
 
 Multiple map icons on same location
 
@@ -34,15 +35,11 @@ Performances shows pieces played
 
 Result piece move up/down buttons to reorder
 
-Fetch pending performances works out ones that aren't in history and aren't rejected
-
 Change password for user
 
 Add pro status to users profile page
 
 Add owned feedback to users profile page
-
-Show user's performances of pieces on piece page tab
 
 Upgrade to pro - how do we check that pro subscription is still active?
 

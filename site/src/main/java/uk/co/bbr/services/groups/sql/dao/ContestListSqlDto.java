@@ -24,7 +24,9 @@ public class ContestListSqlDto extends AbstractSqlDto {
         ContestDao returnContest = new ContestDao();
         returnContest.setName(this.contestName);
         returnContest.setSlug(this.contestSlug);
-        returnContest.setEventsCount(this.eventCount);
+        if (this.eventCount != null) {
+            returnContest.setEventsCount(this.eventCount);
+        }
         returnContest.setExtinct(this.extinct);
         return returnContest;
     }
