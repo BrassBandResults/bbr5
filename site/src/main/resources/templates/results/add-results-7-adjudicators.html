@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title th:text="@{#{page.add-results.title} + ' - Brass Band Results'}">Add Results - Brass Band Results</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h2 th:text="#{page.add-results.title}">Add Results</h2>
+
+    <form th:object="${Form}"
+          th:action="${'/add-results/7/' + ContestEvent.contest.slug} + '/' + ${ContestEvent.eventDateForUrl}"
+          method="post">
+        <div class="alert alert-danger" th:if="${#fields.hasErrors('*')}">
+            <ul>
+                <li th:each="err : ${#fields.errors('*')}" th:text="@{#{${err}}}"></li>
+            </ul>
+        </div>
+        <div>
+            <span class="form-label fw-bold" th:text="#{page.field-prompt.contest}">Contest:</span>
+            <span th:text="${ContestEvent.name}">Yorkshire Area</span>
+        </div>
+        <div>
+            <span class="form-label fw-bold" th:text="#{page.field-prompt.event-date}">Event Date:</span>
+            <span th:text="${ContestEvent.eventDateDisplayWithDay}">Monday 5th Sept 2023</span>
+        </div>
+        <div>
+            <span class="form-label fw-bold" th:text="#{page.field-prompt.contest-type}">Contest Type:</span>
+            <span th:text="#{'contest-types.' + ${ContestEvent.contestType.slug}}">Contest Type</span>
+        </div>
+        <div>
+            <span class="form-label fw-bold" th:text="#{page.field-prompt.test-piece}">Test Piece:</span>
+            <span th:each="contestEventPiece : ${TestPieces}">
+                <span th:text="${contestEventPiece.piece.name}">Piece Name</span>
+            </span>
+        </div>
+        <div>
+            <span class="form-label fw-bold" th:text="#{page.field-prompt.venue}">Venue:</span>
+            <span th:if="${ContestEvent.venue != null}" th:text="${ContestEvent.venue.name}">Venue</span>
+        </div>
+
+        <table class="table table-hover sortable">
+            <thead>
+            <tr>
+                <th th:text="#{page.column-header.position}" class="result">Position</th>
+                <th th:text="#{page.column-header.band}">Band</th>
+                <th th:text="#{page.column-header.conductor}">Conductor</th>
+                <th th:if="${ContestEvent.contestType.drawOneTitle != null}" th:text="#{${ContestEvent.contestType.drawOneTitle}}" class="number">Draw 1</th>
+                <th th:if="${ContestEvent.contestType.pointsTotalTitle != null}" th:text="#{${ContestEvent.contestType.pointsTotalTitle}}" class="number">Points Total</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="result : ${EventResults}">
+                <td class="bbr-position">
+                    <span th:replace="components/results-position.html :: resultsPosition(${result})">1</span>
+                    <img th:if="${result.hasNotes}" th:title="${result.notes}" th:src="@{${STATIC_HOST} + '/icons/comment.png'}"/>
+                </td>
+                <td class="bbr-band"><span th:replace="links/band-link.html :: bandLinkWithOverride(${result})"></span></td>
+                <td class="bbr-conductor"><span th:replace="links/person-link.html :: conductorsLink(${result})">Bob Childs</span></td>
+                <td class="bbr-piece" th:if="${ContestEvent.contestType.ownChoice || ContestEvent.contestType.entertainments}">
+                    <span th:replace="links/piece-link.html :: resultPieces(${result})">Bob Childs</span>
+                </td>
+                <td class="bbr-draw" th:if="${ContestEvent.contestType.drawOneTitle != null}">
+                        <span th:if="${result.draw != 0}">
+                          <span th:replace="links/contest-link.html :: contestLinkDraw(${ContestEvent.contest}, ${result.draw})"></span>
+                        </span>
+                </td>
+                <td class="bbr-draw" th:if="${ContestEvent.contestType.pointsTotalTitle != null}" th:text="${result.pointsTotal}"></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="mb-3">
+            <label class="form-label fw-bold" for="adjudicator" th:text="#{page.field-prompt.adjudicators}">Adjudicators:</label>
+            <span th:each="adjudicator : ${Adjudicators}">
+                <span th:text="${adjudicator.adjudicator.combinedName}">Adjudicator Name</span>
+            </span>
+            <input id="adjudicator" th:field="*{adjudicatorName}" autocomplete="off" th:placeholder="#{page.add-results.placeholder.adjudicator}" class="form-control" type="text" maxlength="100" onkeyup="lookup('adjudicator', 'person');"/>
+            <input type="hidden" th:field="*{adjudicatorSlug}" id="adjudicator-slug"/>
+        </div>
+
+        <input type="submit" th:value="#{page.buttons.add-adjudicator}" class="btn btn-outline-success"/>
+        <a th:href="${'/add-results/8/' + ContestEvent.contest.slug + '/' + ContestEvent.eventDateForUrl}"><span class="btn btn-outline-success" th:text="#{page.buttons.done}">Done</span></a>
+        <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+    </form>
+</div>
+
+<div layout:fragment="scriptfooter">
+    <script th:src="@{${STATIC_HOST} + '/js2023/lookup.js'}"></script>
+    <script>
+        function fill(inputId, matchSlug, matchName) {
+            let inputElement = document.getElementById(inputId);
+            let inputSlugElement = document.getElementById(inputId + '-slug');
+            inputElement.value = matchName;
+            inputSlugElement.value = matchSlug;
+            inputElement.classList.remove("bg-warning-subtle");
+            inputElement.classList.add("bg-success-subtle");
+
+            document.getElementById('list-' + inputId).remove();
+        }
+    </script>
+</div>
+
+<div layout:fragment="feedback">
+</div>
+
+</body>
+</html>
