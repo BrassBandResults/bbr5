@@ -15,9 +15,6 @@ Support for instruments on contest history for pro users
 
 Ads for non-pro users
 
-Region/contests fix event count
-Contest group fix event count
-
 Assign points
 
 === Go Live ===

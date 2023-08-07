@@ -12,6 +12,7 @@ import uk.co.bbr.services.groups.dao.ContestGroupDao;
 import uk.co.bbr.services.events.dao.ContestResultDao;
 import uk.co.bbr.services.events.dao.ContestResultPieceDao;
 import uk.co.bbr.services.groups.sql.GroupSql;
+import uk.co.bbr.services.groups.sql.dao.ContestListSqlDto;
 import uk.co.bbr.services.groups.sql.dao.GroupListSqlDto;
 import uk.co.bbr.services.tags.dao.ContestTagDao;
 import uk.co.bbr.services.events.dto.ContestEventSummaryDto;
@@ -205,8 +206,18 @@ public class ContestGroupServiceImpl implements ContestGroupService, SlugTools {
             throw NotFoundException.groupNotFoundBySlug(contestGroup.getSlug());
         }
 
-        List<ContestDao> activeContests = this.contestGroupRepository.fetchActiveContestsForGroup(matchingContestGroup.get().getId());
-        List<ContestDao> oldContests = this.contestGroupRepository.fetchOldContestsForGroup(matchingContestGroup.get().getId());
+        List<ContestListSqlDto> contests = GroupSql.contestsForGroup(this.entityManager, matchingContestGroup.get().getSlug());
+;
+        List<ContestDao> activeContests = new ArrayList<>();
+        List<ContestDao> oldContests = new ArrayList<>();
+
+        for (ContestListSqlDto eachContest : contests) {
+            if (eachContest.isExtinct()) {
+                oldContests.add(eachContest.asContest());
+            } else {
+                activeContests.add(eachContest.asContest());
+            }
+        }
 
         return new ContestGroupDetailsDto(matchingContestGroup.get(), activeContests, oldContests);
     }
