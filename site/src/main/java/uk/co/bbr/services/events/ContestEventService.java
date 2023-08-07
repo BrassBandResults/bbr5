@@ -71,4 +71,6 @@ public interface ContestEventService {
     ContestResultDao fetchTodayInHistory();
 
     ContestResultDao fetchThisWeekInHistory();
+
+    Optional<ContestEventDao> fetchEventBetweenDates(ContestDao contest, LocalDate startDate, LocalDate endDate);
 }

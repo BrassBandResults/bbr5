@@ -123,6 +123,13 @@ public class ContestEventServiceImpl implements ContestEventService {
     @IsBbrMember
     public List<ContestAdjudicatorDao> addAdjudicator(ContestEventDao event, PersonDao adjudicator) {
 
+        List<ContestAdjudicatorDao> existingAdjudicators = this.fetchAdjudicators(event);
+        for (ContestAdjudicatorDao eachExisting : existingAdjudicators) {
+            if (eachExisting.getAdjudicator().getSlug().equals(adjudicator.getSlug())) {
+                return existingAdjudicators;
+            }
+        }
+
         ContestAdjudicatorDao newAdjudicator = new ContestAdjudicatorDao();
         newAdjudicator.setAdjudicator(adjudicator);
         newAdjudicator.setName(adjudicator.getName());
@@ -426,5 +433,14 @@ public class ContestEventServiceImpl implements ContestEventService {
             return inHistory.get(0).toResult();
         }
         return null;
+    }
+
+    @Override
+    public Optional<ContestEventDao> fetchEventBetweenDates(ContestDao contest, LocalDate startDate, LocalDate endDate) {
+        List<ContestEventDao> events = this.contestEventRepository.findContestBetweenDates(contest.getSlug(), startDate, endDate);
+        if (events.size() == 0) {
+            return Optional.empty();
+        }
+        return Optional.of(events.get(0));
     }
 }
