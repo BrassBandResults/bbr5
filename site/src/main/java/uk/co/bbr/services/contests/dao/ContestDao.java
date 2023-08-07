@@ -95,6 +95,7 @@ public class ContestDao extends AbstractDao implements NameTools {
     private Set<ContestTagDao> tags = new HashSet<>();
 
     @Transient
+    @Setter
     private int eventsCount;
 
     public void setName(String name){
