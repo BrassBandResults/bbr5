@@ -7,7 +7,7 @@ import uk.co.bbr.services.events.dao.ContestAdjudicatorDao;
 import java.util.List;
 
 public interface ContestAdjudicatorRepository extends JpaRepository<ContestAdjudicatorDao, Long> {
-    @Query("SELECT a FROM ContestAdjudicatorDao a WHERE a.contestEvent.id = :contestEventId")
+    @Query("SELECT a FROM ContestAdjudicatorDao a WHERE a.contestEvent.id = :contestEventId ORDER BY a.adjudicator.surname")
     List<ContestAdjudicatorDao> fetchForEvent(Long contestEventId);
 
     @Query("SELECT count(a) FROM ContestAdjudicatorDao a WHERE a.adjudicator.id = :personId")

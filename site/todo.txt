@@ -1,17 +1,16 @@
-Add results - add results fix unknown band
-Add results - add results fix unknown conductor
 Add results - add adjudicators
 Add results - add notes
-Add results - create adjudicator
 Edit adjudicators
 
 Deal with unique slug clash
+
+Person Name synonym list William <=> Bill etc.
+Infer person date range from event dates
 
 Add classifieds to users profile page
 Markdown edit?
 Profile links working in text
 
-Profile list
 Edit Profile
 
 Upgrade to pro - subscribe link on 403 page

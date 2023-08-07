@@ -15,12 +15,14 @@ import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.contests.dao.ContestTypeDao;
 import uk.co.bbr.services.events.ContestEventService;
 import uk.co.bbr.services.events.ResultService;
+import uk.co.bbr.services.events.dao.ContestAdjudicatorDao;
 import uk.co.bbr.services.events.dao.ContestEventDao;
 import uk.co.bbr.services.events.dao.ContestEventTestPieceDao;
 import uk.co.bbr.services.events.dao.ContestResultDao;
 import uk.co.bbr.services.events.types.ContestEventDateResolution;
 import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.people.PersonService;
+import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.pieces.PieceService;
 import uk.co.bbr.services.pieces.dao.PieceDao;
 import uk.co.bbr.services.results.ParseResultService;
@@ -30,16 +32,12 @@ import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.services.venues.VenueService;
 import uk.co.bbr.services.venues.dao.VenueDao;
 import uk.co.bbr.web.Tools;
-import uk.co.bbr.web.results.forms.AddResultsBandsForm;
-import uk.co.bbr.web.results.forms.AddResultsContestForm;
-import uk.co.bbr.web.results.forms.AddResultsContestTypeForm;
-import uk.co.bbr.web.results.forms.AddResultsDateForm;
-import uk.co.bbr.web.results.forms.AddResultsTestPieceForm;
-import uk.co.bbr.web.results.forms.AddResultsVenueForm;
+import uk.co.bbr.web.results.forms.*;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -152,7 +150,9 @@ public class AddResultsController {
 
         // does event already exist?
         ContestEventDao contestEvent;
-        Optional<ContestEventDao> existingEvent = this.contestEventService.fetchEvent(matchingContest.get(), eventDate);
+        LocalDate lastMonth = eventDate.minus(2, ChronoUnit.MONTHS);
+        LocalDate nextMonth = eventDate.plus(2, ChronoUnit.MONTHS);
+        Optional<ContestEventDao> existingEvent = this.contestEventService.fetchEventBetweenDates(matchingContest.get(), lastMonth, nextMonth);
         if (existingEvent.isPresent()) {
             // does it have results?
             List<ContestResultDao> existingResults = this.resultService.fetchForEvent(existingEvent.get());
@@ -390,5 +390,61 @@ public class AddResultsController {
         model.addAttribute("ContestEvent", event.get());
         model.addAttribute("ParsedResults", parsedResults.getResultLines());
         return "results/add-results-6-bands";
+    }
+
+    @IsBbrMember
+    @GetMapping("/add-results/7/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}")
+    public String addAdjudicatorStageGet(Model model, @PathVariable("contestSlug") String contestSlug, @PathVariable String contestEventDate) {
+        LocalDate eventDate = Tools.parseEventDate(contestEventDate);
+        Optional<ContestEventDao> event = this.contestEventService.fetchEvent(contestSlug, eventDate);
+        if (event.isEmpty()) {
+            throw NotFoundException.eventNotFound(contestSlug, contestEventDate);
+        }
+
+        List<ContestEventTestPieceDao> pieces = this.contestEventService.listTestPieces(event.get());
+        List<ContestResultDao> eventResults = this.resultService.fetchForEvent(event.get());
+        List<ContestAdjudicatorDao> adjudicators = this.contestEventService.fetchAdjudicators(event.get());
+
+        AddResultsAdjudicatorForm form = new AddResultsAdjudicatorForm();
+        model.addAttribute("TestPieces", pieces);
+        model.addAttribute("ContestEvent", event.get());
+        model.addAttribute("EventResults", eventResults);
+        model.addAttribute("Adjudicators", adjudicators);
+        model.addAttribute("Form", form);
+
+        return "results/add-results-7-adjudicators";
+    }
+
+    @IsBbrMember
+    @PostMapping("/add-results/7/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}")
+    public String addAdjudicatorStagePost(Model model, @Valid @ModelAttribute("Form") AddResultsAdjudicatorForm submittedForm, BindingResult bindingResult, @PathVariable("contestSlug") String contestSlug, @PathVariable String contestEventDate) {
+        LocalDate eventDate = Tools.parseEventDate(contestEventDate);
+        Optional<ContestEventDao> event = this.contestEventService.fetchEvent(contestSlug, eventDate);
+        if (event.isEmpty()) {
+            throw NotFoundException.eventNotFound(contestSlug, contestEventDate);
+        }
+
+        submittedForm.validate(bindingResult);
+
+        if (submittedForm.getAdjudicatorSlug() != null && submittedForm.getAdjudicatorSlug().length() > 0) {
+            Optional<PersonDao> adjudicatorPerson = this.personService.fetchBySlug(submittedForm.getAdjudicatorSlug());
+
+            if (adjudicatorPerson.isPresent()) {
+                this.contestEventService.addAdjudicator(event.get(), adjudicatorPerson.get());
+            }
+        }
+
+        ContestAdjudicatorDao eventAdjudicator = new ContestAdjudicatorDao();
+        eventAdjudicator.setContestEvent(event.get());
+
+        List<ContestEventTestPieceDao> pieces = this.contestEventService.listTestPieces(event.get());
+        List<ContestResultDao> eventResults = this.resultService.fetchForEvent(event.get());
+        List<ContestAdjudicatorDao> adjudicators = this.contestEventService.fetchAdjudicators(event.get());
+
+        model.addAttribute("TestPieces", pieces);
+        model.addAttribute("ContestEvent", event.get());
+        model.addAttribute("EventResults", eventResults);
+        model.addAttribute("Adjudicators", adjudicators);
+        return "results/add-results-7-adjudicators";
     }
 }

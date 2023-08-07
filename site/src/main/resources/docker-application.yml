@@ -12,10 +12,6 @@ spring:
     database-platform: org.hibernate.dialect.SQLServerDialect
     hibernate:
       ddl-auto: none
-  cloud:
-    azure:
-      cosmos:
-        endpoint: ${BBR_COSMOS_DB_ENDPOINT}
   mail:
     password: ${BBR_SMTP_SERVER_PASSWORD}
     username: ${BBR_SMTP_SERVER_USERNAME}
