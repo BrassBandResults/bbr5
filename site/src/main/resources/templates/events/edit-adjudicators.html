@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+<head>
+    <title th:text="@{#{page.add-adjudicators.title} + ' - Brass Band Results'}">Edit Adjudicators - Brass Band Results</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h2>
+        <span th:text="#{page.add-adjudicators.title}">Edit Adjudicators</span>
+        <span th:replace="links/contest-link.html :: contestLink(${ContestEvent.contest})"></span>
+    </h2>
+    <h3><a th:href="${'/contests/' + ContestEvent.contest.slug + '/' + ContestEvent.eventDateForUrl}" th:text="${ContestEvent.eventDateDisplayWithDay}"></a></h3>
+
+    <table class="table table-hover">
+        <tr th:each="adjudicator : ${Adjudicators}">
+            <td>
+                <span th:replace="links/person-link.html :: personLink(${adjudicator.adjudicator})"></span>
+            </td>
+            <td><span th:replace="buttons/delete.html :: removeAdjudicator(${ContestEvent}, ${adjudicator})"></span></td>
+        </tr>
+    </table>
+
+    <br/>
+    <br/>
+
+    <h4 th:text="#{page.add-adjudicators.add-another}">Add Another Adjudicator</h4>
+    <form th:object="${Form}"
+          th:action="${'/contests/' + ContestEvent.contest.slug + '/' + ContestEvent.eventDateForUrl + '/edit-adjudicators'}"
+          method="post">
+        <div class="alert alert-danger" th:if="${#fields.hasErrors('*')}">
+            <ul>
+                <li th:each="err : ${#fields.errors('*')}" th:text="@{#{${err}}}"></li>
+            </ul>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="adjudicator" th:text="#{page.field-prompt.adjudicator}">Adjudicator:</label>
+            <input id="adjudicator" th:field="*{adjudicatorName}" autocomplete="off" class="form-control" type="text" maxlength="100" onkeyup="lookupMandatory('adjudicator', 'person');"/>
+            <input type="hidden" th:field="*{adjudicatorSlug}" id="adjudicator-slug"/>
+        </div>
+
+        <input type="submit" th:value="#{page.buttons.add-adjudicator}" class="btn btn-outline-success"/>
+        <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+        <a th:href="${'/contests/' + ContestEvent.contest.slug + '/' + ContestEvent.eventDateForUrl}" th:text="#{page.buttons.cancel}" class="btn btn-light">Cancel wout saving</a>
+    </form>
+</div>
+
+<div layout:fragment="feedback">
+</div>
+
+<div layout:fragment="scriptfooter">
+    <script th:src="@{${STATIC_HOST} + '/js2023/lookup.js'}"></script>
+    <script>
+        function fill(inputId, matchSlug, matchName) {
+            let inputElement = document.getElementById(inputId);
+            let inputSlugElement = document.getElementById(inputId + '-slug');
+            inputElement.value = matchName;
+            inputSlugElement.value = matchSlug;
+            inputElement.classList.remove("bg-danger-subtle");
+            inputElement.classList.add("bg-success-subtle");
+
+            document.getElementById('list-' + inputId).remove();
+        }
+    </script>
+</div>
+
+</body>
+</html>

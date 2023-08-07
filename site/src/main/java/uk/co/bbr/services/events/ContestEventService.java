@@ -73,4 +73,6 @@ public interface ContestEventService {
     ContestResultDao fetchThisWeekInHistory();
 
     Optional<ContestEventDao> fetchEventBetweenDates(ContestDao contest, LocalDate startDate, LocalDate endDate);
+
+    void removeAdjudicator(ContestEventDao contestEvent, Long adjudicatorId);
 }

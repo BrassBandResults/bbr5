@@ -6,6 +6,10 @@
     <span th:replace="buttons/button.html :: dangerButton(#{page.buttons.remove}, ${'/contests/' + event.contest.slug + '/' + event.eventDateForUrl + '/result/' + result.id + '/' + resultPiece.id + '/delete'})"></span>
 </span>
 
+<span th:fragment="removeAdjudicator(event, adjudicator)" th:remove="tag">
+    <span th:replace="buttons/button.html :: dangerButton(#{page.buttons.delete}, ${'/contests/' + event.contest.slug + '/' + event.eventDateForUrl + '/edit-adjudicators/' + adjudicator.id + '/delete'})"></span>
+</span>
+
 <span th:fragment="deleteResult(event, result)" th:remove="tag">
     <span th:replace="buttons/button.html :: dangerButton(#{page.buttons.delete}, ${'/contests/' + event.contest.slug + '/' + event.eventDateForUrl + '/result/' + result.id + '/delete'})"></span>
 </span>
