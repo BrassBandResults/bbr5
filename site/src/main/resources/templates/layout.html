@@ -117,12 +117,26 @@
 <div class="clear"></div>
 <br/>
 
+<div class="container pt-1" style="width: 100%" sec:authorize="!hasRole('BBR_PRO')">
+<div layout:fragment="ad-block-top" class="text-center">
+    Ad block top
+<p style="width: 100%" class="text-center"><a href="/profile" class="badge bg-success-subtle">Upgrade to pro and remove ads</a></p>
+</div>
+</div>
+
+
 <main class="container pt-1">
 <div layout:fragment="content">
 <h2>Content</h2>
 <p>You'll be wanting to override block content</p>
 </div>
 </main>
+
+<div class="container pt-1" sec:authorize="!hasRole('BBR_PRO')">
+    <div layout:fragment="ad-block-bottom" class="text-center">
+        Ad block bottom
+    </div>
+</div>
 
 <br/><br/>
 <footer class="bg-dark text-white pt-2 pb-2" role="contentinfo">
