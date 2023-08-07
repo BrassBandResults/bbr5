@@ -416,6 +416,20 @@ public class AddResultsController {
     }
 
     @IsBbrMember
+    @GetMapping("/add-results/7/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}/delete/{adjudicatorId:\\d+}")
+    public String deleteAdjudicator(Model model, @PathVariable("contestSlug") String contestSlug, @PathVariable String contestEventDate, @PathVariable Long adjudicatorId) {
+        LocalDate eventDate = Tools.parseEventDate(contestEventDate);
+        Optional<ContestEventDao> event = this.contestEventService.fetchEvent(contestSlug, eventDate);
+        if (event.isEmpty()) {
+            throw NotFoundException.eventNotFound(contestSlug, contestEventDate);
+        }
+
+        this.contestEventService.removeAdjudicator(event.get(), adjudicatorId);
+
+        return "redirect:/add-results/7/{contestSlug}/{contestEventDate}";
+    }
+
+    @IsBbrMember
     @PostMapping("/add-results/7/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}")
     public String addAdjudicatorStagePost(Model model, @Valid @ModelAttribute("Form") AddResultsAdjudicatorForm submittedForm, BindingResult bindingResult, @PathVariable("contestSlug") String contestSlug, @PathVariable String contestEventDate) {
         LocalDate eventDate = Tools.parseEventDate(contestEventDate);
