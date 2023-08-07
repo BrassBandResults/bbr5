@@ -102,6 +102,13 @@ public class ContestEventDao extends AbstractDao implements NameTools {
         this.notes = value;
     }
 
+    public String getNotes() {
+        if (this.notes == null) {
+            return "";
+        }
+        return this.notes;
+    }
+
     public void setOwner(String value) {
         if (value != null) {
             value = value.trim();
