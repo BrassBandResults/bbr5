@@ -443,4 +443,12 @@ public class ContestEventServiceImpl implements ContestEventService {
         }
         return Optional.of(events.get(0));
     }
+
+    @Override
+    public void removeAdjudicator(ContestEventDao contestEvent, Long adjudicatorId) {
+        Optional<ContestAdjudicatorDao> adjudication = this.contestAdjudicatorRepository.fetchForEventAndAdjudicator(contestEvent.getId(), adjudicatorId);
+        if (adjudication.isPresent()) {
+            this.contestAdjudicatorRepository.delete(adjudication.get());
+        }
+    }
 }
