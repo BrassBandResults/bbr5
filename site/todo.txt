@@ -11,27 +11,31 @@ Edit Profile
 Upgrade to pro - subscribe link on 403 page
 Upgrade to pro - record stripe details on user
 
-Support for instruments on contest history for pro users
-
 Ads for non-pro users
 
 Assign points
-
-Add privacy settings for personal contest history
-Add date ranges for personal contest history
-Fetch pending performances works out ones that aren't in history and aren't rejected
 
 Record 500 error - send feedback to owner?
 
 === Go Live ===
 
-Maps don't 500 where lat/lng is missing
+Add placeholder text to form fields
+
+Support for instruments on contest history for pro users
+
+Add privacy settings for personal contest history
+Add date ranges for personal contest history
+Fetch pending performances works out ones that aren't in history and aren't rejected
 
 Multiple map icons on same location
 
-Add placeholder text to form fields
-
 Performances shows pieces played
+
+csrf
+
+=== Fast Followers Complete ===
+
+Maps don't 500 where lat/lng is missing
 
 Result piece move up/down buttons to reorder
 
@@ -45,7 +49,6 @@ Upgrade to pro - how do we check that pro subscription is still active?
 
 Blog on the homepage
 
-csrf
 Validate api key
 
 robots.txt
