@@ -1,10 +1,9 @@
-Add results - add notes
 Edit adjudicators
 
-Deal with unique slug clash
+fix data so this works
+CREATE UNIQUE INDEX idx_adjudicator_prevent_duplicate ON contest_event_adjudicator(contest_event_id, person_id);
 
-Person Name synonym list William <=> Bill etc.
-Infer person date range from event dates
+Deal with unique slug clash
 
 Add classifieds to users profile page
 Markdown edit?
