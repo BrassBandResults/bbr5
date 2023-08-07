@@ -1,4 +1,3 @@
-Add results - add adjudicators
 Add results - add notes
 Edit adjudicators
 
@@ -23,11 +22,11 @@ Ads for non-pro users
 Region/contests fix event count
 Contest group fix event count
 
-Maps don't 500 where lat/lng is missing
-
 Assign points
 
 === Go Live ===
+
+Maps don't 500 where lat/lng is missing
 
 Add privacy settings for personal contest history
 Add date ranges for personal contest history
@@ -78,3 +77,6 @@ Export results to files in git repo
 Split Australian regions into states?
 
 Email for bands created in last month
+
+Person Name synonym list William <=> Bill etc.
+Infer person date range from event dates

@@ -447,4 +447,51 @@ public class AddResultsController {
         model.addAttribute("Adjudicators", adjudicators);
         return "results/add-results-7-adjudicators";
     }
+
+    @IsBbrMember
+    @GetMapping("/add-results/8/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}")
+    public String addNotesStageGet(Model model, @PathVariable("contestSlug") String contestSlug, @PathVariable String contestEventDate) {
+        LocalDate eventDate = Tools.parseEventDate(contestEventDate);
+        Optional<ContestEventDao> event = this.contestEventService.fetchEvent(contestSlug, eventDate);
+        if (event.isEmpty()) {
+            throw NotFoundException.eventNotFound(contestSlug, contestEventDate);
+        }
+
+        List<ContestEventTestPieceDao> pieces = this.contestEventService.listTestPieces(event.get());
+        List<ContestResultDao> eventResults = this.resultService.fetchForEvent(event.get());
+        List<ContestAdjudicatorDao> adjudicators = this.contestEventService.fetchAdjudicators(event.get());
+
+        AddResultsNotesForm form = new AddResultsNotesForm();
+        model.addAttribute("TestPieces", pieces);
+        model.addAttribute("ContestEvent", event.get());
+        model.addAttribute("EventResults", eventResults);
+        model.addAttribute("Adjudicators", adjudicators);
+        model.addAttribute("Form", form);
+
+        return "results/add-results-8-notes";
+    }
+
+    @IsBbrMember
+    @PostMapping("/add-results/8/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}")
+    public String addNotesStagePost(Model model, @Valid @ModelAttribute("Form") AddResultsNotesForm submittedForm, BindingResult bindingResult, @PathVariable("contestSlug") String contestSlug, @PathVariable String contestEventDate) {
+        LocalDate eventDate = Tools.parseEventDate(contestEventDate);
+        Optional<ContestEventDao> event = this.contestEventService.fetchEvent(contestSlug, eventDate);
+        if (event.isEmpty()) {
+            throw NotFoundException.eventNotFound(contestSlug, contestEventDate);
+        }
+
+        submittedForm.validate(bindingResult);
+
+        if (submittedForm.getNotes() != null && submittedForm.getNotes().trim().length() > 0) {
+            if (event.get().getNotes() == null || event.get().getNotes().trim().length() == 0) {
+                event.get().setNotes(submittedForm.getNotes());
+            } else {
+                event.get().setNotes(event.get().getNotes() + "\n" + submittedForm.getNotes());
+            }
+
+            this.contestEventService.update(event.get());
+        }
+
+        return "redirect:/contests/{contestSlug}/{contestEventDate}";
+    }
 }
