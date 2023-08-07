@@ -18,6 +18,7 @@ import uk.co.bbr.services.regions.dto.LinkSectionDto;
 import uk.co.bbr.services.regions.dto.RegionPageDto;
 import uk.co.bbr.services.regions.sql.RegionSql;
 import uk.co.bbr.services.regions.sql.dto.BandListForRegionSqlDto;
+import uk.co.bbr.services.regions.sql.dto.ContestListForRegionSqlDto;
 import uk.co.bbr.services.regions.sql.dto.RegionListSqlDto;
 import uk.co.bbr.services.sections.dao.SectionDao;
 import uk.co.bbr.services.security.SecurityService;
@@ -165,7 +166,13 @@ public class RegionServiceImpl implements RegionService, SlugTools {
 
     @Override
     public List<ContestDao> findContestsForRegion(RegionDao region) {
-        return this.contestRepository.findContestsForRegion(region.getId());
+        List<ContestDao> returnContests = new ArrayList<>();
+        List<ContestListForRegionSqlDto> contestsSql = RegionSql.listContestsForRegion(this.entityManager, region.getSlug());
+        for (ContestListForRegionSqlDto eachContest : contestsSql){
+            returnContests.add(eachContest.asContest());
+        }
+
+        return returnContests;
     }
 
     @Override

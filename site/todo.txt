@@ -6,7 +6,6 @@ Deal with unique slug clash
 Add classifieds to users profile page
 Markdown edit?
 Profile links working in text
-
 Edit Profile
 
 Upgrade to pro - subscribe link on 403 page
