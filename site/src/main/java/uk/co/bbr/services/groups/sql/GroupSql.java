@@ -4,6 +4,7 @@ import lombok.experimental.UtilityClass;
 import uk.co.bbr.services.bands.sql.dto.BandListSqlDto;
 import uk.co.bbr.services.bands.sql.dto.BandWinnersSqlDto;
 import uk.co.bbr.services.framework.sql.SqlExec;
+import uk.co.bbr.services.groups.sql.dao.ContestListSqlDto;
 import uk.co.bbr.services.groups.sql.dao.GroupListSqlDto;
 
 import javax.persistence.EntityManager;
@@ -64,6 +65,26 @@ public class GroupSql {
 
     public static List<GroupListSqlDto> findAllForList(EntityManager entityManager) {
         return SqlExec.execute(entityManager, GROUP_LIST_ALL_SQL, GroupListSqlDto.class);
+    }
+
+    private static final String CONTESTS_FOR_GROUP = """
+        WITH result_counts AS (
+            SELECT e.contest_id as contest_id, count(*) as event_count
+            FROM contest_event e
+                     INNER JOIN contest c ON c.id = e.contest_id
+                     INNER JOIN contest_group g ON g.id = c.contest_group_id
+            WHERE g.slug = ?1
+            GROUP BY e.contest_id
+            )
+        SELECT c.name as contest_name, c.slug as contest_slug, c.extinct as extinct, counts.event_count
+        FROM contest c
+        INNER JOIN contest_group g ON g.id = c.contest_group_id
+        LEFT OUTER JOIN result_counts counts ON counts.contest_id = c.id
+        WHERE g.slug = ?1
+        ORDER BY c.name""";
+
+    public static List<ContestListSqlDto> contestsForGroup(EntityManager entityManager, String groupSlug) {
+        return SqlExec.execute(entityManager, CONTESTS_FOR_GROUP, groupSlug, ContestListSqlDto.class);
     }
 
 }
