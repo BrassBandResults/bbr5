@@ -62,7 +62,7 @@ public class ProfileController {
     }
 
     @IsBbrMember
-    @GetMapping("/profile/person-profiles")
+    @GetMapping("/profile/people-profiles")
     public String profilePersonProfiles(Model model) {
         SiteUserDao user = this.securityService.getCurrentUser();
 

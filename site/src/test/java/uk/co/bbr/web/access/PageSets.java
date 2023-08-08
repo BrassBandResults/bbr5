@@ -235,7 +235,7 @@ public abstract class PageSets {
         pageList.add("/pieces/ALL");
         pageList.add("/profile");
         pageList.add("/profile/performances");
-        pageList.add("/profile/person-profiles");
+        pageList.add("/profile/people-profiles");
         pageList.add("/people/david-roberts/edit");
         pageList.add("/people/david-roberts/edit-aliases");
         pageList.add("/people/david-roberts/edit-aliases/1/hide");
@@ -300,7 +300,7 @@ public abstract class PageSets {
         pageList.add("/feedback/owner");
         pageList.add("/feedback/inconclusive");
         pageList.add("/feedback/spam");
-        pageList.add("/person-profiles");
+        pageList.add("/people-profiles");
         pageList.add("/user-list");
         pageList.add("/user-list/pro");
         pageList.add("/user-list/superuser");

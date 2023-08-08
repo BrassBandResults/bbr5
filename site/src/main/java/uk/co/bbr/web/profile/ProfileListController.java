@@ -27,7 +27,7 @@ public class ProfileListController {
     private final PersonService personService;
 
     @IsBbrAdmin
-    @GetMapping("/person-profiles")
+    @GetMapping("/people-profiles")
     public String publicUserPage(Model model) {
 
         List<PersonProfileDao> allProfiles = this.personService.fetchAllProfiles();
