@@ -5,21 +5,7 @@
 </head>
 <body>
 <div layout:fragment="content">
-    <h2 th:text="${User.usercode}">Profile</h2>
-
-    <div class="container">
-        <div class="row">
-            <div class="col">
-                <p>
-                    <span th:text="#{page.profile.member-since}" th:remove="tag">Member since</span>
-                    <span th:text="${#temporals.format(User.created, 'dd MMM yyyy')}">date</span>
-                </p>
-            </div>
-            <div class="col text-end">
-                <span th:replace="components/gravatar.html :: icon(${User})"></span>
-            </div>
-        </div>
-    </div>
+    <span th:replace="profile/components/header.html :: header(${User})"></span>
 
     <ul class="nav nav-tabs">
         <li class="nav-item">
@@ -27,6 +13,9 @@
         </li>
         <li class="nav-item">
             <a class="nav-link active" href="/profile/performances"  th:text="#{page.profile.tab.performances}">Performances</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/profile/people-profiles"  th:text="#{page.profile.tab.people-profiles}">People Profiles</a>
         </li>
     </ul>
     <br/>

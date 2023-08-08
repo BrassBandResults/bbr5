@@ -14,4 +14,7 @@ public interface PersonProfileRepository extends JpaRepository<PersonProfileDao,
 
     @Query("SELECT p FROM PersonProfileDao p ORDER BY p.person.surname")
     List<PersonProfileDao> fetchAll();
+
+    @Query("SELECT p FROM PersonProfileDao p WHERE p.createdBy = :ownerUsername ORDER BY p.person.surname")
+    List<PersonProfileDao> fetchForOwner(String ownerUsername);
 }

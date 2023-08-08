@@ -8,11 +8,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import uk.co.bbr.services.events.dao.ContestResultDao;
 import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.payments.PaymentsService;
+import uk.co.bbr.services.people.PersonService;
+import uk.co.bbr.services.people.dao.PersonProfileDao;
 import uk.co.bbr.services.performances.PerformanceService;
 import uk.co.bbr.services.performances.dao.PerformanceDao;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.services.security.UserService;
 import uk.co.bbr.services.security.dao.SiteUserDao;
+import uk.co.bbr.web.security.annotations.IsBbrAdmin;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
 import java.util.List;
@@ -24,40 +27,8 @@ public class ProfileController {
 
     private final SecurityService securityService;
     private final PaymentsService paymentsService;
+    private final PersonService personService;
     private final PerformanceService performanceService;
-    private final UserService userService;
-
-    @GetMapping("/users/{usercode:[a-zA-Z0-9@_\\-.]+}")
-    public String publicUserPage(Model model, @PathVariable("usercode") String usercode) {
-
-        Optional<SiteUserDao> user = this.userService.fetchUserByUsercode(usercode);
-        if (user.isEmpty()) {
-            throw NotFoundException.userNotFoundByUsercode(usercode);
-        }
-
-        List<PerformanceDao> performances = this.performanceService.fetchApprovedPerformancesForUser(user.get());
-
-        model.addAttribute("User", user.get());
-        model.addAttribute("Performances", performances);
-
-        return "users/public-user";
-    }
-
-    @GetMapping("/myresults/{usercode:[a-zA-Z0-9@_\\-.]+}")
-    public String publicMyResultsPage(Model model, @PathVariable("usercode") String usercode) {
-
-        Optional<SiteUserDao> user = this.userService.fetchUserByUsercode(usercode);
-        if (user.isEmpty()) {
-            throw NotFoundException.userNotFoundByUsercode(usercode);
-        }
-
-        List<PerformanceDao> performances = this.performanceService.fetchApprovedPerformancesForUser(user.get());
-
-        model.addAttribute("User", user.get());
-        model.addAttribute("Performances", performances);
-
-        return "users/myresults";
-    }
 
     @IsBbrMember
     @GetMapping("/profile")
@@ -88,5 +59,18 @@ public class ProfileController {
         model.addAttribute("ApprovedPerformances", performances);
 
         return "profile/performances";
+    }
+
+    @IsBbrMember
+    @GetMapping("/profile/person-profiles")
+    public String profilePersonProfiles(Model model) {
+        SiteUserDao user = this.securityService.getCurrentUser();
+
+        List<PersonProfileDao> profiles = this.personService.fetchProfilesForOwner(user.getUsercode());
+
+        model.addAttribute("User", user);
+        model.addAttribute("Profiles", profiles);
+
+        return "profile/people-profiles";
     }
 }

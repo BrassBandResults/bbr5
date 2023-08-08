@@ -56,4 +56,6 @@ public interface PersonService {
     void delete(PersonDao person);
 
     List<PersonProfileDao> fetchAllProfiles();
+
+    List<PersonProfileDao> fetchProfilesForOwner(String ownerUsername);
 }

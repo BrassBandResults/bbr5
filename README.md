@@ -33,3 +33,7 @@ It is also possible to run the app locally with docker compose:-
 cd site
 docker-compose up
 ```
+## JavaScript
+
+* Markdown visual editor provided by https://github.com/Ionaru/easy-markdown-editor
+* Mapping provided by https://leafletjs.com/

@@ -235,6 +235,11 @@ public class PersonServiceImpl implements PersonService, SlugTools {
     }
 
     @Override
+    public List<PersonProfileDao> fetchProfilesForOwner(String ownerUsername) {
+        return this.personProfileRepository.fetchForOwner(ownerUsername);
+    }
+
+    @Override
     public int fetchUserAdjudicationsCount(SiteUserDao user, PersonDao person) {
         if (user == null) {
             return 0;
