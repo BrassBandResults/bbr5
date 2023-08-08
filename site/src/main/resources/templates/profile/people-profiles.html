@@ -21,7 +21,22 @@
     <br/>
 
     <div class="tab-content">
-
+        <table id="people" class="table table-hover sortable">
+            <thead>
+            <tr>
+                <th th:text="#{page.column-header.name}">Name</th>
+                <th th:text="#{page.column-header.last-changed}">Last Changed</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="profile : ${Profiles}">
+                <td class="person">
+                    <span th:replace="links/person-link.html :: personLink(${profile.person})"></span>
+                </td>
+                <td><span th:text="${#temporals.format(profile.updated, 'dd MMM yyyy')}">date</span></td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 </div>
 </body>
