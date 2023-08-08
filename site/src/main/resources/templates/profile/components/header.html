@@ -1,0 +1,17 @@
+<div th:fragment="header(User)">
+    <h2 th:text="${User.usercode}">Profile</h2>
+
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <p>
+                    <span th:text="#{page.profile.member-since}" th:remove="tag">Member since</span>
+                    <span th:text="${#temporals.format(User.created, 'dd MMM yyyy')}">date</span>
+                </p>
+            </div>
+            <div class="col text-end">
+                <span th:replace="components/gravatar.html :: icon(${User})"></span>
+            </div>
+        </div>
+    </div>
+</div>

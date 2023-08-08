@@ -8,8 +8,6 @@ Markdown edit?
 Profile links working in text
 Edit Profile
 
-Upgrade to pro - record stripe details on user
-
 Ads for non-pro users
 
 Assign points
@@ -17,6 +15,7 @@ Assign points
 Record 500 error - send feedback to owner?
 
 === Go Live ===
+Upgrade to pro - record stripe details on user
 
 Add placeholder text to form fields
 

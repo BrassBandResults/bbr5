@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+<head>
+    <title th:text="@{#{page.profile.title(${User.usercode})} + ' - Brass Band Results'}">About Us - Brass Band Results</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <span th:replace="profile/components/header.html :: header(${User})"></span>
+
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link" href="/profile" th:text="#{page.profile.tab.pro}">Pro Account</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/profile/performances"  th:text="#{page.profile.tab.performances}">Performances</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" href="/profile/people-profiles"  th:text="#{page.profile.tab.people-profiles}">People Profiles</a>
+        </li>
+    </ul>
+    <br/>
+
+    <div class="tab-content">
+
+    </div>
+</div>
+</body>
+</html>

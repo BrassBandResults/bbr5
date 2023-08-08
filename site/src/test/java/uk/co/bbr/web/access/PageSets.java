@@ -235,6 +235,7 @@ public abstract class PageSets {
         pageList.add("/pieces/ALL");
         pageList.add("/profile");
         pageList.add("/profile/performances");
+        pageList.add("/profile/person-profiles");
         pageList.add("/people/david-roberts/edit");
         pageList.add("/people/david-roberts/edit-aliases");
         pageList.add("/people/david-roberts/edit-aliases/1/hide");
