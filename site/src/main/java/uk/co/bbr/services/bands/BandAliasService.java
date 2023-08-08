@@ -9,8 +9,6 @@ import java.util.Optional;
 public interface BandAliasService {
     BandAliasDao createAlias(BandDao band, BandAliasDao previousName);
     BandAliasDao createAlias(BandDao band, String name);
-    BandAliasDao migrateAlias(BandDao band, BandAliasDao previousName);
-
     Optional<BandAliasDao> aliasExists(BandDao band, String aliasName);
 
     List<BandAliasDao> findVisibleAliases(BandDao band);

@@ -70,12 +70,6 @@ public class ContestGroupServiceImpl implements ContestGroupService, SlugTools {
         return this.create(contestGroup, false);
     }
 
-    @Override
-    @IsBbrAdmin
-    public ContestGroupDao migrate(ContestGroupDao contestGroup) {
-        return this.create(contestGroup, true);
-    }
-
     private ContestGroupDao create(ContestGroupDao contestGroup, boolean migrating) {
         // validation
         if (contestGroup.getId() != null) {
@@ -134,11 +128,6 @@ public class ContestGroupServiceImpl implements ContestGroupService, SlugTools {
         return this.contestGroupAliasRepository.fetchByName(group.getId(), searchName);
     }
 
-    @Override
-    @IsBbrAdmin
-    public ContestGroupAliasDao migrateAlias(ContestGroupDao group, ContestGroupAliasDao alias) {
-        return this.createAlias(group, alias, true);
-    }
     @Override
     @IsBbrMember
     public ContestGroupAliasDao createAlias(ContestGroupDao group, ContestGroupAliasDao alias) {

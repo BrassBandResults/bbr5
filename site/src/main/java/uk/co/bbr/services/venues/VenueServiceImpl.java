@@ -54,12 +54,6 @@ public class VenueServiceImpl implements VenueService, SlugTools {
         return this.create(venue, false);
     }
 
-    @Override
-    @IsBbrAdmin
-    public VenueDao migrate(VenueDao venue) {
-        return this.create(venue, true);
-    }
-
     private VenueDao create(VenueDao venue, boolean migrating) {
         // validation
         if (venue.getId() != null) {
@@ -92,12 +86,6 @@ public class VenueServiceImpl implements VenueService, SlugTools {
     @IsBbrMember
     public VenueAliasDao createAlias(VenueDao venue, VenueAliasDao previousName) {
         return this.createAlias(venue, previousName, false);
-    }
-
-    @Override
-    @IsBbrAdmin
-    public VenueAliasDao migrateAlias(VenueDao venue, VenueAliasDao previousName) {
-        return this.createAlias(venue, previousName, true);
     }
 
     private VenueAliasDao createAlias(VenueDao venue, VenueAliasDao previousName, boolean migrating) {

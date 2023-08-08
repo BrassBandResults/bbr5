@@ -32,12 +32,6 @@ public class BandRehearsalsServiceImpl implements BandRehearsalsService, SlugToo
         this.createRehearsalNight(band, day, details,false);
     }
 
-    @Override
-    @IsBbrAdmin
-    public void migrateRehearsalDay(BandDao band, RehearsalDay day) {
-        this.createRehearsalNight(band, day, null, true);
-    }
-
     private void createRehearsalNight(BandDao band, RehearsalDay day, String details, boolean migrating) {
         BandRehearsalDayDao rehearsalNight = new BandRehearsalDayDao();
         rehearsalNight.setBand(band);
@@ -81,10 +75,5 @@ public class BandRehearsalsServiceImpl implements BandRehearsalsService, SlugToo
     public void deleteRehearsalDays(BandDao band) {
         List<BandRehearsalDayDao> daysForBand = this.fetchRehearsalDays(band);
         this.bandRehearsalDayRepository.deleteAll(daysForBand);
-    }
-
-    @Override
-    public List<BandRehearsalDayDao> fetchBandsByDayForMap(RehearsalDay day) {
-        return this.bandRehearsalDayRepository.findForDay(day);
     }
 }

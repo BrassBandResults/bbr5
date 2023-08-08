@@ -66,12 +66,6 @@ public class ContestEventServiceImpl implements ContestEventService {
     }
 
     @Override
-    @IsBbrAdmin
-    public ContestEventDao migrate(ContestDao contest, ContestEventDao contestEvent) {
-        return this.create(contest, contestEvent, true);
-    }
-
-    @Override
     @IsBbrMember
     public ContestEventDao update(ContestEventDao event) {
        this.validateMandatory(event.getContest(), event);

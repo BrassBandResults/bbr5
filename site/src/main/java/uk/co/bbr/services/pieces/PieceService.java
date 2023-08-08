@@ -16,15 +16,11 @@ import java.util.Optional;
 
 public interface PieceService {
     PieceDao create(PieceDao newPiece);
-    PieceDao migrate(PieceDao piece);
-
     PieceDao create(String name, PieceCategory category, PersonDao composer);
     PieceDao create(String name);
     PieceDao update(PieceDao existingPiece);
 
     void createAlternativeName(PieceDao piece, PieceAliasDao alternativeName);
-
-    void migrateAlternativeName(PieceDao piece, PieceAliasDao previousName);
 
     Optional<PieceDao> fetchBySlug(String pieceSlug);
 

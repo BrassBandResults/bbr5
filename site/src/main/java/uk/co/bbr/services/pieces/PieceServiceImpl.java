@@ -57,12 +57,6 @@ public class PieceServiceImpl implements PieceService, SlugTools {
         return this.create(piece, false);
     }
 
-    @Override
-    @IsBbrAdmin
-    public PieceDao migrate(PieceDao piece) {
-        return this.create(piece, true);
-    }
-
     private void validateMandatory(PieceDao piece) {
         // validation
         if (StringUtils.isBlank(piece.getName())) {
@@ -134,12 +128,6 @@ public class PieceServiceImpl implements PieceService, SlugTools {
     @IsBbrMember
     public void createAlternativeName(PieceDao piece, PieceAliasDao alternativeName) {
         this.createAlternativeName(piece, alternativeName, false);
-    }
-
-    @Override
-    @IsBbrAdmin
-    public void migrateAlternativeName(PieceDao piece, PieceAliasDao alternativeName) {
-        this.createAlternativeName(piece, alternativeName, true);
     }
 
     private void createAlternativeName(PieceDao piece, PieceAliasDao alternativeName, boolean migrating) {

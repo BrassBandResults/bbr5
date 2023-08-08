@@ -16,10 +16,8 @@ public interface ContestService {
 
     ContestDao create(ContestDao contest);
 
-    ContestDao migrate(ContestDao contest);
     ContestDao update(ContestDao contest);
 
-    ContestAliasDao migrateAlias(ContestDao contest, ContestAliasDao previousName);
     ContestAliasDao createAlias(ContestDao contest, ContestAliasDao previousName);
     ContestAliasDao createAlias(ContestDao contest, String previousName);
 
