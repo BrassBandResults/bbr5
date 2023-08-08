@@ -11,10 +11,10 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.client.RestTemplate;
 import uk.co.bbr.services.bands.BandService;
 import uk.co.bbr.services.bands.dao.BandDao;
-import uk.co.bbr.services.events.ContestEventService;
-import uk.co.bbr.services.events.ResultService;
 import uk.co.bbr.services.contests.ContestService;
 import uk.co.bbr.services.contests.dao.ContestDao;
+import uk.co.bbr.services.events.ContestEventService;
+import uk.co.bbr.services.events.ResultService;
 import uk.co.bbr.services.events.dao.ContestEventDao;
 import uk.co.bbr.services.events.dao.ContestResultDao;
 import uk.co.bbr.services.people.PersonService;
@@ -36,10 +36,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ActiveProfiles("test")
 @SpringBootTest(properties = {  "spring.config.location=classpath:test-application.yml",
-        "spring.datasource.url=jdbc:h2:mem:pieces-list-web-tests-admin-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE"},
+        "spring.datasource.url=jdbc:h2:mem:pieces-list-pro-web-tests-admin-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE"},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class PieceListWebTests implements LoginMixin {
+class PieceListProWebTests implements LoginMixin {
 
     @Autowired private SecurityService securityService;
     @Autowired private JwtService jwtService;
@@ -55,7 +55,10 @@ class PieceListWebTests implements LoginMixin {
 
     @BeforeAll
     void setupUser() {
-        loginTestUserByWeb(TestUser.TEST_MEMBER, this.restTemplate, this.csrfTokenRepository, this.port);
+        this.securityService.createUser(TestUser.TEST_PRO.getUsername(), TestUser.TEST_PRO.getPassword(), TestUser.TEST_PRO.getEmail());
+        this.securityService.makeUserPro(TestUser.TEST_PRO.getUsername());
+
+        loginTestUserByWeb(TestUser.TEST_PRO, this.restTemplate, this.csrfTokenRepository, this.port);
     }
 
     @BeforeAll
@@ -143,8 +146,7 @@ class PieceListWebTests implements LoginMixin {
         assertFalse(response.contains("1st Class"));
 
         // Journey To The Centre of the Earth should have set test
-        // only true for pro user
-        assertFalse(response.contains(">1<"));
+        assertTrue(response.contains(">1<"));
     }
 
     @Test
@@ -163,8 +165,7 @@ class PieceListWebTests implements LoginMixin {
         assertFalse(response.contains("1st Class"));
 
         // Hootenanny should be own choice
-        // only true for pro user
-        assertFalse(response.contains(">1<"));
+        assertTrue(response.contains(">1<"));
     }
 
     @Test
@@ -200,8 +201,7 @@ class PieceListWebTests implements LoginMixin {
         assertTrue(response.contains("T&#39;Wizard"));
         assertTrue(response.contains("1st Class"));
 
-        // only true for pro user
-        assertFalse(response.contains(">1<"));
+        assertTrue(response.contains(">1<"));
     }
 }
 
