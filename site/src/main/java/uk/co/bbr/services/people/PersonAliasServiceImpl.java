@@ -27,12 +27,6 @@ public class PersonAliasServiceImpl implements PersonAliasService, SlugTools {
         return this.createAlternativeName(person, previousName, false);
     }
 
-    @Override
-    @IsBbrAdmin
-    public PersonAliasDao migrateAlias(PersonDao person, PersonAliasDao previousName) {
-        return this.createAlternativeName(person, previousName, true);
-    }
-
     private PersonAliasDao createAlternativeName(PersonDao person, PersonAliasDao previousName, boolean migrating) {
         previousName.setPerson(person);
         if (!migrating) {

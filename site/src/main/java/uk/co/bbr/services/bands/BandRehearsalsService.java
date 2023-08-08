@@ -10,13 +10,10 @@ public interface BandRehearsalsService {
 
     void createRehearsalDay(BandDao band, RehearsalDay day);
     void createRehearsalDay(BandDao band, RehearsalDay day, String details);
-    void migrateRehearsalDay(BandDao band, RehearsalDay day);
 
     List<RehearsalDay> findRehearsalDays(BandDao band);
 
     List<BandRehearsalDayDao> fetchRehearsalDays(BandDao band);
 
     void deleteRehearsalDays(BandDao band);
-
-    List<BandRehearsalDayDao> fetchBandsByDayForMap(RehearsalDay day);
 }

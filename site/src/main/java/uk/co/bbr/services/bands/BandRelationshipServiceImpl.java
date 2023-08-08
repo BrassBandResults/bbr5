@@ -56,24 +56,6 @@ public class BandRelationshipServiceImpl implements BandRelationshipService, Slu
         return this.createRelationship(newRelationship);
     }
 
-    @Override
-    public BandRelationshipDao updateRelationship(BandRelationshipDao relationship) {
-        if (relationship.getId() == null) {
-            throw new ValidationException("ID required to update");
-        }
-
-        relationship.setUpdated(LocalDateTime.now());
-        relationship.setUpdatedBy(this.securityService.getCurrentUsername());
-
-        return this.saveRelationship(relationship);
-    }
-
-    @Override
-    @IsBbrAdmin
-    public BandRelationshipDao migrateRelationship(BandRelationshipDao relationship) {
-        return this.createRelationship(relationship, true);
-    }
-
     private BandRelationshipDao createRelationship(BandRelationshipDao relationship, boolean migrating) {
         if (!migrating) {
             relationship.setCreated(LocalDateTime.now());

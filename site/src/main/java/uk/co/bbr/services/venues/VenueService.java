@@ -16,12 +16,9 @@ public interface VenueService {
 
     VenueDao create(VenueDao venue);
 
-    VenueDao migrate(VenueDao venue);
-
     Optional<VenueAliasDao> aliasExists(VenueDao venue, String name);
 
     VenueAliasDao createAlias(VenueDao venue, VenueAliasDao previousName);
-    VenueAliasDao migrateAlias(VenueDao venue, VenueAliasDao previousName);
 
     Optional<VenueDao> fetchBySlug(String slug);
 

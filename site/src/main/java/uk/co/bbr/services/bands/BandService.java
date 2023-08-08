@@ -12,8 +12,6 @@ import java.util.Optional;
 public interface BandService {
 
     BandDao create(BandDao band);
-    BandDao migrate(BandDao band);
-
     BandDao create(String bandName);
 
     BandDao create(String bandName, RegionDao region);

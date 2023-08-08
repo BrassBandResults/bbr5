@@ -54,12 +54,6 @@ public class BandServiceImpl implements BandService, SlugTools {
         return this.create(band, false);
     }
 
-    @Override
-    @IsBbrAdmin
-    public BandDao migrate(BandDao band) {
-        return this.create(band, true);
-    }
-
     private BandDao create(BandDao band, boolean migrating) {
         // validation
         if (band.getId() != null) {

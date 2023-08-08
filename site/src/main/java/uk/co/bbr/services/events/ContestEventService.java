@@ -20,8 +20,6 @@ public interface ContestEventService {
 
     ContestEventDao create(ContestDao contest, ContestEventDao event);
 
-    ContestEventDao migrate(ContestDao contest, ContestEventDao contestEvent);
-
     ContestEventDao update(ContestEventDao event);
 
     List<ContestAdjudicatorDao> addAdjudicator(ContestEventDao event, PersonDao adjudicator);

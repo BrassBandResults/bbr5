@@ -40,8 +40,6 @@ public class ContestServiceImpl implements ContestService, SlugTools {
 
     private final ContestTypeService contestTypeService;
     private final ContestAliasRepository contestAliasRepository;
-    private final ContestGroupRepository contestGroupRepository;
-    private final ContestGroupAliasRepository contestGroupAliasRepository;
     private final ContestRepository contestRepository;
 
     private final EntityManager entityManager;
@@ -70,12 +68,6 @@ public class ContestServiceImpl implements ContestService, SlugTools {
     @IsBbrMember
     public ContestDao create(ContestDao contest) {
         return this.create(contest, false);
-    }
-
-    @Override
-    @IsBbrAdmin
-    public ContestDao migrate(ContestDao contest) {
-        return this.create(contest, true);
     }
 
     @Override
@@ -161,11 +153,6 @@ public class ContestServiceImpl implements ContestService, SlugTools {
         return this.contestRepository.saveAndFlush(contest);
     }
 
-    @Override
-    @IsBbrAdmin
-    public ContestAliasDao migrateAlias(ContestDao contest, ContestAliasDao alias) {
-        return this.createAlias(contest, alias, true);
-    }
     @Override
     @IsBbrMember
     public ContestAliasDao createAlias(ContestDao contest, ContestAliasDao alias) {

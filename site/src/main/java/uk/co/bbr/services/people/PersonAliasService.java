@@ -8,8 +8,6 @@ import java.util.Optional;
 
 public interface PersonAliasService {
     PersonAliasDao createAlias(PersonDao person, PersonAliasDao previousName);
-    PersonAliasDao migrateAlias(PersonDao person, PersonAliasDao previousName);
-
     List<PersonAliasDao> findAllAliases(PersonDao person);
     List<PersonAliasDao> findVisibleAliases(PersonDao person);
 

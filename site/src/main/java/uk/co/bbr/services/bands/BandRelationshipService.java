@@ -12,8 +12,6 @@ public interface BandRelationshipService {
     BandRelationshipTypeDao fetchIsParentOfRelationship();
     BandRelationshipDao createRelationship(BandRelationshipDao relationship);
     BandRelationshipDao createRelationship(BandDao leftBand, BandDao rightBand, BandRelationshipTypeDao relationship);
-    BandRelationshipDao updateRelationship(BandRelationshipDao relationship);
-    BandRelationshipDao migrateRelationship(BandRelationshipDao relationship);
     List<BandRelationshipDao> fetchRelationshipsForBand(BandDao band);
     Optional<BandRelationshipDao> fetchById(Long relationshipId);
     void deleteRelationship(BandRelationshipDao bandRelationship);

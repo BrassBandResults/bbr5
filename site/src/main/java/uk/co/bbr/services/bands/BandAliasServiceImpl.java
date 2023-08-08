@@ -52,12 +52,6 @@ public class BandAliasServiceImpl implements BandAliasService, SlugTools {
         return this.createAlias(band, newAlias);
     }
 
-    @Override
-    @IsBbrAdmin
-    public BandAliasDao migrateAlias(BandDao band, BandAliasDao previousName) {
-        return createPreviousName(band, previousName, true);
-    }
-
     private BandAliasDao createPreviousName(BandDao band, BandAliasDao previousName, boolean migrating) {
         previousName.setBand(band);
 
