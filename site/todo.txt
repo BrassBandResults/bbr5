@@ -1,12 +1,8 @@
 fix data so this works
 CREATE UNIQUE INDEX idx_adjudicator_prevent_duplicate ON contest_event_adjudicator(contest_event_id, person_id);
+get rid of double spaces in csv files?
 
 Deal with unique slug clash
-
-Add classifieds to users profile page
-Markdown edit?
-Profile links working in text
-Edit Profile
 
 Ads for non-pro users
 

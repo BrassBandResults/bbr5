@@ -61,7 +61,7 @@ public class SignUpController {
             return "signup/register";
         }
 
-        if (password1.trim().length() < 8) {
+        if (password1.strip().length() < 8) {
             model.addAttribute("Errors", "page.signup.errors.password-too-short");
             model.addAttribute("Email", email);
             model.addAttribute("Username", username);

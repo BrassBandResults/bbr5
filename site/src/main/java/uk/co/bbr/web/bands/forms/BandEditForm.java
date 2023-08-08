@@ -45,7 +45,7 @@ public class BandEditForm {
     }
 
     public void validate(BindingResult bindingResult) {
-        if (this.name == null || this.name.trim().length() == 0) {
+        if (this.name == null || this.name.strip().length() == 0) {
             bindingResult.addError(new ObjectError("name", "page.band-edit.errors.name-required"));
         }
         if (this.startDate != null && this.endDate != null && this.endDate.isBefore(this.startDate)) {

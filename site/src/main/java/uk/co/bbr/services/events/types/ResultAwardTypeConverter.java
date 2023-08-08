@@ -15,7 +15,7 @@ public class ResultAwardTypeConverter implements AttributeConverter<ResultAwardT
 
     @Override
     public ResultAwardType convertToEntityAttribute(String code) {
-        if (code == null || code.trim().length() == 0) {
+        if (code == null || code.strip().length() == 0) {
             return null;
         }
         return ResultAwardType.fromCode(code);

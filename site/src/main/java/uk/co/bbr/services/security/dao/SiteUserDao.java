@@ -100,42 +100,42 @@ public class SiteUserDao extends AbstractDao {
 
     public void setUsercode(String value) {
         if (value != null) {
-            value = value.trim();
+            value = value.strip();
         }
         this.usercode = value;
     }
 
     public void setPassword(String value) {
         if (value != null) {
-            value = value.trim();
+            value = value.strip();
         }
         this.password = value;
     }
 
     public void setAccessLevel(String value) {
         if (value != null) {
-            value = value.trim();
+            value = value.strip();
         }
         this.accessLevel = value;
     }
 
     public void setSalt(String value) {
         if (value != null) {
-            value = value.trim();
+            value = value.strip();
         }
         this.salt = value;
     }
 
     public void setEmail(String value) {
         if (value != null) {
-            value = value.trim();
+            value = value.strip();
         }
         this.email = value;
     }
 
     public void setPasswordVersion(String value) {
         if (value != null) {
-            value = value.trim();
+            value = value.strip();
         }
         this.passwordVersion = value;
     }
@@ -146,7 +146,7 @@ public class SiteUserDao extends AbstractDao {
             return;
         }
 
-        value = value.trim();
+        value = value.strip();
         if (value.length() == 0) {
             this.contestHistoryVisibility = ContestHistoryVisibility.PUBLIC;
             return;
@@ -191,6 +191,6 @@ public class SiteUserDao extends AbstractDao {
     }
 
     public boolean isSuperuser() {
-        return "S".equals(this.accessLevel);
+        return "S".equals(this.accessLevel) || "A".equals(this.accessLevel);
     }
 }

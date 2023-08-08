@@ -67,7 +67,7 @@ public class CompareBandsSqlDto extends AbstractSqlDto {
     }
 
     public PersonDao getLeftConductor() {
-        if (this.leftConductorSlug == null || this.leftConductorSlug.trim().length() == 0) {
+        if (this.leftConductorSlug == null || this.leftConductorSlug.strip().length() == 0) {
             return null;
         }
 
@@ -80,7 +80,7 @@ public class CompareBandsSqlDto extends AbstractSqlDto {
     }
 
     public PersonDao getRightConductor() {
-        if (this.rightConductorSlug == null || this.rightConductorSlug.trim().length() == 0) {
+        if (this.rightConductorSlug == null || this.rightConductorSlug.strip().length() == 0) {
             return null;
         }
 

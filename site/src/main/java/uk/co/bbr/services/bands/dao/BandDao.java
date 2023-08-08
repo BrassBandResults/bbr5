@@ -84,7 +84,6 @@ public class BandDao extends AbstractDao implements NameTools {
     private String rehearsalsBinary;
 
     public void setName(String sourceName) {
-
         if (sourceName == null) {
             this.name = null;
             return;
@@ -94,17 +93,17 @@ public class BandDao extends AbstractDao implements NameTools {
 
     public void setOldId(String value) {
         if (value != null) {
-            value = value.trim();
+            value = value.strip();
         }
         this.oldId = value;
     }
 
     public void setLatitude(String latitude) {
         if (latitude != null) {
-            if (latitude.trim().length() > 15) {
-                latitude = latitude.trim().substring(0, 15);
+            if (latitude.strip().length() > 15) {
+                latitude = latitude.strip().substring(0, 15);
             }
-            latitude = latitude.trim();
+            latitude = latitude.strip();
             if (latitude.length() == 0) {
                 latitude = null;
             }
@@ -114,10 +113,10 @@ public class BandDao extends AbstractDao implements NameTools {
 
     public void setLongitude(String longitude) {
         if (longitude != null) {
-            if (longitude.trim().length() > 15) {
-                longitude = longitude.trim().substring(0, 15);
+            if (longitude.strip().length() > 15) {
+                longitude = longitude.strip().substring(0, 15);
             }
-            longitude = longitude.trim();
+            longitude = longitude.strip();
             if (longitude.length() == 0) {
                 longitude = null;
             }
@@ -127,14 +126,14 @@ public class BandDao extends AbstractDao implements NameTools {
 
     public void setNotes(String notes) {
         if (notes != null) {
-            notes = notes.trim();
+            notes = notes.strip();
         }
         this.notes = notes;
     }
 
     public void setWebsite(String website) {
         if (website != null) {
-            website = website.trim();
+            website = website.strip();
             if (website.length() == 0 || website.equalsIgnoreCase("http://") || website.equalsIgnoreCase("https://")) {
                 website = null;
             }
@@ -144,8 +143,8 @@ public class BandDao extends AbstractDao implements NameTools {
 
     public void setTwitterName(String twitterName) {
         if (twitterName != null) {
-            if (twitterName.trim().startsWith("@")) {
-                twitterName = twitterName.trim().substring(1);
+            if (twitterName.strip().startsWith("@")) {
+                twitterName = twitterName.strip().substring(1);
             }
         }
         this.twitterName = twitterName;
@@ -153,7 +152,7 @@ public class BandDao extends AbstractDao implements NameTools {
 
     public void setSlug(String value) {
         if (value != null) {
-            value = value.trim();
+            value = value.strip();
         }
         this.slug = value;
     }
@@ -245,6 +244,6 @@ public class BandDao extends AbstractDao implements NameTools {
     }
 
     public boolean hasLocation() {
-        return this.latitude != null && this.latitude.trim().length() > 0 && this.longitude != null && this.longitude.trim().length() > 0;
+        return this.latitude != null && this.latitude.strip().length() > 0 && this.longitude != null && this.longitude.strip().length() > 0;
     }
 }

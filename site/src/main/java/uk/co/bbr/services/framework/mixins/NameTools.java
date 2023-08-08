@@ -5,7 +5,7 @@ public interface NameTools {
     default String replaceCommon(String name) {
         return name.replaceAll(" +", " ")
                    .replaceAll("^St ", "St. ")
-                   .replace(" St ", " St. ").trim();
+                   .replace(" St ", " St. ").strip();
     }
 
     default String makeSureSpaceAfterDot(String name) {
@@ -36,7 +36,7 @@ public interface NameTools {
         // do same for first character in string if it's a single initial
         String endInitials = singleInitialNotAtEnd.replaceAll("^([A-Z])\\s", "$1. ");
 
-        return endInitials.trim();
+        return endInitials.strip();
     }
 
     default String simplifyBandName(String name) {

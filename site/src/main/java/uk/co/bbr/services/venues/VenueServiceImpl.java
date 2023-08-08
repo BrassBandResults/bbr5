@@ -142,10 +142,10 @@ public class VenueServiceImpl implements VenueService, SlugTools {
                 venuesToReturn = VenueListSql.venueListNumber(this.entityManager);
             }
             default -> {
-                if (prefix.trim().length() != 1) {
+                if (prefix.strip().length() != 1) {
                     throw new UnsupportedOperationException("Prefix must be a single character");
                 }
-                venuesToReturn = VenueListSql.venueListPrefix(this.entityManager, prefix.trim().toUpperCase());
+                venuesToReturn = VenueListSql.venueListPrefix(this.entityManager, prefix.strip().toUpperCase());
             }
         }
 

@@ -42,21 +42,21 @@ public class SectionDao extends AbstractDao implements NameTools {
 
     public void setSlug(String value) {
         if (value != null) {
-            value = value.trim();
+            value = value.strip();
         }
         this.slug = value;
     }
 
     public void setMapShortCode(String value) {
         if (value != null) {
-            value = value.trim();
+            value = value.strip();
         }
         this.mapShortCode = value;
     }
 
     public void setTranslationKey(String value) {
         if (value != null) {
-            value = value.trim();
+            value = value.strip();
         }
         this.translationKey = value;
     }

@@ -79,7 +79,7 @@ public class BandRelationshipsController {
             throw NotFoundException.bandNotFoundBySlug(bandSlug);
         }
 
-        if (rightBandName == null || rightBandName.trim().length() == 0) {
+        if (rightBandName == null || rightBandName.strip().length() == 0) {
             rightBandName = rightBand.get().getName();
         }
 

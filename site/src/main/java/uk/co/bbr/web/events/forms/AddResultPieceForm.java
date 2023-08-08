@@ -17,7 +17,7 @@ public class AddResultPieceForm {
     }
 
     public void validate(BindingResult bindingResult) {
-        if (this.pieceSlug == null || this.pieceSlug.trim().length() == 0) {
+        if (this.pieceSlug == null || this.pieceSlug.strip().length() == 0) {
             bindingResult.addError(new ObjectError("name", "page.add-set-tests.errors.piece-required"));
         }
     }

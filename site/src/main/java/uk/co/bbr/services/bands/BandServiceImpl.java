@@ -149,10 +149,10 @@ public class BandServiceImpl implements BandService, SlugTools {
             case "ALL" -> bandsToReturn = BandSql.selectAllBandsForList(this.entityManager);
             case "0" -> bandsToReturn = BandSql.selectBandsStartingWithNumbersForList(this.entityManager);
             default -> {
-                if (prefix.trim().length() != 1) {
+                if (prefix.strip().length() != 1) {
                     throw new UnsupportedOperationException("Prefix must be a single character");
                 }
-                bandsToReturn = BandSql.selectBandsStartingWithLetterForList(this.entityManager, prefix.trim().toUpperCase());
+                bandsToReturn = BandSql.selectBandsStartingWithLetterForList(this.entityManager, prefix.strip().toUpperCase());
             }
         }
 

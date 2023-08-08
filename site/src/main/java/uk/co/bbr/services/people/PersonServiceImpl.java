@@ -118,6 +118,11 @@ public class PersonServiceImpl implements PersonService, SlugTools {
     }
 
     @Override
+    public PersonProfileDao update(PersonProfileDao personProfile) {
+        return this.personProfileRepository.saveAndFlush(personProfile);
+    }
+
+    @Override
     public Optional<PersonDao> fetchBySlug(String personSlug) {
         return this.personRepository.fetchBySlug(personSlug);
     }
@@ -129,7 +134,7 @@ public class PersonServiceImpl implements PersonService, SlugTools {
 
     @Override
     public PeopleListDto listPeopleStartingWith(String prefix) {
-        if (prefix.trim().length() != 1) {
+        if (prefix.strip().length() != 1) {
             throw new UnsupportedOperationException("Prefix must be a single character");
         }
 
@@ -237,6 +242,14 @@ public class PersonServiceImpl implements PersonService, SlugTools {
     @Override
     public List<PersonProfileDao> fetchProfilesForOwner(String ownerUsername) {
         return this.personProfileRepository.fetchForOwner(ownerUsername);
+    }
+
+    @Override
+    public Optional<PersonProfileDao> fetchProfileByPersonSlugAndOwner(String personSlug, SiteUserDao user) {
+        if (user.isSuperuser()) {
+            return this.personProfileRepository.fetchProfileForPersonSlug(personSlug);
+        }
+        return this.personProfileRepository.fetchProfileForPersonSlugAndUser(personSlug, user.getUsercode());
     }
 
     @Override

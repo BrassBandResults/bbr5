@@ -183,10 +183,10 @@ public class PieceServiceImpl implements PieceService, SlugTools {
                 pieceUsageCounts = PieceSql.selectNumbersPieceUsageCounts(this.entityManager);
             }
             default -> {
-                if (prefix.trim().length() != 1) {
+                if (prefix.strip().length() != 1) {
                     throw new UnsupportedOperationException("Prefix must be a single character");
                 }
-                piecesToReturn = this.pieceRepository.findByPrefixOrderByName(prefix.trim().toUpperCase());
+                piecesToReturn = this.pieceRepository.findByPrefixOrderByName(prefix.strip().toUpperCase());
                 pieceUsageCounts = PieceSql.selectPieceUsageCounts(this.entityManager, prefix.toUpperCase());
             }
         }

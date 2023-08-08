@@ -49,45 +49,45 @@ public class FeedbackDao extends AbstractDao {
 
     public void setUrl(String url) {
         if (url != null) {
-            url = url.trim();
+            url = url.strip();
         }
         this.url = url;
     }
 
     public void setReportedBy(String usercode) {
         if (usercode != null) {
-            usercode = usercode.trim();
+            usercode = usercode.strip();
         }
         this.reportedBy = usercode;
     }
 
     public void setComment(String comment) {
         if (comment != null) {
-            comment = comment.trim();
+            comment = comment.strip();
         }
         this.comment = comment;
     }
 
     public void setBrowser(String browser) {
         if (browser != null) {
-            browser = browser.trim();
+            browser = browser.strip();
         }
         this.browser = browser;
     }
 
     public void setOwnedBy(String username) {
         if (username != null) {
-            username = username.trim();
+            username = username.strip();
         }
         this.ownedBy = username;
     }
 
     public void setIp(String ip) {
-        if (ip != null && ip.trim().length() > 15) {
-            ip = ip.trim().substring(0, 15);
+        if (ip != null && ip.strip().length() > 15) {
+            ip = ip.strip().substring(0, 15);
         }
         if (ip != null) {
-            ip = ip.trim();
+            ip = ip.strip();
         }
         this.ip = ip;
     }

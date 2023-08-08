@@ -41,7 +41,7 @@ public class PersonEditForm {
     }
 
     public void validate(BindingResult bindingResult) {
-        if (this.surname == null || this.surname.trim().length() == 0) {
+        if (this.surname == null || this.surname.strip().length() == 0) {
             bindingResult.addError(new ObjectError("surname", "page.person-edit.errors.surname-required"));
         }
         if (this.startDate != null && this.endDate != null && this.endDate.isBefore(this.startDate)) {

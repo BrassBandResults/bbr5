@@ -42,7 +42,7 @@ public class ContestResultPieceDao extends AbstractDao implements NameTools {
         if (suffix == null) {
             this.suffix = null;
         } else {
-            this.suffix = suffix.trim();
+            this.suffix = suffix.strip();
         }
     }
 }

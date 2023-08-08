@@ -12,6 +12,7 @@
             <th th:text="#{page.column-header.name}">Name</th>
             <th th:text="#{page.column-header.owner}">Owner</th>
             <th th:text="#{page.column-header.last-changed}">Last Changed</th>
+            <th></th>
         </tr>
         </thead>
         <tbody>
@@ -21,6 +22,7 @@
             </td>
             <td th:text="${profile.createdBy}"></td>
             <td><span th:text="${#temporals.format(profile.updated, 'dd MMM yyyy')}">date</span></td>
+            <td><span th:replace="buttons/edit.html :: editPersonProfile(${profile})"></span></td>
         </tr>
         </tbody>
     </table>

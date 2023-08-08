@@ -29,6 +29,7 @@ import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.services.security.dao.SiteUserDao;
 import uk.co.bbr.services.tags.ContestTagService;
 import uk.co.bbr.services.tags.dao.ContestTagDao;
+import uk.co.bbr.web.Tools;
 import uk.co.bbr.web.security.annotations.IsBbrPro;
 
 import java.util.List;
@@ -89,6 +90,7 @@ public class PersonController {
 
         model.addAttribute("Person", person.get());
         model.addAttribute("PersonProfile", profile);
+        model.addAttribute("ProfileMarkdown", Tools.markdownToHTML(profile.getProfile()));
         model.addAttribute("PreviousNames", previousNames);
         model.addAttribute("ResultsCount", personConductingResults.getBandNonWhitResults().size());
         model.addAttribute("WhitCount", personConductingResults.getBandWhitResults().size());

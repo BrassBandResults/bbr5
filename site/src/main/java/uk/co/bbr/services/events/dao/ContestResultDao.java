@@ -187,7 +187,7 @@ public class ContestResultDao extends AbstractDao implements NameTools {
     }
 
     public void setOldId(String id) {
-        this.oldId = id.trim();
+        this.oldId = id.strip();
     }
 
     public void setContestEvent(ContestEventDao contestEvent) {
@@ -248,56 +248,56 @@ public class ContestResultDao extends AbstractDao implements NameTools {
         if (points == null) {
             this.pointsTotal = null;
         } else {
-            if (points.trim().length() > 10) {
-                points = points.trim().substring(0, 10);
+            if (points.strip().length() > 10) {
+                points = points.strip().substring(0, 10);
             }
-            this.pointsTotal = points.trim();
+            this.pointsTotal = points.strip();
         }
     }
     public void setPointsFirst(String points){
         if (points == null) {
             this.pointsFirst = null;
         } else {
-            this.pointsFirst = points.trim();
+            this.pointsFirst = points.strip();
         }
     }
     public void setPointsSecond(String points) {
         if (points == null) {
             this.pointsSecond = null;
         } else {
-            this.pointsSecond = points.trim();
+            this.pointsSecond = points.strip();
         }
     }
     public void setPointsThird(String points){
         if (points == null) {
             this.pointsThird = null;
         } else {
-            this.pointsThird = points.trim();
+            this.pointsThird = points.strip();
         }
     }
     public void setPointsFourth(String points){
         if (points == null) {
             this.pointsFourth = null;
         } else {
-            this.pointsFourth = points.trim();
+            this.pointsFourth = points.strip();
         }
     }
     public void setPointsPenalty(String points){
         if (points == null) {
             this.pointsPenalty = null;
         } else {
-            this.pointsPenalty = points.trim();
+            this.pointsPenalty = points.strip();
         }
     }
 
     public void setNotes(String notes) {
         if (notes != null) {
-            notes = notes.trim();
+            notes = notes.strip();
         }
         this.notes = notes;
     }
 
     public boolean getHasNotes() {
-        return this.notes != null && this.notes.trim().length() > 0;
+        return this.notes != null && this.notes.strip().length() > 0;
     }
 }

@@ -104,7 +104,7 @@ public class ResultEditForm {
     }
 
     public void validate(BindingResult bindingResult) {
-        if (this.bandName == null || this.bandName.trim().length() == 0) {
+        if (this.bandName == null || this.bandName.strip().length() == 0) {
             bindingResult.addError(new ObjectError("bandName", "page.result-edit.errors.band-required"));
         }
     }

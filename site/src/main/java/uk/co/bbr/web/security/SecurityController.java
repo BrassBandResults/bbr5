@@ -48,7 +48,7 @@ public class SecurityController {
 
             nextUrl = (String)request.getSession().getAttribute(SessionKeys.LOGIN_NEXT_PAGE);
 
-            if (nextUrl != null && nextUrl.trim().length() > 0 && nextUrl.startsWith("/")) {
+            if (nextUrl != null && nextUrl.strip().length() > 0 && nextUrl.startsWith("/")) {
                 return "redirect:" + nextUrl;
             }
 

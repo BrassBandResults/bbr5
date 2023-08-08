@@ -17,6 +17,7 @@ import uk.co.bbr.services.security.UserService;
 import uk.co.bbr.services.security.dao.SiteUserDao;
 import uk.co.bbr.web.security.annotations.IsBbrAdmin;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
+import uk.co.bbr.web.security.annotations.IsBbrPro;
 
 import java.util.List;
 import java.util.Optional;
@@ -61,7 +62,7 @@ public class ProfileController {
         return "profile/performances";
     }
 
-    @IsBbrMember
+    @IsBbrPro
     @GetMapping("/profile/people-profiles")
     public String profilePersonProfiles(Model model) {
         SiteUserDao user = this.securityService.getCurrentUser();

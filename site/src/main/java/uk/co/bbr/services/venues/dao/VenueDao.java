@@ -73,41 +73,41 @@ public class VenueDao extends AbstractDao implements NameTools {
 
     public void setSlug(String value) {
         if (value != null) {
-            value = value.trim();
+            value = value.strip();
         }
         this.slug = value;
     }
 
     public void setOldId(String value) {
         if (value != null) {
-            value = value.trim();
+            value = value.strip();
         }
         this.oldId = value;
     }
 
     public void setNotes(String notes) {
         if (notes != null) {
-            notes = notes.trim();
+            notes = notes.strip();
         }
         this.notes = notes;
     }
 
     public void setLatitude(String latitude) {
         if (latitude != null) {
-            if (latitude.trim().length() > 15) {
-                latitude = latitude.trim().substring(0, 15);
+            if (latitude.strip().length() > 15) {
+                latitude = latitude.strip().substring(0, 15);
             }
-            latitude = latitude.trim();
+            latitude = latitude.strip();
         }
         this.latitude = latitude;
     }
 
     public void setLongitude(String longitude) {
         if (longitude != null) {
-            if (longitude.trim().length() > 15) {
-                longitude = longitude.trim().substring(0, 15);
+            if (longitude.strip().length() > 15) {
+                longitude = longitude.strip().substring(0, 15);
             }
-            longitude = longitude.trim();
+            longitude = longitude.strip();
         }
         this.longitude = longitude;
     }
@@ -149,7 +149,7 @@ public class VenueDao extends AbstractDao implements NameTools {
     }
 
     public boolean hasLocation() {
-        return this.latitude != null && this.latitude.trim().length() > 0 && this.longitude != null && this.longitude.trim().length() > 0;
+        return this.latitude != null && this.latitude.strip().length() > 0 && this.longitude != null && this.longitude.strip().length() > 0;
     }
 
     public ObjectNode asGeoJson(ObjectMapper objectMapper) {

@@ -1,6 +1,9 @@
 package uk.co.bbr.web;
 
 import lombok.experimental.UtilityClass;
+import org.commonmark.node.Node;
+import org.commonmark.parser.Parser;
+import org.commonmark.renderer.html.HtmlRenderer;
 
 import java.time.LocalDate;
 
@@ -8,11 +11,11 @@ import java.time.LocalDate;
 public class Tools {
 
     public static String format(String inputString) {
-        if (inputString == null || inputString.trim().length() == 0) {
+        if (inputString == null || inputString.strip().length() == 0) {
             return "";
         }
 
-        String outputString = inputString.trim();
+        String outputString = inputString.strip();
         outputString = outputString.replace("&", "&amp;");
         outputString = outputString.replace("<", "&lt;");
         outputString = outputString.replace(">", "&gt;");
@@ -24,5 +27,14 @@ public class Tools {
     public static LocalDate parseEventDate(String contestEventDate) {
         String[] dateSplit = contestEventDate.split("-");
         return LocalDate.of(Integer.parseInt(dateSplit[0]), Integer.parseInt(dateSplit[1]), Integer.parseInt(dateSplit[2]));
+    }
+
+    public static String markdownToHTML(String markdown) {
+        Parser parser = Parser.builder().build();
+
+        Node document = parser.parse(markdown);
+        HtmlRenderer renderer = HtmlRenderer.builder().build();
+
+        return renderer.render(document);
     }
 }

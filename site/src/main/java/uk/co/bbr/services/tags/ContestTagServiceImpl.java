@@ -56,10 +56,10 @@ public class ContestTagServiceImpl implements ContestTagService, SlugTools {
         if (prefix.equalsIgnoreCase("ALL")) {
             tagsSql = ContestTagSql.selectAllTagsWithCounts(this.entityManager);
         } else {
-            if (prefix.trim().length() != 1) {
+            if (prefix.strip().length() != 1) {
                 throw new UnsupportedOperationException("Prefix must be a single character");
             }
-            tagsSql = ContestTagSql.selectTagsForPrefixWithCount(this.entityManager, prefix.trim().toUpperCase());
+            tagsSql = ContestTagSql.selectTagsForPrefixWithCount(this.entityManager, prefix.strip().toUpperCase());
         }
 
         List<ContestTagDao> tagsToReturn = new ArrayList<>();

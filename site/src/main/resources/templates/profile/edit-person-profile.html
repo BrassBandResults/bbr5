@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layout-markdown}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+<head>
+    <title th:text="@{#{page.person-profile-edit.title(${PersonProfile.person.name})} + ' - Brass Band Results'}">Person - Brass Band Results</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h2><span th:text="#{page.edit-header-prefix}" th:remove="tag">Edit</span> <span th:text="${PersonProfile.person.name}" th:remove="tag">Person Name</span></h2>
+
+    <form th:object="${Form}"
+          th:action = "${'/profile/people-profiles/' + PersonProfile.person.slug + '/edit'}"
+          method="post">
+        <div class="alert alert-danger" th:if="${#fields.hasErrors('*')}">
+            <ul>
+                <li th:each="err : ${#fields.errors('*')}" th:text="@{#{${err}}}"></li>
+            </ul>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="title" th:text="#{page.field-prompt.title}">Title:</label>
+            <input id="title" class="form-control" type="text" th:field="*{title}" maxlength="10" size="80"/>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="email" th:text="#{page.field-prompt.email}">Email:</label>
+            <input id="email" class="form-control" type="text" th:field="*{email}" maxlength="50" size="80"/>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="website" th:text="#{page.field-prompt.website}">Website:</label>
+            <input id="website" class="form-control" type="text" th:field="*{website}" maxlength="50" size="80"/>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="qualifications" th:text="#{page.field-prompt.qualifications}">Qualifications:</label>
+            <input id="qualifications" class="form-control" type="text" th:field="*{qualifications}" maxlength="30" size="80"/>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="address" th:text="#{page.field-prompt.address}">Address:</label>
+            <input id="address" class="form-control" type="text" th:field="*{address}" maxlength="20020" size="80"/>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="homePhone" th:text="#{page.field-prompt.homePhone}">Home Phone:</label>
+            <input id="homePhone" class="form-control" type="text" th:field="*{homePhone}" maxlength="20" size="80"/>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="mobilePhone" th:text="#{page.field-prompt.mobilePhone}">Mobile Phone:</label>
+            <input id="mobilePhone" class="form-control" type="text" th:field="*{mobilePhone}" maxlength="20" size="80"/>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="profile" th:text="#{page.field-prompt.profile}">Profile:</label>
+            <textarea id="profile" class="form-control" th:field="*{profile}" cols="80" rows="10"></textarea>
+        </div>
+
+        <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <input type="submit" th:value="#{page.buttons.save-changes}" class="btn btn-outline-success"/>
+                    <a href="/profile/people-profiles" th:text="#{page.buttons.cancel-without-saving}" class="btn btn-light">Cancel wout saving</a>
+                </div>
+                <div class="col text-end">
+                    <span th:replace="buttons/delete.html :: deletePersonProfile(${PersonProfile})"></span>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div layout:fragment="feedback">
+</div>
+
+</body>
+</html>
