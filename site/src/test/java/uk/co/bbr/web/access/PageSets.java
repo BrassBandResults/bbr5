@@ -235,7 +235,6 @@ public abstract class PageSets {
         pageList.add("/pieces/ALL");
         pageList.add("/profile");
         pageList.add("/profile/performances");
-        pageList.add("/profile/people-profiles");
         pageList.add("/people/david-roberts/edit");
         pageList.add("/people/david-roberts/edit-aliases");
         pageList.add("/people/david-roberts/edit-aliases/1/hide");
@@ -274,6 +273,7 @@ public abstract class PageSets {
         pageList.add("/people/WINNERS/after/1950");
         pageList.add("/pieces/BY-SECTION/championship");
         pageList.add("/pieces/BEST-OWN-CHOICE");
+        pageList.add("/profile/people-profiles");
         pageList.add("/regions/yorkshire/winners");
         pageList.add("/venues/st-george-s-hall/yorkshire-area");
         pageList.add("/venues/st-george-s-hall/years");
