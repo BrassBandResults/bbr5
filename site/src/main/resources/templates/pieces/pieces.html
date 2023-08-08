@@ -30,8 +30,8 @@
             </td>
             <td class="composer person"><span th:replace="links/person-link.html :: personLinkWithUnknown(${piece.composer})"></span></td>
             <td class="arranger person"><span th:replace="links/person-link.html :: personLink(${piece.arranger})"></span></td>
-            <td th:text="${piece.setTestCount}"></td>
-            <td th:text="${piece.ownChoiceCount}"></td>
+            <td sec:authorize="hasRole('BBR_PRO')" th:text="${piece.setTestCount}"></td>
+            <td sec:authorize="hasRole('BBR_PRO')" th:text="${piece.ownChoiceCount}"></td>
         </tr>
         </tbody>
     </table>
