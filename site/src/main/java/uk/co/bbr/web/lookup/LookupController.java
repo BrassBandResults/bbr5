@@ -35,117 +35,33 @@ public class LookupController {
     private final LookupService lookupService;
 
     private static final String MATCH_TAG_NAME = "matches";
+    private static final String QUERY_PARAMETER_NAME = "s";
 
     @IsBbrMember
     @GetMapping("/lookup/{type:[a-z]+}/data.json")
-    public ResponseEntity<JsonNode>  lookupElement(@PathVariable("type") String type, @RequestParam("s") String searchString) {
+    public ResponseEntity<JsonNode>  lookupElement(@PathVariable("type") String type, @RequestParam(QUERY_PARAMETER_NAME) String searchString) {
         if (searchString.length() < 3) {
             throw NotFoundException.lookupNeedsThreeCharacters();
         }
 
-        ObjectNode objectNode = switch (type) {
-            case "person" -> this.lookupPerson(searchString);
-            case "band" -> this.lookupBand(searchString);
-            case "contest" -> this.lookupContest(searchString);
-            case "venue" -> this.lookupVenue(searchString);
-            case "group" -> this.lookupGroup(searchString);
-            case "piece" -> this.lookupPiece(searchString);
-            case "tag" -> this.lookupTag(searchString);
+        List<LookupSqlDto> results = switch (type) {
+            case "person" -> this.lookupService.lookupPeopleAndAlias(searchString);
+            case "band" -> this.lookupService.lookupBandsAndAlias(searchString);
+            case "contest" -> this.lookupService.lookupContestsAndAlias(searchString);
+            case "venue" -> this.lookupService.lookupVenuesAndAlias(searchString);
+            case "group" -> this.lookupService.lookupGroupsAndAlias(searchString);
+            case "piece" -> this.lookupService.lookupPiecesAndAlias(searchString);
+            case "tag" -> this.lookupService.lookupTags(searchString);
             default -> throw NotFoundException.lookupTypeNotFound(type);
         };
 
-        return ResponseEntity.ok(objectNode);
-    }
-
-    private ObjectNode lookupPerson(String searchString) {
-        List<LookupSqlDto> matchingPeople = this.lookupService.lookupPeople(searchString);
-
         ObjectNode rootNode = objectMapper.createObjectNode();
         ArrayNode people = rootNode.putArray(MATCH_TAG_NAME);
 
-        for (LookupSqlDto eachPerson : matchingPeople) {
-            people.add(eachPerson.asLookup(this.objectMapper));
+        for (LookupSqlDto eachResult : results) {
+            people.add(eachResult.asLookup(this.objectMapper));
         }
 
-        return rootNode;
+        return ResponseEntity.ok(rootNode);
     }
-
-    private ObjectNode lookupBand(String searchString) {
-        List<LookupSqlDto> matchingBands = this.lookupService.lookupBands(searchString);
-
-        ObjectNode rootNode = objectMapper.createObjectNode();
-        ArrayNode people = rootNode.putArray(MATCH_TAG_NAME);
-
-        for (LookupSqlDto eachBand : matchingBands) {
-            people.add(eachBand.asLookup(this.objectMapper));
-        }
-
-        return rootNode;
-    }
-
-    private ObjectNode lookupContest(String searchString) {
-        List<LookupSqlDto> matchingContests = this.lookupService.lookupContests(searchString);
-
-        ObjectNode rootNode = objectMapper.createObjectNode();
-        ArrayNode people = rootNode.putArray(MATCH_TAG_NAME);
-
-        for (LookupSqlDto eachContest : matchingContests) {
-            people.add(eachContest.asLookup(this.objectMapper));
-        }
-
-        return rootNode;
-    }
-
-    private ObjectNode lookupVenue(String searchString) {
-        List<LookupSqlDto> matchingVenues = this.lookupService.lookupVenues(searchString);
-
-        ObjectNode rootNode = objectMapper.createObjectNode();
-        ArrayNode people = rootNode.putArray(MATCH_TAG_NAME);
-
-        for (LookupSqlDto eachVenue : matchingVenues) {
-            people.add(eachVenue.asLookup(this.objectMapper));
-        }
-
-        return rootNode;
-    }
-
-    private ObjectNode lookupGroup(String searchString) {
-        List<LookupSqlDto> matchingGroups = this.lookupService.lookupGroups(searchString);
-
-        ObjectNode rootNode = objectMapper.createObjectNode();
-        ArrayNode groups = rootNode.putArray(MATCH_TAG_NAME);
-
-        for (LookupSqlDto eachGroup : matchingGroups) {
-            groups.add(eachGroup.asLookup(this.objectMapper));
-        }
-
-        return rootNode;
-    }
-
-    private ObjectNode lookupPiece(String searchString) {
-        List<LookupSqlDto> matchingGroups = this.lookupService.lookupPieces(searchString);
-
-        ObjectNode rootNode = objectMapper.createObjectNode();
-        ArrayNode groups = rootNode.putArray(MATCH_TAG_NAME);
-
-        for (LookupSqlDto eachGroup : matchingGroups) {
-            groups.add(eachGroup.asLookup(this.objectMapper));
-        }
-
-        return rootNode;
-    }
-
-    private ObjectNode lookupTag(String searchString) {
-        List<LookupSqlDto> matchingGroups = this.lookupService.lookupTags(searchString);
-
-        ObjectNode rootNode = objectMapper.createObjectNode();
-        ArrayNode groups = rootNode.putArray(MATCH_TAG_NAME);
-
-        for (LookupSqlDto eachGroup : matchingGroups) {
-            groups.add(eachGroup.asLookup(this.objectMapper));
-        }
-
-        return rootNode;
-    }
-
 }

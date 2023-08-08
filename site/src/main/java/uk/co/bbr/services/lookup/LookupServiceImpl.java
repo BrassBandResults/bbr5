@@ -21,8 +21,22 @@ public class LookupServiceImpl implements LookupService, SlugTools {
     }
 
     @Override
+    public List<LookupSqlDto> lookupPeopleAndAlias(String searchString) {
+        List<LookupSqlDto> nameResults = LookupSql.lookupPeople(this.entityManager, searchString);
+        nameResults.addAll(LookupSql.lookupPeopleAlias(this.entityManager, searchString));
+        return nameResults;
+    }
+
+    @Override
     public List<LookupSqlDto> lookupGroups(String searchString) {
         return LookupSql.lookupGroups(this.entityManager, searchString);
+    }
+
+    @Override
+    public List<LookupSqlDto> lookupGroupsAndAlias(String searchString) {
+        List<LookupSqlDto> nameResults = LookupSql.lookupGroups(this.entityManager, searchString);
+        nameResults.addAll(LookupSql.lookupGroupAlias(this.entityManager, searchString));
+        return nameResults;
     }
 
     @Override
@@ -31,8 +45,22 @@ public class LookupServiceImpl implements LookupService, SlugTools {
     }
 
     @Override
+    public List<LookupSqlDto> lookupVenuesAndAlias(String searchString) {
+        List<LookupSqlDto> nameResults = LookupSql.lookupVenues(this.entityManager, searchString);
+        nameResults.addAll(LookupSql.lookupVenueAlias(this.entityManager, searchString));
+        return nameResults;
+    }
+
+    @Override
     public List<LookupSqlDto> lookupContests(String searchString) {
         return LookupSql.lookupContests(this.entityManager, searchString);
+    }
+
+    @Override
+    public List<LookupSqlDto> lookupContestsAndAlias(String searchString) {
+        List<LookupSqlDto> nameResults = LookupSql.lookupContests(this.entityManager, searchString);
+        nameResults.addAll(LookupSql.lookupContestAlias(this.entityManager, searchString));
+        return nameResults;
     }
 
     @Override
@@ -41,8 +69,22 @@ public class LookupServiceImpl implements LookupService, SlugTools {
     }
 
     @Override
+    public List<LookupSqlDto> lookupBandsAndAlias(String searchString) {
+        List<LookupSqlDto> nameResults = LookupSql.lookupBands(this.entityManager, searchString);
+        nameResults.addAll(LookupSql.lookupBandAlias(this.entityManager, searchString));
+        return nameResults;
+    }
+
+    @Override
     public List<LookupSqlDto> lookupPieces(String searchString) {
         return LookupSql.lookupPieces(this.entityManager, searchString);
+    }
+
+    @Override
+    public List<LookupSqlDto> lookupPiecesAndAlias(String searchString) {
+        List<LookupSqlDto> nameResults = LookupSql.lookupPieces(this.entityManager, searchString);
+        nameResults.addAll(LookupSql.lookupPieceAlias(this.entityManager, searchString));
+        return nameResults;
     }
 
     @Override
@@ -73,5 +115,10 @@ public class LookupServiceImpl implements LookupService, SlugTools {
     @Override
     public List<LookupSqlDto> lookupVenueAlias(String searchString) {
         return LookupSql.lookupVenueAlias(this.entityManager, searchString);
+    }
+
+    @Override
+    public List<LookupSqlDto> lookupGroupAlias(String searchString) {
+        return LookupSql.lookupGroupAlias(this.entityManager, searchString);
     }
 }

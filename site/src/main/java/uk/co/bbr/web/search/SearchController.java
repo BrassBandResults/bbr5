@@ -31,6 +31,7 @@ public class SearchController {
         matches.addAll(this.lookupService.lookupContests(searchString));
         matches.addAll(this.lookupService.lookupContestAlias(searchString));
         matches.addAll(this.lookupService.lookupGroups(searchString));
+        matches.addAll(this.lookupService.lookupGroupAlias(searchString));
         matches.addAll(this.lookupService.lookupTags(searchString));
         matches.addAll(this.lookupService.lookupPeople(searchString));
         matches.addAll(this.lookupService.lookupPeopleAlias(searchString));
@@ -38,7 +39,6 @@ public class SearchController {
         matches.addAll(this.lookupService.lookupPieceAlias(searchString));
         matches.addAll(this.lookupService.lookupVenues(searchString));
         matches.addAll(this.lookupService.lookupVenueAlias(searchString));
-
 
         model.addAttribute("SearchString", searchString);
         model.addAttribute("SearchResults", matches);
