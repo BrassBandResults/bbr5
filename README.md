@@ -26,7 +26,7 @@ The following environment variables are used by the site.
 Clone the git repository to your local machine.  From here the unit test suite can be run.
 In order to run the application locally, you'll need a running sql server database.  The easiest way to do this is to deploy the `mcr.microsoft.com/azure-sql-edge:latest` image using docker.
 Specify the `MSSQL_SA_PASSWORD` environment variable to be a password, and then put this password in `site/src/main/resources/application.properties`
-You'll also need to change `timpi` in this file [README.md](README.md)to point at the hostname that you are running your database server on.
+You'll also need to change `timpi` in this file to point at the hostname that you are running your database server on.
 Startup the server by running the `site/run.sh` script, designed for a mac, or `run.bat` designed for Windows.
 It is also possible to run the app locally with docker compose:-
 ```bash
