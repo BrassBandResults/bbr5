@@ -32,7 +32,7 @@ public class PieceAliasDao extends AbstractDao {
 
     public void setName(String name) {
         if (name != null) {
-            this.name = name.trim();
+            this.name = name.strip();
         }
     }
 

@@ -20,7 +20,7 @@ public class FeedbackSubmitController {
 
     @PostMapping("/feedback")
     public String feedback(HttpServletRequest request, @RequestParam("x_url") String url, @RequestParam("x_owner") String ownerUsercode, @RequestParam("feedback") String feedback, @RequestParam("url") String honeyTrapUrl) {
-        if (honeyTrapUrl.trim().length() > 0) {
+        if (honeyTrapUrl.strip().length() > 0) {
             return "redirect:/feedback/thanks?next=/&t=h";
         }
 
@@ -29,14 +29,14 @@ public class FeedbackSubmitController {
             return "redirect:/feedback/thanks?next=/&t=r1";
         }
 
-        if (!referrer.trim().equalsIgnoreCase(url.trim())) {
+        if (!referrer.strip().equalsIgnoreCase(url.strip())) {
             return "redirect:/feedback/thanks?next=/&t=r2";
         }
 
         final String URL_PATTERN = "^[^#]*?://.*?(/.*)$";
         Pattern pattern = Pattern.compile(URL_PATTERN);
-        Matcher matcher = pattern.matcher(url.trim());
-        String offset = url.trim();
+        Matcher matcher = pattern.matcher(url.strip());
+        String offset = url.strip();
         if (matcher.find()) {
             offset = matcher.group(1);
         }
@@ -47,7 +47,7 @@ public class FeedbackSubmitController {
             ip = request.getRemoteAddr();
         }
 
-        this.feedbackService.submit(offset, referrer, ownerUsercode.trim(), feedback.trim(), browserName, ip);
+        this.feedbackService.submit(offset, referrer, ownerUsercode.strip(), feedback.strip(), browserName, ip);
 
         return "redirect:/feedback/thanks?next=" + offset;
     }

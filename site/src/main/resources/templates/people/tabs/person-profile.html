@@ -39,7 +39,7 @@
             <tr th:if="${PersonProfile.mobilePhone != null && PersonProfile.mobilePhone.length > 0}"><th th:text="#{page.field-prompt.mobile}">Mobile:</th><td th:text="${PersonProfile.mobilePhone}"></td></tr>
         </table>
         <br/>
-        <p th:text="${PersonProfile.profile}"></p>
+        <p th:utext="${ProfileMarkdown}"></p>
     </div>
 </div>
 

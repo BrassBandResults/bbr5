@@ -26,7 +26,7 @@ public class ParseServiceImpl implements ParseService {
             parsedResult.setRawPosition(matcher1.group(1).toUpperCase());
             parsedResult.setRawBandName(matcher1.group(2));
             parsedResult.setRawConductorName(matcher1.group(3));
-            if (matcher1.group(4).trim().length() > 0) {
+            if (matcher1.group(4).strip().length() > 0) {
                 parsedResult.setRawDraw(Integer.parseInt(matcher1.group(4)));
             } else {
                 parsedResult.setRawDraw(0);

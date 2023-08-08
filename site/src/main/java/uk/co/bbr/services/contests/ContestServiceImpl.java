@@ -209,10 +209,10 @@ public class ContestServiceImpl implements ContestService, SlugTools {
         if (prefix.equalsIgnoreCase("ALL")) {
             contests = ContestListSql.listAllForContestList(this.entityManager);
         } else {
-            if (prefix.trim().length() != 1) {
+            if (prefix.strip().length() != 1) {
                 throw new UnsupportedOperationException("Prefix must be a single character");
             }
-            String upperPrefix = prefix.trim().toUpperCase();
+            String upperPrefix = prefix.strip().toUpperCase();
             contests = ContestListSql.listByPrefixForContestList(this.entityManager, upperPrefix);
         }
         return contests;

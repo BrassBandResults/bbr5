@@ -49,4 +49,76 @@ public class PersonProfileDao extends AbstractDao {
 
     @Column(name="visible")
     private boolean visible;
+
+    public void setTitle(String title) {
+
+        if (title == null) {
+            this.title = null;
+            return;
+        }
+        this.title = title.strip();
+    }
+
+    public void setQualifications(String qualifications) {
+
+        if (qualifications == null) {
+            this.qualifications = null;
+            return;
+        }
+        this.qualifications = qualifications.strip();
+    }
+
+    public void setEmail(String email) {
+
+        if (email == null) {
+            this.email = null;
+            return;
+        }
+        this.email = email.strip();
+    }
+
+    public void setWebsite(String website) {
+
+        if (website == null) {
+            this.website = null;
+            return;
+        }
+        this.website = website.strip();
+    }
+
+    public void setHomePhone(String homePhone) {
+
+        if (homePhone == null) {
+            this.homePhone = null;
+            return;
+        }
+        this.homePhone = homePhone.strip();
+    }
+
+    public void setMobilePhone(String mobilePhone) {
+
+        if (mobilePhone == null) {
+            this.mobilePhone = null;
+            return;
+        }
+        this.mobilePhone = mobilePhone.strip();
+    }
+
+    public void setAddress(String address) {
+
+        if (address == null) {
+            this.address = null;
+            return;
+        }
+        this.address = address.strip();
+    }
+
+    public void setProfile(String profile) {
+
+        if (profile == null) {
+            this.profile = null;
+            return;
+        }
+        this.profile = profile.strip();
+    }
 }

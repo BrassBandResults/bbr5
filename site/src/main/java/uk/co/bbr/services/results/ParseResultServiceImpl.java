@@ -24,7 +24,7 @@ public class ParseResultServiceImpl implements ParseResultService {
         String[] lines = resultBlock.split("\n");
 
         for (String line : lines) {
-            if (line.trim().length() == 0) {
+            if (line.strip().length() == 0) {
                 continue;
             }
             parsedResults.add(this.parseLine(line, dateContext));

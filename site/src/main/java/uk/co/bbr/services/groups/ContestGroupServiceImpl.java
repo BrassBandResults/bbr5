@@ -176,10 +176,10 @@ public class ContestGroupServiceImpl implements ContestGroupService, SlugTools {
         if (prefix.equalsIgnoreCase("ALL")) {
             groups = GroupSql.findAllForList(this.entityManager);
         } else {
-            if (prefix.trim().length() != 1) {
+            if (prefix.strip().length() != 1) {
                 throw new UnsupportedOperationException("Prefix must be a single character");
             }
-            groups = GroupSql.findByPrefixForList(this.entityManager, prefix.trim().toUpperCase());
+            groups = GroupSql.findByPrefixForList(this.entityManager, prefix.strip().toUpperCase());
         }
 
         List<ContestGroupDao> groupsToReturn = new ArrayList<>();

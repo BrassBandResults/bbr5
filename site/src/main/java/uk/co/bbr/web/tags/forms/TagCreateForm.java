@@ -11,7 +11,7 @@ public class TagCreateForm {
     private String name;
 
     public void validate(BindingResult bindingResult) {
-        if (this.name == null || this.name.trim().length() == 0) {
+        if (this.name == null || this.name.strip().length() == 0) {
             bindingResult.addError(new ObjectError("name", "page.tag-edit.errors.name-required"));
         }
     }

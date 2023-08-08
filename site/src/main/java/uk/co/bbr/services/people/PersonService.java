@@ -20,6 +20,7 @@ public interface PersonService {
     PersonDao create(PersonDao person);
     PersonDao create(String surname, String firstNames);
     PersonDao update(PersonDao person);
+    PersonProfileDao update(PersonProfileDao personProfile);
 
     Optional<PersonDao> fetchBySlug(String personSlug);
 
@@ -58,4 +59,6 @@ public interface PersonService {
     List<PersonProfileDao> fetchAllProfiles();
 
     List<PersonProfileDao> fetchProfilesForOwner(String ownerUsername);
+
+    Optional<PersonProfileDao> fetchProfileByPersonSlugAndOwner(String personSlug, SiteUserDao user);
 }

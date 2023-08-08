@@ -62,21 +62,21 @@ public class PieceDao extends AbstractDao implements NameTools {
 
     public void setNotes(String notes) {
         if (notes != null) {
-            notes = notes.trim();
+            notes = notes.strip();
         }
         this.notes = notes;
     }
 
     public void setSlug(String value) {
         if (value != null) {
-            value = value.trim();
+            value = value.strip();
         }
         this.slug = value;
     }
 
     public void setOldId(String oldId) {
         if (oldId != null) {
-            oldId = oldId.trim();
+            oldId = oldId.strip();
         }
         this.oldId = oldId;
     }
@@ -92,7 +92,7 @@ public class PieceDao extends AbstractDao implements NameTools {
 
     public void setYear(String year) {
         if (year != null) {
-            year = year.trim();
+            year = year.strip();
         }
         this.year = year;
     }

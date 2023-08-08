@@ -90,14 +90,14 @@ public class ContestEventDao extends AbstractDao implements NameTools {
 
     public void setOldId(String value) {
         if (value != null) {
-            value = value.trim();
+            value = value.strip();
         }
         this.oldId = value;
     }
 
     public void setNotes(String value) {
         if (value != null) {
-            value = value.trim();
+            value = value.strip();
         }
         this.notes = value;
     }
@@ -111,7 +111,7 @@ public class ContestEventDao extends AbstractDao implements NameTools {
 
     public void setOwner(String value) {
         if (value != null) {
-            value = value.trim();
+            value = value.strip();
         }
         this.owner = value;
     }

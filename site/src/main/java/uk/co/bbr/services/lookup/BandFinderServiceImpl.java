@@ -28,10 +28,10 @@ public class BandFinderServiceImpl implements BandFinderService, SlugTools {
             return null;
         }
 
-        String bandNameUpper = searchBandName.toUpperCase().trim();
+        String bandNameUpper = searchBandName.toUpperCase().strip();
         String bandNameUpperLessBand = null;
         if (bandNameUpper.endsWith("BAND")) {
-            bandNameUpperLessBand = bandNameUpper.substring(0, bandNameUpper.length() - "BAND".length()).trim();
+            bandNameUpperLessBand = bandNameUpper.substring(0, bandNameUpper.length() - "BAND".length()).strip();
         }
 
         System.out.println("Looking for " + bandNameUpper);

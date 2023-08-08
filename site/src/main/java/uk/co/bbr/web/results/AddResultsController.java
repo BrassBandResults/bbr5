@@ -76,7 +76,7 @@ public class AddResultsController {
             return "results/add-results-1-contest";
         }
 
-        if (submittedForm.getContestSlug() != null && submittedForm.getContestSlug().trim().length() > 0) {
+        if (submittedForm.getContestSlug() != null && submittedForm.getContestSlug().strip().length() > 0) {
             Optional<ContestDao> matchingContest = this.contestService.fetchBySlug(submittedForm.getContestSlug());
             if (matchingContest.isPresent()){
                 return "redirect:/add-results/2/" + matchingContest.get().getSlug();
@@ -261,7 +261,7 @@ public class AddResultsController {
             return "results/add-results-4-test-piece";
         }
 
-        if (submittedForm.getTestPieceName() != null && submittedForm.getTestPieceName().trim().length() > 0) {
+        if (submittedForm.getTestPieceName() != null && submittedForm.getTestPieceName().strip().length() > 0) {
             PieceDao pieceToLink = null;
             Optional<PieceDao> testPiece = this.pieceService.fetchBySlug(submittedForm.getTestPieceSlug());
             if (testPiece.isEmpty()) {
@@ -316,7 +316,7 @@ public class AddResultsController {
             return "results/add-results-5-venue";
         }
 
-        if (submittedForm.getVenueName() != null && submittedForm.getVenueName().trim().length() > 0) {
+        if (submittedForm.getVenueName() != null && submittedForm.getVenueName().strip().length() > 0) {
             VenueDao venueToLink = null;
             Optional<VenueDao> venue = this.venueService.fetchBySlug(submittedForm.getVenueSlug());
             if (venue.isEmpty()) {
@@ -496,8 +496,8 @@ public class AddResultsController {
 
         submittedForm.validate(bindingResult);
 
-        if (submittedForm.getNotes() != null && submittedForm.getNotes().trim().length() > 0) {
-            if (event.get().getNotes() == null || event.get().getNotes().trim().length() == 0) {
+        if (submittedForm.getNotes() != null && submittedForm.getNotes().strip().length() > 0) {
+            if (event.get().getNotes() == null || event.get().getNotes().strip().length() == 0) {
                 event.get().setNotes(submittedForm.getNotes());
             } else {
                 event.get().setNotes(event.get().getNotes() + "\n" + submittedForm.getNotes());

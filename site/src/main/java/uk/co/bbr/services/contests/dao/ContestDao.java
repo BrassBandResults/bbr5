@@ -104,28 +104,28 @@ public class ContestDao extends AbstractDao implements NameTools {
 
     public void setSlug(String value) {
         if (value != null) {
-            value = value.trim();
+            value = value.strip();
         }
         this.slug = value;
     }
 
     public void setNotes(String value) {
         if (value != null) {
-            value = value.trim();
+            value = value.strip();
         }
         this.notes = value;
     }
 
     public void setOldId(String value) {
         if (value != null) {
-            value = value.trim();
+            value = value.strip();
         }
         this.oldId = value;
     }
 
     public void setDescription(String value) {
         if (value != null) {
-            value = value.trim();
+            value = value.strip();
         }
         this.description = value;
     }

@@ -29,7 +29,7 @@ public enum ContestHistoryVisibility {
             return ContestHistoryVisibility.SITE_ONLY;
         }
         return Stream.of(ContestHistoryVisibility.values())
-                .filter(c -> c.getCode().equals(code.trim().toUpperCase()))
+                .filter(c -> c.getCode().equals(code.strip().toUpperCase()))
                 .findFirst()
                 .orElseThrow(IllegalArgumentException::new);
     }

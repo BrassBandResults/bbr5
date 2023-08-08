@@ -65,7 +65,7 @@ public class ContestGroupDao extends AbstractDao implements NameTools {
 
     public void setSlug(String value) {
         if (value != null) {
-            this.slug = value.trim().toUpperCase();
+            this.slug = value.strip().toUpperCase();
         } else {
             this.slug = null;
         }
@@ -80,14 +80,14 @@ public class ContestGroupDao extends AbstractDao implements NameTools {
 
     public void setOldId(String value) {
         if (value != null) {
-            value = value.trim();
+            value = value.strip();
         }
         this.oldId = value;
     }
 
     public void setNotes(String value) {
         if (value != null) {
-            value = value.trim();
+            value = value.strip();
         }
         this.notes = value;
     }

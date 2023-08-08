@@ -28,7 +28,7 @@ public class ForgottenPasswordController {
 
     @PostMapping("/acc/forgotten-password")
     public String passwordResetPost(@RequestParam("usercode") String username) {
-        String usercode = username.trim();
+        String usercode = username.strip();
         Optional<SiteUserDao> matchingUser = this.userService.fetchUserByUsercode(usercode);
         if (matchingUser.isEmpty()) {
             matchingUser = this.userService.fetchUserByEmail(usercode);
@@ -73,7 +73,7 @@ public class ForgottenPasswordController {
             return "security/password/enter-new-password";
         }
 
-        if (password1.trim().length() < 8) {
+        if (password1.strip().length() < 8) {
             model.addAttribute("Errors", "page.signup.errors.password-too-short");
             model.addAttribute("User", matchingUser.get());
             return "security/password/enter-new-password";

@@ -74,19 +74,19 @@ public class PersonDao extends AbstractDao implements NameTools {
 
     public void setNotes(String notes) {
         if (notes != null) {
-            this.notes = notes.trim();
+            this.notes = notes.strip();
         }
     }
 
     public void setOldId(String oldId) {
         if (oldId != null) {
-            this.oldId = oldId.trim();
+            this.oldId = oldId.strip();
         }
     }
 
     public void setSlug(String value) {
         if (value != null) {
-            value = value.trim();
+            value = value.strip();
         }
         this.slug = value;
     }
@@ -106,19 +106,19 @@ public class PersonDao extends AbstractDao implements NameTools {
     private void setCombinedName() {
         StringBuilder tempCombinedName = new StringBuilder();
         if (this.firstNames != null) {
-            tempCombinedName.append(this.firstNames.trim());
+            tempCombinedName.append(this.firstNames.strip());
             tempCombinedName.append(" ");
         }
         if (this.surname != null) {
-            tempCombinedName.append(this.surname.trim());
+            tempCombinedName.append(this.surname.strip());
             tempCombinedName.append(" ");
         }
         if (this.suffix != null) {
-            tempCombinedName.append(this.suffix.trim());
+            tempCombinedName.append(this.suffix.strip());
             tempCombinedName.append(" ");
         }
 
-        this.combinedName = tempCombinedName.toString().trim();
+        this.combinedName = tempCombinedName.toString().strip();
     }
 
     public void setSurname(String surname) {
@@ -129,7 +129,7 @@ public class PersonDao extends AbstractDao implements NameTools {
 
     public void setSuffix(String suffix) {
         if (suffix != null) {
-            suffix = suffix.trim();
+            suffix = suffix.strip();
         }
         this.suffix = suffix;
 
@@ -138,14 +138,14 @@ public class PersonDao extends AbstractDao implements NameTools {
 
     public void setKnownFor(String knownFor) {
         if (knownFor != null) {
-            knownFor = knownFor.trim();
+            knownFor = knownFor.strip();
         }
         this.knownFor = knownFor;
     }
 
     public String getName() {
         StringBuilder returnValue = new StringBuilder();
-        if (this.firstNames != null && this.firstNames.trim().length() > 0) {
+        if (this.firstNames != null && this.firstNames.strip().length() > 0) {
             returnValue.append(this.firstNames);
         }
 
@@ -153,7 +153,7 @@ public class PersonDao extends AbstractDao implements NameTools {
             returnValue.append(" ");
         }
         returnValue.append(this.surname);
-        if (this.suffix != null && this.suffix.trim().length() > 0) {
+        if (this.suffix != null && this.suffix.strip().length() > 0) {
             returnValue.append(" ");
             returnValue.append(this.suffix);
         }
@@ -165,12 +165,12 @@ public class PersonDao extends AbstractDao implements NameTools {
         StringBuilder returnValue = new StringBuilder();
         returnValue.append(this.surname);
 
-        if (this.suffix != null && this.suffix.trim().length() > 0) {
+        if (this.suffix != null && this.suffix.strip().length() > 0) {
             returnValue.append(" ");
             returnValue.append(this.suffix);
         }
 
-        if (this.firstNames != null && this.firstNames.trim().length() > 0) {
+        if (this.firstNames != null && this.firstNames.strip().length() > 0) {
             returnValue.append(", ");
             returnValue.append(this.firstNames);
         }

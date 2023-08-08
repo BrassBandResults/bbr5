@@ -50,14 +50,14 @@ public class BandRelationshipDao extends AbstractDao {
 
     public void setRightBandName(String value) {
         if (value != null) {
-            value = value.trim();
+            value = value.strip();
         }
         this.rightBandName = value;
     }
 
     public void setLeftBandName(String value) {
         if (value != null) {
-            value = value.trim();
+            value = value.strip();
         }
         this.leftBandName = value;
     }

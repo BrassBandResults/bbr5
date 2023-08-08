@@ -19,7 +19,7 @@ public class JwtServiceImpl implements JwtService {
 
     private String getPrivateKey() {
         String key = System.getenv("JWT_PRIVATE_KEY");
-        if (key == null || key.trim().length() < 1) {
+        if (key == null || key.strip().length() < 1) {
             key = DEFAULT_PRIVATE_KEY;
         }
         return key;

@@ -61,3 +61,7 @@
 <span th:fragment="editResultPieces(event, result)" th:remove="tag">
     <span th:replace="buttons/button.html :: button(#{page.buttons.edit-pieces}, ${'/contests/' + event.contest.slug + '/' + event.eventDateForUrl + '/result/' + result.id + '/edit-pieces'})"></span>
 </span>
+
+<span th:fragment="editPersonProfile(PersonProfile)" th:remove="tag">
+    <span th:replace="buttons/button.html :: button(#{page.buttons.edit}, ${'/profile/people-profiles/' + PersonProfile.person.slug + '/edit'})"></span>
+</span>

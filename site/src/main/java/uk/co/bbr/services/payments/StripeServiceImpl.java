@@ -33,7 +33,7 @@ public class StripeServiceImpl implements StripeService {
     private Optional<Subscription> getActiveSubscription(SiteUserDao user) {
         Stripe.apiKey = EnvVar.getEnv("BBR_STRIPE_PRIVATE_API_KEY", "sk_test_abc123");
 
-        if (user.getStripeCustomer() == null || user.getStripeCustomer().trim().length() == 0) {
+        if (user.getStripeCustomer() == null || user.getStripeCustomer().strip().length() == 0) {
             return Optional.empty();
         }
 

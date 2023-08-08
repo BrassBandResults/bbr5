@@ -37,7 +37,7 @@ public class BandRehearsalDayDao extends AbstractDao {
             return;
         }
 
-        this.details = value.trim();
+        this.details = value.strip();
     }
 
     public String getDayTranslationKey() {

@@ -46,7 +46,7 @@ public class PersonFinderServiceImpl implements PersonFinderService, SlugTools {
 
         if (personName.length() > 3 && personName.charAt(1) == '.') {
             String initialUpper = personName.substring(0, 1).toUpperCase();
-            String surnameUpper = personName.substring(personName.lastIndexOf(" ")).trim().toUpperCase();
+            String surnameUpper = personName.substring(personName.lastIndexOf(" ")).strip().toUpperCase();
 
             List<FinderSqlDto> matchingInitialPeople = FinderSql.personFetchByInitialAndSurname(this.entityManager, initialUpper, surnameUpper);
             for (FinderSqlDto eachPerson : matchingInitialPeople) {

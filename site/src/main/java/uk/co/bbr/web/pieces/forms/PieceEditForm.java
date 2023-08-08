@@ -43,7 +43,7 @@ public class PieceEditForm {
     }
 
     public void validate(BindingResult bindingResult) {
-        if (this.name == null || this.name.trim().length() == 0) {
+        if (this.name == null || this.name.strip().length() == 0) {
             bindingResult.addError(new ObjectError("name", "page.piece-edit.errors.name-required"));
         }
     }

@@ -42,7 +42,7 @@ public class ContestTagDao extends AbstractDao implements NameTools {
         if (oldId == null) {
             this.oldId = null;
         } else {
-            this.oldId = oldId.trim();
+            this.oldId = oldId.strip();
         }
     }
 
@@ -50,7 +50,7 @@ public class ContestTagDao extends AbstractDao implements NameTools {
         if (slug == null) {
             this.slug = null;
         } else {
-            this.slug = slug.trim();
+            this.slug = slug.strip();
         }
     }
 }
