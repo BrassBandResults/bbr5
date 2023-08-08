@@ -25,7 +25,8 @@ CREATE TABLE site_user (
     pro_user_for_free BIT DEFAULT 0,
     uuid VARCHAR(40) NOT NULL,
     reset_password_key VARCHAR(40),
-    locale VARCHAR(10)
+    locale VARCHAR(10),
+    profile_count_allowed INT DEFAULT 2
 );
 
 CREATE UNIQUE INDEX idx_site_user_usercode ON site_user(usercode);

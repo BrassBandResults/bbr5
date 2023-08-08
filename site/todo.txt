@@ -1,7 +1,3 @@
-fix data so this works
-CREATE UNIQUE INDEX idx_adjudicator_prevent_duplicate ON contest_event_adjudicator(contest_event_id, person_id);
-get rid of double spaces in csv files?
-
 Deal with unique slug clash
 
 Ads for non-pro users
@@ -42,6 +38,8 @@ Add owned feedback to users profile page
 Upgrade to pro - how do we check that pro subscription is still active?
 
 Blog on the homepage
+
+lookup tests to check for aliases
 
 Validate api key
 

@@ -94,16 +94,30 @@ public class CompareBandsSqlDto extends AbstractSqlDto {
     }
 
     public String getLeftClass() {
-        if (this.leftResult < this.rightResult) {
+        if (this.leftResult != null && this.rightResult != null && this.leftResult < this.rightResult) {
             return "bg-warning-subtle";
         }
         return "";
     }
 
     public String getRightClass() {
-        if (this.rightResult < this.leftResult) {
+        if (this.rightResult != null && this.leftResult != null && this.rightResult < this.leftResult) {
             return "bg-warning-subtle";
         }
         return "";
+    }
+
+    public Integer getLeftResult() {
+        if (this.leftResult == null) {
+            return 0;
+        }
+        return this.leftResult;
+    }
+
+    public Integer getRightResult() {
+        if (this.rightResult == null) {
+            return 0;
+        }
+        return this.rightResult;
     }
 }

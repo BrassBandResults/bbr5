@@ -35,6 +35,7 @@ function fill(inputId, matchSlug, matchName) {
     inputElement.value = matchName;
     inputElement.dataset.slug = matchSlug;
     inputElement.classList.remove("bg-warning-subtle");
+    inputElement.classList.remove("bg-danger-subtle");
     inputElement.classList.add("bg-success-subtle");
 
     document.getElementById('list-' + inputId).remove();
