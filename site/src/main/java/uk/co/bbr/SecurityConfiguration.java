@@ -37,8 +37,7 @@ public class SecurityConfiguration {
 
         XorCsrfTokenRequestAttributeHandler delegate = new XorCsrfTokenRequestAttributeHandler();
         // set the name of the attribute the CsrfToken will be populated on
-        // set null to opt out of deferred tokens
-        delegate.setCsrfRequestAttributeName(null);
+        delegate.setCsrfRequestAttributeName("_csrf");
         // Use only the handle() method of XorCsrfTokenRequestAttributeHandler and the
         // default implementation of resolveCsrfTokenValue() from CsrfTokenRequestHandler
         CsrfTokenRequestHandler requestHandler = delegate::handle;
@@ -95,6 +94,6 @@ public class SecurityConfiguration {
 
     @Bean
     public CsrfTokenRepository csrfTokenRepository() {
-        return new HttpSessionCsrfTokenRepository();
+        return CookieCsrfTokenRepository.withHttpOnlyFalse();
     }
 }
