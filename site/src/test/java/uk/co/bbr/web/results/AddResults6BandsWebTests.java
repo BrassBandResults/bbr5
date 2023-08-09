@@ -25,6 +25,7 @@ import uk.co.bbr.services.people.PersonService;
 import uk.co.bbr.services.regions.RegionService;
 import uk.co.bbr.services.security.JwtService;
 import uk.co.bbr.services.security.SecurityService;
+import uk.co.bbr.services.security.dao.SiteUserDao;
 import uk.co.bbr.services.security.ex.AuthenticationFailedException;
 import uk.co.bbr.services.venues.VenueService;
 import uk.co.bbr.web.LoginMixin;
@@ -93,7 +94,11 @@ class AddResults6BandsWebTests implements LoginMixin {
     }
 
     @Test
-    void testAddSingleResultThatMatchesWorksSuccessfully() {
+    void testAddSingleResultThatMatchesWorksSuccessfully() throws AuthenticationFailedException {
+        loginTestUser(this.securityService, this.jwtService, TestUser.TEST_MEMBER);
+        SiteUserDao currentUser = this.securityService.getCurrentUser();
+        int pointsBefore = currentUser.getPoints();
+
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
@@ -132,10 +137,17 @@ class AddResults6BandsWebTests implements LoginMixin {
         assertEquals("Roberts", eventResults.get(0).getConductor().getSurname());
         assertEquals("David", eventResults.get(0).getConductor().getFirstNames());
         assertEquals(5, eventResults.get(0).getDraw());
+
+        currentUser = this.securityService.getCurrentUser();
+        assertEquals(pointsBefore + 1, currentUser.getPoints());
     }
 
     @Test
-    void testAddMultipleResultsThatMatchWorksSuccessfully() {
+    void testAddMultipleResultsThatMatchWorksSuccessfully() throws AuthenticationFailedException {
+        loginTestUser(this.securityService, this.jwtService, TestUser.TEST_MEMBER);
+        SiteUserDao currentUser = this.securityService.getCurrentUser();
+        int pointsBefore = currentUser.getPoints();
+
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
@@ -191,6 +203,9 @@ class AddResults6BandsWebTests implements LoginMixin {
         assertEquals("Childs", eventResults.get(1).getConductor().getSurname());
         assertEquals("Nick", eventResults.get(1).getConductor().getFirstNames());
         assertEquals(3, eventResults.get(1).getDraw());
+
+        currentUser = this.securityService.getCurrentUser();
+        assertEquals(pointsBefore + 2, currentUser.getPoints());
     }
 }
 

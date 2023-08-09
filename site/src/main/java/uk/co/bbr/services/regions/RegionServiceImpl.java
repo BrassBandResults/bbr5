@@ -177,6 +177,9 @@ public class RegionServiceImpl implements RegionService, SlugTools {
 
     @Override
     public Optional<RegionDao> fetchById(Long regionId) {
+        if (regionId == null) {
+            return Optional.empty();
+        }
         return this.regionRepository.findById(regionId);
     }
 }

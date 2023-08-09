@@ -380,6 +380,7 @@ public class AddResultsController {
             for (ParseResultDto eachParsedResult : parsedResults.getResultLines()) {
                 ContestResultDao eachResult = eachParsedResult.buildContestResult(event.get(), this.bandService, this.personService);
                 this.resultService.addResult(event.get(), eachResult);
+                this.securityService.addOnePoint(this.securityService.getCurrentUsername());
             }
 
             return "redirect:/add-results/7/{contestSlug}/{contestEventDate}";

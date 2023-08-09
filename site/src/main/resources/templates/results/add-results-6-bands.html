@@ -38,56 +38,60 @@
             <span th:if="${ContestEvent.venue != null}" th:text="${ContestEvent.venue.name}">Venue</span>
         </div>
 
-        <table class="table" th:if="${ParsedResults.size() > 0}">
-            <tr>
-                <th th:text="#{page.column-header.position}">Position</th>
-                <th th:text="#{page.column-header.band}">Band</th>
-                <th th:text="#{page.column-header.conductor}">Conductor</th>
-                <th th:text="#{page.column-header.draw}">Draw</th>
-                <th th:text="#{page.column-header.points}">Points</th>
-            </tr>
-            <span th:each="parsedResult : ${ParsedResults}" th:remove="tag">
-                <tr th:if="${parsedResult.green}" class="table-success">
-                    <td th:text="${parsedResult.rawPosition}"></td>
-                    <td>
-                        <span th:text="${parsedResult.rawBandName}" th:remove="tag"></span>
-                        <br/><span class="badge bg-success">Band matched <span th:text="${parsedResult.matchedBandName}">Band Name</span></span>
-                    </td>
-                    <td>
-                        <span th:text="${parsedResult.rawConductorName}" th:remove="tag"></span>
-                        <br/><span class="badge bg-success">Conductor matched <span th:text="${parsedResult.matchedConductorName}">Person Name</span></span>
-                    </td>
-                    <td th:text="${parsedResult.rawDraw}">/td>
-                    <td th:text="${parsedResult.rawPoints}"></td>
+        <div th:if="${ParsedResults.size() > 0}">
+            <p th:text="#{page.add-results.parsed-prompt-1}">Lines with a green background have been successfully matched.  Lines with a yellow background have not matched, please check the bands (in a separate browser tab) and fix this.</p>
+            <p th:text="#{page.add-results.parsed-prompt-2}">Lines with a red background cannot be parsed and need fixing in the text box below.</p>
+            <table class="table">
+                <tr>
+                    <th th:text="#{page.column-header.position}">Position</th>
+                    <th th:text="#{page.column-header.band}">Band</th>
+                    <th th:text="#{page.column-header.conductor}">Conductor</th>
+                    <th th:text="#{page.column-header.draw}">Draw</th>
+                    <th th:text="#{page.column-header.points}">Points</th>
                 </tr>
-                <tr th:if="${parsedResult.amber}" class="table-warning">
-                    <td th:text="${parsedResult.rawPosition}"></td>
-                    <td>
-                        <span th:text="${parsedResult.rawBandName}" th:remove="tag"></span>
-                        <span th:if="${parsedResult.matchedBandSlug != null}">
+                <span th:each="parsedResult : ${ParsedResults}" th:remove="tag">
+                    <tr th:if="${parsedResult.green}" class="table-success">
+                        <td th:text="${parsedResult.rawPosition}"></td>
+                        <td>
+                            <span th:text="${parsedResult.rawBandName}" th:remove="tag"></span>
                             <br/><span class="badge bg-success">Band matched <span th:text="${parsedResult.matchedBandName}">Band Name</span></span>
-                        </span>
-                        <span th:if="${parsedResult.matchedBandSlug == null}">
-                            <br/><span class="badge bg-danger">Band did not match.</span>
-                        </span>
-                    </td>
-                    <td>
-                        <span th:text="${parsedResult.rawConductorName}" th:remove="tag"></span>
-                        <span th:if="${parsedResult.matchedConductorSlug != null}">
+                        </td>
+                        <td>
+                            <span th:text="${parsedResult.rawConductorName}" th:remove="tag"></span>
                             <br/><span class="badge bg-success">Conductor matched <span th:text="${parsedResult.matchedConductorName}">Person Name</span></span>
-                        </span>
-                        <span th:if="${parsedResult.matchedConductorSlug == null}">
-                            <br/><span class="badge bg-danger">Conductor did not match.</span>
-                        </span>
-                    </td>
-                    <td th:text="${parsedResult.rawDraw}">/td>
-                    <td th:text="${parsedResult.rawPoints}"></td>
-                </tr>
-                <tr th:if="${parsedResult.red}" class="table-danger">
-                    <td colspan="5" th:text="${parsedResult.rawLine}"></td>
-                </tr>
-            </span>
-        </table>
+                        </td>
+                        <td th:text="${parsedResult.rawDraw}">/td>
+                        <td th:text="${parsedResult.rawPoints}"></td>
+                    </tr>
+                    <tr th:if="${parsedResult.amber}" class="table-warning">
+                        <td th:text="${parsedResult.rawPosition}"></td>
+                        <td>
+                            <span th:text="${parsedResult.rawBandName}" th:remove="tag"></span>
+                            <span th:if="${parsedResult.matchedBandSlug != null}">
+                                <br/><span class="badge bg-success">Band matched <span th:text="${parsedResult.matchedBandName}">Band Name</span></span>
+                            </span>
+                            <span th:if="${parsedResult.matchedBandSlug == null}">
+                                <br/><span class="badge bg-danger">Band did not match.</span>
+                            </span>
+                        </td>
+                        <td>
+                            <span th:text="${parsedResult.rawConductorName}" th:remove="tag"></span>
+                            <span th:if="${parsedResult.matchedConductorSlug != null}">
+                                <br/><span class="badge bg-success">Conductor matched <span th:text="${parsedResult.matchedConductorName}">Person Name</span></span>
+                            </span>
+                            <span th:if="${parsedResult.matchedConductorSlug == null}">
+                                <br/><span class="badge bg-danger">Conductor did not match.</span>
+                            </span>
+                        </td>
+                        <td th:text="${parsedResult.rawDraw}">/td>
+                        <td th:text="${parsedResult.rawPoints}"></td>
+                    </tr>
+                    <tr th:if="${parsedResult.red}" class="table-danger">
+                        <td colspan="5" th:text="${parsedResult.rawLine}"></td>
+                    </tr>
+                </span>
+            </table>
+        </div>
 
         <div class="container border border-info bg-light rounded-bottom mb-2">
         <p th:utext="#{page.add-results.prompt.bands-1}">Enter results, one per line, in the form: position, band, conductor, draw, points.  For example:</p>

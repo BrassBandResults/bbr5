@@ -144,6 +144,8 @@ CREATE TABLE band (
 );
 
 CREATE UNIQUE INDEX idx_band_slug ON band(slug);
+CREATE INDEX idx_band_region ON band(region_id);
+CREATE INDEX idx_band_section ON band(section_id);
 
 CREATE TABLE band_rehearsal_day (
     id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
@@ -157,6 +159,7 @@ CREATE TABLE band_rehearsal_day (
 );
 
 CREATE UNIQUE INDEX idx_band_rehearsal_day ON band_rehearsal_day(day_number, band_id);
+CREATE INDEX idx_band_rehearsal_day_band ON band_rehearsal_day(band_id);
 
 CREATE TABLE band_previous_name (
     id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
@@ -232,6 +235,7 @@ CREATE TABLE person (
 
 CREATE UNIQUE INDEX idx_person_slug ON person(slug);
 CREATE INDEX idx_person_surname ON person(surname);
+CREATE INDEX idx_person_combined_name ON person(combined_name);
 
 CREATE TABLE person_alias (
     id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
@@ -265,6 +269,8 @@ CREATE TABLE person_profile (
     profile TEXT NOT NULL,
     visible BIT NOT NULL DEFAULT 0
 );
+
+CREATE INDEX idx_person_profile_person on person_profile(person_id);
 
 CREATE TABLE person_relationship_type (
     id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
@@ -319,6 +325,8 @@ CREATE TABLE piece (
 
 CREATE UNIQUE INDEX idx_piece_slug ON piece(slug);
 CREATE UNIQUE INDEX idx_piece_name ON piece(name, piece_year);
+CREATE INDEX idx_piece_composer ON piece(composer_id);
+CREATE INDEX idx_piece_arranger ON piece(arranger_id);
 
 CREATE TABLE piece_alias (
     id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
@@ -356,6 +364,7 @@ CREATE TABLE venue (
 
 CREATE UNIQUE INDEX idx_venue_slug ON venue(slug);
 CREATE UNIQUE INDEX idx_venue_name ON venue(name);
+CREATE INDEX idx_venue_region ON venue(region_id);
 
 CREATE TABLE venue_alias (
     id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
@@ -485,6 +494,55 @@ INSERT INTO contest_type(old_id, updated, created, updated_by, created_by, name,
 INSERT INTO contest_type(old_id, updated, created, updated_by, created_by, name, slug, translation_key, draw_one_title, draw_two_title, draw_three_title, points_total_title, points_one_title, points_two_title, points_three_title, points_four_title, points_penalty_title, has_test_piece, has_own_choice, has_entertainments, statistics_show, statistics_limit) VALUES (30, '20230531 17:00:35', '20340531 17:00:35', 'owner', 'owner', 'Own Choice and Two Concert Item (Separate Points)', 'own-choice-and-two-concert-item-separate-points', 'contest-types.own-choice-and-two-concert-item-separate-points','Draw', null, null, 'Total Points', 'Own Choice', 'Concert Item 1', 'Concert Item 2', null, null, 0, 1, 0, 0, '0');
 INSERT INTO contest_type(old_id, updated, created, updated_by, created_by, name, slug, translation_key, draw_one_title, draw_two_title, draw_three_title, points_total_title, points_one_title, points_two_title, points_three_title, points_four_title, points_penalty_title, has_test_piece, has_own_choice, has_entertainments, statistics_show, statistics_limit) VALUES (31, '20230531 17:00:35', '20340531 17:00:35', 'owner', 'owner', 'March, Hymn and Deportment Contest (Separate Points)', 'march-hymn-deportment-contest-separate-points', 'contest-types.march-hymn-deportment-contest-separate-points','Draw', null, null, 'Total', 'March', 'Hymn', 'Deportment', null, null, 0, 0, 0, 0, '0');
 
+UPDATE contest_type SET draw_one_title ='h.draw' WHERE draw_one_title = 'Draw';
+UPDATE contest_type SET draw_one_title ='h.set-test-draw' WHERE draw_one_title = 'Set Test Draw';
+UPDATE contest_type SET draw_one_title ='h.test-piece-draw' WHERE draw_one_title = 'Test Piece Draw';
+UPDATE contest_type SET draw_two_title ='h.entertainment-draw' WHERE draw_two_title = 'Entertainment Draw';
+UPDATE contest_type SET draw_two_title ='h.entertainment-draw' WHERE draw_two_title = 'Entertainments Draw';
+UPDATE contest_type SET draw_two_title ='h.own-choice-draw' WHERE draw_two_title = 'Own Choice Draw';
+UPDATE contest_type SET points_total_title ='h.points' WHERE points_total_title = 'Points';
+UPDATE contest_type SET points_total_title ='h.total' WHERE points_total_title = 'Total';
+UPDATE contest_type SET points_total_title ='h.total' WHERE points_total_title = 'Total Points';
+UPDATE contest_type SET points_one_title ='h.adj-a' WHERE points_one_title = 'Adj A';
+UPDATE contest_type SET points_one_title ='h.church' WHERE points_one_title = 'Church';
+UPDATE contest_type SET points_one_title ='h.concert' WHERE points_one_title = 'Concert';
+UPDATE contest_type SET points_one_title ='h.hymn' WHERE points_one_title = 'Hymn';
+UPDATE contest_type SET points_one_title ='h.march' WHERE points_one_title = 'March';
+UPDATE contest_type SET points_one_title ='h.music' WHERE points_one_title = 'Music';
+UPDATE contest_type SET points_one_title ='h.own-choice' WHERE points_one_title = 'Own Choice';
+UPDATE contest_type SET points_one_title ='h.quality-adj-1' WHERE points_one_title = 'Quality Adj 1';
+UPDATE contest_type SET points_one_title ='h.set-test' WHERE points_one_title = 'Set Test';
+UPDATE contest_type SET points_one_title ='h.adj-b' WHERE points_one_title = 'Adj B';
+UPDATE contest_type SET points_two_title ='h.concert-item-1' WHERE points_two_title = 'Concert Item 1';
+UPDATE contest_type SET points_two_title ='h.entertainment' WHERE points_two_title = 'Entertainment';
+UPDATE contest_type SET points_two_title ='h.hymn' WHERE points_two_title = 'Hymn';
+UPDATE contest_type SET points_two_title ='h.inspection' WHERE points_two_title = 'Inspection';
+UPDATE contest_type SET points_two_title ='h.own-choice' WHERE points_two_title = 'Own Choice';
+UPDATE contest_type SET points_two_title ='h.quality-adj-2' WHERE points_two_title = 'Quality Adj 2';
+UPDATE contest_type SET points_two_title ='h.sacred' WHERE points_two_title = 'Sacred';
+UPDATE contest_type SET points_two_title ='h.set-test' WHERE points_two_title = 'Set Test';
+UPDATE contest_type SET points_two_title ='h.solo' WHERE points_two_title = 'Solo';
+UPDATE contest_type SET points_two_title ='h.test-piece' WHERE points_two_title = 'Test Piece';
+UPDATE contest_type SET points_three_title ='h.adj-c' WHERE points_three_title = 'Adj C';
+UPDATE contest_type SET points_three_title ='h.concert-item-2' WHERE points_three_title = 'Concert Item 2';
+UPDATE contest_type SET points_three_title ='h.deportment' WHERE points_three_title = 'Deportment';
+UPDATE contest_type SET points_three_title ='h.entertainment' WHERE points_three_title = 'Entertainment';
+UPDATE contest_type SET points_three_title ='h.music' WHERE points_three_title = 'Music';
+UPDATE contest_type SET points_three_title ='h.own-choice' WHERE points_three_title = 'Own Choice';
+UPDATE contest_type SET points_three_title ='h.programme' WHERE points_three_title = 'Programme';
+UPDATE contest_type SET points_three_title ='h.test-piece' WHERE points_three_title = 'Test Piece';
+UPDATE contest_type SET points_four_title ='h.entertainment' WHERE points_four_title = 'Entertainment';
+UPDATE contest_type SET points_four_title ='h.stage-march' WHERE points_four_title = 'Stage March';
+UPDATE contest_type SET points_penalty_title ='h.penalty' WHERE points_penalty_title = 'Penalty';
+UPDATE contest_type SET points_one_title ='h.test-piece' WHERE points_one_title = 'Test Piece';
+UPDATE contest_type SET points_two_title ='h.adj-b' WHERE points_two_title = 'Adj B';
+
+UPDATE contest_type SET has_own_choice = 1 WHERE slug = 'march-hymn-contest';
+UPDATE contest_type SET has_own_choice = 1 WHERE slug = 'march-hymn-contest-separate-points';
+UPDATE contest_type SET has_own_choice = 1 WHERE slug = 'march-contest-music-and-inspection-points';
+UPDATE contest_type SET has_own_choice = 1 WHERE slug = 'march-hymn-deportment-contest-separate-points';
+UPDATE contest_type SET has_own_choice = 1 WHERE slug = 'own-choice-from-a-specified-list';
+
 CREATE TABLE contest (
     id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
     old_id BIGINT,
@@ -511,6 +569,10 @@ CREATE TABLE contest (
 
 CREATE UNIQUE INDEX idx_contest_slug_unique ON contest(slug);
 CREATE UNIQUE INDEX idx_contest_name_unique ON contest(name);
+CREATE INDEX idx_contest_group ON contest(contest_group_id);
+CREATE INDEX idx_contest_region ON contest(region_id);
+CREATE INDEX idx_contest_section ON contest(section_id);
+CREATE INDEX idx_contest_qualifies_for ON contest(qualifies_for);
 
 CREATE TABLE contest_tag_link (
     contest_id BIGINT NOT NULL CONSTRAINT fk_contest_tag_link_contest REFERENCES contest(id),
@@ -552,6 +614,8 @@ CREATE TABLE contest_event (
 );
 
 CREATE INDEX idx_contest_event ON contest_event(contest_id);
+CREATE INDEX idx_contest_event_date ON contest_event(date_of_event);
+CREATE INDEX idx_contest_event_venue ON contest_event(venue_id);
 
 CREATE TABLE contest_result (
     id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
@@ -583,8 +647,10 @@ CREATE TABLE contest_result (
 );
 
 CREATE INDEX idx_contest_result_event ON contest_result(contest_event_id);
-CREATE INDEX idx_conductor ON contest_result(conductor_id);
-CREATE INDEX idx_band ON contest_result(band_id);
+CREATE INDEX idx_contest_result_band ON contest_result(band_id);
+CREATE INDEX idx_contest_result_conductor ON contest_result(conductor_id);
+CREATE INDEX idx_contest_result_conductor_two ON contest_result(conductor_two_id);
+CREATE INDEX idx_contest_result_conductor_three ON contest_result(conductor_three_id);
 
 CREATE TABLE contest_event_adjudicator (
     id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
@@ -598,6 +664,7 @@ CREATE TABLE contest_event_adjudicator (
     adjudicator_name VARCHAR(50) NOT NULL
 );
 
+CREATE UNIQUE INDEX idx_adjudicator_prevent_duplicate ON contest_event_adjudicator(contest_event_id, person_id);
 CREATE INDEX idx_adjudicator_event ON contest_event_adjudicator(contest_event_id);
 CREATE INDEX idx_adjudicator_person ON contest_event_adjudicator(person_id);
 
@@ -614,6 +681,8 @@ CREATE TABLE contest_event_test_piece (
 );
 
 CREATE UNIQUE INDEX idx_contest_event_test_piece ON contest_event_test_piece(contest_event_id, piece_id);
+CREATE INDEX idx_contest_event_test_piece_piece ON contest_event_test_piece(piece_id);
+CREATE INDEX idx_contest_event_test_piece_event ON contest_event_test_piece(contest_event_id);
 
 -- CONTEST RESULT TEST PIECES
 CREATE TABLE contest_result_test_piece (
@@ -629,6 +698,8 @@ CREATE TABLE contest_result_test_piece (
 );
 
 CREATE UNIQUE INDEX idx_contest_result_test_piece ON contest_result_test_piece(contest_result_id, piece_id, suffix);
+CREATE INDEX idx_contest_result_test_piece_piece ON contest_result_test_piece(piece_id);
+CREATE INDEX idx_contest_result_test_piece_result ON contest_result_test_piece(contest_result_id);
 
 -- FEEDBACK
 CREATE TABLE site_feedback (
@@ -663,6 +734,7 @@ CREATE TABLE personal_contest_history (
 );
 
 CREATE INDEX idx_personal_history_owner ON personal_contest_history(created_by);
+CREATE INDEX idx_personal_contest_history_result ON personal_contest_history(result_id);
 
 CREATE TABLE personal_contest_history_date_range (
     id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,

@@ -1,14 +1,8 @@
-fix data so this works
-CREATE UNIQUE INDEX idx_adjudicator_prevent_duplicate ON contest_event_adjudicator(contest_event_id, person_id);
-get rid of double spaces in csv files?
-
-Deal with unique slug clash
-
 Ads for non-pro users
 
-Assign points
-
 Record 500 error - send feedback to owner?
+
+Blog on the homepage
 
 === Go Live ===
 Upgrade to pro - record stripe details on user
@@ -17,13 +11,10 @@ Add placeholder text to form fields
 
 Support for instruments on contest history for pro users
 
-Add privacy settings for personal contest history
 Add date ranges for personal contest history
 Fetch pending performances works out ones that aren't in history and aren't rejected
 
 Multiple map icons on same location
-
-Performances shows pieces played
 
 csrf
 
@@ -31,22 +22,26 @@ csrf
 
 Maps don't 500 where lat/lng is missing
 
+Current champions band header badge
+
 Result piece move up/down buttons to reorder
 
 Change password for user
 
 Add pro status to users profile page
+Add owner status to users profile page
 
 Add owned feedback to users profile page
 
 Upgrade to pro - how do we check that pro subscription is still active?
 
-Blog on the homepage
+lookup tests to check for aliases
 
 Validate api key
 
 robots.txt
 sitemap.xml
+keywords for SEO in headers
 
 Search for location on map and give bands and venues within specific range of it
 Filter map by section
@@ -65,7 +60,11 @@ Split Australian regions into states?
 
 Email for bands created in last month
 
-Person Name synonym list William <=> Bill etc.
+Person Name synonym list William <=> Bill etc, and <=> &
 Infer person date range from event dates
 
 Markdown for all notes/description fields
+
+Badges?
+
+Cache years page data

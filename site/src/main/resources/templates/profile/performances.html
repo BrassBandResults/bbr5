@@ -21,6 +21,22 @@
     <br/>
 
     <div class="tab-content">
+        <span th:if="${User.contestHistoryVisibility.code == 'O'}">
+            <span th:text="#{page.profile.history-visible.public}">Your contest history is publicly visible.</span>
+            <span th:replace="profile/components/buttons.html :: makePrivate()"></span>
+            <span th:replace="profile/components/buttons.html :: makeSiteOnly()"></span>
+        </span>
+        <span th:if="${User.contestHistoryVisibility.code == 'P'}">
+            <span th:text="#{page.profile.history-visible.private}">Your contest history is private and is not visible to others.</span>
+            <span th:replace="profile/components/buttons.html :: makePublic()"></span>
+            <span th:replace="profile/components/buttons.html :: makeSiteOnly()"></span>
+        </span>
+        <span th:if="${User.contestHistoryVisibility.code == 'S'}">
+            <span th:text="#{page.profile.history-visible.site}">Your contest history is visible to users logged into this site.</span>
+            <span th:replace="profile/components/buttons.html :: makePublic()"></span>
+            <span th:replace="profile/components/buttons.html :: makePrivate()"></span>
+        </span>
+
          <table class="table table-hover sortable">
             <thead>
             <tr>

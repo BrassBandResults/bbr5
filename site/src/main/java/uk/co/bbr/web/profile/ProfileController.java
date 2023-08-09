@@ -15,6 +15,7 @@ import uk.co.bbr.services.performances.dao.PerformanceDao;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.services.security.UserService;
 import uk.co.bbr.services.security.dao.SiteUserDao;
+import uk.co.bbr.services.security.types.ContestHistoryVisibility;
 import uk.co.bbr.web.security.annotations.IsBbrAdmin;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 import uk.co.bbr.web.security.annotations.IsBbrPro;
@@ -60,6 +61,36 @@ public class ProfileController {
         model.addAttribute("ApprovedPerformances", performances);
 
         return "profile/performances";
+    }
+
+    @IsBbrMember
+    @GetMapping("/profile/performances/make-public")
+    public String makePerformancesPublic(Model model) {
+        SiteUserDao user = this.securityService.getCurrentUser();
+        user.setContestHistoryVisibility(ContestHistoryVisibility.PUBLIC);
+        this.securityService.update(user);
+
+        return "redirect:/profile/performances";
+    }
+
+    @IsBbrMember
+    @GetMapping("/profile/performances/make-private")
+    public String makePerformancesPrivate(Model model) {
+        SiteUserDao user = this.securityService.getCurrentUser();
+        user.setContestHistoryVisibility(ContestHistoryVisibility.PRIVATE);
+        this.securityService.update(user);
+
+        return "redirect:/profile/performances";
+    }
+
+    @IsBbrMember
+    @GetMapping("/profile/performances/make-site-only")
+    public String makePerformancesSiteOnly(Model model) {
+        SiteUserDao user = this.securityService.getCurrentUser();
+        user.setContestHistoryVisibility(ContestHistoryVisibility.SITE_ONLY);
+        this.securityService.update(user);
+
+        return "redirect:/profile/performances";
     }
 
     @IsBbrPro

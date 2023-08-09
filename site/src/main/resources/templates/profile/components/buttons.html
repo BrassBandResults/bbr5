@@ -1,0 +1,11 @@
+<span th:fragment="makePublic()" th:remove="tag">
+    <span th:replace="buttons/button.html :: button(#{page.buttons.make-public}, ${'/profile/performances/make-public'})"></span>
+</span>
+
+<span th:fragment="makePrivate()" th:remove="tag">
+    <span th:replace="buttons/button.html :: button(#{page.buttons.make-private}, ${'/profile/performances/make-private'})"></span>
+</span>
+
+<span th:fragment="makeSiteOnly()" th:remove="tag">
+    <span th:replace="buttons/button.html :: button(#{page.buttons.make-site-only}, ${'/profile/performances/make-site-only'})"></span>
+</span>
