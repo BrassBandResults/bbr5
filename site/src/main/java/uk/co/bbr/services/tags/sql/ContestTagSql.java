@@ -5,7 +5,7 @@ import uk.co.bbr.services.framework.sql.SqlExec;
 import uk.co.bbr.services.tags.sql.dto.ContestTagSqlDto;
 import uk.co.bbr.services.tags.sql.dto.TagListSqlDto;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import java.util.List;
 import java.util.Set;
 

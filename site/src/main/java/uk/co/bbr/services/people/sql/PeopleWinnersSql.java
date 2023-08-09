@@ -4,8 +4,8 @@ import lombok.experimental.UtilityClass;
 import uk.co.bbr.services.framework.sql.SqlExec;
 import uk.co.bbr.services.people.sql.dto.PeopleWinnersSqlDto;
 
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
 import java.math.BigInteger;
 import java.time.LocalDate;
 import java.util.HashMap;

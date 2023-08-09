@@ -5,7 +5,7 @@ import uk.co.bbr.services.bands.sql.dto.CompareBandsSqlDto;
 import uk.co.bbr.services.framework.sql.SqlExec;
 import uk.co.bbr.services.people.sql.dto.CompareConductorsSqlDto;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import java.util.List;
 
 @UtilityClass
@@ -35,7 +35,7 @@ public class BandCompareSql {
     INNER JOIN contest_result band_two_result ON band_two_result.contest_event_id = e.id
     INNER JOIN contest c ON c.id = e.contest_id
     LEFT OUTER JOIN person left_conductor ON left_conductor.id = band_one_result.conductor_id
-    LEFT OUTER JOIN person right_conductor ON right_conductor.id = band_two_result.conductor_id     
+    LEFT OUTER JOIN person right_conductor ON right_conductor.id = band_two_result.conductor_id
     WHERE band_one_result.band_id = ?1
     AND band_two_result.band_id = ?2
     AND band_one_result.contest_event_id = band_two_result.contest_event_id

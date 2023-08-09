@@ -33,24 +33,24 @@ public class CompareBandsSqlDto extends AbstractSqlDto {
     private final String rightConductorSlug;
 
     public CompareBandsSqlDto(Object[] columnList) {
-        this.leftResult = (Integer)columnList[0];
-        this.leftResultType = (String)columnList[1];
-        this.rightResult = (Integer)columnList[2];
-        this.rightResultType = (String)columnList[3];
+        this.leftResult = this.getInteger(columnList,0);
+        this.leftResultType = this.getString(columnList, 1);
+        this.rightResult = this.getInteger(columnList,2);
+        this.rightResultType = this.getString(columnList, 3);
         this.eventDate = this.getLocalDate(columnList, 4);
-        this.contestSlug = (String)columnList[5];
-        this.contestName = (String)columnList[6];
-        this.eventDateResolution = (String)columnList[7];
-        this.leftBandName = (String)columnList[8];
-        this.rightBandName = (String)columnList[9];
-        this.leftConductorFirstNames = (String)columnList[10];
-        this.leftConductorSurname = (String)columnList[11];
-        this.leftConductorKnownFor = (String)columnList[12];
-        this.leftConductorSlug = (String)columnList[13];
-        this.rightConductorFirstNames = (String)columnList[14];
-        this.rightConductorSurname = (String)columnList[15];
-        this.rightConductorKnownFor = (String)columnList[16];
-        this.rightConductorSlug = (String)columnList[17];
+        this.contestSlug = this.getString(columnList, 5);
+        this.contestName = this.getString(columnList, 6);
+        this.eventDateResolution = this.getString(columnList, 7);
+        this.leftBandName = this.getString(columnList, 8);
+        this.rightBandName = this.getString(columnList, 9);
+        this.leftConductorFirstNames = this.getString(columnList, 10);
+        this.leftConductorSurname = this.getString(columnList, 11);
+        this.leftConductorKnownFor = this.getString(columnList, 12);
+        this.leftConductorSlug = this.getString(columnList, 13);
+        this.rightConductorFirstNames = this.getString(columnList, 14);
+        this.rightConductorSurname = this.getString(columnList, 15);
+        this.rightConductorKnownFor = this.getString(columnList, 16);
+        this.rightConductorSlug = this.getString(columnList, 17);
     }
 
     public ContestEventDao getEvent() {

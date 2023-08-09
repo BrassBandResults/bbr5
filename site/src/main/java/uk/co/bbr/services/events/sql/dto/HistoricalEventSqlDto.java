@@ -34,15 +34,15 @@ public class HistoricalEventSqlDto extends AbstractSqlDto {
 
         // e.name, c.slug, e.date_of_event, r.band_name, b.slug, b.name, reg.name, reg.slug, reg.country_code
 
-        this.eventName = (String)columnList[0];
-        this.contestSlug  = (String)columnList[1];
+        this.eventName = this.getString(columnList, 0);
+        this.contestSlug  = this.getString(columnList, 1);
         this.eventDate = this.getLocalDate(columnList, 2);
-        this.bandCompetedAs = (String)columnList[3];
-        this.bandSlug = (String)columnList[4];
-        this.bandName = (String)columnList[5];
-        this.regionName = (String)columnList[6];
-        this.regionSlug = (String)columnList[7];
-        this.regionCountryCode = (String)columnList[8];
+        this.bandCompetedAs = this.getString(columnList, 3);
+        this.bandSlug = this.getString(columnList, 4);
+        this.bandName = this.getString(columnList, 5);
+        this.regionName = this.getString(columnList, 6);
+        this.regionSlug = this.getString(columnList, 7);
+        this.regionCountryCode = this.getString(columnList, 8);
     }
 
     public ContestResultDao toResult() {

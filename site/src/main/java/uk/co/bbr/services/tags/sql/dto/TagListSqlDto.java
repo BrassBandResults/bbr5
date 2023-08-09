@@ -15,8 +15,8 @@ public class TagListSqlDto extends AbstractSqlDto {
     private final Integer groupCount;
 
     public TagListSqlDto(Object[] columnList) {
-        this.tagSlug = (String)columnList[0];
-        this.tagName = (String)columnList[1];
+        this.tagSlug = this.getString(columnList, 0);
+        this.tagName = this.getString(columnList, 1);
         if (columnList[2] != null) {
             this.contestCount = this.getInteger(columnList, 2);
         }

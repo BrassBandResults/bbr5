@@ -8,7 +8,7 @@ import uk.co.bbr.services.pieces.sql.dto.PieceUsageCountSqlDto;
 import uk.co.bbr.services.pieces.sql.dto.PiecesPerSectionSqlDto;
 import uk.co.bbr.services.pieces.sql.dto.SetTestUsagePieceSqlDto;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import java.util.List;
 
 @UtilityClass

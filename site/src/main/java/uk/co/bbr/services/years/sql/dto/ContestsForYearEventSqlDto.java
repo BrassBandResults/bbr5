@@ -32,28 +32,27 @@ public class ContestsForYearEventSqlDto extends AbstractSqlDto {
     private final Boolean noContest;
 
     public ContestsForYearEventSqlDto(Object[] columnList) {
-        Date localEventDate = (Date)columnList[0];
-        this.eventDate = localEventDate.toLocalDate();
-        this.eventDateResolution = (String)columnList[1];
-        this.contestSlug = (String)columnList[2];
-        this.contestName = (String)columnList[3];
-        this.noContest = (Boolean)columnList[4];
-        this.bandCompetedAs = (String)columnList[5];
-        this.bandSlug = (String)columnList[6];
-        this.bandName = (String)columnList[7];
-        this.bandRegionCountryCode = (String)columnList[8];
-        this.resultPieceSlug = (String)columnList[9];
-        this.resultPieceName = (String)columnList[10];
-        this.setPieceSlug = (String)columnList[11];
-        this.setPieceName = (String)columnList[12];
-        this.conductor1Slug = (String)columnList[13];
-        this.conductor1FirstNames = (String)columnList[14];
-        this.conductor1Surname = (String)columnList[15];
-        this.conductor2Slug = (String)columnList[16];
-        this.conductor2FirstNames = (String)columnList[17];
-        this.conductor2Surname = (String)columnList[18];
-        this.conductor3Slug = (String)columnList[19];
-        this.conductor3FirstNames = (String)columnList[20];
-        this.conductor3Surname = (String)columnList[21];
+        this.eventDate = this.getLocalDate(columnList,0);
+        this.eventDateResolution = this.getString(columnList, 1);
+        this.contestSlug = this.getString(columnList, 2);
+        this.contestName = this.getString(columnList, 3);
+        this.noContest = this.getBoolean(columnList,4);
+        this.bandCompetedAs = this.getString(columnList, 5);
+        this.bandSlug = this.getString(columnList, 6);
+        this.bandName = this.getString(columnList, 7);
+        this.bandRegionCountryCode = this.getString(columnList, 8);
+        this.resultPieceSlug = this.getString(columnList, 9);
+        this.resultPieceName = this.getString(columnList, 10);
+        this.setPieceSlug = this.getString(columnList, 11);
+        this.setPieceName = this.getString(columnList, 12);
+        this.conductor1Slug = this.getString(columnList, 13);
+        this.conductor1FirstNames = this.getString(columnList, 14);
+        this.conductor1Surname = this.getString(columnList, 15);
+        this.conductor2Slug = this.getString(columnList, 16);
+        this.conductor2FirstNames = this.getString(columnList, 17);
+        this.conductor2Surname = this.getString(columnList, 18);
+        this.conductor3Slug = this.getString(columnList, 19);
+        this.conductor3FirstNames = this.getString(columnList, 20);
+        this.conductor3Surname = this.getString(columnList, 21);
     }
 }

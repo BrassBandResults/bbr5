@@ -7,12 +7,12 @@ import java.math.BigInteger;
 
 @Getter
 public class PieceUsageCountSqlDto extends AbstractSqlDto {
-    private final BigInteger pieceId;
+    private final Long pieceId;
     private final Integer setTestCount;
     private final Integer ownChoiceCount;
 
     public PieceUsageCountSqlDto(Object[] columnList) {
-        this.pieceId = (BigInteger)columnList[0];
+        this.pieceId = this.getLong(columnList,0);
         this.setTestCount = this.getInteger(columnList, 1);
         this.ownChoiceCount = this.getInteger(columnList, 2);
     }

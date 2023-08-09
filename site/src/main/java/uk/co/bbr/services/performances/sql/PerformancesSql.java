@@ -6,7 +6,7 @@ import uk.co.bbr.services.performances.sql.dto.PerformanceListPieceSqlDto;
 import uk.co.bbr.services.performances.sql.dto.PerformanceListSqlDto;
 import uk.co.bbr.services.performances.sql.dto.PiecePerformanceSqlDto;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import java.util.List;
 
 @UtilityClass

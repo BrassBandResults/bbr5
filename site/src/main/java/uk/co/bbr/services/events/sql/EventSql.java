@@ -5,7 +5,7 @@ import uk.co.bbr.services.events.sql.dto.EventUpDownLeftRightSqlDto;
 import uk.co.bbr.services.events.sql.dto.ResultPieceSqlDto;
 import uk.co.bbr.services.framework.sql.SqlExec;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import java.time.LocalDate;
 import java.util.List;
 

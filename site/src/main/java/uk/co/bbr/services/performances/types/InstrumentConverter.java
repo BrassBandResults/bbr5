@@ -1,7 +1,7 @@
 package uk.co.bbr.services.performances.types;
 
-import javax.persistence.AttributeConverter;
-import javax.persistence.Converter;
+import jakarta.persistence.AttributeConverter;
+import jakarta.persistence.Converter;
 
 @Converter(autoApply = true)
 public class InstrumentConverter implements AttributeConverter<Instrument, Integer> {

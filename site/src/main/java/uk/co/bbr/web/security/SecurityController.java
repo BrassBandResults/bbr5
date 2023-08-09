@@ -13,9 +13,9 @@ import uk.co.bbr.services.security.ex.AuthenticationFailedException;
 import uk.co.bbr.web.SessionKeys;
 import uk.co.bbr.web.security.filter.SecurityFilter;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
 @RequiredArgsConstructor

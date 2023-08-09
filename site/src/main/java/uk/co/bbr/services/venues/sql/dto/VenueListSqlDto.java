@@ -21,14 +21,14 @@ public class VenueListSqlDto  extends AbstractSqlDto {
     private final Long venueId;
 
     public VenueListSqlDto(Object[] columnList) {
-        this.venueSlug = (String)columnList[0];
-        this.venueName = (String)columnList[1];
-        this.regionSlug = (String)columnList[2];
-        this.regionName = (String)columnList[3];
-        this.countryCode = (String)columnList[4];
+        this.venueSlug = this.getString(columnList, 0);
+        this.venueName = this.getString(columnList, 1);
+        this.regionSlug = this.getString(columnList, 2);
+        this.regionName = this.getString(columnList, 3);
+        this.countryCode = this.getString(columnList, 4);
         this.eventCount = this.getInteger(columnList, 5);
-        this.latitude = (String)columnList[6];
-        this.longitude = (String)columnList[7];
+        this.latitude = this.getString(columnList, 6);
+        this.longitude = this.getString(columnList, 7);
         this.venueId = this.getLong(columnList, 8);
     }
 

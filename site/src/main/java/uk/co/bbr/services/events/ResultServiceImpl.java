@@ -30,7 +30,7 @@ import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.services.security.dao.SiteUserDao;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;

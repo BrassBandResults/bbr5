@@ -10,6 +10,9 @@ public abstract class AbstractSqlDto {
         if (columnList[position] == null) {
             return null;
         }
+        if (columnList[position] instanceof Long) {
+            return ((Long) columnList[position]).intValue();
+        }
         return columnList[position] instanceof BigInteger ? ((BigInteger)columnList[position]).intValue() : (Integer)columnList[position];
     }
 
@@ -17,7 +20,17 @@ public abstract class AbstractSqlDto {
         if (columnList[position] == null) {
             return null;
         }
-        return columnList[position] instanceof BigInteger ? ((BigInteger)columnList[position]).longValue() : (Integer)columnList[position];
+        return columnList[position] instanceof BigInteger ? ((BigInteger)columnList[position]).longValue() : (Long)columnList[position];
+    }
+
+    protected String getString(Object[] columnList, int position) {
+        if (columnList[position] == null) {
+            return null;
+        }
+        if (columnList[position] instanceof Character) {
+            return String.valueOf(columnList[position]);
+        }
+        return (String)columnList[position];
     }
 
     protected LocalDate getLocalDate(Object[] columnList, int position) {
@@ -26,5 +39,12 @@ public abstract class AbstractSqlDto {
             return null;
         }
         return tempEventDate.toLocalDate();
+    }
+
+    protected Boolean getBoolean(Object[] columnList, int position) {
+        if (columnList[position] == null) {
+            return null;
+        }
+        return (Boolean)columnList[position];
     }
 }

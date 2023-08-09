@@ -20,7 +20,7 @@ import uk.co.bbr.services.venues.dao.VenueDao;
 import uk.co.bbr.web.events.forms.EventEditForm;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;

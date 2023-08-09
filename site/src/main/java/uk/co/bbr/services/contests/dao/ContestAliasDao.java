@@ -6,7 +6,7 @@ import lombok.Setter;
 import uk.co.bbr.services.framework.AbstractDao;
 import uk.co.bbr.services.framework.mixins.NameTools;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Getter
 @Entity

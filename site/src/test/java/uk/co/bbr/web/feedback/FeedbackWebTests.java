@@ -4,56 +4,31 @@ import com.icegreen.greenmail.configuration.GreenMailConfiguration;
 import com.icegreen.greenmail.junit5.GreenMailExtension;
 import com.icegreen.greenmail.util.GreenMailUtil;
 import com.icegreen.greenmail.util.ServerSetupTest;
+import jakarta.mail.internet.MimeMessage;
 import org.awaitility.Awaitility;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.security.web.csrf.CsrfToken;
+import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
-import uk.co.bbr.services.bands.BandService;
-import uk.co.bbr.services.bands.dao.BandDao;
-import uk.co.bbr.services.contests.ContestService;
-import uk.co.bbr.services.contests.dao.ContestDao;
-import uk.co.bbr.services.events.ContestEventService;
-import uk.co.bbr.services.events.ResultService;
-import uk.co.bbr.services.events.dao.ContestEventDao;
 import uk.co.bbr.services.feedback.FeedbackService;
 import uk.co.bbr.services.feedback.dao.FeedbackDao;
-import uk.co.bbr.services.people.PersonService;
-import uk.co.bbr.services.people.dao.PersonDao;
-import uk.co.bbr.services.regions.RegionService;
-import uk.co.bbr.services.regions.dao.RegionDao;
-import uk.co.bbr.services.security.JwtService;
-import uk.co.bbr.services.security.SecurityService;
-import uk.co.bbr.services.security.ex.AuthenticationFailedException;
 import uk.co.bbr.web.LoginMixin;
 import uk.co.bbr.web.security.filter.SecurityFilter;
-import uk.co.bbr.web.security.support.TestUser;
 
-import javax.mail.internet.MimeMessage;
-import java.time.LocalDate;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ActiveProfiles("test")
 @SpringBootTest(properties = {  "spring.config.location=classpath:test-application.yml",
@@ -64,6 +39,7 @@ class FeedbackWebTests implements LoginMixin {
 
     @Autowired private FeedbackService feedbackService;
     @Autowired private RestTemplate restTemplate;
+    @Autowired private CsrfTokenRepository csrfTokenRepository;
     @LocalServerPort private int port;
 
     @RegisterExtension
@@ -76,6 +52,9 @@ class FeedbackWebTests implements LoginMixin {
         // arrange
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+        CsrfToken csrfToken = csrfTokenRepository.generateToken(null);
+        headers.add(csrfToken.getHeaderName(), csrfToken.getToken());
+        headers.add("Cookie", SecurityFilter.CSRF_HEADER_NAME + "=" + csrfToken.getToken());
         headers.add("Referer", "http://localhost:8080/offset/test");
 
         MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
@@ -83,6 +62,8 @@ class FeedbackWebTests implements LoginMixin {
         map.add("x_url", "  http://localhost:8080/offset/test  ");
         map.add("x_owner", "   owner  ");
         map.add("url", "");
+        map.add("_csrf", csrfToken.getToken());
+        map.add("_csrf_header", SecurityFilter.CSRF_HEADER_NAME);
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
 
         // act
@@ -119,6 +100,10 @@ class FeedbackWebTests implements LoginMixin {
         // arrange
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+        CsrfToken csrfToken = csrfTokenRepository.generateToken(null);
+        headers.add(csrfToken.getHeaderName(), csrfToken.getToken());
+        headers.add("Cookie", SecurityFilter.CSRF_HEADER_NAME + "=" + csrfToken.getToken());
         headers.add("Referer", "http://localhost:8080/url/populated/fail");
 
         MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
@@ -126,6 +111,8 @@ class FeedbackWebTests implements LoginMixin {
         map.add("x_url", "  http://localhost:8080/offset/test  ");
         map.add("x_owner", "   owner  ");
         map.add("url", "something");
+        map.add("_csrf", csrfToken.getToken());
+        map.add("_csrf_header", SecurityFilter.CSRF_HEADER_NAME);
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
 
         // act
@@ -145,6 +132,10 @@ class FeedbackWebTests implements LoginMixin {
         // arrange
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+        CsrfToken csrfToken = csrfTokenRepository.generateToken(null);
+        headers.add(csrfToken.getHeaderName(), csrfToken.getToken());
+        headers.add("Cookie", SecurityFilter.CSRF_HEADER_NAME + "=" + csrfToken.getToken());
         headers.add("Referer", "http://blassblandresults.co.uk/incorrect/referer/host");
 
         MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
@@ -152,6 +143,8 @@ class FeedbackWebTests implements LoginMixin {
         map.add("x_url", "  http://localhost:8080/offset/test  ");
         map.add("x_owner", "   owner  ");
         map.add("url", "");
+        map.add("_csrf", csrfToken.getToken());
+        map.add("_csrf_header", SecurityFilter.CSRF_HEADER_NAME);
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
 
         // act
@@ -171,6 +164,10 @@ class FeedbackWebTests implements LoginMixin {
         // arrange
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+        CsrfToken csrfToken = csrfTokenRepository.generateToken(null);
+        headers.add(csrfToken.getHeaderName(), csrfToken.getToken());
+        headers.add("Cookie", SecurityFilter.CSRF_HEADER_NAME + "=" + csrfToken.getToken());
         headers.add("Referer", "http://localhost:8080/incorrect/referer/match");
 
         MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
@@ -178,6 +175,8 @@ class FeedbackWebTests implements LoginMixin {
         map.add("x_url", "http://localhost:8080/offset/test");
         map.add("x_owner", "   owner  ");
         map.add("url", "");
+        map.add("_csrf", csrfToken.getToken());
+        map.add("_csrf_header", SecurityFilter.CSRF_HEADER_NAME);
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
 
         // act

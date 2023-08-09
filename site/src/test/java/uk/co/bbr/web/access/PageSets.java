@@ -148,7 +148,7 @@ public abstract class PageSets {
         pageList.add("/acc/forgotten-password");
         pageList.add("/acc/forgotten-password/sent");
         pageList.add("/acc/forgotten-password/changed");
-        pageList.add("/bands/");
+        pageList.add("/bands");
         pageList.add("/bands/R");
         pageList.add("/bands/0");
         pageList.add("/bands/rothwell-temperance");

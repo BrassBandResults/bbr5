@@ -23,11 +23,11 @@ public class BandListForRegionSqlDto extends AbstractSqlDto {
     private final String bandSectionTranslationKey;
 
     public BandListForRegionSqlDto(Object[] columnList) {
-        this.bandName = (String)columnList[0];
-        this.bandSlug = (String)columnList[1];
-        this.regionName = (String)columnList[2];
-        this.regionSlug = (String)columnList[3];
-        this.countryCode = (String)columnList[4];
+        this.bandName = this.getString(columnList, 0);
+        this.bandSlug = this.getString(columnList, 1);
+        this.regionName = this.getString(columnList, 2);
+        this.regionSlug = this.getString(columnList, 3);
+        this.countryCode = this.getString(columnList, 4);
         if (columnList[5] != null) {
             this.resultCount = this.getInteger(columnList, 5);
         }
@@ -40,8 +40,8 @@ public class BandListForRegionSqlDto extends AbstractSqlDto {
         else {
             this.bandStatus = 0;
         }
-        this.bandSectionSlug = (String)columnList[7];
-        this.bandSectionTranslationKey = (String)columnList[8];
+        this.bandSectionSlug = this.getString(columnList, 7);
+        this.bandSectionTranslationKey = this.getString(columnList, 8);
     }
 
     public BandDao asBand() {

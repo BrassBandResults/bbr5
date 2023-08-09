@@ -17,9 +17,9 @@ public class PerformanceListPieceSqlDto extends AbstractSqlDto {
 
     public PerformanceListPieceSqlDto(Object[] columnList) {
         this.resultId = this.getLong(columnList, 0);
-        this.pieceName = (String)columnList[1];
-        this.pieceSlug = (String)columnList[2];
-        this.pieceYear = (String)columnList[3];
+        this.pieceName = this.getString(columnList, 1);
+        this.pieceSlug = this.getString(columnList, 2);
+        this.pieceYear = this.getString(columnList, 3);
     }
 
     public ContestResultPieceDao asResultPiece() {

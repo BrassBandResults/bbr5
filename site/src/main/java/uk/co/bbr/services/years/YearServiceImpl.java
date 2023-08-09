@@ -16,7 +16,7 @@ import uk.co.bbr.services.years.sql.YearSql;
 import uk.co.bbr.services.years.sql.dto.ContestsForYearEventSqlDto;
 import uk.co.bbr.services.years.sql.dto.YearListEntrySqlDto;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -6,7 +6,7 @@ import uk.co.bbr.services.framework.mixins.SlugTools;
 import uk.co.bbr.services.lookup.sql.LookupSql;
 import uk.co.bbr.services.lookup.sql.dto.LookupSqlDto;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import java.util.List;
 
 @Service

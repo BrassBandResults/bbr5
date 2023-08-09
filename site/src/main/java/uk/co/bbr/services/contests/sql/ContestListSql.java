@@ -4,7 +4,7 @@ import lombok.experimental.UtilityClass;
 import uk.co.bbr.services.contests.sql.dto.ContestListSqlDto;
 import uk.co.bbr.services.framework.sql.SqlExec;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import java.util.List;
 
 @UtilityClass

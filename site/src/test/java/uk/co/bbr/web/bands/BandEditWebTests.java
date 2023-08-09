@@ -229,6 +229,7 @@ class BandEditWebTests implements LoginMixin {
         assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
     }
 
+    @Test
     void testSubmitEditBandPageFailsWithNoCsrfToken() {
         // arrange
         HttpHeaders headers = new HttpHeaders();

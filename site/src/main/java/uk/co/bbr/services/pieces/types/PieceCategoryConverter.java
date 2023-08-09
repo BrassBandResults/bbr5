@@ -1,7 +1,7 @@
 package uk.co.bbr.services.pieces.types;
 
-import javax.persistence.AttributeConverter;
-import javax.persistence.Converter;
+import jakarta.persistence.AttributeConverter;
+import jakarta.persistence.Converter;
 
 @Converter(autoApply = true)
 public class PieceCategoryConverter implements AttributeConverter<PieceCategory, String> {

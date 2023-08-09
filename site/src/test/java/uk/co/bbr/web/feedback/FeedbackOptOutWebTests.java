@@ -24,7 +24,7 @@ import uk.co.bbr.services.security.UserService;
 import uk.co.bbr.services.security.dao.SiteUserDao;
 import uk.co.bbr.web.LoginMixin;
 
-import javax.mail.internet.MimeMessage;
+import jakarta.mail.internet.MimeMessage;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;

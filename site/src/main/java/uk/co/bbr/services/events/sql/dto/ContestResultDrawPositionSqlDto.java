@@ -40,27 +40,27 @@ public class ContestResultDrawPositionSqlDto  extends AbstractSqlDto {
 
     public ContestResultDrawPositionSqlDto(Object[] columnList) {
         this.eventDate = this.getLocalDate(columnList, 0);
-        this.eventDateResolution = (String)columnList[1];
-        this.contestSlug = (String)columnList[2];
-        this.resultPosition = (Integer)columnList[3];
-        this.resultPositionType = (String)columnList[4];
-        this.competedAs = (String)columnList[5];
-        this.bandName = (String)columnList[6];
-        this.bandSlug = (String)columnList[7];
-        this.bandRegionName = (String)columnList[8];
-        this.bandRegionSlug = (String)columnList[9];
-        this.bandCountryCode = (String)columnList[10];
-        this.draw = (Integer)columnList[11];
-        this.pointsTotal = (String)columnList[12];
-        this.conductor1Slug = (String)columnList[13];
-        this.conductor1FirstNames = (String)columnList[14];
-        this.conductor1Surname = (String)columnList[15];
-        this.conductor2Slug = (String)columnList[16];
-        this.conductor2FirstNames = (String)columnList[17];
-        this.conductor2Surname = (String)columnList[18];
-        this.conductor3Slug = (String)columnList[19];
-        this.conductor3FirstNames = (String)columnList[20];
-        this.conductor3Surname = (String)columnList[21];
+        this.eventDateResolution = this.getString(columnList, 1);
+        this.contestSlug = this.getString(columnList, 2);
+        this.resultPosition = this.getInteger(columnList,3);
+        this.resultPositionType = this.getString(columnList, 4);
+        this.competedAs = this.getString(columnList, 5);
+        this.bandName = this.getString(columnList, 6);
+        this.bandSlug = this.getString(columnList, 7);
+        this.bandRegionName = this.getString(columnList, 8);
+        this.bandRegionSlug = this.getString(columnList, 9);
+        this.bandCountryCode = this.getString(columnList, 10);
+        this.draw = this.getInteger(columnList,11);
+        this.pointsTotal = this.getString(columnList, 12);
+        this.conductor1Slug = this.getString(columnList, 13);
+        this.conductor1FirstNames = this.getString(columnList, 14);
+        this.conductor1Surname = this.getString(columnList, 15);
+        this.conductor2Slug = this.getString(columnList, 16);
+        this.conductor2FirstNames = this.getString(columnList, 17);
+        this.conductor2Surname = this.getString(columnList, 18);
+        this.conductor3Slug = this.getString(columnList, 19);
+        this.conductor3FirstNames = this.getString(columnList, 20);
+        this.conductor3Surname = this.getString(columnList, 21);
     }
 
     public ContestResultDao getResult() {

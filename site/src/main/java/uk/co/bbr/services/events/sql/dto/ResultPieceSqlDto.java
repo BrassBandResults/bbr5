@@ -34,17 +34,17 @@ public class ResultPieceSqlDto extends AbstractSqlDto {
 
 
     public ResultPieceSqlDto(Object[] columnList) {
-        this.pieceName = (String)columnList[0];
-        this.pieceSlug = (String)columnList[1];
-        this.pieceYear = (String)columnList[2];
-        this.resultId = ((BigInteger)columnList[3]).longValue();
-        this.pieceOrdering = (Integer)columnList[4];
-        this.composerSurname = (String)columnList[5];
-        this.composerFirstNames = (String)columnList[6];
-        this.composerSlug = (String)columnList[7];
-        this.arrangerSurname = (String)columnList[8];
-        this.arrangerFirstNames = (String)columnList[9];
-        this.arrangerSlug = (String)columnList[10];
+        this.pieceName = this.getString(columnList, 0);
+        this.pieceSlug = this.getString(columnList, 1);
+        this.pieceYear = this.getString(columnList, 2);
+        this.resultId = this.getLong(columnList,3);
+        this.pieceOrdering = this.getInteger(columnList,4);
+        this.composerSurname = this.getString(columnList, 5);
+        this.composerFirstNames = this.getString(columnList, 6);
+        this.composerSlug = this.getString(columnList, 7);
+        this.arrangerSurname = this.getString(columnList, 8);
+        this.arrangerFirstNames = this.getString(columnList, 9);
+        this.arrangerSlug = this.getString(columnList, 10);
     }
 
     public ContestResultPieceDao asResultPiece() {

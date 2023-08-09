@@ -29,7 +29,7 @@ import uk.co.bbr.services.security.dao.UserRole;
 import uk.co.bbr.web.LoginMixin;
 import uk.co.bbr.web.security.filter.SecurityFilter;
 
-import javax.mail.internet.MimeMessage;
+import jakarta.mail.internet.MimeMessage;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
@@ -286,6 +286,6 @@ class SignupWebTests implements LoginMixin {
         // assert
         assertEquals(HttpStatus.FOUND, response.getStatusCode());
 
-        assertTrue(Objects.requireNonNull(response.getHeaders().get("Location")).get(0).endsWith("/acc/login-pro"));
+        assertTrue(Objects.requireNonNull(response.getHeaders().get("Location")).get(0).endsWith("/"));
     }
 }

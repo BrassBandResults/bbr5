@@ -30,7 +30,7 @@ public class SignUpController {
             return "redirect:/acc/register";
         }
 
-        return "redirect:/acc/login-pro";
+        return "redirect:/";
     }
 
     @GetMapping("/acc/register")

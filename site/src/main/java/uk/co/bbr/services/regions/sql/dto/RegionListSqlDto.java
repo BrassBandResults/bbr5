@@ -18,9 +18,9 @@ public class RegionListSqlDto extends AbstractSqlDto {
     private final Integer extinctBandsCount;
 
     public RegionListSqlDto(Object[] columnList) {
-        this.regionSlug = (String)columnList[0];
-        this.regionName = (String)columnList[1];
-        this.countryCode = (String)columnList[2];
+        this.regionSlug = this.getString(columnList, 0);
+        this.regionName = this.getString(columnList, 1);
+        this.countryCode = this.getString(columnList, 2);
         if (columnList[3] != null) {
             this.activeBandsCount = this.getInteger(columnList, 3);
         }

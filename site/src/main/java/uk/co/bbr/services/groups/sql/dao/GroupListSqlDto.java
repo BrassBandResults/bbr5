@@ -17,8 +17,8 @@ public class GroupListSqlDto extends AbstractSqlDto {
     private final Integer contestCount;
 
     public GroupListSqlDto(Object[] columnList) {
-        this.groupName = (String)columnList[0];
-        this.groupSlug = (String)columnList[1];
+        this.groupName = this.getString(columnList, 0);
+        this.groupSlug = this.getString(columnList, 1);
         if (columnList[2] != null) {
             this.eventCount = this.getInteger(columnList, 2);
         }

@@ -32,16 +32,16 @@ public class RegionBandSqlDto extends AbstractSqlDto {
 
 
     public RegionBandSqlDto(Object[] columnList) {
-        this.bandSlug = (String)columnList[0];
-        this.bandName = (String)columnList[1];
+        this.bandSlug = this.getString(columnList, 0);
+        this.bandName = this.getString(columnList, 1);
         this.bandStatus =  this.getInteger(columnList, 2);
-        this.sectionSlug = (String)columnList[3];
-        this.sectionName = (String)columnList[4];
-        this.sectionTranslationKey = (String)columnList[5];
-        this.sectionMapShortCode = (String)columnList[6];
-        this.bandLongitude = (String)columnList[7];
-        this.bandLatitude = (String)columnList[8];
-        this.bandWebsite = (String)columnList[9];
+        this.sectionSlug = this.getString(columnList, 3);
+        this.sectionName = this.getString(columnList, 4);
+        this.sectionTranslationKey = this.getString(columnList, 5);
+        this.sectionMapShortCode = this.getString(columnList, 6);
+        this.bandLongitude = this.getString(columnList, 7);
+        this.bandLatitude = this.getString(columnList, 8);
+        this.bandWebsite = this.getString(columnList, 9);
 
         this.sunRehearsal = this.fetchRehearsal(columnList[10]);
         this.monRehearsal = this.fetchRehearsal(columnList[11]);

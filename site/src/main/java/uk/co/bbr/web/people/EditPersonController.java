@@ -17,7 +17,7 @@ import uk.co.bbr.services.pieces.PieceService;
 import uk.co.bbr.web.people.forms.PersonEditForm;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.Optional;
 
 @Controller

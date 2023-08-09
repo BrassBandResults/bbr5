@@ -17,10 +17,10 @@ public class PeopleWinnersSqlDto extends AbstractSqlDto {
     private final Integer contests;
 
     public PeopleWinnersSqlDto(Object[] columnList) {
-        this.personSlug = (String)columnList[0];
-        this.personSurname = (String)columnList[1];
-        this.personFirstNames = (String)columnList[2];
-        this.personKnownFor = (String)columnList[3];
+        this.personSlug = this.getString(columnList, 0);
+        this.personSurname = this.getString(columnList, 1);
+        this.personFirstNames = this.getString(columnList, 2);
+        this.personKnownFor = this.getString(columnList, 3);
         this.wins = this.getInteger(columnList, 4);
         this.contests = this.getInteger(columnList, 5);
     }

@@ -16,8 +16,8 @@ public class ContestListForRegionSqlDto extends AbstractSqlDto {
     private final Integer eventCount;
 
     public ContestListForRegionSqlDto(Object[] columnList) {
-        this.contestName = (String)columnList[0];
-        this.contestSlug = (String)columnList[1];
+        this.contestName = this.getString(columnList, 0);
+        this.contestSlug = this.getString(columnList, 1);
         this.eventCount = this.getInteger(columnList, 2);
     }
 

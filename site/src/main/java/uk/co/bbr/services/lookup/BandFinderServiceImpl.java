@@ -9,7 +9,7 @@ import uk.co.bbr.services.framework.mixins.SlugTools;
 import uk.co.bbr.services.lookup.sql.FinderSql;
 import uk.co.bbr.services.lookup.sql.dto.FinderSqlDto;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;

@@ -46,7 +46,7 @@ public class UserAdjudicationsSqlDto extends AbstractSqlDto {
         } else {
             this.resultPosition = null;
         }
-        this.resultPositionType = (String)columnList[11];
+        this.resultPositionType = this.getString(columnList, 11);
     }
 
     public ContestResultDao buildContestResultDao() {

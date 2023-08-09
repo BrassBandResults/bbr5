@@ -5,8 +5,8 @@ import uk.co.bbr.services.bands.sql.dto.BandListSqlDto;
 import uk.co.bbr.services.bands.sql.dto.BandWinnersSqlDto;
 import uk.co.bbr.services.framework.sql.SqlExec;
 
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
 import java.math.BigInteger;
 import java.util.List;
 
@@ -60,7 +60,9 @@ public class BandSql {
             if (!queryResults.isEmpty()) {
                 if (queryResults.get(0) instanceof BigInteger) {
                     count = ((BigInteger) queryResults.get(0)).intValue();
-                } else {
+                } else if (queryResults.get(0) instanceof Long) {
+                    count = ((Long)queryResults.get(0)).intValue();
+                }else {
                     count = (Integer)queryResults.get(0);
                 }
             }

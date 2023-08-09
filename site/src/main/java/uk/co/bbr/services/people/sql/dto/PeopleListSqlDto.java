@@ -25,11 +25,11 @@ public class PeopleListSqlDto extends AbstractSqlDto {
 
 
     public PeopleListSqlDto(Object[] columnList) {
-        this.personSurname = (String)columnList[0];
-        this.personFirstNames = (String)columnList[1];
-        this.personSlug = (String)columnList[2];
-        this.personSuffix = (String)columnList[3];
-        this.personKnownFor = (String)columnList[4];
+        this.personSurname = this.getString(columnList, 0);
+        this.personFirstNames = this.getString(columnList, 1);
+        this.personSlug = this.getString(columnList, 2);
+        this.personSuffix = this.getString(columnList, 3);
+        this.personKnownFor = this.getString(columnList, 4);
         if (columnList[5] != null) {
             this.conductor1Count = this.getInteger(columnList, 5);
         }

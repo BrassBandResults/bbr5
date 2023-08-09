@@ -5,7 +5,7 @@ import uk.co.bbr.services.framework.sql.SqlExec;
 import uk.co.bbr.services.years.sql.dto.ContestsForYearEventSqlDto;
 import uk.co.bbr.services.years.sql.dto.YearListEntrySqlDto;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import java.util.List;
 
 @UtilityClass

@@ -7,10 +7,10 @@ import org.apache.commons.lang3.RandomStringUtils;
 import uk.co.bbr.services.framework.AbstractDao;
 import uk.co.bbr.services.security.types.ContestHistoryVisibility;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.xml.bind.DatatypeConverter;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.xml.bind.DatatypeConverter;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;

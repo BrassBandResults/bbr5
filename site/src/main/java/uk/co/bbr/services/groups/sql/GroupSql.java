@@ -7,8 +7,8 @@ import uk.co.bbr.services.framework.sql.SqlExec;
 import uk.co.bbr.services.groups.sql.dao.ContestListSqlDto;
 import uk.co.bbr.services.groups.sql.dao.GroupListSqlDto;
 
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
 import java.math.BigInteger;
 import java.util.List;
 
