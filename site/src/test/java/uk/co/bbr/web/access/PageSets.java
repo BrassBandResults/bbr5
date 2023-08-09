@@ -173,7 +173,6 @@ public abstract class PageSets {
         pageList.add("/faq");
         pageList.add("/feedback/thanks?next=/");
         pageList.add("/leaderboard");
-        pageList.add("/myresults/owner");
         pageList.add("/people");
         pageList.add("/people/R");
         pageList.add("/people/david-roberts");

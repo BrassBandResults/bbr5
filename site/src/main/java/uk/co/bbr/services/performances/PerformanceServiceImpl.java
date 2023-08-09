@@ -13,6 +13,7 @@ import uk.co.bbr.services.performances.dto.CompetitorDto;
 import uk.co.bbr.services.performances.repo.PerformanceRepository;
 import uk.co.bbr.services.performances.sql.PerformancesSql;
 import uk.co.bbr.services.performances.sql.dto.PerformanceListPieceSqlDto;
+import uk.co.bbr.services.performances.sql.dto.PerformanceListSqlDto;
 import uk.co.bbr.services.performances.sql.dto.PiecePerformanceSqlDto;
 import uk.co.bbr.services.performances.types.PerformanceStatus;
 import uk.co.bbr.services.pieces.dao.PieceDao;
@@ -40,12 +41,24 @@ public class PerformanceServiceImpl implements PerformanceService, SlugTools {
 
     @Override
     public List<PerformanceDao> fetchPendingPerformancesForUser(SiteUserDao user) {
-        return this.performanceRepository.fetchPendingUserPerformances(user.getUsercode());
+        List<PerformanceListSqlDto> performancesSql = PerformancesSql.selectUserPerformanceList(this.entityManager, user.getUsercode(), "P");
+
+        List<PerformanceDao> performances = new ArrayList<>();
+        for (PerformanceListSqlDto eachPerformance : performancesSql){
+            performances.add(eachPerformance.asPerformance());
+        }
+
+        return performances;
     }
 
     @Override
     public List<PerformanceDao> fetchApprovedPerformancesForUser(SiteUserDao user) {
-        List<PerformanceDao> performances = this.performanceRepository.fetchApprovedUserPerformances(user.getUsercode());
+        List<PerformanceListSqlDto> performancesSql = PerformancesSql.selectUserPerformanceList(this.entityManager, user.getUsercode(), "A");
+
+        List<PerformanceDao> performances = new ArrayList<>();
+        for (PerformanceListSqlDto eachPerformance : performancesSql){
+            performances.add(eachPerformance.asPerformance());
+        }
 
         List<PerformanceListPieceSqlDto> setTests = PerformancesSql.selectSetTestPiecesForPerformanceList(this.entityManager, user.getUsercode());
         List<PerformanceListPieceSqlDto> ownChoice = PerformancesSql.selectOwnChoicePiecesForPerformanceList(this.entityManager, user.getUsercode());

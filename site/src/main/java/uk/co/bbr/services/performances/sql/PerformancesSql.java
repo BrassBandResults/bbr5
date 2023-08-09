@@ -1,15 +1,12 @@
 package uk.co.bbr.services.performances.sql;
 
 import lombok.experimental.UtilityClass;
-import uk.co.bbr.services.bands.sql.dto.BandListSqlDto;
-import uk.co.bbr.services.bands.sql.dto.BandWinnersSqlDto;
 import uk.co.bbr.services.framework.sql.SqlExec;
 import uk.co.bbr.services.performances.sql.dto.PerformanceListPieceSqlDto;
+import uk.co.bbr.services.performances.sql.dto.PerformanceListSqlDto;
 import uk.co.bbr.services.performances.sql.dto.PiecePerformanceSqlDto;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
-import java.math.BigInteger;
 import java.util.List;
 
 @UtilityClass
@@ -57,6 +54,26 @@ public class PerformancesSql {
 
     public static List<PerformanceListPieceSqlDto> selectOwnChoicePiecesForPerformanceList(EntityManager entityManager, String username) {
         return SqlExec.execute(entityManager, RESULT_PIECE_SQL, username, PerformanceListPieceSqlDto.class);
+    }
+
+    private static final String PERFORMANCES_SQL = """
+        SELECT e.date_of_event, e.date_resolution, c.name as contest_name, c.slug as contest_slug,
+               r.band_name as competed_as, b.name as band_name, b.slug as band_slug, reg.name as region_name, reg.slug as region_slug, reg.country_code,
+               con.surname, con.first_names, con.slug as conductor_slug, r.result_position, r.result_position_type, pch.instrument, r.id
+        FROM personal_contest_history pch
+        INNER JOIN contest_result r ON r.id = pch.result_id
+        INNER JOIN contest_event e ON e.id = r.contest_event_id
+        INNER JOIN contest c ON c.id = e.contest_id
+        INNER JOIN band b ON b.id = r.band_id
+        INNER JOIN region reg ON reg.id = b.region_id
+        LEFT OUTER JOIN person con ON con.id = r.conductor_id
+        WHERE pch.created_by = ?1
+        AND pch.status = ?2
+        ORDER BY e.date_of_event DESC
+        """;
+
+    public static List<PerformanceListSqlDto> selectUserPerformanceList(EntityManager entityManager, String username, String approvedOrPending) {
+        return SqlExec.execute(entityManager, PERFORMANCES_SQL, username, approvedOrPending, PerformanceListSqlDto.class);
     }
 }
 
