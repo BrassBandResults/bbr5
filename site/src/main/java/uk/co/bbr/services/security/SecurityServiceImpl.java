@@ -181,4 +181,30 @@ public class SecurityServiceImpl implements SecurityService {
 
         this.bbrUserRepository.saveAndFlush(user);
     }
+
+    @Override
+    public void addOnePoint(String userCode) {
+        Optional<SiteUserDao> matchingUserOptional = this.bbrUserRepository.fetchByUsercode(userCode);
+        if (matchingUserOptional.isEmpty()){
+            throw NotFoundException.userNotFoundByUsercode(userCode);
+        }
+
+        SiteUserDao matchingUser = matchingUserOptional.get();
+
+        matchingUser.addOnePoint();
+        this.bbrUserRepository.saveAndFlush(matchingUser);
+    }
+
+    @Override
+    public void deductOnePoint(String userCode) {
+        Optional<SiteUserDao> matchingUserOptional = this.bbrUserRepository.fetchByUsercode(userCode);
+        if (matchingUserOptional.isEmpty()){
+            throw NotFoundException.userNotFoundByUsercode(userCode);
+        }
+
+        SiteUserDao matchingUser = matchingUserOptional.get();
+
+        matchingUser.deductOnePoint();
+        this.bbrUserRepository.saveAndFlush(matchingUser);
+    }
 }

@@ -25,4 +25,8 @@ public interface SecurityService {
     boolean userExists(String username);
 
     void update(SiteUserDao user);
+
+    void addOnePoint(String userCode);
+
+    void deductOnePoint(String userCode);
 }

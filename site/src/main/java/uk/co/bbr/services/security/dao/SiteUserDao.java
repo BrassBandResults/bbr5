@@ -193,4 +193,15 @@ public class SiteUserDao extends AbstractDao {
     public boolean isSuperuser() {
         return "S".equals(this.accessLevel) || "A".equals(this.accessLevel);
     }
+
+    public void addOnePoint() {
+        this.points += 1;
+    }
+
+    public void deductOnePoint() {
+        this.points -= 1;
+        if (this.points < 0) {
+            this.points = 0;
+        }
+    }
 }

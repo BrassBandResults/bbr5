@@ -19,6 +19,7 @@ import uk.co.bbr.services.people.PersonService;
 import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.performances.PerformanceService;
 import uk.co.bbr.services.performances.dao.PerformanceDao;
+import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.web.events.forms.ResultEditForm;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
@@ -34,6 +35,7 @@ public class DeleteResultController {
     private final ResultService resultService;
     private final PerformanceService performanceService;
     private final ContestEventService contestEventService;
+    private final SecurityService securityService;
 
     @IsBbrMember
     @GetMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}/result/{resultId:\\d+}/delete")
@@ -66,6 +68,11 @@ public class DeleteResultController {
         }
 
         this.resultService.delete(result.get());
+
+        String currentUsername = this.securityService.getCurrentUsername();
+        if (result.get().getCreatedBy().equals(currentUsername)) {
+            this.securityService.deductOnePoint(currentUsername);
+        }
 
         return "redirect:/contests/{contestSlug}/{contestEventDate}";
     }

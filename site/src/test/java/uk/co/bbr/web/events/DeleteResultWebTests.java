@@ -99,7 +99,11 @@ class DeleteResultWebTests implements LoginMixin {
     }
 
     @Test
-    void testDeleteResultWithNoPerformancesSucceeds() {
+    void testDeleteResultWithNoPerformancesSucceeds() throws AuthenticationFailedException {
+        loginTestUser(this.securityService, this.jwtService, TestUser.TEST_MEMBER);
+        SiteUserDao currentUser = this.securityService.getCurrentUser();
+        int pointsBefore = currentUser.getPoints();
+
         Optional<ContestResultDao> resultBeforeDelete = this.contestResultService.fetchById(1L);
         assertTrue(resultBeforeDelete.isPresent());
 
@@ -110,6 +114,9 @@ class DeleteResultWebTests implements LoginMixin {
 
         Optional<ContestResultDao> resultAfterDelete = this.contestResultService.fetchById(1L);
         assertTrue(resultAfterDelete.isEmpty());
+
+        currentUser = this.securityService.getCurrentUser();
+        assertEquals(pointsBefore - 1, currentUser.getPoints());
     }
 
     @Test
