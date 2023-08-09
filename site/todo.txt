@@ -10,7 +10,6 @@ Upgrade to pro - record stripe details on user
 Add placeholder text to form fields
 
 Support for instruments on contest history for pro users
-Add privacy settings for personal contest history
 Add date ranges for personal contest history
 Fetch pending performances works out ones that aren't in history and aren't rejected
 
@@ -45,6 +44,8 @@ keywords for SEO in headers
 
 Search for location on map and give bands and venues within specific range of it
 Filter map by section
+
+Performance improvement on performances list
 
 Download band csv
 Download conductor csv
