@@ -13,7 +13,6 @@ Support for instruments on contest history for pro users
 Add privacy settings for personal contest history
 Add date ranges for personal contest history
 Fetch pending performances works out ones that aren't in history and aren't rejected
-Performances shows pieces played
 
 Multiple map icons on same location
 

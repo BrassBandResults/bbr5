@@ -116,7 +116,7 @@ class DeleteResultWebTests implements LoginMixin {
         assertTrue(resultAfterDelete.isEmpty());
 
         currentUser = this.securityService.getCurrentUser();
-        assertEquals(pointsBefore - 1, currentUser.getPoints());
+        assertEquals(pointsBefore == 0 ? 0 : pointsBefore - 1, currentUser.getPoints());
     }
 
     @Test

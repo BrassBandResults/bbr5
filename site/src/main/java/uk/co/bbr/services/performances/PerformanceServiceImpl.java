@@ -12,6 +12,7 @@ import uk.co.bbr.services.performances.dto.CompetitorBandDto;
 import uk.co.bbr.services.performances.dto.CompetitorDto;
 import uk.co.bbr.services.performances.repo.PerformanceRepository;
 import uk.co.bbr.services.performances.sql.PerformancesSql;
+import uk.co.bbr.services.performances.sql.dto.PerformanceListPieceSqlDto;
 import uk.co.bbr.services.performances.sql.dto.PiecePerformanceSqlDto;
 import uk.co.bbr.services.performances.types.PerformanceStatus;
 import uk.co.bbr.services.pieces.dao.PieceDao;
@@ -44,7 +45,31 @@ public class PerformanceServiceImpl implements PerformanceService, SlugTools {
 
     @Override
     public List<PerformanceDao> fetchApprovedPerformancesForUser(SiteUserDao user) {
-        return this.performanceRepository.fetchApprovedUserPerformances(user.getUsercode());
+        List<PerformanceDao> performances = this.performanceRepository.fetchApprovedUserPerformances(user.getUsercode());
+
+        List<PerformanceListPieceSqlDto> setTests = PerformancesSql.selectSetTestPiecesForPerformanceList(this.entityManager, user.getUsercode());
+        List<PerformanceListPieceSqlDto> ownChoice = PerformancesSql.selectOwnChoicePiecesForPerformanceList(this.entityManager, user.getUsercode());
+
+        for (PerformanceDao eachPerformance: performances) {
+            if (eachPerformance.getResult().getContestEvent().getPieces() == null) {
+                eachPerformance.getResult().getContestEvent().setPieces(new ArrayList<>());
+            }
+            if (eachPerformance.getResult().getPieces() == null) {
+                eachPerformance.getResult().setPieces(new ArrayList<>());
+            }
+            for  (PerformanceListPieceSqlDto eachPiece : setTests) {
+                if (eachPerformance.getResult().getId().equals(eachPiece.getResultId())) {
+                    eachPerformance.getResult().getContestEvent().getPieces().add(eachPiece.asEventPiece());
+                }
+            }
+            for  (PerformanceListPieceSqlDto eachPiece : ownChoice) {
+                if (eachPerformance.getResult().getId().equals(eachPiece.getResultId())) {
+                    eachPerformance.getResult().getPieces().add(eachPiece.asResultPiece());
+                }
+            }
+        }
+
+        return performances;
     }
 
     @Override

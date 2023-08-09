@@ -4,6 +4,7 @@ import lombok.experimental.UtilityClass;
 import uk.co.bbr.services.bands.sql.dto.BandListSqlDto;
 import uk.co.bbr.services.bands.sql.dto.BandWinnersSqlDto;
 import uk.co.bbr.services.framework.sql.SqlExec;
+import uk.co.bbr.services.performances.sql.dto.PerformanceListPieceSqlDto;
 import uk.co.bbr.services.performances.sql.dto.PiecePerformanceSqlDto;
 
 import javax.persistence.EntityManager;
@@ -31,6 +32,31 @@ public class PerformancesSql {
 
     public static List<PiecePerformanceSqlDto> selectPerformancesOfPiece(EntityManager entityManager, String username, Long pieceId) {
         return SqlExec.execute(entityManager, PIECE_PERFORMANCES_SQL, username, pieceId, PiecePerformanceSqlDto.class);
+    }
+
+    private static final String EVENT_PIECE_SQL = """
+        SELECT r.id, p.name, p.slug, p.piece_year
+        FROM contest_event_test_piece etp
+        INNER JOIN piece p ON p.id = etp.piece_id
+        INNER JOIN contest_event e ON e.id = etp.contest_event_id
+        INNER JOIN contest_result r ON e.id = r.contest_event_id
+        INNER JOIN personal_contest_history pch ON r.id = pch.result_id
+        WHERE pch.created_by = ?1""";
+
+    public static List<PerformanceListPieceSqlDto> selectSetTestPiecesForPerformanceList(EntityManager entityManager, String username) {
+        return SqlExec.execute(entityManager, EVENT_PIECE_SQL, username, PerformanceListPieceSqlDto.class);
+    }
+
+    private static final String RESULT_PIECE_SQL = """
+        SELECT r.id, p.name, p.slug, p.piece_year
+        FROM contest_result_test_piece rtp
+        INNER JOIN piece p ON p.id = rtp.piece_id
+        INNER JOIN contest_result r ON r.id = rtp.contest_result_id
+        INNER JOIN personal_contest_history pch ON r.id = pch.result_id
+        WHERE pch.created_by = ?1""";
+
+    public static List<PerformanceListPieceSqlDto> selectOwnChoicePiecesForPerformanceList(EntityManager entityManager, String username) {
+        return SqlExec.execute(entityManager, RESULT_PIECE_SQL, username, PerformanceListPieceSqlDto.class);
     }
 }
 
