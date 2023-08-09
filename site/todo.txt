@@ -18,6 +18,8 @@ Multiple map icons on same location
 
 csrf
 
+favicon.ico
+
 === Fast Followers Complete ===
 
 Maps don't 500 where lat/lng is missing
