@@ -66,6 +66,7 @@ class BandEditWebTests implements LoginMixin {
         RegionDao yorkshire = this.regionService.fetchBySlug("yorkshire").get();
 
         this.bandService.create("Grimethorpe", yorkshire);
+        this.bandService.create("csrf band", yorkshire);
         this.bandService.create("Grimley", yorkshire);
 
         logoutTestUser();
@@ -226,6 +227,36 @@ class BandEditWebTests implements LoginMixin {
 
         // assert
         assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
+    }
+
+    void testSubmitEditBandPageFailsWithNoCsrfToken() {
+        // arrange
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+        Optional<RegionDao> northWest = this.regionService.fetchBySlug("north-west");
+        assertTrue(northWest.isPresent());
+
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+        map.add("name", "Grimethorpe");
+        map.add("region", String.valueOf(northWest.get().getId()));
+        map.add("latitude", " 1.23 ");
+        map.add("longitude", " 4.56 ");
+        map.add("website", " https://BrassBandResults.co.uk ");
+        map.add("status", "3");
+        map.add("startDate", "1990-01-01");
+        map.add("endDate", "2000-02-02");
+        map.add("notes", "  These are the notes  ");
+
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
+
+        // act
+        ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/bands/csrf-band/edit", request, String.class);
+
+        // assert
+        assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
+
+        assertNotNull(response.getBody());
     }
 }
 
