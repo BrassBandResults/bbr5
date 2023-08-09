@@ -45,8 +45,6 @@ keywords for SEO in headers
 Search for location on map and give bands and venues within specific range of it
 Filter map by section
 
-Performance improvement on performances list
-
 Download band csv
 Download conductor csv
 
