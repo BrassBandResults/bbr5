@@ -5,7 +5,7 @@
     <div class="container">
         <div class="row">
             <div class="col">
-                <div sec:authorize="hasRole('BBR_SUPERUSER')">
+                <div th:if="${ContestEvent.canEdit}">
                     <span th:replace="buttons/edit.html :: editEvent(${ContestEvent})"></span>
                     <span th:replace="buttons/edit.html :: editEventSetTests(${ContestEvent})"></span>
                     <span th:replace="buttons/edit.html :: editEventAdjudicators(${ContestEvent})"></span>
