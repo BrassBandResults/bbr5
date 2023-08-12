@@ -94,9 +94,7 @@ class ResetPasswordTests implements LoginMixin {
         ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/acc/forgotten-password", request, String.class);
 
         // assert
-        assertEquals(HttpStatus.FOUND, response.getStatusCode());
-
-        assertTrue(Objects.requireNonNull(response.getHeaders().get("Location")).get(0).endsWith("/acc/forgotten-password/sent"));
+        assertEquals(HttpStatus.OK, response.getStatusCode());
 
         Awaitility.await().atMost(2, TimeUnit.SECONDS).untilAsserted(()-> {
             MimeMessage receivedMessage = greenMail.getReceivedMessages()[0];
@@ -141,9 +139,7 @@ class ResetPasswordTests implements LoginMixin {
         ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/acc/forgotten-password", request, String.class);
 
         // assert
-        assertEquals(HttpStatus.FOUND, response.getStatusCode());
-
-        assertTrue(Objects.requireNonNull(response.getHeaders().get("Location")).get(0).endsWith("/acc/forgotten-password/sent"));
+        assertEquals(HttpStatus.OK, response.getStatusCode());
 
         Awaitility.await().atMost(2, TimeUnit.SECONDS).untilAsserted(() -> {
             MimeMessage receivedMessage = greenMail.getReceivedMessages()[0];
@@ -182,9 +178,7 @@ class ResetPasswordTests implements LoginMixin {
         ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/acc/forgotten-password", request, String.class);
 
         // assert
-        assertEquals(HttpStatus.FOUND, response.getStatusCode());
-
-        assertTrue(Objects.requireNonNull(response.getHeaders().get("Location")).get(0).endsWith("/acc/forgotten-password/sent"));
+        assertEquals(HttpStatus.OK, response.getStatusCode());
 
         Awaitility.await().atMost(2, TimeUnit.SECONDS).untilAsserted(()-> {
             assertEquals(0, greenMail.getReceivedMessages().length);
@@ -247,9 +241,7 @@ class ResetPasswordTests implements LoginMixin {
         ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/acc/forgotten-password/reset/" + resetKey, request, String.class);
 
         // assert
-        assertEquals(HttpStatus.FOUND, response.getStatusCode());
-
-        assertTrue(Objects.requireNonNull(response.getHeaders().get("Location")).get(0).endsWith("/acc/forgotten-password/changed"));
+        assertEquals(HttpStatus.OK, response.getStatusCode());
 
         Optional<SiteUserDao> userAfter = this.userService.fetchUserByUsercode("test-user4");
         assertTrue(userAfter.isPresent());

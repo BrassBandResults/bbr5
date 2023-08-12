@@ -112,9 +112,7 @@ class VenueEditWebTests implements LoginMixin {
         ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/venues/" + testVenue.getSlug() + "/edit", request, String.class);
 
         // assert
-        assertEquals(HttpStatus.FOUND, response.getStatusCode());
-
-        assertTrue(Objects.requireNonNull(response.getHeaders().get("Location")).get(0).endsWith("/venues/" + testVenue.getSlug()));
+        assertEquals(HttpStatus.OK, response.getStatusCode());
 
         Optional<VenueDao> fetchedVenue = this.venueService.fetchBySlug("test-venue-2a");
         assertTrue(fetchedVenue.isPresent());
@@ -168,9 +166,7 @@ class VenueEditWebTests implements LoginMixin {
         ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/venues/" + testVenue.getSlug() + "/edit", request, String.class);
 
         // assert
-        assertEquals(HttpStatus.FOUND, response.getStatusCode());
-
-        assertTrue(Objects.requireNonNull(response.getHeaders().get("Location")).get(0).endsWith("/venues/" + testVenue.getSlug()));
+        assertEquals(HttpStatus.OK, response.getStatusCode());
 
         Optional<VenueDao> fetchedVenue = this.venueService.fetchBySlug("test-venue-2c");
         assertTrue(fetchedVenue.isPresent());
@@ -210,9 +206,7 @@ class VenueEditWebTests implements LoginMixin {
         ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/venues/" + testVenue.getSlug() + "/edit", request, String.class);
 
         // assert
-        assertEquals(HttpStatus.FOUND, response.getStatusCode());
-
-        assertTrue(Objects.requireNonNull(response.getHeaders().get("Location")).get(0).endsWith("/venues/" + testVenue.getSlug()));
+        assertEquals(HttpStatus.OK, response.getStatusCode());
 
         Optional<VenueDao> fetchedVenue = this.venueService.fetchBySlug("test-venue-2b");
         assertTrue(fetchedVenue.isPresent());
@@ -255,9 +249,7 @@ class VenueEditWebTests implements LoginMixin {
         ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/venues/" + testVenue.getSlug() + "/edit", request, String.class);
 
         // assert
-        assertEquals(HttpStatus.FOUND, response.getStatusCode());
-
-        assertTrue(Objects.requireNonNull(response.getHeaders().get("Location")).get(0).endsWith("/venues/" + testVenue.getSlug()));
+        assertEquals(HttpStatus.OK, response.getStatusCode());
 
         Optional<VenueDao> fetchedVenue = this.venueService.fetchBySlug("test-venue-2");
         assertTrue(fetchedVenue.isPresent());

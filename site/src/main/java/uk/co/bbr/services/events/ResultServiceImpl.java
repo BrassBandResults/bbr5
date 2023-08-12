@@ -295,6 +295,11 @@ public class ResultServiceImpl implements ResultService {
 
     @Override
     public void workOutCanEdit(ContestEventDao contestEvent, List<ContestResultDao> eventResults) {
+        if (eventResults.isEmpty()) {
+            contestEvent.setCanEdit(true);
+            return;
+        }
+
         SiteUserDao currentUser = this.securityService.getCurrentUser();
         boolean canEditAnyResult = false;
         for (ContestResultDao result : eventResults){

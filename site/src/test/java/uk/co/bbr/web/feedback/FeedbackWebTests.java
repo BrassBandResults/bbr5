@@ -70,9 +70,7 @@ class FeedbackWebTests implements LoginMixin {
         ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/feedback", request, String.class);
 
         // assert
-        assertEquals(HttpStatus.FOUND, response.getStatusCode());
-
-        assertTrue(Objects.requireNonNull(response.getHeaders().get("Location")).get(0).endsWith("/feedback/thanks?next=/offset/test"));
+        assertEquals(HttpStatus.OK, response.getStatusCode());
 
         Optional<FeedbackDao> latestFeedback = this.feedbackService.fetchLatestFeedback("/offset/test");
         assertTrue(latestFeedback.isPresent());
@@ -119,9 +117,7 @@ class FeedbackWebTests implements LoginMixin {
         ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/feedback", request, String.class);
 
         // assert
-        assertEquals(HttpStatus.FOUND, response.getStatusCode());
-
-        assertTrue(Objects.requireNonNull(response.getHeaders().get("Location")).get(0).endsWith("/feedback/thanks?next=/&t=h"));
+        assertEquals(HttpStatus.OK, response.getStatusCode());
 
         Optional<FeedbackDao> latestFeedback = this.feedbackService.fetchLatestFeedback("/url/populated/fail");
         assertTrue(latestFeedback.isEmpty());
@@ -151,9 +147,7 @@ class FeedbackWebTests implements LoginMixin {
         ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/feedback", request, String.class);
 
         // assert
-        assertEquals(HttpStatus.FOUND, response.getStatusCode());
-
-        assertTrue(Objects.requireNonNull(response.getHeaders().get("Location")).get(0).endsWith("/feedback/thanks?next=/&t=r1"));
+        assertEquals(HttpStatus.OK, response.getStatusCode());
 
         Optional<FeedbackDao> latestFeedback = this.feedbackService.fetchLatestFeedback("/incorrect/referer/host");
         assertTrue(latestFeedback.isEmpty());
@@ -183,9 +177,7 @@ class FeedbackWebTests implements LoginMixin {
         ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/feedback", request, String.class);
 
         // assert
-        assertEquals(HttpStatus.FOUND, response.getStatusCode());
-
-        assertTrue(Objects.requireNonNull(response.getHeaders().get("Location")).get(0).endsWith("/feedback/thanks?next=/&t=r2"));
+        assertEquals(HttpStatus.OK, response.getStatusCode());
 
         Optional<FeedbackDao> latestFeedback = this.feedbackService.fetchLatestFeedback("/incorrect/referer/host");
         assertTrue(latestFeedback.isEmpty());

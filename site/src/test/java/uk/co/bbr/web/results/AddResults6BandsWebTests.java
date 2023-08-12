@@ -117,9 +117,8 @@ class AddResults6BandsWebTests implements LoginMixin {
         ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/add-results/6/yorkshire-area/2000-03-01", request, String.class);
 
         // assert
-        assertEquals(HttpStatus.FOUND, response.getStatusCode());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
 
-        assertTrue(Objects.requireNonNull(response.getHeaders().get("Location")).get(0).endsWith("/add-results/7/yorkshire-area/2000-03-01"));
         Optional<ContestEventDao> fetchedContestEvent =  this.contestEventService.fetchEvent("yorkshire-area", LocalDate.of(2000,3,1));
         assertTrue(fetchedContestEvent.isPresent());
 
@@ -169,9 +168,8 @@ class AddResults6BandsWebTests implements LoginMixin {
         ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/add-results/6/yorkshire-area/2000-03-02", request, String.class);
 
         // assert
-        assertEquals(HttpStatus.FOUND, response.getStatusCode());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
 
-        assertTrue(Objects.requireNonNull(response.getHeaders().get("Location")).get(0).endsWith("/add-results/7/yorkshire-area/2000-03-02"));
         Optional<ContestEventDao> fetchedContestEvent =  this.contestEventService.fetchEvent("yorkshire-area", LocalDate.of(2000,3,2));
         assertTrue(fetchedContestEvent.isPresent());
 

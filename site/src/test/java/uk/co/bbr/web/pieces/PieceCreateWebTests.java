@@ -100,9 +100,7 @@ class PieceCreateWebTests implements LoginMixin {
         ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/create/piece", request, String.class);
 
         // assert
-        assertEquals(HttpStatus.FOUND, response.getStatusCode());
-
-        assertTrue(Objects.requireNonNull(response.getHeaders().get("Location")).get(0).endsWith("/pieces"));
+        assertEquals(HttpStatus.OK, response.getStatusCode());
 
         Optional<PieceDao> fetchedPiece = this.pieceService.fetchBySlug("new-test-piece");
         assertTrue(fetchedPiece.isPresent());

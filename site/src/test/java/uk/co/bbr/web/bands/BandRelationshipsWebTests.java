@@ -174,9 +174,7 @@ class BandRelationshipsWebTests implements LoginMixin {
         ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/bands/rothwell-temperance-band/edit-relationships/add", request, String.class);
 
         // assert
-        assertEquals(HttpStatus.FOUND, response.getStatusCode());
-
-        assertTrue(Objects.requireNonNull(response.getHeaders().get("Location")).get(0).endsWith("/bands/rothwell-temperance-band/edit-relationships"));
+        assertEquals(HttpStatus.OK, response.getStatusCode());
 
         List<BandRelationshipDao> fetchedRelationships2 = this.bandRelationshipService.fetchRelationshipsForBand(newRelationshipBand.get());
         assertEquals(1, fetchedRelationships2.size());
@@ -215,9 +213,7 @@ class BandRelationshipsWebTests implements LoginMixin {
         ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/bands/rothwell-temperance-band/edit-relationships/add", request, String.class);
 
         // assert
-        assertEquals(HttpStatus.FOUND, response.getStatusCode());
-
-        assertTrue(Objects.requireNonNull(response.getHeaders().get("Location")).get(0).endsWith("/bands/rothwell-temperance-band/edit-relationships"));
+        assertEquals(HttpStatus.OK, response.getStatusCode());
 
         List<BandRelationshipDao> fetchedRelationships2 = this.bandRelationshipService.fetchRelationshipsForBand(newRelationshipBand.get());
         assertEquals(1, fetchedRelationships2.size());

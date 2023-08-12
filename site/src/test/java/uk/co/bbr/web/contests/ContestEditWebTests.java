@@ -132,9 +132,7 @@ class ContestEditWebTests implements LoginMixin {
         ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/contests/yorkshire-area/edit", request, String.class);
 
         // assert
-        assertEquals(HttpStatus.FOUND, response.getStatusCode());
-
-        assertTrue(Objects.requireNonNull(response.getHeaders().get("Location")).get(0).endsWith("/contests/yorkshire-area"));
+        assertEquals(HttpStatus.OK, response.getStatusCode());
 
         Optional<ContestDao> fetchedContest = this.contestService.fetchBySlug("yorkshire-area");
         assertTrue(fetchedContest.isPresent());

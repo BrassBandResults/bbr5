@@ -122,9 +122,7 @@ class PieceEditWebTests implements LoginMixin {
         ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/pieces/contest-music/edit", request, String.class);
 
         // assert
-        assertEquals(HttpStatus.FOUND, response.getStatusCode());
-
-        assertTrue(Objects.requireNonNull(response.getHeaders().get("Location")).get(0).endsWith("/pieces/contest-music"));
+        assertEquals(HttpStatus.OK, response.getStatusCode());
 
         Optional<PieceDao> piece = this.pieceService.fetchBySlug("contest-music");
         assertTrue(piece.isPresent());

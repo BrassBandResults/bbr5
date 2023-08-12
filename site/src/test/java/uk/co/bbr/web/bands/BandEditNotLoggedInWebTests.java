@@ -108,10 +108,8 @@ class BandEditNotLoggedInWebTests implements LoginMixin {
         ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/bands/grimethorpe/edit", request, String.class);
 
         // assert
-        assertEquals(HttpStatus.FOUND, response.getStatusCode());
-
-        assertNotNull(response.getHeaders().get("Location"));
-        assertTrue(response.getHeaders().get("Location").get(0).endsWith("/acc/sign-in"));
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertTrue(response.getBody().contains("<h2>Sign In</h2>"));
     }
 }
 

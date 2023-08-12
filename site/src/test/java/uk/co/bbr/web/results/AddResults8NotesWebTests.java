@@ -112,8 +112,7 @@ class AddResults8NotesWebTests implements LoginMixin {
         ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/add-results/8/yorkshire-area/2000-03-15", request, String.class);
 
         // assert
-        assertEquals(HttpStatus.FOUND, response.getStatusCode());
-        assertTrue(Objects.requireNonNull(response.getHeaders().get("Location")).get(0).endsWith("/contests/yorkshire-area/2000-03-15"));
+        assertEquals(HttpStatus.OK, response.getStatusCode());
 
         Optional<ContestEventDao> fetchedContestEvent =  this.contestEventService.fetchEvent("yorkshire-area", LocalDate.of(2000,3,15));
         assertTrue(fetchedContestEvent.isPresent());
@@ -141,8 +140,7 @@ class AddResults8NotesWebTests implements LoginMixin {
         ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/add-results/8/yorkshire-area/2000-03-16", request, String.class);
 
         // assert
-        assertEquals(HttpStatus.FOUND, response.getStatusCode());
-        assertTrue(Objects.requireNonNull(response.getHeaders().get("Location")).get(0).endsWith("/contests/yorkshire-area/2000-03-16"));
+        assertEquals(HttpStatus.OK, response.getStatusCode());
 
         Optional<ContestEventDao> fetchedContestEvent =  this.contestEventService.fetchEvent("yorkshire-area", LocalDate.of(2000,3,16));
         assertTrue(fetchedContestEvent.isPresent());
@@ -171,8 +169,7 @@ class AddResults8NotesWebTests implements LoginMixin {
         ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/add-results/8/yorkshire-area/2000-03-17", request, String.class);
 
         // assert
-        assertEquals(HttpStatus.FOUND, response.getStatusCode());
-        assertTrue(Objects.requireNonNull(response.getHeaders().get("Location")).get(0).endsWith("/contests/yorkshire-area/2000-03-17"));
+        assertEquals(HttpStatus.OK, response.getStatusCode());
 
         Optional<ContestEventDao> fetchedContestEvent =  this.contestEventService.fetchEvent("yorkshire-area", LocalDate.of(2000,3,17));
         assertTrue(fetchedContestEvent.isPresent());

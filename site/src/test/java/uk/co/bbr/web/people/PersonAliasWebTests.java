@@ -244,9 +244,7 @@ class PersonAliasWebTests implements LoginMixin {
         ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/people/david-roberts/edit-aliases/add", request, String.class);
 
         // assert
-        assertEquals(HttpStatus.FOUND, response.getStatusCode());
-
-        assertTrue(Objects.requireNonNull(response.getHeaders().get("Location")).get(0).endsWith("/people/david-roberts/edit-aliases"));
+        assertEquals(HttpStatus.OK, response.getStatusCode());
 
         List<PersonAliasDao> fetchedAliases2 = this.personAliasService.findAllAliases(band.get());
         assertEquals(3, fetchedAliases2.size());

@@ -56,7 +56,16 @@ public class RegionBandSqlDto extends AbstractSqlDto {
         if (column == null) {
             return false;
         }
-        int value = column instanceof BigInteger ? ((BigInteger)column).intValue() : (Integer)column;
+        int value = 0;
+        if (column instanceof Integer) {
+            value = (Integer)column;
+        }
+        else if (column instanceof Long) {
+            value = ((Long) column).intValue();
+        } else if (column instanceof BigInteger) {
+            value = ((BigInteger) column).intValue();
+        }
+
         return value > 0;
     }
 

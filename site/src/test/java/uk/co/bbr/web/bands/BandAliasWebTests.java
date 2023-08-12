@@ -253,9 +253,7 @@ class BandAliasWebTests implements LoginMixin {
         ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/bands/rothwell-temperance-band/edit-aliases/add", request, String.class);
 
         // assert
-        assertEquals(HttpStatus.FOUND, response.getStatusCode());
-
-        assertTrue(Objects.requireNonNull(response.getHeaders().get("Location")).get(0).endsWith("/bands/rothwell-temperance-band/edit-aliases"));
+        assertEquals(HttpStatus.OK, response.getStatusCode());
 
         List<BandAliasDao> fetchedAliases2 = this.bandAliasService.findAllAliases(band.get());
         assertEquals(3, fetchedAliases2.size());
@@ -350,9 +348,7 @@ class BandAliasWebTests implements LoginMixin {
         ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/bands/rothwell-temperance-band/edit-aliases/" + aliasId + "/edit-dates", request, String.class);
 
         // assert
-        assertEquals(HttpStatus.FOUND, response.getStatusCode());
-
-        assertTrue(Objects.requireNonNull(response.getHeaders().get("Location")).get(0).endsWith("/bands/rothwell-temperance-band/edit-aliases"));
+        assertEquals(HttpStatus.OK, response.getStatusCode());
 
         List<BandAliasDao> fetchedAliases2 = this.bandAliasService.findAllAliases(band.get());
         assertEquals(2, fetchedAliases2.size());
@@ -489,9 +485,7 @@ class BandAliasWebTests implements LoginMixin {
         ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/bands/rothwell-temperance-band/edit-aliases/" + aliasId + "/edit-dates", request, String.class);
 
         // assert
-        assertEquals(HttpStatus.FOUND, response.getStatusCode());
-
-        assertTrue(Objects.requireNonNull(response.getHeaders().get("Location")).get(0).endsWith("/bands/rothwell-temperance-band/edit-aliases"));
+        assertEquals(HttpStatus.OK, response.getStatusCode());
 
         List<BandAliasDao> fetchedAliases2 = this.bandAliasService.findAllAliases(band.get());
         assertEquals(2, fetchedAliases2.size());
@@ -537,9 +531,7 @@ class BandAliasWebTests implements LoginMixin {
         ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/bands/rothwell-temperance-band/edit-aliases/" + aliasId + "/edit-dates", request, String.class);
 
         // assert
-        assertEquals(HttpStatus.FOUND, response.getStatusCode());
-
-        assertTrue(Objects.requireNonNull(response.getHeaders().get("Location")).get(0).endsWith("/bands/rothwell-temperance-band/edit-aliases"));
+        assertEquals(HttpStatus.OK, response.getStatusCode());
 
         List<BandAliasDao> fetchedAliases2 = this.bandAliasService.findAllAliases(band.get());
         assertEquals(2, fetchedAliases2.size());

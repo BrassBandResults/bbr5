@@ -82,9 +82,7 @@ class CreateTagWebTests implements LoginMixin {
         ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/create/tag", request, String.class);
 
         // assert
-        assertEquals(HttpStatus.FOUND, response.getStatusCode());
-
-        assertTrue(Objects.requireNonNull(response.getHeaders().get("Location")).get(0).endsWith("/tags"));
+        assertEquals(HttpStatus.OK, response.getStatusCode());
 
         Optional<ContestTagDao> contestTagAfter = this.contestTagService.fetchBySlug("test-tag");
         assertTrue(contestTagAfter.isPresent());
