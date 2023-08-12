@@ -118,7 +118,18 @@
 
 <div class="container pt-1" style="width: 100%" sec:authorize="!hasRole('BBR_PRO')">
 <div layout:fragment="ad-block-top" class="text-center">
-    Ad block top
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5087204743199130"
+            crossorigin="anonymous"></script>
+    <!-- bbr5-header -->
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-5087204743199130"
+         data-ad-slot="2251137786"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
 <p style="width: 100%" class="text-center"><a href="/profile" class="badge bg-success-subtle">Upgrade to pro and remove ads</a></p>
 </div>
 </div>
@@ -133,7 +144,18 @@
 
 <div class="container pt-1" sec:authorize="!hasRole('BBR_PRO')">
     <div layout:fragment="ad-block-bottom" class="text-center">
-        Ad block bottom
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5087204743199130"
+                crossorigin="anonymous"></script>
+        <!-- bbr5-feedback -->
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-5087204743199130"
+             data-ad-slot="1726138576"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
     </div>
 </div>
 
@@ -177,6 +199,21 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
 <script th:src="@{${STATIC_HOST} + '/js2023/tablesorter.js'}"></script>
 <div layout:fragment="scriptfooter-prefix"></div>
-<div layout:fragment="scriptfooter"></div>
+<div layout:fragment="scriptfooter">
+    <div class="container pt-1" sec:authorize="!hasRole('BBR_PRO')">
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5087204743199130"
+                crossorigin="anonymous"></script>
+        <!-- bbr5-footer -->
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-5087204743199130"
+             data-ad-slot="2245013326"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div>
+</div>
 </body>
 </html>
