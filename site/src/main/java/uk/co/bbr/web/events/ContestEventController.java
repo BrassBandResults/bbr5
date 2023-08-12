@@ -17,23 +17,21 @@ import uk.co.bbr.services.events.dao.ContestEventDao;
 import uk.co.bbr.services.events.dao.ContestEventTestPieceDao;
 import uk.co.bbr.services.events.dao.ContestResultDao;
 import uk.co.bbr.services.framework.NotFoundException;
-import uk.co.bbr.services.map.dto.Location;
 import uk.co.bbr.services.performances.PerformanceService;
 import uk.co.bbr.services.performances.dto.CompetitorBandDto;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.services.security.UserService;
 import uk.co.bbr.services.security.dao.SiteUserDao;
-import uk.co.bbr.web.Tools;
+import uk.co.bbr.web.framework.AbstractEventController;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 import uk.co.bbr.web.security.annotations.IsBbrPro;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
-public class ContestEventController {
+public class ContestEventController extends AbstractEventController {
 
     private final ContestEventService contestEventService;
     private final ResultService resultService;
@@ -44,25 +42,17 @@ public class ContestEventController {
 
     @GetMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}")
     public String contestEventDetails(Model model, @PathVariable String contestSlug, @PathVariable String contestEventDate) {
-        LocalDate eventDate = Tools.parseEventDate(contestEventDate);
-        Optional<ContestEventDao> contestEvent = this.contestEventService.fetchEvent(contestSlug, eventDate);
+        ContestEventDao contestEvent = this.contestEventFromUrlParameters(this.contestEventService, contestSlug, contestEventDate);
 
-        if (contestEvent.isEmpty()) {
-          contestEvent = this.contestEventService.fetchEventWithinWiderDateRange(contestSlug, eventDate);
-          if (contestEvent.isEmpty()) {
-            throw NotFoundException.eventNotFound(contestSlug, contestEventDate);
-          }
-        }
+        List<ContestResultDao> eventResults = this.resultService.fetchForEvent(contestEvent);
 
-        List<ContestResultDao> eventResults = this.resultService.fetchForEvent(contestEvent.get());
-
-        ContestEventDao nextEvent = this.contestEventService.fetchEventLinkNext(contestEvent.get());
-        ContestEventDao previousEvent = this.contestEventService.fetchEventLinkPrevious(contestEvent.get());
-        ContestEventDao upEvent = this.contestEventService.fetchEventLinkUp(contestEvent.get());
-        ContestEventDao downEvent = this.contestEventService.fetchEventLinkDown(contestEvent.get());
+        ContestEventDao nextEvent = this.contestEventService.fetchEventLinkNext(contestEvent);
+        ContestEventDao previousEvent = this.contestEventService.fetchEventLinkPrevious(contestEvent);
+        ContestEventDao upEvent = this.contestEventService.fetchEventLinkUp(contestEvent);
+        ContestEventDao downEvent = this.contestEventService.fetchEventLinkDown(contestEvent);
 
         SiteUserDao contestOwner = null;
-        Optional<SiteUserDao> contestOwnerOptional = this.userService.fetchUserByUsercode(contestEvent.get().getOwner());
+        Optional<SiteUserDao> contestOwnerOptional = this.userService.fetchUserByUsercode(contestEvent.getOwner());
         if (contestOwnerOptional.isPresent()) {
             contestOwner = contestOwnerOptional.get();
         } else {
@@ -72,12 +62,12 @@ public class ContestEventController {
             }
         }
 
-        List<ContestEventTestPieceDao> eventTestPieces = this.contestEventService.listTestPieces(contestEvent.get());
-        List<ContestAdjudicatorDao> adjudicators = this.contestEventService.fetchAdjudicators(contestEvent.get());
+        List<ContestEventTestPieceDao> eventTestPieces = this.contestEventService.listTestPieces(contestEvent);
+        List<ContestAdjudicatorDao> adjudicators = this.contestEventService.fetchAdjudicators(contestEvent);
 
-        this.resultService.workOutCanEdit(contestEvent.get(), eventResults);
+        this.resultService.workOutCanEdit(contestEvent, eventResults);
 
-        model.addAttribute("ContestEvent", contestEvent.get());
+        model.addAttribute("ContestEvent", contestEvent);
         model.addAttribute("EventTestPieces", eventTestPieces);
         model.addAttribute("Adjudicators", adjudicators);
         model.addAttribute("ContestOwner", contestOwner);
@@ -93,19 +83,11 @@ public class ContestEventController {
     @IsBbrPro
     @GetMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}/competitors")
     public String contestEventCompetitors(Model model, @PathVariable String contestSlug, @PathVariable String contestEventDate) {
-        LocalDate eventDate = Tools.parseEventDate(contestEventDate);
-        Optional<ContestEventDao> contestEvent = this.contestEventService.fetchEvent(contestSlug, eventDate);
+        ContestEventDao contestEvent = this.contestEventFromUrlParameters(this.contestEventService, contestSlug, contestEventDate);
 
-        if (contestEvent.isEmpty()) {
-            contestEvent = this.contestEventService.fetchEventWithinWiderDateRange(contestSlug, eventDate);
-            if (contestEvent.isEmpty()) {
-                throw NotFoundException.eventNotFound(contestSlug, contestEventDate);
-            }
-        }
+        List<CompetitorBandDto> competitors = this.performanceService.fetchPerformancesForEvent(contestEvent);
 
-        List<CompetitorBandDto> competitors = this.performanceService.fetchPerformancesForEvent(contestEvent.get());
-
-        model.addAttribute("ContestEvent", contestEvent.get());
+        model.addAttribute("ContestEvent", contestEvent);
         model.addAttribute("Competitors", competitors);
 
         return "events/competitors";
@@ -114,19 +96,11 @@ public class ContestEventController {
     @IsBbrMember
     @GetMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}/geography")
     public String contestEventMap(Model model, @PathVariable String contestSlug, @PathVariable String contestEventDate) {
-        LocalDate eventDate = Tools.parseEventDate(contestEventDate);
-        Optional<ContestEventDao> contestEvent = this.contestEventService.fetchEvent(contestSlug, eventDate);
+        ContestEventDao contestEvent = this.contestEventFromUrlParameters(this.contestEventService, contestSlug, contestEventDate);
 
-        if (contestEvent.isEmpty()) {
-            contestEvent = this.contestEventService.fetchEventWithinWiderDateRange(contestSlug, eventDate);
-            if (contestEvent.isEmpty()) {
-                throw NotFoundException.eventNotFound(contestSlug, contestEventDate);
-            }
-        }
+        List<ContestResultDao> eventResults = this.resultService.fetchForEvent(contestEvent);
 
-        List<ContestResultDao> eventResults = this.resultService.fetchForEvent(contestEvent.get());
-
-        model.addAttribute("ContestEvent", contestEvent.get());
+        model.addAttribute("ContestEvent", contestEvent);
         model.addAttribute("EventResults", eventResults);
 
         return "events/map-competitors";
@@ -135,13 +109,9 @@ public class ContestEventController {
     @IsBbrMember
     @GetMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}/map/geography.json")
     public ResponseEntity<JsonNode> contestEventMapJson(@PathVariable String contestSlug, @PathVariable String contestEventDate) {
-        LocalDate eventDate = Tools.parseEventDate(contestEventDate);
-        Optional<ContestEventDao> contestEvent = this.contestEventService.fetchEvent(contestSlug, eventDate);
-        if (contestEvent.isEmpty()) {
-            throw NotFoundException.eventNotFound(contestSlug, contestEventDate);
-        }
+        ContestEventDao contestEvent = this.contestEventFromUrlParameters(this.contestEventService, contestSlug, contestEventDate);
 
-        List<ContestResultDao> eventResults = this.resultService.fetchForEvent(contestEvent.get());
+        List<ContestResultDao> eventResults = this.resultService.fetchForEvent(contestEvent);
 
         ObjectNode objectNode = objectMapper.createObjectNode();
         objectNode.put("type", "FeatureCollection");
@@ -152,8 +122,8 @@ public class ContestEventController {
                 features.add(eachResult.getBand().asGeoJson(this.objectMapper));
             }
         }
-        if (contestEvent.get().getVenue().hasLocation()) {
-            features.add(contestEvent.get().getVenue().asGeoJson(this.objectMapper));
+        if (contestEvent.getVenue().hasLocation()) {
+            features.add(contestEvent.getVenue().asGeoJson(this.objectMapper));
         }
 
         return ResponseEntity.ok(objectNode);
@@ -164,17 +134,13 @@ public class ContestEventController {
 
     @GetMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}/performer")
     public String eventPerformerSelectBand(Model model, @PathVariable("contestSlug")  String contestSlug, @PathVariable("contestEventDate") String contestEventDate) {
-        LocalDate eventDate = Tools.parseEventDate(contestEventDate);
-        Optional<ContestEventDao> contestEvent = this.contestEventService.fetchEvent(contestSlug, eventDate);
-        if (contestEvent.isEmpty()) {
-            throw NotFoundException.eventNotFound(contestSlug, contestEventDate);
-        }
+        ContestEventDao contestEvent = this.contestEventFromUrlParameters(this.contestEventService, contestSlug, contestEventDate);
 
         SiteUserDao currentUser = this.securityService.getCurrentUser();
 
-        List<ContestResultDao> eventResults = this.resultService.fetchForEvent(contestEvent.get());
+        List<ContestResultDao> eventResults = this.resultService.fetchForEvent(contestEvent);
 
-        model.addAttribute("ContestEvent", contestEvent.get());
+        model.addAttribute("ContestEvent", contestEvent);
         model.addAttribute("EventResults", eventResults);
         model.addAttribute("User", currentUser);
 
@@ -183,12 +149,8 @@ public class ContestEventController {
 
     @IsBbrMember
     @GetMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}/performer/{resultId:\\d+}")
-    public String eventPerformerSelectBand(Model model, @PathVariable("contestSlug") String contestSlug, @PathVariable("contestEventDate") String contestEventDate, @PathVariable("resultId") Long resultId) {
-        LocalDate eventDate = Tools.parseEventDate(contestEventDate);
-        Optional<ContestEventDao> contestEvent = this.contestEventService.fetchEvent(contestSlug, eventDate);
-        if (contestEvent.isEmpty()) {
-            throw NotFoundException.eventNotFound(contestSlug, contestEventDate);
-        }
+    public String eventPerformerSelectBand(@PathVariable("contestSlug") String contestSlug, @PathVariable("contestEventDate") String contestEventDate, @PathVariable("resultId") Long resultId) {
+        this.contestEventFromUrlParameters(this.contestEventService, contestSlug, contestEventDate);
 
         Optional<ContestResultDao> result = this.resultService.fetchById(resultId);
         if (result.isEmpty()) {

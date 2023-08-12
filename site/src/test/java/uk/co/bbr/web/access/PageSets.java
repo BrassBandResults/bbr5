@@ -125,6 +125,8 @@ public abstract class PageSets {
         pageList.add("/calendar/2101/12");
         pageList.add("/contests/not-a-contest");
         pageList.add("/contests/not-a-contest/2000-03-01");
+        pageList.add("/contests/yorkshire-area/2000-12-40");
+        pageList.add("/contests/yorkshire-area/2000-13-01");
         pageList.add("/contests/NOT-A-GROUP");
         pageList.add("/people/not-a-person");
         pageList.add("/people/not-a-person/whits");
