@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title th:text="@{#{page.error.title} + ' - Brass Band Results'}">Error - Brass Band Results</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h2 th:text="#{page.error.title}">Snap, it broke!</h2>
+    <p th:text="#{page.error.line1}">We're sorry, something went wrong.  It's probably our fault rather than yours.</p>
+    <p th:text="#{page.error.line2}">if you could tell us what you were doing in the feedback box below, we'll look into it.</p>
+</div>
+</body>
+</html>

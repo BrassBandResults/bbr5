@@ -1,6 +1,3 @@
-Ads for non-pro users
-
-Record 500 error - send feedback to owner?
 
 Blog on the homepage
 
@@ -17,6 +14,8 @@ Fetch pending performances works out ones that aren't in history and aren't reje
 Multiple map icons on same location
 
 csrf
+
+Spring 3
 
 favicon.ico
 
