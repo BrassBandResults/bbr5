@@ -15,10 +15,6 @@ Multiple map icons on same location
 
 csrf
 
-Spring 3
-
-favicon.ico
-
 === Fast Followers Complete ===
 
 Maps don't 500 where lat/lng is missing
