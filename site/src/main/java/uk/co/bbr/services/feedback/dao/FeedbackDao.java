@@ -8,9 +8,9 @@ import uk.co.bbr.services.security.dao.SiteUserDao;
 import uk.co.bbr.web.Tools;
 import uk.co.bbr.web.security.annotations.IsBbrSuperuser;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 

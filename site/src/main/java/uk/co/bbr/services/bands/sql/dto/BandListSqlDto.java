@@ -18,17 +18,12 @@ public class BandListSqlDto extends AbstractSqlDto {
     private final Integer resultCount;
 
     public BandListSqlDto(Object[] columnList) {
-        this.bandName = (String)columnList[0];
-        this.bandSlug = (String)columnList[1];
-        this.regionName = (String)columnList[2];
-        this.regionSlug = (String)columnList[3];
-        this.countryCode = (String)columnList[4];
-        if (columnList[5] != null) {
-            this.resultCount = this.getInteger(columnList, 5);
-        }
-        else {
-            this.resultCount = 0;
-        }
+        this.bandName = this.getString(columnList, 0);
+        this.bandSlug = this.getString(columnList, 1);
+        this.regionName = this.getString(columnList, 2);
+        this.regionSlug = this.getString(columnList, 3);
+        this.countryCode = this.getString(columnList, 4);
+        this.resultCount = this.getIntegerOrZero(columnList, 5);
     }
 
     public BandDao asBand() {

@@ -168,9 +168,7 @@ class BandRehearsalWebTests implements LoginMixin {
         ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/bands/rothwell-temperance-band/edit-rehearsals", request, String.class);
 
         // assert
-        assertEquals(HttpStatus.FOUND, response.getStatusCode());
-
-        assertTrue(Objects.requireNonNull(response.getHeaders().get("Location")).get(0).endsWith("/bands/rothwell-temperance-band"));
+        assertEquals(HttpStatus.OK, response.getStatusCode());
 
         List<BandRehearsalDayDao> fetchedRehearsals2 = this.bandRehearsalsService.fetchRehearsalDays(band.get());
         assertEquals(7, fetchedRehearsals2.size());

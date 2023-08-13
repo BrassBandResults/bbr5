@@ -19,13 +19,13 @@ public class BandWinnersSqlDto extends AbstractSqlDto {
     private final Integer contests;
 
     public BandWinnersSqlDto(Object[] columnList) {
-        this.bandSlug = (String)columnList[0];
-        this.bandName = (String)columnList[1];
+        this.bandSlug = this.getString(columnList, 0);
+        this.bandName = this.getString(columnList, 1);
         this.wins = this.getInteger(columnList, 2);
         this.contests = this.getInteger(columnList, 3);
-        this.regionSlug = (String)columnList[4];
-        this.regionName = (String)columnList[5];
-        this.countryCode = (String)columnList[6];
+        this.regionSlug = this.getString(columnList, 4);
+        this.regionName = this.getString(columnList, 5);
+        this.countryCode = this.getString(columnList, 6);
     }
 
     public BandDao getBand() {

@@ -29,16 +29,16 @@ public class AdjudicationsSqlDto  extends AbstractSqlDto {
     private final String winnerRegionCode;
 
     public AdjudicationsSqlDto(Object[] columnList) {
-        this.eventName = (String) columnList[0];
+        this.eventName = this.getString(columnList, 0);
         this.eventDate = this.getLocalDate(columnList, 1);
-        this.eventDateResolution = (String) columnList[2];
-        this.contestSlug = (String) columnList[3];
-        this.winnerCompetedAs = (String) columnList[4];
-        this.winnerSlug = (String) columnList[5];
-        this.winnerName = (String) columnList[6];
-        this.winnerRegionName = (String) columnList[7];
-        this.winnerRegionSlug = (String) columnList[8];
-        this.winnerRegionCode = (String) columnList[9];
+        this.eventDateResolution = this.getString(columnList, 2);
+        this.contestSlug = this.getString(columnList, 3);
+        this.winnerCompetedAs = this.getString(columnList, 4);
+        this.winnerSlug = this.getString(columnList, 5);
+        this.winnerName = this.getString(columnList, 6);
+        this.winnerRegionName = this.getString(columnList, 7);
+        this.winnerRegionSlug = this.getString(columnList, 8);
+        this.winnerRegionCode = this.getString(columnList, 9);
     }
 
     public ContestAdjudicatorDao buildAdjudicationDao() {

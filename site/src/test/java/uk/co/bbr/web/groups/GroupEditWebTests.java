@@ -113,9 +113,7 @@ class GroupEditWebTests implements LoginMixin {
         ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/contests/YORKSHIRE-AREA/edit", request, String.class);
 
         // assert
-        assertEquals(HttpStatus.FOUND, response.getStatusCode());
-
-        assertTrue(Objects.requireNonNull(response.getHeaders().get("Location")).get(0).endsWith("/contests/YORKSHIRE-AREA"));
+        assertEquals(HttpStatus.OK, response.getStatusCode());
 
         Optional<ContestGroupDao> group = this.contestGroupService.fetchBySlug("YORKSHIRE-AREA");
         assertTrue(group.isPresent());

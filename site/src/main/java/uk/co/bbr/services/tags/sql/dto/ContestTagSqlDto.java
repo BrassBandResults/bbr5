@@ -11,8 +11,8 @@ public class ContestTagSqlDto extends AbstractSqlDto {
     private final String tagName;
 
     public ContestTagSqlDto(Object[] columnList) {
-        this.contestSlug = (String)columnList[0];
-        this.tagSlug = (String)columnList[1];
-        this.tagName = (String)columnList[2];
+        this.contestSlug = this.getString(columnList, 0);
+        this.tagSlug = this.getString(columnList, 1);
+        this.tagName = this.getString(columnList, 2);
     }
 }

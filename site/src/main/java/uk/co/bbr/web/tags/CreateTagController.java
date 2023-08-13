@@ -11,7 +11,7 @@ import uk.co.bbr.services.tags.ContestTagService;
 import uk.co.bbr.web.tags.forms.TagCreateForm;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 @Controller
 @RequiredArgsConstructor

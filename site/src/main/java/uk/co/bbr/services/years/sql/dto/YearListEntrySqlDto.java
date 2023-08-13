@@ -12,7 +12,7 @@ public class YearListEntrySqlDto extends AbstractSqlDto {
     private final Integer eventCount;
 
     public YearListEntrySqlDto(Object[] columnList) {
-        this.year = (Integer)columnList[0];
+        this.year = this.getInteger(columnList,0);
         this.bandCount = this.getInteger(columnList, 1);
         this.eventCount = this.getInteger(columnList, 2);
     }

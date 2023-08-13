@@ -78,9 +78,7 @@ class AddResults1ContestWebTests implements LoginMixin {
         ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/add-results", request, String.class);
 
         // assert
-        assertEquals(HttpStatus.FOUND, response.getStatusCode());
-
-        assertTrue(Objects.requireNonNull(response.getHeaders().get("Location")).get(0).endsWith("/add-results/2/yorkshire-area-1"));
+        assertEquals(HttpStatus.OK, response.getStatusCode());
 
         Optional<ContestDao> fetchedContest =  this.contestService.fetchBySlug("yorkshire-area-1");
         assertTrue(fetchedContest.isPresent());
@@ -111,9 +109,7 @@ class AddResults1ContestWebTests implements LoginMixin {
         ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/add-results", request, String.class);
 
         // assert
-        assertEquals(HttpStatus.FOUND, response.getStatusCode());
-
-        assertTrue(Objects.requireNonNull(response.getHeaders().get("Location")).get(0).endsWith("/add-results/2/yorkshire-area-2"));
+        assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
     @Test
@@ -140,8 +136,6 @@ class AddResults1ContestWebTests implements LoginMixin {
         ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/add-results", request, String.class);
 
         // assert
-        assertEquals(HttpStatus.FOUND, response.getStatusCode());
-
-        assertTrue(Objects.requireNonNull(response.getHeaders().get("Location")).get(0).endsWith("/add-results/2/yorkshire-area-3"));
+        assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 }

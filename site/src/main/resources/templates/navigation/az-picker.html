@@ -1,37 +1,37 @@
 <div th:fragment="azPicker(offset, selectedLetter, enableNumbers, enableAll)">
     <p><span th:text="#{az-picker.starts-with}" th:remove="tag">Starts with:</span>
-        <span th:if="${selectedLetter == 'A'}" class="bg-dark text-light rounded p-1">A</span><span th:remove="tag" th:unless="${selectedLetter == 'A'}"><a th:href="${'/' + offset + '/A/'}">A</a></span>
-        <span th:if="${selectedLetter == 'B'}" class="bg-dark text-light rounded p-1">B</span><span th:remove="tag" th:unless="${selectedLetter == 'B'}"><a th:href="${'/' + offset + '/B/'}">B</a></span>
-        <span th:if="${selectedLetter == 'C'}" class="bg-dark text-light rounded p-1">C</span><span th:remove="tag" th:unless="${selectedLetter == 'C'}"><a th:href="${'/' + offset + '/C/'}">C</a></span>
-        <span th:if="${selectedLetter == 'D'}" class="bg-dark text-light rounded p-1">D</span><span th:remove="tag" th:unless="${selectedLetter == 'D'}"><a th:href="${'/' + offset + '/D/'}">D</a></span>
-        <span th:if="${selectedLetter == 'E'}" class="bg-dark text-light rounded p-1">E</span><span th:remove="tag" th:unless="${selectedLetter == 'E'}"><a th:href="${'/' + offset + '/E/'}">E</a></span>
-        <span th:if="${selectedLetter == 'F'}" class="bg-dark text-light rounded p-1">F</span><span th:remove="tag" th:unless="${selectedLetter == 'F'}"><a th:href="${'/' + offset + '/F/'}">F</a></span>
-        <span th:if="${selectedLetter == 'G'}" class="bg-dark text-light rounded p-1">G</span><span th:remove="tag" th:unless="${selectedLetter == 'G'}"><a th:href="${'/' + offset + '/G/'}">G</a></span>
-        <span th:if="${selectedLetter == 'H'}" class="bg-dark text-light rounded p-1">H</span><span th:remove="tag" th:unless="${selectedLetter == 'H'}"><a th:href="${'/' + offset + '/H/'}">H</a></span>
-        <span th:if="${selectedLetter == 'I'}" class="bg-dark text-light rounded p-1">I</span><span th:remove="tag" th:unless="${selectedLetter == 'I'}"><a th:href="${'/' + offset + '/I/'}">I</a></span>
-        <span th:if="${selectedLetter == 'J'}" class="bg-dark text-light rounded p-1">J</span><span th:remove="tag" th:unless="${selectedLetter == 'J'}"><a th:href="${'/' + offset + '/J/'}">J</a></span>
-        <span th:if="${selectedLetter == 'K'}" class="bg-dark text-light rounded p-1">K</span><span th:remove="tag" th:unless="${selectedLetter == 'K'}"><a th:href="${'/' + offset + '/K/'}">K</a></span>
-        <span th:if="${selectedLetter == 'L'}" class="bg-dark text-light rounded p-1">L</span><span th:remove="tag" th:unless="${selectedLetter == 'L'}"><a th:href="${'/' + offset + '/L/'}">L</a></span>
-        <span th:if="${selectedLetter == 'M'}" class="bg-dark text-light rounded p-1">M</span><span th:remove="tag" th:unless="${selectedLetter == 'M'}"><a th:href="${'/' + offset + '/M/'}">M</a></span>
-        <span th:if="${selectedLetter == 'N'}" class="bg-dark text-light rounded p-1">N</span><span th:remove="tag" th:unless="${selectedLetter == 'N'}"><a th:href="${'/' + offset + '/N/'}">N</a></span>
-        <span th:if="${selectedLetter == 'O'}" class="bg-dark text-light rounded p-1">O</span><span th:remove="tag" th:unless="${selectedLetter == 'O'}"><a th:href="${'/' + offset + '/O/'}">O</a></span>
-        <span th:if="${selectedLetter == 'P'}" class="bg-dark text-light rounded p-1">P</span><span th:remove="tag" th:unless="${selectedLetter == 'P'}"><a th:href="${'/' + offset + '/P/'}">P</a></span>
-        <span th:if="${selectedLetter == 'Q'}" class="bg-dark text-light rounded p-1">Q</span><span th:remove="tag" th:unless="${selectedLetter == 'Q'}"><a th:href="${'/' + offset + '/Q/'}">Q</a></span>
-        <span th:if="${selectedLetter == 'R'}" class="bg-dark text-light rounded p-1">R</span><span th:remove="tag" th:unless="${selectedLetter == 'R'}"><a th:href="${'/' + offset + '/R/'}">R</a></span>
-        <span th:if="${selectedLetter == 'S'}" class="bg-dark text-light rounded p-1">S</span><span th:remove="tag" th:unless="${selectedLetter == 'S'}"><a th:href="${'/' + offset + '/S/'}">S</a></span>
-        <span th:if="${selectedLetter == 'T'}" class="bg-dark text-light rounded p-1">T</span><span th:remove="tag" th:unless="${selectedLetter == 'T'}"><a th:href="${'/' + offset + '/T/'}">T</a></span>
-        <span th:if="${selectedLetter == 'U'}" class="bg-dark text-light rounded p-1">U</span><span th:remove="tag" th:unless="${selectedLetter == 'U'}"><a th:href="${'/' + offset + '/U/'}">U</a></span>
-        <span th:if="${selectedLetter == 'V'}" class="bg-dark text-light rounded p-1">V</span><span th:remove="tag" th:unless="${selectedLetter == 'V'}"><a th:href="${'/' + offset + '/V/'}">V</a></span>
-        <span th:if="${selectedLetter == 'W'}" class="bg-dark text-light rounded p-1">W</span><span th:remove="tag" th:unless="${selectedLetter == 'W'}"><a th:href="${'/' + offset + '/W/'}">W</a></span>
-        <span th:if="${selectedLetter == 'X'}" class="bg-dark text-light rounded p-1">X</span><span th:remove="tag" th:unless="${selectedLetter == 'X'}"><a th:href="${'/' + offset + '/X/'}">X</a></span>
-        <span th:if="${selectedLetter == 'Y'}" class="bg-dark text-light rounded p-1">Y</span><span th:remove="tag" th:unless="${selectedLetter == 'Y'}"><a th:href="${'/' + offset + '/Y/'}">Y</a></span>
-        <span th:if="${selectedLetter == 'Z'}" class="bg-dark text-light rounded p-1">Z</span><span th:remove="tag" th:unless="${selectedLetter == 'Z'}"><a th:href="${'/' + offset + '/Z/'}">Z</a></span>
+        <span th:if="${selectedLetter == 'A'}" class="bg-dark text-light rounded p-1">A</span><span th:remove="tag" th:unless="${selectedLetter == 'A'}"><a th:href="${'/' + offset + '/A'}">A</a></span>
+        <span th:if="${selectedLetter == 'B'}" class="bg-dark text-light rounded p-1">B</span><span th:remove="tag" th:unless="${selectedLetter == 'B'}"><a th:href="${'/' + offset + '/B'}">B</a></span>
+        <span th:if="${selectedLetter == 'C'}" class="bg-dark text-light rounded p-1">C</span><span th:remove="tag" th:unless="${selectedLetter == 'C'}"><a th:href="${'/' + offset + '/C'}">C</a></span>
+        <span th:if="${selectedLetter == 'D'}" class="bg-dark text-light rounded p-1">D</span><span th:remove="tag" th:unless="${selectedLetter == 'D'}"><a th:href="${'/' + offset + '/D'}">D</a></span>
+        <span th:if="${selectedLetter == 'E'}" class="bg-dark text-light rounded p-1">E</span><span th:remove="tag" th:unless="${selectedLetter == 'E'}"><a th:href="${'/' + offset + '/E'}">E</a></span>
+        <span th:if="${selectedLetter == 'F'}" class="bg-dark text-light rounded p-1">F</span><span th:remove="tag" th:unless="${selectedLetter == 'F'}"><a th:href="${'/' + offset + '/F'}">F</a></span>
+        <span th:if="${selectedLetter == 'G'}" class="bg-dark text-light rounded p-1">G</span><span th:remove="tag" th:unless="${selectedLetter == 'G'}"><a th:href="${'/' + offset + '/G'}">G</a></span>
+        <span th:if="${selectedLetter == 'H'}" class="bg-dark text-light rounded p-1">H</span><span th:remove="tag" th:unless="${selectedLetter == 'H'}"><a th:href="${'/' + offset + '/H'}">H</a></span>
+        <span th:if="${selectedLetter == 'I'}" class="bg-dark text-light rounded p-1">I</span><span th:remove="tag" th:unless="${selectedLetter == 'I'}"><a th:href="${'/' + offset + '/I'}">I</a></span>
+        <span th:if="${selectedLetter == 'J'}" class="bg-dark text-light rounded p-1">J</span><span th:remove="tag" th:unless="${selectedLetter == 'J'}"><a th:href="${'/' + offset + '/J'}">J</a></span>
+        <span th:if="${selectedLetter == 'K'}" class="bg-dark text-light rounded p-1">K</span><span th:remove="tag" th:unless="${selectedLetter == 'K'}"><a th:href="${'/' + offset + '/K'}">K</a></span>
+        <span th:if="${selectedLetter == 'L'}" class="bg-dark text-light rounded p-1">L</span><span th:remove="tag" th:unless="${selectedLetter == 'L'}"><a th:href="${'/' + offset + '/L'}">L</a></span>
+        <span th:if="${selectedLetter == 'M'}" class="bg-dark text-light rounded p-1">M</span><span th:remove="tag" th:unless="${selectedLetter == 'M'}"><a th:href="${'/' + offset + '/M'}">M</a></span>
+        <span th:if="${selectedLetter == 'N'}" class="bg-dark text-light rounded p-1">N</span><span th:remove="tag" th:unless="${selectedLetter == 'N'}"><a th:href="${'/' + offset + '/N'}">N</a></span>
+        <span th:if="${selectedLetter == 'O'}" class="bg-dark text-light rounded p-1">O</span><span th:remove="tag" th:unless="${selectedLetter == 'O'}"><a th:href="${'/' + offset + '/O'}">O</a></span>
+        <span th:if="${selectedLetter == 'P'}" class="bg-dark text-light rounded p-1">P</span><span th:remove="tag" th:unless="${selectedLetter == 'P'}"><a th:href="${'/' + offset + '/P'}">P</a></span>
+        <span th:if="${selectedLetter == 'Q'}" class="bg-dark text-light rounded p-1">Q</span><span th:remove="tag" th:unless="${selectedLetter == 'Q'}"><a th:href="${'/' + offset + '/Q'}">Q</a></span>
+        <span th:if="${selectedLetter == 'R'}" class="bg-dark text-light rounded p-1">R</span><span th:remove="tag" th:unless="${selectedLetter == 'R'}"><a th:href="${'/' + offset + '/R'}">R</a></span>
+        <span th:if="${selectedLetter == 'S'}" class="bg-dark text-light rounded p-1">S</span><span th:remove="tag" th:unless="${selectedLetter == 'S'}"><a th:href="${'/' + offset + '/S'}">S</a></span>
+        <span th:if="${selectedLetter == 'T'}" class="bg-dark text-light rounded p-1">T</span><span th:remove="tag" th:unless="${selectedLetter == 'T'}"><a th:href="${'/' + offset + '/T'}">T</a></span>
+        <span th:if="${selectedLetter == 'U'}" class="bg-dark text-light rounded p-1">U</span><span th:remove="tag" th:unless="${selectedLetter == 'U'}"><a th:href="${'/' + offset + '/U'}">U</a></span>
+        <span th:if="${selectedLetter == 'V'}" class="bg-dark text-light rounded p-1">V</span><span th:remove="tag" th:unless="${selectedLetter == 'V'}"><a th:href="${'/' + offset + '/V'}">V</a></span>
+        <span th:if="${selectedLetter == 'W'}" class="bg-dark text-light rounded p-1">W</span><span th:remove="tag" th:unless="${selectedLetter == 'W'}"><a th:href="${'/' + offset + '/W'}">W</a></span>
+        <span th:if="${selectedLetter == 'X'}" class="bg-dark text-light rounded p-1">X</span><span th:remove="tag" th:unless="${selectedLetter == 'X'}"><a th:href="${'/' + offset + '/X'}">X</a></span>
+        <span th:if="${selectedLetter == 'Y'}" class="bg-dark text-light rounded p-1">Y</span><span th:remove="tag" th:unless="${selectedLetter == 'Y'}"><a th:href="${'/' + offset + '/Y'}">Y</a></span>
+        <span th:if="${selectedLetter == 'Z'}" class="bg-dark text-light rounded p-1">Z</span><span th:remove="tag" th:unless="${selectedLetter == 'Z'}"><a th:href="${'/' + offset + '/Z'}">Z</a></span>
 
         <span th:if="${enableNumbers}">
-            <span th:if="${selectedLetter == '0'}" class="bg-dark text-light rounded p-1">0-9</span><span th:remove="tag" th:unless="${selectedLetter == '0'}"><a th:href="${'/' + offset + '/0/'}">0-9</a></span>
+            <span th:if="${selectedLetter == '0'}" class="bg-dark text-light rounded p-1">0-9</span><span th:remove="tag" th:unless="${selectedLetter == '0'}"><a th:href="${'/' + offset + '/0'}">0-9</a></span>
         </span>
         <span th:if="${enableAll}">
-            <span th:if="${selectedLetter == 'ALL'}" class="bg-dark text-light rounded p-1" th:text="#{az-picker.show-all}">Show All</span><span th:remove="tag" th:unless="${selectedLetter == 'ALL'}"><a th:href="${'/' + offset + '/ALL/'}" th:text="#{az-picker.show-all}">Show All</a></span>
+            <span th:if="${selectedLetter == 'ALL'}" class="bg-dark text-light rounded p-1" th:text="#{az-picker.show-all}">Show All</span><span th:remove="tag" th:unless="${selectedLetter == 'ALL'}"><a th:href="${'/' + offset + '/ALL'}" th:text="#{az-picker.show-all}">Show All</a></span>
         </span>
     </p>
 </div>

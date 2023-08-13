@@ -105,9 +105,7 @@ class BandCreateWebTests implements LoginMixin {
         ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/create/band", request, String.class);
 
         // assert
-        assertEquals(HttpStatus.FOUND, response.getStatusCode());
-
-        assertTrue(Objects.requireNonNull(response.getHeaders().get("Location")).get(0).endsWith("/bands"));
+        assertEquals(HttpStatus.OK, response.getStatusCode());
 
         Optional<BandDao> fetchedBand = this.bandService.fetchBySlug("rothwell-temperance-band");
         assertTrue(fetchedBand.isPresent());

@@ -66,7 +66,6 @@ class SuperuserWebTests implements LoginMixin {
         loginTestUserByWeb(TestUser.TEST_SUPERUSER, this.restTemplate, this.csrfTokenRepository, this.port);
 
         HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + port + "/test/admin", String.class ));
-        assertEquals("Forbidden", ex.getStatusCode().getReasonPhrase());
         assertEquals(403, ex.getStatusCode().value());
     }
 

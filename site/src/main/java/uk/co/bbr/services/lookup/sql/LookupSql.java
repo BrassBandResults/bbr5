@@ -3,7 +3,7 @@ package uk.co.bbr.services.lookup.sql;
 import uk.co.bbr.services.framework.sql.SqlExec;
 import uk.co.bbr.services.lookup.sql.dto.LookupSqlDto;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import java.util.List;
 
 public class LookupSql {

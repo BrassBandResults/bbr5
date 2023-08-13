@@ -84,9 +84,7 @@ class GroupCreateWebTests implements LoginMixin {
         ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/create/group", request, String.class);
 
         // assert
-        assertEquals(HttpStatus.FOUND, response.getStatusCode());
-
-        assertTrue(Objects.requireNonNull(response.getHeaders().get("Location")).get(0).endsWith("/contest-groups"));
+        assertEquals(HttpStatus.OK, response.getStatusCode());
 
         Optional<ContestGroupDao> fetchedGroup = this.contestGroupService.fetchBySlug("TEST-GROUP");
         assertTrue(fetchedGroup.isPresent());

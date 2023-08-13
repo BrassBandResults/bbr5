@@ -18,27 +18,12 @@ public class RegionListSqlDto extends AbstractSqlDto {
     private final Integer extinctBandsCount;
 
     public RegionListSqlDto(Object[] columnList) {
-        this.regionSlug = (String)columnList[0];
-        this.regionName = (String)columnList[1];
-        this.countryCode = (String)columnList[2];
-        if (columnList[3] != null) {
-            this.activeBandsCount = this.getInteger(columnList, 3);
-        }
-        else {
-            this.activeBandsCount = 0;
-        }
-        if (columnList[4] != null) {
-            this.extinctBandsCount = this.getInteger(columnList, 4);
-        }
-        else {
-            this.extinctBandsCount = 0;
-        }
-        if (columnList[5] != null) {
-            this.regionId = this.getLong(columnList, 5);
-        }
-        else {
-            this.regionId = null;
-        }
+        this.regionSlug = this.getString(columnList, 0);
+        this.regionName = this.getString(columnList, 1);
+        this.countryCode = this.getString(columnList, 2);
+        this.activeBandsCount = this.getIntegerOrZero(columnList, 3);
+        this.extinctBandsCount = this.getIntegerOrZero(columnList, 4);
+        this.regionId = this.getLong(columnList, 5);
     }
 
     public RegionDao asRegion() {

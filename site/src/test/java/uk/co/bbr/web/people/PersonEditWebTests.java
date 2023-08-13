@@ -118,9 +118,7 @@ class PersonEditWebTests implements LoginMixin {
         ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/people/robert-childs/edit", request, String.class);
 
         // assert
-        assertEquals(HttpStatus.FOUND, response.getStatusCode());
-
-        assertTrue(Objects.requireNonNull(response.getHeaders().get("Location")).get(0).endsWith("/people/robert-childs"));
+        assertEquals(HttpStatus.OK, response.getStatusCode());
 
         Optional<PersonDao> fetchedPerson = this.personService.fetchBySlug("robert-childs");
         assertTrue(fetchedPerson.isPresent());

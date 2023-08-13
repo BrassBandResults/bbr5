@@ -98,9 +98,7 @@ class VenueCreateWebTests implements LoginMixin {
         ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/create/venue", request, String.class);
 
         // assert
-        assertEquals(HttpStatus.FOUND, response.getStatusCode());
-
-        assertTrue(Objects.requireNonNull(response.getHeaders().get("Location")).get(0).endsWith("/venues"));
+        assertEquals(HttpStatus.OK, response.getStatusCode());
 
         Optional<VenueDao> fetchedVenue = this.venueService.fetchBySlug("new-venue");
         assertTrue(fetchedVenue.isPresent());

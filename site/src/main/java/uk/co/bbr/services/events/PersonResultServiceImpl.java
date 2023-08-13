@@ -20,7 +20,7 @@ import uk.co.bbr.services.tags.repo.ContestTagRepository;
 import uk.co.bbr.services.tags.sql.ContestTagSql;
 import uk.co.bbr.services.tags.sql.dto.ContestTagSqlDto;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;

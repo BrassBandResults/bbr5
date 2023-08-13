@@ -22,7 +22,7 @@ import uk.co.bbr.web.contests.forms.ContestEditForm;
 import uk.co.bbr.web.groups.forms.GroupEditForm;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 

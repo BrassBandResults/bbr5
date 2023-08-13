@@ -33,18 +33,18 @@ public class PiecePerformanceSqlDto extends AbstractSqlDto {
 
     public PiecePerformanceSqlDto(Object[] columnList) {
         this.resultId = this.getLong(columnList, 0);
-        this.contestName = (String)columnList[1];
-        this.contestSlug = (String)columnList[2];
+        this.contestName = this.getString(columnList, 1);
+        this.contestSlug = this.getString(columnList, 2);
         this.eventDate = this.getLocalDate(columnList, 3);
-        this.eventDateResolution = (String)columnList[4];
-        this.competedAs = (String)columnList[5];
-        this.bandName = (String)columnList[6];
-        this.bandSlug = (String)columnList[7];
-        this.regionName = (String)columnList[8];
-        this.regionSlug = (String)columnList[9];
-        this.countryCode = (String)columnList[10];
+        this.eventDateResolution = this.getString(columnList, 4);
+        this.competedAs = this.getString(columnList, 5);
+        this.bandName = this.getString(columnList, 6);
+        this.bandSlug = this.getString(columnList, 7);
+        this.regionName = this.getString(columnList, 8);
+        this.regionSlug = this.getString(columnList, 9);
+        this.countryCode = this.getString(columnList, 10);
         this.resultPosition = this.getInteger(columnList, 11);
-        this.resultPositionType = (String)columnList[12];
+        this.resultPositionType = this.getString(columnList, 12);
     }
 
     public ContestResultDao asResult() {

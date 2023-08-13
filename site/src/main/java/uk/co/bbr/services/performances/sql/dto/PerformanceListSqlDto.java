@@ -38,20 +38,20 @@ public class PerformanceListSqlDto extends AbstractSqlDto {
 
     public PerformanceListSqlDto(Object[] columnList) {
         this.eventDate = this.getLocalDate(columnList, 0);
-        this.dateResolution = (String)columnList[1];
-        this.contestName = (String)columnList[2];
-        this.contestSlug = (String)columnList[3];
-        this.competedAs = (String)columnList[4];
-        this.bandName = (String)columnList[5];
-        this.bandSlug = (String)columnList[6];
-        this.regionName = (String)columnList[7];
-        this.regionSlug = (String)columnList[8];
-        this.regionCountryCode = (String)columnList[9];
-        this.conductorSurname = (String)columnList[10];
-        this.conductorFirstNames = (String)columnList[11];
-        this.conductorSlug = (String)columnList[12];
+        this.dateResolution = this.getString(columnList, 1);
+        this.contestName = this.getString(columnList, 2);
+        this.contestSlug = this.getString(columnList, 3);
+        this.competedAs = this.getString(columnList, 4);
+        this.bandName = this.getString(columnList, 5);
+        this.bandSlug = this.getString(columnList, 6);
+        this.regionName = this.getString(columnList, 7);
+        this.regionSlug = this.getString(columnList, 8);
+        this.regionCountryCode = this.getString(columnList, 9);
+        this.conductorSurname = this.getString(columnList, 10);
+        this.conductorFirstNames = this.getString(columnList, 11);
+        this.conductorSlug = this.getString(columnList, 12);
         this.resultPosition = this.getInteger(columnList, 13);
-        this.resultPositionType = (String)columnList[14];
+        this.resultPositionType = this.getString(columnList, 14);
         this.instrument = this.getInteger(columnList, 15);
         this.resultId = this.getLong(columnList, 16);
     }

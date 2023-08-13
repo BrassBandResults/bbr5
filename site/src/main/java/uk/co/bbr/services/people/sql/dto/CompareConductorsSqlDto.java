@@ -36,26 +36,26 @@ public class CompareConductorsSqlDto extends AbstractSqlDto {
     private final String rightBandRegionCountryCode;
 
     public CompareConductorsSqlDto(Object[] columnList) {
-        this.leftResult = (Integer)columnList[0];
-        this.leftResultType = (String)columnList[1];
-        this.rightResult = (Integer)columnList[2];
-        this.rightResultType = (String)columnList[3];
+        this.leftResult = this.getInteger(columnList,0);
+        this.leftResultType = this.getString(columnList, 1);
+        this.rightResult = this.getInteger(columnList,2);
+        this.rightResultType = this.getString(columnList, 3);
         this.eventDate = this.getLocalDate(columnList, 4);
-        this.contestSlug = (String)columnList[5];
-        this.contestName = (String)columnList[6];
-        this.eventDateResolution = (String)columnList[7];
-        this.leftBandName = (String)columnList[8];
-        this.rightBandName = (String)columnList[9];
-        this.leftBandSlug = (String)columnList[10];
-        this.rightBandSlug = (String)columnList[11];
-        this.leftBandCurrentName = (String)columnList[12];
-        this.rightBandCurrentName = (String)columnList[13];
-        this.leftBandRegionSlug = (String)columnList[14];
-        this.leftBandRegionName = (String)columnList[15];
-        this.leftBandRegionCountryCode = (String)columnList[16];
-        this.rightBandRegionSlug = (String)columnList[17];
-        this.rightBandRegionName = (String)columnList[18];
-        this.rightBandRegionCountryCode = (String)columnList[19];
+        this.contestSlug = this.getString(columnList, 5);
+        this.contestName = this.getString(columnList, 6);
+        this.eventDateResolution = this.getString(columnList, 7);
+        this.leftBandName = this.getString(columnList, 8);
+        this.rightBandName = this.getString(columnList, 9);
+        this.leftBandSlug = this.getString(columnList, 10);
+        this.rightBandSlug = this.getString(columnList, 11);
+        this.leftBandCurrentName = this.getString(columnList, 12);
+        this.rightBandCurrentName = this.getString(columnList, 13);
+        this.leftBandRegionSlug = this.getString(columnList, 14);
+        this.leftBandRegionName = this.getString(columnList, 15);
+        this.leftBandRegionCountryCode = this.getString(columnList, 16);
+        this.rightBandRegionSlug = this.getString(columnList, 17);
+        this.rightBandRegionName = this.getString(columnList, 18);
+        this.rightBandRegionCountryCode = this.getString(columnList, 19);
     }
 
     public ContestEventDao getEvent() {

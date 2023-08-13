@@ -1,4 +1,3 @@
-Ads for non-pro users
 
 Blog on the homepage
 
@@ -15,6 +14,10 @@ Fetch pending performances works out ones that aren't in history and aren't reje
 Multiple map icons on same location
 
 csrf
+
+Spring 3
+
+favicon.ico
 
 === Fast Followers Complete ===
 

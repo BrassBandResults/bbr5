@@ -31,22 +31,18 @@ public class UserAdjudicationsSqlDto extends AbstractSqlDto {
     private final String resultPositionType;
 
     public UserAdjudicationsSqlDto(Object[] columnList) {
-        this.eventName = (String) columnList[0];
+        this.eventName = this.getString(columnList, 0);
         this.eventDate = this.getLocalDate(columnList, 1);
-        this.eventDateResolution = (String) columnList[2];
-        this.contestSlug = (String) columnList[3];
-        this.bandCompetedAs = (String) columnList[4];
-        this.bandSlug = (String) columnList[5];
-        this.bandName = (String) columnList[6];
-        this.bandRegionName = (String) columnList[7];
-        this.bandRegionSlug = (String) columnList[8];
-        this.bandRegionCode = (String) columnList[9];
-        if (columnList[10] != null) {
-            this.resultPosition = this.getInteger(columnList, 10);
-        } else {
-            this.resultPosition = null;
-        }
-        this.resultPositionType = (String)columnList[11];
+        this.eventDateResolution = this.getString(columnList, 2);
+        this.contestSlug = this.getString(columnList, 3);
+        this.bandCompetedAs = this.getString(columnList, 4);
+        this.bandSlug = this.getString(columnList, 5);
+        this.bandName = this.getString(columnList, 6);
+        this.bandRegionName = this.getString(columnList, 7);
+        this.bandRegionSlug = this.getString(columnList, 8);
+        this.bandRegionCode = this.getString(columnList, 9);
+        this.resultPosition = this.getInteger(columnList, 10);
+        this.resultPositionType = this.getString(columnList, 11);
     }
 
     public ContestResultDao buildContestResultDao() {

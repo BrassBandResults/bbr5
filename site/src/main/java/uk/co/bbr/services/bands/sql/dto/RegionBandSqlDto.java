@@ -32,31 +32,41 @@ public class RegionBandSqlDto extends AbstractSqlDto {
 
 
     public RegionBandSqlDto(Object[] columnList) {
-        this.bandSlug = (String)columnList[0];
-        this.bandName = (String)columnList[1];
+        this.bandSlug = this.getString(columnList, 0);
+        this.bandName = this.getString(columnList, 1);
         this.bandStatus =  this.getInteger(columnList, 2);
-        this.sectionSlug = (String)columnList[3];
-        this.sectionName = (String)columnList[4];
-        this.sectionTranslationKey = (String)columnList[5];
-        this.sectionMapShortCode = (String)columnList[6];
-        this.bandLongitude = (String)columnList[7];
-        this.bandLatitude = (String)columnList[8];
-        this.bandWebsite = (String)columnList[9];
+        this.sectionSlug = this.getString(columnList, 3);
+        this.sectionName = this.getString(columnList, 4);
+        this.sectionTranslationKey = this.getString(columnList, 5);
+        this.sectionMapShortCode = this.getString(columnList, 6);
+        this.bandLongitude = this.getString(columnList, 7);
+        this.bandLatitude = this.getString(columnList, 8);
+        this.bandWebsite = this.getString(columnList, 9);
 
-        this.sunRehearsal = this.fetchRehearsal(columnList[10]);
-        this.monRehearsal = this.fetchRehearsal(columnList[11]);
-        this.tueRehearsal = this.fetchRehearsal(columnList[12]);
-        this.wedRehearsal = this.fetchRehearsal(columnList[13]);
-        this.thuRehearsal = this.fetchRehearsal(columnList[14]);
-        this.friRehearsal = this.fetchRehearsal(columnList[15]);
-        this.satRehearsal = this.fetchRehearsal(columnList[16]);
+        this.sunRehearsal = this.fetchRehearsal(columnList, 10);
+        this.monRehearsal = this.fetchRehearsal(columnList, 11);
+        this.tueRehearsal = this.fetchRehearsal(columnList, 12);
+        this.wedRehearsal = this.fetchRehearsal(columnList, 13);
+        this.thuRehearsal = this.fetchRehearsal(columnList, 14);
+        this.friRehearsal = this.fetchRehearsal(columnList, 15);
+        this.satRehearsal = this.fetchRehearsal(columnList, 16);
     }
 
-    private boolean fetchRehearsal(Object column) {
+    private boolean fetchRehearsal(Object[] columnList, int position) {
+        Object column = columnList[position];
         if (column == null) {
             return false;
         }
-        int value = column instanceof BigInteger ? ((BigInteger)column).intValue() : (Integer)column;
+        int value = 0;
+        if (column instanceof Integer) {
+            value = (Integer)column;
+        }
+        else if (column instanceof Long) {
+            value = ((Long) column).intValue();
+        } else if (column instanceof BigInteger) {
+            value = ((BigInteger) column).intValue();
+        }
+
         return value > 0;
     }
 

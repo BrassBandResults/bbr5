@@ -29,7 +29,7 @@ import uk.co.bbr.services.security.dao.UserRole;
 import uk.co.bbr.web.LoginMixin;
 import uk.co.bbr.web.security.filter.SecurityFilter;
 
-import javax.mail.internet.MimeMessage;
+import jakarta.mail.internet.MimeMessage;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
@@ -127,9 +127,7 @@ class SignupWebTests implements LoginMixin {
         ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/acc/register", request, String.class);
 
         // assert
-        assertEquals(HttpStatus.FOUND, response.getStatusCode());
-
-        assertTrue(Objects.requireNonNull(response.getHeaders().get("Location")).get(0).endsWith("/acc/sign-up-confirm"));
+        assertEquals(HttpStatus.OK, response.getStatusCode());
 
         Optional<PendingUserDao> pendingUser = this.userService.fetchPendingUser("tjs-test1");
         assertTrue(pendingUser.isPresent());
@@ -258,9 +256,9 @@ class SignupWebTests implements LoginMixin {
         ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/acc/sign-up", request, String.class);
 
         // assert
-        assertEquals(HttpStatus.FOUND, response.getStatusCode());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
 
-        assertTrue(Objects.requireNonNull(response.getHeaders().get("Location")).get(0).endsWith("/acc/register"));
+        assertTrue(response.getBody().contains("Please fill in the details below to create your new account."));
     }
 
     @Test
@@ -284,8 +282,7 @@ class SignupWebTests implements LoginMixin {
         ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/acc/sign-up", request, String.class);
 
         // assert
-        assertEquals(HttpStatus.FOUND, response.getStatusCode());
-
-        assertTrue(Objects.requireNonNull(response.getHeaders().get("Location")).get(0).endsWith("/acc/login-pro"));
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertTrue(response.getBody().contains("This site is an archive of brass band competition results"));
     }
 }

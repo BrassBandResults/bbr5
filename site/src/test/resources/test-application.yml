@@ -1,4 +1,4 @@
-debug: false
+debug: true
 logging:
   level:
     org:
@@ -13,7 +13,7 @@ spring:
     username: sa
     password: password
   jpa:
-    database-platform: org.hibernate.dialect.SQLServerDialect
+    database-platform: org.hibernate.dialect.H2Dialect
     open-in-view: false
     show-sql: false
   mail:

@@ -13,9 +13,9 @@ public class ContestListSqlDto extends AbstractSqlDto {
     private final boolean extinct;
 
     public ContestListSqlDto(Object[] columnList) {
-        this.contestName = (String)columnList[0];
-        this.contestSlug = (String)columnList[1];
-        this.extinct = columnList[2] != null && (Boolean)columnList[2];
+        this.contestName = this.getString(columnList, 0);
+        this.contestSlug = this.getString(columnList, 1);
+        this.extinct = this.getBoolean(columnList,2);
         this.eventCount = this.getInteger(columnList, 3);
 
     }

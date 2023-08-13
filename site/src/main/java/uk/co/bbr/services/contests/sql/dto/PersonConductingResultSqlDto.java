@@ -21,8 +21,8 @@ public class PersonConductingResultSqlDto extends AbstractSqlDto {
     private final String resultAward;
     private final String points;
     private final Integer draw;
-    private final BigInteger contestResultId;
-    private final BigInteger contestEventId;
+    private final Long contestResultId;
+    private final Long contestEventId;
     private final String regionName;
     private final String regionCountryCode;
     private final String groupName;
@@ -30,22 +30,22 @@ public class PersonConductingResultSqlDto extends AbstractSqlDto {
 
     public PersonConductingResultSqlDto(Object[] columnList) {
         this.eventDate = this.getLocalDate(columnList, 0);
-        this.eventDateResolution = (String)columnList[1];
-        this.contestSlug = (String)columnList[2];
-        this.contestName = (String)columnList[3];
-        this.bandCompetedAs = (String)columnList[4];
-        this.bandName = (String)columnList[5];
-        this.bandSlug = (String)columnList[6];
-        this.resultPosition = (Integer)columnList[7];
-        this.resultPositionType = (String)columnList[8];
-        this.resultAward = (String)columnList[9];
-        this.points = (String)columnList[10];
-        this.draw = (Integer)columnList[11];
-        this.contestResultId = (BigInteger)columnList[12];
-        this.contestEventId = (BigInteger)columnList[13];
-        this.regionName = (String)columnList[14];
-        this.regionCountryCode = (String)columnList[15];
-        this.groupName = (String)columnList[16];
-        this.groupSlug = (String)columnList[17];
+        this.eventDateResolution = this.getString(columnList, 1);
+        this.contestSlug = this.getString(columnList, 2);
+        this.contestName = this.getString(columnList, 3);
+        this.bandCompetedAs = this.getString(columnList, 4);
+        this.bandName = this.getString(columnList, 5);
+        this.bandSlug = this.getString(columnList, 6);
+        this.resultPosition = this.getInteger(columnList,7);
+        this.resultPositionType = this.getString(columnList, 8);
+        this.resultAward = this.getString(columnList, 9);
+        this.points = this.getString(columnList, 10);
+        this.draw = this.getInteger(columnList,11);
+        this.contestResultId = this.getLong(columnList,12);
+        this.contestEventId = this.getLong(columnList,13);
+        this.regionName = this.getString(columnList, 14);
+        this.regionCountryCode = this.getString(columnList, 15);
+        this.groupName = this.getString(columnList, 16);
+        this.groupSlug = this.getString(columnList, 17);
     }
 }

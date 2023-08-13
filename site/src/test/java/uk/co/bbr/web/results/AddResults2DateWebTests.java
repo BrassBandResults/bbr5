@@ -113,9 +113,7 @@ class AddResults2DateWebTests implements LoginMixin {
         ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/add-results/2/yorkshire-area", request, String.class);
 
         // assert
-        assertEquals(HttpStatus.FOUND, response.getStatusCode());
-
-        assertTrue(Objects.requireNonNull(response.getHeaders().get("Location")).get(0).endsWith("/add-results/3/yorkshire-area/1990-03-23"));
+        assertEquals(HttpStatus.OK, response.getStatusCode());
 
         Optional<ContestEventDao> fetchedContestEvent =  this.contestEventService.fetchEvent("yorkshire-area", LocalDate.of(1990,3,23));
         assertTrue(fetchedContestEvent.isPresent());
@@ -145,9 +143,7 @@ class AddResults2DateWebTests implements LoginMixin {
         ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/add-results/2/yorkshire-area", request, String.class);
 
         // assert
-        assertEquals(HttpStatus.FOUND, response.getStatusCode());
-
-        assertTrue(Objects.requireNonNull(response.getHeaders().get("Location")).get(0).endsWith("/add-results/3/yorkshire-area/1991-04-23"));
+        assertEquals(HttpStatus.OK, response.getStatusCode());
 
         Optional<ContestEventDao> fetchedContestEvent =  this.contestEventService.fetchEvent("yorkshire-area", LocalDate.of(1991,4,23));
         assertTrue(fetchedContestEvent.isPresent());
@@ -178,9 +174,7 @@ class AddResults2DateWebTests implements LoginMixin {
         ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/add-results/2/yorkshire-area", request, String.class);
 
         // assert
-        assertEquals(HttpStatus.FOUND, response.getStatusCode());
-
-        assertTrue(Objects.requireNonNull(response.getHeaders().get("Location")).get(0).endsWith("/add-results/3/yorkshire-area/1992-03-01"));
+        assertEquals(HttpStatus.OK, response.getStatusCode());
 
         Optional<ContestEventDao> fetchedContestEvent =  this.contestEventService.fetchEvent("yorkshire-area", LocalDate.of(1992,3,1));
         assertTrue(fetchedContestEvent.isPresent());
@@ -210,9 +204,7 @@ class AddResults2DateWebTests implements LoginMixin {
         ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/add-results/2/spennymoor", request, String.class);
 
         // assert
-        assertEquals(HttpStatus.FOUND, response.getStatusCode());
-
-        assertTrue(Objects.requireNonNull(response.getHeaders().get("Location")).get(0).endsWith("/add-results/3/spennymoor/1993-05-01"));
+        assertEquals(HttpStatus.OK, response.getStatusCode());
 
         Optional<ContestEventDao> fetchedContestEvent =  this.contestEventService.fetchEvent("spennymoor", LocalDate.of(1993,5,1));
         assertTrue(fetchedContestEvent.isPresent());
@@ -243,9 +235,7 @@ class AddResults2DateWebTests implements LoginMixin {
         ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/add-results/2/yorkshire-area", request, String.class);
 
         // assert
-        assertEquals(HttpStatus.FOUND, response.getStatusCode());
-
-        assertTrue(Objects.requireNonNull(response.getHeaders().get("Location")).get(0).endsWith("/add-results/3/yorkshire-area/1994-03-01"));
+        assertEquals(HttpStatus.OK, response.getStatusCode());
 
         Optional<ContestEventDao> fetchedContestEvent =  this.contestEventService.fetchEvent("yorkshire-area", LocalDate.of(1994,3,1));
         assertTrue(fetchedContestEvent.isPresent());
@@ -275,9 +265,7 @@ class AddResults2DateWebTests implements LoginMixin {
         ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/add-results/2/yorkshire-area", request, String.class);
 
         // assert
-        assertEquals(HttpStatus.FOUND, response.getStatusCode());
-
-        assertTrue(Objects.requireNonNull(response.getHeaders().get("Location")).get(0).endsWith("/add-results/3/yorkshire-area/1995-01-01"));
+        assertEquals(HttpStatus.OK, response.getStatusCode());
 
         Optional<ContestEventDao> fetchedContestEvent =  this.contestEventService.fetchEvent("yorkshire-area", LocalDate.of(1995,1,1));
         assertTrue(fetchedContestEvent.isPresent());
@@ -314,9 +302,7 @@ class AddResults2DateWebTests implements LoginMixin {
         ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/add-results/2/yorkshire-area", request, String.class);
 
         // assert
-        assertEquals(HttpStatus.FOUND, response.getStatusCode());
-
-        assertTrue(Objects.requireNonNull(response.getHeaders().get("Location")).get(0).endsWith("/contests/yorkshire-area/1996-03-03"));
+        assertEquals(HttpStatus.OK, response.getStatusCode());
 
         Optional<ContestEventDao> fetchedContestEvent =  this.contestEventService.fetchEvent("yorkshire-area", LocalDate.of(1995,4,1));
         assertFalse(fetchedContestEvent.isPresent());

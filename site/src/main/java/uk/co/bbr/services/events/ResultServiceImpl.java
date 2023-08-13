@@ -30,7 +30,7 @@ import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.services.security.dao.SiteUserDao;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -168,7 +168,7 @@ public class ResultServiceImpl implements ResultService {
             eachReturnPiece.getPiece().setName(eachResult.getPieceName());
             eachReturnPiece.getPiece().setSlug(eachResult.getPieceSlug());
             eachReturnPiece.getPiece().setYear(eachResult.getPieceYear());
-            eachReturnPiece.getContestResult().setPosition(eachResult.getPosition());
+            eachReturnPiece.getContestResult().setPosition(String.valueOf(eachResult.getPosition()));
             eachReturnPiece.getContestResult().setResultPositionType(ResultPositionType.fromCode(eachResult.getPositionType()));
             eachReturnPiece.getContestResult().getBand().getRegion().setName(eachResult.getRegionName());
             eachReturnPiece.getContestResult().getBand().getRegion().setCountryCode(eachResult.getRegionCountryCode());
@@ -295,6 +295,11 @@ public class ResultServiceImpl implements ResultService {
 
     @Override
     public void workOutCanEdit(ContestEventDao contestEvent, List<ContestResultDao> eventResults) {
+        if (eventResults.isEmpty()) {
+            contestEvent.setCanEdit(true);
+            return;
+        }
+
         SiteUserDao currentUser = this.securityService.getCurrentUser();
         boolean canEditAnyResult = false;
         for (ContestResultDao result : eventResults){

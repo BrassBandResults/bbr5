@@ -6,7 +6,7 @@ import uk.co.bbr.services.people.sql.dto.AdjudicationsSqlDto;
 import uk.co.bbr.services.people.sql.dto.PeopleBandsSqlDto;
 import uk.co.bbr.services.people.sql.dto.UserAdjudicationsSqlDto;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import java.util.List;
 
 @UtilityClass

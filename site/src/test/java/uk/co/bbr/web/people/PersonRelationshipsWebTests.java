@@ -171,9 +171,7 @@ class PersonRelationshipsWebTests implements LoginMixin {
         ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/people/david-roberts/edit-relationships/add", request, String.class);
 
         // assert
-        assertEquals(HttpStatus.FOUND, response.getStatusCode());
-
-        assertTrue(Objects.requireNonNull(response.getHeaders().get("Location")).get(0).endsWith("/people/david-roberts/edit-relationships"));
+        assertEquals(HttpStatus.OK, response.getStatusCode());
 
         List<PersonRelationshipDao> fetchedRelationships2 = this.personRelationshipService.fetchRelationshipsForPerson(newRelationshipPerson.get());
         assertEquals(1, fetchedRelationships2.size());

@@ -3,7 +3,7 @@ logging:
   level:
     org:
       springframework:
-        security: INFO
+        security: DEBUG
       apache:
         http: INFO
 spring:

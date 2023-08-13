@@ -23,7 +23,7 @@ import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.web.events.forms.ResultEditForm;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;

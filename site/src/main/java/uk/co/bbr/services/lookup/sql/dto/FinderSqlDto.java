@@ -18,8 +18,8 @@ public class FinderSqlDto extends AbstractSqlDto {
     private final LocalDate endDate;
 
     public FinderSqlDto(Object[] columnList) {
-        this.name = (String)columnList[0];
-        this.slug = (String)columnList[1];
+        this.name = this.getString(columnList, 0);
+        this.slug = this.getString(columnList, 1);
         this.startDate = this.getLocalDate(columnList, 2);
         this.endDate = this.getLocalDate(columnList, 3);
     }

@@ -16,11 +16,11 @@ public class LookupSqlDto extends AbstractSqlDto {
     private final String aliasOrObject;
 
     public LookupSqlDto(Object[] columnList) {
-        this.name = (String)columnList[0];
-        this.slug = (String)columnList[1];
-        this.context = (String)columnList[2];
-        this.offset = (String)columnList[3];
-        this.aliasOrObject = (String)columnList[4];
+        this.name = this.getString(columnList, 0);
+        this.slug = this.getString(columnList, 1);
+        this.context = this.getString(columnList, 2);
+        this.offset = this.getString(columnList, 3);
+        this.aliasOrObject = this.getString(columnList, 4);
     }
 
     public boolean isAlias() {

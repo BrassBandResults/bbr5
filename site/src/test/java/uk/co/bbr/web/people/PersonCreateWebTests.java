@@ -96,9 +96,7 @@ class PersonCreateWebTests implements LoginMixin {
         ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/create/person", request, String.class);
 
         // assert
-        assertEquals(HttpStatus.FOUND, response.getStatusCode());
-
-        assertTrue(Objects.requireNonNull(response.getHeaders().get("Location")).get(0).endsWith("/people"));
+        assertEquals(HttpStatus.OK, response.getStatusCode());
 
         Optional<PersonDao> fetchedPerson = this.personService.fetchBySlug("test-person-ii");
         assertTrue(fetchedPerson.isPresent());

@@ -36,7 +36,7 @@ import uk.co.bbr.web.framework.AbstractEventController;
 import uk.co.bbr.web.results.forms.*;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Collections;

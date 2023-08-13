@@ -17,13 +17,13 @@ import uk.co.bbr.api.security.ApiKeyAuthentication;
 import uk.co.bbr.services.security.JwtService;
 import uk.co.bbr.web.SessionKeys;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Arrays;
@@ -36,7 +36,7 @@ public class SecurityFilter extends GenericFilterBean {
     public static final String URL_SIGN_IN = "/acc/sign-in";
     public static final String URL_SIGN_OUT = "/acc/sign-out";
 
-    public static final String CSRF_HEADER_NAME = "X-XSRF-TOKEN";
+    public static final String CSRF_HEADER_NAME = "XSRF-TOKEN";
 
     private final JwtService jwtService;
 

@@ -8,8 +8,8 @@ import uk.co.bbr.services.regions.sql.dto.BandListForRegionSqlDto;
 import uk.co.bbr.services.regions.sql.dto.ContestListForRegionSqlDto;
 import uk.co.bbr.services.regions.sql.dto.RegionListSqlDto;
 
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
 import java.math.BigInteger;
 import java.util.List;
 

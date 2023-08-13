@@ -10,7 +10,7 @@ import uk.co.bbr.services.contests.sql.dto.PersonConductingResultSqlDto;
 import uk.co.bbr.services.contests.sql.dto.ResultPieceSqlDto;
 import uk.co.bbr.services.framework.sql.SqlExec;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import java.util.List;
 
 @UtilityClass

@@ -2,8 +2,8 @@ package uk.co.bbr.services.framework.sql;
 
 import lombok.experimental.UtilityClass;
 
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;

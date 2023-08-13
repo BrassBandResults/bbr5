@@ -13,8 +13,8 @@ import uk.co.bbr.services.map.dto.Location;
 import uk.co.bbr.services.regions.dao.RegionDao;
 import uk.co.bbr.services.sections.dao.SectionDao;
 
-import javax.persistence.*;
-import javax.xml.bind.DatatypeConverter;
+import jakarta.persistence.*;
+import jakarta.xml.bind.DatatypeConverter;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;

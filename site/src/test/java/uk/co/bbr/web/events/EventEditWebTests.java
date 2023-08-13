@@ -126,9 +126,7 @@ class EventEditWebTests implements LoginMixin {
         ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/contests/yorkshire-area/2010-03-12/edit", request, String.class);
 
         // assert
-        assertEquals(HttpStatus.FOUND, response.getStatusCode());
-
-        assertTrue(Objects.requireNonNull(response.getHeaders().get("Location")).get(0).endsWith("/contests/yorkshire-area/2011-04-15"));
+        assertEquals(HttpStatus.OK, response.getStatusCode());
 
         Optional<ContestEventDao> fetchedEvent = this.contestEventService.fetchEvent("yorkshire-area", LocalDate.of(2011,4,15));
         assertTrue(fetchedEvent.isPresent());

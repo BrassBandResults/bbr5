@@ -7,7 +7,7 @@ import uk.co.bbr.services.lookup.sql.dto.FinderSqlDto;
 import uk.co.bbr.services.lookup.sql.FinderSql;
 import uk.co.bbr.services.people.dao.PersonDao;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import java.time.LocalDate;
 import java.util.List;
 

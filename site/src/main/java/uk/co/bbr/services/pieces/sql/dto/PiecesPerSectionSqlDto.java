@@ -22,19 +22,19 @@ public class PiecesPerSectionSqlDto extends AbstractSqlDto {
     private final Integer ownChoiceCount;
 
     public PiecesPerSectionSqlDto(Object[] columnList) {
-        this.pieceSlug = (String)columnList[0];
-        this.pieceName = (String)columnList[1];
-        this.pieceYear = (String)columnList[2];
-        this.composerSurname = (String)columnList[3];
-        this.composerFirstNames = (String)columnList[4];
-        this.composerSuffix = (String)columnList[5];
-        this.composerSlug = (String)columnList[6];
-        this.arrangerSurname = (String)columnList[7];
-        this.arrangerFirstNames = (String)columnList[8];
-        this.arrangerSuffix = (String)columnList[9];
-        this.arrangerSlug = (String)columnList[10];
-        this.setTestCount = (Integer)columnList[11];
-        this.ownChoiceCount = (Integer)columnList[12];
+        this.pieceSlug = this.getString(columnList, 0);
+        this.pieceName = this.getString(columnList, 1);
+        this.pieceYear = this.getString(columnList, 2);
+        this.composerSurname = this.getString(columnList, 3);
+        this.composerFirstNames = this.getString(columnList, 4);
+        this.composerSuffix = this.getString(columnList, 5);
+        this.composerSlug = this.getString(columnList, 6);
+        this.arrangerSurname = this.getString(columnList, 7);
+        this.arrangerFirstNames = this.getString(columnList, 8);
+        this.arrangerSuffix = this.getString(columnList, 9);
+        this.arrangerSlug = this.getString(columnList, 10);
+        this.setTestCount = this.getInteger(columnList,11);
+        this.ownChoiceCount = this.getInteger(columnList,2);
     }
 
     public PieceDao getPiece() {

@@ -16,7 +16,7 @@ import uk.co.bbr.services.tags.sql.ContestTagSql;
 import uk.co.bbr.services.tags.sql.dto.TagListSqlDto;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
