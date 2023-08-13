@@ -17,7 +17,7 @@ public class ContestResultPieceSqlDto extends AbstractSqlDto {
     private final String pieceName;
     private final String pieceSlug;
     private final String pieceYear;
-    private final String position;
+    private final Integer position;
     private final String positionType;
     private final String regionName;
     private final String regionCountryCode;
@@ -32,7 +32,7 @@ public class ContestResultPieceSqlDto extends AbstractSqlDto {
         this.pieceName = this.getString(columnList, 6);
         this.pieceSlug = this.getString(columnList, 7);
         this.pieceYear = this.getString(columnList, 8);
-        this.position = String.valueOf(columnList[9]);
+        this.position = this.getInteger(columnList, 9);
         this.positionType = this.getString(columnList, 10);
         this.regionName = this.getString(columnList, 11);
         this.regionCountryCode = this.getString(columnList, 12);

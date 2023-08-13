@@ -28,18 +28,8 @@ public class BandListForRegionSqlDto extends AbstractSqlDto {
         this.regionName = this.getString(columnList, 2);
         this.regionSlug = this.getString(columnList, 3);
         this.countryCode = this.getString(columnList, 4);
-        if (columnList[5] != null) {
-            this.resultCount = this.getInteger(columnList, 5);
-        }
-        else {
-            this.resultCount = 0;
-        }
-        if (columnList[6] != null) {
-            this.bandStatus = this.getInteger(columnList, 6);
-        }
-        else {
-            this.bandStatus = 0;
-        }
+        this.resultCount = this.getIntegerOrZero(columnList, 5);
+        this.bandStatus = this.getIntegerOrZero(columnList, 6);
         this.bandSectionSlug = this.getString(columnList, 7);
         this.bandSectionTranslationKey = this.getString(columnList, 8);
     }

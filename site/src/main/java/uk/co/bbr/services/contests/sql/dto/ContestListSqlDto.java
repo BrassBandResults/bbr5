@@ -15,11 +15,6 @@ public class ContestListSqlDto extends AbstractSqlDto {
     public ContestListSqlDto(Object[] columnList) {
         this.name = this.getString(columnList, 0);
         this.slug = this.getString(columnList, 1);
-        if (columnList[2] != null) {
-            this.eventCount = this.getInteger(columnList, 2);
-        }
-        else {
-            this.eventCount = 0;
-        }
+        this.eventCount = this.getIntegerOrZero(columnList, 2);
     }
 }

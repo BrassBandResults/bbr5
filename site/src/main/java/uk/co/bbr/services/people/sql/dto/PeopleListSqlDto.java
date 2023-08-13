@@ -30,42 +30,12 @@ public class PeopleListSqlDto extends AbstractSqlDto {
         this.personSlug = this.getString(columnList, 2);
         this.personSuffix = this.getString(columnList, 3);
         this.personKnownFor = this.getString(columnList, 4);
-        if (columnList[5] != null) {
-            this.conductor1Count = this.getInteger(columnList, 5);
-        }
-        else {
-            this.conductor1Count = 0;
-        }
-        if (columnList[6] != null) {
-            this.conductor2Count = this.getInteger(columnList, 6);
-        }
-        else {
-            this.conductor2Count = 0;
-        }
-        if (columnList[7] != null) {
-            this.conductor3Count = this.getInteger(columnList, 7);
-        }
-        else {
-            this.conductor3Count = 0;
-        }
-        if (columnList[8] != null) {
-            this.adjudicatorCount = this.getInteger(columnList, 8);
-        }
-        else {
-            this.adjudicatorCount = 0;
-        }
-        if (columnList[9] != null) {
-            this.composerCount = this.getInteger(columnList, 9);
-        }
-        else {
-            this.composerCount = 0;
-        }
-        if (columnList[10] != null) {
-            this.arrangerCount = this.getInteger(columnList, 10);
-        }
-        else {
-            this.arrangerCount = 0;
-        }
+        this.conductor1Count = this.getIntegerOrZero(columnList, 5);
+        this.conductor2Count = this.getIntegerOrZero(columnList, 6);
+        this.conductor3Count = this.getIntegerOrZero(columnList, 7);
+        this.adjudicatorCount = this.getIntegerOrZero(columnList, 8);
+        this.composerCount = this.getIntegerOrZero(columnList, 9);
+        this.arrangerCount = this.getIntegerOrZero(columnList, 10);
     }
 
     public PersonDao asPerson() {

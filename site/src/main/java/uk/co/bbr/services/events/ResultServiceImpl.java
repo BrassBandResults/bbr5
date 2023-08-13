@@ -168,7 +168,7 @@ public class ResultServiceImpl implements ResultService {
             eachReturnPiece.getPiece().setName(eachResult.getPieceName());
             eachReturnPiece.getPiece().setSlug(eachResult.getPieceSlug());
             eachReturnPiece.getPiece().setYear(eachResult.getPieceYear());
-            eachReturnPiece.getContestResult().setPosition(eachResult.getPosition());
+            eachReturnPiece.getContestResult().setPosition(String.valueOf(eachResult.getPosition()));
             eachReturnPiece.getContestResult().setResultPositionType(ResultPositionType.fromCode(eachResult.getPositionType()));
             eachReturnPiece.getContestResult().getBand().getRegion().setName(eachResult.getRegionName());
             eachReturnPiece.getContestResult().getBand().getRegion().setCountryCode(eachResult.getRegionCountryCode());

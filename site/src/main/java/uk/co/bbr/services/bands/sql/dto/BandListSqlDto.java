@@ -23,12 +23,7 @@ public class BandListSqlDto extends AbstractSqlDto {
         this.regionName = this.getString(columnList, 2);
         this.regionSlug = this.getString(columnList, 3);
         this.countryCode = this.getString(columnList, 4);
-        if (columnList[5] != null) {
-            this.resultCount = this.getInteger(columnList, 5);
-        }
-        else {
-            this.resultCount = 0;
-        }
+        this.resultCount = this.getIntegerOrZero(columnList, 5);
     }
 
     public BandDao asBand() {

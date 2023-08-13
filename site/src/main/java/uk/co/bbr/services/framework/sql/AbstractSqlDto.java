@@ -16,6 +16,14 @@ public abstract class AbstractSqlDto {
         return columnList[position] instanceof BigInteger ? ((BigInteger)columnList[position]).intValue() : (Integer)columnList[position];
     }
 
+    protected Integer getIntegerOrZero(Object[] columnList, int position) {
+        Integer value = this.getInteger(columnList, position);
+        if (value == null) {
+            return 0;
+        }
+        return value;
+    }
+
     protected Long getLong(Object[] columnList, int position) {
         if (columnList[position] == null) {
             return null;

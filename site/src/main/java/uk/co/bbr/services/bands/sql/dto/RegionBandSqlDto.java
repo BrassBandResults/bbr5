@@ -43,16 +43,17 @@ public class RegionBandSqlDto extends AbstractSqlDto {
         this.bandLatitude = this.getString(columnList, 8);
         this.bandWebsite = this.getString(columnList, 9);
 
-        this.sunRehearsal = this.fetchRehearsal(columnList[10]);
-        this.monRehearsal = this.fetchRehearsal(columnList[11]);
-        this.tueRehearsal = this.fetchRehearsal(columnList[12]);
-        this.wedRehearsal = this.fetchRehearsal(columnList[13]);
-        this.thuRehearsal = this.fetchRehearsal(columnList[14]);
-        this.friRehearsal = this.fetchRehearsal(columnList[15]);
-        this.satRehearsal = this.fetchRehearsal(columnList[16]);
+        this.sunRehearsal = this.fetchRehearsal(columnList, 10);
+        this.monRehearsal = this.fetchRehearsal(columnList, 11);
+        this.tueRehearsal = this.fetchRehearsal(columnList, 12);
+        this.wedRehearsal = this.fetchRehearsal(columnList, 13);
+        this.thuRehearsal = this.fetchRehearsal(columnList, 14);
+        this.friRehearsal = this.fetchRehearsal(columnList, 15);
+        this.satRehearsal = this.fetchRehearsal(columnList, 16);
     }
 
-    private boolean fetchRehearsal(Object column) {
+    private boolean fetchRehearsal(Object[] columnList, int position) {
+        Object column = columnList[position];
         if (column == null) {
             return false;
         }
