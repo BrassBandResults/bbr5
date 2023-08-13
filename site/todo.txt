@@ -1,9 +1,3 @@
-
-Blog on the homepage
-
-=== Go Live ===
-Upgrade to pro - record stripe details on user
-
 Add placeholder text to form fields
 
 Support for instruments on contest history for pro users
@@ -13,9 +7,11 @@ Fetch pending performances works out ones that aren't in history and aren't reje
 
 Multiple map icons on same location
 
+=== Go Live ===
+
 csrf
 
-=== Fast Followers Complete ===
+Upgrade to pro - record stripe details on user
 
 Maps don't 500 where lat/lng is missing
 
