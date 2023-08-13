@@ -1,6 +1,6 @@
 <span th:fragment="bandLink(band, showFlag, showDateRange)">
-    <span th:if="${band != null}" th:remove="tag">
-        <img th:if="${showFlag}" th:title="${band.region.name}" th:src="@{${STATIC_HOST} + '/flags/' + ${band.region.countryCode} + '.png'}"/>
+    <span th:if="${band != null && band.slug != null && band.name != null}" th:remove="tag">
+        <img th:if="${showFlag && band.region != null && band.region.countryCode != null}" th:title="${band.region.name}" th:src="@{${STATIC_HOST} + '/flags/' + ${band.region.countryCode} + '.png'}"/>
         <a th:href="${'/bands/' + band.slug}" th:text="${band.name}" class="bbr-band">Band Name</a>
         <small th:if="${showDateRange && band.dateRange.length > 0}"><small><span th:text="${band.dateRange}" th:remove="tag">1950-2000</span></small></small>
     </span>

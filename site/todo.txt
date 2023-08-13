@@ -19,6 +19,8 @@ Current champions band header badge
 
 Result piece move up/down buttons to reorder
 
+Piece add context for working out which is which to replace square brackets
+
 Change password for user
 
 Add pro status to users profile page
@@ -61,3 +63,9 @@ Markdown for all notes/description fields
 Badges?
 
 Cache years page data
+
+Chart on years data for pro users
+
+Result Gold/Silver/Bronze/Merit
+
+Result awards out of comments
