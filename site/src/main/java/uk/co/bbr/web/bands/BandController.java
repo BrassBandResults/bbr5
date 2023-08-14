@@ -107,6 +107,10 @@ public class BandController {
             throw NotFoundException.bandNotFoundBySlug(bandSlug);
         }
 
+        if (!band.get().hasLocation()) {
+            return "redirect:/bands/{bandSlug}";
+        }
+
         ResultDetailsDto bandResults = this.bandResultService.findResultsForBand(band.get(), ResultSetCategory.ALL);
         List<BandRehearsalDayDao> bandRehearsalDays = this.bandRehearsalsService.fetchRehearsalDays(band.get());
         List<BandAliasDao> previousNames = this.bandAliasService.findVisibleAliases(band.get());

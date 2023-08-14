@@ -14,7 +14,7 @@
         <li class="nav-item" th:if="${WhitCount > 0}">
             <a class="nav-link" th:href="${'/bands/' + Band.slug + '/whits'}" th:text="#{page.band.tab.whits(${WhitCount})}">Whit Friday</a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" th:if="${Band.hasLocation()}">
             <a class="nav-link active" th:href="${'/bands/' + Band.slug + '/map'}" th:text="#{page.band.tab.map}">Map</a>
         </li>
     </ul>
