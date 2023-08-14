@@ -1,17 +1,22 @@
-Add placeholder text to form fields
-
 Support for instruments on contest history for pro users
 
 Add date ranges for personal contest history
 Fetch pending performances works out ones that aren't in history and aren't rejected
 
 Multiple map icons on same location
+https://github.com/Leaflet/Leaflet.markercluster
 
 === Go Live ===
 
-csrf
-
 Upgrade to pro - record stripe details on user
+
+
+
+Add placeholder text to form fields
+
+csrf + tidy configuration
+
+coverage
 
 Maps don't 500 where lat/lng is missing
 
