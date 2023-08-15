@@ -15,14 +15,16 @@
                 <li th:each="err : ${#fields.errors('*')}" th:text="@{#{${err}}}"></li>
             </ul>
         </div>
-        <div>
-            <span class="form-label fw-bold" th:text="#{page.field-prompt.contest}">Contest:</span>
-            <span th:text="${ContestEvent.name}">Yorkshire Area</span>
-        </div>
-        <div>
-            <span class="form-label fw-bold" th:text="#{page.field-prompt.event-date}">Event Date:</span>
-            <span th:text="${ContestEvent.eventDateDisplayWithDay}">Monday 5th Sept 2023</span>
-        </div>
+        <table>
+            <tr>
+                <td class="form-label fw-bold" th:text="#{page.field-prompt.contest}">Contest:</td>
+                <td th:text="${ContestEvent.name}">Yorkshire Area</td>
+            </tr>
+            <tr>
+                <td class="form-label fw-bold" th:text="#{page.field-prompt.event-date}">Event Date:</td>
+                <td th:text="${ContestEvent.eventDateDisplayWithDay}">Monday 5th Sept 2023</td>
+            </tr>
+        </table>
         <div class="mb-3">
             <label class="form-label fw-bold" for="contest-type" th:text="#{page.field-prompt.contest-type}">Contest Type:</label>
             <select id="contest-type" class="form-select" th:field="*{contestType}">

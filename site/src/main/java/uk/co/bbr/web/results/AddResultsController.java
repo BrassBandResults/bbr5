@@ -413,6 +413,8 @@ public class AddResultsController extends AbstractEventController {
         List<ContestResultDao> eventResults = this.resultService.fetchForEvent(contestEvent);
         List<ContestAdjudicatorDao> adjudicators = this.contestEventService.fetchAdjudicators(contestEvent);
 
+        AddResultsAdjudicatorForm form = new AddResultsAdjudicatorForm();
+        model.addAttribute("Form", form);
         model.addAttribute("TestPieces", pieces);
         model.addAttribute("ContestEvent", contestEvent);
         model.addAttribute("EventResults", eventResults);

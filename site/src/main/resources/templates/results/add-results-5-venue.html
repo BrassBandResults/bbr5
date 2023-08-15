@@ -15,24 +15,26 @@
                 <li th:each="err : ${#fields.errors('*')}" th:text="@{#{${err}}}"></li>
             </ul>
         </div>
-        <div>
-            <span class="form-label fw-bold" th:text="#{page.field-prompt.contest}">Contest:</span>
-            <span th:text="${ContestEvent.name}">Yorkshire Area</span>
-        </div>
-        <div>
-            <span class="form-label fw-bold" th:text="#{page.field-prompt.event-date}">Event Date:</span>
-            <span th:text="${ContestEvent.eventDateDisplayWithDay}">Monday 5th Sept 2023</span>
-        </div>
-        <div>
-            <span class="form-label fw-bold" th:text="#{page.field-prompt.contest-type}">Contest Type:</span>
-            <span th:text="#{'contest-types.' + ${ContestEvent.contestType.slug}}">Contest Type</span>
-        </div>
-        <div>
-            <span class="form-label fw-bold" th:text="#{page.field-prompt.test-piece}">Test Piece:</span>
-            <span th:each="contestEventPiece : ${TestPieces}">
-                <span th:text="${contestEventPiece.piece.name}">Piece Name</span>
-            </span>
-        </div>
+        <table>
+            <tr>
+                <td class="form-label fw-bold" th:text="#{page.field-prompt.contest}">Contest:</td>
+                <td th:text="${ContestEvent.name}">Yorkshire Area</td>
+            </tr>
+            <tr>
+                <td class="form-label fw-bold" th:text="#{page.field-prompt.event-date}">Event Date:</td>
+                <td th:text="${ContestEvent.eventDateDisplayWithDay}">Monday 5th Sept 2023</td>
+            </tr>
+            <tr>
+                <td class="form-label fw-bold" th:text="#{page.field-prompt.contest-type}">Contest Type:</td>
+                <td th:text="#{'contest-types.' + ${ContestEvent.contestType.slug}}">Contest Type</td>
+            </tr>
+            <tr>
+                <td class="form-label fw-bold" th:text="#{page.field-prompt.test-piece}">Test Piece:</td>
+                <td th:each="contestEventPiece : ${TestPieces}">
+                    <span th:text="${contestEventPiece.piece.name}">Piece Name</span>
+                </td>
+            </tr>
+        </table>
         <div class="mb-3">
             <label class="form-label fw-bold" for="venue" th:text="#{page.field-prompt.venue}">Venue:</label>
             <input id="venue" th:field="*{venueName}" autocomplete="off" th:placeholder="#{page.add-results.placeholder.venue}" class="form-control" type="text" maxlength="100" onkeyup="lookup('venue', 'venue');"/>
