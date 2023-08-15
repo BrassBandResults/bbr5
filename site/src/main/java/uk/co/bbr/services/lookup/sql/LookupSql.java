@@ -7,7 +7,7 @@ import jakarta.persistence.EntityManager;
 import java.util.List;
 
 public class LookupSql {
-    private static final String PEOPLE_LOOKUP_SQL = "SELECT combined_name, slug, known_for as context, 'people', 'O' as type FROM person WHERE UPPER(combined_name) LIKE ?1";
+    private static final String PEOPLE_LOOKUP_SQL = "SELECT combined_name, slug, COALESCE(known_for, '') as context, 'people', 'O' as type FROM person WHERE UPPER(combined_name) LIKE ?1";
     private static final String GROUP_LOOKUP_SQL = "SELECT name, slug, '' as context, 'contest-groups', 'O' as type FROM contest_group WHERE UPPER(name) LIKE ?1";
     private static final String VENUE_LOOKUP_SQL = "SELECT name, slug, '' as context, 'venues', 'O' as type FROM venue WHERE UPPER(name) LIKE ?1";
     private static final String CONTEST_LOOKUP_SQL = "SELECT name, slug, '' as context, 'contests', 'O' as type FROM contest WHERE UPPER(name) LIKE ?1";
