@@ -37,6 +37,8 @@ import uk.co.bbr.web.results.forms.*;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
 import jakarta.validation.Valid;
+
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Collections;
@@ -111,7 +113,7 @@ public class AddResultsController extends AbstractEventController {
 
     @IsBbrMember
     @PostMapping("/add-results/2/{contestSlug:[\\-a-z\\d]{2,}}")
-    public String addResultsDateStagePost(@Valid @ModelAttribute("Form") AddResultsDateForm submittedForm, BindingResult bindingResult, @PathVariable("contestSlug") String contestSlug) {
+    public String addResultsDateStagePost(Model model, @Valid @ModelAttribute("Form") AddResultsDateForm submittedForm, BindingResult bindingResult, @PathVariable("contestSlug") String contestSlug) {
         Optional<ContestDao> matchingContest = this.contestService.fetchBySlug(contestSlug);
         if (matchingContest.isEmpty()) {
             throw NotFoundException.contestNotFoundBySlug(contestSlug);
@@ -120,6 +122,7 @@ public class AddResultsController extends AbstractEventController {
         submittedForm.validate(bindingResult);
 
         if (bindingResult.hasErrors()) {
+            model.addAttribute("Contest", matchingContest.get());
             return "results/add-results-2-event-date";
         }
 
@@ -148,6 +151,7 @@ public class AddResultsController extends AbstractEventController {
                 eventDate = LocalDate.of(year3, month3, day3);
             }
         }
+
 
         // does event already exist?
         ContestEventDao contestEvent;

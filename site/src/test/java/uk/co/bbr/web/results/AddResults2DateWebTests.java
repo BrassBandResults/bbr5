@@ -281,7 +281,7 @@ class AddResults2DateWebTests implements LoginMixin {
         Optional<ContestDao> yorkshireArea = this.contestService.fetchBySlug("yorkshire-area");
         ContestEventDao yorkshireArea1996 = this.contestEventService.create(yorkshireArea.get(), LocalDate.of(1996, 3, 3));
         BandDao band = this.bandService.create("Band");
-        PersonDao conductor = this.personService.create("Condutor", "Mr");
+        PersonDao conductor = this.personService.create("Conductor", "Mr");
         this.contestResultService.addResult(yorkshireArea1996, "1", band, conductor);
 
         HttpHeaders headers = new HttpHeaders();
@@ -303,6 +303,157 @@ class AddResults2DateWebTests implements LoginMixin {
 
         // assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertTrue(Objects.requireNonNull(response.getBody()).contains("<h3>Sun 03 Mar 1996</h3>"));
+
+        Optional<ContestEventDao> fetchedContestEvent =  this.contestEventService.fetchEvent("yorkshire-area", LocalDate.of(1995,4,1));
+        assertFalse(fetchedContestEvent.isPresent());
+    }
+
+    @Test
+    void testCreateNewEventWithInvalidMonthNumberFailsAsExpected() throws AuthenticationFailedException {
+        loginTestUser(this.securityService, this.jwtService, TestUser.TEST_MEMBER);
+        Optional<ContestDao> yorkshireArea = this.contestService.fetchBySlug("yorkshire-area");
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+        CsrfToken csrfToken = csrfTokenRepository.generateToken(null);
+        headers.add(csrfToken.getHeaderName(), csrfToken.getToken());
+        headers.add("Cookie", SecurityFilter.CSRF_HEADER_NAME + "=" + csrfToken.getToken());
+
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+        map.add("eventDate", "01/13/1996");
+        map.add("_csrf", csrfToken.getToken());
+        map.add("_csrf_header", SecurityFilter.CSRF_HEADER_NAME);
+
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
+
+        // act
+        ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/add-results/2/yorkshire-area", request, String.class);
+
+        // assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertTrue(Objects.requireNonNull(response.getBody()).contains("<li>Can&#39;t parse date.</li>"));
+
+        Optional<ContestEventDao> fetchedContestEvent =  this.contestEventService.fetchEvent("yorkshire-area", LocalDate.of(1995,4,1));
+        assertFalse(fetchedContestEvent.isPresent());
+    }
+
+    @Test
+    void testCreateNewEventWithInvalidDayNumberFailsAsExpected() throws AuthenticationFailedException {
+        loginTestUser(this.securityService, this.jwtService, TestUser.TEST_MEMBER);
+        Optional<ContestDao> yorkshireArea = this.contestService.fetchBySlug("yorkshire-area");
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+        CsrfToken csrfToken = csrfTokenRepository.generateToken(null);
+        headers.add(csrfToken.getHeaderName(), csrfToken.getToken());
+        headers.add("Cookie", SecurityFilter.CSRF_HEADER_NAME + "=" + csrfToken.getToken());
+
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+        map.add("eventDate", "35/12/1996");
+        map.add("_csrf", csrfToken.getToken());
+        map.add("_csrf_header", SecurityFilter.CSRF_HEADER_NAME);
+
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
+
+        // act
+        ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/add-results/2/yorkshire-area", request, String.class);
+
+        // assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertTrue(Objects.requireNonNull(response.getBody()).contains("<li>Can&#39;t parse date.</li>"));
+
+        Optional<ContestEventDao> fetchedContestEvent =  this.contestEventService.fetchEvent("yorkshire-area", LocalDate.of(1995,4,1));
+        assertFalse(fetchedContestEvent.isPresent());
+    }
+
+    @Test
+    void testCreateNewEventWithThreeDigitYearFailsAsExpected() throws AuthenticationFailedException {
+        loginTestUser(this.securityService, this.jwtService, TestUser.TEST_MEMBER);
+        Optional<ContestDao> yorkshireArea = this.contestService.fetchBySlug("yorkshire-area");
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+        CsrfToken csrfToken = csrfTokenRepository.generateToken(null);
+        headers.add(csrfToken.getHeaderName(), csrfToken.getToken());
+        headers.add("Cookie", SecurityFilter.CSRF_HEADER_NAME + "=" + csrfToken.getToken());
+
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+        map.add("eventDate", "15/12/199");
+        map.add("_csrf", csrfToken.getToken());
+        map.add("_csrf_header", SecurityFilter.CSRF_HEADER_NAME);
+
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
+
+        // act
+        ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/add-results/2/yorkshire-area", request, String.class);
+
+        // assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertTrue(Objects.requireNonNull(response.getBody()).contains("<li>Can&#39;t parse date.</li>"));
+
+        Optional<ContestEventDao> fetchedContestEvent =  this.contestEventService.fetchEvent("yorkshire-area", LocalDate.of(1995,4,1));
+        assertFalse(fetchedContestEvent.isPresent());
+    }
+
+    @Test
+    void testCreateNewEventWithTooEarlyYearFailsAsExpected() throws AuthenticationFailedException {
+        loginTestUser(this.securityService, this.jwtService, TestUser.TEST_MEMBER);
+        Optional<ContestDao> yorkshireArea = this.contestService.fetchBySlug("yorkshire-area");
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+        CsrfToken csrfToken = csrfTokenRepository.generateToken(null);
+        headers.add(csrfToken.getHeaderName(), csrfToken.getToken());
+        headers.add("Cookie", SecurityFilter.CSRF_HEADER_NAME + "=" + csrfToken.getToken());
+
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+        map.add("eventDate", "15/12/1750");
+        map.add("_csrf", csrfToken.getToken());
+        map.add("_csrf_header", SecurityFilter.CSRF_HEADER_NAME);
+
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
+
+        // act
+        ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/add-results/2/yorkshire-area", request, String.class);
+
+        // assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertTrue(Objects.requireNonNull(response.getBody()).contains("<li>Can&#39;t parse date.</li>"));
+
+        Optional<ContestEventDao> fetchedContestEvent =  this.contestEventService.fetchEvent("yorkshire-area", LocalDate.of(1995,4,1));
+        assertFalse(fetchedContestEvent.isPresent());
+    }
+
+    @Test
+    void testCreateNewEventWitEmptyDateFailsAsExpected() throws AuthenticationFailedException {
+        loginTestUser(this.securityService, this.jwtService, TestUser.TEST_MEMBER);
+        Optional<ContestDao> yorkshireArea = this.contestService.fetchBySlug("yorkshire-area");
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+        CsrfToken csrfToken = csrfTokenRepository.generateToken(null);
+        headers.add(csrfToken.getHeaderName(), csrfToken.getToken());
+        headers.add("Cookie", SecurityFilter.CSRF_HEADER_NAME + "=" + csrfToken.getToken());
+
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+        map.add("eventDate", "   ");
+        map.add("_csrf", csrfToken.getToken());
+        map.add("_csrf_header", SecurityFilter.CSRF_HEADER_NAME);
+
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
+
+        // act
+        ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/add-results/2/yorkshire-area", request, String.class);
+
+        // assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertTrue(Objects.requireNonNull(response.getBody()).contains("<li>Can&#39;t parse date.</li>"));
 
         Optional<ContestEventDao> fetchedContestEvent =  this.contestEventService.fetchEvent("yorkshire-area", LocalDate.of(1995,4,1));
         assertFalse(fetchedContestEvent.isPresent());

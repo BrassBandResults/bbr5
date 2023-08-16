@@ -6,8 +6,6 @@ Fetch pending performances works out ones that aren't in history and aren't reje
 Multiple map icons on same location
 https://github.com/Leaflet/Leaflet.markercluster
 
-Date error on contest add handled without a 500
-
 === Go Live ===
 
 Upgrade to pro - record stripe details on user
