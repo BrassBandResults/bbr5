@@ -31,7 +31,7 @@
         </table>
         <div class="mb-3">
             <label class="form-label fw-bold" for="test-piece" th:text="#{page.field-prompt.test-piece}">Test Piece:</label>
-            <input id="test-piece" th:field="*{testPieceName}" autocomplete="off" th:placeholder="#{page.add-results.placeholder.test-piece}" class="form-control" type="text" maxlength="100" onkeyup="lookup('test-piece', 'piece');"/>
+            <input id="test-piece" th:field="*{testPieceName}" autocomplete="off" th:placeholder="#{page.add-results.placeholder.test-piece}" class="form-control" type="text" maxlength="100" onkeyup="lookupMandatory('test-piece', 'piece');"/>
             <input type="hidden" th:field="*{testPieceSlug}" id="test-piece-slug"/>
         </div>
 

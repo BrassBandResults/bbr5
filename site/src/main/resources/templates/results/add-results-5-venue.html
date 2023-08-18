@@ -37,7 +37,7 @@
         </table>
         <div class="mb-3">
             <label class="form-label fw-bold" for="venue" th:text="#{page.field-prompt.venue}">Venue:</label>
-            <input id="venue" th:field="*{venueName}" autocomplete="off" th:placeholder="#{page.add-results.placeholder.venue}" class="form-control" type="text" maxlength="100" onkeyup="lookup('venue', 'venue');"/>
+            <input id="venue" th:field="*{venueName}" autocomplete="off" th:placeholder="#{page.add-results.placeholder.venue}" class="form-control" type="text" maxlength="100" onkeyup="lookupMandatory('venue', 'venue');"/>
             <input type="hidden" th:field="*{venueSlug}" id="venue-slug"/>
         </div>
 

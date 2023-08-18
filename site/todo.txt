@@ -76,3 +76,8 @@ Chart on years data for pro users
 Result Gold/Silver/Bronze/Merit
 
 Result awards out of comments
+
+page showing contests for a given month/year
+- linked to from page below.  Can we do better?
+page showing contests for a given date
+- linked to from contest event page

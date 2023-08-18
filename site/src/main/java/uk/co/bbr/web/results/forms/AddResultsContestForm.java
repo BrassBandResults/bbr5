@@ -3,6 +3,8 @@ package uk.co.bbr.web.results.forms;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
+import uk.co.bbr.services.contests.ContestService;
 
 @Getter
 @Setter
@@ -11,6 +13,8 @@ public class AddResultsContestForm {
     private String contestSlug;
 
     public void validate(BindingResult bindingResult) {
-        // TODO validate that name is entered
+        if (this.contestSlug == null || this.contestSlug.trim().length() < 4) {
+            bindingResult.addError(new ObjectError("eventDate", "page.add-results.errors.not-found-contest"));
+        }
     }
 }

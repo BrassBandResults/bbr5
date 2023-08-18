@@ -3,6 +3,8 @@ package uk.co.bbr.web.results.forms;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
+import uk.co.bbr.services.pieces.PieceService;
 
 @Getter
 @Setter
@@ -11,6 +13,8 @@ public class AddResultsTestPieceForm {
     private String testPieceSlug;
 
     public void validate(BindingResult bindingResult) {
-        // TODO validate that it's a sensible date
+        if (this.testPieceSlug == null || this.testPieceSlug.trim().length() < 4) {
+            bindingResult.addError(new ObjectError("eventDate", "page.add-results.errors.not-found-piece"));
+        }
     }
 }

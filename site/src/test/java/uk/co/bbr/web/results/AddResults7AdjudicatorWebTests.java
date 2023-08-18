@@ -76,6 +76,7 @@ class AddResults7AdjudicatorWebTests implements LoginMixin {
         this.contestEventService.addAdjudicator(event17, davidRoberts);
         ContestEventDao event18 = this.contestEventService.create(yorkshireArea, LocalDate.of(2000, 3, 18));
         this.contestEventService.addAdjudicator(event18, davidRead);
+        ContestEventDao event19 = this.contestEventService.create(yorkshireArea, LocalDate.of(2000, 3, 19));
 
         logoutTestUser();
     }
@@ -224,5 +225,35 @@ class AddResults7AdjudicatorWebTests implements LoginMixin {
         assertEquals("david-read", adjudicators.get(0).getAdjudicator().getSlug());
         assertEquals("David Read", adjudicators.get(0).getAdjudicator().getName());
         assertEquals(fetchedContestEvent.get().getId(), adjudicators.get(0).getContestEvent().getId());
+    }
+
+    @Test
+    void testInvalidAdjudicatorFailsAsExpected() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+        CsrfToken csrfToken = csrfTokenRepository.generateToken(null);
+        headers.add(csrfToken.getHeaderName(), csrfToken.getToken());
+        headers.add("Cookie", SecurityFilter.CSRF_HEADER_NAME + "=" + csrfToken.getToken());
+
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+        map.add("adjudicatorName", "Not a real adjudicator");
+        map.add("adjudicatorSlug", "");
+        map.add("_csrf", csrfToken.getToken());
+        map.add("_csrf_header", SecurityFilter.CSRF_HEADER_NAME);
+
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
+
+        // act
+        ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/add-results/7/yorkshire-area/2000-03-19", request, String.class);
+
+        // assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+
+        Optional<ContestEventDao> fetchedContestEvent =  this.contestEventService.fetchEvent("yorkshire-area", LocalDate.of(2000,3,19));
+        assertTrue(fetchedContestEvent.isPresent());
+
+        List<ContestAdjudicatorDao> adjudicators = this.contestEventService.fetchAdjudicators(fetchedContestEvent.get());
+        assertEquals(0, adjudicators.size());
     }
 }
