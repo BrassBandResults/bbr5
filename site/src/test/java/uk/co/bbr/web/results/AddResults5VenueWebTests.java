@@ -74,7 +74,7 @@ class AddResults5VenueWebTests implements LoginMixin {
     }
 
     @Test
-    void testEventContestTypeStageGetWorksSuccessfully() {
+    void testVenueGetWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/add-results/5/yorkshire-area/2000-03-15", String.class);
         assertNotNull(response);
         assertTrue(response.contains("<title>Add Contest Results - Brass Band Results</title>"));
@@ -88,7 +88,7 @@ class AddResults5VenueWebTests implements LoginMixin {
     }
 
     @Test
-    void testUpdateContestTypeWorksSuccessfully() {
+    void testAddVenueWorksSuccessfully() {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
