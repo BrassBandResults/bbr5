@@ -40,7 +40,7 @@
             </tr>
         </table>
 
-        <div th:if="${ParsedResults.size() > 0}">
+        <div th:if="${ParsedResults.size() > 0}" class="container border border-danger bg-light rounded-bottom m-2">
             <p th:text="#{page.add-results.parsed-prompt-1}">Lines with a green background have been successfully matched.  Lines with a yellow background have not matched, please check the bands (in a separate browser tab) and fix this.</p>
             <p th:text="#{page.add-results.parsed-prompt-2}">Lines with a red background cannot be parsed and need fixing in the text box below.</p>
             <table class="table">
@@ -95,7 +95,7 @@
             </table>
         </div>
 
-        <div class="container border border-info bg-light rounded-bottom mb-2">
+        <div class="container border border-info bg-light rounded-bottom m-2">
         <p th:utext="#{page.add-results.prompt.bands-1}">Enter results, one per line, in the form: position, band, conductor, draw, points.  For example:</p>
         <p>1, Black Dyke, Nick Childs, 4, 199</p>
         <p th:utext="#{page.add-results.prompt.bands-2}">Use <b>unknown</b> where conductor is not known.</p>
