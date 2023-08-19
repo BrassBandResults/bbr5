@@ -165,6 +165,7 @@ public abstract class PageSets {
         pageList.add("/contests/yorkshire-area");
         pageList.add("/contests/yorkshire-area/2000-03-01");
         pageList.add("/contests/YORKSHIRE-GROUP");
+        pageList.add("/contests/YORKSHIRE-GROUP/2000");
         pageList.add("/contest-groups");
         pageList.add("/contest-groups/Y");
         pageList.add("/embed/band/rothwell-temperance/results/1");
@@ -220,7 +221,6 @@ public abstract class PageSets {
         pageList.add("/contest-groups/ALL");
         pageList.add("/contests/ALL");
         pageList.add("/contests/YORKSHIRE-GROUP/years");
-        pageList.add("/contests/YORKSHIRE-GROUP/2000");
         pageList.add("/contests/yorkshire-area/2000-03-01/edit-set-tests");
         pageList.add("/contests/yorkshire-area/2000-03-01/result/1/edit");
         pageList.add("/contests/yorkshire-area/2000-03-01/result/1/edit-pieces");

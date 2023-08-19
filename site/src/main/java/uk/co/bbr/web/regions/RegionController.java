@@ -56,7 +56,7 @@ public class RegionController {
         SiteUserDao currentUser = this.securityService.getCurrentUser();
 
         if (currentUser != null && currentUser.isProUser()) {
-            return "home/region-pro";
+            return "regions/region-pro";
         }
 
         return "regions/region";
