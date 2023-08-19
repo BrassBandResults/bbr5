@@ -33,7 +33,11 @@
 
         <p th:text="#{page.region.section.bands.count(${Region.activeBandsCount}, ${Region.extinctBandsCount})}">This region has {0} active bands, and {1} extinct.</p>
 
-          <table id="bands" class="table table-hover sortable" th:if="${Region.bands.size > 0}">
+        <span sec:authorize="hasRole('BBR_PRO')">
+            <button class="bandTypeButton btn btn-sm btn-success" type="button" th:each="type : ${Region.sectionTypes}" th:id="${type.key}"><span class="typeDescription" th:text="#{${type.key}}">Type</span> (<span th:text="${type.value}">123</span>)</button>
+        </span>
+
+        <table id="bands" class="table table-hover sortable" th:if="${Region.bands.size > 0}">
             <thead>
                 <tr>
                     <th th:text="#{page.region.section.bands.column-band-name}">Band</th>
@@ -49,8 +53,6 @@
                 </tr>
             </tbody>
         </table>
-
-        <button class="shh bandTypeButton btn btn-sm btn-success" type="button" th:each="type : ${Region.sectionTypes}" th:id="${type.key}"><span class="typeDescription" th:text="#{${type.key}}">Type</span> (<span th:text="${type.value}">123</span>)</button>
     </div>
 </div>
 
@@ -92,6 +94,48 @@
                 fetch(url)
                     .then(response => response.json())
                     .then(json => populateBandsOnMap(json, layers[id]));
+            }
+        }
+    </script>
+
+    <script sec:authorize="hasRole('BBR_PRO')">
+        let typeButtons = document.querySelectorAll("button.bandTypeButton");
+        for (let i=0; i<typeButtons.length; i++) {
+            let eachButton = typeButtons[i];
+            eachButton.addEventListener("click", toggleDisplayFunction(eachButton));
+        }
+
+        function toggleDisplayFunction(button) {
+            return function toggleTypeDisplay(ev) {
+                if (button.classList.contains("btn-success")) {
+                    showHideType(button.querySelector("span.typeDescription").textContent, false);
+                    button.classList.remove("btn-success");
+                    button.classList.add("btn-outline-dark");
+                    map.removeLayer(layers[button.id]);
+                } else {
+                    showHideType(button.querySelector("span.typeDescription").textContent, true);
+                    button.classList.remove("btn-outline-dark");
+                    button.classList.add("btn-success");
+                    map.addLayer(layers[button.id]);
+                }
+                ev.preventDefault();
+            }
+
+        }
+
+        function showHideType(typeText, showType) {
+            let tbody = document.querySelector("table#bands").querySelector("tbody");
+            let tableRows = tbody.querySelectorAll("td.bandType");
+            for(let i=0; i<tableRows.length;i++) {
+                let td = tableRows[i];
+                let tr = td.parentNode;
+                if (td.textContent === typeText) {
+                    if (showType) {
+                        tr.style.display = '';
+                    } else {
+                        tr.style.display = 'none';
+                    }
+                }
             }
         }
     </script>

@@ -19,6 +19,8 @@ import uk.co.bbr.services.regions.RegionService;
 import uk.co.bbr.services.regions.dao.RegionDao;
 import uk.co.bbr.services.regions.dto.LinkSectionDto;
 import uk.co.bbr.services.regions.dto.RegionPageDto;
+import uk.co.bbr.services.security.SecurityService;
+import uk.co.bbr.services.security.dao.SiteUserDao;
 import uk.co.bbr.web.security.annotations.IsBbrPro;
 
 import java.util.ArrayList;
@@ -32,6 +34,7 @@ public class RegionController {
 
     private final RegionService regionService;
     private final BandService bandService;
+    private final SecurityService securityService;
     private final ObjectMapper objectMapper;
 
     @GetMapping("/regions")
@@ -49,6 +52,13 @@ public class RegionController {
 
         model.addAttribute("Region", region);
         model.addAttribute("SubRegions", subRegions);
+
+        SiteUserDao currentUser = this.securityService.getCurrentUser();
+
+        if (currentUser != null && currentUser.isProUser()) {
+            return "home/region-pro";
+        }
+
         return "regions/region";
     }
 

@@ -54,11 +54,12 @@ public class HomeController {
         StatisticsDto statistics = this.statisticsService.fetchStatistics();
 
         model.addAttribute("Statistics", statistics);
+        SiteUserDao currentUser = this.securityService.getCurrentUser();
 
-        if (this.securityService.getCurrentUsername() == null) {
-            return "home/statistics-public";
+        if (currentUser != null && currentUser.isProUser()) {
+            return "home/statistics-pro";
         }
-        return "home/statistics-member";
+        return "home/statistics-public";
     }
 
     @GetMapping("/faq")
