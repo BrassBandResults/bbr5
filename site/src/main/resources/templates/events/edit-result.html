@@ -100,7 +100,7 @@
                     <a th:href="${'/contests/' + ContestEvent.contest.slug + '/' + ContestEvent.eventDateForUrl}" th:text="#{page.buttons.cancel-without-saving}" class="btn btn-light">Cancel wout saving</a>
                 </div>
                 <div class="col text-end">
-                    <span th:replace="buttons/delete.html :: deleteResult(${ContestEvent}, ${Result})"></span>
+                    <span th:replace="~{buttons/delete.html :: deleteResult(${ContestEvent}, ${Result})}"></span>
                 </div>
             </div>
         </div>

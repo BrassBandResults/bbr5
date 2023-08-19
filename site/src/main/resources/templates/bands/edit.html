@@ -72,7 +72,7 @@
                     <a th:href="${'/bands/' + Band.slug}" th:text="#{page.buttons.cancel-without-saving}" class="btn btn-light">Cancel wout saving</a>
                 </div>
                 <div class="col text-end">
-                    <span th:replace="buttons/delete.html :: deleteBand(${Band})"></span>
+                    <span th:replace="~{buttons/delete.html :: deleteBand(${Band})}"></span>
                 </div>
             </div>
         </div>

@@ -5,7 +5,7 @@
 </head>
 <body>
 <div layout:fragment="content">
-    <span th:replace="profile/components/header.html :: header(${User})"></span>
+    <span th:replace="~{profile/components/header.html :: header(${User})}"></span>
 
     <ul class="nav nav-tabs">
         <li class="nav-item">

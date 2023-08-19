@@ -5,18 +5,18 @@
         <small><small><small th:if="${PersonProfile != null}" th:text="${PersonProfile.qualifications}"></small></small></small>
     </h2>
     <div sec:authorize="hasRole('BBR_SUPERUSER')">
-        <span th:replace="buttons/edit.html :: editPerson(${Person})"></span>
-        <span th:replace="buttons/edit.html :: editPersonAliases(${Person})"></span>
-        <span th:replace="buttons/edit.html :: editPersonRelationships(${Person})"></span>
+        <span th:replace="~{buttons/edit.html :: editPerson(${Person})}"></span>
+        <span th:replace="~{buttons/edit.html :: editPersonAliases(${Person})}"></span>
+        <span th:replace="~{buttons/edit.html :: editPersonRelationships(${Person})}"></span>
     </div>
-    <span th:replace="components/aliases.html :: previousNames(${PreviousNames})"></span>
+    <span th:replace="~{components/aliases.html :: previousNames(${PreviousNames})}"></span>
     <br/>
     <span th:if="${PersonRelationships != null && PersonRelationships.size > 0}">
         <b th:text="#{page.field-prompt.relationships}">Relationships:</b>
         <ul>
             <li th:each="relationship : ${PersonRelationships}">
                 <span th:text="#{${relationship.relationshipName(Person)}}">relationship</span>
-                <span th:replace="links/person-link.html :: personLink(${relationship.otherPerson(Person)})">Person Name</span>
+                <span th:replace="~{links/person-link.html :: personLink(${relationship.otherPerson(Person)})}">Person Name</span>
             </li>
         </ul>
         <br/>

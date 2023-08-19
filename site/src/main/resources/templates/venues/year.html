@@ -17,8 +17,8 @@
         </thead>
         <tbody>
         <tr th:each="contestEvent : ${Events}">
-            <td class="bbr-event" nowrap><span th:replace="links/event-link.html :: eventLink(${contestEvent})">9th Sep 2023</span></td>
-            <td class="bbr-contest"><span th:replace="links/contest-link.html :: contestLink(${contestEvent.contest})">Contest Name</span></td>
+            <td class="bbr-event" nowrap><span th:replace="~{links/event-link.html :: eventLink(${contestEvent})}">9th Sep 2023</span></td>
+            <td class="bbr-contest"><span th:replace="~{links/contest-link.html :: contestLink(${contestEvent.contest})}">Contest Name</span></td>
         </tr>
         </tbody>
     </table>

@@ -7,12 +7,12 @@
 <div layout:fragment="content">
     <h2 th:if="${GroupPrefixLetter == 'ALL'}"><span th:text="#{page.groups.page-title}" th:remove="tag">All Groups</span></h2>
     <h2 th:if="${GroupPrefixLetter != 'ALL'}"><span th:text="#{page.groups.groups-starting-with(${GroupPrefixLetter})}" th:remove="tag">Contest Groups starting with R</span></h2>
-    <p th:replace="buttons/create.html :: createGroup()"></p><br/><br/>
+    <p th:replace="~{buttons/create.html :: createGroup()}"></p><br/><br/>
     <p>
         <span th:text="#{page.groups.group-counts(${Groups.returnedGroupsCount},${Groups.allGroupsCount})}" th:remove="tag">Showing 1 of 6 groups.</span>
         <span th:text="#{page.groups.group-list-header}" th:remove="tag">This is a list of current or last known names, alternative group names can be found by search.</span>
     </p>
-    <p th:replace="navigation/az-picker.html :: azPicker('contest-groups', ${GroupPrefixLetter}, false, true)"></p>
+    <p th:replace="~{navigation/az-picker.html :: azPicker('contest-groups', ${GroupPrefixLetter}, false, true)}"></p>
     <table id="bands" class="table table-hover sortable">
         <thead>
         <tr>
@@ -24,14 +24,14 @@
         <tbody>
         <tr th:each="group : ${Groups.returnedGroups}">
             <td class="group">
-                <span th:replace="links/group-link.html :: groupLink(${group})"></span>
+                <span th:replace="~{links/group-link.html :: groupLink(${group})}"></span>
             </td>
             <td class="group-contest-count" th:text="${group.contestCount}">0</td>
             <td class="group-event-count" th:text="${group.eventCount}">0</td>
         </tr>
         </tbody>
     </table>
-    <p th:replace="navigation/az-picker.html :: azPicker('contest-groups', ${GroupPrefixLetter}, false, true)"></p>
+    <p th:replace="~{navigation/az-picker.html :: azPicker('contest-groups', ${GroupPrefixLetter}, false, true)}"></p>
 </div>
 </body>
 </html>

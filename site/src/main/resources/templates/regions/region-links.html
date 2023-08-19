@@ -32,7 +32,7 @@
               [
                 <a th:if="${band.website != null}" th:href="${band.website}" th:text="#{page.region-links.web-link}">xweb</a>
                 <span class="text-muted" th:if="${band.website == null}" th:text="#{page.region-links.web-link}">xweb</span>
-              ]<span th:replace="links/band-link.html :: bandLink(${band}, false, true)"></span>
+              ]<span th:replace="~{links/band-link.html :: bandLink(${band}, false, true)}"></span>
             </li>
         </ul>
     </div>

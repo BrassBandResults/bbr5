@@ -1,11 +1,11 @@
 <span th:fragment="day(dayData)" th:remove="tag">
-    <div th:class="'col border border-1 ' + ${dayData.day == null ? 'bg-secondary-subtle ' : ' '} + ${dayData.hasEvents() ? 'bg-success-subtle ' : ' '} + ${dayData.today ? 'border-danger ' : 'border-dark-subtle '}">
+    <div th:class="'col border border-1 ' + ${dayData.day == null ? 'bg-secondary-subtle ' : ' '} + ${dayData.hasEvents() ? 'bg-primary-subtle ' : ' '} + ${dayData.today ? 'border-danger ' : 'border-dark-subtle '}">
         <b><span th:remove="tag" th:text="${dayData.dayNumber}"></span></b>
         <span th:remove="tag" th:each="group : ${dayData.groups}">
-            <p class="lh-1"><small><span th:replace="links/group-link.html :: calendarGroupLink(${group}, ${dayData.day.year})"></span></small></p>
+            <p class="lh-1"><small><span th:replace="~{links/group-link.html :: calendarGroupLink(${group}, ${dayData.day.year})}"></span></small></p>
         </span>
         <span th:remove="tag" th:each="event : ${dayData.events}">
-            <p class="lh-1"><small><span th:replace="links/event-link.html :: calendarEventLink(${event})"></span></small></p>
+            <p class="lh-1"><small><span th:replace="~{links/event-link.html :: calendarEventLink(${event})}"></span></small></p>
         </span>
     </div>
 </span>

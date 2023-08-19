@@ -5,7 +5,7 @@
 </head>
 <body>
 <div layout:fragment="content">
-    <span th:replace="pieces/components/header.html :: header(${Piece},${PreviousNames})"></span>
+    <span th:replace="~{pieces/components/header.html :: header(${Piece},${PreviousNames})}"></span>
 
     <ul class="nav nav-tabs">
         <li class="nav-item">
@@ -31,11 +31,11 @@
             </thead>
             <tbody>
             <tr th:each="eventPiece : ${SetTestContests}">
-                <td class="bbr-event" nowrap><span th:replace="links/event-link.html :: eventLink(${eventPiece.contestEvent})">9th Sep 2023</span></td>
+                <td class="bbr-event" nowrap><span th:replace="~{links/event-link.html :: eventLink(${eventPiece.contestEvent})}">9th Sep 2023</span></td>
                 <td class="bbr-contest"><span th:text="${eventPiece.contestEvent.contest.name}">Yorkshire Area</span></td>
                 <td class="bbr-band">
                     <span th:each="winningBand : ${eventPiece.winners}">
-                        <span th:replace="links/band-link.html :: bandLink(${winningBand}, true, false)"></span>
+                        <span th:replace="~{links/band-link.html :: bandLink(${winningBand}, true, false)}"></span>
                     </span>
                 </td>
             </tr>

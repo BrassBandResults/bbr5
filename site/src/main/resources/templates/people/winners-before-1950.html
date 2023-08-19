@@ -39,7 +39,7 @@
                 <tr th:each="winningPerson, iStat : ${WinningPeople}">
                     <td th:text="${iStat.count}">1</td>
                     <td class="person">
-                        <span th:replace="links/person-link.html :: personLinkWithKnownFor(${winningPerson.person})"></span>
+                        <span th:replace="~{links/person-link.html :: personLinkWithKnownFor(${winningPerson.person})}"></span>
                     </td>
                     <td th:text="${winningPerson.wins}">250</td>
                     <td><span th:text="${winningPerson.percentage}">41</span>%</td>

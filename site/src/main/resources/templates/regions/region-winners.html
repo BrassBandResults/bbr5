@@ -39,7 +39,7 @@
             <tbody>
                 <tr th:each="winningBand : ${WinningBands}">
                     <td class="band">
-                        <span th:replace="links/band-link.html :: bandLink(${winningBand.band}, false, true)"></span>
+                        <span th:replace="~{links/band-link.html :: bandLink(${winningBand.band}, false, true)}"></span>
                     </td>
                     <td th:text="${winningBand.wins}">250</td>
                     <td><span th:text="${winningBand.percentage}">41</span>%</td>

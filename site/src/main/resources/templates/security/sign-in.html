@@ -6,6 +6,7 @@
 <body>
 <div layout:fragment="content">
     <h2 th:text="#{page.security.sign-in.title}">Sign In</h2>
+    <p th:text="#{page.security.sign-in.explain}">To access this page you need to be logged into an account on the site.  You can create one for free.</p>
     <p class="text-danger" th:if="${LoginError != null}" th:text="${LoginError}">Error</p>
     <p><span th:text="#{page.security.sign-in.not-joined}">Not joined yet?</span> <a href="/acc/sign-up" th:text="#{page.security.sign-in.register-text}">Register here to create your account</a></p>
     <form action="/acc/sign-in" method="post">

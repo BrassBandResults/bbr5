@@ -1,27 +1,27 @@
 <span th:fragment="deleteBandAlias(band, bandAlias)" th:remove="tag">
-    <span th:replace="buttons/button.html :: dangerButton(#{page.buttons.delete}, ${'/bands/' + band.slug + '/edit-aliases/' + bandAlias.id + '/delete'})"></span>
+    <span th:replace="~{buttons/button.html :: dangerButton(#{page.buttons.delete}, ${'/bands/' + band.slug + '/edit-aliases/' + bandAlias.id + '/delete'})}"></span>
 </span>
 
 <span th:fragment="hideBandAlias(band, bandAlias)" th:remove="tag">
-    <span th:replace="buttons/button.html :: button(#{page.buttons.hide}, ${'/bands/' + band.slug + '/edit-aliases/' + bandAlias.id + '/hide'})"></span>
+    <span th:replace="~{buttons/button.html :: button(#{page.buttons.hide}, ${'/bands/' + band.slug + '/edit-aliases/' + bandAlias.id + '/hide'})}"></span>
 </span>
 
 <span th:fragment="showBandAlias(band, bandAlias)" th:remove="tag">
-    <span th:replace="buttons/button.html :: button(#{page.buttons.show}, ${'/bands/' + band.slug + '/edit-aliases/' + bandAlias.id + '/show'})"></span>
+    <span th:replace="~{buttons/button.html :: button(#{page.buttons.show}, ${'/bands/' + band.slug + '/edit-aliases/' + bandAlias.id + '/show'})}"></span>
 </span>
 
 <span th:fragment="editBandAlias(band, bandAlias)" th:remove="tag">
-    <span th:replace="buttons/button.html :: button(#{page.buttons.edit-dates}, ${'/bands/' + band.slug + '/edit-aliases/' + bandAlias.id + '/edit-dates'})"></span>
+    <span th:replace="~{buttons/button.html :: button(#{page.buttons.edit-dates}, ${'/bands/' + band.slug + '/edit-aliases/' + bandAlias.id + '/edit-dates'})}"></span>
 </span>
 
 <span th:fragment="deletePersonAlias(person, personAlias)" th:remove="tag">
-    <span th:replace="buttons/button.html :: dangerButton(#{page.buttons.delete}, ${'/people/' + person.slug + '/edit-aliases/' + personAlias.id + '/delete'})"></span>
+    <span th:replace="~{buttons/button.html :: dangerButton(#{page.buttons.delete}, ${'/people/' + person.slug + '/edit-aliases/' + personAlias.id + '/delete'})}"></span>
 </span>
 
 <span th:fragment="hidePersonAlias(person, personAlias)" th:remove="tag">
-    <span th:replace="buttons/button.html :: button(#{page.buttons.hide}, ${'/people/' + person.slug + '/edit-aliases/' + personAlias.id + '/hide'})"></span>
+    <span th:replace="~{buttons/button.html :: button(#{page.buttons.hide}, ${'/people/' + person.slug + '/edit-aliases/' + personAlias.id + '/hide'})}"></span>
 </span>
 
 <span th:fragment="showPersonAlias(person, personAlias)" th:remove="tag">
-    <span th:replace="buttons/button.html :: button(#{page.buttons.show}, ${'/people/' + person.slug + '/edit-aliases/' + personAlias.id + '/show'})"></span>
+    <span th:replace="~{buttons/button.html :: button(#{page.buttons.show}, ${'/people/' + person.slug + '/edit-aliases/' + personAlias.id + '/show'})}"></span>
 </span>

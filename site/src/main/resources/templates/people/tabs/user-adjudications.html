@@ -5,7 +5,7 @@
 </head>
 <body>
 <div layout:fragment="content">
-    <span th:replace="people/components/header.html :: header(${Person},${PersonProfile},${PreviousNames})"></span>
+    <span th:replace="~{people/components/header.html :: header(${Person},${PersonProfile},${PreviousNames})}"></span>
 
     <ul class="nav nav-tabs">
         <li class="nav-item" th:if="${PersonProfile != null}">
@@ -41,10 +41,10 @@
             </thead>
             <tbody>
                 <tr th:each="result : ${UserAdjudications}">
-                    <td class="bbr-event" nowrap><span th:replace="links/event-link.html :: eventLink(${result.contestEvent})">9th Sep 2023</span></td>
+                    <td class="bbr-event" nowrap><span th:replace="~{links/event-link.html :: eventLink(${result.contestEvent})}">9th Sep 2023</span></td>
                     <td class="bbr-contest"><span th:text="${result.contestEvent.name}">Yorkshire Area</span></td>
-                    <td class="bbr-band"><span th:replace="links/band-link.html :: bandLink(${result.band},true,false)"></span></td>
-                    <td><span th:replace="components/results-position.html :: resultsPosition(${result})">1</span></td>
+                    <td class="bbr-band"><span th:replace="~{links/band-link.html :: bandLink(${result.band},true,false)}"></span></td>
+                    <td><span th:replace="~{components/results-position.html :: resultsPosition(${result})}">1</span></td>
                 </tr>
             </tbody>
         </table>

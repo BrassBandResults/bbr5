@@ -41,14 +41,14 @@
             </thead>
             <tbody>
             <tr th:each="user: ${ProUsers}">
-                <td><span th:replace="links/user-link.html :: userLink(${user.siteUser})">Lokry</span></td>
+                <td><span th:replace="~{links/user-link.html :: userLink(${user.siteUser})}">Lokry</span></td>
                 <td><span th:text="${user.siteUser.email}">me@here.com</span></td>
                 <td th:text="${#temporals.format(user.siteUser.created, 'dd MMM yyyy')}"></td>
                 <td th:text="${#temporals.format(user.siteUser.lastLogin, 'dd MMM yyyy')}"></td>
                 <td th:text="${user.siteUser.points}"></td>
                 <td th:if="${user.siteUser.getStripeEmail() != null}">
                     <span class="text-success" th:if="${user.subscriptionActive}" th:text="${#temporals.format(user.currentSubscriptionEndDate, 'dd MMM yyyy')}"></span>
-                    <span th:if="${!user.subscriptionActive}"><span th:replace="buttons/button.html :: removePro(${user.siteUser})">Remove Pro</span></span>
+                    <span th:if="${!user.subscriptionActive}"><span th:replace="~{buttons/button.html :: removePro(${user.siteUser})}">Remove Pro</span></span>
                 </td>
                 <td th:if="${user.siteUser.getStripeEmail() == null}" class="text-danger">
                     No Stripe Email

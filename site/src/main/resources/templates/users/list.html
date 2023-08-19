@@ -39,7 +39,7 @@
             </thead>
             <tbody>
             <tr th:each="user: ${Users}">
-                <td><span th:replace="links/user-link.html :: userLink(${user})">Lokry</span></td>
+                <td><span th:replace="~{links/user-link.html :: userLink(${user})}">Lokry</span></td>
                 <td><span th:text="${user.email}">me@here.com</span></td>
                 <td th:text="${#temporals.format(user.created, 'dd MMM yyyy')}"></td>
                 <td th:text="${user.points}"></td>

@@ -1,8 +1,8 @@
 <div th:fragment="header(Group, PreviousNames)" xmlns:sec="http://www.thymeleaf.org">
     <h2 th:text="${Group.name}">Group Name</h2>
     <div sec:authorize="hasRole('BBR_SUPERUSER')">
-        <span th:replace="buttons/edit.html :: editGroup(${Group})"></span>
+        <span th:replace="~{buttons/edit.html :: editGroup(${Group})}"></span>
     </div>
-    <span th:replace="components/aliases.html :: previousNames(${PreviousNames})"></span>
+    <span th:replace="~{components/aliases.html :: previousNames(${PreviousNames})}"></span>
     <br/>
 </div>

@@ -5,7 +5,7 @@
 </head>
 <body>
 <div layout:fragment="content">
-    <span th:replace="people/components/header.html :: header(${Person},${PersonProfile},${PreviousNames})"></span>
+    <span th:replace="~{people/components/header.html :: header(${Person},${PersonProfile},${PreviousNames})}"></span>
 
     <ul class="nav nav-tabs">
         <li class="nav-item" th:if="${PersonProfile != null}">

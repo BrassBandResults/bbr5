@@ -7,16 +7,16 @@
 <div layout:fragment="content">
     <h2>
         <span th:text="#{page.add-adjudicators.title}">Edit Adjudicators</span>
-        <span th:replace="links/contest-link.html :: contestLink(${ContestEvent.contest})"></span>
+        <span th:replace="~{links/contest-link.html :: contestLink(${ContestEvent.contest})}"></span>
     </h2>
     <h3><a th:href="${'/contests/' + ContestEvent.contest.slug + '/' + ContestEvent.eventDateForUrl}" th:text="${ContestEvent.eventDateDisplayWithDay}"></a></h3>
 
     <table class="table table-hover">
         <tr th:each="adjudicator : ${Adjudicators}">
             <td>
-                <span th:replace="links/person-link.html :: personLink(${adjudicator.adjudicator})"></span>
+                <span th:replace="~{links/person-link.html :: personLink(${adjudicator.adjudicator})}"></span>
             </td>
-            <td><span th:replace="buttons/delete.html :: removeAdjudicator(${ContestEvent}, ${adjudicator})"></span></td>
+            <td><span th:replace="~{buttons/delete.html :: removeAdjudicator(${ContestEvent}, ${adjudicator})}"></span></td>
         </tr>
     </table>
 

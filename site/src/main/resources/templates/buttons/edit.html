@@ -1,67 +1,67 @@
 <span th:fragment="editPerson(person)" th:remove="tag">
-    <span th:replace="buttons/button.html :: button(#{page.buttons.edit}, ${'/people/' + person.slug + '/edit'})"></span>
+    <span th:replace="~{buttons/button.html :: button(#{page.buttons.edit}, ${'/people/' + person.slug + '/edit'})}"></span>
 </span>
 
 <span th:fragment="editPersonAliases(person)" th:remove="tag">
-    <span th:replace="buttons/button.html :: button(#{page.buttons.edit-aliases}, ${'/people/' + person.slug + '/edit-aliases'})"></span>
+    <span th:replace="~{buttons/button.html :: button(#{page.buttons.edit-aliases}, ${'/people/' + person.slug + '/edit-aliases'})}"></span>
 </span>
 
 <span th:fragment="editPersonRelationships(person)" th:remove="tag">
-    <span th:replace="buttons/button.html :: button(#{page.buttons.edit-relationships}, ${'/people/' + person.slug + '/edit-relationships'})"></span>
+    <span th:replace="~{buttons/button.html :: button(#{page.buttons.edit-relationships}, ${'/people/' + person.slug + '/edit-relationships'})}"></span>
 </span>
 
 <span th:fragment="editBand(band)" th:remove="tag">
-    <span th:replace="buttons/button.html :: button(#{page.buttons.edit}, ${'/bands/' + band.slug + '/edit'})"></span>
+    <span th:replace="~{buttons/button.html :: button(#{page.buttons.edit}, ${'/bands/' + band.slug + '/edit'})}"></span>
 </span>
 
 <span th:fragment="editBandAliases(band)" th:remove="tag">
-    <span th:replace="buttons/button.html :: button(#{page.buttons.edit-aliases}, ${'/bands/' + band.slug + '/edit-aliases'})"></span>
+    <span th:replace="~{buttons/button.html :: button(#{page.buttons.edit-aliases}, ${'/bands/' + band.slug + '/edit-aliases'})}"></span>
 </span>
 
 <span th:fragment="editBandRelationships(band)" th:remove="tag">
-    <span th:replace="buttons/button.html :: button(#{page.buttons.edit-relationships}, ${'/bands/' + band.slug + '/edit-relationships'})"></span>
+    <span th:replace="~{buttons/button.html :: button(#{page.buttons.edit-relationships}, ${'/bands/' + band.slug + '/edit-relationships'})}"></span>
 </span>
 
 <span th:fragment="editRehearsalDays(band)" th:remove="tag">
-    <span th:replace="buttons/button.html :: button(#{page.buttons.edit-rehearsals}, ${'/bands/' + band.slug + '/edit-rehearsals'})"></span>
+    <span th:replace="~{buttons/button.html :: button(#{page.buttons.edit-rehearsals}, ${'/bands/' + band.slug + '/edit-rehearsals'})}"></span>
 </span>
 
 <span th:fragment="editContest(contest)" th:remove="tag">
-    <span th:replace="buttons/button.html :: button(#{page.buttons.edit}, ${'/contests/' + contest.slug + '/edit'})"></span>
+    <span th:replace="~{buttons/button.html :: button(#{page.buttons.edit}, ${'/contests/' + contest.slug + '/edit'})}"></span>
 </span>
 
 <span th:fragment="editGroup(group)" th:remove="tag">
-    <span th:replace="buttons/button.html :: button(#{page.buttons.edit}, ${'/contests/' + group.slug + '/edit'})"></span>
+    <span th:replace="~{buttons/button.html :: button(#{page.buttons.edit}, ${'/contests/' + group.slug + '/edit'})}"></span>
 </span>
 
 <span th:fragment="editVenue(venue)" th:remove="tag">
-    <span th:replace="buttons/button.html :: button(#{page.buttons.edit}, ${'/venues/' + venue.slug + '/edit'})"></span>
+    <span th:replace="~{buttons/button.html :: button(#{page.buttons.edit}, ${'/venues/' + venue.slug + '/edit'})}"></span>
 </span>
 
 <span th:fragment="editPiece(piece)" th:remove="tag">
-    <span th:replace="buttons/button.html :: button(#{page.buttons.edit}, ${'/pieces/' + piece.slug + '/edit'})"></span>
+    <span th:replace="~{buttons/button.html :: button(#{page.buttons.edit}, ${'/pieces/' + piece.slug + '/edit'})}"></span>
 </span>
 
 <span th:fragment="editEvent(event)" th:remove="tag">
-    <span th:replace="buttons/button.html :: button(#{page.buttons.edit}, ${'/contests/' + event.contest.slug + '/' + event.eventDateForUrl + '/edit'})"></span>
+    <span th:replace="~{buttons/button.html :: button(#{page.buttons.edit}, ${'/contests/' + event.contest.slug + '/' + event.eventDateForUrl + '/edit'})}"></span>
 </span>
 
 <span th:fragment="editEventSetTests(event)" th:remove="tag">
-    <span th:replace="buttons/button.html :: button(#{page.buttons.edit-set-tests}, ${'/contests/' + event.contest.slug + '/' + event.eventDateForUrl + '/edit-set-tests'})"></span>
+    <span th:replace="~{buttons/button.html :: button(#{page.buttons.edit-set-tests}, ${'/contests/' + event.contest.slug + '/' + event.eventDateForUrl + '/edit-set-tests'})}"></span>
 </span>
 
 <span th:fragment="editEventAdjudicators(event)" th:remove="tag">
-    <span th:replace="buttons/button.html :: button(#{page.buttons.edit-adjudicators}, ${'/contests/' + event.contest.slug + '/' + event.eventDateForUrl + '/edit-adjudicators'})"></span>
+    <span th:replace="~{buttons/button.html :: button(#{page.buttons.edit-adjudicators}, ${'/contests/' + event.contest.slug + '/' + event.eventDateForUrl + '/edit-adjudicators'})}"></span>
 </span>
 
 <span th:fragment="editResult(event, result)" th:remove="tag">
-    <span th:replace="buttons/button.html :: button(#{page.buttons.edit}, ${'/contests/' + event.contest.slug + '/' + event.eventDateForUrl + '/result/' + result.id + '/edit'})"></span>
+    <span th:replace="~{buttons/button.html :: button(#{page.buttons.edit}, ${'/contests/' + event.contest.slug + '/' + event.eventDateForUrl + '/result/' + result.id + '/edit'})}"></span>
 </span>
 
 <span th:fragment="editResultPieces(event, result)" th:remove="tag">
-    <span th:replace="buttons/button.html :: button(#{page.buttons.edit-pieces}, ${'/contests/' + event.contest.slug + '/' + event.eventDateForUrl + '/result/' + result.id + '/edit-pieces'})"></span>
+    <span th:replace="~{buttons/button.html :: button(#{page.buttons.edit-pieces}, ${'/contests/' + event.contest.slug + '/' + event.eventDateForUrl + '/result/' + result.id + '/edit-pieces'})}"></span>
 </span>
 
 <span th:fragment="editPersonProfile(PersonProfile)" th:remove="tag">
-    <span th:replace="buttons/button.html :: button(#{page.buttons.edit}, ${'/profile/people-profiles/' + PersonProfile.person.slug + '/edit'})"></span>
+    <span th:replace="~{buttons/button.html :: button(#{page.buttons.edit}, ${'/profile/people-profiles/' + PersonProfile.person.slug + '/edit'})}"></span>
 </span>

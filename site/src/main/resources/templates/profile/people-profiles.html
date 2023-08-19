@@ -5,7 +5,7 @@
 </head>
 <body>
 <div layout:fragment="content">
-    <span th:replace="profile/components/header.html :: header(${User})"></span>
+    <span th:replace="~{profile/components/header.html :: header(${User})}"></span>
 
     <ul class="nav nav-tabs">
         <li class="nav-item">
@@ -32,10 +32,10 @@
             <tbody>
             <tr th:each="profile : ${Profiles}">
                 <td class="person">
-                    <span th:replace="links/person-link.html :: personLink(${profile.person})"></span>
+                    <span th:replace="~{links/person-link.html :: personLink(${profile.person})}"></span>
                 </td>
                 <td><span th:text="${#temporals.format(profile.updated, 'dd MMM yyyy')}">date</span></td>
-                <td><span th:replace="buttons/edit.html :: editPersonProfile(${profile})"></span></td>
+                <td><span th:replace="~{buttons/edit.html :: editPersonProfile(${profile})}"></span></td>
             </tr>
             </tbody>
         </table>

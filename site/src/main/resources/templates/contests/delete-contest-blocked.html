@@ -10,16 +10,16 @@
 
     <ul>
         <li th:each="event : ${FutureEvents}">
-            <span th:replace="links/event-link.html :: eventLink(${event})">9th Sep 2023</span>
+            <span th:replace="~{links/event-link.html :: eventLink(${event})}">9th Sep 2023</span>
         </li>
         <li th:each="event : ${Events}">
-            <span th:replace="links/event-link.html :: eventLink(${event})">9th Sep 2023</span>
+            <span th:replace="~{links/event-link.html :: eventLink(${event})}">9th Sep 2023</span>
         </li>
     </ul>
 
     <p>
         <span th:text="#{page.delete-prompt.return-to}">Return to</span>
-        <span th:replace="links/contest-link.html :: contestLink(${Contest})"></span>
+        <span th:replace="~{links/contest-link.html :: contestLink(${Contest})}"></span>
     </p>
 
 </div>

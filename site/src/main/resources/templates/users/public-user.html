@@ -18,7 +18,7 @@
                 </p>
             </div>
             <div class="col text-end">
-                <span th:replace="components/gravatar.html :: icon(${User})"></span>
+                <span th:replace="~{components/gravatar.html :: icon(${User})}"></span>
             </div>
         </div>
 
@@ -38,11 +38,11 @@
                 </thead>
                 <tbody>
                 <tr th:each="performance : ${Performances}">
-                    <td class="bbr-event" nowrap><span th:replace="links/event-link.html :: eventLink(${performance.result.contestEvent})">9th Sep 2023</span></td>
+                    <td class="bbr-event" nowrap><span th:replace="~{links/event-link.html :: eventLink(${performance.result.contestEvent})}">9th Sep 2023</span></td>
                     <td th:text="${performance.result.contestEvent.name}"></td>
-                    <td class="bbr-band"><span th:replace="links/band-link.html :: bandLinkWithOverride(${performance.result})"></span></td>
-                    <td class="bbr-conductor"><span th:replace="links/person-link.html :: conductorsLink(${performance.result})">Bob Childs</span></td>
-                    <td class="bbr-piece"><span th:replace="links/piece-link.html :: resultPieceWithSetTestIfNone(${performance.result})">Test Piece</span></td>
+                    <td class="bbr-band"><span th:replace="~{links/band-link.html :: bandLinkWithOverride(${performance.result})}"></span></td>
+                    <td class="bbr-conductor"><span th:replace="~{links/person-link.html :: conductorsLink(${performance.result})}">Bob Childs</span></td>
+                    <td class="bbr-piece"><span th:replace="~{links/piece-link.html :: resultPieceWithSetTestIfNone(${performance.result})}">Test Piece</span></td>
                     <td th:text="${performance.result.positionDisplay}"></td>
                     <td><span th:if="${performance.instrument != null}" th:text="#{${performance.instrument.translationKey}}">Percussion</span></td>
                 </tr>

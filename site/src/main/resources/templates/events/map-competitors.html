@@ -5,7 +5,7 @@
 </head>
 <body>
 <div layout:fragment="content">
-    <span th:replace="events/components/header.html :: header(${ContestEvent})"></span>
+    <span th:replace="~{events/components/header.html :: header(${ContestEvent})}"></span>
 
     <ul class="nav nav-tabs">
         <li class="nav-item">

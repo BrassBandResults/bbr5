@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import uk.co.bbr.services.events.ContestEventService;
 import uk.co.bbr.services.events.dao.ContestResultDao;
+import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.services.security.UserService;
 import uk.co.bbr.services.security.dao.SiteUserDao;
 import uk.co.bbr.services.statistics.StatisticsService;
@@ -18,6 +19,7 @@ import java.util.List;
 public class HomeController {
 
     private final UserService userService;
+    private final SecurityService securityService;
     private final ContestEventService contestEventService;
     private final StatisticsService statisticsService;
 
@@ -52,7 +54,11 @@ public class HomeController {
         StatisticsDto statistics = this.statisticsService.fetchStatistics();
 
         model.addAttribute("Statistics", statistics);
-        return "home/statistics";
+
+        if (this.securityService.getCurrentUsername() == null) {
+            return "home/statistics-public";
+        }
+        return "home/statistics-member";
     }
 
     @GetMapping("/faq")

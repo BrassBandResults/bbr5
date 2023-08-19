@@ -7,8 +7,8 @@
 <div layout:fragment="content">
     <span th:if="${VenuePrefixLetter == 'ALL'}"><h2><span th:text="#{page.venues.page-title}" th:remove="tag">All Venues</span></h2></span>
     <span th:if="${VenuePrefixLetter != 'ALL'}"><h2><span th:text="#{page.venues.venues-starting-with(${VenuePrefixLetter})}" th:remove="tag">Venues starting with R</span></h2></span>
-    <p th:replace="buttons/create.html :: createVenue()"></p><br/><br/>
-    <p th:replace="navigation/az-picker.html :: azPicker('venues', ${RegionPrefixLetter}, true, true)"></p>
+    <p th:replace="~{buttons/create.html :: createVenue()}"></p><br/><br/>
+    <p th:replace="~{navigation/az-picker.html :: azPicker('venues', ${RegionPrefixLetter}, true, true)}"></p>
     <table id="venues" class="table table-hover sortable">
         <thead>
         <tr>
@@ -19,13 +19,13 @@
         </thead>
         <tbody>
         <tr th:each="venue : ${Venues.returnedVenues}">
-            <td class="venue"><span th:replace="links/venue-link.html :: venueLink(${venue})"></span></td>
-            <td><span th:replace="links/region-link.html :: regionLink(${venue.region})"></span></td>
+            <td class="venue"><span th:replace="~{links/venue-link.html :: venueLink(${venue})}"></span></td>
+            <td><span th:replace="~{links/region-link.html :: regionLink(${venue.region})}"></span></td>
             <td class="venue-event-count" th:text="${venue.eventCount}">0</td>
         </tr>
         </tbody>
     </table>
-    <p th:replace="navigation/az-picker.html :: azPicker('venues', ${RegionPrefixLetter}, true, true)"></p>
+    <p th:replace="~{navigation/az-picker.html :: azPicker('venues', ${RegionPrefixLetter}, true, true)}"></p>
 </div>
 </body>
 </html>

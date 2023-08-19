@@ -55,7 +55,7 @@
                     <a th:href="${'/venues/' + Venue.slug}" th:text="#{page.buttons.cancel-without-saving}" class="btn btn-light">Cancel wout saving</a>
                 </div>
                 <div class="col text-end">
-                    <span th:replace="buttons/delete.html :: deleteVenue(${Venue})"></span>
+                    <span th:replace="~{buttons/delete.html :: deleteVenue(${Venue})}"></span>
                 </div>
             </div>
         </div>

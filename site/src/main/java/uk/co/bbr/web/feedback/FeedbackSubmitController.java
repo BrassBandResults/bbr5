@@ -47,7 +47,15 @@ public class FeedbackSubmitController {
             ip = request.getRemoteAddr();
         }
 
-        this.feedbackService.submit(offset, referrer, ownerUsercode.strip(), feedback.strip(), browserName, ip);
+        String strippedOwnerUsercode = ownerUsercode;
+        if (ownerUsercode != null) {
+            strippedOwnerUsercode = ownerUsercode.strip();
+        }
+        String strippedFeedback = feedback;
+        if (feedback != null) {
+            strippedFeedback = feedback.strip();
+        }
+        this.feedbackService.submit(offset, referrer, strippedOwnerUsercode, strippedFeedback, browserName, ip);
 
         return "redirect:/feedback/thanks?next=" + offset;
     }

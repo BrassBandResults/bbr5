@@ -8,11 +8,11 @@
     <span th:if="${PiecePrefixLetter == 'ALL'}"><h2><span th:text="#{page.pieces.page-title-all}" th:remove="tag">All Bands</span></h2></span>
     <span th:if="${PiecePrefixLetter == '0'}"><h2><span th:text="#{page.pieces.page-title-numbers}" th:remove="tag">Pieces starting with numbers</span></h2></span>
     <span th:if="${PiecePrefixLetter != 'ALL' && PiecePrefixLetter != '0'}"><h2><span th:text="#{page.pieces.pieces-starting-with(${PiecePrefixLetter})}" th:remove="tag">Pieces starting with R</span></h2></span>
-    <p th:replace="buttons/create.html :: createPiece()"></p><br/><br/>
+    <p th:replace="~{buttons/create.html :: createPiece()}"></p><br/><br/>
     <p>
         <span th:text="#{page.pieces.piece-counts(${Pieces.returnedPiecesCount},${Pieces.allPiecesCount})}" th:remove="tag">Showing 1 of 6 pieces.</span>
     </p>
-    <p th:replace="navigation/az-picker.html :: azPicker('pieces', ${PiecePrefixLetter}, true, true)"></p>
+    <p th:replace="~{navigation/az-picker.html :: azPicker('pieces', ${PiecePrefixLetter}, true, true)}"></p>
     <table id="bands" class="table table-hover sortable">
         <thead>
         <tr>
@@ -26,16 +26,16 @@
         <tbody>
         <tr th:each="piece : ${Pieces.returnedPieces}">
             <td class="piece">
-                <span th:replace="links/piece-link.html :: pieceLink(${piece})"></span>
+                <span th:replace="~{links/piece-link.html :: pieceLink(${piece})}"></span>
             </td>
-            <td class="composer person"><span th:replace="links/person-link.html :: personLinkWithUnknown(${piece.composer})"></span></td>
-            <td class="arranger person"><span th:replace="links/person-link.html :: personLink(${piece.arranger})"></span></td>
+            <td class="composer person"><span th:replace="~{links/person-link.html :: personLinkWithUnknown(${piece.composer})}"></span></td>
+            <td class="arranger person"><span th:replace="~{links/person-link.html :: personLink(${piece.arranger})}"></span></td>
             <td sec:authorize="hasRole('BBR_PRO')" th:text="${piece.setTestCount}"></td>
             <td sec:authorize="hasRole('BBR_PRO')" th:text="${piece.ownChoiceCount}"></td>
         </tr>
         </tbody>
     </table>
-    <p th:replace="navigation/az-picker.html :: azPicker('pieces', ${PiecePrefixLetter}, true, true)"></p>
+    <p th:replace="~{navigation/az-picker.html :: azPicker('pieces', ${PiecePrefixLetter}, true, true)}"></p>
 </div>
 </body>
 </html>

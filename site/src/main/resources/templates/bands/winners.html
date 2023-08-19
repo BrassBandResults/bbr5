@@ -24,9 +24,9 @@
             <tr th:each="winningBand, iStat : ${WinningBands}">
                 <td th:text="${iStat.count}">1</td>
                 <td class="band">
-                    <span th:replace="links/band-link.html :: bandLink(${winningBand.band}, false, true)"></span>
+                    <span th:replace="~{links/band-link.html :: bandLink(${winningBand.band}, false, true)}"></span>
                 </td>
-                <td class="region"><span th:replace="links/region-link.html :: regionLink(${winningBand.band.region})"></span></td>
+                <td class="region"><span th:replace="~{links/region-link.html :: regionLink(${winningBand.band.region})}"></span></td>
                 <td th:text="${winningBand.wins}">250</td>
                 <td><span th:text="${winningBand.percentage}">41</span>%</td>
                 <td th:text="${winningBand.contests}">597</td>
