@@ -11,7 +11,7 @@
             <span th:text="${#numbers.formatDecimal(Statistics.bandCount, 0, 'COMMA', 0, 'POINT')}" th:remove="tag">123</span>
             <span th:text="#{page.statistics.bands}" th:remove="tag">bands</span>,
             <span sec:authorize="hasRole('BBR_PRO')" th:text="#{page.statistics.latest-is}" th:remove="tag">latest is</span>
-            <span sec:authorize="hasRole('BBR_PRO')" th:replace="links/band-link.html :: bandLink(${Statistics.latestBand}, false, false)"></span>
+            <span sec:authorize="hasRole('BBR_PRO')" th:replace="~{links/band-link.html :: bandLink(${Statistics.latestBand}, false, false)}"></span>
             <ul sec:authorize="hasRole('BBR_PRO')">
                 <li>
                     <span th:text="${#numbers.formatDecimal(Statistics.bandsCompetedLastYear, 0, 'COMMA', 0, 'POINT')}" th:remove="tag">123</span>
@@ -34,7 +34,7 @@
             <span th:text="${#numbers.formatDecimal(Statistics.peopleCount, 0, 'COMMA', 0, 'POINT')}" th:remove="tag">123</span>
             <span th:text="#{page.statistics.people}" th:remove="tag">people</span>,
             <span sec:authorize="hasRole('BBR_PRO')" th:text="#{page.statistics.latest-is}" th:remove="tag">latest is</span>
-            <span sec:authorize="hasRole('BBR_PRO')" th:replace="links/person-link.html :: personLink(${Statistics.latestPerson})"></span>
+            <span sec:authorize="hasRole('BBR_PRO')" th:replace="~{links/person-link.html :: personLink(${Statistics.latestPerson})}"></span>
         </li>
         <li>
             <span th:text="${#numbers.formatDecimal(Statistics.resultCount, 0, 'COMMA', 0, 'POINT')}" th:remove="tag">123</span>
@@ -48,25 +48,25 @@
             <span th:text="#{page.statistics.events}" th:remove="tag">events</span>,
             <span sec:authorize="hasRole('BBR_PRO')" th:text="#{page.statistics.latest-is}" th:remove="tag">latest is</span>
             <span sec:authorize="hasRole('BBR_PRO')" th:text="${Statistics.latestEvent.contest.name}">Contest Name</span>
-            <span sec:authorize="hasRole('BBR_PRO')" th:replace="links/event-link.html :: eventLink(${Statistics.latestEvent})"></span>
+            <span sec:authorize="hasRole('BBR_PRO')" th:replace="~{links/event-link.html :: eventLink(${Statistics.latestEvent})}"></span>
         </li>
         <li>
             <span th:text="${#numbers.formatDecimal(Statistics.contestCount, 0, 'COMMA', 0, 'POINT')}" th:remove="tag">123</span>
             <span th:text="#{page.statistics.contests}" th:remove="tag">contests</span>,
             <span sec:authorize="hasRole('BBR_PRO')" th:text="#{page.statistics.latest-is}" th:remove="tag">latest is</span>
-            <span sec:authorize="hasRole('BBR_PRO')" th:replace="links/contest-link.html :: contestLink(${Statistics.latestContest})"></span>
+            <span sec:authorize="hasRole('BBR_PRO')" th:replace="~{links/contest-link.html :: contestLink(${Statistics.latestContest})}"></span>
         </li>
         <li>
             <span th:text="${#numbers.formatDecimal(Statistics.pieceCount, 0, 'COMMA', 0, 'POINT')}" th:remove="tag">123</span>
             <span th:text="#{page.statistics.pieces}" th:remove="tag">pieces</span>,
             <span sec:authorize="hasRole('BBR_PRO')" th:text="#{page.statistics.latest-is}" th:remove="tag">latest is</span>
-            <span sec:authorize="hasRole('BBR_PRO')" th:replace="links/piece-link.html :: pieceLink(${Statistics.latestPiece})"></span>
+            <span sec:authorize="hasRole('BBR_PRO')" th:replace="~{links/piece-link.html :: pieceLink(${Statistics.latestPiece})}"></span>
         </li>
         <li>
             <span th:text="${#numbers.formatDecimal(Statistics.venueCount, 0, 'COMMA', 0, 'POINT')}" th:remove="tag">123</span>
             <span th:text="#{page.statistics.venues}" th:remove="tag">venues</span>,
             <span sec:authorize="hasRole('BBR_PRO')" th:text="#{page.statistics.latest-is}" th:remove="tag">latest is</span>
-            <span sec:authorize="hasRole('BBR_PRO')" th:replace="links/venue-link.html :: venueLink(${Statistics.latestVenue})"></span>
+            <span sec:authorize="hasRole('BBR_PRO')" th:replace="~{links/venue-link.html :: venueLink(${Statistics.latestVenue})}"></span>
         </li>
         <ul sec:authorize="hasRole('BBR_PRO')">
             <li>

@@ -10,16 +10,16 @@
 
     <ul>
         <li th:each="contest : ${ActiveContests}">
-            <span th:replace="links/contest-link.html :: contestLink(${contest})">Yorkshire Area</span>
+            <span th:replace="~{links/contest-link.html :: contestLink(${contest})}">Yorkshire Area</span>
         </li>
         <li th:each="contest : ${OldContests}">
-            <span th:replace="links/contest-link.html :: contestLink(${contest})">North West Area</span>
+            <span th:replace="~{links/contest-link.html :: contestLink(${contest})}">North West Area</span>
         </li>
     </ul>
 
     <p>
         <span th:text="#{page.delete-prompt.return-to}">Return to</span>
-        <span th:replace="links/group-link.html :: groupLink(${Group})"></span>
+        <span th:replace="~{links/group-link.html :: groupLink(${Group})}"></span>
     </p>
 
 </div>

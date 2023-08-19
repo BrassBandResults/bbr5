@@ -5,7 +5,7 @@
 </head>
 <body>
 <div layout:fragment="content">
-    <span th:replace="people/components/header.html :: header(${Person},${PersonProfile},${PreviousNames})"></span>
+    <span th:replace="~{people/components/header.html :: header(${Person},${PersonProfile},${PreviousNames})}"></span>
 
     <ul class="nav nav-tabs">
         <li class="nav-item" th:if="${PersonProfile != null}">
@@ -43,10 +43,10 @@
             </thead>
             <tbody>
                 <tr th:each="result : ${WhitResults}" th:class="${'result-' + result.position}">
-                    <td class="bbr-event" nowrap><span th:replace="links/event-link.html :: eventLink(${result.contestEvent})">9th Sep 2023</span></td>
+                    <td class="bbr-event" nowrap><span th:replace="~{links/event-link.html :: eventLink(${result.contestEvent})}">9th Sep 2023</span></td>
                     <td class="bbr-contest"><span th:text="${result.contestEvent.contest.name}">Yorkshire Area</span></td>
-                    <td class="bbr-band"><span th:replace="links/band-link.html :: bandLinkWithOverride(${result})"></span></td>
-                    <td class="bbr-position"><span th:replace="components/results-position.html :: resultsPosition(${result})">1</span></td>
+                    <td class="bbr-band"><span th:replace="~{links/band-link.html :: bandLinkWithOverride(${result})}"></span></td>
+                    <td class="bbr-position"><span th:replace="~{components/results-position.html :: resultsPosition(${result})}">1</span></td>
                     <td class="bbr-points"><span th:text="${result.pointsTotal}">123.45</span></td>
                     <td class="bbr-draw"><span th:if="${result.draw != 0}" th:text="${result.draw}">1</span></td>
 

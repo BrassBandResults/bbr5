@@ -34,7 +34,7 @@
             <tbody>
             <tr th:each="contest : ${Contests}">
                 <td class="contest">
-                    <span th:replace="links/contest-link.html :: contestLink(${contest})"></span>
+                    <span th:replace="~{links/contest-link.html :: contestLink(${contest})}"></span>
                 </td>
                 <td th:text="${contest.eventsCount}">250</td>
             </tr>

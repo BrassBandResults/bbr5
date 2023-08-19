@@ -5,21 +5,21 @@
 </head>
 <body>
 <div layout:fragment="content">
-    <h2><span th:replace="links/band-link.html :: bandLink(${Band}, false, false)"></span> <span th:text="#{page.band-relationships.page-header}" th:remove="tag">Relationships</span></h2>
+    <h2><span th:replace="~{links/band-link.html :: bandLink(${Band}, false, false)}"></span> <span th:text="#{page.band-relationships.page-header}" th:remove="tag">Relationships</span></h2>
 
     <table class="table table-hover sortable">
         <tbody>
         <tr th:each="relationship : ${BandRelationships}">
             <td>
                 <span th:if="${Band.slug == relationship.leftBand.slug}" th:text="${Band.name}">Band Name</span>
-                <span th:if="${Band.slug != relationship.leftBand.slug}"><span th:replace="links/band-link.html :: bandLink(${relationship.leftBand}, true, true)">Band Name</span></span>
+                <span th:if="${Band.slug != relationship.leftBand.slug}"><span th:replace="~{links/band-link.html :: bandLink(${relationship.leftBand}, true, true)}">Band Name</span></span>
             </td>
             <td th:text="#{${relationship.relationship.name}}"></td>
             <td>
                 <span th:if="${Band.slug == relationship.rightBand.slug}" th:text="${Band.name}">Band Name</span>
-                <span th:if="${Band.slug != relationship.rightBand.slug}"><span th:replace="links/band-link.html :: bandLink(${relationship.rightBand}, true, true)">Band Name</span></span>
+                <span th:if="${Band.slug != relationship.rightBand.slug}"><span th:replace="~{links/band-link.html :: bandLink(${relationship.rightBand}, true, true)}">Band Name</span></span>
             </td>
-            <td><span th:replace="buttons/relationships.html :: deleteBandRelationship(${Band}, ${relationship})">delete</span></td>
+            <td><span th:replace="~{buttons/relationships.html :: deleteBandRelationship(${Band}, ${relationship})}">delete</span></td>
         </tr>
         </tbody>
     </table>

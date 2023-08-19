@@ -7,12 +7,12 @@
 <div layout:fragment="content">
     <span th:if="${BandPrefixLetter == 'ALL'}"><h2><span th:text="#{page.bands.page-title}" th:remove="tag">All Bands</span></h2></span>
     <span th:if="${BandPrefixLetter != 'ALL'}"><h2><span th:text="#{page.bands.bands-starting-with(${BandPrefixLetter})}" th:remove="tag">Bands starting with R</span></h2></span>
-    <p th:replace="buttons/create.html :: createBand()"></p><br/><br/>
+    <p th:replace="~{buttons/create.html :: createBand()}"></p><br/><br/>
     <p>
         <span th:text="#{page.bands.band-counts(${Bands.returnedBandsCount},${Bands.allBandsCount})}" th:remove="tag">Showing 1 of 6 bands.</span>
         <span th:text="#{page.bands.band-list-header}" th:remove="tag">This is a list of current or last known names, previous band names can be found by search.</span>
     </p>
-    <p th:replace="navigation/az-picker.html :: azPicker('bands', ${BandPrefixLetter}, true, true)"></p>
+    <p th:replace="~{navigation/az-picker.html :: azPicker('bands', ${BandPrefixLetter}, true, true)}"></p>
     <table id="bands" class="table table-hover sortable">
         <thead>
             <tr>
@@ -24,14 +24,14 @@
         <tbody>
             <tr th:each="band : ${Bands.returnedBands}">
                 <td class="band">
-                    <span th:replace="links/band-link.html :: bandLink(${band}, false, true)"></span>
+                    <span th:replace="~{links/band-link.html :: bandLink(${band}, false, true)}"></span>
                 </td>
-                <td class="region"><span th:replace="links/region-link.html :: regionLink(${band.region})"></span></td>
+                <td class="region"><span th:replace="~{links/region-link.html :: regionLink(${band.region})}"></span></td>
                 <td class="band-contest-count" th:text="${band.resultsCount}">0</td>
             </tr>
         </tbody>
     </table>
-    <p th:replace="navigation/az-picker.html :: azPicker('bands', ${BandPrefixLetter}, true, true)"></p>
+    <p th:replace="~{navigation/az-picker.html :: azPicker('bands', ${BandPrefixLetter}, true, true)}"></p>
 </div>
 </body>
 </html>

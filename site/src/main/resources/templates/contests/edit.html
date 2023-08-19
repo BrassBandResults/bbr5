@@ -110,7 +110,7 @@
                     <a th:href="${'/contests/' + Contest.slug}" th:text="#{page.buttons.cancel-without-saving}" class="btn btn-light">Cancel wout saving</a>
                 </div>
                 <div class="col text-end">
-                    <span th:replace="buttons/delete.html :: deleteContest(${Contest})"></span>
+                    <span th:replace="~{buttons/delete.html :: deleteContest(${Contest})}"></span>
                 </div>
             </div>
         </div>

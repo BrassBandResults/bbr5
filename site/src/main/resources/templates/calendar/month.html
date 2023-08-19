@@ -64,7 +64,7 @@
             </div>
 
             <span th:each="week : ${Weeks}">
-                <span th:replace="calendar/components/week.html :: week(${week})"></span>
+                <span th:replace="~{calendar/components/week.html :: week(${week})}"></span>
             </span>
         </div>
     </div>

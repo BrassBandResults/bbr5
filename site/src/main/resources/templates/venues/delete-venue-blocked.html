@@ -10,13 +10,13 @@
 
     <ul>
         <li th:each="venueContest : ${Contests}">
-            <span th:replace="links/contest-link.html :: contestLink(${venueContest.contest})">Yorkshire Area</span>
+            <span th:replace="~{links/contest-link.html :: contestLink(${venueContest.contest})}">Yorkshire Area</span>
         </li>
     </ul>
 
     <p>
         <span th:text="#{page.delete-prompt.return-to}">Return to</span>
-        <span th:replace="links/venue-link.html :: venueLink(${Venue})"></span>
+        <span th:replace="~{links/venue-link.html :: venueLink(${Venue})}"></span>
     </p>
 
 </div>

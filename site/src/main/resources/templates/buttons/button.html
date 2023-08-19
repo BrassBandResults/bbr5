@@ -11,5 +11,5 @@
 </span>
 
 <span th:fragment="removePro(user)" th:remove="tag">
-    <span th:replace="buttons/button.html :: dangerButton(#{page.buttons.remove-pro}, ${'/user-list/pro/' + user.usercode + '/remove'})"></span>
+    <span th:replace="~{buttons/button.html :: dangerButton(#{page.buttons.remove-pro}, ${'/user-list/pro/' + user.usercode + '/remove'})}"></span>
 </span>

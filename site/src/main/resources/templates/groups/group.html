@@ -5,7 +5,7 @@
 </head>
 <body>
 <div layout:fragment="content">
-    <span th:replace="groups/components/header.html :: header(${Group.contestGroup},${PreviousNames})"></span>
+    <span th:replace="~{groups/components/header.html :: header(${Group.contestGroup},${PreviousNames})}"></span>
 
     <ul class="nav nav-tabs">
         <li class="nav-item">
@@ -29,7 +29,7 @@
                 </thead>
                 <tbody>
                 <tr th:each="contest : ${Group.activeContests}">
-                    <td class="contest"><span th:replace="links/contest-link.html :: contestLink(${contest})"></span></td>
+                    <td class="contest"><span th:replace="~{links/contest-link.html :: contestLink(${contest})}"></span></td>
                     <td th:text="${contest.eventsCount}">123</td>
                 </tr>
                 </tbody>
@@ -47,7 +47,7 @@
                 </thead>
                 <tbody>
                 <tr th:each="contest : ${Group.oldContests}">
-                    <td class="contest"><span th:replace="links/contest-link.html :: contestLink(${contest})"></span></td>
+                    <td class="contest"><span th:replace="~{links/contest-link.html :: contestLink(${contest})}"></span></td>
                     <td th:text="${contest.eventsCount}">123</td>
                 </tr>
                 </tbody>
@@ -55,7 +55,7 @@
         </div>
 
         <div>
-            <span th:replace="links/tag-link.html :: tagCloudGroup(${Group.contestGroup})"></span>
+            <span th:replace="~{links/tag-link.html :: tagCloudGroup(${Group.contestGroup})}"></span>
         </div>
 
         <br/>

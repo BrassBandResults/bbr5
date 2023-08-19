@@ -6,7 +6,7 @@
 <body>
 <div layout:fragment="content">
     <h2>
-        <span th:replace="links/group-link.html :: groupLink(${GroupYearEvents.contestGroup})"></span>
+        <span th:replace="~{links/group-link.html :: groupLink(${GroupYearEvents.contestGroup})}"></span>
         <span th:text="${GroupYearEvents.year}">1234</span>
     </h2>
 
@@ -42,17 +42,17 @@
         <tbody>
         <tr th:each="eventSummary : ${GroupYearEvents.contestEvents}">
             <td class="contest-event">
-                <span th:replace="links/event-link.html :: eventLink(${eventSummary.contestEvent})"></span>
+                <span th:replace="~{links/event-link.html :: eventLink(${eventSummary.contestEvent})}"></span>
             </td>
             <td th:text="${eventSummary.contestEvent.contest.name}">Contest Name</td>
             <td>
                 <span th:each="winnerResult : ${eventSummary.winningBands}">
-                    <span th:replace="links/band-link.html :: bandLinkWithOverride(${winnerResult})"></span>
+                    <span th:replace="~{links/band-link.html :: bandLinkWithOverride(${winnerResult})}"></span>
                 </span>
             </td>
             <td>
                 <span th:each="contestPiece : ${eventSummary.testPieces}">
-                    <span th:replace="links/piece-link.html :: pieceLink(${contestPiece})"></span>
+                    <span th:replace="~{links/piece-link.html :: pieceLink(${contestPiece})}"></span>
                 </span>
             </td>
         </tr>
@@ -60,7 +60,7 @@
     </table>
 
     <div>
-        <span th:replace="links/tag-link.html :: tagCloudGroup(${GroupYearEvents.contestGroup})"></span>
+        <span th:replace="~{links/tag-link.html :: tagCloudGroup(${GroupYearEvents.contestGroup})}"></span>
     </div>
 
 </div>

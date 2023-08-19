@@ -27,12 +27,14 @@ public class FeedbackServiceImpl implements FeedbackService {
     public void submit(String url, String referrer, String ownerUsercode, String feedback, String browserName, String ip) {
         String currentUsername = this.securityService.getCurrentUsername();
 
-
         FeedbackDao newFeedback = new FeedbackDao();
         newFeedback.setUrl(url);
         newFeedback.setComment(feedback);
         newFeedback.setBrowser(browserName);
         newFeedback.setIp(ip);
+        if (ownerUsercode != null && ownerUsercode.length() > 0) {
+            newFeedback.setOwnedBy(ownerUsercode);
+        }
 
         newFeedback.addAuditLog(currentUsername, "Referrer: " + url);
         newFeedback.addAuditLog(currentUsername, "Ip: " + ip);

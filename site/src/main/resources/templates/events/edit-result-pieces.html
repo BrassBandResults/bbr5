@@ -7,20 +7,20 @@
 <div layout:fragment="content">
     <h2>
         <span th:text="#{page.edit-result-pieces.title}">Edit Result Pieces</span>
-        <span th:replace="links/contest-link.html :: contestLink(${ContestEvent.contest})"></span>
+        <span th:replace="~{links/contest-link.html :: contestLink(${ContestEvent.contest})}"></span>
     </h2>
     <h3><a th:href="${'/contests/' + ContestEvent.contest.slug + '/' + ContestEvent.eventDateForUrl}" th:text="${ContestEvent.eventDateDisplayWithDay}"></a></h3>
 
     <table class="table table-hover">
         <tr th:each="resultPiece : ${Pieces}">
             <td>
-                <span th:replace="links/piece-link.html :: pieceLink(${resultPiece.piece})"></span>
+                <span th:replace="~{links/piece-link.html :: pieceLink(${resultPiece.piece})}"></span>
             </td>
             <td>
                 <span th:text="${resultPiece.suffix}">Suffix</span>
             </td>
             <td>
-                <span th:replace="buttons/delete.html :: removeResultPiece(${ContestEvent}, ${ContestResult}, ${resultPiece})"></span>
+                <span th:replace="~{buttons/delete.html :: removeResultPiece(${ContestEvent}, ${ContestResult}, ${resultPiece})}"></span>
             </td>
         </tr>
     </table>

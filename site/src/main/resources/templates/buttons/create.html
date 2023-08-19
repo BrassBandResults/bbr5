@@ -1,23 +1,23 @@
 <span th:fragment="createTag()" th:remove="tag">
-    <span th:replace="buttons/button.html :: button(#{page.buttons.create.tag}, ${'/create/tag'})"></span>
+    <span th:replace="~{buttons/button.html :: button(#{page.buttons.create.tag}, ${'/create/tag'})}"></span>
 </span>
 
 <span th:fragment="createBand()" th:remove="tag">
-    <span th:replace="buttons/button.html :: button(#{page.buttons.create.band}, ${'/create/band'})"></span>
+    <span th:replace="~{buttons/button.html :: button(#{page.buttons.create.band}, ${'/create/band'})}"></span>
 </span>
 
 <span th:fragment="createGroup()" th:remove="tag">
-    <span th:replace="buttons/button.html :: button(#{page.buttons.create.group}, ${'/create/group'})"></span>
+    <span th:replace="~{buttons/button.html :: button(#{page.buttons.create.group}, ${'/create/group'})}"></span>
 </span>
 
 <span th:fragment="createPerson()" th:remove="tag">
-    <span th:replace="buttons/button.html :: button(#{page.buttons.create.person}, ${'/create/person'})"></span>
+    <span th:replace="~{buttons/button.html :: button(#{page.buttons.create.person}, ${'/create/person'})}"></span>
 </span>
 
 <span th:fragment="createPiece()" th:remove="tag">
-    <span th:replace="buttons/button.html :: button(#{page.buttons.create.piece}, ${'/create/piece'})"></span>
+    <span th:replace="~{buttons/button.html :: button(#{page.buttons.create.piece}, ${'/create/piece'})}"></span>
 </span>
 
 <span th:fragment="createVenue()" th:remove="tag">
-    <span th:replace="buttons/button.html :: button(#{page.buttons.create.venue}, ${'/create/venue'})"></span>
+    <span th:replace="~{buttons/button.html :: button(#{page.buttons.create.venue}, ${'/create/venue'})}"></span>
 </span>

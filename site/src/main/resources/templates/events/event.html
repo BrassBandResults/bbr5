@@ -5,7 +5,7 @@
 </head>
 <body>
 <div layout:fragment="content">
-    <span th:replace="events/components/header.html :: header(${ContestEvent})"></span>
+    <span th:replace="~{events/components/header.html :: header(${ContestEvent})}"></span>
 
     <ul class="nav nav-tabs">
         <li class="nav-item">
@@ -28,17 +28,17 @@
             </tr>
             <tr th:if="${EventTestPieces.size > 0}">
                 <th th:text="#{page.field-prompt.test-piece}">Test Piece:</th>
-                <td><span th:replace="links/piece-link.html :: eventPiecesLink(${EventTestPieces})"></span></td>
+                <td><span th:replace="~{links/piece-link.html :: eventPiecesLink(${EventTestPieces})}"></span></td>
             </tr>
             <tr>
                 <th th:text="#{page.field-prompt.adjudicators}">Adjudicators:</th>
                 <td>
-                    <span th:replace="links/person-link.html :: adjudicatorsLink(${Adjudicators})">Bob Childs</span>
+                    <span th:replace="~{links/person-link.html :: adjudicatorsLink(${Adjudicators})}">Bob Childs</span>
                 </td>
             </tr>
             <tr>
                 <th th:text="#{page.field-prompt.venue}">Venue:</th>
-                <td class="venue"><span th:replace="links/venue-link.html :: venueLink(${ContestEvent.venue})"></span></td>
+                <td class="venue"><span th:replace="~{links/venue-link.html :: venueLink(${ContestEvent.venue})}"></span></td>
             </tr>
         </table>
 
@@ -46,18 +46,18 @@
         <div class="container">
             <div class="row">
                 <div class="col">
-                    <span th:replace="links/event-link.html :: eventNavigationUpLink(${SectionUp})">Yorkshire Area (Championship Section) 2013</span>
+                    <span th:replace="~{links/event-link.html :: eventNavigationUpLink(${SectionUp})}">Yorkshire Area (Championship Section) 2013</span>
                 </div>
                 <div class="col text-end">
-                    <span th:replace="links/event-link.html :: eventNavigationDownLink(${SectionDown})">Yorkshire Area (Second Section) 2013</span>
+                    <span th:replace="~{links/event-link.html :: eventNavigationDownLink(${SectionDown})}">Yorkshire Area (Second Section) 2013</span>
                 </div>
             </div>
             <div class="row">
                 <div class="col">
-                    <span th:replace="links/event-link.html :: eventNavigationLeftLink(${PreviousEvent})">Previous Event</span>
+                    <span th:replace="~{links/event-link.html :: eventNavigationLeftLink(${PreviousEvent})}">Previous Event</span>
                 </div>
                 <div class="col text-end">
-                    <span th:replace="links/event-link.html :: eventNavigationRightLink(${NextEvent})">Next Event</span>
+                    <span th:replace="~{links/event-link.html :: eventNavigationRightLink(${NextEvent})}">Next Event</span>
                 </div>
             </div>
         </div>
@@ -84,17 +84,17 @@
             <tbody>
                 <tr th:each="result : ${EventResults}" th:class="${'result-' + result.position}">
                     <td class="bbr-position">
-                        <span th:replace="components/results-position.html :: resultsPosition(${result})">1</span>
+                        <span th:replace="~{components/results-position.html :: resultsPosition(${result})}">1</span>
                         <img th:if="${result.hasNotes}" th:title="${result.notes}" th:src="@{${STATIC_HOST} + '/icons/comment.png'}"/>
                     </td>
-                    <td class="bbr-band"><span th:replace="links/band-link.html :: bandLinkWithOverride(${result})"></span></td>
-                    <td class="bbr-conductor"><span th:replace="links/person-link.html :: conductorsLink(${result})">Bob Childs</span></td>
+                    <td class="bbr-band"><span th:replace="~{links/band-link.html :: bandLinkWithOverride(${result})}"></span></td>
+                    <td class="bbr-conductor"><span th:replace="~{links/person-link.html :: conductorsLink(${result})}">Bob Childs</span></td>
                     <td class="bbr-piece" th:if="${ContestEvent.contestType.ownChoice || ContestEvent.contestType.entertainments}">
-                        <span th:replace="links/piece-link.html :: resultPieces(${result})">Bob Childs</span>
+                        <span th:replace="~{links/piece-link.html :: resultPieces(${result})}">Bob Childs</span>
                     </td>
                     <td class="bbr-draw" th:if="${ContestEvent.contestType.drawOneTitle != null}">
                         <span th:if="${result.draw != 0}">
-                          <span th:replace="links/contest-link.html :: contestLinkDraw(${ContestEvent.contest}, ${result.draw})"></span>
+                          <span th:replace="~{links/contest-link.html :: contestLinkDraw(${ContestEvent.contest}, ${result.draw})}"></span>
                         </span>
                     </td>
                     <td class="bbr-draw" th:if="${ContestEvent.contestType.drawTwoTitle != null}" th:text="${result.drawSecond}"></td>
@@ -107,9 +107,9 @@
                     <td class="bbr-draw" th:if="${ContestEvent.contestType.pointsTotalTitle != null}" th:text="${result.pointsTotal}"></td>
                     <td th:if="${ContestEvent.canEdit}">
                         <span th:if="${result.canEdit}">
-                            <span th:replace="buttons/edit.html :: editResult(${ContestEvent}, ${result})"></span>
+                            <span th:replace="~{buttons/edit.html :: editResult(${ContestEvent}, ${result})}"></span>
                             <span th:if="${ContestEvent.contestType.ownChoice || ContestEvent.contestType.entertainments}">
-                                <span th:replace="buttons/edit.html :: editResultPieces(${ContestEvent}, ${result})"></span>
+                                <span th:replace="~{buttons/edit.html :: editResultPieces(${ContestEvent}, ${result})}"></span>
                             </span>
                         </span>
                     </td>
@@ -120,10 +120,10 @@
         <div class="container">
             <div class="row">
                 <div class="col">
-                    <span th:replace="links/event-link.html :: eventNavigationLeftLink(${PreviousEvent})">Previous Event</span>
+                    <span th:replace="~{links/event-link.html :: eventNavigationLeftLink(${PreviousEvent})}">Previous Event</span>
                 </div>
                 <div class="col text-end">
-                    <span th:replace="links/event-link.html :: eventNavigationRightLink(${NextEvent})">Next Event</span>
+                    <span th:replace="~{links/event-link.html :: eventNavigationRightLink(${NextEvent})}">Next Event</span>
                 </div>
             </div>
         </div>
@@ -131,11 +131,11 @@
         <div class="container">
             <div class="row">
                 <div class="col">
-                    <span th:if="${ContestEvent.canEdit}"><span th:replace="buttons/button.html :: greenButton(#{page.buttons.add-results}, ${'/add-results/6/' + ContestEvent.contest.slug + '/' + ContestEvent.eventDateForUrl})"></span></span>
-                    <span th:replace="links/tag-link.html :: tagCloudContest(${ContestEvent.contest})"></span>
+                    <span th:if="${ContestEvent.canEdit}"><span th:replace="~{buttons/button.html :: greenButton(#{page.buttons.add-results}, ${'/add-results/6/' + ContestEvent.contest.slug + '/' + ContestEvent.eventDateForUrl})}"></span></span>
+                    <span th:replace="~{links/tag-link.html :: tagCloudContest(${ContestEvent.contest})}"></span>
                 </div>
                 <div class="col text-end">
-                    <span th:replace="components/gravatar.html :: icon(${ContestOwner})"></span>
+                    <span th:replace="~{components/gravatar.html :: icon(${ContestOwner})}"></span>
                 </div>
             </div>
         </div>

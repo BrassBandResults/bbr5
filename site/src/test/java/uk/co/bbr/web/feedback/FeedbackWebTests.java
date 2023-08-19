@@ -184,6 +184,66 @@ class FeedbackWebTests implements LoginMixin {
     }
 
     @Test
+    void testSubmitFeedbackBlankOwnerSucceeds() {
+        // arrange
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+        CsrfToken csrfToken = csrfTokenRepository.generateToken(null);
+        headers.add(csrfToken.getHeaderName(), csrfToken.getToken());
+        headers.add("Cookie", SecurityFilter.CSRF_HEADER_NAME + "=" + csrfToken.getToken());
+        headers.add("Referer", "http://localhost:8080/offset/blank-owner");
+
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+        map.add("feedback", "   Some   test  feedback   ");
+        map.add("x_url", "http://localhost:8080/offset/blank-owner");
+        map.add("x_owner", "");
+        map.add("url", "");
+        map.add("_csrf", csrfToken.getToken());
+        map.add("_csrf_header", SecurityFilter.CSRF_HEADER_NAME);
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
+
+        // act
+        ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/feedback", request, String.class);
+
+        // assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+
+        Optional<FeedbackDao> latestFeedback = this.feedbackService.fetchLatestFeedback("/offset/blank-owner");
+        assertFalse(latestFeedback.isEmpty());
+    }
+
+    @Test
+    void testSubmitFeedbackEmptyOwnerSucceeds() {
+        // arrange
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+        CsrfToken csrfToken = csrfTokenRepository.generateToken(null);
+        headers.add(csrfToken.getHeaderName(), csrfToken.getToken());
+        headers.add("Cookie", SecurityFilter.CSRF_HEADER_NAME + "=" + csrfToken.getToken());
+        headers.add("Referer", "http://localhost:8080/offset/empty-owner");
+
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+        map.add("feedback", "   Some   test  feedback   ");
+        map.add("x_url", "http://localhost:8080/offset/empty-owner");
+        map.add("x_owner", "    ");
+        map.add("url", "");
+        map.add("_csrf", csrfToken.getToken());
+        map.add("_csrf_header", SecurityFilter.CSRF_HEADER_NAME);
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
+
+        // act
+        ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/feedback", request, String.class);
+
+        // assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+
+        Optional<FeedbackDao> latestFeedback = this.feedbackService.fetchLatestFeedback("/offset/empty-owner");
+        assertFalse(latestFeedback.isEmpty());
+    }
+
+    @Test
     void testSubmitThanksWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/feedback/thanks?next=/abc/def", String.class);
         assertNotNull(response);

@@ -7,11 +7,11 @@
 <div layout:fragment="content">
     <span th:if="${PeoplePrefixLetter == 'ALL'}"><h2><span th:text="#{page.people.page-title}" th:remove="tag">All People</span></h2></span>
     <span th:if="${PeoplePrefixLetter != 'ALL'}"><h2><span th:text="#{page.people.people-starting-with(${PeoplePrefixLetter})}" th:remove="tag">People surnames starting with R</span></h2></span>
-    <p th:replace="buttons/create.html :: createPerson()"></p><br/><br/>
+    <p th:replace="~{buttons/create.html :: createPerson()}"></p><br/><br/>
     <p>
         <span th:text="#{page.people.people-counts(${People.returnedPeopleCount},${People.allPeopleCount})}" th:remove="tag">Showing 1 of 6 people.</span>
     </p>
-    <p th:replace="navigation/az-picker.html :: azPicker('people', ${PeoplePrefixLetter}, false, false)"></p>
+    <p th:replace="~{navigation/az-picker.html :: azPicker('people', ${PeoplePrefixLetter}, false, false)}"></p>
     <table id="people" class="table table-hover sortable">
         <thead>
         <tr>
@@ -26,7 +26,7 @@
         <tbody>
         <tr th:each="person : ${People.returnedPeople}">
             <td class="person">
-                <span th:replace="links/person-link.html :: personLinkSurnameFirst(${person})"></span>
+                <span th:replace="~{links/person-link.html :: personLinkSurnameFirst(${person})}"></span>
             </td>
             <td th:text="${person.conductingCount}">0</td>
             <td th:text="${person.adjudicationsCount}">0</td>
@@ -35,7 +35,7 @@
         </tr>
         </tbody>
     </table>
-    <p th:replace="navigation/az-picker.html :: azPicker('people', ${PeoplePrefixLetter}, false, false)"></p>
+    <p th:replace="~{navigation/az-picker.html :: azPicker('people', ${PeoplePrefixLetter}, false, false)}"></p>
 </div>
 </body>
 </html>

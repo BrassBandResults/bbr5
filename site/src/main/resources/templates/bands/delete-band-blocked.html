@@ -10,13 +10,13 @@
 
     <ul>
         <li th:each="result : ${Results}">
-            <span th:replace="links/event-link.html :: eventLink(${result.contestEvent})">9th Sep 2023</span>
+            <span th:replace="~{links/event-link.html :: eventLink(${result.contestEvent})}">9th Sep 2023</span>
         </li>
     </ul>
 
     <p>
         <span th:text="#{page.delete-prompt.return-to}">Return to</span>
-        <span th:replace="links/band-link.html :: bandLink(${Band}, false, false)"></span>
+        <span th:replace="~{links/band-link.html :: bandLink(${Band}, false, false)}"></span>
     </p>
 
 </div>

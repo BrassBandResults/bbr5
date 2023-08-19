@@ -24,11 +24,11 @@
         <h3 th:text="#{page.home.last-weekend}">Last Weekend</h3>
         <ul>
             <li th:each="result : ${LastWeekendEvents}">
-                <span th:replace="links/event-link.html :: eventLink(${result.contestEvent})">9th Sep 2023</span>
+                <span th:replace="~{links/event-link.html :: eventLink(${result.contestEvent})}">9th Sep 2023</span>
                 <span th:text="${result.contestEvent.name}">Yorkshire Area</span>
                 <span th:if="${result.band != null}">
                     <br/>- <span th:text="#{page.home.won-by}">won by</span>
-                    <span th:replace="links/band-link.html :: bandLinkWithOverride(${result})"></span>
+                    <span th:replace="~{links/band-link.html :: bandLinkWithOverride(${result})}"></span>
                 </span>
             </li>
         </ul>
@@ -37,11 +37,11 @@
         <h3 th:text="#{page.home.this-weekend}">This Weekend</h3>
         <ul>
             <li th:each="result : ${ThisWeekendEvents}">
-                <span th:replace="links/event-link.html :: eventLink(${result.contestEvent})">9th Sep 2023</span>
+                <span th:replace="~{links/event-link.html :: eventLink(${result.contestEvent})}">9th Sep 2023</span>
                 <span th:text="${result.contestEvent.name}">Yorkshire Area</span>
                 <span th:if="${result.band != null}">
                     <br/>- <span th:text="#{page.home.won-by}">won by</span>
-                    <span th:replace="links/band-link.html :: bandLinkWithOverride(${result})"></span>
+                    <span th:replace="~{links/band-link.html :: bandLinkWithOverride(${result})}"></span>
                 </span>
             </li>
         </ul>
@@ -50,11 +50,11 @@
         <h3 th:text="#{page.home.next-weekend}">Next Weekend</h3>
         <ul>
             <li th:each="result : ${NextWeekendEvents}">
-                <span th:replace="links/event-link.html :: eventLink(${result.contestEvent})">9th Sep 2023</span>
+                <span th:replace="~{links/event-link.html :: eventLink(${result.contestEvent})}">9th Sep 2023</span>
                 <span th:text="${result.contestEvent.name}">Yorkshire Area</span>
                 <span th:if="${result.band != null}">
                     <br/>- <span th:text="#{page.home.won-by}">won by</span>
-                    <span th:replace="links/band-link.html :: bandLinkWithOverride(${result})"></span>
+                    <span th:replace="~{links/band-link.html :: bandLinkWithOverride(${result})}"></span>
                 </span>
             </li>
         </ul>
@@ -63,10 +63,10 @@
         <h3 th:text="#{page.home.today-in-history}">Today in History</h3>
         <ul>
             <li>
-                <span th:replace="links/event-link.html :: eventLink(${TodayInHistoryEvent.contestEvent})">9th Sep 2023</span>
+                <span th:replace="~{links/event-link.html :: eventLink(${TodayInHistoryEvent.contestEvent})}">9th Sep 2023</span>
                 <span th:text="${TodayInHistoryEvent.contestEvent.name}">Yorkshire Area</span>
                 <br/>- <span th:text="#{page.home.won-by}">won by</span>
-                <span th:replace="links/band-link.html :: bandLinkWithOverride(${TodayInHistoryEvent})"></span>
+                <span th:replace="~{links/band-link.html :: bandLinkWithOverride(${TodayInHistoryEvent})}"></span>
             </li>
         </ul>
     </div>
@@ -74,10 +74,10 @@
         <h3 th:text="#{page.home.this-week-in-history}">This Week in History</h3>
         <ul>
             <li>
-                <span th:replace="links/event-link.html :: eventLink(${ThisWeekInHistoryEvent.contestEvent})">9th Sep 2023</span>
+                <span th:replace="~{links/event-link.html :: eventLink(${ThisWeekInHistoryEvent.contestEvent})}">9th Sep 2023</span>
                 <span th:text="${ThisWeekInHistoryEvent.contestEvent.name}">Yorkshire Area</span>
                 <br/>- <span th:text="#{page.home.won-by}">won by</span>
-                <span th:replace="links/band-link.html :: bandLinkWithOverride(${ThisWeekInHistoryEvent})"></span>
+                <span th:replace="~{links/band-link.html :: bandLinkWithOverride(${ThisWeekInHistoryEvent})}"></span>
             </li>
         </ul>
     </div>

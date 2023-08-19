@@ -41,7 +41,7 @@
                     <a th:href="${'/contests/' + Group.slug}" th:text="#{page.buttons.cancel-without-saving}" class="btn btn-light">Cancel wout saving</a>
                 </div>
                 <div class="col text-end">
-                    <span th:replace="buttons/delete.html :: deleteGroup(${Group})"></span>
+                    <span th:replace="~{buttons/delete.html :: deleteGroup(${Group})}"></span>
                 </div>
             </div>
         </div>

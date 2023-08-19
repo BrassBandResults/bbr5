@@ -5,7 +5,7 @@
 </head>
 <body>
 <div layout:fragment="content">
-    <span th:replace="contests/components/header.html :: header(${Contest},${PreviousNames})"></span>
+    <span th:replace="~{contests/components/header.html :: header(${Contest},${PreviousNames})}"></span>
 
     <ul class="nav nav-tabs">
         <li class="nav-item">
@@ -30,10 +30,10 @@
             <ul>
                 <li th:each="event : ${FutureEvents}">
                     <span th:text="#{page.contest.future-event-prompt}">We believe this contest will be run on</span>
-                    <span th:replace="links/event-link.html :: eventLink(${event})">9th Sep 2023</span>
+                    <span th:replace="~{links/event-link.html :: eventLink(${event})}">9th Sep 2023</span>
                     <span th:if="${event.venue != null}">
                         <span th:text="#{page.contest.future-event-prompt-at}">at</span>
-                        <span th:replace="links/venue-link.html :: venueLink(${event.venue})"></span>
+                        <span th:replace="~{links/venue-link.html :: venueLink(${event.venue})}"></span>
                     </span>
 
                 </li>
@@ -54,23 +54,23 @@
                 </thead>
                 <tbody>
                 <tr th:each="event : ${PastEvents}">
-                    <td class="bbr-event" nowrap><span th:replace="links/event-link.html :: eventLink(${event})">9th Sep 2023</span></td>
+                    <td class="bbr-event" nowrap><span th:replace="~{links/event-link.html :: eventLink(${event})}">9th Sep 2023</span></td>
                     <span th:if="${!event.noContest}" th:remove="tag">
                         <td class="bbr-band">
                             <span th:each="result, iStat : ${event.winners}">
                                 <span th:if="${iStat.index > 0}"><br/></span>
-                                <span th:replace="links/band-link.html :: bandLinkWithOverride(${result})"></span>
+                                <span th:replace="~{links/band-link.html :: bandLinkWithOverride(${result})}"></span>
                             </span>
                         </td>
                         <td class="bbr-conductor">
                             <span th:each="result, iStat : ${event.winners}">
                                 <span th:if="${iStat.index > 0}"><br/></span>
-                                <span th:replace="links/person-link.html :: conductorsLink(${result})">Bob Childs</span>
+                                <span th:replace="~{links/person-link.html :: conductorsLink(${result})}">Bob Childs</span>
                             </span>
                         </td>
                         <td class="bbr-piece">
                             <span th:each="result : ${event.winners}">
-                                <span th:replace="links/piece-link.html :: resultPieceWithSetTestIfNone(${result})">Test Piece</span>
+                                <span th:replace="~{links/piece-link.html :: resultPieceWithSetTestIfNone(${result})}">Test Piece</span>
                             </span>
                         </td>
                     </span>
@@ -81,7 +81,7 @@
         </div>
         <p th:text="${Contest.notes}">Contest Notes</p>
 
-        <span th:replace="links/tag-link.html :: tagCloudContest(${Contest})"></span>
+        <span th:replace="~{links/tag-link.html :: tagCloudContest(${Contest})}"></span>
     </div>
 </div>
 </body>

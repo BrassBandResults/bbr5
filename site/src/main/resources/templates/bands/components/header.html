@@ -4,12 +4,12 @@
         <small th:if="${Band.dateRange.length > 0}"><small><small th:text="${Band.dateRange}">1940-</small></small></small>
     </h2>
     <div sec:authorize="hasRole('BBR_SUPERUSER')">
-        <span th:replace="buttons/edit.html :: editBand(${Band})"></span>
-        <span th:replace="buttons/edit.html :: editBandAliases(${Band})"></span>
-        <span th:replace="buttons/edit.html :: editBandRelationships(${Band})"></span>
-        <span th:replace="buttons/edit.html :: editRehearsalDays(${Band})"></span>
+        <span th:replace="~{buttons/edit.html :: editBand(${Band})}"></span>
+        <span th:replace="~{buttons/edit.html :: editBandAliases(${Band})}"></span>
+        <span th:replace="~{buttons/edit.html :: editBandRelationships(${Band})}"></span>
+        <span th:replace="~{buttons/edit.html :: editRehearsalDays(${Band})}"></span>
     </div>
-    <span th:replace="components/aliases.html :: previousNames(${PreviousNames})"></span>
+    <span th:replace="~{components/aliases.html :: previousNames(${PreviousNames})}"></span>
     <br/><br/>
     <table>
         <tr><td colspan="2" th:if="${Band.status.notCompeting}" th:text="#{${Band.status.translationKey} +'.long'}">Band Status</td></tr>
@@ -23,7 +23,7 @@
         </tr>
         <tr>
             <th th:text="#{page.field-prompt.region}">Region:</th>
-            <td><span th:replace="links/region-link.html :: regionLink(${Band.region})"></span></td>
+            <td><span th:replace="~{links/region-link.html :: regionLink(${Band.region})}"></span></td>
         </tr>
         <tr th:if="${BandRehearsalDays.size() > 0}">
             <th th:text="#{page.field-prompt.rehearsals}">Rehearsals:</th>
@@ -39,7 +39,7 @@
         <ul>
             <li th:each="relationship : ${BandRelationships}">
                 <span th:text="#{${relationship.relationshipName(Band)}}">relationship</span>
-                <span th:replace="links/band-link.html :: bandLink(${relationship.otherBand(Band)},true,true)">Band Name</span>
+                <span th:replace="~{links/band-link.html :: bandLink(${relationship.otherBand(Band)},true,true)}">Band Name</span>
             </li>
         </ul>
     </span>

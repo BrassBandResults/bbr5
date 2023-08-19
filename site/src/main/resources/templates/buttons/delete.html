@@ -1,47 +1,47 @@
 <span th:fragment="removeTestPiece(event, eventPiece)" th:remove="tag">
-    <span th:replace="buttons/button.html :: dangerButton(#{page.buttons.remove}, ${'/contests/' + event.contest.slug + '/' + event.eventDateForUrl + '/edit-set-tests/' + eventPiece.id + '/delete'})"></span>
+    <span th:replace="~{buttons/button.html :: dangerButton(#{page.buttons.remove}, ${'/contests/' + event.contest.slug + '/' + event.eventDateForUrl + '/edit-set-tests/' + eventPiece.id + '/delete'})}"></span>
 </span>
 
 <span th:fragment="removeResultPiece(event, result, resultPiece)" th:remove="tag">
-    <span th:replace="buttons/button.html :: dangerButton(#{page.buttons.remove}, ${'/contests/' + event.contest.slug + '/' + event.eventDateForUrl + '/result/' + result.id + '/' + resultPiece.id + '/delete'})"></span>
+    <span th:replace="~{buttons/button.html :: dangerButton(#{page.buttons.remove}, ${'/contests/' + event.contest.slug + '/' + event.eventDateForUrl + '/result/' + result.id + '/' + resultPiece.id + '/delete'})}"></span>
 </span>
 
 <span th:fragment="removeAdjudicator(event, adjudicator)" th:remove="tag">
-    <span th:replace="buttons/button.html :: dangerButton(#{page.buttons.delete}, ${'/contests/' + event.contest.slug + '/' + event.eventDateForUrl + '/edit-adjudicators/' + adjudicator.id + '/delete'})"></span>
+    <span th:replace="~{buttons/button.html :: dangerButton(#{page.buttons.delete}, ${'/contests/' + event.contest.slug + '/' + event.eventDateForUrl + '/edit-adjudicators/' + adjudicator.id + '/delete'})}"></span>
 </span>
 
 <span th:fragment="deleteResult(event, result)" th:remove="tag">
-    <span th:replace="buttons/button.html :: dangerButton(#{page.buttons.delete}, ${'/contests/' + event.contest.slug + '/' + event.eventDateForUrl + '/result/' + result.id + '/delete'})"></span>
+    <span th:replace="~{buttons/button.html :: dangerButton(#{page.buttons.delete}, ${'/contests/' + event.contest.slug + '/' + event.eventDateForUrl + '/result/' + result.id + '/delete'})}"></span>
 </span>
 
 <span th:fragment="deleteEvent(event)" th:remove="tag">
-    <span th:replace="buttons/button.html :: dangerButton(#{page.buttons.delete}, ${'/contests/' + event.contest.slug + '/' + event.eventDateForUrl + '/delete'})"></span>
+    <span th:replace="~{buttons/button.html :: dangerButton(#{page.buttons.delete}, ${'/contests/' + event.contest.slug + '/' + event.eventDateForUrl + '/delete'})}"></span>
 </span>
 
 <span th:fragment="deleteContest(contest)" th:remove="tag">
-    <span th:replace="buttons/button.html :: dangerButton(#{page.buttons.delete}, ${'/contests/' + contest.slug + '/delete'})"></span>
+    <span th:replace="~{buttons/button.html :: dangerButton(#{page.buttons.delete}, ${'/contests/' + contest.slug + '/delete'})}"></span>
 </span>
 
 <span th:fragment="deleteGroup(group)" th:remove="tag">
-    <span th:replace="buttons/button.html :: dangerButton(#{page.buttons.delete}, ${'/contest-groups/' + group.slug + '/delete'})"></span>
+    <span th:replace="~{buttons/button.html :: dangerButton(#{page.buttons.delete}, ${'/contest-groups/' + group.slug + '/delete'})}"></span>
 </span>
 
 <span th:fragment="deletePerson(person)" th:remove="tag">
-    <span th:replace="buttons/button.html :: dangerButton(#{page.buttons.delete}, ${'/people/' + person.slug + '/delete'})"></span>
+    <span th:replace="~{buttons/button.html :: dangerButton(#{page.buttons.delete}, ${'/people/' + person.slug + '/delete'})}"></span>
 </span>
 
 <span th:fragment="deleteBand(band)" th:remove="tag">
-    <span th:replace="buttons/button.html :: dangerButton(#{page.buttons.delete}, ${'/bands/' + band.slug + '/delete'})"></span>
+    <span th:replace="~{buttons/button.html :: dangerButton(#{page.buttons.delete}, ${'/bands/' + band.slug + '/delete'})}"></span>
 </span>
 
 <span th:fragment="deletePiece(piece)" th:remove="tag">
-    <span th:replace="buttons/button.html :: dangerButton(#{page.buttons.delete}, ${'/pieces/' + piece.slug + '/delete'})"></span>
+    <span th:replace="~{buttons/button.html :: dangerButton(#{page.buttons.delete}, ${'/pieces/' + piece.slug + '/delete'})}"></span>
 </span>
 
 <span th:fragment="deleteVenue(venue)" th:remove="tag">
-    <span th:replace="buttons/button.html :: dangerButton(#{page.buttons.delete}, ${'/venues/' + venue.slug + '/delete'})"></span>
+    <span th:replace="~{buttons/button.html :: dangerButton(#{page.buttons.delete}, ${'/venues/' + venue.slug + '/delete'})}"></span>
 </span>
 
 <span th:fragment="deletePersonProfile(PersonProfile)" th:remove="tag">
-    <span th:replace="buttons/button.html :: dangerButton(#{page.buttons.delete}, ${'/profile/people-profiles/' + PersonProfile.person.slug + '/delete'})"></span>
+    <span th:replace="~{buttons/button.html :: dangerButton(#{page.buttons.delete}, ${'/profile/people-profiles/' + PersonProfile.person.slug + '/delete'})}"></span>
 </span>

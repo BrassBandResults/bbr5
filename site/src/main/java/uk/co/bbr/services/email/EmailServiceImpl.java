@@ -49,6 +49,7 @@ public class EmailServiceImpl implements EmailService {
         messageText.append(this.getSiteUrl()).append(feedbackOffset);
         messageText.append("\n\n");
         messageText.append(this.messageSource.getMessage("email.feedback.opt-out", null, LocaleContextHolder.getLocale()));
+        messageText.append(" ");
         messageText.append(this.getSiteUrl() + "/acc/feedback/opt-out/").append(user.getUuid());
         messageText.append("\n\n");
         messageText.append(this.messageSource.getMessage("email.sign-off", null, LocaleContextHolder.getLocale()));

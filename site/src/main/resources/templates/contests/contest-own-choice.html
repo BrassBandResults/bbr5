@@ -5,7 +5,7 @@
 </head>
 <body>
 <div layout:fragment="content">
-    <span th:replace="contests/components/header.html :: header(${Contest},${PreviousNames})"></span>
+    <span th:replace="~{contests/components/header.html :: header(${Contest},${PreviousNames})}"></span>
 
     <ul class="nav nav-tabs">
         <li class="nav-item">
@@ -36,10 +36,10 @@
             </thead>
             <tbody>
             <tr th:each="resultPiece : ${OwnChoiceResults}">
-                <td class="bbr-event" nowrap><span th:replace="links/event-link.html :: eventLink(${resultPiece.contestResult.contestEvent})">9th Sep 2023</span></td>
-                <td class="bbr-band"><span th:replace="links/band-link.html :: bandLinkWithOverride(${resultPiece.contestResult})"></span></td>
-                <td class="bbr-piece"><span th:replace="links/piece-link.html :: resultOwnChoicePieceLink(${resultPiece})">Test Piece</span></td>
-                <td class="bbr-position"><span th:replace="components/results-position.html :: resultsPosition(${resultPiece.contestResult})">1</span></td>
+                <td class="bbr-event" nowrap><span th:replace="~{links/event-link.html :: eventLink(${resultPiece.contestResult.contestEvent})}">9th Sep 2023</span></td>
+                <td class="bbr-band"><span th:replace="~{links/band-link.html :: bandLinkWithOverride(${resultPiece.contestResult})}"></span></td>
+                <td class="bbr-piece"><span th:replace="~{links/piece-link.html :: resultOwnChoicePieceLink(${resultPiece})}">Test Piece</span></td>
+                <td class="bbr-position"><span th:replace="~{components/results-position.html :: resultsPosition(${resultPiece.contestResult})}">1</span></td>
             </tr>
             </tbody>
         </table>

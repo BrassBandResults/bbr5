@@ -7,7 +7,7 @@
 <div layout:fragment="content">
     <span th:if="${ContestPrefixLetter == 'ALL'}"><h2><span th:text="#{page.contests.page-title}" th:remove="tag">All Contests</span></h2></span>
     <span th:if="${ContestPrefixLetter != 'ALL'}"><h2><span th:text="#{page.contests.contests-starting-with(${ContestPrefixLetter})}" th:remove="tag">Contests starting with R</span></h2></span>
-    <p th:replace="navigation/az-picker.html :: azPicker('contests', ${ContestPrefixLetter}, false, true)"></p>
+    <p th:replace="~{navigation/az-picker.html :: azPicker('contests', ${ContestPrefixLetter}, false, true)}"></p>
     <table id="bands" class="table table-hover sortable">
         <thead>
         <tr>
@@ -18,13 +18,13 @@
         <tbody>
         <tr th:each="contest : ${Contests}">
             <td class="contest">
-                <span th:replace="links/contest-link.html :: contestLink(${contest})"></span>
+                <span th:replace="~{links/contest-link.html :: contestLink(${contest})}"></span>
             </td>
             <td class="contest-event-count" th:text="${contest.eventCount}">0</td>
         </tr>
         </tbody>
     </table>
-    <p th:replace="navigation/az-picker.html :: azPicker('contests', ${ContestPrefixLetter}, false, true)"></p>
+    <p th:replace="~{navigation/az-picker.html :: azPicker('contests', ${ContestPrefixLetter}, false, true)}"></p>
 </div>
 </body>
 </html>

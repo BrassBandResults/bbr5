@@ -10,19 +10,19 @@
 
     <ul>
         <li th:each="result : ${ConductingResults}">
-            <span th:replace="links/event-link.html :: eventLink(${result.contestEvent})">9th Sep 2023</span>
+            <span th:replace="~{links/event-link.html :: eventLink(${result.contestEvent})}">9th Sep 2023</span>
         </li>
         <li th:each="adjudication : ${Adjudications}">
-            <span th:replace="links/event-link.html :: eventLink(${adjudication.contestEvent})">9th Sep 2023</span>
+            <span th:replace="~{links/event-link.html :: eventLink(${adjudication.contestEvent})}">9th Sep 2023</span>
         </li>
         <li th:each="piece : ${Pieces}">
-            <span th:replace="links/piece-link.html :: pieceLink(${piece})"Contest Music</span>
+            <span th:replace="~{links/piece-link.html :: pieceLink(${piece})"Contest Music</span>
         </li>
     </ul>
 
     <p>
         <span th:text="#{page.delete-prompt.return-to}">Return to</span>
-        <span th:replace="links/person-link.html :: personLink(${Person})"></span>
+        <span th:replace="~{links/person-link.html :: personLink(${Person})}"></span>
     </p>
 
 </div>

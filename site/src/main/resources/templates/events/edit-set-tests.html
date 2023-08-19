@@ -7,7 +7,7 @@
 <div layout:fragment="content">
     <h2>
         <span th:text="#{page.add-set-tests.title}">Edit Set Test Pieces</span>
-        <span th:replace="links/contest-link.html :: contestLink(${ContestEvent.contest})"></span>
+        <span th:replace="~{links/contest-link.html :: contestLink(${ContestEvent.contest})}"></span>
     </h2>
     <h3><a th:href="${'/contests/' + ContestEvent.contest.slug + '/' + ContestEvent.eventDateForUrl}" th:text="${ContestEvent.eventDateDisplayWithDay}"></a></h3>
 
@@ -15,9 +15,9 @@
         <tr th:each="eventPiece, iStat : ${TestPieces}">
             <td>
                 <span th:if="${!iStat.first}" th:text="#{${eventPiece.andOr.translationKey}}"></span>
-                <span th:replace="links/piece-link.html :: pieceLink(${eventPiece.piece})"></span>
+                <span th:replace="~{links/piece-link.html :: pieceLink(${eventPiece.piece})}"></span>
             </td>
-            <td><span th:replace="buttons/delete.html :: removeTestPiece(${ContestEvent}, ${eventPiece})"></span></td>
+            <td><span th:replace="~{buttons/delete.html :: removeTestPiece(${ContestEvent}, ${eventPiece})}"></span></td>
         </tr>
     </table>
 
