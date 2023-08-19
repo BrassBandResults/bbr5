@@ -143,7 +143,7 @@ public class FeedbackDao extends AbstractDao {
 
     public void sendToOwner(String currentUsername) {
         this.setStatus(FeedbackStatus.OWNER);
-        this.setOwnedBy("owner");
+        this.setOwnedBy("tjs");
         this.addAuditLog(currentUsername, "Assigning to owner");
     }
 

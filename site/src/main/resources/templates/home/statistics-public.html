@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layout}" xmlns:sec="http://www.thymeleaf.org" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+<head>
+    <title th:text="@{#{page.statistics.title} + ' - Brass Band Results'}">Statistics - Brass Band Results</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h2 th:text="#{page.statistics.title}">Site Statistics</h2>
+    <ul>
+        <li>
+            <span th:text="${#numbers.formatDecimal(Statistics.bandCount, 0, 'COMMA', 0, 'POINT')}" th:remove="tag">123</span>
+            <span th:text="#{page.statistics.bands}" th:remove="tag">bands</span>
+        <li>
+            <span th:text="${#numbers.formatDecimal(Statistics.peopleCount, 0, 'COMMA', 0, 'POINT')}" th:remove="tag">123</span>
+            <span th:text="#{page.statistics.people}" th:remove="tag">people</span>
+        </li>
+        <li>
+            <span th:text="${#numbers.formatDecimal(Statistics.resultCount, 0, 'COMMA', 0, 'POINT')}" th:remove="tag">123</span>
+            <span th:text="#{page.statistics.results}" th:remove="tag">results</span>
+        </li>
+        <li>
+            <span th:text="${#numbers.formatDecimal(Statistics.eventCount, 0, 'COMMA', 0, 'POINT')}" th:remove="tag">123</span>
+            <span th:text="#{page.statistics.events}" th:remove="tag">events</span>
+        </li>
+        <li>
+            <span th:text="${#numbers.formatDecimal(Statistics.contestCount, 0, 'COMMA', 0, 'POINT')}" th:remove="tag">123</span>
+            <span th:text="#{page.statistics.contests}" th:remove="tag">contests</span>
+        </li>
+        <li>
+            <span th:text="${#numbers.formatDecimal(Statistics.pieceCount, 0, 'COMMA', 0, 'POINT')}" th:remove="tag">123</span>
+            <span th:text="#{page.statistics.pieces}" th:remove="tag">pieces</span>
+        </li>
+        <li>
+            <span th:text="${#numbers.formatDecimal(Statistics.venueCount, 0, 'COMMA', 0, 'POINT')}" th:remove="tag">123</span>
+            <span th:text="#{page.statistics.venues}" th:remove="tag">venues</span>
+        </li>
+    </ul>
+</div>
+</body>
+</html>

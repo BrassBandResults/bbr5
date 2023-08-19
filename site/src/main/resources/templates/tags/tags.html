@@ -9,6 +9,7 @@
     <span th:if="${TagPrefixLetter != 'ALL'}"><h2><span th:text="#{page.tags.tags-starting-with(${TagPrefixLetter})}" th:remove="tag">Contests Tags starting with R</span></h2></span>
     <p sec:authorize="hasRole('BBR_PRO')"><span th:replace="~{buttons/create.html :: createTag()}"></span><br/></p>
     <br/>
+    <p th:text="#{page.tags.explain}">Tags can be attached to contests and contest groups to group them together.</p>
     <p th:replace="~{navigation/az-picker.html :: azPicker('tags', ${GroupPrefixLetter}, false, true)}"></p>
     <table id="bands" class="table table-hover sortable">
         <thead>

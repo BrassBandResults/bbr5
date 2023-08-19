@@ -157,7 +157,7 @@ class FeedbackStatusChangeWebTests implements LoginMixin {
         Optional<FeedbackDao> checkFeedback = this.feedbackService.fetchById(testFeedback.getId());
         assertTrue(checkFeedback.isPresent());
 
-        assertEquals("owner", checkFeedback.get().getOwnedBy());
+        assertEquals("tjs", checkFeedback.get().getOwnedBy());
         assertEquals(FeedbackStatus.OWNER, checkFeedback.get().getStatus());
         assertEquals("Comment", checkFeedback.get().getComment());
         assertNotEquals(testFeedback.getAuditLog(), checkFeedback.get().getAuditLog());
