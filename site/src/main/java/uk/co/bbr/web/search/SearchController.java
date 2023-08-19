@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import uk.co.bbr.services.lookup.LookupService;
 import uk.co.bbr.services.lookup.sql.dto.LookupSqlDto;
-import uk.co.bbr.web.security.annotations.IsBbrMember;
+import java.util.Comparator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,8 +40,10 @@ public class SearchController {
         matches.addAll(this.lookupService.lookupVenues(searchString));
         matches.addAll(this.lookupService.lookupVenueAlias(searchString));
 
+        List<LookupSqlDto> orderedMatches = matches.stream().sorted(Comparator.comparing(LookupSqlDto::getName)).toList();
+
         model.addAttribute("SearchString", searchString);
-        model.addAttribute("SearchResults", matches);
+        model.addAttribute("SearchResults", orderedMatches);
 
         if (matches.isEmpty()) {
             return "search/results-no-matches";
