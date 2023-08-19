@@ -6,6 +6,7 @@ import com.icegreen.greenmail.util.GreenMailUtil;
 import com.icegreen.greenmail.util.ServerSetupTest;
 import jakarta.mail.internet.MimeMessage;
 import org.awaitility.Awaitility;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -21,8 +22,10 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import uk.co.bbr.services.feedback.FeedbackService;
 import uk.co.bbr.services.feedback.dao.FeedbackDao;
+import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.web.LoginMixin;
 import uk.co.bbr.web.security.filter.SecurityFilter;
+import uk.co.bbr.web.security.support.TestUser;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -39,6 +42,7 @@ class FeedbackWebTests implements LoginMixin {
 
     @Autowired private FeedbackService feedbackService;
     @Autowired private RestTemplate restTemplate;
+    @Autowired private SecurityService securityService;
     @Autowired private CsrfTokenRepository csrfTokenRepository;
     @LocalServerPort private int port;
 
@@ -46,6 +50,11 @@ class FeedbackWebTests implements LoginMixin {
     static GreenMailExtension greenMail = new GreenMailExtension(ServerSetupTest.SMTP)
             .withConfiguration(GreenMailConfiguration.aConfig().withUser("user", "admin"))
             .withPerMethodLifecycle(false);
+
+    @BeforeAll
+    void setupUser() {
+        this.securityService.createUser("tjs", "password", "test.user@brassbandresults.co.uk");
+    }
 
     @Test
     void testSubmitFeedbackWorkSuccessfully() {
@@ -80,7 +89,7 @@ class FeedbackWebTests implements LoginMixin {
             MimeMessage receivedMessage = greenMail.getReceivedMessages()[0];
 
             assertEquals(1, receivedMessage.getAllRecipients().length);
-            assertEquals("owner@brassbandresults.co.uk", receivedMessage.getAllRecipients()[0].toString());
+            assertEquals("test.user@brassbandresults.co.uk", receivedMessage.getAllRecipients()[0].toString());
             assertEquals("BrassBandResults <notification@brassbandresults.co.uk>", receivedMessage.getFrom()[0].toString());
             assertEquals("Feedback /offset/test", receivedMessage.getSubject());
 
