@@ -11,7 +11,16 @@ public class LookupSql {
     private static final String GROUP_LOOKUP_SQL = "SELECT name, slug, '' as context, 'contest-groups', 'O' as type FROM contest_group WHERE UPPER(name) LIKE ?1";
     private static final String VENUE_LOOKUP_SQL = "SELECT name, slug, '' as context, 'venues', 'O' as type FROM venue WHERE UPPER(name) LIKE ?1";
     private static final String CONTEST_LOOKUP_SQL = "SELECT name, slug, '' as context, 'contests', 'O' as type FROM contest WHERE UPPER(name) LIKE ?1";
-    private static final String BAND_LOOKUP_SQL = "SELECT name, slug, CONCAT(YEAR(start_date), '-', YEAR(end_date)) as context, 'bands', 'O' as type FROM band WHERE UPPER(name) LIKE ?1";
+    private static final String BAND_LOOKUP_SQL = """
+        SELECT name,
+               slug,
+               CONCAT(
+                       CASE WHEN LEN(start_date) > 0 OR LEN(end_date) > 0 THEN CONCAT(YEAR(start_date), '-', YEAR(end_date)) ELSE '' END,
+                       CASE WHEN status = 0 THEN ' extinct' ELSE '' END
+                   ) as context,
+               'bands',
+               'O' as type
+               FROM band WHERE UPPER(name) LIKE ?1""";
     private static final String PIECE_LOOKUP_SQL = "SELECT p.name, p.slug, composer.combined_name as context, 'pieces', 'O' as type FROM piece p LEFT OUTER JOIN person composer ON composer.id = p.composer_id WHERE UPPER(p.name) LIKE ?1";
     private static final String TAG_LOOKUP_SQL = "SELECT name, slug, '' as context, 'tags', 'O' as type FROM contest_tag WHERE UPPER(name) LIKE ?1";
     private static final String VENUE_ALIAS_LOOKUP_SQL = "SELECT a.name, v.slug, v.name as context, 'venues', 'A' as type FROM venue_alias a INNER JOIN venue v ON a.venue_id = v.id WHERE UPPER(a.name) LIKE ?1";

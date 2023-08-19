@@ -49,7 +49,7 @@ public class FeedbackServiceImpl implements FeedbackService {
         String currentUsercode = this.securityService.getCurrentUsername();
         String reportedBy = currentUsercode;
         if (currentUsercode == null || currentUsercode.strip().length() == 0 || currentUsercode.equals("anonymousUser")) {
-            reportedBy = "owner";
+            reportedBy = null;
         }
 
         feedback.addAuditLog(currentUsercode, "Reported by: " + currentUsercode);

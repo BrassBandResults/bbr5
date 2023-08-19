@@ -21,6 +21,7 @@
         <tr th:each="result : ${SearchResults}">
             <td>
                 <a th:href="${result.offset + '/' + result.slug}" th:text="${result.name}">Link</a>
+                <small><small th:if="${result.context != null && !result.alias}" th:text="${result.context}">context</small></small>
             </td>
             <td th:if="${!result.alias}" th:text="#{${result.type.translationKey}}">Contest</td>
             <td th:if="${result.alias}">

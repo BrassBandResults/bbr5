@@ -204,4 +204,8 @@ public class SiteUserDao extends AbstractDao {
             this.points = 0;
         }
     }
+
+    public boolean isProUser()  {
+        return "S".equals(this.accessLevel) || "A".equals(this.accessLevel) || "P".equals(this.accessLevel);
+    }
 }
