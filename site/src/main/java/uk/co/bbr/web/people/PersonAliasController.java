@@ -13,7 +13,6 @@ import uk.co.bbr.services.people.PersonService;
 import uk.co.bbr.services.people.dao.PersonAliasDao;
 import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
-import uk.co.bbr.web.security.annotations.IsBbrPro;
 
 import java.util.List;
 import java.util.Optional;

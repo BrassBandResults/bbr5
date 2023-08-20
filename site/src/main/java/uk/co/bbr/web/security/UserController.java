@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.payments.PaymentsService;
-import uk.co.bbr.services.payments.StripeService;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.services.security.UserService;
 import uk.co.bbr.services.security.dao.PendingUserDao;

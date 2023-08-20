@@ -1,5 +1,6 @@
 package uk.co.bbr.web.results;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,14 +32,17 @@ import uk.co.bbr.services.results.dto.ParsedResultsDto;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.services.venues.VenueService;
 import uk.co.bbr.services.venues.dao.VenueDao;
-import uk.co.bbr.web.Tools;
 import uk.co.bbr.web.framework.AbstractEventController;
-import uk.co.bbr.web.results.forms.*;
+import uk.co.bbr.web.results.forms.AddResultsAdjudicatorForm;
+import uk.co.bbr.web.results.forms.AddResultsBandsForm;
+import uk.co.bbr.web.results.forms.AddResultsContestForm;
+import uk.co.bbr.web.results.forms.AddResultsContestTypeForm;
+import uk.co.bbr.web.results.forms.AddResultsDateForm;
+import uk.co.bbr.web.results.forms.AddResultsNotesForm;
+import uk.co.bbr.web.results.forms.AddResultsTestPieceForm;
+import uk.co.bbr.web.results.forms.AddResultsVenueForm;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
-import jakarta.validation.Valid;
-
-import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Collections;
@@ -126,8 +130,8 @@ public class AddResultsController extends AbstractEventController {
             return "results/add-results-2-event-date";
         }
 
-        ContestEventDateResolution eventDateResolution = null;
-        LocalDate eventDate = null;
+        ContestEventDateResolution eventDateResolution;
+        LocalDate eventDate;
         int slashCount = (int) submittedForm.getEventDate().chars().filter(ch -> ch == '/').count();
         switch (slashCount) {
             case 0 -> {
@@ -149,6 +153,10 @@ public class AddResultsController extends AbstractEventController {
                 int month3 = Integer.parseInt(dateSections3[1]);
                 int year3 = Integer.parseInt(dateSections3[2]);
                 eventDate = LocalDate.of(year3, month3, day3);
+            }
+            default -> {
+                model.addAttribute("Contest", matchingContest.get());
+                return "results/add-results-2-event-date";
             }
         }
 
@@ -201,15 +209,6 @@ public class AddResultsController extends AbstractEventController {
     @PostMapping("/add-results/3/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}")
     public String addResultsContestTypeStagePost(Model model, @Valid @ModelAttribute("Form") AddResultsContestTypeForm submittedForm, BindingResult bindingResult, @PathVariable("contestSlug") String contestSlug, @PathVariable String contestEventDate) {
         ContestEventDao contestEvent = this.contestEventFromUrlParameters(this.contestEventService, contestSlug, contestEventDate);
-
-        submittedForm.validate(bindingResult);
-
-        if (bindingResult.hasErrors()) {
-            List<ContestTypeDao> contestTypes = this.contestTypeService.fetchAll();
-            model.addAttribute("ContestEvent", contestEvent);
-            model.addAttribute("ContestTypes", contestTypes);
-            return "results/add-results-3-event-type";
-        }
 
         Optional<ContestTypeDao> contestType = this.contestTypeService.fetchById(submittedForm.getContestType());
         if (contestType.isEmpty()) {
@@ -336,17 +335,6 @@ public class AddResultsController extends AbstractEventController {
     public String addBandsStagePost(Model model, @Valid @ModelAttribute("Form") AddResultsBandsForm submittedForm, BindingResult bindingResult, @PathVariable("contestSlug") String contestSlug, @PathVariable String contestEventDate) {
         ContestEventDao contestEvent = this.contestEventFromUrlParameters(this.contestEventService, contestSlug, contestEventDate);
 
-        submittedForm.validate(bindingResult);
-
-        if (bindingResult.hasErrors()) {
-            List<ContestEventTestPieceDao> pieces = this.contestEventService.listTestPieces(contestEvent);
-
-            model.addAttribute("TestPieces", pieces);
-            model.addAttribute("ContestEvent", contestEvent);
-            model.addAttribute("ParsedResults", Collections.emptyList());
-            return "results/add-results-6-bands";
-        }
-
         String resultsBlock = submittedForm.getResultBlock();
         ParsedResultsDto parsedResults = this.parseResultService.parseBlock(resultsBlock, contestEvent.getEventDate());
         if (parsedResults.allGreen()) {
@@ -387,7 +375,7 @@ public class AddResultsController extends AbstractEventController {
 
     @IsBbrMember
     @GetMapping("/add-results/7/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}/delete/{adjudicatorId:\\d+}")
-    public String deleteAdjudicator(Model model, @PathVariable("contestSlug") String contestSlug, @PathVariable String contestEventDate, @PathVariable Long adjudicatorId) {
+    public String deleteAdjudicator(@PathVariable("contestSlug") String contestSlug, @PathVariable String contestEventDate, @PathVariable Long adjudicatorId) {
         ContestEventDao contestEvent = this.contestEventFromUrlParameters(this.contestEventService, contestSlug, contestEventDate);
 
         this.contestEventService.removeAdjudicator(contestEvent, adjudicatorId);
@@ -447,10 +435,8 @@ public class AddResultsController extends AbstractEventController {
 
     @IsBbrMember
     @PostMapping("/add-results/8/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}")
-    public String addNotesStagePost(Model model, @Valid @ModelAttribute("Form") AddResultsNotesForm submittedForm, BindingResult bindingResult, @PathVariable("contestSlug") String contestSlug, @PathVariable String contestEventDate) {
+    public String addNotesStagePost(@Valid @ModelAttribute("Form") AddResultsNotesForm submittedForm, BindingResult bindingResult, @PathVariable("contestSlug") String contestSlug, @PathVariable String contestEventDate) {
         ContestEventDao contestEvent = this.contestEventFromUrlParameters(this.contestEventService, contestSlug, contestEventDate);
-
-        submittedForm.validate(bindingResult);
 
         if (submittedForm.getNotes() != null && submittedForm.getNotes().strip().length() > 0) {
             if (contestEvent.getNotes() == null || contestEvent.getNotes().strip().length() == 0) {

@@ -7,7 +7,6 @@ import uk.co.bbr.services.events.types.ContestEventDateResolution;
 import uk.co.bbr.services.framework.sql.AbstractSqlDto;
 import uk.co.bbr.services.people.dao.PersonDao;
 
-import java.sql.Date;
 import java.time.LocalDate;
 
 @Getter

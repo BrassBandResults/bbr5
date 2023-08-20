@@ -1,12 +1,12 @@
 package uk.co.bbr.services.lookup.sql;
 
+import lombok.experimental.UtilityClass;
 import uk.co.bbr.services.framework.sql.SqlExec;
 import uk.co.bbr.services.lookup.sql.dto.FinderSqlDto;
-import uk.co.bbr.services.lookup.sql.dto.LookupSqlDto;
-
 import jakarta.persistence.EntityManager;
 import java.util.List;
 
+@UtilityClass
 public class FinderSql {
     private static final String BAND_FIND_BY_EXACT_NAME_SQL = "SELECT b.name, b.slug, b.start_date, b.end_date FROM band b WHERE UPPER(b.name) = ?1";
     private static final String BAND_ALIAS_FIND_BY_EXACT_NAME_SQL = "SELECT a.old_name as old_name, b.slug as slug, COALESCE(a.start_date, b.start_date) as start_date, COALESCE(a.end_date, b.end_date) as end_date FROM band_previous_name a INNER JOIN band b ON b.id = a.band_id WHERE UPPER(a.old_name) = ?1";

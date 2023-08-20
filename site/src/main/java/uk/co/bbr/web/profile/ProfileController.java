@@ -4,24 +4,18 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import uk.co.bbr.services.events.dao.ContestResultDao;
-import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.payments.PaymentsService;
 import uk.co.bbr.services.people.PersonService;
 import uk.co.bbr.services.people.dao.PersonProfileDao;
 import uk.co.bbr.services.performances.PerformanceService;
 import uk.co.bbr.services.performances.dao.PerformanceDao;
 import uk.co.bbr.services.security.SecurityService;
-import uk.co.bbr.services.security.UserService;
 import uk.co.bbr.services.security.dao.SiteUserDao;
 import uk.co.bbr.services.security.types.ContestHistoryVisibility;
-import uk.co.bbr.web.security.annotations.IsBbrAdmin;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 import uk.co.bbr.web.security.annotations.IsBbrPro;
 
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -65,7 +59,7 @@ public class ProfileController {
 
     @IsBbrMember
     @GetMapping("/profile/performances/make-public")
-    public String makePerformancesPublic(Model model) {
+    public String makePerformancesPublic() {
         SiteUserDao user = this.securityService.getCurrentUser();
         user.setContestHistoryVisibility(ContestHistoryVisibility.PUBLIC);
         this.securityService.update(user);
@@ -75,7 +69,7 @@ public class ProfileController {
 
     @IsBbrMember
     @GetMapping("/profile/performances/make-private")
-    public String makePerformancesPrivate(Model model) {
+    public String makePerformancesPrivate() {
         SiteUserDao user = this.securityService.getCurrentUser();
         user.setContestHistoryVisibility(ContestHistoryVisibility.PRIVATE);
         this.securityService.update(user);
@@ -85,7 +79,7 @@ public class ProfileController {
 
     @IsBbrMember
     @GetMapping("/profile/performances/make-site-only")
-    public String makePerformancesSiteOnly(Model model) {
+    public String makePerformancesSiteOnly() {
         SiteUserDao user = this.securityService.getCurrentUser();
         user.setContestHistoryVisibility(ContestHistoryVisibility.SITE_ONLY);
         this.securityService.update(user);

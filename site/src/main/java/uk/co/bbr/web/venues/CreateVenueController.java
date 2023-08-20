@@ -44,7 +44,7 @@ public class CreateVenueController {
 
     @IsBbrMember
     @PostMapping("/create/venue")
-    public String createPost(Model model, @Valid @ModelAttribute("Form") VenueEditForm submittedForm, BindingResult bindingResult) {
+    public String createPost(@Valid @ModelAttribute("Form") VenueEditForm submittedForm, BindingResult bindingResult) {
 
         submittedForm.validate(bindingResult);
 
@@ -64,9 +64,7 @@ public class CreateVenueController {
         newVenue.setNotes(submittedForm.getNotes());
 
         Optional<VenueDao> parent = this.venueService.fetchBySlug(submittedForm.getParentVenueSlug());
-        if (parent.isPresent()) {
-            newVenue.setParent(parent.get());
-        }
+        parent.ifPresent(newVenue::setParent);
 
         this.venueService.create(newVenue);
         this.locationService.updateVenueLocation(newVenue);

@@ -3,7 +3,6 @@ package uk.co.bbr.services.people.sql.dto;
 import lombok.Getter;
 import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.contests.dao.ContestDao;
-import uk.co.bbr.services.events.dao.ContestAdjudicatorDao;
 import uk.co.bbr.services.events.dao.ContestEventDao;
 import uk.co.bbr.services.events.dao.ContestResultDao;
 import uk.co.bbr.services.events.types.ContestEventDateResolution;
@@ -11,8 +10,6 @@ import uk.co.bbr.services.events.types.ResultPositionType;
 import uk.co.bbr.services.framework.sql.AbstractSqlDto;
 import uk.co.bbr.services.regions.dao.RegionDao;
 
-import java.math.BigInteger;
-import java.sql.Date;
 import java.time.LocalDate;
 
 @Getter

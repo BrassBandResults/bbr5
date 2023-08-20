@@ -1,12 +1,8 @@
 package uk.co.bbr.services.lookup.sql.dto;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.Getter;
 import uk.co.bbr.services.framework.sql.AbstractSqlDto;
-import uk.co.bbr.services.framework.types.EntityType;
 
-import java.sql.Date;
 import java.time.LocalDate;
 
 @Getter

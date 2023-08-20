@@ -1,6 +1,5 @@
 package uk.co.bbr.web.search;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import uk.co.bbr.services.lookup.LookupService;
 import uk.co.bbr.services.lookup.sql.dto.LookupSqlDto;
 import java.util.Comparator;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,10 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SearchController {
 
-    private final ObjectMapper objectMapper;
     private final LookupService lookupService;
-
-    private static final String MATCH_TAG_NAME = "matches";
 
     @GetMapping("/search")
     public String search(Model model, @RequestParam("q") String searchString) {

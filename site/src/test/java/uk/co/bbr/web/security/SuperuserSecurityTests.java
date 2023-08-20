@@ -50,7 +50,7 @@ class SuperuserSecurityTests {
     @Test
     void testAccessAdminPageWithSuperuserFails() {
         AccessDeniedException thrown = assertThrows(AccessDeniedException.class, () -> securityTestController.testAdmin(new ExtendedModelMap()));
-        assertEquals("Access is denied", thrown.getMessage());
+        assertEquals("Access Denied", thrown.getMessage());
     }
 
 }

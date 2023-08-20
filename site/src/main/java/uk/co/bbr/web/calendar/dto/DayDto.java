@@ -42,6 +42,6 @@ public class DayDto {
     }
 
     public boolean hasEvents() {
-        return this.events.size() > 0 || this.groups.size() > 0;
+        return !this.events.isEmpty() || !this.groups.isEmpty();
     }
 }

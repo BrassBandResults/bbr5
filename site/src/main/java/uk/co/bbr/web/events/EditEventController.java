@@ -1,5 +1,6 @@
 package uk.co.bbr.web.events;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,7 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import uk.co.bbr.services.contests.ContestService;
 import uk.co.bbr.services.contests.ContestTypeService;
 import uk.co.bbr.services.contests.dao.ContestTypeDao;
 import uk.co.bbr.services.events.ContestEventService;
@@ -20,7 +20,6 @@ import uk.co.bbr.services.venues.dao.VenueDao;
 import uk.co.bbr.web.events.forms.EventEditForm;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
-import jakarta.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -29,7 +28,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class EditEventController {
 
-    private final ContestService contestService;
     private final ContestEventService contestEventService;
     private final ContestTypeService contestTypeService;
     private final VenueService venueService;
@@ -94,9 +92,7 @@ public class EditEventController {
 
         if (submittedEvent.getVenueSlug() != null) {
             Optional<VenueDao> venue = this.venueService.fetchBySlug(submittedEvent.getVenueSlug());
-            if (venue.isPresent()) {
-                existingEvent.setVenue(venue.get());
-            }
+            venue.ifPresent(existingEvent::setVenue);
         } else {
             existingEvent.setVenue(null);
         }

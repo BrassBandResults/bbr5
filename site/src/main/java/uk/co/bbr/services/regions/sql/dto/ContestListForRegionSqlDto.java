@@ -1,12 +1,8 @@
 package uk.co.bbr.services.regions.sql.dto;
 
 import lombok.Getter;
-import uk.co.bbr.services.bands.dao.BandDao;
-import uk.co.bbr.services.bands.types.BandStatus;
 import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.framework.sql.AbstractSqlDto;
-import uk.co.bbr.services.regions.dao.RegionDao;
-import uk.co.bbr.services.sections.dao.SectionDao;
 
 @Getter
 public class ContestListForRegionSqlDto extends AbstractSqlDto {

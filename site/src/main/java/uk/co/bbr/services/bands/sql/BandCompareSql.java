@@ -3,8 +3,6 @@ package uk.co.bbr.services.bands.sql;
 import lombok.experimental.UtilityClass;
 import uk.co.bbr.services.bands.sql.dto.CompareBandsSqlDto;
 import uk.co.bbr.services.framework.sql.SqlExec;
-import uk.co.bbr.services.people.sql.dto.CompareConductorsSqlDto;
-
 import jakarta.persistence.EntityManager;
 import java.util.List;
 

@@ -4,8 +4,6 @@ import lombok.Getter;
 import uk.co.bbr.services.framework.sql.AbstractSqlDto;
 import uk.co.bbr.services.people.dao.PersonDao;
 
-import java.math.BigInteger;
-
 @Getter
 public class PeopleWinnersSqlDto extends AbstractSqlDto {
 

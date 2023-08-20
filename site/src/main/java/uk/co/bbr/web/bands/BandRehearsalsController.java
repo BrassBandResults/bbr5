@@ -3,25 +3,18 @@ package uk.co.bbr.web.bands;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import uk.co.bbr.services.bands.BandAliasService;
 import uk.co.bbr.services.bands.BandRehearsalsService;
 import uk.co.bbr.services.bands.BandService;
-import uk.co.bbr.services.bands.dao.BandAliasDao;
 import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.bands.dao.BandRehearsalDayDao;
 import uk.co.bbr.services.bands.types.RehearsalDay;
 import uk.co.bbr.services.framework.NotFoundException;
-import uk.co.bbr.web.bands.forms.BandAliasEditForm;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
-import uk.co.bbr.web.security.annotations.IsBbrPro;
 
-import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 

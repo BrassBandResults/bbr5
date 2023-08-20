@@ -1,23 +1,20 @@
 package uk.co.bbr.web.people;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import uk.co.bbr.services.framework.NotFoundException;
-import uk.co.bbr.services.framework.ValidationException;
 import uk.co.bbr.services.people.PersonService;
 import uk.co.bbr.services.people.dao.PersonDao;
-import uk.co.bbr.services.pieces.PieceService;
 import uk.co.bbr.web.people.forms.PersonEditForm;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
-import jakarta.validation.Valid;
 import java.util.Optional;
 
 @Controller

@@ -3,8 +3,6 @@ package uk.co.bbr.services.people.sql;
 import lombok.experimental.UtilityClass;
 import uk.co.bbr.services.framework.sql.SqlExec;
 import uk.co.bbr.services.people.sql.dto.PeopleBandsSqlDto;
-import uk.co.bbr.services.people.sql.dto.PeopleWinnersSqlDto;
-
 import jakarta.persistence.EntityManager;
 import java.time.LocalDate;
 import java.util.List;

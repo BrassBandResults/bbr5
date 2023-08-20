@@ -44,13 +44,13 @@ class ProUserSecurityTests {
     @Test
     void testAccessSuperuserPageWithProUserFails() {
         AccessDeniedException thrown = assertThrows(AccessDeniedException.class, () -> securityTestController.testSuperuser(new ExtendedModelMap()));
-        assertEquals("Access is denied", thrown.getMessage());
+        assertEquals("Access Denied", thrown.getMessage());
     }
 
     @Test
     void testAccessAdminPageWithProUserFails() {
         AccessDeniedException thrown = assertThrows(AccessDeniedException.class, () -> securityTestController.testAdmin(new ExtendedModelMap()));
-        assertEquals("Access is denied", thrown.getMessage());
+        assertEquals("Access Denied", thrown.getMessage());
     }
 
 }

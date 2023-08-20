@@ -5,7 +5,6 @@ import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.events.dao.ContestEventDao;
 import uk.co.bbr.services.framework.sql.AbstractSqlDto;
 
-import java.sql.Date;
 import java.time.LocalDate;
 
 @Getter

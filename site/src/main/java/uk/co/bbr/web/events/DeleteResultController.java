@@ -3,27 +3,18 @@ package uk.co.bbr.web.events;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import uk.co.bbr.services.bands.BandService;
-import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.events.ContestEventService;
 import uk.co.bbr.services.events.ResultService;
 import uk.co.bbr.services.events.dao.ContestEventDao;
 import uk.co.bbr.services.events.dao.ContestResultDao;
 import uk.co.bbr.services.framework.NotFoundException;
-import uk.co.bbr.services.people.PersonService;
-import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.performances.PerformanceService;
 import uk.co.bbr.services.performances.dao.PerformanceDao;
 import uk.co.bbr.services.security.SecurityService;
-import uk.co.bbr.web.events.forms.ResultEditForm;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
-import jakarta.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -59,7 +50,7 @@ public class DeleteResultController {
 
         List<PerformanceDao> performances = this.performanceService.fetchPerformancesForResult(result.get());
 
-        if (performances.size() > 0) {
+        if (!performances.isEmpty()) {
             model.addAttribute("ContestEvent", contestEvent.get());
             model.addAttribute("Result", result.get());
             model.addAttribute("Performances", performances);

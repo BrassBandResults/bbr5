@@ -10,8 +10,6 @@ import uk.co.bbr.services.events.ResultService;
 import uk.co.bbr.services.events.dao.ContestEventDao;
 import uk.co.bbr.services.events.dao.ContestResultDao;
 import uk.co.bbr.services.framework.NotFoundException;
-import uk.co.bbr.services.performances.PerformanceService;
-import uk.co.bbr.services.performances.dao.PerformanceDao;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
 import java.time.LocalDate;
@@ -38,7 +36,7 @@ public class DeleteEventController {
 
         List<ContestResultDao> eventResults = this.resultService.fetchForEvent(contestEvent.get());
 
-        if (eventResults.size() > 0) {
+        if (!eventResults.isEmpty()) {
             model.addAttribute("ContestEvent", contestEvent.get());
             model.addAttribute("Results", eventResults);
 

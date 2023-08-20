@@ -1,5 +1,6 @@
 package uk.co.bbr.web.pieces;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,11 +13,9 @@ import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.pieces.PieceService;
 import uk.co.bbr.services.pieces.dao.PieceDao;
 import uk.co.bbr.services.pieces.types.PieceCategory;
-import uk.co.bbr.web.people.forms.PersonEditForm;
 import uk.co.bbr.web.pieces.forms.PieceEditForm;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
-import jakarta.validation.Valid;
 import java.util.Optional;
 
 @Controller
@@ -39,7 +38,7 @@ public class CreatePieceController {
 
     @IsBbrMember
     @PostMapping("/create/piece")
-    public String createPost(Model model, @Valid @ModelAttribute("Form") PieceEditForm submittedForm, BindingResult bindingResult) {
+    public String createPost(@Valid @ModelAttribute("Form") PieceEditForm submittedForm, BindingResult bindingResult) {
 
         submittedForm.validate(bindingResult);
 

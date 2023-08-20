@@ -1,28 +1,17 @@
 package uk.co.bbr.web.people;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import uk.co.bbr.services.bands.BandService;
-import uk.co.bbr.services.bands.dao.BandDao;
-import uk.co.bbr.services.bands.types.BandStatus;
 import uk.co.bbr.services.people.PersonService;
 import uk.co.bbr.services.people.dao.PersonDao;
-import uk.co.bbr.services.regions.RegionService;
-import uk.co.bbr.services.regions.dao.RegionDao;
-import uk.co.bbr.web.bands.forms.BandEditForm;
 import uk.co.bbr.web.people.forms.PersonEditForm;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
-
-import jakarta.validation.Valid;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -43,7 +32,7 @@ public class CreatePersonController {
 
     @IsBbrMember
     @PostMapping("/create/person")
-    public String createPost(Model model, @Valid @ModelAttribute("Form") PersonEditForm submittedForm, BindingResult bindingResult) {
+    public String createPost(@Valid @ModelAttribute("Form") PersonEditForm submittedForm, BindingResult bindingResult) {
 
         submittedForm.validate(bindingResult);
 

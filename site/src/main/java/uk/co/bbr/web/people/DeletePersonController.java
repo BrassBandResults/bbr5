@@ -6,12 +6,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import uk.co.bbr.services.bands.types.ResultSetCategory;
-import uk.co.bbr.services.contests.ContestService;
-import uk.co.bbr.services.contests.dao.ContestDao;
-import uk.co.bbr.services.events.ContestEventService;
 import uk.co.bbr.services.events.PersonResultService;
 import uk.co.bbr.services.events.dao.ContestAdjudicatorDao;
-import uk.co.bbr.services.events.dao.ContestEventDao;
 import uk.co.bbr.services.events.dto.ResultDetailsDto;
 import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.people.PersonService;
@@ -43,7 +39,7 @@ public class DeletePersonController {
         List<ContestAdjudicatorDao> adjudications = this.personService.fetchAdjudications(person.get());
         List<PieceDao> personPieces = this.pieceService.findPiecesForPerson(person.get());
 
-        boolean blocked = personConductingResults.getBandAllResults().size() > 0 || adjudications.size() > 0 || personPieces.size() > 0;
+        boolean blocked = !personConductingResults.getBandAllResults().isEmpty() || !adjudications.isEmpty() || !personPieces.isEmpty();
 
         if (blocked) {
             model.addAttribute("Person", person.get());

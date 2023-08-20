@@ -7,8 +7,6 @@ import uk.co.bbr.services.framework.sql.AbstractSqlDto;
 import uk.co.bbr.services.regions.dao.RegionDao;
 import uk.co.bbr.services.sections.dao.SectionDao;
 
-import java.math.BigInteger;
-
 @Getter
 public class BandListForRegionSqlDto extends AbstractSqlDto {
 

@@ -10,21 +10,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
-import uk.co.bbr.services.bands.BandService;
-import uk.co.bbr.services.bands.dao.BandDao;
-import uk.co.bbr.services.contests.ContestService;
-import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.framework.NotFoundException;
-import uk.co.bbr.services.groups.ContestGroupService;
-import uk.co.bbr.services.groups.dao.ContestGroupDao;
 import uk.co.bbr.services.lookup.LookupService;
 import uk.co.bbr.services.lookup.sql.dto.LookupSqlDto;
-import uk.co.bbr.services.people.PersonService;
-import uk.co.bbr.services.people.dao.PersonDao;
-import uk.co.bbr.services.venues.VenueService;
-import uk.co.bbr.services.venues.dao.VenueDao;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Controller
@@ -54,6 +45,8 @@ public class LookupController {
             case "tag" -> this.lookupService.lookupTags(searchString);
             default -> throw NotFoundException.lookupTypeNotFound(type);
         };
+
+        results = results.stream().sorted(Comparator.comparing(LookupSqlDto::getName)).toList();
 
         ObjectNode rootNode = objectMapper.createObjectNode();
         ArrayNode people = rootNode.putArray(MATCH_TAG_NAME);

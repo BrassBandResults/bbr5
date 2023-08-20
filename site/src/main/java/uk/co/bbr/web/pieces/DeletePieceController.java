@@ -5,10 +5,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import uk.co.bbr.services.contests.ContestService;
-import uk.co.bbr.services.contests.dao.ContestDao;
-import uk.co.bbr.services.events.ContestEventService;
-import uk.co.bbr.services.events.dao.ContestEventDao;
 import uk.co.bbr.services.events.dao.ContestEventTestPieceDao;
 import uk.co.bbr.services.events.dao.ContestResultPieceDao;
 import uk.co.bbr.services.framework.NotFoundException;
@@ -36,7 +32,7 @@ public class DeletePieceController {
         List<ContestResultPieceDao> ownChoiceResults = this.pieceService.fetchOwnChoicePieceUsage(piece.get());
         List<ContestEventTestPieceDao> setTestContests = this.pieceService.fetchSetTestPieceUsage(piece.get());
 
-        boolean blocked = ownChoiceResults.size() > 0 || setTestContests.size() > 0;
+        boolean blocked = !ownChoiceResults.isEmpty() || !setTestContests.isEmpty();
 
         if (blocked) {
             model.addAttribute("Piece", piece.get());

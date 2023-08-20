@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
@@ -17,7 +18,6 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfTokenRequestHandler;
-import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.security.web.csrf.XorCsrfTokenRequestAttributeHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -28,6 +28,9 @@ import java.io.IOException;
 
 @Configuration
 @RequiredArgsConstructor
+@EnableMethodSecurity(
+    securedEnabled = true,
+    jsr250Enabled = true)
 public class SecurityConfiguration {
     private final JwtService jwtService;
 
@@ -59,21 +62,6 @@ public class SecurityConfiguration {
             .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
-
-//        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//                .and().httpBasic()
-//                .and().csrf().csrfTokenRepository(this.csrfTokenRepository())
-//                .disable().authorizeRequests()
-//                .requestMatchers("/bbr-admin/**").authenticated()
-//                .requestMatchers("/migrate/**").authenticated()
-//                .requestMatchers("/**").permitAll()
-//                .and().exceptionHandling().authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint(SecurityFilter.URL_SIGN_IN))
-//                .and().logout()
-//                .logoutRequestMatcher(new AntPathRequestMatcher(SecurityFilter.URL_SIGN_OUT))
-//                .logoutSuccessUrl(SecurityFilter.URL_SIGN_IN)
-//                .invalidateHttpSession(true)
-//                .deleteCookies(SecurityFilter.COOKIE_NAME)
-//                .and().addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
     private static final class CsrfCookieFilter extends OncePerRequestFilter {

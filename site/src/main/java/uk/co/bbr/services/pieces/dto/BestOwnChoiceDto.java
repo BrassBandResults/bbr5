@@ -1,10 +1,8 @@
 package uk.co.bbr.services.pieces.dto;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import uk.co.bbr.services.pieces.dao.PieceDao;
-import uk.co.bbr.services.pieces.sql.dto.BestPieceSqlDto;
 
 @Getter
 public class BestOwnChoiceDto {

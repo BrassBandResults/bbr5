@@ -8,17 +8,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import uk.co.bbr.services.bands.BandService;
 import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.bands.types.ResultSetCategory;
-import uk.co.bbr.services.contests.ContestService;
-import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.events.BandResultService;
-import uk.co.bbr.services.events.ContestEventService;
-import uk.co.bbr.services.events.ResultService;
-import uk.co.bbr.services.events.dao.ContestEventDao;
 import uk.co.bbr.services.events.dto.ResultDetailsDto;
 import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
-import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -38,7 +32,7 @@ public class DeleteBandController {
 
         ResultDetailsDto bandResults = this.bandResultService.findResultsForBand(band.get(), ResultSetCategory.ALL);
 
-        boolean blocked = bandResults.getBandAllResults().size() > 0;
+        boolean blocked = !bandResults.getBandAllResults().isEmpty();
 
         if (blocked) {
             model.addAttribute("Band", band.get());

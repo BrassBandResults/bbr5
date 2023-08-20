@@ -10,8 +10,6 @@ import uk.co.bbr.services.events.types.ResultPositionType;
 import uk.co.bbr.services.framework.sql.AbstractSqlDto;
 import uk.co.bbr.services.regions.dao.RegionDao;
 
-import java.math.BigInteger;
-import java.sql.Date;
 import java.time.LocalDate;
 
 @Getter
