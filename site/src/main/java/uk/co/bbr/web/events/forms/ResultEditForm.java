@@ -2,13 +2,9 @@ package uk.co.bbr.web.events.forms;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import uk.co.bbr.services.events.dao.ContestEventDao;
 import uk.co.bbr.services.events.dao.ContestResultDao;
-
-import java.time.LocalDate;
 
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 
@@ -47,26 +43,26 @@ public class ResultEditForm {
         assertNotNull(result);
 
         switch (result.getResultPositionType()) {
-            case RESULT:
+            case RESULT -> {
                 this.position = result.getPosition();
                 this.withdrawn = false;
                 this.disqualified = false;
-                break;
-            case UNKNOWN:
+            }
+            case UNKNOWN -> {
                 this.position = null;
                 this.withdrawn = false;
                 this.disqualified = false;
-                break;
-            case WITHDRAWN:
+            }
+            case WITHDRAWN -> {
                 this.position = null;
                 this.withdrawn = true;
                 this.disqualified = false;
-                break;
-            case DISQUALIFIED:
+            }
+            case DISQUALIFIED -> {
                 this.position = null;
                 this.withdrawn = false;
                 this.disqualified = true;
-                break;
+            }
         }
 
         this.competedAs = result.getBandName();

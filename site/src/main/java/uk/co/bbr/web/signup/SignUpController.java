@@ -79,7 +79,7 @@ public class SignUpController {
     }
 
     @GetMapping("/acc/activate/{activationKey:[A-Za-z0-9]{40}}")
-    public String activate(Model model, @PathVariable("activationKey") String activationKey) {
+    public String activate(@PathVariable("activationKey") String activationKey) {
 
         this.userService.activateUser(activationKey);
 

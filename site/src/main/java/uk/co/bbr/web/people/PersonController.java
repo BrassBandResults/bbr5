@@ -52,7 +52,7 @@ public class PersonController {
 
 
     @GetMapping("/people/{personSlug:[\\-a-z\\d]{2,}}")
-    public String conductingOrProfile(Model model, @PathVariable("personSlug") String personSlug) {
+    public String conductingOrProfile(@PathVariable("personSlug") String personSlug) {
         Optional<PersonDao> person = this.personService.fetchBySlug(personSlug);
         if (person.isEmpty()) {
             throw NotFoundException.personNotFoundBySlug(personSlug);
@@ -90,7 +90,9 @@ public class PersonController {
 
         model.addAttribute("Person", person.get());
         model.addAttribute("PersonProfile", profile);
-        model.addAttribute("ProfileMarkdown", Tools.markdownToHTML(profile.getProfile()));
+        if (profile != null) {
+            model.addAttribute("ProfileMarkdown", Tools.markdownToHTML(profile.getProfile()));
+        }
         model.addAttribute("PreviousNames", previousNames);
         model.addAttribute("ResultsCount", personConductingResults.getBandNonWhitResults().size());
         model.addAttribute("WhitCount", personConductingResults.getBandWhitResults().size());

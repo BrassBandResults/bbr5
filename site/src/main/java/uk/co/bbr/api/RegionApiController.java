@@ -7,8 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import uk.co.bbr.services.regions.RegionService;
 import uk.co.bbr.services.regions.dao.RegionDao;
-import uk.co.bbr.services.venues.VenueService;
-import uk.co.bbr.services.venues.dao.VenueDao;
 
 import java.util.Optional;
 

@@ -1,5 +1,6 @@
 package uk.co.bbr.web.events;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,26 +11,17 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import uk.co.bbr.services.bands.BandService;
 import uk.co.bbr.services.bands.dao.BandDao;
-import uk.co.bbr.services.contests.ContestService;
-import uk.co.bbr.services.contests.ContestTypeService;
-import uk.co.bbr.services.contests.dao.ContestTypeDao;
 import uk.co.bbr.services.events.ContestEventService;
 import uk.co.bbr.services.events.ResultService;
 import uk.co.bbr.services.events.dao.ContestEventDao;
 import uk.co.bbr.services.events.dao.ContestResultDao;
-import uk.co.bbr.services.events.types.ContestEventDateResolution;
 import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.people.PersonService;
 import uk.co.bbr.services.people.dao.PersonDao;
-import uk.co.bbr.services.venues.VenueService;
-import uk.co.bbr.services.venues.dao.VenueDao;
-import uk.co.bbr.web.events.forms.EventEditForm;
 import uk.co.bbr.web.events.forms.ResultEditForm;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
-import jakarta.validation.Valid;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -125,36 +117,28 @@ public class EditResultController {
 
         if (submittedResult.getBandSlug() != null) {
             Optional<BandDao> band = this.bandService.fetchBySlug(submittedResult.getBandSlug());
-            if (band.isPresent()) {
-                existingResult.setBand(band.get());
-            }
+            band.ifPresent(existingResult::setBand);
         } else {
-            throw NotFoundException.bandNotFoundBySlug(submittedResult.getBandSlug());
+            throw NotFoundException.bandNotFoundBySlug(submittedResult.getBandName());
         }
 
         if (submittedResult.getConductorSlug() != null) {
             Optional<PersonDao> conductor = this.personService.fetchBySlug(submittedResult.getConductorSlug());
-            if (conductor.isPresent()) {
-                existingResult.setConductor(conductor.get());
-            }
+            conductor.ifPresent(existingResult::setConductor);
         } else {
             existingResult.setConductor(null);
         }
 
         if (submittedResult.getConductorTwoSlug() != null) {
             Optional<PersonDao> conductor = this.personService.fetchBySlug(submittedResult.getConductorTwoSlug());
-            if (conductor.isPresent()) {
-                existingResult.setConductorSecond(conductor.get());
-            }
+            conductor.ifPresent(existingResult::setConductorSecond);
         } else {
             existingResult.setConductorSecond(null);
         }
 
         if (submittedResult.getConductorThreeSlug() != null) {
             Optional<PersonDao> conductor = this.personService.fetchBySlug(submittedResult.getConductorThreeSlug());
-            if (conductor.isPresent()) {
-                existingResult.setConductorThird(conductor.get());
-            }
+            conductor.ifPresent(existingResult::setConductorThird);
         } else {
             existingResult.setConductorThird(null);
         }

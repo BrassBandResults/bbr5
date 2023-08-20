@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.pieces.dao.PieceDao;
 
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;

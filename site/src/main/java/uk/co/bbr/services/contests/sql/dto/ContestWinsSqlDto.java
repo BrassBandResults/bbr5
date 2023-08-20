@@ -3,8 +3,6 @@ package uk.co.bbr.services.contests.sql.dto;
 import lombok.Getter;
 import uk.co.bbr.services.framework.sql.AbstractSqlDto;
 
-import java.math.BigInteger;
-
 @Getter
 public class ContestWinsSqlDto extends AbstractSqlDto {
     private final String bandSlug;

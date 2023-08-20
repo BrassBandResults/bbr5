@@ -5,8 +5,6 @@ import uk.co.bbr.services.framework.sql.AbstractSqlDto;
 import uk.co.bbr.services.regions.dao.RegionDao;
 import uk.co.bbr.services.venues.dao.VenueDao;
 
-import java.math.BigInteger;
-
 @Getter
 public class VenueListSqlDto  extends AbstractSqlDto {
 

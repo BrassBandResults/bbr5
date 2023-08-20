@@ -5,17 +5,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import uk.co.bbr.services.contests.ContestService;
-import uk.co.bbr.services.contests.dao.ContestDao;
-import uk.co.bbr.services.events.ContestEventService;
-import uk.co.bbr.services.events.dao.ContestEventDao;
 import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.groups.ContestGroupService;
 import uk.co.bbr.services.groups.dao.ContestGroupDao;
 import uk.co.bbr.services.groups.dto.ContestGroupDetailsDto;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
-import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -34,7 +29,7 @@ public class DeleteGroupController {
 
         ContestGroupDetailsDto contestGroupDetails = this.contestGroupService.fetchDetail(contestGroup.get());
 
-        boolean blocked = contestGroupDetails.getActiveContests().size() > 0 || contestGroupDetails.getOldContests().size() > 0;
+        boolean blocked = !contestGroupDetails.getActiveContests().isEmpty() || !contestGroupDetails.getOldContests().isEmpty();
 
         if (blocked) {
             model.addAttribute("Group", contestGroup.get());

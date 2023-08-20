@@ -10,7 +10,6 @@ import uk.co.bbr.services.events.dao.ContestResultDao;
 import uk.co.bbr.services.events.dao.ContestResultPieceDao;
 import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.performances.PerformanceService;
-import uk.co.bbr.services.performances.dao.PerformanceDao;
 import uk.co.bbr.services.pieces.PieceService;
 import uk.co.bbr.services.pieces.dao.PieceAliasDao;
 import uk.co.bbr.services.pieces.dao.PieceDao;
@@ -21,8 +20,6 @@ import uk.co.bbr.services.sections.dao.SectionDao;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.web.security.annotations.IsBbrPro;
 
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 

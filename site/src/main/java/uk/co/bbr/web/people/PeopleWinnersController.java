@@ -4,8 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import uk.co.bbr.services.bands.BandService;
-import uk.co.bbr.services.bands.sql.dto.BandWinnersSqlDto;
 import uk.co.bbr.services.people.PersonService;
 import uk.co.bbr.services.people.sql.dto.PeopleWinnersSqlDto;
 import uk.co.bbr.web.security.annotations.IsBbrPro;

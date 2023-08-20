@@ -5,10 +5,6 @@ import uk.co.bbr.services.framework.sql.AbstractSqlDto;
 import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.pieces.dao.PieceDao;
 
-import java.math.BigInteger;
-import java.sql.Date;
-import java.time.LocalDate;
-
 @Getter
 public class BestPieceSqlDto extends AbstractSqlDto {
     private final String pieceName;

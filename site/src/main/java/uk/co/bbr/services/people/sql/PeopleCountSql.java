@@ -1,15 +1,12 @@
 package uk.co.bbr.services.people.sql;
 
-import lombok.experimental.UtilityClass;
-import uk.co.bbr.services.bands.sql.dto.BandListSqlDto;
-import uk.co.bbr.services.framework.sql.SqlExec;
-import uk.co.bbr.services.people.sql.dto.PeopleListSqlDto;
-import uk.co.bbr.services.people.sql.dto.PeopleWinnersSqlDto;
-
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
+import lombok.experimental.UtilityClass;
+import uk.co.bbr.services.framework.sql.SqlExec;
+import uk.co.bbr.services.people.sql.dto.PeopleListSqlDto;
+
 import java.math.BigInteger;
-import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

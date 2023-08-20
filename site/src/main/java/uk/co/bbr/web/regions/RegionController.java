@@ -26,7 +26,6 @@ import uk.co.bbr.web.security.annotations.IsBbrPro;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
@@ -112,7 +111,7 @@ public class RegionController {
             throw NotFoundException.regionNotFoundBySlug(regionSlug);
         }
 
-        List<BandDao> bandsForMap = this.bandService.findBandsWithMapLocationAndRehearsals(region.get()).stream().filter(t -> t.getSectionType().equals(sectionType)).collect(Collectors.toList());
+        List<BandDao> bandsForMap = this.bandService.findBandsWithMapLocationAndRehearsals(region.get()).stream().filter(t -> t.getSectionType().equals(sectionType)).toList();
 
         ObjectNode objectNode = objectMapper.createObjectNode();
         objectNode.put("type", "FeatureCollection");

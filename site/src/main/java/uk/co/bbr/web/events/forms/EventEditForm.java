@@ -5,7 +5,6 @@ import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.events.dao.ContestEventDao;
 
 import java.time.LocalDate;

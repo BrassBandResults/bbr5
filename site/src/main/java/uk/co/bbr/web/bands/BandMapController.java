@@ -15,7 +15,6 @@ import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.map.LocationService;
 import uk.co.bbr.services.map.dto.Location;
-import uk.co.bbr.services.venues.dao.VenueDao;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
 import java.util.ArrayList;

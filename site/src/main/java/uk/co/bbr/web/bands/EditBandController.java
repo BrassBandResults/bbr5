@@ -80,9 +80,7 @@ public class EditBandController {
 
         // region
         Optional<RegionDao> newRegion = this.regionService.fetchById(submittedBand.getRegion());
-        if (newRegion.isPresent()) {
-            existingBand.setRegion(newRegion.get());
-        }
+        newRegion.ifPresent(existingBand::setRegion);
 
         // status
         BandStatus newStatus = BandStatus.fromCode(submittedBand.getStatus());

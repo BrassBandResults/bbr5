@@ -1,12 +1,10 @@
 package uk.co.bbr.services.people.sql;
 
+import jakarta.persistence.EntityManager;
 import lombok.experimental.UtilityClass;
 import uk.co.bbr.services.framework.sql.SqlExec;
 import uk.co.bbr.services.people.sql.dto.CompareConductorsSqlDto;
-import uk.co.bbr.services.people.sql.dto.PeopleWinnersSqlDto;
 
-import jakarta.persistence.EntityManager;
-import java.time.LocalDate;
 import java.util.List;
 
 @UtilityClass

@@ -1,5 +1,6 @@
 package uk.co.bbr.web.pieces;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,16 +15,9 @@ import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.pieces.PieceService;
 import uk.co.bbr.services.pieces.dao.PieceDao;
 import uk.co.bbr.services.pieces.types.PieceCategory;
-import uk.co.bbr.services.regions.RegionService;
-import uk.co.bbr.services.regions.dao.RegionDao;
-import uk.co.bbr.services.venues.VenueService;
-import uk.co.bbr.services.venues.dao.VenueDao;
 import uk.co.bbr.web.pieces.forms.PieceEditForm;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
-import uk.co.bbr.web.venues.forms.VenueEditForm;
 
-import jakarta.validation.Valid;
-import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -73,18 +67,14 @@ public class EditPieceController {
 
         if (submittedPiece.getComposerSlug() != null) {
             Optional<PersonDao> composer = this.personService.fetchBySlug(submittedPiece.getComposerSlug());
-            if (composer.isPresent()) {
-                existingPiece.setComposer(composer.get());
-            }
+            composer.ifPresent(existingPiece::setComposer);
         }
         else {
             existingPiece.setComposer(null);
         }
         if (submittedPiece.getArrangerSlug() != null) {
             Optional<PersonDao> arranger = this.personService.fetchBySlug(submittedPiece.getArrangerSlug());
-            if (arranger.isPresent()) {
-                existingPiece.setArranger(arranger.get());
-            }
+            arranger.ifPresent(existingPiece::setArranger);
         } else {
             existingPiece.setArranger(null);
         }

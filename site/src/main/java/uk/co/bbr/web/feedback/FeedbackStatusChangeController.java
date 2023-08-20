@@ -35,27 +35,14 @@ public class FeedbackStatusChangeController {
 
         String currentUsername = this.securityService.getCurrentUsername();
 
-        switch(type) {
-            case "claim":
-                feedback.get().assignToUser(currentUsername, destinationUser.get());
-                break;
-            case "done":
-                feedback.get().markDone(currentUsername);
-                break;
-            case "owner":
-                feedback.get().sendToOwner(currentUsername);
-                break;
-            case "closed":
-                feedback.get().markClosed(currentUsername);
-                break;
-            case "inconclusive":
-                feedback.get().markInconclusive(currentUsername);
-                break;
-            case "spam":
-                feedback.get().markAsSpam(currentUsername);
-                break;
-            default:
-                throw NotFoundException.feedbackUpdateNotFound(type);
+        switch (type) {
+            case "claim" -> feedback.get().assignToUser(currentUsername, destinationUser.get());
+            case "done" -> feedback.get().markDone(currentUsername);
+            case "owner" -> feedback.get().sendToOwner(currentUsername);
+            case "closed" -> feedback.get().markClosed(currentUsername);
+            case "inconclusive" -> feedback.get().markInconclusive(currentUsername);
+            case "spam" -> feedback.get().markAsSpam(currentUsername);
+            default -> throw NotFoundException.feedbackUpdateNotFound(type);
         }
 
         this.feedbackService.update(feedback.get());

@@ -1,5 +1,6 @@
 package uk.co.bbr.services.events.sql;
 
+import lombok.experimental.UtilityClass;
 import uk.co.bbr.services.events.sql.dto.EventResultSqlDto;
 import uk.co.bbr.services.events.sql.dto.EventUpDownLeftRightSqlDto;
 import uk.co.bbr.services.events.sql.dto.ResultPieceSqlDto;
@@ -9,6 +10,7 @@ import jakarta.persistence.EntityManager;
 import java.time.LocalDate;
 import java.util.List;
 
+@UtilityClass
 public class EventSql {
 
     private static final String EVENT_RESULTS_SQL = """

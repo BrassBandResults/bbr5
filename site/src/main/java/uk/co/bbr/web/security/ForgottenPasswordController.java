@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import uk.co.bbr.services.email.EmailService;
 import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.security.UserService;
 import uk.co.bbr.services.security.dao.SiteUserDao;
@@ -19,7 +18,6 @@ import java.util.Optional;
 public class ForgottenPasswordController {
 
     private final UserService userService;
-    private final EmailService emailService;
 
     @GetMapping("/acc/forgotten-password")
     public String passwordResetGet() {
@@ -34,9 +32,7 @@ public class ForgottenPasswordController {
             matchingUser = this.userService.fetchUserByEmail(usercode);
         }
 
-        if (matchingUser.isPresent()) {
-            this.userService.sendResetPasswordEmail(matchingUser.get());
-        }
+        matchingUser.ifPresent(this.userService::sendResetPasswordEmail);
 
         return "redirect:/acc/forgotten-password/sent";
     }

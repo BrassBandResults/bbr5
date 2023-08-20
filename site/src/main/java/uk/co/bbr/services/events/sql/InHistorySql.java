@@ -1,15 +1,13 @@
 package uk.co.bbr.services.events.sql;
 
-import uk.co.bbr.services.events.sql.dto.EventResultSqlDto;
-import uk.co.bbr.services.events.sql.dto.EventUpDownLeftRightSqlDto;
+import jakarta.persistence.EntityManager;
+import lombok.experimental.UtilityClass;
 import uk.co.bbr.services.events.sql.dto.HistoricalEventSqlDto;
-import uk.co.bbr.services.events.sql.dto.ResultPieceSqlDto;
 import uk.co.bbr.services.framework.sql.SqlExec;
 
-import jakarta.persistence.EntityManager;
-import java.time.LocalDate;
 import java.util.List;
 
+@UtilityClass
 public class InHistorySql {
 
     private static final String RANDOM_HISTORICAL_EVENT_FOR_TODAY_SQL = """

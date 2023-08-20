@@ -1,5 +1,6 @@
 package uk.co.bbr.web.profile;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,21 +10,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import uk.co.bbr.services.framework.NotFoundException;
-import uk.co.bbr.services.payments.PaymentsService;
 import uk.co.bbr.services.people.PersonService;
-import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.people.dao.PersonProfileDao;
-import uk.co.bbr.services.performances.PerformanceService;
-import uk.co.bbr.services.performances.dao.PerformanceDao;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.services.security.dao.SiteUserDao;
-import uk.co.bbr.web.people.forms.PersonEditForm;
 import uk.co.bbr.web.profile.forms.EditProfileForm;
-import uk.co.bbr.web.security.annotations.IsBbrMember;
 import uk.co.bbr.web.security.annotations.IsBbrPro;
 
-import jakarta.validation.Valid;
-import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -31,9 +24,7 @@ import java.util.Optional;
 public class EditPersonProfileController {
 
     private final SecurityService securityService;
-    private final PaymentsService paymentsService;
     private final PersonService personService;
-    private final PerformanceService performanceService;
 
     @IsBbrPro
     @GetMapping("/profile/people-profiles/{personSlug:[\\-a-z\\d]{2,}}/edit")

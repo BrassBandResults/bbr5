@@ -4,8 +4,6 @@ import lombok.Getter;
 import uk.co.bbr.services.framework.sql.AbstractSqlDto;
 import uk.co.bbr.services.tags.dao.ContestTagDao;
 
-import java.math.BigInteger;
-
 @Getter
 public class TagListSqlDto extends AbstractSqlDto {
 

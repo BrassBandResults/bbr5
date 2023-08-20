@@ -11,10 +11,7 @@ import uk.co.bbr.services.bands.dto.BandCompareDto;
 import uk.co.bbr.services.contests.ContestService;
 import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.framework.NotFoundException;
-import uk.co.bbr.services.people.dto.ConductorCompareDto;
-import uk.co.bbr.web.security.annotations.IsBbrMember;
 import uk.co.bbr.web.security.annotations.IsBbrPro;
-
 
 import java.util.Optional;
 
@@ -26,7 +23,7 @@ public class BandCompareController {
 
     @IsBbrPro
     @GetMapping("/bands/COMPARE")
-    public String compareBandsHome(Model model) {
+    public String compareBandsHome() {
         return "bands/compare/select";
     }
 

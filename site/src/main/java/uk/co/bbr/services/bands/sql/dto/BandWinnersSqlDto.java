@@ -5,8 +5,6 @@ import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.framework.sql.AbstractSqlDto;
 import uk.co.bbr.services.regions.dao.RegionDao;
 
-import java.math.BigInteger;
-
 @Getter
 public class BandWinnersSqlDto extends AbstractSqlDto {
 

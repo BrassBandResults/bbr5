@@ -1,12 +1,8 @@
 package uk.co.bbr.services.groups.sql.dao;
 
 import lombok.Getter;
-import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.framework.sql.AbstractSqlDto;
 import uk.co.bbr.services.groups.dao.ContestGroupDao;
-import uk.co.bbr.services.regions.dao.RegionDao;
-
-import java.math.BigInteger;
 
 @Getter
 public class GroupListSqlDto extends AbstractSqlDto {

@@ -5,37 +5,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import uk.co.bbr.services.bands.BandAliasService;
-import uk.co.bbr.services.bands.BandRehearsalsService;
-import uk.co.bbr.services.bands.BandRelationshipService;
-import uk.co.bbr.services.bands.BandService;
-import uk.co.bbr.services.bands.dao.BandAliasDao;
-import uk.co.bbr.services.bands.dao.BandDao;
-import uk.co.bbr.services.bands.dao.BandRehearsalDayDao;
-import uk.co.bbr.services.bands.dao.BandRelationshipDao;
-import uk.co.bbr.services.bands.types.ResultSetCategory;
-import uk.co.bbr.services.contests.ContestService;
-import uk.co.bbr.services.contests.dao.ContestDao;
-import uk.co.bbr.services.events.BandResultService;
 import uk.co.bbr.services.events.ContestEventService;
-import uk.co.bbr.services.events.dao.ContestEventDao;
 import uk.co.bbr.services.events.dao.ContestResultDao;
-import uk.co.bbr.services.events.dto.ResultDetailsDto;
 import uk.co.bbr.services.framework.NotFoundException;
-import uk.co.bbr.services.groups.ContestGroupService;
-import uk.co.bbr.services.groups.dao.ContestGroupDao;
-import uk.co.bbr.services.tags.ContestTagService;
-import uk.co.bbr.services.tags.dao.ContestTagDao;
 import uk.co.bbr.web.calendar.dto.WeekDto;
-import uk.co.bbr.web.security.annotations.IsBbrPro;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.YearMonth;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -44,7 +23,7 @@ public class CalendarController {
     private final ContestEventService contestEventService;
 
     @GetMapping("/calendar")
-    public String calendarHome(Model model) {
+    public String calendarHome() {
         LocalDate today = LocalDate.now();
 
         return "redirect:/calendar/" + today.getYear() + "/" + today.getMonthValue();

@@ -1,15 +1,11 @@
 package uk.co.bbr.services.groups.sql;
 
+import jakarta.persistence.EntityManager;
 import lombok.experimental.UtilityClass;
-import uk.co.bbr.services.bands.sql.dto.BandListSqlDto;
-import uk.co.bbr.services.bands.sql.dto.BandWinnersSqlDto;
 import uk.co.bbr.services.framework.sql.SqlExec;
 import uk.co.bbr.services.groups.sql.dao.ContestListSqlDto;
 import uk.co.bbr.services.groups.sql.dao.GroupListSqlDto;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.Query;
-import java.math.BigInteger;
 import java.util.List;
 
 @UtilityClass

@@ -31,7 +31,7 @@ public class CreateTagController {
 
     @IsBbrMember
     @PostMapping("/create/tag")
-    public String createPost(Model model, @Valid @ModelAttribute("TagForm") TagCreateForm submittedTag, BindingResult bindingResult) {
+    public String createPost(@Valid @ModelAttribute("TagForm") TagCreateForm submittedTag, BindingResult bindingResult) {
 
         submittedTag.validate(bindingResult);
 

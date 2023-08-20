@@ -30,25 +30,25 @@ class AnonymousUserSecurityTests {
     @Test
     void testAccessSecuredPageWithAnonymousUserFails() {
         AccessDeniedException thrown = assertThrows(AccessDeniedException.class, () -> securityTestController.testMember(new ExtendedModelMap()));
-        assertEquals("Access is denied", thrown.getMessage());
+        assertEquals("Access Denied", thrown.getMessage());
     }
 
     @Test
     void testAccessProAccountPageWithAnonymousUserFails() {
         AccessDeniedException thrown = assertThrows(AccessDeniedException.class, () -> securityTestController.testPro(new ExtendedModelMap()));
-        assertEquals("Access is denied", thrown.getMessage());
+        assertEquals("Access Denied", thrown.getMessage());
     }
 
     @Test
     void testAccessSuperuserPageWithAnonymousUserFails() {
         AccessDeniedException thrown = assertThrows(AccessDeniedException.class, () -> securityTestController.testSuperuser(new ExtendedModelMap()));
-        assertEquals("Access is denied", thrown.getMessage());
+        assertEquals("Access Denied", thrown.getMessage());
     }
 
     @Test
     void testAccessAdminPageWithAnonymousUserFails() {
         AccessDeniedException thrown = assertThrows(AccessDeniedException.class, () -> securityTestController.testAdmin(new ExtendedModelMap()));
-        assertEquals("Access is denied", thrown.getMessage());
+        assertEquals("Access Denied", thrown.getMessage());
     }
 
 }

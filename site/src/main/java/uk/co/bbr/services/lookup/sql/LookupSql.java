@@ -1,11 +1,13 @@
 package uk.co.bbr.services.lookup.sql;
 
+import lombok.experimental.UtilityClass;
 import uk.co.bbr.services.framework.sql.SqlExec;
 import uk.co.bbr.services.lookup.sql.dto.LookupSqlDto;
 
 import jakarta.persistence.EntityManager;
 import java.util.List;
 
+@UtilityClass
 public class LookupSql {
     private static final String PEOPLE_LOOKUP_SQL = "SELECT combined_name, slug, COALESCE(known_for, '') as context, 'people', 'O' as type FROM person WHERE UPPER(combined_name) LIKE ?1";
     private static final String GROUP_LOOKUP_SQL = "SELECT name, slug, '' as context, 'contest-groups', 'O' as type FROM contest_group WHERE UPPER(name) LIKE ?1";

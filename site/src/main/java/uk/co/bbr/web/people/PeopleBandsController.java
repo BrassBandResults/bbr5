@@ -6,7 +6,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import uk.co.bbr.services.people.PersonService;
 import uk.co.bbr.services.people.sql.dto.PeopleBandsSqlDto;
-import uk.co.bbr.services.people.sql.dto.PeopleWinnersSqlDto;
 import uk.co.bbr.web.security.annotations.IsBbrPro;
 
 import java.util.List;
