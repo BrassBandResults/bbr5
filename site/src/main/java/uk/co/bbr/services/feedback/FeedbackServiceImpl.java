@@ -63,7 +63,7 @@ public class FeedbackServiceImpl implements FeedbackService {
 
         FeedbackDao newFeedback = this.feedbackRepository.saveAndFlush(feedback);
 
-        Optional<SiteUserDao> user = this.userService.fetchUserByUsercode(reportedBy);
+        Optional<SiteUserDao> user = this.userService.fetchUserByUsercode(feedback.getOwnedBy());
         if (user.isEmpty()) {
             user = this.userService.fetchUserByUsercode("tjs");
         }
