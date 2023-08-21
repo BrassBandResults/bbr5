@@ -13,7 +13,11 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.test.context.ActiveProfiles;
@@ -25,13 +29,14 @@ import uk.co.bbr.services.feedback.dao.FeedbackDao;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.web.LoginMixin;
 import uk.co.bbr.web.security.filter.SecurityFilter;
-import uk.co.bbr.web.security.support.TestUser;
 
-import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ActiveProfiles("test")
 @SpringBootTest(properties = {  "spring.config.location=classpath:test-application.yml",
@@ -89,7 +94,7 @@ class FeedbackWebTests implements LoginMixin {
             MimeMessage receivedMessage = greenMail.getReceivedMessages()[0];
 
             assertEquals(1, receivedMessage.getAllRecipients().length);
-            assertEquals("test.user@brassbandresults.co.uk", receivedMessage.getAllRecipients()[0].toString());
+            assertEquals("owner@brassbandresults.co.uk", receivedMessage.getAllRecipients()[0].toString());
             assertEquals("BrassBandResults <notification@brassbandresults.co.uk>", receivedMessage.getFrom()[0].toString());
             assertEquals("Feedback /offset/test", receivedMessage.getSubject());
 
