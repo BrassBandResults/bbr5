@@ -44,6 +44,7 @@
         <div class="mb-3">
             <label class="form-label" for="region" th:text="#{page.field-prompt.region}">Region:</label>
             <select id="region" class="form-select" th:field="*{region}">
+                <option value=""></option>
                 <option th:each="region : ${Regions}"
                         th:value="${region.id}"
                         th:text="#{'region.' + ${region.slug}}">
@@ -54,6 +55,7 @@
         <div class="mb-3">
             <label class="form-label" for="section" th:text="#{page.field-prompt.section}">Section:</label>
             <select id="section" class="form-select" th:field="*{section}">
+                <option value=""></option>
                 <option th:each="section : ${Sections}"
                         th:value="${section.id}"
                         th:text="#{'section.' + ${section.slug}}">

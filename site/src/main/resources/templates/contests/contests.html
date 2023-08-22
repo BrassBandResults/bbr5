@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+<html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <title th:text="@{#{page.contests.title} + ' - Brass Band Results'}">Contests - Brass Band Results</title>
 </head>
@@ -7,8 +7,9 @@
 <div layout:fragment="content">
     <span th:if="${ContestPrefixLetter == 'ALL'}"><h2><span th:text="#{page.contests.page-title}" th:remove="tag">All Contests</span></h2></span>
     <span th:if="${ContestPrefixLetter != 'ALL'}"><h2><span th:text="#{page.contests.contests-starting-with(${ContestPrefixLetter})}" th:remove="tag">Contests starting with R</span></h2></span>
+    <p sec:authorize="hasRole('BBR_MEMBER')" th:replace="~{buttons/create.html :: createContest()}"></p><br/><br/>
     <p th:replace="~{navigation/az-picker.html :: azPicker('contests', ${ContestPrefixLetter}, false, true)}"></p>
-    <table id="bands" class="table table-hover sortable">
+    <table id="contests" class="table table-hover sortable">
         <thead>
         <tr>
             <th th:text="#{page.column-header.name}">Name</th>

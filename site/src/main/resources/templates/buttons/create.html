@@ -21,3 +21,7 @@
 <span th:fragment="createVenue()" th:remove="tag">
     <span th:replace="~{buttons/button.html :: button(#{page.buttons.create.venue}, ${'/create/venue'})}"></span>
 </span>
+
+<span th:fragment="createContest()" th:remove="tag">
+    <span th:replace="~{buttons/button.html :: button(#{page.buttons.create.contest}, ${'/create/contest'})}"></span>
+</span>

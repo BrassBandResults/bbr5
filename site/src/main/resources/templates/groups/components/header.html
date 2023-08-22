@@ -1,4 +1,4 @@
-<div th:fragment="header(Group, PreviousNames)" xmlns:sec="http://www.thymeleaf.org">
+<div th:fragment="header(Group, PreviousNames)" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <h2 th:text="${Group.name}">Group Name</h2>
     <div sec:authorize="hasRole('BBR_SUPERUSER')">
         <span th:replace="~{buttons/edit.html :: editGroup(${Group})}"></span>

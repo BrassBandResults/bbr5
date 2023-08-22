@@ -1,4 +1,4 @@
-<div th:fragment="header(Contest, PreviousNames)" xmlns:sec="http://www.thymeleaf.org">
+<div th:fragment="header(Contest, PreviousNames)" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <h2>
         <span th:if="${Contest.contestGroup != null}" th:replace="~{links/group-link.html :: groupLinkFromContest(${Contest})}"></span>
         <span th:if="${Contest.contestGroup == null}" th:text="${Contest.name}">Yorkshire Area (Championship Section)</span>
