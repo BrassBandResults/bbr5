@@ -1,6 +1,5 @@
 package uk.co.bbr.web.access;
 
-import com.stripe.model.Person;
 import uk.co.bbr.services.bands.BandAliasService;
 import uk.co.bbr.services.bands.BandRelationshipService;
 import uk.co.bbr.services.bands.BandService;
@@ -30,7 +29,6 @@ import uk.co.bbr.services.pieces.dao.PieceDao;
 import uk.co.bbr.services.regions.RegionService;
 import uk.co.bbr.services.regions.dao.RegionDao;
 import uk.co.bbr.services.security.SecurityService;
-import uk.co.bbr.services.security.UserService;
 import uk.co.bbr.services.security.dao.SiteUserDao;
 import uk.co.bbr.services.tags.ContestTagService;
 import uk.co.bbr.services.tags.dao.ContestTagDao;
@@ -134,7 +132,6 @@ public abstract class PageSets {
         pageList.add("/pieces/not-a-piece");
         pageList.add("/regions/not-a-region");
         pageList.add("/regions/not-a-region/contests");
-        pageList.add("/regions/not-a-region/links");
         pageList.add("/tags/not-a-tag");
         pageList.add("/venues/not-a-venue");
         return pageList;
@@ -189,7 +186,6 @@ public abstract class PageSets {
         pageList.add("/regions");
         pageList.add("/regions/yorkshire");
         pageList.add("/regions/yorkshire/contests");
-        pageList.add("/regions/yorkshire/links");
         pageList.add("/regions/yorkshire/championship/bands.json");
         pageList.add("/search?q=rothwell");
         pageList.add("/statistics");

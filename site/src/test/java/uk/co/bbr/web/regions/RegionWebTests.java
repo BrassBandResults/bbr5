@@ -125,18 +125,6 @@ class RegionWebTests implements LoginMixin {
     }
 
     @Test
-    void testGetYorkshireRegionLinksPageWorksSuccessfully() {
-        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/regions/yorkshire/links", String.class);
-        assertNotNull(response);
-        assertTrue(response.contains("<title>Yorkshire - Region - Brass Band Results</title>"));
-
-        assertTrue(response.contains("<h2>Yorkshire</h2>"));
-
-        assertTrue(response.contains("Rothwell Temperance"));
-        assertFalse(response.contains("Accrington Borough"));
-    }
-
-    @Test
     void testGetYorkshireRegionWinnersPageWorksSuccessfully() {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/regions/yorkshire/winners", String.class);
         assertNotNull(response);
