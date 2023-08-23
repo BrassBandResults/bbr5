@@ -11,9 +11,9 @@ import org.springframework.web.client.RestTemplate;
 import uk.co.bbr.services.bands.BandService;
 import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.bands.types.BandStatus;
-import uk.co.bbr.services.events.ContestEventService;
 import uk.co.bbr.services.contests.ContestService;
 import uk.co.bbr.services.contests.dao.ContestDao;
+import uk.co.bbr.services.events.ContestEventService;
 import uk.co.bbr.services.regions.RegionService;
 import uk.co.bbr.services.regions.dao.RegionDao;
 import uk.co.bbr.services.security.JwtService;
@@ -24,10 +24,7 @@ import uk.co.bbr.web.security.support.TestUser;
 
 import java.time.LocalDate;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ActiveProfiles("test")
@@ -90,7 +87,6 @@ class RegionContestsWebTests implements LoginMixin {
         assertTrue(response.contains("<title>Yorkshire - Region - Brass Band Results</title>"));
 
         assertTrue(response.contains("<h2>Yorkshire</h2>"));
-        assertTrue(response.contains(">Links<"));
         assertTrue(response.contains(">Bands<"));
 
         assertTrue(response.contains(">Yorkshire Area<"));

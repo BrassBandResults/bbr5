@@ -1,4 +1,4 @@
-<div th:fragment="header(ContestEvent)" xmlns:sec="http://www.thymeleaf.org">
+<div th:fragment="header(ContestEvent)" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <h2><span th:replace="~{links/contest-link.html :: contestLink(${ContestEvent.contest})}"></span></h2>
     <h3 th:text="${ContestEvent.eventDateDisplayWithDay}"></h3>
 

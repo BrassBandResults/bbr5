@@ -1,4 +1,4 @@
-<div th:fragment="header(Person, PersonProfile, PreviousNames)" xmlns:sec="http://www.thymeleaf.org">
+<div th:fragment="header(Person, PersonProfile, PreviousNames)" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <h2>
         <span th:remove="tag" th:if="${PersonProfile != null}" th:text="${PersonProfile.title}">Mr</span>
         <span th:remove="tag" th:text="${Person.name}">Person Name</span>

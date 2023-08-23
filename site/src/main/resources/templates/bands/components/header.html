@@ -1,7 +1,7 @@
-<div th:fragment="header(Band, PreviousNames)" xmlns:sec="http://www.thymeleaf.org">
+<div th:fragment="header(Band, PreviousNames)" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <h2>
         <span th:remove="tag" th:text="${Band.name}">Band Name</span>
-        <small th:if="${Band.dateRange.length > 0}"><small><small th:text="${Band.dateRange}">1940-</small></small></small>
+        <small th:if="${Band.dateRange != null && Band.dateRange.length > 0}"><small><small th:text="${Band.dateRange}">1940-</small></small></small>
     </h2>
     <div sec:authorize="hasRole('BBR_SUPERUSER')">
         <span th:replace="~{buttons/edit.html :: editBand(${Band})}"></span>

@@ -17,7 +17,6 @@ import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.regions.RegionService;
 import uk.co.bbr.services.regions.dao.RegionDao;
-import uk.co.bbr.services.regions.dto.LinkSectionDto;
 import uk.co.bbr.services.regions.dto.RegionPageDto;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.services.security.dao.SiteUserDao;
@@ -70,20 +69,6 @@ public class RegionController {
         model.addAttribute("Region", region);
         model.addAttribute("Contests", contests);
         return "regions/region-contests";
-    }
-
-    @GetMapping("/regions/{regionSlug}/links")
-    public String regionLinks(Model model, @PathVariable("regionSlug") String regionSlug) {
-        Optional<RegionDao> region = this.regionService.fetchBySlug(regionSlug);
-        if (region.isEmpty()) {
-            throw NotFoundException.regionNotFoundBySlug(regionSlug);
-        }
-
-        List<LinkSectionDto> bandsBySection = this.regionService.findBandsBySection(region.get(), "section.ungraded");
-
-        model.addAttribute("Region", region.get());
-        model.addAttribute("Sections", bandsBySection);
-        return "regions/region-links";
     }
 
     @IsBbrPro
