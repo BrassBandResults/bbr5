@@ -107,6 +107,15 @@ public class ResultServiceImpl implements ResultService {
             }
         }
 
+        for (ContestResultDao eachResultOuter : returnResults) {
+            for (ContestResultDao eachResultInner : returnResults) {
+                if (!eachResultOuter.getId().equals(eachResultInner.getId()) && eachResultOuter.getBand().getSlug().equals(eachResultInner.getBand().getSlug())) {
+                    eachResultOuter.setDuplicateBandThisEvent(true);
+                    eachResultInner.setDuplicateBandThisEvent(true);
+                }
+            }
+        }
+
         return returnResults;
     }
 

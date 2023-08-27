@@ -18,10 +18,6 @@ csrf + tidy configuration
 
 coverage
 
-Add placeholder text to form fields
-
-csrf + tidy configuration
-
 Current champions band header badge
 
 Result piece move up/down buttons to reorder
@@ -77,7 +73,21 @@ Result Gold/Silver/Bronze/Merit
 
 Result awards out of comments
 
-page showing contests for a given month/year
-- linked to from page below.  Can we do better?
 page showing contests for a given date
 - linked to from contest event page
+- links through to calendar to show a full month
+
+
+
+Fix same band multiple results
+
+WITH event_band_counts AS (SELECT COUNT(*) as count, contest_event_id, band_id
+FROM contest_result
+GROUP BY contest_event_id, band_id)
+SELECT e.date_of_event, c.slug, bc.band_id, b.name, CONCAT('https://brassbandresults.co.uk/contests/', c.slug, '/', e.date_of_event) as url
+FROM contest_event e
+INNER JOIN contest c ON c.id = e.contest_id
+INNER JOIN event_band_counts bc ON bc.contest_event_id = e.id
+INNER JOIN band b ON b.id = bc.band_id
+WHERE bc.count > 1
+ORDER BY b.name;
