@@ -39,7 +39,7 @@
 
         let latitude = "[[${ContestEvent.venue.latitude}]]";
         let longitude = "[[${ContestEvent.venue.longitude}]]";
-        let mapZoom = "12";
+        let mapZoom = "[[${ZoomLevel}]]";
         let map = L.map('map').setView([latitude, longitude], mapZoom);
         let icon_markers = buildIcons();
         let layers = {};

@@ -21,6 +21,7 @@
     <br/>
 
     <div class="tab-content">
+        <p th:if="${HasNoLocation}" th:text="#{page.venue.map-no-location}"></p>
         <div  id="map" style="width: 100%; height: 600px"></div>
     </div>
 </div>
@@ -39,7 +40,7 @@
 
         let latitude = "[[${Venue.latitude}]]";
         let longitude = "[[${Venue.longitude}]]";
-        let mapZoom = "12";
+        let mapZoom = "[[${ZoomLevel}]]";
         let venueSlug = "[[${Venue.slug}]]";
         let map = L.map('map').setView([latitude, longitude], mapZoom);
         let icon_markers = buildIcons();

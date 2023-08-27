@@ -100,9 +100,16 @@ public class VenueController {
             throw NotFoundException.venueNotFoundBySlug(venueSlug);
         }
         List<VenueAliasDao> previousNames = this.venueService.fetchAliases(venue.get());
+        boolean venueHasLocation = venue.get().hasLocation();
+        int zoomLevel = 10;
+        if (!venueHasLocation){
+            zoomLevel = 2;
+        }
 
         model.addAttribute("Venue", venue.get());
         model.addAttribute("PreviousNames", previousNames);
+        model.addAttribute("ZoomLevel", zoomLevel);
+        model.addAttribute("HasNoLocation", !venueHasLocation);
 
         return "venues/map";
     }
