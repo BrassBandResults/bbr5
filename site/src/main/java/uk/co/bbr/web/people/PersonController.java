@@ -100,6 +100,7 @@ public class PersonController {
         model.addAttribute("UserAdjudicationsCount", userAdjudicationsCount);
         model.addAttribute("PieceCount", composerCount + arrangerCount);
         model.addAttribute("PersonRelationships", personRelationships);
+        model.addAttribute("Notes", Tools.markdownToHTML(person.get().getNotes()));
 
         return "people/tabs/person-profile";
     }
@@ -149,6 +150,7 @@ public class PersonController {
         model.addAttribute("UserAdjudicationsCount", userAdjudicationsCount);
         model.addAttribute("PieceCount", composerCount + arrangerCount);
         model.addAttribute("PersonRelationships", personRelationships);
+        model.addAttribute("Notes", Tools.markdownToHTML(person.get().getNotes()));
 
         return "people/tabs/person-conducting";
     }
@@ -186,6 +188,7 @@ public class PersonController {
         model.addAttribute("UserAdjudicationsCount", userAdjudicationsCount);
         model.addAttribute("PieceCount", composerCount + arrangerCount);
         model.addAttribute("PersonRelationships", personRelationships);
+        model.addAttribute("Notes", Tools.markdownToHTML(person.get().getNotes()));
 
         return "people/tabs/person-whits";
     }
@@ -223,6 +226,7 @@ public class PersonController {
         model.addAttribute("PieceCount", composerCount + arrangerCount);
         model.addAttribute("PersonRelationships", personRelationships);
         model.addAttribute("Pieces", personPieces);
+        model.addAttribute("Notes", Tools.markdownToHTML(person.get().getNotes()));
 
         return "people/tabs/person-pieces";
     }
@@ -260,6 +264,7 @@ public class PersonController {
         model.addAttribute("PieceCount", composerCount + arrangerCount);
         model.addAttribute("PersonRelationships", personRelationships);
         model.addAttribute("Adjudications", adjudications);
+        model.addAttribute("Notes", Tools.markdownToHTML(person.get().getNotes()));
 
         return "people/tabs/person-adjudications";
     }
@@ -297,6 +302,7 @@ public class PersonController {
         model.addAttribute("PieceCount", composerCount + arrangerCount);
         model.addAttribute("PersonRelationships", personRelationships);
         model.addAttribute("UserAdjudications", userAdjudications);
+        model.addAttribute("Notes", Tools.markdownToHTML(person.get().getNotes()));
 
         return "people/tabs/user-adjudications";
     }
@@ -337,6 +343,7 @@ public class PersonController {
         model.addAttribute("PieceCount", composerCount + arrangerCount);
         model.addAttribute("PersonRelationships", personRelationships);
         model.addAttribute("FilteredTo", contest.get().getName());
+        model.addAttribute("Notes", Tools.markdownToHTML(person.get().getNotes()));
 
         return "people/tabs/person-conducting";
     }
@@ -377,6 +384,7 @@ public class PersonController {
         model.addAttribute("PieceCount", composerCount + arrangerCount);
         model.addAttribute("PersonRelationships", personRelationships);
         model.addAttribute("FilteredTo", group.get().getName());
+        model.addAttribute("Notes", Tools.markdownToHTML(person.get().getNotes()));
 
         return "people/tabs/person-conducting";
     }
@@ -417,6 +425,7 @@ public class PersonController {
         model.addAttribute("PieceCount", composerCount + arrangerCount);
         model.addAttribute("PersonRelationships", personRelationships);
         model.addAttribute("FilteredTo", tag.get().getName());
+        model.addAttribute("Notes", Tools.markdownToHTML(person.get().getNotes()));
 
         return "people/tabs/person-conducting";
     }

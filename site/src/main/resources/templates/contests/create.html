@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+<html lang="en" layout:decorate="~{layout-markdown}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
 <head>
     <title th:text="@{#{page.contest-create.title} + ' - Brass Band Results'}">Create Contest - Brass Band Results</title>
 </head>
@@ -70,14 +70,9 @@
             <small class="form-text" th:text="#{page.contest-edit.hint.ordering}">Order to show contest in group. Higher numbers are later in the list.</small>
         </div>
         <div class="mb-3">
-            <label class="form-label" for="description" th:text="#{page.field-prompt.description}">Description:</label>
-            <textarea id="description" class="form-control" th:field="*{description}" cols="80" rows="10"></textarea>
-            <small class="form-text" th:text="#{page.contest-edit.hint.description}">Shown at the top of the contest page.</small>
-        </div>
-        <div class="mb-3">
             <label class="form-label" for="notes" th:text="#{page.field-prompt.notes}">Notes:</label>
             <textarea id="notes" class="form-control" th:field="*{notes}" cols="80" rows="10"></textarea>
-            <small class="form-text" th:text="#{page.contest-edit.hint.notes}">Shown at the bottom of the contest page.</small>
+            <small class="form-text" th:text="#{page.contest-edit.hint.notes}">Notes about the contest</small>
         </div>
         <div class="mb-3">
             <label class="form-label" for="repeat-period" th:text="#{page.field-prompt.repeat-period}">Repeat Period (months):</label>

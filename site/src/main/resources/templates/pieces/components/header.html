@@ -8,6 +8,8 @@
     </div><br/>
     <span th:replace="~{components/aliases.html :: previousNames(${PreviousNames})}"></span>
 
+    <div style="white-space: pre-line" th:utext="${Notes}">Notes</div>
+
     <table>
         <tr th:if="${Piece.composer != null}">
             <th th:text="#{page.field-prompt.composer}">Composer:</th>

@@ -16,6 +16,7 @@ import uk.co.bbr.services.events.dao.ContestResultDao;
 import uk.co.bbr.services.events.dao.ContestResultPieceDao;
 import uk.co.bbr.services.contests.sql.dto.ContestWinsSqlDto;
 import uk.co.bbr.services.framework.NotFoundException;
+import uk.co.bbr.web.Tools;
 import uk.co.bbr.web.security.annotations.IsBbrPro;
 
 import java.util.List;
@@ -47,6 +48,8 @@ public class ContestController {
         model.addAttribute("PastEvents", pastEventsForContest);
         model.addAttribute("OwnChoicePieceCount", ownChoicePieceCount);
         model.addAttribute("PreviousNames", contestAliases);
+        model.addAttribute("Description", Tools.markdownToHTML(contest.get().getDescription()));
+        model.addAttribute("Notes", Tools.markdownToHTML(contest.get().getNotes()));
 
         return "contests/contest";
     }
@@ -66,6 +69,8 @@ public class ContestController {
         model.addAttribute("Contest", contest.get());
         model.addAttribute("OwnChoiceResults", resultsWithOwnChoicePieces);
         model.addAttribute("PastEventsCount", pastEventsCount);
+        model.addAttribute("Description", Tools.markdownToHTML(contest.get().getDescription()));
+        model.addAttribute("Notes", Tools.markdownToHTML(contest.get().getNotes()));
 
         return "contests/contest-own-choice";
     }
@@ -88,6 +93,8 @@ public class ContestController {
         model.addAttribute("Wins", wins);
         model.addAttribute("PastEventsCount", pastEventsCount);
         model.addAttribute("OwnChoicePieceCount", ownChoicePieceCount);
+        model.addAttribute("Description", Tools.markdownToHTML(contest.get().getDescription()));
+        model.addAttribute("Notes", Tools.markdownToHTML(contest.get().getNotes()));
 
         return "contests/contest-wins";
     }
@@ -110,6 +117,8 @@ public class ContestController {
         model.addAttribute("Streaks", streaks);
         model.addAttribute("PastEventsCount", pastEventsCount);
         model.addAttribute("OwnChoicePieceCount", ownChoicePieceCount);
+        model.addAttribute("Description", Tools.markdownToHTML(contest.get().getDescription()));
+        model.addAttribute("Notes", Tools.markdownToHTML(contest.get().getNotes()));
 
         return "contests/contest-streaks";
     }
@@ -129,6 +138,8 @@ public class ContestController {
         model.addAttribute("Contest", contest.get());
         model.addAttribute("ResultPosition", position);
         model.addAttribute("Results", results);
+        model.addAttribute("Description", Tools.markdownToHTML(contest.get().getDescription()));
+        model.addAttribute("Notes", Tools.markdownToHTML(contest.get().getNotes()));
 
         return "contests/results-for-position";
     }
@@ -147,6 +158,8 @@ public class ContestController {
         model.addAttribute("Contest", contest.get());
         model.addAttribute("DrawPosition", draw);
         model.addAttribute("Results", results);
+        model.addAttribute("Description", Tools.markdownToHTML(contest.get().getDescription()));
+        model.addAttribute("Notes", Tools.markdownToHTML(contest.get().getNotes()));
 
         return "contests/results-for-draw";
     }

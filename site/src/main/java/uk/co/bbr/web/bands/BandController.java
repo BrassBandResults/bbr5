@@ -23,6 +23,7 @@ import uk.co.bbr.services.groups.ContestGroupService;
 import uk.co.bbr.services.groups.dao.ContestGroupDao;
 import uk.co.bbr.services.tags.ContestTagService;
 import uk.co.bbr.services.tags.dao.ContestTagDao;
+import uk.co.bbr.web.Tools;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 import uk.co.bbr.web.security.annotations.IsBbrPro;
 
@@ -66,6 +67,7 @@ public class BandController {
         model.addAttribute("WhitCount", bandResults.getBandWhitResults().size());
         model.addAttribute("BandRehearsalDays", bandRehearsalDays);
         model.addAttribute("BandRelationships", bandRelationships);
+        model.addAttribute("Notes", Tools.markdownToHTML(band.get().getNotes()));
         return "bands/band";
     }
 
@@ -93,6 +95,7 @@ public class BandController {
         model.addAttribute("WhitCount", bandResults.getBandWhitResults().size());
         model.addAttribute("BandRehearsalDays", bandRehearsalDays);
         model.addAttribute("BandRelationships", bandRelationships);
+        model.addAttribute("Notes", Tools.markdownToHTML(band.get().getNotes()));
         return "bands/band-whits";
     }
 
@@ -120,6 +123,7 @@ public class BandController {
         model.addAttribute("WhitCount", bandResults.getBandWhitResults().size());
         model.addAttribute("BandRehearsalDays", bandRehearsalDays);
         model.addAttribute("BandRelationships", bandRelationships);
+        model.addAttribute("Notes", Tools.markdownToHTML(band.get().getNotes()));
 
         return "bands/map-nearby";
     }
@@ -149,6 +153,7 @@ public class BandController {
         model.addAttribute("BandRehearsalDays", bandRehearsalDays);
         model.addAttribute("BandRelationships", bandRelationships);
         model.addAttribute("FilteredTo", contest.get().getName());
+        model.addAttribute("Notes", Tools.markdownToHTML(band.get().getNotes()));
         return "bands/band";
     }
 
@@ -177,6 +182,7 @@ public class BandController {
         model.addAttribute("BandRehearsalDays", bandRehearsalDays);
         model.addAttribute("BandRelationships", bandRelationships);
         model.addAttribute("FilteredTo", group.get().getName());
+        model.addAttribute("Notes", Tools.markdownToHTML(band.get().getNotes()));
         return "bands/band";
     }
 
@@ -205,6 +211,7 @@ public class BandController {
         model.addAttribute("BandRehearsalDays", bandRehearsalDays);
         model.addAttribute("BandRelationships", bandRelationships);
         model.addAttribute("FilteredTo", tag.get().getName());
+        model.addAttribute("Notes", Tools.markdownToHTML(band.get().getNotes()));
         return "bands/band";
     }
 }
