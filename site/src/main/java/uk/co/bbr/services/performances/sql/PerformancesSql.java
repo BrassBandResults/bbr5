@@ -59,7 +59,7 @@ public class PerformancesSql {
     private static final String PERFORMANCES_SQL = """
         SELECT e.date_of_event, e.date_resolution, c.name as contest_name, c.slug as contest_slug,
                r.band_name as competed_as, b.name as band_name, b.slug as band_slug, reg.name as region_name, reg.slug as region_slug, reg.country_code,
-               con.surname, con.first_names, con.slug as conductor_slug, r.result_position, r.result_position_type, pch.instrument, r.id
+               con.surname, con.first_names, con.slug as conductor_slug, r.result_position, r.result_position_type, pch.instrument, r.id, pch.id
         FROM personal_contest_history pch
         INNER JOIN contest_result r ON r.id = pch.result_id
         INNER JOIN contest_event e ON e.id = r.contest_event_id

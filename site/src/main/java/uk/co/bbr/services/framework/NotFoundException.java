@@ -124,4 +124,8 @@ public class NotFoundException extends RuntimeException {
     public static NotFoundException resultPieceNotFoundById() {
         return new NotFoundException("Contest Result Piece not found by id");
     }
+
+    public static NotFoundException performanceNotFoundByUserAndId(String usercode, Long performanceId) {
+        return new NotFoundException("Performance not found for user " + usercode + " with id " + performanceId);
+    }
 }

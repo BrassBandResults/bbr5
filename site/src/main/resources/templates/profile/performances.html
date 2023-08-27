@@ -47,6 +47,7 @@
                 <th th:text="#{page.column-header.music}">Music</th>
                 <th th:text="#{page.column-header.position}">Position</th>
                 <th th:text="#{page.column-header.instrument}">Instrument</th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
@@ -58,6 +59,7 @@
                 <td class="bbr-piece"><span th:replace="~{links/piece-link.html :: resultPieceWithSetTestIfNone(${performance.result})}">Test Piece</span></td>
                 <td th:text="${performance.result.positionDisplay}"></td>
                 <td><span th:if="${performance.instrument != null}" th:text="#{${performance.instrument.translationKey}}">Percussion</span></td>
+                <td><span th:replace="~{buttons/edit.html :: editPerformance(${performance})}"></span></td>
             </tr>
             </tbody>
         </table>
