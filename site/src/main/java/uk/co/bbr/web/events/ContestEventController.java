@@ -22,6 +22,7 @@ import uk.co.bbr.services.performances.dto.CompetitorBandDto;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.services.security.UserService;
 import uk.co.bbr.services.security.dao.SiteUserDao;
+import uk.co.bbr.web.Tools;
 import uk.co.bbr.web.framework.AbstractEventController;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 import uk.co.bbr.web.security.annotations.IsBbrPro;
@@ -98,6 +99,7 @@ public class ContestEventController extends AbstractEventController {
         model.addAttribute("ShowPoints4", showPoints4);
         model.addAttribute("ShowPointsPenalty", showPointsPenalty);
         model.addAttribute("ShowPointsTotal", showPointsTotal);
+        model.addAttribute("Notes", Tools.markdownToHTML(contestEvent.getNotes()));
 
 
         return "events/event";
@@ -123,7 +125,7 @@ public class ContestEventController extends AbstractEventController {
 
         List<ContestResultDao> eventResults = this.resultService.fetchForEvent(contestEvent);
 
-        int zoomLevel = 10;
+        int zoomLevel = 6;
         boolean venueHasLocation = contestEvent.getVenue() != null && contestEvent.getVenue().hasLocation();
         if (!venueHasLocation) {
             zoomLevel = 2;

@@ -18,6 +18,7 @@ import uk.co.bbr.services.pieces.sql.dto.PiecesPerSectionSqlDto;
 import uk.co.bbr.services.sections.SectionService;
 import uk.co.bbr.services.sections.dao.SectionDao;
 import uk.co.bbr.services.security.SecurityService;
+import uk.co.bbr.web.Tools;
 import uk.co.bbr.web.security.annotations.IsBbrPro;
 
 import java.util.List;
@@ -53,6 +54,7 @@ public class PieceController {
         model.addAttribute("OwnChoiceCount", ownChoiceResults.size());
         model.addAttribute("PreviousNames", pieceAliases);
         model.addAttribute("PerformanceCount", performances.size());
+        model.addAttribute("Notes", Tools.markdownToHTML(piece.get().getNotes()));
 
         return "pieces/piece";
     }
@@ -78,6 +80,7 @@ public class PieceController {
         model.addAttribute("OwnChoiceCount", ownChoiceResults.size());
         model.addAttribute("PreviousNames", pieceAliases);
         model.addAttribute("PerformanceCount", performances.size());
+        model.addAttribute("Notes", Tools.markdownToHTML(piece.get().getNotes()));
 
         return "pieces/piece-own-choice";
     }
@@ -105,6 +108,7 @@ public class PieceController {
         model.addAttribute("PreviousNames", pieceAliases);
         model.addAttribute("PerformanceCount", performances.size());
         model.addAttribute("Performances", performances);
+        model.addAttribute("Notes", Tools.markdownToHTML(piece.get().getNotes()));
 
         return "pieces/piece-performances";
     }

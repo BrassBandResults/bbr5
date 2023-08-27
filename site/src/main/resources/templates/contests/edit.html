@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+<html lang="en" layout:decorate="~{layout-markdown}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
 <head>
     <title th:text="@{#{page.contest-edit.title(${Contest.name})} + ' - Brass Band Results'}">Edit Contest - Brass Band Results</title>
 </head>
@@ -67,11 +67,6 @@
             <label class="form-label" for="ordering" th:text="#{page.field-prompt.ordering}">Ordering:</label>
             <input id="ordering" class="form-control" type="text" th:field="*{ordering}" maxlength="10" size="80"/>
             <small class="form-text" th:text="#{page.contest-edit.hint.ordering}">Order to show contest in group. Higher numbers are later in the list.</small>
-        </div>
-        <div class="mb-3">
-            <label class="form-label" for="description" th:text="#{page.field-prompt.description}">Description:</label>
-            <textarea id="description" class="form-control" th:field="*{description}" cols="80" rows="10"></textarea>
-            <small class="form-text" th:text="#{page.contest-edit.hint.description}">Shown at the top of the contest page.</small>
         </div>
         <div class="mb-3">
             <label class="form-label" for="notes" th:text="#{page.field-prompt.notes}">Notes:</label>

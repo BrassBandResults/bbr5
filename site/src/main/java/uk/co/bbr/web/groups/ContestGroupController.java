@@ -12,6 +12,7 @@ import uk.co.bbr.services.groups.dao.ContestGroupDao;
 import uk.co.bbr.services.groups.dto.ContestGroupDetailsDto;
 import uk.co.bbr.services.groups.dto.ContestGroupYearDto;
 import uk.co.bbr.services.groups.dto.ContestGroupYearsDetailsDto;
+import uk.co.bbr.web.Tools;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
 import java.util.List;
@@ -45,6 +46,7 @@ public class ContestGroupController {
 
         model.addAttribute("Group", contestGroupDetails);
         model.addAttribute("PreviousNames", contestGroupAliases);
+        model.addAttribute("Notes", Tools.markdownToHTML(contestGroupDetails.getContestGroup().getNotes()));
         return "groups/group";
     }
 
@@ -61,6 +63,7 @@ public class ContestGroupController {
 
         model.addAttribute("Group", contestGroupDetails);
         model.addAttribute("PreviousNames", contestGroupAliases);
+        model.addAttribute("Notes", Tools.markdownToHTML(contestGroupDetails.getContestGroup().getNotes()));
         return "groups/years";
     }
 

@@ -5,6 +5,6 @@
     </div><br/>
     <span th:replace="~{components/aliases.html :: previousNames(${PreviousNames})}"></span>
     <p th:if="${Venue.parent}"><span th:text="#{page.venue.inside}">Part of </span> <span th:replace="~{links/venue-link.html :: venueLink(${Venue.parent})}">Venue Parent</span></p>
-    <p th:text="${Venue.notes}">Notes</p>
+    <p th:utext="${Notes}">Notes</p>
     <br/>
 </div>

@@ -58,10 +58,8 @@ Split Australian regions into states?
 
 Email for bands created in last month
 
-Person Name synonym list William <=> Bill etc, and <=> &
+Name synonym list William <=> Bill etc, and <=> &
 Infer person date range from event dates
-
-Markdown for all notes/description fields
 
 Badges?
 

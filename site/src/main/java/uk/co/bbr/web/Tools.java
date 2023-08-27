@@ -30,6 +30,9 @@ public class Tools {
     }
 
     public static String markdownToHTML(String markdown) {
+        if (markdown == null || markdown.trim().length() == 0) {
+            return "";
+        }
         Parser parser = Parser.builder().build();
 
         Node document = parser.parse(markdown);

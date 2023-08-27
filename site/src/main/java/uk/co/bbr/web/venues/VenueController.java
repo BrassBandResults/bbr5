@@ -22,6 +22,7 @@ import uk.co.bbr.services.venues.dao.VenueAliasDao;
 import uk.co.bbr.services.venues.dao.VenueDao;
 import uk.co.bbr.services.venues.dto.VenueContestDto;
 import uk.co.bbr.services.venues.dto.VenueContestYearDto;
+import uk.co.bbr.web.Tools;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 import uk.co.bbr.web.security.annotations.IsBbrPro;
 
@@ -50,6 +51,7 @@ public class VenueController {
         model.addAttribute("Venue", venue.get());
         model.addAttribute("PreviousNames", previousNames);
         model.addAttribute("VenueContests", venueContests);
+        model.addAttribute("Notes", Tools.markdownToHTML(venue.get().getNotes()));
 
         return "venues/venue";
     }
@@ -70,6 +72,7 @@ public class VenueController {
 
         model.addAttribute("Venue", venue.get());
         model.addAttribute("VenueContests", venueContests);
+        model.addAttribute("Notes", Tools.markdownToHTML(venue.get().getNotes()));
 
         return "venues/contest";
     }
@@ -88,6 +91,7 @@ public class VenueController {
         model.addAttribute("Venue", venue.get());
         model.addAttribute("PreviousNames", previousNames);
         model.addAttribute("VenueYears", venueYears);
+        model.addAttribute("Notes", Tools.markdownToHTML(venue.get().getNotes()));
 
         return "venues/years";
     }
@@ -101,7 +105,7 @@ public class VenueController {
         }
         List<VenueAliasDao> previousNames = this.venueService.fetchAliases(venue.get());
         boolean venueHasLocation = venue.get().hasLocation();
-        int zoomLevel = 10;
+        int zoomLevel = 6;
         if (!venueHasLocation){
             zoomLevel = 2;
         }
@@ -110,6 +114,7 @@ public class VenueController {
         model.addAttribute("PreviousNames", previousNames);
         model.addAttribute("ZoomLevel", zoomLevel);
         model.addAttribute("HasNoLocation", !venueHasLocation);
+        model.addAttribute("Notes", Tools.markdownToHTML(venue.get().getNotes()));
 
         return "venues/map";
     }
@@ -153,6 +158,7 @@ public class VenueController {
         model.addAttribute("Venue", venue.get());
         model.addAttribute("Year", Integer.toString(year));
         model.addAttribute("Events", events);
+        model.addAttribute("Notes", Tools.markdownToHTML(venue.get().getNotes()));
 
         return "venues/year";
     }

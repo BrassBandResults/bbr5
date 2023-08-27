@@ -12,5 +12,5 @@
     </small>
     <span th:replace="~{components/aliases.html :: previousNames(${PreviousNames})}"></span>
     <br/><br/>
-    <p th:text="${Contest.description}">Contest Description</p>
+    <p th:utext="${Notes}">Contest Notes</p>
 </div>
