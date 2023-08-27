@@ -34,6 +34,7 @@ public class ResultEditForm {
     private String conductorThreeName;
     private String conductorThreeSlug;
     private String notes;
+    private String resultAwardCode;
 
     public ResultEditForm() {
         super();
@@ -63,6 +64,10 @@ public class ResultEditForm {
                 this.withdrawn = false;
                 this.disqualified = true;
             }
+        }
+
+        if (result.getResultAward() != null) {
+            this.resultAwardCode = result.getResultAward().getCode();
         }
 
         this.competedAs = result.getBandName();

@@ -15,6 +15,7 @@ import uk.co.bbr.services.events.ContestEventService;
 import uk.co.bbr.services.events.ResultService;
 import uk.co.bbr.services.events.dao.ContestEventDao;
 import uk.co.bbr.services.events.dao.ContestResultDao;
+import uk.co.bbr.services.events.types.ResultAwardType;
 import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.people.PersonService;
 import uk.co.bbr.services.people.dao.PersonDao;
@@ -100,6 +101,7 @@ public class EditResultController {
             existingResult.setPosition(String.valueOf(submittedResult.getPosition()));
         }
 
+        existingResult.setResultAward(ResultAwardType.fromCode(submittedResult.getResultAwardCode()));
 
         existingResult.setBandName(submittedResult.getCompetedAs());
         existingResult.setNotes(submittedResult.getNotes());

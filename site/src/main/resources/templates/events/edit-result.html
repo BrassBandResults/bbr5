@@ -29,6 +29,17 @@
             </div>
         </div>
         <div class="mb-3">
+            <label class="form-label" for="date-resolution" th:text="#{page.field-prompt.gsb-award}">Gold/Silver/Bronze Award:</label>
+            <select id="date-resolution" class="form-select" th:field="*{resultAwardCode}">
+                <option value=""></option>
+                <option th:each="state : ${T(uk.co.bbr.services.events.types.ResultAwardType).values()}"
+                        th:value="${state.code}"
+                        th:text="#{${state.translationKey}}">
+                </option>
+            </select>
+            <small class="form-text" th:text="#{page.result-edit.hint.gsb-award}">Gold/Silver/Bronze.</small>
+        </div>
+        <div class="mb-3">
             <label class="form-label" for="competed-as" th:text="#{page.field-prompt.competed-as}">Name:</label>
             <input id="competed-as" class="form-control" type="text" th:field="*{competedAs}" maxlength="100" size="80"/>
             <small class="form-text" th:text="#{page.result-edit.hint.competed-as}">The name the band competed under.</small>
@@ -80,6 +91,10 @@
             <input id="conductor" th:field="*{conductorName}" autocomplete="off" class="form-control" type="text" maxlength="100" onkeyup="lookupMandatory('conductor', 'person');"/>
             <input type="hidden" th:field="*{conductorSlug}" id="conductor-slug"/>
             <small th:text="#{page.field-prompt.original-conductor}">Original Conductor:</small> <small th:text="${Result.originalConductorName}">Original Conductor Name</small>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="notes" th:text="#{page.field-prompt.notes}">Notes:</label>
+            <textarea id="notes" class="form-control" th:field="*{notes}" cols="80" rows="10"></textarea>
         </div>
         <div class="mb-3">
             <label class="form-label" for="conductor-two" th:text="#{page.field-prompt.conductor-two}">Second Conductor:</label>

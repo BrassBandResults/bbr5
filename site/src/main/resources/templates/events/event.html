@@ -82,9 +82,10 @@
                 </tr>
             </thead>
             <tbody class="align-middle">
-                <tr th:each="result : ${EventResults}" th:class="${'result-' + result.position}">
+                <tr th:each="result : ${EventResults}" th:class="${result.cssClass}">
                     <td class="bbr-position">
                         <span th:replace="~{components/results-position.html :: resultsPosition(${result})}">1</span>
+                        <span th:replace="~{components/results-position.html :: resultAward(${result})}"></span>
                         <img th:if="${result.hasNotes}" th:title="${result.notes}" th:src="@{${STATIC_HOST} + '/icons/comment.png'}"/>
                         <span th:if="${result.duplicateBandThisEvent}" class="badge text-bg-danger" th:text="#{page.contest-event.duplicate-band}" th:title="#{page.contest-event.duplicate-band.hint}">Duplicate Band</span>
                     </td>

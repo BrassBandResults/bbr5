@@ -304,4 +304,26 @@ public class ContestResultDao extends AbstractDao implements NameTools {
     public boolean getHasNotes() {
         return this.notes != null && this.notes.strip().length() > 0;
     }
+
+    public String getCssClass() {
+        String cssClass = "";
+        if (this.resultPositionType == ResultPositionType.RESULT) {
+            cssClass = "result-" + this.position;
+        } else if (this.resultPositionType == ResultPositionType.WITHDRAWN) {
+            cssClass = "table-light";
+        }
+        else if (this.resultPositionType == ResultPositionType.DISQUALIFIED) {
+            cssClass = "table-secondary";
+        }
+        if (this.resultAward != null) {
+            switch (this.resultAward) {
+                case GOLD -> cssClass = "result-gold";
+                case SILVER -> cssClass = "result-silver";
+                case BRONZE -> cssClass = "result-bronze";
+                case MERIT -> cssClass = "result-merit";
+            }
+        }
+
+        return cssClass;
+    }
 }
