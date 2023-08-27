@@ -123,8 +123,15 @@ public class ContestEventController extends AbstractEventController {
 
         List<ContestResultDao> eventResults = this.resultService.fetchForEvent(contestEvent);
 
+        int zoomLevel = 10;
+        boolean venueHasLocation = contestEvent.getVenue() != null && contestEvent.getVenue().hasLocation();
+        if (!venueHasLocation) {
+            zoomLevel = 2;
+        }
+
         model.addAttribute("ContestEvent", contestEvent);
         model.addAttribute("EventResults", eventResults);
+        model.addAttribute("ZoomLevel", zoomLevel);
 
         return "events/map-competitors";
     }
