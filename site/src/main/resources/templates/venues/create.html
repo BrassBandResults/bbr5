@@ -38,7 +38,7 @@
         </div>
         <div class="mb-3">
             <label class="form-label" for="parent-venue" th:text="#{page.field-prompt.parent-venue}">Parent Venue:</label>
-            <input id="parent-venue" th:field="*{parentVenueName}" autocomplete="off" class="form-control" type="text" maxlength="100" onkeyup="lookupMandatory('parent-venue', 'venue');"/>
+            <input id="parent-venue" th:field="*{parentVenueName}" th:placeholder="#{page.form.placeholder.venue}" autocomplete="off" class="form-control" type="text" maxlength="100" onkeyup="lookupMandatory('parent-venue', 'venue');"/>
             <small class="form-text" th:text="#{page.venue-edit.hint.parent-venue}">Parent for this venue.</small>
             <input type="hidden" th:field="*{parentVenueSlug}" id="parent-venue-slug"/>
         </div>

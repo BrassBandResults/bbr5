@@ -35,12 +35,12 @@
         </div>
         <div class="mb-3">
             <label class="form-label" for="composer" th:text="#{page.field-prompt.composer}">Composer:</label>
-            <input id="composer" th:field="*{composerName}" autocomplete="off" class="form-control" type="text" maxlength="100" onkeyup="lookupMandatory('composer', 'person');"/>
+            <input id="composer" th:field="*{composerName}" th:placeholder="#{page.form.placeholder.person}" autocomplete="off" class="form-control" type="text" maxlength="100" onkeyup="lookupMandatory('composer', 'person');"/>
             <input type="hidden" th:field="*{composerSlug}" id="composer-slug"/>
         </div>
         <div class="mb-3">
             <label class="form-label" for="arranger" th:text="#{page.field-prompt.arranger}">Arranger:</label>
-            <input id="arranger" th:field="*{arrangerName}" autocomplete="off" class="form-control" type="text" maxlength="100" onkeyup="lookupMandatory('arranger', 'person');"/>
+            <input id="arranger" th:field="*{arrangerName}" th:placeholder="#{page.form.placeholder.person}" autocomplete="off" class="form-control" type="text" maxlength="100" onkeyup="lookupMandatory('arranger', 'person');"/>
             <input type="hidden" th:field="*{arrangerSlug}" id="arranger-slug"/>
         </div>
         <div class="mb-3">

@@ -46,7 +46,7 @@
                 <span th:text="${adjudicator.adjudicator.combinedName}">Adjudicator Name</span>
                 <a th:href="${'/add-results/7/' + ContestEvent.contest.slug + '/' + ContestEvent.eventDateForUrl + '/delete/' + adjudicator.id}"><img th:src="@{${STATIC_HOST} + '/icons/cancel.png'}"/></a>
             </span>
-            <input id="adjudicator" th:field="*{adjudicatorName}" autocomplete="off" th:placeholder="#{page.add-results.placeholder.adjudicator}" class="form-control" type="text" maxlength="100" onkeyup="lookupMandatory('adjudicator', 'person');"/>
+            <input id="adjudicator" th:field="*{adjudicatorName}" autocomplete="off" th:placeholder="#{page.form.placeholder.adjudicator}" class="form-control" type="text" maxlength="100" onkeyup="lookupMandatory('adjudicator', 'person');"/>
             <input type="hidden" th:field="*{adjudicatorSlug}" id="adjudicator-slug"/>
         </div>
 

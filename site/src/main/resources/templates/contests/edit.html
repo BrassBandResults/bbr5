@@ -21,7 +21,7 @@
         </div>
         <div class="mb-3">
             <label class="form-label" for="contest-group" th:text="#{page.field-prompt.group}">Group:</label>
-            <input id="contest-group" th:field="*{contestGroupName}" autocomplete="off" class="form-control" type="text" maxlength="100" onkeyup="lookupMandatory('contest-group', 'group');"/>
+            <input id="contest-group" th:field="*{contestGroupName}" th:placeholder="#{page.form.placeholder.group}" autocomplete="off" class="form-control" type="text" maxlength="100" onkeyup="lookupMandatory('contest-group', 'group');"/>
             <input type="hidden" th:field="*{contestGroupSlug}" id="contest-group-slug"/>
             <small class="form-text" th:text="#{page.contest-edit.hint.group}">A container for all the sections of the same contest.</small>
         </div>
@@ -37,7 +37,7 @@
         </div>
         <div class="mb-3">
             <label class="form-label" for="qualifies-for" th:text="#{page.field-prompt.qualifies-for}">Qualifies For:</label>
-            <input id="qualifies-for" th:field="*{qualifiesForName}" autocomplete="off" class="form-control" type="text" maxlength="100" onkeyup="lookupMandatory('qualifies-for', 'contest');"/>
+            <input id="qualifies-for" th:field="*{qualifiesForName}" th:placeholder="#{page.form.placeholder.contest}" autocomplete="off" class="form-control" type="text" maxlength="100" onkeyup="lookupMandatory('qualifies-for', 'contest');"/>
             <input type="hidden" th:field="*{qualifiesForSlug}" id="qualifies-for-slug"/>
             <small class="form-text" th:text="#{page.contest-edit.hint.qualifies-for}">Contest that bands who do well here qualify through to.</small>
         </div>
