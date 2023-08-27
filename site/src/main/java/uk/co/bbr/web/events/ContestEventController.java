@@ -67,6 +67,18 @@ public class ContestEventController extends AbstractEventController {
 
         this.resultService.workOutCanEdit(contestEvent, eventResults);
 
+        boolean showMusic = (contestEvent.getContestType().isOwnChoice() || contestEvent.getContestType().isEntertainments());
+        boolean showDraw1 = contestEvent.getContestType().getDrawOneTitle() != null && eventResults.stream().anyMatch(s -> s.getDraw() != null && s.getDraw() > 0);
+        boolean showDraw2 = contestEvent.getContestType().getDrawTwoTitle() != null && eventResults.stream().anyMatch(s -> s.getDrawSecond() != null && s.getDrawSecond() > 0);
+        boolean showDraw3 = contestEvent.getContestType().getDrawThreeTitle() != null && eventResults.stream().anyMatch(s -> s.getDrawThird() != null && s.getDrawThird() > 0);
+        boolean showPoints1 = contestEvent.getContestType().getPointsOneTitle() != null && eventResults.stream().anyMatch(s -> s.getPointsFirst() != null && s.getPointsFirst().length() > 0);
+        boolean showPoints2 = contestEvent.getContestType().getPointsTwoTitle() != null && eventResults.stream().anyMatch(s -> s.getPointsSecond() != null && s.getPointsSecond().length() > 0);
+        boolean showPoints3 = contestEvent.getContestType().getPointsThreeTitle() != null && eventResults.stream().anyMatch(s -> s.getPointsThird() != null && s.getPointsThird().length() > 0);
+        boolean showPoints4 = contestEvent.getContestType().getPointsFourTitle() != null && eventResults.stream().anyMatch(s -> s.getPointsFourth() != null && s.getPointsFourth().length() > 0);
+        boolean showPointsPenalty = contestEvent.getContestType().getPointsPenaltyTitle() != null && eventResults.stream().anyMatch(s -> s.getPointsPenalty() != null && s.getPointsPenalty().length() > 0);
+        boolean showPointsTotal = contestEvent.getContestType().getPointsTotalTitle() != null && eventResults.stream().anyMatch(s -> s.getPointsTotal() != null && s.getPointsTotal().length() > 0);
+
+
         model.addAttribute("ContestEvent", contestEvent);
         model.addAttribute("EventTestPieces", eventTestPieces);
         model.addAttribute("Adjudicators", adjudicators);
@@ -76,6 +88,17 @@ public class ContestEventController extends AbstractEventController {
         model.addAttribute("PreviousEvent", previousEvent);
         model.addAttribute("SectionUp", upEvent);
         model.addAttribute("SectionDown", downEvent);
+        model.addAttribute("ShowMusic", showMusic);
+        model.addAttribute("ShowDraw1", showDraw1);
+        model.addAttribute("ShowDraw2", showDraw2);
+        model.addAttribute("ShowDraw3", showDraw3);
+        model.addAttribute("ShowPoints1", showPoints1);
+        model.addAttribute("ShowPoints2", showPoints2);
+        model.addAttribute("ShowPoints3", showPoints3);
+        model.addAttribute("ShowPoints4", showPoints4);
+        model.addAttribute("ShowPointsPenalty", showPointsPenalty);
+        model.addAttribute("ShowPointsTotal", showPointsTotal);
+
 
         return "events/event";
     }
