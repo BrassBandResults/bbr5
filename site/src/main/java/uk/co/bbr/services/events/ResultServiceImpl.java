@@ -59,7 +59,7 @@ public class ResultServiceImpl implements ResultService {
 
         ContestResultDao returnResult;
         // is there an existing result for the same band?
-        Optional<ContestResultDao> existingResult = this.contestResultRepository.fetchForEventAndBand(event.getId(), result.getBand().getId());
+        Optional<ContestResultDao> existingResult = this.contestResultRepository.fetchForEventAndBand(event.getId(), result.getBand().getId(), result.getBandName());
         if (existingResult.isPresent()) {
             ContestResultDao existingResultObject = existingResult.get();
             existingResultObject.populateFrom(result);

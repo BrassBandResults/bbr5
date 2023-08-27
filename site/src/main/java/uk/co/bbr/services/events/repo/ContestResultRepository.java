@@ -8,11 +8,10 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ContestResultRepository extends JpaRepository<ContestResultDao, Long> {
-    @Query("SELECT r FROM ContestResultDao r WHERE r.contestEvent.id = :eventId AND r.band.id = :bandId")
-    Optional<ContestResultDao> fetchForEventAndBand(Long eventId, Long bandId);
+    @Query("SELECT r FROM ContestResultDao r WHERE r.contestEvent.id = :eventId AND r.band.id = :bandId AND r.bandName = :bandName")
+    Optional<ContestResultDao> fetchForEventAndBand(Long eventId, Long bandId, String bandName);
 
-    @Query("SELECT r FROM ContestResultDao r " +
-            "WHERE r.band.id = :bandId")
+    @Query("SELECT r FROM ContestResultDao r WHERE r.band.id = :bandId")
     List<ContestResultDao> findAllForBand(Long bandId);
 
     @Query("SELECT COUNT(r) FROM ContestResultDao r")
