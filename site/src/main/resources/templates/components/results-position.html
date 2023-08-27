@@ -11,3 +11,12 @@
   <span th:if="${result.resultPositionType.code == 'U'}">
   </span>
 </span>
+
+<span th:fragment="resultAward(result)">
+    <span th:if="${result != null && result.resultAward != null}" th:remove="tag">
+        <img th:if="${result.resultAward.code == 'G'}" th:src="@{${STATIC_HOST} + '/icons/award-gold.png'}" th:title="#{award.gold}"/>
+        <img th:if="${result.resultAward.code == 'S'}" th:src="@{${STATIC_HOST} + '/icons/award-silver.png'}" th:title="#{award.silver}"/>
+        <img th:if="${result.resultAward.code == 'B'}" th:src="@{${STATIC_HOST} + '/icons/award-bronze.png'}" th:title="#{award.bronze}"/>
+        <img th:if="${result.resultAward.code == 'M'}" th:src="@{${STATIC_HOST} + '/icons/award-merit.png'}" th:title="#{award.merit}"/>
+    </span>
+</span>

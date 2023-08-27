@@ -6,6 +6,7 @@ import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.events.dao.ContestEventDao;
 import uk.co.bbr.services.events.dao.ContestResultDao;
 import uk.co.bbr.services.events.types.ContestEventDateResolution;
+import uk.co.bbr.services.events.types.ResultAwardType;
 import uk.co.bbr.services.events.types.ResultPositionType;
 import uk.co.bbr.services.framework.sql.AbstractSqlDto;
 import uk.co.bbr.services.groups.dao.ContestGroupDao;
@@ -23,6 +24,7 @@ public class EventResultSqlDto extends AbstractSqlDto {
     private final String contestSlug;
     private final Integer resultPosition;
     private final String resultPositionType;
+    private final String resultAward;
     private final String bandName;
     private final String bandSlug;
     private final Integer draw;
@@ -101,6 +103,7 @@ public class EventResultSqlDto extends AbstractSqlDto {
         this.sectionSlug = this.getString(columnList, 37);
         this.sectionTranslationKey = this.getString(columnList, 38);
         this.createdBy = this.getString(columnList, 39);
+        this.resultAward = this.getString(columnList, 40);
     }
 
     public ContestResultDao toResult() {
@@ -148,6 +151,7 @@ public class EventResultSqlDto extends AbstractSqlDto {
                 result.getBand().getRegion().setCountryCode(this.bandCountryCode);
             }
         }
+        result.setResultAward(ResultAwardType.fromCode(this.resultAward));
 
 
         if (this.conductor1Slug != null) {

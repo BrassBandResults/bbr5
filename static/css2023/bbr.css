@@ -11,15 +11,15 @@ a:hover {
   text-decoration: underline;
 }
 
-tbody tr.result-1 td {
+tbody tr.result-1 td, tbody tr.result-gold td {
   background-color: #f9f1be !important;
 }
 
-tbody tr.result-2 td {
+tbody tr.result-2 td, tbody tr.result-silver td {
   background-color: #c3c7d0 !important;
 }
 
-tbody tr.result-3 td {
+tbody tr.result-3 td, tbody tr.result-bronze td {
   background-color: #b1a399 !important;
 }
 

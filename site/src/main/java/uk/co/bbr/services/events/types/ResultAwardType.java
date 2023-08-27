@@ -29,6 +29,9 @@ public enum ResultAwardType {
         if (code == null) {
             return null;
         }
+        if (code.trim().length() == 0) {
+            return null;
+        }
         return Stream.of(ResultAwardType.values())
                 .filter(c -> c.getCode().equals(code))
                 .findFirst()
