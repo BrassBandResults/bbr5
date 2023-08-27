@@ -58,7 +58,7 @@ public class EventSql {
                   r.id, r.notes, e.name,
                   g.name as group_name, g.slug as group_slug,
                   b.latitude, b.longitude, b.status as band_status, sect.slug as section_slug, sect.translation_key as section_translation_key,
-                  r.created_by
+                  r.created_by, r.result_award
            FROM contest_event e
            LEFT OUTER JOIN contest_result r ON r.contest_event_id = e.id AND r.result_position_type = 'R' AND r.result_position = 1
            INNER JOIN contest c ON c.id = e.contest_id
