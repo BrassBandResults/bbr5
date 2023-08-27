@@ -87,16 +87,23 @@ public class PerformanceServiceImpl implements PerformanceService, SlugTools {
 
     @Override
     public void linkUserPerformance(SiteUserDao user, ContestResultDao contestResult) {
-        PerformanceDao newPerformance = new PerformanceDao();
-        newPerformance.setCreated(LocalDateTime.now());
-        newPerformance.setCreatedBy(user.getUsercode());
-        newPerformance.setUpdated(LocalDateTime.now());
-        newPerformance.setUpdatedBy(this.securityService.getCurrentUsername());
-        newPerformance.setResult(contestResult);
-        newPerformance.setStatus(PerformanceStatus.ACCEPTED);
-        newPerformance.setInstrument(null);
 
-        this.performanceRepository.saveAndFlush(newPerformance);
+        Optional<PerformanceDao> existingPerformanceRecord = this.performanceRepository.fetchForResult(user.getUsercode(), contestResult.getId());
+        if (existingPerformanceRecord.isPresent()) {
+            existingPerformanceRecord.get().setStatus(PerformanceStatus.ACCEPTED);
+            this.update(existingPerformanceRecord.get());
+        } else {
+            PerformanceDao newPerformance = new PerformanceDao();
+            newPerformance.setCreated(LocalDateTime.now());
+            newPerformance.setCreatedBy(user.getUsercode());
+            newPerformance.setUpdated(LocalDateTime.now());
+            newPerformance.setUpdatedBy(this.securityService.getCurrentUsername());
+            newPerformance.setResult(contestResult);
+            newPerformance.setStatus(PerformanceStatus.ACCEPTED);
+            newPerformance.setInstrument(null);
+
+            this.performanceRepository.saveAndFlush(newPerformance);
+        }
     }
 
     @Override
@@ -145,5 +152,24 @@ public class PerformanceServiceImpl implements PerformanceService, SlugTools {
     @Override
     public List<PerformanceDao> fetchPerformancesForResult(ContestResultDao contestResult) {
         return this.performanceRepository.fetchPerformancesForResult(contestResult.getId());
+    }
+
+    @Override
+    public Optional<PerformanceDao> fetchPerformance(SiteUserDao currentUser, Long performanceId) {
+        return this.performanceRepository.fetchByUserAndId(currentUser.getUsercode(), performanceId);
+    }
+
+    @Override
+    public void update(PerformanceDao performance) {
+        performance.setUpdated(LocalDateTime.now());
+        performance.setUpdatedBy(this.securityService.getCurrentUsername());
+
+        this.performanceRepository.saveAndFlush(performance);
+    }
+
+    @Override
+    public void delete(PerformanceDao performance) {
+        performance.setStatus(PerformanceStatus.DECLINED);
+        this.update(performance);
     }
 }

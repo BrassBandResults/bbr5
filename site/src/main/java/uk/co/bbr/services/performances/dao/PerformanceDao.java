@@ -1,21 +1,19 @@
 package uk.co.bbr.services.performances.dao;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import uk.co.bbr.services.events.dao.ContestResultDao;
-import uk.co.bbr.services.framework.AbstractDao;
-import uk.co.bbr.services.framework.mixins.NameTools;
-import uk.co.bbr.services.performances.dto.CompetitorDto;
-import uk.co.bbr.services.performances.types.Instrument;
-import uk.co.bbr.services.performances.types.PerformanceStatus;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import uk.co.bbr.services.events.dao.ContestResultDao;
+import uk.co.bbr.services.framework.AbstractDao;
+import uk.co.bbr.services.framework.mixins.NameTools;
+import uk.co.bbr.services.performances.types.Instrument;
+import uk.co.bbr.services.performances.types.PerformanceStatus;
 
 @Getter
 @Setter

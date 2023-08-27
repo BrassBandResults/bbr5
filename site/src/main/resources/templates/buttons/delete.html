@@ -45,3 +45,7 @@
 <span th:fragment="deletePersonProfile(PersonProfile)" th:remove="tag">
     <span th:replace="~{buttons/button.html :: dangerButton(#{page.buttons.delete}, ${'/profile/people-profiles/' + PersonProfile.person.slug + '/delete'})}"></span>
 </span>
+
+<span th:fragment="deletePerformance(Performance)" th:remove="tag">
+    <span th:replace="~{buttons/button.html :: dangerButton(#{page.buttons.delete}, ${'/profile/performances/' + Performance.id + '/' + Performance.result.id + '/delete'})}"></span>
+</span>

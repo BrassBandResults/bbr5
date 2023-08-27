@@ -35,6 +35,7 @@ public class PerformanceListSqlDto extends AbstractSqlDto {
     private final String resultPositionType;
     private final Integer instrument;
     private final Long resultId;
+    private final Long performanceId;
 
     public PerformanceListSqlDto(Object[] columnList) {
         this.eventDate = this.getLocalDate(columnList, 0);
@@ -54,10 +55,12 @@ public class PerformanceListSqlDto extends AbstractSqlDto {
         this.resultPositionType = this.getString(columnList, 14);
         this.instrument = this.getInteger(columnList, 15);
         this.resultId = this.getLong(columnList, 16);
+        this.performanceId = this.getLong(columnList, 17);
     }
 
     public PerformanceDao asPerformance() {
         PerformanceDao returnDetails = new PerformanceDao();
+        returnDetails.setId(this.performanceId);
         returnDetails.setInstrument(Instrument.fromCode(this.instrument));
         returnDetails.setResult(new ContestResultDao());
 

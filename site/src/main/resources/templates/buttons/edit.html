@@ -65,3 +65,7 @@
 <span th:fragment="editPersonProfile(PersonProfile)" th:remove="tag">
     <span th:replace="~{buttons/button.html :: button(#{page.buttons.edit}, ${'/profile/people-profiles/' + PersonProfile.person.slug + '/edit'})}"></span>
 </span>
+
+<span th:fragment="editPerformance(Performance)" th:remove="tag">
+    <span th:replace="~{buttons/button.html :: button(#{page.buttons.edit}, ${'/profile/performances/' + Performance.id + '/' + Performance.result.id + '/edit'})}"></span>
+</span>

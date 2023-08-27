@@ -31,4 +31,10 @@ public interface PerformanceService {
     List<ContestResultDao> fetchApprovedPerformancesForPiece(String userCode, PieceDao piece);
 
     List<PerformanceDao> fetchPerformancesForResult(ContestResultDao contestResult);
+
+    Optional<PerformanceDao> fetchPerformance(SiteUserDao currentUser, Long performanceId);
+
+    void update(PerformanceDao performance);
+
+    void delete(PerformanceDao performance);
 }
