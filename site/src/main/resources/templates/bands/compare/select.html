@@ -8,11 +8,11 @@
     <h2 th:text="#{page.compare-bands.page-header}">Compare Bands</h2>
     <div class="mb-3">
         <label class="form-label" for="first" th:text="#{page.field-prompt.first-band}">First Band:</label>
-        <input id="first" autocomplete="off" class="form-control" type="text" maxlength="100" onkeyup="lookupMandatory('first', 'band');"/>
+        <input id="first" autocomplete="off" th:placeholder="#{page.form.placeholder.band}" class="form-control" type="text" maxlength="100" onkeyup="lookupMandatory('first', 'band');"/>
     </div>
     <div class="mb-3">
         <label class="form-label" for="second" th:text="#{page.field-prompt.second-band}">Second Band:</label>
-        <input id="second" autocomplete="off" class="form-control" type="text" maxlength="100" onkeyup="lookupMandatory('second', 'band');"/>
+        <input id="second" autocomplete="off" th:placeholder="#{page.form.placeholder.band}" class="form-control" type="text" maxlength="100" onkeyup="lookupMandatory('second', 'band');"/>
     </div>
     <button id="compare-button" th:text="#{page.buttons.compare}" class="btn btn-outline-success disabled" onclick="showComparison()"></button>
 </div>

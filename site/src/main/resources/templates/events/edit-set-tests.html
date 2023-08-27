@@ -44,7 +44,7 @@
         </div>
         <div class="mb-3">
             <label class="form-label" for="piece" th:text="#{page.field-prompt.test-piece}">Piece:</label>
-            <input id="piece" th:field="*{pieceName}" autocomplete="off" class="form-control" type="text" maxlength="100" onkeyup="lookupMandatory('piece', 'piece');"/>
+            <input id="piece" th:field="*{pieceName}" th:placeholder="#{page.form.placeholder.piece}" autocomplete="off" class="form-control" type="text" maxlength="100" onkeyup="lookupMandatory('piece', 'piece');"/>
             <input type="hidden" th:field="*{pieceSlug}" id="piece-slug"/>
         </div>
 

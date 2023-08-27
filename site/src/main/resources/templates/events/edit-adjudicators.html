@@ -34,7 +34,7 @@
         </div>
         <div class="mb-3">
             <label class="form-label" for="adjudicator" th:text="#{page.field-prompt.adjudicator}">Adjudicator:</label>
-            <input id="adjudicator" th:field="*{adjudicatorName}" autocomplete="off" class="form-control" type="text" maxlength="100" onkeyup="lookupMandatory('adjudicator', 'person');"/>
+            <input id="adjudicator" th:field="*{adjudicatorName}" th:placeholder="#{page.form.placeholder.person}" autocomplete="off" class="form-control" type="text" maxlength="100" onkeyup="lookupMandatory('adjudicator', 'person');"/>
             <input type="hidden" th:field="*{adjudicatorSlug}" id="adjudicator-slug"/>
         </div>
 

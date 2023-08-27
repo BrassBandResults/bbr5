@@ -46,7 +46,7 @@
         </div>
         <div class="mb-3">
             <label class="form-label" for="band" th:text="#{page.field-prompt.band}">Band:</label>
-            <input id="band" th:field="*{bandName}" autocomplete="off" class="form-control" type="text" maxlength="100" onkeyup="lookupMandatory('band', 'band');"/>
+            <input id="band" th:field="*{bandName}" th:placeholder="#{page.form.placeholder.band}" autocomplete="off" class="form-control" type="text" maxlength="100" onkeyup="lookupMandatory('band', 'band');"/>
             <input type="hidden" th:field="*{bandSlug}" id="band-slug"/>
             <small class="form-text" th:text="#{page.result-edit.hint.band}">The band that competed.</small>
         </div>
@@ -88,7 +88,7 @@
         </div>
         <div class="mb-3">
             <label class="form-label" for="conductor" th:text="#{page.field-prompt.conductor}">Conductor:</label>
-            <input id="conductor" th:field="*{conductorName}" autocomplete="off" class="form-control" type="text" maxlength="100" onkeyup="lookupMandatory('conductor', 'person');"/>
+            <input id="conductor" th:field="*{conductorName}" th:placeholder="#{page.form.placeholder.person}" autocomplete="off" class="form-control" type="text" maxlength="100" onkeyup="lookupMandatory('conductor', 'person');"/>
             <input type="hidden" th:field="*{conductorSlug}" id="conductor-slug"/>
             <small th:text="#{page.field-prompt.original-conductor}">Original Conductor:</small> <small th:text="${Result.originalConductorName}">Original Conductor Name</small>
         </div>
@@ -98,12 +98,12 @@
         </div>
         <div class="mb-3">
             <label class="form-label" for="conductor-two" th:text="#{page.field-prompt.conductor-two}">Second Conductor:</label>
-            <input id="conductor-two" th:field="*{conductorTwoName}" autocomplete="off" class="form-control" type="text" maxlength="100" onkeyup="lookupMandatory('conductor-two', 'person');"/>
+            <input id="conductor-two" th:field="*{conductorTwoName}" th:placeholder="#{page.form.placeholder.person}" autocomplete="off" class="form-control" type="text" maxlength="100" onkeyup="lookupMandatory('conductor-two', 'person');"/>
             <input type="hidden" th:field="*{conductorTwoSlug}" id="conductor-two-slug"/>
         </div>
         <div class="mb-3">
             <label class="form-label" for="conductor-three" th:text="#{page.field-prompt.conductor-three}">Third Conductor:</label>
-            <input id="conductor-three" th:field="*{conductorThreeName}" autocomplete="off" class="form-control" type="text" maxlength="100" onkeyup="lookupMandatory('conductor-three', 'person');"/>
+            <input id="conductor-three" th:field="*{conductorThreeName}" th:placeholder="#{page.form.placeholder.person}" autocomplete="off" class="form-control" type="text" maxlength="100" onkeyup="lookupMandatory('conductor-three', 'person');"/>
             <input type="hidden" th:field="*{conductorThreeSlug}" id="conductor-three-slug"/>
         </div>
 
