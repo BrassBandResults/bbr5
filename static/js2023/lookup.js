@@ -9,6 +9,11 @@ function _lookup(inputId, entity, invalidClass) {
         inputElementSlug.value="";
     }
 
+    if (inputValue.length == 0) {
+        inputElement.classList.remove("bg-warning-subtle");
+        inputElement.classList.remove("bg-danger-subtle");
+    }
+
     if (inputValue.length > 2 ) {
      
         let searchList = document.getElementById('list-' + inputId);

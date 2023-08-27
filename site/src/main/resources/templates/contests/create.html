@@ -18,6 +18,7 @@
         <div class="mb-3">
             <label class="form-label" for="name" th:text="#{page.field-prompt.name}">Name:</label>
             <input id="name" class="form-control" type="text" th:field="*{name}" maxlength="100" size="80" required/>
+            <small class="form-text" th:text="#{page.contest-edit.hint.name}">The name of this contest, in the form Contest Name (Section), such as 'Yorkshire Area (Championship Section)'</small>
         </div>
         <div class="mb-3">
             <label class="form-label" for="contest-group" th:text="#{page.field-prompt.group}">Group:</label>
