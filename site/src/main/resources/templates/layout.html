@@ -192,14 +192,7 @@
     </div>
     <p class="text-center bg-inverse">Copyright © 2023 Brass Band Results &amp; Tim Sawyer, All Rights Reserved</p>
 </footer>
-<footer class="bg-dark text-white pt-2 pb-2 min-vh-100"></footer>
-
-<p class="printonly"><br/><br/>Printed from https://brassbandresults.co.uk/</p>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
-<script th:src="@{${STATIC_HOST} + '/js2023/tablesorter.js'}"></script>
-<div layout:fragment="scriptfooter-prefix"></div>
-<div layout:fragment="scriptfooter">
+<footer class="bg-dark text-white pt-2 pb-2 min-vh-100">
     <div class="container pt-1" sec:authorize="!hasRole('BBR_PRO')">
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5087204743199130"
                 crossorigin="anonymous"></script>
@@ -214,6 +207,13 @@
             (adsbygoogle = window.adsbygoogle || []).push({});
         </script>
     </div>
-</div>
+</footer>
+
+<p class="printonly"><br/><br/>Printed from https://brassbandresults.co.uk/</p>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+<script th:src="@{${STATIC_HOST} + '/js2023/tablesorter.js'}"></script>
+<div layout:fragment="scriptfooter-prefix"></div>
+<div layout:fragment="scriptfooter"></div>
 </body>
 </html>

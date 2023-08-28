@@ -65,8 +65,6 @@ Cache years page data
 
 Chart on years data for pro users
 
-Result Gold/Silver/Bronze/Merit
-
 Result awards out of comments
 
 page showing contests for a given date
