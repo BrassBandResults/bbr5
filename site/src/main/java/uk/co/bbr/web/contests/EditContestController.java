@@ -84,9 +84,6 @@ public class EditContestController {
         existingContest.setNotes(submittedContest.getNotes());
         existingContest.setExtinct(submittedContest.isExtinct());
         existingContest.setExcludeFromGroupResults(submittedContest.isExcludeFromGroupResults());
-        existingContest.setAllEventsAdded(submittedContest.isAllEventsAdded());
-        existingContest.setPreventFutureBands(submittedContest.isPreventFutureBands());
-        existingContest.setRepeatPeriod(submittedContest.getRepeatPeriod());
         existingContest.setOrdering(submittedContest.getOrdering());
         existingContest.setDescription(submittedContest.getDescription());
         if (submittedContest.getQualifiesForSlug() != null) {

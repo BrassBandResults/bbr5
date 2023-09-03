@@ -73,9 +73,6 @@ public class CreateContestController {
         newContest.setOrdering(submittedForm.getOrdering() != null ? submittedForm.getOrdering() : 0);
         newContest.setExtinct(submittedForm.isExtinct());
         newContest.setExcludeFromGroupResults(submittedForm.isExcludeFromGroupResults());
-        newContest.setAllEventsAdded(submittedForm.isAllEventsAdded());
-        newContest.setPreventFutureBands(submittedForm.isPreventFutureBands());
-        newContest.setRepeatPeriod(submittedForm.getRepeatPeriod());
 
         if (submittedForm.getRegion() != null) {
             Optional<RegionDao> region = this.regionService.fetchById(submittedForm.getRegion());

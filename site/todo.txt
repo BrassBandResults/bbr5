@@ -1,15 +1,21 @@
-Add date ranges for personal contest history
-Fetch pending performances works out ones that aren't in history and aren't rejected
-
 Multiple map icons on same location
 https://github.com/Leaflet/Leaflet.markercluster
 https://stackoverflow.com/questions/29824478/leaflet-markercluster-with-geojson
+
+https://bbr5.brassbandresults.co.uk/contests/WHIT-FRIDAY-SADDLEWORTH/years
+expand for Whit Friday to support results like
+https://brassbandresults.co.uk/contests/WHIT-FRIDAY-SADDLEWORTH/
+
+New page for overall Whit Friday results like
+https://brassbandresults.co.uk/contests/WHIT-FRIDAY-SADDLEWORTH/2023-06-02/
 
 === Go Live ===
 
 Upgrade to pro - record stripe details on user
 
 
+
+Caching for some specific pages - use CosmosDB?
 
 Add placeholder text to form fields
 
@@ -71,6 +77,11 @@ Result awards out of comments
 page showing contests for a given date
 - linked to from contest event page
 - links through to calendar to show a full month
+
+Follow a band or person
+- Email notification for when something related to that band or person changes
+- (Add date ranges for personal contest history)
+- (Fetch pending performances works out ones that aren't in history and aren't rejected)
 
 
 

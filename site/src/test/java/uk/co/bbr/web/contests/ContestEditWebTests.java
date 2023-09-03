@@ -118,9 +118,6 @@ class ContestEditWebTests implements LoginMixin {
         map.add("notes", "Contest notes");
         map.add("extinct", "true");
         map.add("excludeFromGroupResults", "true");
-        map.add("allEventsAdded", "true");
-        map.add("preventFutureBands", "true");
-        map.add("repeatPeriod", "14");
         map.add("qualifiesForName", "National Finals");
         map.add("qualifiesForSlug", "national-finals");
         map.add("_csrf", csrfToken.getToken());
@@ -146,9 +143,6 @@ class ContestEditWebTests implements LoginMixin {
         assertEquals("Contest notes", fetchedContest.get().getNotes());
         assertTrue(fetchedContest.get().isExtinct());
         assertTrue(fetchedContest.get().isExcludeFromGroupResults());
-        assertTrue(fetchedContest.get().isAllEventsAdded());
-        assertTrue(fetchedContest.get().isPreventFutureBands());
-        assertEquals(14, fetchedContest.get().getRepeatPeriod());
         assertEquals("national-finals", fetchedContest.get().getQualifiesFor().getSlug());
     }
 

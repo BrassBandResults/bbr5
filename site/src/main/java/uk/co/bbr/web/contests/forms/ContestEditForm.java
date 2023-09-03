@@ -22,9 +22,6 @@ public class ContestEditForm {
     private String notes;
     private boolean extinct;
     private boolean excludeFromGroupResults;
-    private boolean allEventsAdded;
-    private boolean preventFutureBands;
-    private Integer repeatPeriod;
     private String qualifiesForName;
     private String qualifiesForSlug;
 
@@ -58,9 +55,6 @@ public class ContestEditForm {
             this.qualifiesForSlug = contest.getQualifiesFor().getSlug();
         }
         this.excludeFromGroupResults = contest.isExcludeFromGroupResults();
-        this.allEventsAdded = contest.isAllEventsAdded();
-        this.preventFutureBands = contest.isPreventFutureBands();
-        this.repeatPeriod = contest.getRepeatPeriod();
     }
 
     public void validate(BindingResult bindingResult) {
