@@ -3,6 +3,7 @@ Fetch pending performances works out ones that aren't in history and aren't reje
 
 Multiple map icons on same location
 https://github.com/Leaflet/Leaflet.markercluster
+https://stackoverflow.com/questions/29824478/leaflet-markercluster-with-geojson
 
 === Go Live ===
 
