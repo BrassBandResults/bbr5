@@ -25,7 +25,7 @@ resource "azurerm_linux_web_app" "bbr5" {
     http_logs {
       file_system {
         retention_in_days = 1
-        retention_in_mb = 35
+        retention_in_mb   = 35
       }
     }
   }
