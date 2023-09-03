@@ -22,6 +22,12 @@ resource "azurerm_linux_web_app" "bbr5" {
     application_logs {
       file_system_level = "Verbose"
     }
+    http_logs {
+      file_system {
+        retention_in_days = 1
+        retention_in_mb   = 35
+      }
+    }
   }
 
   app_settings = {

@@ -75,11 +75,6 @@
             <small class="form-text" th:text="#{page.contest-edit.hint.notes}">Notes about the contest</small>
         </div>
         <div class="mb-3">
-            <label class="form-label" for="repeat-period" th:text="#{page.field-prompt.repeat-period}">Repeat Period (months):</label>
-            <input id="repeat-period" class="form-control" type="text" th:field="*{repeatPeriod}" maxlength="10" size="80"/>
-            <small class="form-text" th:text="#{page.contest-edit.hint.repeat-period}">Number of months this contest repeats over. If this is not blank, allows contests between 14 months and 60 months to be included in current champions.</small>
-        </div>
-        <div class="mb-3">
             <input id="extinct" class="form-check-input" type="checkbox" th:field="*{extinct}"/>
             <label class="form-label" for="extinct" th:text="#{page.checkbox-prompt.extinct}">Extinct</label><br/>
             <small class="form-text" th:text="#{page.contest-edit.hint.extinct}">This marks the contest as one that is no longer run.</small>
@@ -88,16 +83,6 @@
             <input id="exclude-from-group-results" class="form-check-input" type="checkbox" th:field="*{excludeFromGroupResults}"/>
             <label class="form-label" for="exclude-from-group-results" th:text="#{page.checkbox-prompt.exclude-from-group-results}">Exclude from Group Results</label><br/>
             <small class="form-text" th:text="#{page.contest-edit.hint.exclude-from-group-results}">If true, this contest is not included in total points calculated from the group (ie Overall Whit Friday)</small>
-        </div>
-        <div class="mb-3">
-            <input id="all-events-added" class="form-check-input" type="checkbox" th:field="*{allEventsAdded}"/>
-            <label class="form-label" for="all-events-added" th:text="#{page.checkbox-prompt.all-events-added}">All Events Added</label><br/>
-            <small class="form-text" th:text="#{page.contest-edit.hint.all-events-added}">This hides the prompt to add more results if contest extinct.</small>
-        </div>
-        <div class="mb-3">
-            <input id="prevent-future-bands" class="form-check-input" type="checkbox" th:field="*{preventFutureBands}"/>
-            <label class="form-label" for="prevent-future-bands" th:text="#{page.checkbox-prompt.prevent-future-bands}">Prevent Future Bands</label><br/>
-            <small class="form-text" th:text="#{page.contest-edit.hint.prevent-future-bands}">If true, prevents bands being added to the contest event whilst it is still in the future.</small>
         </div>
 
         <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">

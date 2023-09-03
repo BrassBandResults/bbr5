@@ -109,9 +109,6 @@ class ContestCreateWebTests implements LoginMixin {
         map.add("notes", "Contest notes");
         map.add("extinct", "true");
         map.add("excludeFromGroupResults", "true");
-        map.add("allEventsAdded", "true");
-        map.add("preventFutureBands", "true");
-        map.add("repeatPeriod", "14");
         map.add("qualifiesForName", "National Finals 1");
         map.add("qualifiesForSlug", "national-finals-1");
         map.add("_csrf", csrfToken.getToken());
@@ -137,9 +134,6 @@ class ContestCreateWebTests implements LoginMixin {
         assertEquals("Contest notes", fetchedContest.get().getNotes());
         assertTrue(fetchedContest.get().isExtinct());
         assertTrue(fetchedContest.get().isExcludeFromGroupResults());
-        assertTrue(fetchedContest.get().isAllEventsAdded());
-        assertTrue(fetchedContest.get().isPreventFutureBands());
-        assertEquals(14, fetchedContest.get().getRepeatPeriod());
         assertEquals("national-finals-1", fetchedContest.get().getQualifiesFor().getSlug());
     }
 
@@ -228,9 +222,6 @@ class ContestCreateWebTests implements LoginMixin {
         map.add("notes", "Contest notes");
         map.add("extinct", "true");
         map.add("excludeFromGroupResults", "true");
-        map.add("allEventsAdded", "true");
-        map.add("preventFutureBands", "true");
-        map.add("repeatPeriod", "14");
         map.add("qualifiesForName", "National Finals 3");
         map.add("qualifiesForSlug", "national-finals-3");
         map.add("_csrf", csrfToken.getToken());
@@ -256,9 +247,6 @@ class ContestCreateWebTests implements LoginMixin {
         assertEquals("Contest notes", fetchedContest.get().getNotes());
         assertTrue(fetchedContest.get().isExtinct());
         assertTrue(fetchedContest.get().isExcludeFromGroupResults());
-        assertTrue(fetchedContest.get().isAllEventsAdded());
-        assertTrue(fetchedContest.get().isPreventFutureBands());
-        assertEquals(14, fetchedContest.get().getRepeatPeriod());
         assertEquals("national-finals-3", fetchedContest.get().getQualifiesFor().getSlug());
     }
 
@@ -295,9 +283,6 @@ class ContestCreateWebTests implements LoginMixin {
         map.add("notes", "Contest notes");
         map.add("extinct", "true");
         map.add("excludeFromGroupResults", "true");
-        map.add("allEventsAdded", "true");
-        map.add("preventFutureBands", "true");
-        map.add("repeatPeriod", "14");
         map.add("qualifiesForName", "");
         map.add("qualifiesForSlug", "");
         map.add("_csrf", csrfToken.getToken());
@@ -323,9 +308,6 @@ class ContestCreateWebTests implements LoginMixin {
         assertEquals("Contest notes", fetchedContest.get().getNotes());
         assertTrue(fetchedContest.get().isExtinct());
         assertTrue(fetchedContest.get().isExcludeFromGroupResults());
-        assertTrue(fetchedContest.get().isAllEventsAdded());
-        assertTrue(fetchedContest.get().isPreventFutureBands());
-        assertEquals(14, fetchedContest.get().getRepeatPeriod());
         assertNull(fetchedContest.get().getQualifiesFor());
     }
 
