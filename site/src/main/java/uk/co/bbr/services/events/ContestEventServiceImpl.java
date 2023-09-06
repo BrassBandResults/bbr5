@@ -384,6 +384,12 @@ public class ContestEventServiceImpl implements ContestEventService {
 
     @Override
     public void delete(ContestEventDao contestEvent) {
+        List<ContestEventTestPieceDao> testPieces = this.contestTestPieceRepository.fetchForEvent(contestEvent.getId());
+        this.contestTestPieceRepository.deleteAll(testPieces);
+
+        List<ContestAdjudicatorDao> adjudicators = this.contestAdjudicatorRepository.fetchForEvent(contestEvent.getId());
+        this.contestAdjudicatorRepository.deleteAll(adjudicators);
+
         this.contestEventRepository.delete(contestEvent);
     }
 
