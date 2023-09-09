@@ -64,27 +64,27 @@
         </div>
         <div th:if="${ContestEvent.contestType.pointsOneTitle != null}" class="mb-3">
             <label class="form-label" for="points-one"><span th:text="#{${ContestEvent.contestType.pointsOneTitle}}">Prompt</span>:</label>
-            <input id="points-one" class="form-control" type="text" th:field="*{pointsOne}" maxlength="100" size="80"/>
+            <input id="points-one" class="form-control" type="text" th:field="*{pointsOne}" maxlength="10" size="80"/>
         </div>
         <div th:if="${ContestEvent.contestType.pointsTwoTitle != null}" class="mb-3">
             <label class="form-label" for="points-two"><span th:text="#{${ContestEvent.contestType.pointsTwoTitle}}">Prompt</span>:</label>
-            <input id="points-two" class="form-control" type="text" th:field="*{pointsTwo}" maxlength="100" size="80"/>
+            <input id="points-two" class="form-control" type="text" th:field="*{pointsTwo}" maxlength="10" size="80"/>
         </div>
         <div th:if="${ContestEvent.contestType.pointsThreeTitle != null}" class="mb-3">
             <label class="form-label" for="points-three"><span th:text="#{${ContestEvent.contestType.pointsThreeTitle}}">Prompt</span>:</label>
-            <input id="points-three" class="form-control" type="text" th:field="*{pointsThree}" maxlength="100" size="80"/>
+            <input id="points-three" class="form-control" type="text" th:field="*{pointsThree}" maxlength="10" size="80"/>
         </div>
         <div th:if="${ContestEvent.contestType.pointsFourTitle != null}" class="mb-3">
             <label class="form-label" for="points-four"><span th:text="#{${ContestEvent.contestType.pointsFourTitle}}">Prompt</span>:</label>
-            <input id="points-four" class="form-control" type="text" th:field="*{pointsFour}" maxlength="100" size="80"/>
+            <input id="points-four" class="form-control" type="text" th:field="*{pointsFour}" maxlength="10" size="80"/>
         </div>
         <div th:if="${ContestEvent.contestType.pointsPenaltyTitle != null}" class="mb-3">
             <label class="form-label" for="points-penalty"><span th:text="#{${ContestEvent.contestType.pointsPenaltyTitle}}">Prompt</span>:</label>
-            <input id="points-penalty" class="form-control" type="text" th:field="*{pointsPenalty}" maxlength="100" size="80"/>
+            <input id="points-penalty" class="form-control" type="text" th:field="*{pointsPenalty}" maxlength="10" size="80"/>
         </div>
         <div th:if="${ContestEvent.contestType.pointsTotalTitle != null}" class="mb-3">
             <label class="form-label" for="points-total"><span th:text="#{${ContestEvent.contestType.pointsTotalTitle}}">Prompt</span>:</label>
-            <input id="points-total" class="form-control" type="text" th:field="*{pointsTotal}" maxlength="100" size="80"/>
+            <input id="points-total" class="form-control" type="text" th:field="*{pointsTotal}" maxlength="10" size="80"/>
         </div>
         <div class="mb-3">
             <label class="form-label" for="conductor" th:text="#{page.field-prompt.conductor}">Conductor:</label>

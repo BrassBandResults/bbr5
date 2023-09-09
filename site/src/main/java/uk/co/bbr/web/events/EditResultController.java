@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import uk.co.bbr.services.bands.BandService;
 import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.events.ContestEventService;
@@ -19,10 +20,13 @@ import uk.co.bbr.services.events.types.ResultAwardType;
 import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.people.PersonService;
 import uk.co.bbr.services.people.dao.PersonDao;
+import uk.co.bbr.web.Tools;
 import uk.co.bbr.web.events.forms.ResultEditForm;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -34,11 +38,87 @@ public class EditResultController {
     private final PersonService personService;
     private final BandService bandService;
 
+
+    @IsBbrMember
+    @GetMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}/edit-results")
+    public String editEventResultsGet(Model model, @PathVariable("contestSlug") String contestSlug, @PathVariable("contestEventDate") String contestEventDate) {
+        LocalDate eventDate = Tools.parseEventDate(contestEventDate);
+        Optional<ContestEventDao> contestEvent = this.contestEventService.fetchEvent(contestSlug, eventDate);
+        if (contestEvent.isEmpty()) {
+            throw NotFoundException.eventNotFound(contestSlug, contestEventDate);
+        }
+
+        List<ContestResultDao> eventResults = this.resultService.fetchForEvent(contestEvent.get());
+
+        this.resultService.workOutCanEdit(contestEvent.get(), eventResults);
+        if (!contestEvent.get().isCanEdit()) {
+            throw NotFoundException.eventNotFound(contestSlug, contestEventDate);
+        }
+
+        model.addAttribute("ContestEvent", contestEvent.get());
+        model.addAttribute("EventResults", eventResults);
+
+        return "events/edit-results";
+    }
+
+    @IsBbrMember
+    @PostMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}/edit-results")
+    public String editEventResultsPost(@RequestParam Map<String,String> allRequestParams, @PathVariable("contestSlug") String contestSlug, @PathVariable("contestEventDate") String contestEventDate) {
+        LocalDate eventDate = Tools.parseEventDate(contestEventDate);
+        Optional<ContestEventDao> contestEvent = this.contestEventService.fetchEvent(contestSlug, eventDate);
+        if (contestEvent.isEmpty()) {
+            throw NotFoundException.eventNotFound(contestSlug, contestEventDate);
+        }
+
+        List<ContestResultDao> eventResults = this.resultService.fetchObjectsForEvent(contestEvent.get());
+
+        this.resultService.workOutCanEdit(contestEvent.get(), eventResults);
+        if (!contestEvent.get().isCanEdit()) {
+            throw NotFoundException.eventNotFound(contestSlug, contestEventDate);
+        }
+
+        for (ContestResultDao eachResult : eventResults) {
+            eachResult.setPosition(this.valueFromForm(allRequestParams, "position", eachResult.getId()));
+            eachResult.setDraw(this.integerValueFromForm(allRequestParams, "draw", eachResult.getId()));
+            eachResult.setDrawSecond(this.integerValueFromForm(allRequestParams, "drawTwo", eachResult.getId()));
+            eachResult.setDrawThird(this.integerValueFromForm(allRequestParams, "drawThree", eachResult.getId()));
+            eachResult.setPointsFirst(this.valueFromForm(allRequestParams, "pointsOne", eachResult.getId()));
+            eachResult.setPointsSecond(this.valueFromForm(allRequestParams, "pointsTwo", eachResult.getId()));
+            eachResult.setPointsThird(this.valueFromForm(allRequestParams, "pointsThree", eachResult.getId()));
+            eachResult.setPointsFourth(this.valueFromForm(allRequestParams, "pointsFour", eachResult.getId()));
+            eachResult.setPointsPenalty(this.valueFromForm(allRequestParams, "pointsPenalty", eachResult.getId()));
+            eachResult.setPointsTotal(this.valueFromForm(allRequestParams, "pointsTotal", eachResult.getId()));
+
+            this.resultService.update(eachResult);
+        }
+
+
+
+        return "redirect:/contests/{contestSlug}/{contestEventDate}";
+    }
+
+    private String valueFromForm(Map<String, String> allRequestParams, String namePrefix, Long resultId) {
+        String nameToLookFor = namePrefix + "-" + resultId;
+        return allRequestParams.get(nameToLookFor);
+    }
+
+    private Integer integerValueFromForm(Map<String, String> allRequestParams, String namePrefix, Long resultId) {
+        String valueFromForm = this.valueFromForm(allRequestParams, namePrefix, resultId);
+        if (valueFromForm == null) {
+            return null;
+        }
+        try {
+            return Integer.parseInt(valueFromForm);
+        }
+        catch (NumberFormatException ex) {
+            return null;
+        }
+    }
+
     @IsBbrMember
     @GetMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}/result/{resultId:\\d+}/edit")
     public String editContestResultForm(Model model, @PathVariable("contestSlug") String contestSlug, @PathVariable("contestEventDate") String contestEventDate, @PathVariable("resultId") Long resultId) {
-        String[] dateSplit = contestEventDate.split("-");
-        LocalDate eventDate = LocalDate.of(Integer.parseInt(dateSplit[0]), Integer.parseInt(dateSplit[1]), Integer.parseInt(dateSplit[2]));
+        LocalDate eventDate = Tools.parseEventDate(contestEventDate);
         Optional<ContestEventDao> contestEvent = this.contestEventService.fetchEvent(contestSlug, eventDate);
 
         if (contestEvent.isEmpty()) {
@@ -66,8 +146,7 @@ public class EditResultController {
     @IsBbrMember
     @PostMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}/result/{resultId:\\d+}/edit")
     public String editContestResultSave(Model model, @Valid @ModelAttribute("Form") ResultEditForm submittedResult, BindingResult bindingResult, @PathVariable("contestSlug") String contestSlug, @PathVariable("contestEventDate") String contestEventDate, @PathVariable("resultId") Long resultId) {
-        String[] dateSplit = contestEventDate.split("-");
-        LocalDate eventDate = LocalDate.of(Integer.parseInt(dateSplit[0]), Integer.parseInt(dateSplit[1]), Integer.parseInt(dateSplit[2]));
+        LocalDate eventDate = Tools.parseEventDate(contestEventDate);
         Optional<ContestEventDao> contestEvent = this.contestEventService.fetchEvent(contestSlug, eventDate);
 
         if (contestEvent.isEmpty()) {

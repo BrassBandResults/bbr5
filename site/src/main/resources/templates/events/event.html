@@ -135,7 +135,11 @@
         <div class="container">
             <div class="row">
                 <div class="col">
-                    <span th:if="${ContestEvent.canEdit}"><span th:replace="~{buttons/button.html :: greenButton(#{page.buttons.add-results}, ${'/add-results/6/' + ContestEvent.contest.slug + '/' + ContestEvent.eventDateForUrl})}"></span><br/><br/></span>
+                    <span th:if="${ContestEvent.canEdit}">
+                        <span th:replace="~{buttons/button.html :: greenButton(#{page.buttons.add-results}, ${'/add-results/6/' + ContestEvent.contest.slug + '/' + ContestEvent.eventDateForUrl})}"></span>
+                        <span th:replace="~{buttons/button.html :: greenButton(#{page.buttons.edit-results}, ${'/contests/' + ContestEvent.contest.slug + '/' + ContestEvent.eventDateForUrl + '/edit-results'})}"></span>
+                        <br/><br/>
+                    </span>
                     <span th:replace="~{links/tag-link.html :: tagCloudContest(${ContestEvent.contest})}"></span>
                 </div>
                 <div class="col text-end">

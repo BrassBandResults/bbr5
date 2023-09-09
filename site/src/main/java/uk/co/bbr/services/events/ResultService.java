@@ -21,6 +21,7 @@ public interface ResultService {
     ContestResultDao migrate(ContestEventDao event, ContestResultDao contestResult);
 
     List<ContestResultDao> fetchForEvent(ContestEventDao event);
+    List<ContestResultDao> fetchObjectsForEvent(ContestEventDao contestEvent);
 
     ContestResultPieceDao addPieceToResult(ContestResultDao contestResult, ContestResultPieceDao contestResultTestPiece);
     ContestResultPieceDao addPieceToResult(ContestResultDao contestResult, PieceDao piece);

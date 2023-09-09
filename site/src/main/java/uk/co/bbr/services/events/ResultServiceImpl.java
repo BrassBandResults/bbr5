@@ -120,6 +120,11 @@ public class ResultServiceImpl implements ResultService {
     }
 
     @Override
+    public List<ContestResultDao> fetchObjectsForEvent(ContestEventDao contestEvent) {
+        return this.contestResultRepository.fetchForEvent(contestEvent.getId());
+    }
+
+    @Override
     @IsBbrMember
     public ContestResultPieceDao addPieceToResult(ContestResultDao contestResult, ContestResultPieceDao contestResultTestPiece) {
         contestResultTestPiece.setContestResult(contestResult);
