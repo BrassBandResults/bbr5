@@ -41,7 +41,7 @@ public class EventSql {
                              WHEN r.result_position_type = 'W' THEN 10001
                              WHEN r.result_position_type = 'D' THEN 10002
                              ELSE r.result_position
-                           END""";
+                           END, r.draw, r.band_name""";
 
     public static List<EventResultSqlDto> selectEventResults(EntityManager entityManager, Long eventId) {
         return SqlExec.execute(entityManager, EVENT_RESULTS_SQL, eventId, EventResultSqlDto.class);

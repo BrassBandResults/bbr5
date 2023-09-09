@@ -16,6 +16,7 @@ import uk.co.bbr.services.events.types.TestPieceAndOr;
 import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.pieces.PieceService;
 import uk.co.bbr.services.pieces.dao.PieceDao;
+import uk.co.bbr.web.Tools;
 import uk.co.bbr.web.events.forms.AddEventSetTestForm;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
@@ -33,8 +34,7 @@ public class EditTestPiecesController {
     @IsBbrMember
     @GetMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}/edit-set-tests")
     public String editSetTests(Model model, @PathVariable String contestSlug, @PathVariable String contestEventDate) {
-        String[] dateSplit = contestEventDate.split("-");
-        LocalDate eventDate = LocalDate.of(Integer.parseInt(dateSplit[0]), Integer.parseInt(dateSplit[1]), Integer.parseInt(dateSplit[2]));
+        LocalDate eventDate = Tools.parseEventDate(contestEventDate);
         Optional<ContestEventDao> contestEvent = this.contestEventService.fetchEvent(contestSlug, eventDate);
 
         if (contestEvent.isEmpty()) {
@@ -55,8 +55,7 @@ public class EditTestPiecesController {
     @IsBbrMember
     @PostMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}/edit-set-tests")
     public String editSetTestsAdd(Model model, @Valid @ModelAttribute("Form") AddEventSetTestForm submittedForm, BindingResult bindingResult, @PathVariable String contestSlug, @PathVariable String contestEventDate) {
-        String[] dateSplit = contestEventDate.split("-");
-        LocalDate eventDate = LocalDate.of(Integer.parseInt(dateSplit[0]), Integer.parseInt(dateSplit[1]), Integer.parseInt(dateSplit[2]));
+        LocalDate eventDate = Tools.parseEventDate(contestEventDate);
         Optional<ContestEventDao> contestEvent = this.contestEventService.fetchEvent(contestSlug, eventDate);
 
         if (contestEvent.isEmpty()) {
@@ -92,8 +91,7 @@ public class EditTestPiecesController {
     @IsBbrMember
     @GetMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}/edit-set-tests/{eventPieceId:\\d+}/delete")
     public String removeSetTest(@PathVariable String contestSlug, @PathVariable String contestEventDate, @PathVariable Long eventPieceId) {
-        String[] dateSplit = contestEventDate.split("-");
-        LocalDate eventDate = LocalDate.of(Integer.parseInt(dateSplit[0]), Integer.parseInt(dateSplit[1]), Integer.parseInt(dateSplit[2]));
+        LocalDate eventDate = Tools.parseEventDate(contestEventDate);
         Optional<ContestEventDao> contestEvent = this.contestEventService.fetchEvent(contestSlug, eventDate);
         if (contestEvent.isEmpty()) {
             throw NotFoundException.eventNotFound(contestSlug, contestEventDate);
