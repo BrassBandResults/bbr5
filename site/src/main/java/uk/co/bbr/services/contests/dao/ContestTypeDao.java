@@ -50,6 +50,9 @@ public class ContestTypeDao extends AbstractDao implements NameTools {
     @Column(name="points_four_title")
     private String pointsFourTitle;
 
+    @Column(name="points_five_title")
+    private String pointsFiveTitle;
+
     @Column(name="points_penalty_title")
     private String pointsPenaltyTitle;
 

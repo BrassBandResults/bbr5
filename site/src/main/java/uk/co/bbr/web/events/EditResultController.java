@@ -86,6 +86,7 @@ public class EditResultController {
             eachResult.setPointsSecond(this.valueFromForm(allRequestParams, "pointsTwo", eachResult.getId()));
             eachResult.setPointsThird(this.valueFromForm(allRequestParams, "pointsThree", eachResult.getId()));
             eachResult.setPointsFourth(this.valueFromForm(allRequestParams, "pointsFour", eachResult.getId()));
+            eachResult.setPointsFifth(this.valueFromForm(allRequestParams, "pointsFive", eachResult.getId()));
             eachResult.setPointsPenalty(this.valueFromForm(allRequestParams, "pointsPenalty", eachResult.getId()));
             eachResult.setPointsTotal(this.valueFromForm(allRequestParams, "pointsTotal", eachResult.getId()));
 
@@ -193,6 +194,7 @@ public class EditResultController {
         existingResult.setPointsSecond(submittedResult.getPointsTwo());
         existingResult.setPointsThird(submittedResult.getPointsThree());
         existingResult.setPointsFourth(submittedResult.getPointsFour());
+        existingResult.setPointsFifth(submittedResult.getPointsFive());
         existingResult.setPointsPenalty(submittedResult.getPointsPenalty());
         existingResult.setPointsTotal(submittedResult.getPointsTotal());
 

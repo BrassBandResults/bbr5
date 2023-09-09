@@ -103,6 +103,7 @@ class CreateContestResultTests implements LoginMixin {
         replaceResult.setPointsSecond(" 2nd Points ");
         replaceResult.setPointsThird(" 3rd Points ");
         replaceResult.setPointsFourth(" 4th Points ");
+        replaceResult.setPointsFifth(" 5th Points ");
         replaceResult.setPointsPenalty(" Penalty  ");
         replaceResult.setPosition("1");
         replaceResult.setConductor(conductor1);
@@ -132,6 +133,7 @@ class CreateContestResultTests implements LoginMixin {
         assertEquals("2nd Points", results.get(0).getPointsSecond());
         assertEquals("3rd Points", results.get(0).getPointsThird());
         assertEquals("4th Points", results.get(0).getPointsFourth());
+        assertEquals("5th Points", results.get(0).getPointsFifth());
         assertEquals("Penalty", results.get(0).getPointsPenalty());
         assertEquals("New Note", results.get(0).getNotes());
 
@@ -162,6 +164,7 @@ class CreateContestResultTests implements LoginMixin {
         existingResult.setPointsSecond(" 2nd Points ");
         existingResult.setPointsThird(" 3rd Points ");
         existingResult.setPointsFourth(" 4th Points ");
+        existingResult.setPointsFifth(" 5th Points ");
         existingResult.setPointsPenalty(" Penalty   ");
         existingResult.setPosition("1");
         existingResult.setConductor(conductor1);
@@ -182,6 +185,7 @@ class CreateContestResultTests implements LoginMixin {
         replaceResult.setPointsSecond("2nd");
         replaceResult.setPointsThird("3rd");
         replaceResult.setPointsFourth("4th ");
+        replaceResult.setPointsFifth("5th ");
         replaceResult.setPointsPenalty("Updated");
         replaceResult.setPosition("5");
         replaceResult.setConductor(conductor3);
@@ -211,6 +215,7 @@ class CreateContestResultTests implements LoginMixin {
         assertEquals("2nd Points", results.get(0).getPointsSecond());
         assertEquals("3rd Points", results.get(0).getPointsThird());
         assertEquals("4th Points", results.get(0).getPointsFourth());
+        assertEquals("5th Points", results.get(0).getPointsFifth());
         assertEquals("Penalty", results.get(0).getPointsPenalty());
         assertEquals("New Note", results.get(0).getNotes());
 
@@ -241,6 +246,7 @@ class CreateContestResultTests implements LoginMixin {
         existingResult.setPointsSecond(" 2nd Points ");
         existingResult.setPointsThird(" 3rd Points ");
         existingResult.setPointsFourth(" 4th Points ");
+        existingResult.setPointsFifth(" 5th Points ");
         existingResult.setPointsPenalty(" Penalty   ");
         existingResult.setPosition("1");
         existingResult.setConductor(conductor1);
@@ -261,6 +267,7 @@ class CreateContestResultTests implements LoginMixin {
         replaceResult.setPointsSecond("2nd 2");
         replaceResult.setPointsThird("3rd 2");
         replaceResult.setPointsFourth("4th  2");
+        replaceResult.setPointsFifth("5th  2");
         replaceResult.setPointsPenalty("Updated 2");
         replaceResult.setPosition("10");
         replaceResult.setConductor(conductor1);
@@ -290,6 +297,7 @@ class CreateContestResultTests implements LoginMixin {
         assertEquals("2nd Points", results.get(0).getPointsSecond());
         assertEquals("3rd Points", results.get(0).getPointsThird());
         assertEquals("4th Points", results.get(0).getPointsFourth());
+        assertEquals("5th Points", results.get(0).getPointsFifth());
         assertEquals("Penalty", results.get(0).getPointsPenalty());
         assertEquals("New Note", results.get(0).getNotes());
 
@@ -310,12 +318,14 @@ class CreateContestResultTests implements LoginMixin {
         assertEquals("2nd 2", results.get(1).getPointsSecond());
         assertEquals("3rd 2", results.get(1).getPointsThird());
         assertEquals("4th  2", results.get(1).getPointsFourth());
+        assertEquals("5th  2", results.get(1).getPointsFifth());
         assertEquals("Updated 2", results.get(1).getPointsPenalty());
         assertEquals("Altered Note 2", results.get(1).getNotes());
 
         logoutTestUser();
     }
 }
+
 
 
 

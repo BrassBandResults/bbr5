@@ -76,6 +76,9 @@ public class ContestResultDao extends AbstractDao implements NameTools {
     @Column(name="points_fourth")
     private String pointsFourth;
 
+    @Column(name="points_fifth")
+    private String pointsFifth;
+
     @Column(name="points_penalty")
     private String pointsPenalty;
 
@@ -155,6 +158,9 @@ public class ContestResultDao extends AbstractDao implements NameTools {
         }
         if (this.getPointsFourth() == null && result.getPointsFourth() != null) {
             this.setPointsFourth(result.getPointsFourth());
+        }
+        if (this.getPointsFifth() == null && result.getPointsFifth() != null) {
+            this.setPointsFifth(result.getPointsFifth());
         }
         if (this.getPointsPenalty() == null && result.getPointsPenalty() != null) {
             this.setPointsPenalty(result.getPointsPenalty());
@@ -284,6 +290,13 @@ public class ContestResultDao extends AbstractDao implements NameTools {
             this.pointsFourth = null;
         } else {
             this.pointsFourth = points.strip();
+        }
+    }
+    public void setPointsFifth(String points){
+        if (points == null) {
+            this.pointsFifth = null;
+        } else {
+            this.pointsFifth = points.strip();
         }
     }
     public void setPointsPenalty(String points){
