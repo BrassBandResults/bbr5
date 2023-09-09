@@ -1,4 +1,2 @@
-ALTER TABLE contest_type ADD points_five_title VARCHAR(20);
 ALTER TABLE contest_result ADD points_fifth VARCHAR(10);
-
-INSERT INTO contest_type(updated_by, created_by, name, slug, translation_key, draw_one_title, draw_two_title, draw_three_title, points_total_title, points_one_title, points_two_title, points_three_title, points_four_title, points_five_title, points_penalty_title, has_test_piece, has_own_choice, has_entertainments, statistics_show, statistics_limit) VALUES ('owner', 'owner', 'Entertainments (2 Music, 1 Programme, 2 Entertainment points)', 'entertainments-2-music-1-programme-2-entertainment-points', 'contest-types.entertainments-2-music-1-programme-2-entertainment-points','Draw', null, null, 'Total', 'Quality Adj 1', 'Quality Adj 2', 'Programme', 'Ents 1', 'Ents 2', 'Penalty', 0, 0, 1, 1, '0');
+ALTER TABLE contest_type ADD points_five_title VARCHAR(20);
