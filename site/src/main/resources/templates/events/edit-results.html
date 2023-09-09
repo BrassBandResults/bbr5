@@ -43,6 +43,10 @@
             <label th:for="${'pointsFour-'+result.id}"><span th:text="#{${ContestEvent.contestType.pointsFourTitle}}">Prompt</span>:</label>
             <input th:id="${'pointsFour-'+result.id}" th:name="${'pointsFour-'+result.id}" type="text" maxlength="10" size="4" th:value="${result.pointsFourth}"/>
         </span>
+        <span th:if="${ContestEvent.contestType.pointsFiveTitle != null}" class="mb-3">
+            <label th:for="${'pointsFive-'+result.id}"><span th:text="#{${ContestEvent.contestType.pointsFiveTitle}}">Prompt</span>:</label>
+            <input th:id="${'pointsFive-'+result.id}" th:name="${'pointsFive-'+result.id}" type="text" maxlength="10" size="4" th:value="${result.pointsFifth}"/>
+        </span>
         <span th:if="${ContestEvent.contestType.pointsPenaltyTitle != null}" class="mb-3">
             <label th:for="${'pointsPenalty-'+result.id}"><span th:text="#{${ContestEvent.contestType.pointsPenaltyTitle}}">Prompt</span>:</label>
             <input th:id="${'pointsPenalty-'+result.id}" th:name="${'pointsPenalty-'+result.id}" type="text" maxlength="10" size="4" th:value="${result.pointsPenalty}"/>

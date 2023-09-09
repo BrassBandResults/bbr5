@@ -24,6 +24,7 @@ public class ResultEditForm {
     private String pointsTwo;
     private String pointsThree;
     private String pointsFour;
+    private String pointsFive;
     private String pointsPenalty;
     private String pointsTotal;
     private String originalConductorName;
@@ -84,6 +85,7 @@ public class ResultEditForm {
         this.pointsTwo = result.getPointsSecond();
         this.pointsThree = result.getPointsThird();
         this.pointsFour = result.getPointsFourth();
+        this.pointsFive = result.getPointsFifth();
         this.pointsPenalty = result.getPointsPenalty();
         this.pointsTotal = result.getPointsTotal();
 

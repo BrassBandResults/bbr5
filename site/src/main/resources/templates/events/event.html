@@ -76,6 +76,7 @@
                     <th th:if="${ShowPoints2}" th:text="#{${ContestEvent.contestType.pointsTwoTitle}}" class="number">Points 2</th>
                     <th th:if="${ShowPoints3}" th:text="#{${ContestEvent.contestType.pointsThreeTitle}}" class="number">Points 3</th>
                     <th th:if="${ShowPoints4}" th:text="#{${ContestEvent.contestType.pointsFourTitle}}" class="number">Points 4</th>
+                    <th th:if="${ShowPoints5}" th:text="#{${ContestEvent.contestType.pointsFiveTitle}}" class="number">Points 5</th>
                     <th th:if="${ShowPointsPenalty}" th:text="#{${ContestEvent.contestType.pointsPenaltyTitle}}" class="number">Points Penalty</th>
                     <th th:if="${ShowPointsTotal}" th:text="#{${ContestEvent.contestType.pointsTotalTitle}}" class="number">Points Total</th>
                     <th th:if="${ContestEvent.canEdit}"></th>
@@ -107,6 +108,7 @@
                     <td class="bbr-draw" th:if="${ShowPoints2}" th:text="${result.pointsSecond}"></td>
                     <td class="bbr-draw" th:if="${ShowPoints3}" th:text="${result.pointsThird}"></td>
                     <td class="bbr-draw" th:if="${ShowPoints4}" th:text="${result.pointsFourth}"></td>
+                    <td class="bbr-draw" th:if="${ShowPoints5}" th:text="${result.pointsFifth}"></td>
                     <td class="bbr-draw" th:if="${ShowPointsPenalty}" th:text="${result.pointsPenalty}"></td>
                     <td class="bbr-draw" th:if="${ShowPointsTotal}" th:text="${result.pointsTotal}"></td>
                     <td th:if="${ContestEvent.canEdit}">

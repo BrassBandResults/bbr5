@@ -78,6 +78,10 @@
             <label class="form-label" for="points-four"><span th:text="#{${ContestEvent.contestType.pointsFourTitle}}">Prompt</span>:</label>
             <input id="points-four" class="form-control" type="text" th:field="*{pointsFour}" maxlength="10" size="80"/>
         </div>
+        <div th:if="${ContestEvent.contestType.pointsFiveTitle != null}" class="mb-3">
+            <label class="form-label" for="points-five"><span th:text="#{${ContestEvent.contestType.pointsFiveTitle}}">Prompt</span>:</label>
+            <input id="points-five" class="form-control" type="text" th:field="*{pointsFive}" maxlength="10" size="80"/>
+        </div>
         <div th:if="${ContestEvent.contestType.pointsPenaltyTitle != null}" class="mb-3">
             <label class="form-label" for="points-penalty"><span th:text="#{${ContestEvent.contestType.pointsPenaltyTitle}}">Prompt</span>:</label>
             <input id="points-penalty" class="form-control" type="text" th:field="*{pointsPenalty}" maxlength="10" size="80"/>

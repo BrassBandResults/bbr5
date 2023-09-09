@@ -48,6 +48,7 @@ public class EventResultSqlDto extends AbstractSqlDto {
     private final String pointsSecond;
     private final String pointsThird;
     private final String pointsFourth;
+    private final String pointsFifth;
     private final String pointsPenalty;
     private final Long resultId;
     private final String notes;
@@ -91,19 +92,20 @@ public class EventResultSqlDto extends AbstractSqlDto {
         this.pointsSecond = this.getString(columnList, 25);
         this.pointsThird = this.getString(columnList, 26);
         this.pointsFourth = this.getString(columnList, 27);
-        this.pointsPenalty = this.getString(columnList, 28);
-        this.resultId = this.getLong(columnList,29);
-        this.notes = this.getString(columnList, 30);
-        this.contestName = this.getString(columnList, 31);
-        this.groupName = this.getString(columnList, 32);
-        this.groupSlug = this.getString(columnList, 33);
-        this.bandLatitude = this.getString(columnList, 34);
-        this.bandLongitude = this.getString(columnList, 35);
-        this.bandStatus = this.getInteger(columnList, 36);
-        this.sectionSlug = this.getString(columnList, 37);
-        this.sectionTranslationKey = this.getString(columnList, 38);
-        this.createdBy = this.getString(columnList, 39);
-        this.resultAward = this.getString(columnList, 40);
+        this.pointsFifth = this.getString(columnList, 28);
+        this.pointsPenalty = this.getString(columnList, 29);
+        this.resultId = this.getLong(columnList,30);
+        this.notes = this.getString(columnList, 31);
+        this.contestName = this.getString(columnList, 32);
+        this.groupName = this.getString(columnList, 33);
+        this.groupSlug = this.getString(columnList, 34);
+        this.bandLatitude = this.getString(columnList, 35);
+        this.bandLongitude = this.getString(columnList, 36);
+        this.bandStatus = this.getInteger(columnList, 37);
+        this.sectionSlug = this.getString(columnList, 38);
+        this.sectionTranslationKey = this.getString(columnList, 39);
+        this.createdBy = this.getString(columnList, 40);
+        this.resultAward = this.getString(columnList, 41);
     }
 
     public ContestResultDao toResult() {
@@ -131,6 +133,7 @@ public class EventResultSqlDto extends AbstractSqlDto {
             result.setPointsSecond(this.pointsSecond);
             result.setPointsThird(this.pointsThird);
             result.setPointsFourth(this.pointsFourth);
+            result.setPointsFifth(this.pointsFifth);
             result.setPointsPenalty(this.pointsPenalty);
             result.setNotes(this.notes);
             result.setBand(new BandDao());

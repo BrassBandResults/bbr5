@@ -76,6 +76,7 @@ public class ContestEventController extends AbstractEventController {
         boolean showPoints2 = contestEvent.getContestType().getPointsTwoTitle() != null && eventResults.stream().anyMatch(s -> s.getPointsSecond() != null && s.getPointsSecond().length() > 0);
         boolean showPoints3 = contestEvent.getContestType().getPointsThreeTitle() != null && eventResults.stream().anyMatch(s -> s.getPointsThird() != null && s.getPointsThird().length() > 0);
         boolean showPoints4 = contestEvent.getContestType().getPointsFourTitle() != null && eventResults.stream().anyMatch(s -> s.getPointsFourth() != null && s.getPointsFourth().length() > 0);
+        boolean showPoints5 = contestEvent.getContestType().getPointsFiveTitle() != null && eventResults.stream().anyMatch(s -> s.getPointsFifth() != null && s.getPointsFifth().length() > 0);
         boolean showPointsPenalty = contestEvent.getContestType().getPointsPenaltyTitle() != null && eventResults.stream().anyMatch(s -> s.getPointsPenalty() != null && s.getPointsPenalty().length() > 0);
         boolean showPointsTotal = contestEvent.getContestType().getPointsTotalTitle() != null && eventResults.stream().anyMatch(s -> s.getPointsTotal() != null && s.getPointsTotal().length() > 0);
 
