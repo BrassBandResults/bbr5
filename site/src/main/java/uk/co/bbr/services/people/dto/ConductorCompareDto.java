@@ -36,11 +36,13 @@ public class ConductorCompareDto {
         int rightCount = 0;
 
         for (CompareConductorsSqlDto eachResult : resultsToAnalyse) {
-            if (eachResult.getLeftResult() < eachResult.getRightResult()) {
-                leftCount++;
-            }
-            if (eachResult.getLeftResult() > eachResult.getRightResult()) {
-                rightCount++;
+            if (eachResult.getLeftResult() != null && eachResult.getRightResult() != null) {
+                if (eachResult.getLeftResult() < eachResult.getRightResult()) {
+                    leftCount++;
+                }
+                if (eachResult.getLeftResult() > eachResult.getRightResult()) {
+                    rightCount++;
+                }
             }
         }
         this.leftPersonWins = leftCount;
