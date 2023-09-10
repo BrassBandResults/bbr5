@@ -1,4 +1,4 @@
-function showData(inputId, entity, inputValue){
+function showData(inputId, entity, inputValue, searchList){
     let key = entity + '-' + inputValue.substring(0,3).toLowerCase();
     let matchData = sessionStorage.getItem(key);
     if (matchData) {
@@ -14,14 +14,14 @@ function showData(inputId, entity, inputValue){
     }
 }
 
-function fetchData(inputId, entity, inputValue) {
+function fetchData(inputId, entity, inputValue, searchList) {
     const httpRequest = new XMLHttpRequest();
     httpRequest.onreadystatechange = () => {
         if (httpRequest.readyState === XMLHttpRequest.DONE) {
             if (httpRequest.status === 200) {
                 let key = entity + '-' + inputValue.toLowerCase();
                 sessionStorage.setItem(key, httpRequest.responseText);
-                showData(inputId, entity, inputValue);
+                showData(inputId, entity, inputValue, searchList);
             }
         }
     };
@@ -57,9 +57,9 @@ function _lookup(inputId, entity, invalidClass) {
         }
 
         if (inputValue.length == 3) {
-            fetchData(inputId, entity, inputValue);
+            fetchData(inputId, entity, inputValue, searchList);
         } else {
-            showData(inputId, entity, inputValue);
+            showData(inputId, entity, inputValue, searchList);
         }
     }
 }
