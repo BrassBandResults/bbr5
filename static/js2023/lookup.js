@@ -19,7 +19,7 @@ function showData(entity, inputValue){
         let resultsHtml = "";
         let data = JSON.parse(matchData);
         for (let i = 0; i < data.matches.length; i++) {
-            if (data.matches[i].name.toLowerCase().contains(inputValue.toLowerCase())) {
+            if (data.matches[i].name.toLowerCase().includes(inputValue.toLowerCase())) {
                 let displayText = "<b>" + data.matches[i].name + "</b> <small>" + data.matches[i].context + "</small>";
                 resultsHtml += "<li style='cursor:pointer' onclick=\"fill('" + inputId + "', '" + data.matches[i].slug + "', '" + data.matches[i].name + "');\">" + displayText + "</li>";
             }
