@@ -1,17 +1,3 @@
-function fetchData(entity, inputValue) {
-    const httpRequest = new XMLHttpRequest();
-    httpRequest.onreadystatechange = () => {
-        if (httpRequest.readyState === XMLHttpRequest.DONE) {
-            if (httpRequest.status === 200) {
-                let key = entity + '-' + inputValue.toLowerCase();
-                sessionStorage.setItem(key, httpRequest.responseText);
-            }
-        }
-    };
-    httpRequest.open("GET", "/lookup/" + entity + "/data.json?s=" + inputValue, true);
-    httpRequest.send();
-}
-
 function showData(entity, inputValue){
     let key = entity + '-' + inputValue.substring(0,3).toLowerCase();
     let matchData = sessionStorage.getItem(key);
@@ -26,6 +12,21 @@ function showData(entity, inputValue){
         }
         searchList.innerHTML = resultsHtml;
     }
+}
+
+function fetchData(entity, inputValue) {
+    const httpRequest = new XMLHttpRequest();
+    httpRequest.onreadystatechange = () => {
+        if (httpRequest.readyState === XMLHttpRequest.DONE) {
+            if (httpRequest.status === 200) {
+                let key = entity + '-' + inputValue.toLowerCase();
+                sessionStorage.setItem(key, httpRequest.responseText);
+                showData(entity, inputValue);
+            }
+        }
+    };
+    httpRequest.open("GET", "/lookup/" + entity + "/data.json?s=" + inputValue, true);
+    httpRequest.send();
 }
 
 function _lookup(inputId, entity, invalidClass) {
