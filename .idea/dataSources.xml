@@ -8,5 +8,12 @@
       <jdbc-url>jdbc:sqlserver://prod-bbr-sqlserver.database.windows.net;database=bbr</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="bbr@timpi" uuid="d1ddb5a0-3075-4166-88a3-bcbeb5b86d80">
+      <driver-ref>sqlserver.ms</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.microsoft.sqlserver.jdbc.SQLServerDriver</jdbc-driver>
+      <jdbc-url>jdbc:sqlserver://timpi;database=bbr;trustServerCertificate=true</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>

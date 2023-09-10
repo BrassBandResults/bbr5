@@ -1,3 +1,33 @@
+function fetchData(entity, inputValue) {
+    const httpRequest = new XMLHttpRequest();
+    httpRequest.onreadystatechange = () => {
+        if (httpRequest.readyState === XMLHttpRequest.DONE) {
+            if (httpRequest.status === 200) {
+                let key = entity + '-' + inputValue.toLowerCase();
+                sessionStorage.setItem(key, httpRequest.responseText);
+            }
+        }
+    };
+    httpRequest.open("GET", "/lookup/" + entity + "/data.json?s=" + inputValue, true);
+    httpRequest.send();
+}
+
+function showData(entity, inputValue){
+    let key = entity + '-' + inputValue.substring(0,3).toLowerCase();
+    let matchData = sessionStorage.getItem(key);
+    if (matchData) {
+        let resultsHtml = "";
+        let data = JSON.parse(matchData);
+        for (let i = 0; i < data.matches.length; i++) {
+            if (data.matches[i].name.toLowerCase().contains(inputValue.toLowerCase())) {
+                let displayText = "<b>" + data.matches[i].name + "</b> <small>" + data.matches[i].context + "</small>";
+                resultsHtml += "<li style='cursor:pointer' onclick=\"fill('" + inputId + "', '" + data.matches[i].slug + "', '" + data.matches[i].name + "');\">" + displayText + "</li>";
+            }
+        }
+        searchList.innerHTML = resultsHtml;
+    }
+}
+
 function _lookup(inputId, entity, invalidClass) {
     let inputElement = document.getElementById(inputId);
     let inputValue = inputElement.value;
@@ -21,25 +51,15 @@ function _lookup(inputId, entity, invalidClass) {
             searchList = document.createElement("ul");
             searchList.id = 'list-' + inputId;
             searchList.className="list-lookup";
+            searchList.innerHTML = "<li>loading...</li>";
             inputElement.parentElement.append(searchList);
         }
-  
-        const httpRequest = new XMLHttpRequest();
-        httpRequest.onreadystatechange = () => {
-            if (httpRequest.readyState === XMLHttpRequest.DONE) {
-                if (httpRequest.status === 200) {
-                    let resultsHtml = "";
-                    let data = JSON.parse(httpRequest.responseText);
-                    for (let i = 0; i < data.matches.length; i++) {
-                        let displayText = "<b>" + data.matches[i].name + "</b> <small>" + data.matches[i].context + "</small>";
-                        resultsHtml += "<li style='cursor:pointer' onclick=\"fill('" + inputId + "', '" + data.matches[i].slug + "', '" + data.matches[i].name + "');\">" + displayText + "</li>";
-                    }
-                    searchList.innerHTML = resultsHtml;
-                }
-            }
-        };
-        httpRequest.open("GET", "/lookup/" + entity + "/data.json?s=" + inputValue, true);
-        httpRequest.send();
+
+        if (inputValue.length == 3) {
+            fetchData(entity, inputValue);
+        } else {
+            showData(entity, inputValue);
+        }
     }
 }
 
