@@ -235,7 +235,7 @@ class AddResults6BandsWebTests implements LoginMixin {
         Optional<ContestEventDao> fetchedContestEvent =  this.contestEventService.fetchEvent("yorkshire-area", LocalDate.of(2000,3,1));
         assertTrue(fetchedContestEvent.isPresent());
 
-        List<ContestResultDao> eventResults = this.resultService.fetchForEvent(fetchedContestEvent.get());
+        List<ContestResultDao> eventResults = this.resultService.fetchObjectsForEvent(fetchedContestEvent.get());
         assertEquals(1, eventResults.size());
         assertEquals(1, eventResults.get(0).getPosition());
         assertEquals("1", eventResults.get(0).getPositionDisplay());
