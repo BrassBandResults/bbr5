@@ -36,7 +36,7 @@ public class Tools {
         Parser parser = Parser.builder().build();
 
         Node document = parser.parse(markdown);
-        HtmlRenderer renderer = HtmlRenderer.builder().build();
+        HtmlRenderer renderer = HtmlRenderer.builder().escapeHtml(true).softbreak("<br/>").build();
 
         return renderer.render(document);
     }
