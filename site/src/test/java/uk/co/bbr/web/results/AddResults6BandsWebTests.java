@@ -48,13 +48,11 @@ class AddResults6BandsWebTests implements LoginMixin {
 
     @Autowired private SecurityService securityService;
     @Autowired private JwtService jwtService;
-    @Autowired private RegionService regionService;
     @Autowired private BandService bandService;
     @Autowired private ContestService contestService;
     @Autowired private PersonService personService;
     @Autowired private ContestEventService contestEventService;
     @Autowired private ResultService resultService;
-    @Autowired private VenueService venueService;
     @Autowired private RestTemplate restTemplate;
     @Autowired private CsrfTokenRepository csrfTokenRepository;
     @LocalServerPort private int port;
@@ -69,6 +67,7 @@ class AddResults6BandsWebTests implements LoginMixin {
         ContestDao yorkshireArea = this.contestService.create("Yorkshire Area");
         this.contestEventService.create(yorkshireArea, LocalDate.of(2000, 3, 1));
         this.contestEventService.create(yorkshireArea, LocalDate.of(2000, 3, 2));
+        this.contestEventService.create(yorkshireArea, LocalDate.of(2000, 3, 3));
 
         this.personService.create("Roberts", "David");
         this.personService.create("Childs", "Nick");
@@ -251,4 +250,5 @@ class AddResults6BandsWebTests implements LoginMixin {
         assertEquals(pointsBefore + 1, currentUser.getPoints());
     }
 }
+
 
