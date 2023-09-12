@@ -227,12 +227,12 @@ class AddResults6BandsWebTests implements LoginMixin {
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
 
         // act
-        ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/add-results/6/yorkshire-area/2000-03-01", request, String.class);
+        ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/add-results/6/yorkshire-area/2000-03-03", request, String.class);
 
         // assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
 
-        Optional<ContestEventDao> fetchedContestEvent =  this.contestEventService.fetchEvent("yorkshire-area", LocalDate.of(2000,3,1));
+        Optional<ContestEventDao> fetchedContestEvent =  this.contestEventService.fetchEvent("yorkshire-area", LocalDate.of(2000,3,3));
         assertTrue(fetchedContestEvent.isPresent());
 
         List<ContestResultDao> eventResults = this.resultService.fetchObjectsForEvent(fetchedContestEvent.get());
