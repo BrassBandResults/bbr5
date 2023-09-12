@@ -163,7 +163,10 @@ public class EventResultSqlDto extends AbstractSqlDto {
             conductor1.setFirstNames(this.conductor1FirstNames);
             conductor1.setSlug(this.conductor1Slug);
             result.setConductor(conductor1);
+        } else {
+            result.setOriginalConductorName("Unknown");
         }
+
 
         if (this.conductor2Slug != null) {
             PersonDao conductor2 = new PersonDao();

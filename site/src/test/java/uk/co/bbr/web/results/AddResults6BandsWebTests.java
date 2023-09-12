@@ -48,13 +48,11 @@ class AddResults6BandsWebTests implements LoginMixin {
 
     @Autowired private SecurityService securityService;
     @Autowired private JwtService jwtService;
-    @Autowired private RegionService regionService;
     @Autowired private BandService bandService;
     @Autowired private ContestService contestService;
     @Autowired private PersonService personService;
     @Autowired private ContestEventService contestEventService;
     @Autowired private ResultService resultService;
-    @Autowired private VenueService venueService;
     @Autowired private RestTemplate restTemplate;
     @Autowired private CsrfTokenRepository csrfTokenRepository;
     @LocalServerPort private int port;
@@ -69,6 +67,7 @@ class AddResults6BandsWebTests implements LoginMixin {
         ContestDao yorkshireArea = this.contestService.create("Yorkshire Area");
         this.contestEventService.create(yorkshireArea, LocalDate.of(2000, 3, 1));
         this.contestEventService.create(yorkshireArea, LocalDate.of(2000, 3, 2));
+        this.contestEventService.create(yorkshireArea, LocalDate.of(2000, 3, 3));
 
         this.personService.create("Roberts", "David");
         this.personService.create("Childs", "Nick");
@@ -205,5 +204,51 @@ class AddResults6BandsWebTests implements LoginMixin {
         currentUser = this.securityService.getCurrentUser();
         assertEquals(pointsBefore + 2, currentUser.getPoints());
     }
+
+    @Test
+    void testAddSingleResultWithUnknownConductorWorksSuccessfully() throws AuthenticationFailedException {
+        loginTestUser(this.securityService, this.jwtService, TestUser.TEST_MEMBER);
+        SiteUserDao currentUser = this.securityService.getCurrentUser();
+        int pointsBefore = currentUser.getPoints();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+        CsrfToken csrfToken = csrfTokenRepository.generateToken(null);
+        headers.add(csrfToken.getHeaderName(), csrfToken.getToken());
+        headers.add("Cookie", SecurityFilter.CSRF_HEADER_NAME + "=" + csrfToken.getToken());
+
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+        map.add("resultBlock", "1. Rothwell Temperance Band, Unknown, 5");
+        map.add("_csrf", csrfToken.getToken());
+        map.add("_csrf_header", SecurityFilter.CSRF_HEADER_NAME);
+
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
+
+        // act
+        ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/add-results/6/yorkshire-area/2000-03-03", request, String.class);
+
+        // assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+
+        Optional<ContestEventDao> fetchedContestEvent =  this.contestEventService.fetchEvent("yorkshire-area", LocalDate.of(2000,3,3));
+        assertTrue(fetchedContestEvent.isPresent());
+
+        List<ContestResultDao> eventResults = this.resultService.fetchObjectsForEvent(fetchedContestEvent.get());
+        assertEquals(1, eventResults.size());
+        assertEquals(1, eventResults.get(0).getPosition());
+        assertEquals("1", eventResults.get(0).getPositionDisplay());
+        assertEquals(ResultPositionType.RESULT, eventResults.get(0).getResultPositionType());
+        assertEquals("rothwell-temperance-band", eventResults.get(0).getBand().getSlug());
+        assertEquals("Rothwell Temperance Band", eventResults.get(0).getBand().getName());
+        assertEquals("Rothwell Temperance Band", eventResults.get(0).getBandName());
+        assertEquals("Unknown", eventResults.get(0).getOriginalConductorName());
+        assertNull(eventResults.get(0).getConductor());
+        assertEquals(5, eventResults.get(0).getDraw());
+
+        currentUser = this.securityService.getCurrentUser();
+        assertEquals(pointsBefore + 1, currentUser.getPoints());
+    }
 }
+
 

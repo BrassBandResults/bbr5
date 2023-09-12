@@ -117,6 +117,7 @@ public class ContestResultDao extends AbstractDao implements NameTools {
     private boolean duplicateBandThisEvent = false;
 
     public void populateFrom(ContestResultDao result) {
+        this.setOriginalConductorName(result.getOriginalConductorName());
         if (this.getConductor() == null && result.getConductor() != null) {
             this.setConductor(result.getConductor());
         }

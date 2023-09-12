@@ -59,6 +59,13 @@ public class ParseResultDto implements NameTools {
         }
     }
 
+    public void setUnknownMatchedConductor() {
+        this.matchedConductorSlug = "";
+        if (this.matchedBandSlug != null) {
+            this.outcome = ParseOutcome.GREEN_MATCHES_FOUND_IN_DATABASE;
+        }
+    }
+
     public ContestResultDao buildContestResult(ContestEventDao contestEvent, BandService bandService, PersonService personService) {
         if (this.outcome != ParseOutcome.GREEN_MATCHES_FOUND_IN_DATABASE) {
             return null;
@@ -70,7 +77,7 @@ public class ParseResultDto implements NameTools {
         }
 
         Optional<PersonDao> matchedConductor = personService.fetchBySlug(this.matchedConductorSlug);
-        if (matchedConductor.isEmpty()) {
+        if (matchedConductor.isEmpty() && !this.rawConductorName.equalsIgnoreCase("Unknown")) {
             return null;
         }
 
@@ -79,7 +86,13 @@ public class ParseResultDto implements NameTools {
         contestResult.setPosition(this.rawPosition);
         contestResult.setBand(matchedBand.get());
         contestResult.setBandName(this.rawBandName);
-        contestResult.setConductor(matchedConductor.get());
+        if (this.rawConductorName.equalsIgnoreCase("Unknown")) {
+            contestResult.setConductor(null);
+            contestResult.setOriginalConductorName("Unknown");
+        } else {
+            contestResult.setConductor(matchedConductor.get());
+        }
+
         contestResult.setOriginalConductorName(this.rawConductorName);
         contestResult.setDraw(this.rawDraw);
 
