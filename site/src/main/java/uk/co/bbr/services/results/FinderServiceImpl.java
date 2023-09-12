@@ -26,12 +26,15 @@ public class FinderServiceImpl implements FinderService {
                 matchedBandSlug = matchedBand.getSlug();
             }
             if (parsedResult.getRawConductorName() != null) {
-                PersonDao matchedConductor = this.personFinderService.findMatchByName(parsedResult.getRawConductorName(), matchedBandSlug, dateContext);
-                if (matchedConductor != null) {
-                    parsedResult.setMatchedConductor(matchedConductor.getSlug(), matchedConductor.getCombinedName());
+                if (parsedResult.getRawConductorName().equalsIgnoreCase("Unknown")) {
+                    parsedResult.setUnknownMatchedConductor();
+                } else {
+                    PersonDao matchedConductor = this.personFinderService.findMatchByName(parsedResult.getRawConductorName(), matchedBandSlug, dateContext);
+                    if (matchedConductor != null) {
+                        parsedResult.setMatchedConductor(matchedConductor.getSlug(), matchedConductor.getCombinedName());
+                    }
                 }
             }
-
         }
 
         return parsedResult;
