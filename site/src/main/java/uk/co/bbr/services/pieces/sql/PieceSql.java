@@ -23,7 +23,7 @@ public class PieceSql {
                 INNER JOIN band b ON b.id = r.band_id
                 INNER JOIN region reg ON reg.id = b.region_id
             WHERE rt.piece_id = ?1
-            ORDER BY e.date_of_event, c.name DESC""";
+            ORDER BY e.date_of_event DESC, c.name DESC""";
 
     public static List<OwnChoiceUsagePieceSqlDto> selectOwnChoicePieceUsage(EntityManager entityManager, Long pieceId) {
         return SqlExec.execute(entityManager, PIECE_OWN_CHOICE_SQL, pieceId, OwnChoiceUsagePieceSqlDto.class);
@@ -38,7 +38,7 @@ public class PieceSql {
                 LEFT OUTER JOIN band b ON b.id = r.band_id
                 LEFT OUTER JOIN region reg ON reg.id = b.region_id
             WHERE et.piece_id = ?1
-            ORDER BY e.date_of_event, c.name DESC""";
+            ORDER BY e.date_of_event DESC, c.name DESC""";
 
     public static List<SetTestUsagePieceSqlDto> selectSetTestPieceUsage(EntityManager entityManager, Long pieceId) {
         return SqlExec.execute(entityManager, PIECE_SET_TEST_SQL, pieceId, SetTestUsagePieceSqlDto.class);
