@@ -145,4 +145,4 @@ jobs:
         run: npm install -g newman
       -
         name: Run newman tests
-        run: newman run "postman/bbr.postman_collection.json" --global-var SITE_URL="https://bbr5.brassbandresults.co.uk"
+        run: newman run "postman/bbr.postman_collection.json" --global-var SITE_URL="https://www.brassbandresults.co.uk"
