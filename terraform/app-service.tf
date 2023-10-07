@@ -72,7 +72,7 @@ resource "azurerm_monitor_diagnostic_setting" "bbr5-logs" {
   target_resource_id = azurerm_linux_web_app.bbr5.id
   storage_account_id = azurerm_storage_account.bbr5.id
 
-  enabled_log {
+  metric {
     category = "AllMetrics"
   }
 }
