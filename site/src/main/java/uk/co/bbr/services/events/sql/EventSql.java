@@ -78,17 +78,12 @@ public class EventSql {
     }
 
     private static final String EVENT_RESULT_PIECES_SQL = """
-            SELECT p.name as piece_name, p.slug as piece_slug, p.piece_year as piece_year, r.id as result_id, crtp.ordering as ordering,
-                   composer.surname as comp_surname, composer.first_names as comp_firstnames, composer.slug as comp_slug,
-                   arranger.surname as arr_surname, arranger.first_names as arr_firstnames, arranger.slug as arr_slug
+            SELECT p.name as piece_name, p.slug as piece_slug, p.piece_year as piece_year, crtp.contest_result_id as result_id, crtp.ordering as ordering
             FROM contest_result_test_piece crtp
             INNER JOIN piece p ON p.id = crtp.piece_id
             INNER JOIN contest_result r ON r.id = crtp.contest_result_id
-            INNER JOIN contest_event e ON e.id = r.contest_event_id
-            LEFT OUTER JOIN person composer ON composer.id = p.composer_id
-            LEFT OUTER JOIN person arranger ON arranger.id = p.arranger_id
-            WHERE e.id = ?1
-            ORDER BY crtp.ordering, r.band_id""";
+            WHERE r.contest_event_id = ?1
+            ORDER BY crtp.ordering""";
 
     public static List<ResultPieceSqlDto> selectEventResultPieces(EntityManager entityManager, Long eventId) {
         return SqlExec.execute(entityManager, EVENT_RESULT_PIECES_SQL, eventId, ResultPieceSqlDto.class);
