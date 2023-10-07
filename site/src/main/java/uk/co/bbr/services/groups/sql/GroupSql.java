@@ -77,7 +77,7 @@ public class GroupSql {
         INNER JOIN contest_group g ON g.id = c.contest_group_id
         LEFT OUTER JOIN result_counts counts ON counts.contest_id = c.id
         WHERE g.slug = ?1
-        ORDER BY c.name""";
+        ORDER BY c.ordering, c.name""";
 
     public static List<ContestListSqlDto> contestsForGroup(EntityManager entityManager, String groupSlug) {
         return SqlExec.execute(entityManager, CONTESTS_FOR_GROUP, groupSlug, ContestListSqlDto.class);
