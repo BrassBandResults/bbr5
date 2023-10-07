@@ -73,12 +73,12 @@ resource "azurerm_monitor_diagnostic_setting" "bbr5-logs" {
   storage_account_id = azurerm_storage_account.bbr5.id
 
   enabled_log {
-    category = "HttpLogs"
+    category = "AppServiceHTTPLogs"
   }
   enabled_log {
     category = "AppServiceConsoleLogs"
   }
   enabled_log {
-    category = "AppServiceApplicationLogs"
+    category = "AppServiceAppLogs"
   }
 }
