@@ -66,13 +66,3 @@ resource "azurerm_app_service_certificate_binding" "bbr5cert" {
   certificate_id      = azurerm_app_service_managed_certificate.bbr5cert.id
   ssl_state           = "SniEnabled"
 }
-
-resource "azurerm_monitor_diagnostic_setting" "bbr5-logs" {
-  name               = terraform.workspace == "prod" ? "bbr5-logs" : "bbr5-${terraform.workspace}-logs"
-  target_resource_id = azurerm_linux_web_app.bbr5.id
-  storage_account_id = azurerm_storage_account.bbr5.id
-
-  metric {
-    category = "AllMetrics"
-  }
-}
