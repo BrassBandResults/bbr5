@@ -50,7 +50,7 @@
 
         <input type="submit" th:value="#{page.buttons.add-test-piece}" class="btn btn-outline-success"/>
         <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
-        <a th:href="${'/contests/' + ContestEvent.contest.slug + '/' + ContestEvent.eventDateForUrl + '/result/' + ContestResult.id + '/edit-pieces'}" th:text="#{page.buttons.cancel}" class="btn btn-light">Cancel wout saving</a>
+        <a th:href="${'/contests/' + ContestEvent.contest.slug + '/' + ContestEvent.eventDateForUrl}" th:text="#{page.buttons.done}" class="btn btn-light">Cancel wout saving</a>
     </form>
 </div>
 
