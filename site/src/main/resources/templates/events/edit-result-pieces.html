@@ -48,7 +48,7 @@
             <small class="form-text" th:text="#{page.edit-result-pieces.hint.suffix}">Optional detail such as 'Second Movement'</small>
         </div>
 
-        <input type="submit" th:value="#{page.buttons.add-test-piece}" class="btn btn-outline-success"/>
+        <input type="submit" th:value="#{page.buttons.add-piece}" class="btn btn-outline-success"/>
         <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
         <a th:href="${'/contests/' + ContestEvent.contest.slug + '/' + ContestEvent.eventDateForUrl}" th:text="#{page.buttons.done}" class="btn btn-light">Cancel wout saving</a>
     </form>
