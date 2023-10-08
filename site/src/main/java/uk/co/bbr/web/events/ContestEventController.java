@@ -85,6 +85,9 @@ public class ContestEventController extends AbstractEventController {
         model.addAttribute("EventTestPieces", eventTestPieces);
         model.addAttribute("Adjudicators", adjudicators);
         model.addAttribute("ContestOwner", contestOwner);
+        if (contestOwner != null) {
+            model.addAttribute("OwnerUserName", contestOwner.getUsercode());
+        }
         model.addAttribute("EventResults", eventResults);
         model.addAttribute("NextEvent", nextEvent);
         model.addAttribute("PreviousEvent", previousEvent);
@@ -98,10 +101,10 @@ public class ContestEventController extends AbstractEventController {
         model.addAttribute("ShowPoints2", showPoints2);
         model.addAttribute("ShowPoints3", showPoints3);
         model.addAttribute("ShowPoints4", showPoints4);
+        model.addAttribute("ShowPoints5", showPoints5);
         model.addAttribute("ShowPointsPenalty", showPointsPenalty);
         model.addAttribute("ShowPointsTotal", showPointsTotal);
         model.addAttribute("Notes", Tools.markdownToHTML(contestEvent.getNotes()));
-
 
         return "events/event";
     }
