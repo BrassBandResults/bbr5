@@ -10,6 +10,7 @@
         <span th:replace="~{links/contest-link.html :: contestLink(${ContestEvent.contest})}"></span>
     </h2>
     <h3><a th:href="${'/contests/' + ContestEvent.contest.slug + '/' + ContestEvent.eventDateForUrl}" th:text="${ContestEvent.eventDateDisplayWithDay}"></a></h3>
+    <h4 th:text="${ContestResult.bandName}"></h4>
 
     <table class="table table-hover">
         <tr th:each="resultPiece : ${Pieces}">
