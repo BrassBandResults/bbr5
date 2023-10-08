@@ -105,4 +105,9 @@ public class PaymentsServiceImpl implements PaymentsService {
 
         return returnData;
     }
+
+    @Override
+    public void recordUpgrade(String usercode, String stripeCheckoutSessionId) {
+        return; // TODO
+    }
 }

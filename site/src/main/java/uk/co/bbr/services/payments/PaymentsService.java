@@ -19,4 +19,6 @@ public interface PaymentsService {
     String fetchStripePublishableKey();
 
     List<SiteUserProDao> markupUsers(List<SiteUserDao> users);
+
+    void recordUpgrade(String usercode, String stripeCheckoutSessionId);
 }
