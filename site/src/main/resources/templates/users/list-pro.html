@@ -50,7 +50,10 @@
                     <span class="text-success" th:if="${user.subscriptionActive}" th:text="${#temporals.format(user.currentSubscriptionEndDate, 'dd MMM yyyy')}"></span>
                     <span th:if="${!user.subscriptionActive}"><span th:replace="~{buttons/button.html :: removePro(${user.siteUser})}">Remove Pro</span></span>
                 </td>
-                <td th:if="${user.siteUser.getStripeEmail() == null}" class="text-danger">
+                <td th:if="${user.siteUser.proUserForFree == true}" class="text-success">
+                    Free
+                </td>
+                <td th:if="${user.siteUser.proUserForFree == false && user.siteUser.getStripeEmail() == null}" class="text-danger">
                     No Stripe Email
                 </td>
             </tr>
