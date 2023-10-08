@@ -5,7 +5,9 @@ public interface NameTools {
     default String replaceCommon(String name) {
         return name.replaceAll(" +", " ")
                    .replaceAll("^St ", "St. ")
-                   .replace(" St ", " St. ").strip();
+                   .replace(" St ", " St. ")
+                   .replaceAll("\"", "")
+                   .strip();
     }
 
     default String makeSureSpaceAfterDot(String name) {

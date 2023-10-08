@@ -9,6 +9,10 @@
         <span th:text="#{page.search-results.page-header}">Search Results for</span>
         <span th:text="${SearchString}">Search String</span>
     </h2>
+    <h3>
+        <span th:text="${SearchResults.size()}"></span>
+        <span th:text="#{page.search-results.matches}">matches</span>
+    </h3>
 
     <table class="table table-hover sortable">
         <thead>
