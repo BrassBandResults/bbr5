@@ -33,6 +33,10 @@ public class FeedbackSubmitController {
             return "redirect:/feedback/thanks?next=/&t=r2";
         }
 
+        if (feedback.strip().length() == 0) {
+            return "redirect:/feedback/thanks?next=/&t=b";
+        }
+
         final String URL_PATTERN = "^[^#]*?://.*?(/.*)$";
         Pattern pattern = Pattern.compile(URL_PATTERN);
         Matcher matcher = pattern.matcher(url.strip());

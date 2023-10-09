@@ -25,8 +25,6 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     @Override
     public void submit(String url, String referrer, String ownerUsercode, String feedback, String browserName, String ip) {
-        String currentUsername = this.securityService.getCurrentUsername();
-
         FeedbackDao newFeedback = new FeedbackDao();
         newFeedback.setUrl(url);
         newFeedback.setComment(feedback);
@@ -36,6 +34,7 @@ public class FeedbackServiceImpl implements FeedbackService {
             newFeedback.setOwnedBy(ownerUsercode);
         }
 
+        String currentUsername = this.securityService.getCurrentUsername();
         newFeedback.addAuditLog(currentUsername, "Referrer: " + url);
         newFeedback.addAuditLog(currentUsername, "Ip: " + ip);
 

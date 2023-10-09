@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import uk.co.bbr.services.framework.EnvVar;
 import uk.co.bbr.services.security.SecurityService;
+import uk.co.bbr.services.security.UserService;
 import uk.co.bbr.services.security.dao.SiteUserDao;
 import uk.co.bbr.services.security.dao.SiteUserProDao;
 
@@ -18,6 +19,7 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -26,6 +28,7 @@ public class PaymentsServiceImpl implements PaymentsService {
 
     private final SecurityService securityService;
     private final StripeService stripeService;
+    private final UserService userService;
 
     @Override
     public boolean isProAccountActive() {
@@ -108,6 +111,16 @@ public class PaymentsServiceImpl implements PaymentsService {
 
     @Override
     public void recordUpgrade(String usercode, String stripeCheckoutSessionId) {
-        return; // TODO
+        try {
+            String stripeEmail = this.stripeService.fetchEmailFromCheckoutSession(stripeCheckoutSessionId);
+
+            Optional<SiteUserDao> user = this.userService.fetchUserByUsercode(usercode);
+            if (user.isPresent()) {
+                user.get().setStripeEmail(stripeEmail);
+                this.securityService.update(user.get());
+            }
+        } catch (Exception ex) {
+           // do nothing
+        }
     }
 }
