@@ -35,6 +35,7 @@ public class CreateBandController {
         List<RegionDao> regions = this.regionService.findAll();
         BandEditForm bandEditForm = new BandEditForm();
         bandEditForm.setRegion(this.regionService.fetchUnknownRegion().getId());
+        bandEditForm.setStatus(BandStatus.COMPETING.getCode());
 
         model.addAttribute("BandForm", bandEditForm);
         model.addAttribute("Regions", regions);

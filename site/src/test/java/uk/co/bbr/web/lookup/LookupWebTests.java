@@ -84,6 +84,9 @@ class LookupWebTests implements LoginMixin {
         PersonDao johnRoberts = this.personService.create("Roberts", "John");
         PersonDao duncanBeckley = this.personService.create("Beckley", "Duncan");
 
+        this.personService.create("Aardvark", "A.");
+        this.personService.create("Barclay", "A. B.");
+
         ContestDao yorkshireArea = this.contestService.create("Yorkshire Area");
         ContestDao broadoakWhitFriday = this.contestService.create("Broadoak (Whit Friday)");
 
@@ -186,6 +189,22 @@ class LookupWebTests implements LoginMixin {
         assertTrue(response.contains("John Roberts"));
         assertTrue(response.contains("David Roberts"));
         assertFalse(response.contains("Duncan Beckley"));
+    }
+
+    @Test
+    void testLookupPeopleWithSingleInitialWorksSuccessfully() {
+        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/lookup/person/data.json?s=a. ", String.class);
+        assertNotNull(response);
+
+        assertTrue(response.contains("A. Aardvark"));
+    }
+
+    @Test
+    void testLookupPeopleWithTwoInitialsWorksSuccessfully() {
+        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/lookup/person/data.json?s=a. b.", String.class);
+        assertNotNull(response);
+
+        assertTrue(response.contains("A. B. Barclay"));
     }
 
     @Test

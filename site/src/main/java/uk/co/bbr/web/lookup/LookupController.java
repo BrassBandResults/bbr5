@@ -15,6 +15,9 @@ import uk.co.bbr.services.lookup.LookupService;
 import uk.co.bbr.services.lookup.sql.dto.LookupSqlDto;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Comparator;
 import java.util.List;
 

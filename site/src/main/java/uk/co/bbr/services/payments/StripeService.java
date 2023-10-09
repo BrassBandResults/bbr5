@@ -11,4 +11,6 @@ public interface StripeService {
     boolean isSubscriptionActive(SiteUserDao user);
 
     LocalDate subscriptionExpiryDate(SiteUserDao user);
+
+    String fetchEmailFromCheckoutSession(String stripeCheckoutSessionId);
 }
