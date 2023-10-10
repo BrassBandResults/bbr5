@@ -40,7 +40,7 @@
             <span th:text="${#numbers.formatDecimal(Statistics.resultCount, 0, 'COMMA', 0, 'POINT')}" th:remove="tag">123</span>
             <span th:text="#{page.statistics.results}" th:remove="tag">results</span>,
             <span sec:authorize="hasRole('BBR_PRO')" th:text="#{page.statistics.of-which}" th:remove="tag">of which</span>
-            <span sec:authorize="hasRole('BBR_PRO')" th:text="${Statistics.resultsWithPlacingsCount}" th:remove="tag">123</span>
+            <span sec:authorize="hasRole('BBR_PRO')" th:text="${#numbers.formatDecimal(Statistics.resultsWithPlacingsCount, 0, 'COMMA', 0, 'POINT')}" th:remove="tag">123</span>
             <span sec:authorize="hasRole('BBR_PRO')" th:text="#{page.statistics.have-placings}" th:remove="tag">have placings</span>.
         </li>
         <li>
