@@ -12,8 +12,10 @@ public class AddResultsTestPieceForm {
     private String testPieceSlug;
 
     public void validate(BindingResult bindingResult) {
-        if (this.testPieceSlug == null || this.testPieceSlug.trim().length() < 4) {
-            bindingResult.addError(new ObjectError("eventDate", "page.add-results.errors.not-found-piece"));
+        if (this.testPieceName != null && this.testPieceName.strip().length() > 0) {
+            if (this.testPieceSlug.trim().length() < 4) {
+                bindingResult.addError(new ObjectError("eventDate", "page.add-results.errors.not-found-piece"));
+            }
         }
     }
 }
