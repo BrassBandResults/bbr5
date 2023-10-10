@@ -34,7 +34,9 @@
 
 <span th:fragment="eventPiecesLink(pieces)">
    <span th:each="contestEventPiece, iStat : ${pieces}">
-       <span th:if="${!iStat.first}" th:text="#{${contestEventPiece.andOr.translationKey}}"></span>
+       <span th:if="${contestEventPiece.andOr != null}">
+         <span th:if="${!iStat.first}" th:text="#{${contestEventPiece.andOr.translationKey}}"></span>
+        </span>
         <span th:replace="~{links/piece-link.html :: pieceLink(${contestEventPiece.piece})}"></span>
     </span>
 </span>

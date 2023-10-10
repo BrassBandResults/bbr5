@@ -12,6 +12,7 @@ import uk.co.bbr.services.events.BandResultService;
 import uk.co.bbr.services.events.dao.ContestResultDao;
 import uk.co.bbr.services.events.dto.ResultDetailsDto;
 import uk.co.bbr.services.framework.NotFoundException;
+import uk.co.bbr.services.people.dao.PersonDao;
 
 import java.util.List;
 import java.util.Optional;
@@ -31,6 +32,14 @@ public class EmbedController {
         }
 
         ResultDetailsDto bandResults = this.bandResultService.findResultsForBand(band.get(), ResultSetCategory.PAST);
+
+        for (ContestResultDao eachResult : bandResults.getBandAllResults()) {
+            if (eachResult.getConductor() == null) {
+                eachResult.setConductor(new PersonDao());
+                eachResult.getConductor().setSurname("Unknown");
+                eachResult.getConductor().setSlug("unknown");
+            }
+        }
 
         List<ContestResultDao> resultsToReturn = null;
         switch (type) {

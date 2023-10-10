@@ -9,8 +9,10 @@ import uk.co.bbr.services.bands.BandService;
 import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.bands.types.ResultSetCategory;
 import uk.co.bbr.services.events.BandResultService;
+import uk.co.bbr.services.events.dao.ContestResultDao;
 import uk.co.bbr.services.events.dto.ResultDetailsDto;
 import uk.co.bbr.services.framework.NotFoundException;
+import uk.co.bbr.services.people.dao.PersonDao;
 
 import java.util.Optional;
 
@@ -29,6 +31,14 @@ public class LegacyEmbedController {
         }
 
         ResultDetailsDto bandResults = this.bandResultService.findResultsForBand(band.get(), ResultSetCategory.PAST);
+
+        for (ContestResultDao eachResult : bandResults.getBandAllResults()) {
+            if (eachResult.getConductor() == null) {
+                eachResult.setConductor(new PersonDao());
+                eachResult.getConductor().setSurname("Unknown");
+                eachResult.getConductor().setSlug("unknown");
+            }
+        }
 
         model.addAttribute("Band", band.get());
         model.addAttribute("BandSlugUnderscores", band.get().getSlugWithUnderscores());
