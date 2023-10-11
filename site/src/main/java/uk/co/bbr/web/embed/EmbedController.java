@@ -73,7 +73,7 @@ public class EmbedController {
         String json = this.resolveTemplate("embed/band-legacy", band.get(), bandResults.getBandAllResults(), "");
 
         HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.setContentType(MediaType.APPLICATION_JSON);
+        responseHeaders.add("Content-Type", "text/javascript");
         responseHeaders.setAccessControlAllowOrigin("*");
         return new ResponseEntity<>(json, responseHeaders, HttpStatus.OK);
     }
@@ -98,7 +98,7 @@ public class EmbedController {
         String json = this.resolveTemplate("embed/band-2023", band.get(), resultsToReturn, type);
 
         HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.setContentType(MediaType.APPLICATION_JSON);
+        responseHeaders.add("Content-Type", "text/javascript");
         responseHeaders.setAccessControlAllowOrigin("*");
         return new ResponseEntity<>(json, responseHeaders, HttpStatus.OK);
     }
