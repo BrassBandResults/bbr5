@@ -56,7 +56,7 @@ class BandEmbedWebTests implements LoginMixin {
         assertTrue(response.contains("<title>Rothwell Temperance Band - Embed Results - Brass Band Results</title>"));
         assertTrue(response.contains("Rothwell Temperance Band"));
 
-        assertTrue(response.contains("https://brassbandresults.co.uk/embed/band/rothwell-temperance-band/results-all/2023"));
+        assertTrue(response.contains("https://www.brassbandresults.co.uk/embed/band/rothwell-temperance-band/results-all/2023"));
     }
 
     @Test
@@ -72,7 +72,7 @@ class BandEmbedWebTests implements LoginMixin {
         assertTrue(response.contains("<title>Rothwell Temperance Band - Embed Results - Brass Band Results</title>"));
         assertTrue(response.contains("Rothwell Temperance Band"));
 
-        assertTrue(response.contains("https://brassbandresults.co.uk/embed/band/rothwell-temperance-band/results-non_whit/2023"));
+        assertTrue(response.contains("https://www.brassbandresults.co.uk/embed/band/rothwell-temperance-band/results-non_whit/2023"));
     }
 
     @Test
@@ -88,7 +88,7 @@ class BandEmbedWebTests implements LoginMixin {
         assertTrue(response.contains("<title>Rothwell Temperance Band - Embed Results - Brass Band Results</title>"));
         assertTrue(response.contains("Rothwell Temperance Band"));
 
-        assertTrue(response.contains("https://brassbandresults.co.uk/embed/band/rothwell-temperance-band/results-whit/2023"));
+        assertTrue(response.contains("https://www.brassbandresults.co.uk/embed/band/rothwell-temperance-band/results-whit/2023"));
     }
 
     @Test
