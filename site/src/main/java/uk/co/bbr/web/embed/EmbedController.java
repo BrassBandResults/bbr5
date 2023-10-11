@@ -74,6 +74,7 @@ public class EmbedController {
 
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.setContentType(MediaType.APPLICATION_JSON);
+        responseHeaders.setAccessControlAllowOrigin("*");
         return new ResponseEntity<>(json, responseHeaders, HttpStatus.OK);
     }
 
@@ -98,6 +99,7 @@ public class EmbedController {
 
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.setContentType(MediaType.APPLICATION_JSON);
+        responseHeaders.setAccessControlAllowOrigin("*");
         return new ResponseEntity<>(json, responseHeaders, HttpStatus.OK);
     }
 
