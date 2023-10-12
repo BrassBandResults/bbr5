@@ -34,7 +34,7 @@ public class PiecesPerSectionSqlDto extends AbstractSqlDto {
         this.arrangerSuffix = this.getString(columnList, 9);
         this.arrangerSlug = this.getString(columnList, 10);
         this.setTestCount = this.getInteger(columnList,11);
-        this.ownChoiceCount = this.getInteger(columnList,2);
+        this.ownChoiceCount = this.getInteger(columnList,12);
     }
 
     public PieceDao getPiece() {
