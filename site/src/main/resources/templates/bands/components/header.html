@@ -11,7 +11,6 @@
     </div>
     <span th:replace="~{components/aliases.html :: previousNames(${PreviousNames})}"></span>
     <br/><br/>
-    <span th:replace="~{buttons/edit.html :: editRehearsalDays(${Band})}"></span>
     <table>
         <tr><td colspan="2" th:if="${Band.status.notCompeting}" th:text="#{${Band.status.translationKey} +'.long'}">Band Status</td></tr>
         <tr th:if="${Band.section}">
