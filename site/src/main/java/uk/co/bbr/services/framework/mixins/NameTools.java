@@ -3,6 +3,9 @@ package uk.co.bbr.services.framework.mixins;
 public interface NameTools {
 
     default String replaceCommon(String name) {
+        if (name == null) {
+            return "";
+        }
         return name.replaceAll(" +", " ")
                    .replaceAll("^St ", "St. ")
                    .replace(" St ", " St. ")

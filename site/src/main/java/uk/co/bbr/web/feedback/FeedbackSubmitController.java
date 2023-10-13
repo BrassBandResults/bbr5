@@ -66,7 +66,7 @@ public class FeedbackSubmitController {
 
 
     @GetMapping("/feedback/thanks")
-    public String thanks(Model model, @RequestParam("next") String next) {
+    public String thanks(Model model, @RequestParam(value="next", required=false) String next) {
         model.addAttribute("FeedbackOffset", next);
 
         return "feedback/thanks";
