@@ -5,18 +5,18 @@
     </h2>
     <div>
         <div class="row">
-            <div class="col" sec:authorize="hasRole('BBR_SUPERUSER')">
-                <span th:replace="~{buttons/edit.html :: editBand(${Band})}"></span>
-                <span th:replace="~{buttons/edit.html :: editBandAliases(${Band})}"></span>
-                <span th:replace="~{buttons/edit.html :: editBandRelationships(${Band})}"></span>
-                <span th:replace="~{buttons/edit.html :: editRehearsalDays(${Band})}"></span>
+            <div class="col">
+                <span sec:authorize="hasRole('BBR_SUPERUSER')" th:replace="~{buttons/edit.html :: editBand(${Band})}"></span>
+                <span sec:authorize="hasRole('BBR_SUPERUSER')" th:replace="~{buttons/edit.html :: editBandAliases(${Band})}"></span>
+                <span sec:authorize="hasRole('BBR_SUPERUSER')" th:replace="~{buttons/edit.html :: editBandRelationships(${Band})}"></span>
+                <span sec:authorize="hasRole('BBR_SUPERUSER')" th:replace="~{buttons/edit.html :: editRehearsalDays(${Band})}"></span>
+                <span th:replace="~{components/aliases.html :: previousNames(${PreviousNames})}"></span>
             </div>
             <div class="col text-end">
                 <span th:replace="~{buttons/create.html :: embedBand(${Band})}"></span>
             </div>
         </div>
     </div>
-    <span th:replace="~{components/aliases.html :: previousNames(${PreviousNames})}"></span>
     <br/><br/>
     <table>
         <tr><td colspan="2" th:if="${Band.status.notCompeting}" th:text="#{${Band.status.translationKey} +'.long'}">Band Status</td></tr>
