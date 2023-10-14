@@ -12,7 +12,7 @@
                 <span sec:authorize="hasRole('BBR_SUPERUSER')" th:replace="~{buttons/edit.html :: editRehearsalDays(${Band})}"></span>
                 <span th:replace="~{components/aliases.html :: previousNames(${PreviousNames})}"></span>
             </div>
-            <div class="col text-end">
+            <div class="col-2 text-end">
                 <span th:replace="~{buttons/create.html :: embedBand(${Band})}"></span>
             </div>
         </div>
