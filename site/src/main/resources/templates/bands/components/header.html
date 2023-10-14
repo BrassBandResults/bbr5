@@ -10,6 +10,7 @@
                 <span sec:authorize="hasRole('BBR_SUPERUSER')" th:replace="~{buttons/edit.html :: editBandAliases(${Band})}"></span>
                 <span sec:authorize="hasRole('BBR_SUPERUSER')" th:replace="~{buttons/edit.html :: editBandRelationships(${Band})}"></span>
                 <span sec:authorize="hasRole('BBR_SUPERUSER')" th:replace="~{buttons/edit.html :: editRehearsalDays(${Band})}"></span>
+                <br sec:authorize="hasRole('BBR_SUPERUSER')"/>
                 <span th:replace="~{components/aliases.html :: previousNames(${PreviousNames})}"></span>
             </div>
             <div class="col-2 text-end">
