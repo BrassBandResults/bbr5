@@ -38,7 +38,7 @@ public class EmbedController {
         templateResolver.setApplicationContext(this.applicationContext);
         templateResolver.setPrefix("classpath:/templates/");
         templateResolver.setSuffix(".jsonp");
-        templateResolver.setTemplateMode("json");
+        templateResolver.setTemplateMode("HTML");
         templateResolver.setCharacterEncoding("utf-8");
         templateResolver.setCacheable(false);
 

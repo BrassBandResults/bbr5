@@ -85,15 +85,31 @@ Follow a band or person
 
 
 
-Fix same band multiple results
+https://github.com/Azure/azure-sdk-for-java/issues/29528
 
-WITH event_band_counts AS (SELECT COUNT(*) as count, contest_event_id, band_id
-FROM contest_result
-GROUP BY contest_event_id, band_id)
-SELECT e.date_of_event, c.slug, bc.band_id, b.name, CONCAT('https://brassbandresults.co.uk/contests/', c.slug, '/', e.date_of_event) as url
-FROM contest_event e
-INNER JOIN contest c ON c.id = e.contest_id
-INNER JOIN event_band_counts bc ON bc.contest_event_id = e.id
-INNER JOIN band b ON b.id = bc.band_id
-WHERE bc.count > 1
-ORDER BY b.name;
+
+
+2023-10-12T20:40:36.264323792Z 2023-10-12T20:40:36.263Z INFO 1 --- [io-8080-exec-17] o.apache.coyote.http11.Http11Processor : Error parsing HTTP request header
+2023-10-12T20:40:36.264375393Z Note: further occurrences of HTTP request parsing errors will be logged at DEBUG level.
+2023-10-12T20:40:36.264383593Z
+2023-10-12T20:40:36.264387593Z java.lang.IllegalArgumentException: Invalid character found in the request target [/map/search/?location=Dudley%20U.M.F.C%20[Northumberland]&lat=55.057676&lng=-1.592588&distance=10&type=mi&from=band ]. The valid characters are defined in RFC 7230 and RFC 3986
+2023-10-12T20:40:36.264393093Z at org.apache.coyote.http11.Http11InputBuffer.parseRequestLine(Http11InputBuffer.java:482) ~[tomcat-embed-core-10.1.11.jar!/:na]
+2023-10-12T20:40:36.264397493Z at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:264) ~[tomcat-embed-core-10.1.11.jar!/:na]
+2023-10-12T20:40:36.264401593Z at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63) ~[tomcat-embed-core-10.1.11.jar!/:na]
+2023-10-12T20:40:36.264420894Z at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:894) ~[tomcat-embed-core-10.1.11.jar!/:na]
+2023-10-12T20:40:36.264425794Z at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1740) ~[tomcat-embed-core-10.1.11.jar!/:na]
+2023-10-12T20:40:36.264429794Z at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) ~[tomcat-embed-core-10.1.11.jar!/:na]
+2023-10-12T20:40:36.264433794Z at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191) ~[tomcat-embed-core-10.1.11.jar!/:na]
+2023-10-12T20:40:36.264437694Z at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659) ~[tomcat-embed-core-10.1.11.jar!/:na]
+2023-10-12T20:40:36.264441794Z at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) ~[tomcat-embed-core-10.1.11.jar!/:na]
+2023-10-12T20:40:36.264445694Z at java.base/java.lang.Thread.run(Thread.java:833) ~[na:na]
+2023-10-12T20:40:36.264449694Z
+
+
+
+Remove duplicates from personal_contest_history  There's quite a lot.
+
+SELECT count(*), result_id, created_by #
+FROM personal_contest_history
+GROUP BY result_id, created_by
+ORDER BY 1 DESC;

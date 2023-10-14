@@ -25,3 +25,7 @@
 <span th:fragment="createContest()" th:remove="tag">
     <span th:replace="~{buttons/button.html :: button(#{page.buttons.create.contest}, ${'/create/contest'})}"></span>
 </span>
+
+<span th:fragment="embedBand(band)" th:remove="tag">
+    <span th:replace="~{buttons/button.html :: greenButton(#{page.buttons.embed.band}, ${'/bands/' + band.slug + '/embed'})}"></span>
+</span>
