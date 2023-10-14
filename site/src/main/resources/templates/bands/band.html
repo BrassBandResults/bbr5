@@ -26,10 +26,6 @@
             <span th:text="#{page.filter.alert}">This view of the band's results is filtered to something.</span>
             <b th:text="${FilteredTo}"></b>
         </p>
-        <span th:if="${FilteredTo == null}">
-            <span th:replace="~{buttons/edit.html :: embedBand(${Band})}"></span>
-        </span>
-
         <table class="table table-hover sortable">
             <thead>
                 <tr>
