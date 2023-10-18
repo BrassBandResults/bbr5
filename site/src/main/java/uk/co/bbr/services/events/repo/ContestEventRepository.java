@@ -56,7 +56,7 @@ public interface ContestEventRepository extends JpaRepository<ContestEventDao, L
     ContestEventDao fetchLatestEvent();
 
     @Query("SELECT e FROM ContestEventDao e WHERE e.contest.id = :contestId AND e.eventDate >= :startDate AND e.eventDate <= :endDate")
-    Optional<ContestEventDao> fetchByContestAndDateRange(Long contestId, LocalDate startDate, LocalDate endDate);
+    List<ContestEventDao> fetchByContestAndDateRange(Long contestId, LocalDate startDate, LocalDate endDate);
 
     @Query("SELECT e FROM ContestEventDao e WHERE e.contest.slug = :contestSlug AND e.eventDate >= :startDate AND e.eventDate <= :endDate")
     List<ContestEventDao> findContestBetweenDates(String contestSlug, LocalDate startDate, LocalDate endDate);

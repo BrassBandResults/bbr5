@@ -198,15 +198,16 @@ public class ContestEventServiceImpl implements ContestEventService {
     LocalDate startDate = eventDate.minus(14, ChronoUnit.DAYS);
     LocalDate endDate = eventDate.plus(14, ChronoUnit.DAYS);
 
-    Optional<ContestEventDao> foundEvent = this.contestEventRepository.fetchByContestAndDateRange(contest.get().getId(), startDate, endDate);
-    if (foundEvent.isPresent()) {
-      return foundEvent;
+    List<ContestEventDao> foundEvent = this.contestEventRepository.fetchByContestAndDateRange(contest.get().getId(), startDate, endDate);
+    if (!foundEvent.isEmpty()) {
+      return Optional.of(foundEvent.get(0));
     }
 
     LocalDate yearStart = LocalDate.of(eventDate.getYear(), 1, 1);
     LocalDate yearEnd = LocalDate.of(eventDate.getYear(), 12, 31);
 
-    return this.contestEventRepository.fetchByContestAndDateRange(contest.get().getId(), yearStart, yearEnd);
+    List<ContestEventDao> matchingEvents = this.contestEventRepository.fetchByContestAndDateRange(contest.get().getId(), yearStart, yearEnd);
+    return Optional.of(matchingEvents.get(0));
   }
 
   @Override

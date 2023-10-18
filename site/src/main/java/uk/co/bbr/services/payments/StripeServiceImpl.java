@@ -65,8 +65,8 @@ public class StripeServiceImpl implements StripeService {
         Stripe.apiKey = EnvVar.getEnv("BBR_STRIPE_PRIVATE_API_KEY", "sk_test_abc123");
         try {
             Session session = Session.retrieve(stripeCheckoutSessionId);
-            return session.getCustomerEmail();
-        } catch (StripeException ex) {
+            return session.getSubscriptionObject().getCustomerObject().getEmail();
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
         return null;
