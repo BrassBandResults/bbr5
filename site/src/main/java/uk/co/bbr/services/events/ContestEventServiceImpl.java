@@ -207,6 +207,9 @@ public class ContestEventServiceImpl implements ContestEventService {
     LocalDate yearEnd = LocalDate.of(eventDate.getYear(), 12, 31);
 
     List<ContestEventDao> matchingEvents = this.contestEventRepository.fetchByContestAndDateRange(contest.get().getId(), yearStart, yearEnd);
+    if (matchingEvents.isEmpty()) {
+        return Optional.empty();
+    }
     return Optional.of(matchingEvents.get(0));
   }
 
