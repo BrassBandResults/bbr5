@@ -11,6 +11,10 @@ csrf + tidy configuration
 
 coverage
 
+filter band/conductor results to a tag
+
+Band result don't show conductor for withdrawn result
+
 Current champions band header badge
 
 Result piece move up/down buttons to reorder
