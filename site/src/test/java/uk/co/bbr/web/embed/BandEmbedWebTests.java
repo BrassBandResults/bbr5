@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
@@ -34,7 +35,6 @@ import java.time.LocalDate;
 import java.util.Iterator;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -100,7 +100,11 @@ class BandEmbedWebTests implements LoginMixin {
     @Test
     void testFetchEmbedLegacyJsonPWorksSuccessfully() throws JsonProcessingException {
         String bandSlug = "rothwell-temperance-band";
-        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/embed/band/" + bandSlug + "/results/1", String.class);
+        ResponseEntity<String> responseEntity = this.restTemplate.getForEntity("http://localhost:" + this.port + "/embed/band/" + bandSlug + "/results/1", String.class);
+
+        assertEquals("text/javascript", responseEntity.getHeaders().getFirst("Content-Type"));
+
+        String response = responseEntity.getBody();
         assertNotNull(response);
 
         assertTrue(response.startsWith("bbr_embed_" + bandSlug.replace("-", "_") + "_jsonp(["));
@@ -162,8 +166,11 @@ class BandEmbedWebTests implements LoginMixin {
     @Test
     void testFetchEmbedBandAllResultsJsonPWorksSuccessfully() throws JsonProcessingException {
         String bandSlug = "rothwell-temperance-band";
-        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/embed/band/" + bandSlug + "/results-all/2023", String.class);
-        assertNotNull(response);
+        ResponseEntity<String> responseEntity = this.restTemplate.getForEntity("http://localhost:" + this.port + "/embed/band/" + bandSlug + "/results-all/2023", String.class);
+
+        assertEquals("text/javascript", responseEntity.getHeaders().getFirst("Content-Type"));
+
+        String response = responseEntity.getBody();assertNotNull(response);
 
         assertTrue(response.startsWith("bbr_embed_" + bandSlug.replace("-", "_") + "_all_jsonp(["));
         assertTrue(response.endsWith("]);"));
@@ -224,8 +231,11 @@ class BandEmbedWebTests implements LoginMixin {
     @Test
     void testFetchEmbedBandWhitResultsJsonPWorksSuccessfully() throws JsonProcessingException {
         String bandSlug = "rothwell-temperance-band";
-        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/embed/band/" + bandSlug + "/results-whit/2023", String.class);
-        assertNotNull(response);
+        ResponseEntity<String> responseEntity = this.restTemplate.getForEntity("http://localhost:" + this.port + "/embed/band/" + bandSlug + "/results-whit/2023", String.class);
+
+        assertEquals("text/javascript", responseEntity.getHeaders().getFirst("Content-Type"));
+
+        String response = responseEntity.getBody();assertNotNull(response);
 
         assertTrue(response.startsWith("bbr_embed_" + bandSlug.replace("-", "_") + "_whit_jsonp(["));
         assertTrue(response.endsWith("]);"));
@@ -271,8 +281,11 @@ class BandEmbedWebTests implements LoginMixin {
     @Test
     void testFetchEmbedBandNonWhitResultsJsonPWorksSuccessfully() throws JsonProcessingException {
         String bandSlug = "rothwell-temperance-band";
-        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/embed/band/" + bandSlug + "/results-non_whit/2023", String.class);
-        assertNotNull(response);
+        ResponseEntity<String> responseEntity = this.restTemplate.getForEntity("http://localhost:" + this.port + "/embed/band/" + bandSlug + "/results-non_whit/2023", String.class);
+
+        assertEquals("text/javascript", responseEntity.getHeaders().getFirst("Content-Type"));
+
+        String response = responseEntity.getBody();assertNotNull(response);
 
         assertTrue(response.startsWith("bbr_embed_" + bandSlug.replace("-", "_") + "_non_whit_jsonp(["));
         assertTrue(response.endsWith("]);"));
