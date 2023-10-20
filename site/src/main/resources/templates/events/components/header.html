@@ -7,7 +7,6 @@
             <div class="col">
                 <div th:if="${ContestEvent.canEdit}">
                     <span th:replace="~{buttons/edit.html :: editEvent(${ContestEvent})}"></span>
-                    <span th:replace="~{buttons/edit.html :: editResults(${ContestEvent})}"></span>
                     <span th:replace="~{buttons/edit.html :: editEventSetTests(${ContestEvent})}"></span>
                     <span th:replace="~{buttons/edit.html :: editEventAdjudicators(${ContestEvent})}"></span>
                 </div>
