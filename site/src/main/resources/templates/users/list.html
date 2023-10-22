@@ -34,6 +34,7 @@
                 <th th:text="#{page.column-header.user}">User</th>
                 <th th:text="#{page.column-header.email}">Email</th>
                 <th th:text="#{page.column-header.created}" class="date">Created</th>
+                <th th:text="#{page.column-header.last-login}" class="date">Last Login</th>
                 <th th:text="#{page.column-header.points}">Points</th>
             </tr>
             </thead>
@@ -42,6 +43,7 @@
                 <td><span th:replace="~{links/user-link.html :: userLink(${user})}">Lokry</span></td>
                 <td><span th:text="${user.email}">me@here.com</span></td>
                 <td th:text="${#temporals.format(user.created, 'dd MMM yyyy')}"></td>
+                <td th:text="${#temporals.format(user.lastLogin, 'dd MMM yyyy')}"></td>
                 <td th:text="${user.points}"></td>
             </tr>
             </tbody>

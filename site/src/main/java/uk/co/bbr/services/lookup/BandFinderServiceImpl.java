@@ -34,36 +34,17 @@ public class BandFinderServiceImpl implements BandFinderService, SlugTools {
             bandNameUpperLessBand = bandNameUpper.substring(0, bandNameUpper.length() - "BAND".length()).strip();
         }
 
-        System.out.println("Looking for " + bandNameUpper);
         List<FinderSqlDto> bandMatches = FinderSql.bandFindExactNameMatch(this.entityManager, bandNameUpper);
-
-        System.out.println("Looking for alias " + bandNameUpper);
         bandMatches.addAll(FinderSql.bandAliasFindExactNameMatch(this.entityManager, bandNameUpper));
-
-
-        System.out.println("Looking for " + bandNameUpper + " BAND");
         bandMatches.addAll(FinderSql.bandFindExactNameMatch(this.entityManager, bandNameUpper + " BAND"));
-
-        System.out.println("Looking for alias " + bandNameUpper + " BAND");
         bandMatches.addAll(FinderSql.bandAliasFindExactNameMatch(this.entityManager, bandNameUpper + " BAND"));
-
-        System.out.println("Looking for contains " + bandNameUpper + " ");
         bandMatches.addAll(FinderSql.bandFindContainsNameMatch(this.entityManager, bandNameUpper + " "));
-
-        System.out.println("Looking for alias contains " + bandNameUpper + " ");
         bandMatches.addAll(FinderSql.bandAliasFindContainsNameMatch(this.entityManager, bandNameUpper + " "));
-
-        System.out.println("Looking for contains " + bandNameUpper);
         bandMatches.addAll(FinderSql.bandFindContainsNameMatch(this.entityManager, bandNameUpper));
-
-        System.out.println("Looking for contains alias " + bandNameUpper);
         bandMatches.addAll(FinderSql.bandAliasFindContainsNameMatch(this.entityManager, bandNameUpper));
 
         if (bandNameUpperLessBand != null) {
-            System.out.println("Looking for contains " + bandNameUpperLessBand);
             bandMatches.addAll(FinderSql.bandFindContainsNameMatch(this.entityManager, bandNameUpperLessBand));
-
-            System.out.println("Looking for alias contains " + bandNameUpperLessBand);
             bandMatches.addAll(FinderSql.bandAliasFindContainsNameMatch(this.entityManager, bandNameUpperLessBand));
         }
 
