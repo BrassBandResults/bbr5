@@ -120,6 +120,7 @@ public class PaymentsServiceImpl implements PaymentsService {
                 this.securityService.update(user.get());
             }
         } catch (Exception ex) {
+            ex.printStackTrace();
            // do nothing
         }
     }
