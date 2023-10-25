@@ -37,6 +37,20 @@
             <span th:replace="~{profile/components/buttons.html :: makePrivate()}"></span>
         </span>
 
+        <div>
+            <span th:text="#{page.profile.bands-prompt(${BandList.size()})}">You have competed with 1 bands: </span>
+            <span th:each="band : ${BandList}">
+                <span th:replace="~{links/band-link.html :: bandLink(${band}, true, false)}">Band</span>
+            </span>
+        </div>
+
+        <div>
+            <span th:text="#{page.profile.conductors-prompt(${ConductorList.size()})}">You have been conducted by 1 people: </span>
+            <span th:each="conductor : ${ConductorList}">
+                <span th:replace="~{links/person-link.html :: personLink(${conductor})}">Conductor</span>
+            </span>
+        </div>
+
          <table class="table table-hover sortable">
             <thead>
             <tr>
