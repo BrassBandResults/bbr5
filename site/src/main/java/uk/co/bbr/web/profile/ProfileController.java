@@ -4,8 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.payments.PaymentsService;
 import uk.co.bbr.services.people.PersonService;
+import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.people.dao.PersonProfileDao;
 import uk.co.bbr.services.performances.PerformanceService;
 import uk.co.bbr.services.performances.dao.PerformanceDao;
@@ -15,7 +17,10 @@ import uk.co.bbr.services.security.types.ContestHistoryVisibility;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 import uk.co.bbr.web.security.annotations.IsBbrPro;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -50,9 +55,21 @@ public class ProfileController {
         List<PerformanceDao> performances = this.performanceService.fetchApprovedPerformancesForUser(user);
         List<PerformanceDao> pendingPerformances = this.performanceService.fetchPendingPerformancesForUser(user);
 
+        Map<String, BandDao> bandList = new HashMap<>();
+        Map<String, PersonDao> conductorList = new HashMap<>();
+
+        for (PerformanceDao eachPerformance : performances) {
+            bandList.put(eachPerformance.getResult().getBand().getSlug(), eachPerformance.getResult().getBand());
+            if (eachPerformance.getResult().getConductor() != null) {
+                conductorList.put(eachPerformance.getResult().getConductor().getSlug(), eachPerformance.getResult().getConductor());
+            }
+        }
+
         model.addAttribute("User", user);
         model.addAttribute("PendingPerformances", pendingPerformances);
         model.addAttribute("ApprovedPerformances", performances);
+        model.addAttribute("ConductorList", conductorList.values());
+        model.addAttribute("BandList", bandList.values());
 
         return "profile/performances";
     }
@@ -100,3 +117,4 @@ public class ProfileController {
         return "profile/people-profiles";
     }
 }
+

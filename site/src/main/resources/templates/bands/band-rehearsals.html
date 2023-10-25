@@ -22,7 +22,7 @@
                 <span th:text="#{day.sunday}">Sunday</span>
             </td>
             <td>
-                <input th:if="${Sunday != null}" type="text" name="sunday-details" th:value="${Sunday.details}" size="60" maxlength="30"/>
+                <input th:if="${Sunday != null}" type="text" name="sunday-details" th:placeholder="#{page.form.placeholder.rehearsal-details}" size="60" maxlength="30" th:value="${Sunday.details}"/>
                 <input th:if="${Sunday == null}" type="text" name="sunday-details" th:placeholder="#{page.form.placeholder.rehearsal-details}" size="60" maxlength="30"/>
             </td>
         </tr>
