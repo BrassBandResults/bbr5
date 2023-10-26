@@ -64,7 +64,7 @@ public class ProfileController {
             if (eachPerformance.getResult().getConductor() != null) {
                 conductorList.put(eachPerformance.getResult().getConductor().getSlug(), eachPerformance.getResult().getConductor());
             }
-            if (eachPerformance.getResult().getPosition() == 1) {
+            if (eachPerformance.getResult().getPosition() != null && eachPerformance.getResult().getPosition() == 1) {
                 winsCount++;
             }
         }
