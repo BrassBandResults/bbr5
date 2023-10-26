@@ -58,10 +58,14 @@ public class ProfileController {
         Map<String, BandDao> bandList = new HashMap<>();
         Map<String, PersonDao> conductorList = new HashMap<>();
 
+        int winsCount = 0;
         for (PerformanceDao eachPerformance : performances) {
             bandList.put(eachPerformance.getResult().getBand().getSlug(), eachPerformance.getResult().getBand());
             if (eachPerformance.getResult().getConductor() != null) {
                 conductorList.put(eachPerformance.getResult().getConductor().getSlug(), eachPerformance.getResult().getConductor());
+            }
+            if (eachPerformance.getResult().getPosition() == 1) {
+                winsCount++;
             }
         }
 
@@ -70,6 +74,8 @@ public class ProfileController {
         model.addAttribute("ApprovedPerformances", performances);
         model.addAttribute("ConductorList", conductorList.values());
         model.addAttribute("BandList", bandList.values());
+        model.addAttribute("ContestCount", performances.size());
+        model.addAttribute("WinsCount", winsCount);
 
         return "profile/performances";
     }
