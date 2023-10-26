@@ -37,6 +37,7 @@
             <span th:replace="~{profile/components/buttons.html :: makePrivate()}"></span>
         </span>
 
+        <br/>
         <div>
             <span th:text="#{page.profile.bands-prompt(${BandList.size()})}">You have competed with 1 bands: </span>
             <span th:each="band : ${BandList}">
@@ -51,6 +52,11 @@
             </span>
         </div>
 
+        <div>
+            <span th:text="#{page.profile.contest-stats(${ContestCount},${WinsCount})}">You have taken part in 10 contests and won 4 of them.</span>
+        </div>
+
+        <br/>
          <table class="table table-hover sortable">
             <thead>
             <tr>
