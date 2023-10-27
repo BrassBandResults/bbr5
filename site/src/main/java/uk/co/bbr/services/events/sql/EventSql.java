@@ -71,7 +71,7 @@ public class EventSql {
            LEFT OUTER JOIN contest_group g ON g.id = c.contest_group_id
            WHERE e.date_of_event > ?1
            AND e.date_of_event < ?2
-           ORDER BY e.date_of_event, c.ordering, c.slug""";
+           ORDER BY e.date_of_event, g.id, c.ordering, c.slug""";
 
     public static List<EventResultSqlDto> eventsForDateRange(EntityManager entityManager, LocalDate start, LocalDate end) {
         return SqlExec.execute(entityManager, EVENTS_AND_RESULTS_FOR_DATE_RANGE, start, end, EventResultSqlDto.class);
