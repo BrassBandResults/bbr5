@@ -31,6 +31,7 @@ import uk.co.bbr.services.security.JwtService;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.services.security.ex.AuthenticationFailedException;
 import uk.co.bbr.services.venues.VenueService;
+import uk.co.bbr.services.venues.dao.VenueDao;
 import uk.co.bbr.web.LoginMixin;
 import uk.co.bbr.web.security.filter.SecurityFilter;
 import uk.co.bbr.web.security.support.TestUser;
@@ -70,11 +71,15 @@ class EventEditWebTests implements LoginMixin {
         ContestDao yorkshireArea = this.contestService.create("Yorkshire Area");
         ContestDao northWestArea = this.contestService.create("North West Area");
 
-        this.venueService.create("Test Venue");
+        VenueDao testVenue = this.venueService.create("Test Venue");
 
         this.contestEventService.create(yorkshireArea, LocalDate.of(2010, 3, 12));
         this.contestEventService.create(yorkshireArea, LocalDate.of(2011, 3, 12));
         this.contestEventService.create(northWestArea, LocalDate.of(2010, 3, 13));
+        ContestEventDao event = this.contestEventService.create(northWestArea, LocalDate.of(2012, 4, 14));
+        event.setVenue(testVenue);
+        this.contestEventService.update(event);
+
 
         logoutTestUser();
     }
@@ -194,6 +199,54 @@ class EventEditWebTests implements LoginMixin {
 
         // assert
         assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
+    }
+
+    @Test
+    void testSubmitEditContestPageWithBlankVenueClearsVenue() {
+        Optional<ContestEventDao> fetchedEventBefore = this.contestEventService.fetchEvent("north-west-area", LocalDate.of(2012,4,14));
+        assertTrue(fetchedEventBefore.isPresent());
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+        CsrfToken csrfToken = csrfTokenRepository.generateToken(null);
+        headers.add(csrfToken.getHeaderName(), csrfToken.getToken());
+        headers.add("Cookie", SecurityFilter.CSRF_HEADER_NAME + "=" + csrfToken.getToken());
+
+        ContestTypeDao contestType = this.contestTypeService.fetchDefaultContestType();
+
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+        map.add("name", "Contest Name");
+        map.add("eventDate", "2012-04-14");
+        map.add("dateResolution", "D");
+        map.add("notes", "Contest notes");
+        map.add("noContest", "true");
+        map.add("venueName", "");
+        map.add("venueSlug", "");
+        map.add("contestType", String.valueOf(contestType.getId()));
+        map.add("_csrf", csrfToken.getToken());
+        map.add("_csrf_header", SecurityFilter.CSRF_HEADER_NAME);
+
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
+
+        // act
+        ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/contests/north-west-area/2012-04-14/edit", request, String.class);
+
+        // assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+
+        Optional<ContestEventDao> fetchedEvent = this.contestEventService.fetchEvent("north-west-area", LocalDate.of(2012,4,14));
+        assertTrue(fetchedEvent.isPresent());
+
+        assertNull(fetchedEvent.get().getVenue());
+
+        assertEquals("Contest Name", fetchedEvent.get().getName());
+        assertEquals(LocalDate.of(2012,4,14), fetchedEvent.get().getEventDate());
+        assertEquals(ContestEventDateResolution.EXACT_DATE, fetchedEvent.get().getEventDateResolution());
+        assertEquals("Contest notes", fetchedEvent.get().getNotes());
+        assertTrue(fetchedEvent.get().isNoContest());
+        assertEquals(contestType.getName(), fetchedEvent.get().getContestType().getName());
+
     }
 
 }

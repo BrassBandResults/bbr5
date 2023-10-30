@@ -11,8 +11,8 @@ import java.util.regex.Pattern;
 @Service
 @RequiredArgsConstructor
 public class ParseServiceImpl implements ParseService {
-    private static final String REGEX_RESULT_BAND_CONDUCTOR_DRAW_POINTS = "\\s*([\\d\\-WwDd]+)[.,]?\\s+([\\w()&'\\-. /]+)\\s*,\\s*\\(?\\s*([\\w.'\\- ]+)\\)?\\s*,?\\s*([\\d\\-]*)[\\s,]*([\\d.]*)\\s*\\w*";
-    private static final String REGEX_BAND_CONDUCTOR = "\\s*([\\w()&'\\-. /]+)\\s*,\\s*\\(?\\s*([\\w.'\\- ]+)\\)?\\s*";
+    private static final String REGEX_RESULT_BAND_CONDUCTOR_DRAW_POINTS = "\\s*([\\d\\-WwDd]+)[.,]?\\s+([\\p{L}\\d()&'\\-. /]+)\\s*,\\s*\\(?\\s*([\\p{L}\\d.'\\- ]+)\\)?\\s*,?\\s*([\\d\\-]*)[\\s,]*([\\d.]*)\\s*[\\p{L}\\d]*";
+    private static final String REGEX_BAND_CONDUCTOR = "\\s*([\\p{L}\\d()&'\\-. /]+)\\s*,\\s*\\(?\\s*([\\p{L}\\d.'\\- ]+)\\)?\\s*";
 
     @Override
     public ParseResultDto parseLine(String resultLine) {
