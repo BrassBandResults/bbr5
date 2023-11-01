@@ -1,6 +1,7 @@
 package uk.co.bbr.services.feedback;
 
 import uk.co.bbr.services.feedback.dao.FeedbackDao;
+import uk.co.bbr.services.security.dao.SiteUserDao;
 
 import java.util.List;
 import java.util.Optional;
@@ -31,4 +32,6 @@ public interface FeedbackService {
     FeedbackDao create(FeedbackDao feedback);
 
     FeedbackDao update(FeedbackDao feedback);
+
+    List<FeedbackDao> listForSubmitter(SiteUserDao user);
 }
