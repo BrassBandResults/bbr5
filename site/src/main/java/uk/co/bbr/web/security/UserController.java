@@ -14,6 +14,8 @@ import uk.co.bbr.services.security.dao.SiteUserDao;
 import uk.co.bbr.services.security.dao.SiteUserProDao;
 import uk.co.bbr.web.security.annotations.IsBbrAdmin;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 
@@ -82,6 +84,14 @@ public class UserController {
     @GetMapping("/user-list/unactivated")
     public String unactivatedUserList(Model model) {
         List<PendingUserDao> users = this.userService.listUnactivatedUsers();
+
+        for (PendingUserDao user : users) {
+            if (user.getCreated().isBefore(LocalDate.now().minus(1, ChronoUnit.WEEKS).atStartOfDay())) {
+                this.userService.removePendingUser(user);
+            }
+        }
+
+        users = this.userService.listUnactivatedUsers();
 
         model.addAttribute("Users", users);
         return "users/list-unactivated";
