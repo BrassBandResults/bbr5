@@ -5,6 +5,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import uk.co.bbr.services.bands.dao.BandDao;
+import uk.co.bbr.services.feedback.FeedbackService;
+import uk.co.bbr.services.feedback.dao.FeedbackDao;
 import uk.co.bbr.services.payments.PaymentsService;
 import uk.co.bbr.services.people.PersonService;
 import uk.co.bbr.services.people.dao.PersonDao;
@@ -30,6 +32,7 @@ public class ProfileController {
     private final PaymentsService paymentsService;
     private final PersonService personService;
     private final PerformanceService performanceService;
+    private final FeedbackService feedbackService;
 
     @IsBbrMember
     @GetMapping("/profile")
@@ -121,6 +124,19 @@ public class ProfileController {
         model.addAttribute("Profiles", profiles);
 
         return "profile/people-profiles";
+    }
+
+    @IsBbrMember
+    @GetMapping("/profile/people-profiles")
+    public String profileSubmittedFeedback(Model model) {
+        SiteUserDao user = this.securityService.getCurrentUser();
+
+        List<FeedbackDao> feedback = this.feedbackService.listForSubmitter(user);
+
+        model.addAttribute("User", user);
+        model.addAttribute("Feedback", feedback);
+
+        return "profile/feedback-list";
     }
 }
 

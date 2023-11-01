@@ -82,6 +82,11 @@ public class FeedbackServiceImpl implements FeedbackService {
     }
 
     @Override
+    public List<FeedbackDao> listForSubmitter(SiteUserDao user) {
+        return this.feedbackRepository.fetchForSubmitter(user.getUsercode());
+    }
+
+    @Override
     public Optional<FeedbackDao> fetchLatestFeedback(String offset) {
         List<FeedbackDao> feedbackForOffset = this.feedbackRepository.fetchFeedbackForOffset(offset);
         if (!feedbackForOffset.isEmpty()) {
