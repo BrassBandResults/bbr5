@@ -127,7 +127,7 @@ public class ProfileController {
     }
 
     @IsBbrMember
-    @GetMapping("/profile/people-profiles")
+    @GetMapping("/profile/feedback")
     public String profileSubmittedFeedback(Model model) {
         SiteUserDao user = this.securityService.getCurrentUser();
 
