@@ -39,4 +39,6 @@ public interface UserService {
     Optional<SiteUserDao> fetchUserByUuid(String userRandomId);
 
     void optUserOutFromFeedbackEmails(SiteUserDao siteUser);
+
+    void removePendingUser(PendingUserDao user);
 }

@@ -101,24 +101,21 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void activateUser(String activationKey) {
+        // don't error if there are problems, just don't do anything.
         Optional<PendingUserDao> matchingUser = this.pendingUserRepository.findByKey(activationKey);
-        if (matchingUser.isEmpty()) {
-            throw NotFoundException.userNotFoundByActivationKey();
+        if (matchingUser.isPresent()) {
+            PendingUserDao pendingUserDao = matchingUser.get();
+            Optional<SiteUserDao> fetchedUser = this.bbrUserRepository.fetchByUsercode(pendingUserDao.getUsercode());
+            if (fetchedUser.isPresent()) {
+                   // user is already created, just need to set a valid password and allow access
+                fetchedUser.get().setPassword(pendingUserDao.getPassword());
+                fetchedUser.get().setSalt(pendingUserDao.getSalt());
+                fetchedUser.get().setAccessLevel(UserRole.MEMBER.getCode());
+                this.bbrUserRepository.saveAndFlush(fetchedUser.get());
+
+                this.pendingUserRepository.delete(matchingUser.get());
+            }
         }
-
-        PendingUserDao pendingUserDao = matchingUser.get();
-        Optional<SiteUserDao> fetchedUser = this.bbrUserRepository.fetchByUsercode(pendingUserDao.getUsercode());
-        if (fetchedUser.isEmpty()) {
-            throw NotFoundException.userNotFoundByActivationKey();
-        }
-
-        // user is already created, just need to set a valid password and allow access
-        fetchedUser.get().setPassword(pendingUserDao.getPassword());
-        fetchedUser.get().setSalt(pendingUserDao.getSalt());
-        fetchedUser.get().setAccessLevel(UserRole.MEMBER.getCode());
-        this.bbrUserRepository.saveAndFlush(fetchedUser.get());
-
-        this.pendingUserRepository.delete(matchingUser.get());
     }
 
     @Override
@@ -175,5 +172,10 @@ public class UserServiceImpl implements UserService {
 
         matchingUser.get().setFeedbackEmailOptOut(true);
         this.bbrUserRepository.saveAndFlush(matchingUser.get());
+    }
+
+    @Override
+    public void removePendingUser(PendingUserDao user) {
+        this.pendingUserRepository.delete(user);
     }
 }
