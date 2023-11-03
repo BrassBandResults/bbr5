@@ -304,6 +304,9 @@ public class ResultServiceImpl implements ResultService {
 
     @Override
     public void delete(ContestResultDao contestResult) {
+        List<ContestResultPieceDao> contestResultPieces = this.listResultPieces((contestResult));
+        this.contestResultPieceRepository.deleteAll(contestResultPieces);
+
         this.contestResultRepository.delete(contestResult);
     }
 
