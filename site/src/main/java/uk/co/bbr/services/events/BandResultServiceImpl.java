@@ -123,10 +123,10 @@ public class BandResultServiceImpl implements BandResultService {
 
     private List<ContestResultDao>  removeWinsWithLaterResult(List<ContestResultDao> currentChampions) {
         List<ContestResultDao> filteredList = new ArrayList<>();
-        LocalDate twoMonthsAgo = LocalDate.now().minus(2, ChronoUnit.MONTHS);
+        LocalDate tenMonthsAgo = LocalDate.now().minus(10, ChronoUnit.MONTHS);
 
         for (ContestResultDao eachResult : currentChampions) {
-            if (eachResult.getContestEvent().getEventDate().isBefore(twoMonthsAgo)) {
+            if (eachResult.getContestEvent().getEventDate().isAfter(tenMonthsAgo)) {
                 filteredList.add(eachResult);
                 continue;
             }
