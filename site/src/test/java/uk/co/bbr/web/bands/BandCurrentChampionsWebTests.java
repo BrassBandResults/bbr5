@@ -75,10 +75,11 @@ class BandCurrentChampionsWebTests implements LoginMixin {
         ContestDao britishOpen = this.contestService.create("British Open");
         ContestDao masters = this.contestService.create("Masters");
         ContestDao oldResult = this.contestService.create("Old Contest");
+        ContestDao whitFriday = this.contestService.create("Somewhere (Whit Friday)");
 
         LocalDate agesAgo = LocalDate.now().minus(2, ChronoUnit.YEARS);
         LocalDate twelveMonthsAgo = LocalDate.now().minus(1, ChronoUnit.YEARS);
-        LocalDate sixMonthsAgo = LocalDate.now().minus(1, ChronoUnit.YEARS);
+        LocalDate sixMonthsAgo = LocalDate.now().minus(6, ChronoUnit.MONTHS);
         LocalDate lastMonth = LocalDate.now().minus(1, ChronoUnit.MONTHS);
         LocalDate today = LocalDate.now();
 
@@ -88,6 +89,7 @@ class BandCurrentChampionsWebTests implements LoginMixin {
         ContestEventDao yorkshireCupLastMonth = this.contestEventService.create(yorkshireCup, lastMonth);
         ContestEventDao BritishOpenLastYear = this.contestEventService.create(britishOpen, twelveMonthsAgo);
         ContestEventDao mastersSixMonthsAgo = this.contestEventService.create(masters, sixMonthsAgo);
+        ContestEventDao whitFridaySixMonthsAgo = this.contestEventService.create(whitFriday, sixMonthsAgo);
 
         this.resultService.addResult(yorkshireAreaLastYear, "1", rtb, davidRoberts);
         this.resultService.addResult(yorkshireAreaLastYear, "2", notRtb, johnRoberts);
@@ -104,6 +106,8 @@ class BandCurrentChampionsWebTests implements LoginMixin {
 
         this.resultService.addResult(mastersSixMonthsAgo, "1", rtb, johnRoberts);
 
+        this.resultService.addResult(whitFridaySixMonthsAgo, "1", rtb, johnRoberts);
+
         logoutTestUser();
     }
 
@@ -115,7 +119,7 @@ class BandCurrentChampionsWebTests implements LoginMixin {
         assertTrue(response.contains("Rothwell Temperance Band"));
 
         LocalDate agesAgo = LocalDate.now().minus(2, ChronoUnit.YEARS);
-        LocalDate sixMonthsAgo = LocalDate.now().minus(1, ChronoUnit.YEARS);
+        LocalDate sixMonthsAgo = LocalDate.now().minus(6, ChronoUnit.MONTHS);
         LocalDate lastMonth = LocalDate.now().minus(1, ChronoUnit.MONTHS);
         LocalDate twelveMonthsAgo = LocalDate.now().minus(1, ChronoUnit.YEARS);
 
@@ -123,11 +127,13 @@ class BandCurrentChampionsWebTests implements LoginMixin {
         String agesAgoString = agesAgo.format(formatter);
         String lastMonthString = lastMonth.format(formatter);
         String twelveMonthsAgoString = twelveMonthsAgo.format(formatter);
-        String sixMonthsAgoAsString = sixMonthsAgo.format(formatter);
+        String sixMonthsAgoString = sixMonthsAgo.format(formatter);
 
         assertTrue(response.contains("<img id=\"champion-yorkshire-cup-" + lastMonthString + "\" src=\"https://null/icons/trophy-gold.png\" alt=\"trophy\" />"));
-        assertTrue(response.contains("<img id=\"champion-masters-" + sixMonthsAgoAsString + "\" src=\"https://null/icons/trophy-gold.png\" alt=\"trophy\" />"));
+        assertTrue(response.contains("<img id=\"champion-masters-" + sixMonthsAgoString + "\" src=\"https://null/icons/trophy-gold.png\" alt=\"trophy\" />"));
         assertTrue(response.contains("<img id=\"champion-british-open-" + twelveMonthsAgoString + "\" src=\"https://null/icons/trophy-gold.png\" alt=\"trophy\" />"));
+        assertTrue(response.contains("<img id=\"champion-somewhere-whit-friday-" + sixMonthsAgoString + "\" src=\"https://null/icons/award-gold.png\" alt=\"rosette\" />"));
+
         assertFalse(response.contains("<img id=\"champion-yorkshire-area-" + twelveMonthsAgo + "\" src=\"https://null/icons/trophy-gold.png\" alt=\"trophy\" />"));
         assertFalse(response.contains("<img id=\"champion-old-contest-" + agesAgoString + "\" src=\"https://null/icons/trophy-gold.png\" alt=\"trophy\" />"));
     }
