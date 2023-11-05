@@ -317,7 +317,12 @@ public class ResultServiceImpl implements ResultService {
             return;
         }
 
+        boolean canEditAll = false;
         SiteUserDao currentUser = this.securityService.getCurrentUser();
+        if (currentUser != null && contestEvent.getOwner().equals(currentUser.getUsercode())) {
+            canEditAll = true;
+        }
+
         boolean canEditAnyResult = false;
         for (ContestResultDao result : eventResults){
             boolean canEditThisResult = false;
@@ -326,12 +331,13 @@ public class ResultServiceImpl implements ResultService {
             }
 
             LocalDate twoWeeksAgo = LocalDate.now().minus(15, ChronoUnit.DAYS);
-            if (currentUser.isSuperuser() ||
+            if (canEditAll ||
+                currentUser.isSuperuser() ||
                 contestEvent.getEventDate().isAfter(twoWeeksAgo) ||
                 result.getCreatedBy().equals(currentUser.getUsercode())) {
-                canEditThisResult = true;
-                canEditAnyResult = true;
-            }
+                    canEditThisResult = true;
+                    canEditAnyResult = true;
+                }
 
             result.setCanEdit(canEditThisResult);
         }

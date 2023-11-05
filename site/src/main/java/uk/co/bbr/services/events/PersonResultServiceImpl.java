@@ -130,7 +130,8 @@ public class PersonResultServiceImpl implements PersonResultService {
         }
 
 
-        return new ResultDetailsDto(bandResults, whitResults, allResults);
+        List<ContestResultDao> currentChampions = new ArrayList<>();
+        return new ResultDetailsDto(bandResults, whitResults, allResults, currentChampions);
     }
 
     @Override
@@ -144,7 +145,8 @@ public class PersonResultServiceImpl implements PersonResultService {
             }
         }
 
-        return new ResultDetailsDto(filteredList, returnData.getBandWhitResults(), returnData.getBandAllResults());
+        List<ContestResultDao> currentChampions = new ArrayList<>();
+        return new ResultDetailsDto(filteredList, returnData.getBandWhitResults(), returnData.getBandAllResults(), currentChampions);
     }
 
     @Override
@@ -158,7 +160,8 @@ public class PersonResultServiceImpl implements PersonResultService {
             }
         }
 
-        return new ResultDetailsDto(filteredList, returnData.getBandWhitResults(), returnData.getBandAllResults());
+        List<ContestResultDao> currentChampions = new ArrayList<>();
+        return new ResultDetailsDto(filteredList, returnData.getBandWhitResults(), returnData.getBandAllResults(), currentChampions);
     }
 
     @Override
@@ -184,6 +187,7 @@ public class PersonResultServiceImpl implements PersonResultService {
             }
         }
 
-        return new ResultDetailsDto(filteredList, returnData.getBandWhitResults(), returnData.getBandAllResults());
+        List<ContestResultDao> currentChampions = new ArrayList<>();
+        return new ResultDetailsDto(filteredList, returnData.getBandWhitResults(), returnData.getBandAllResults(), currentChampions);
     }
 }
