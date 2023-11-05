@@ -22,7 +22,7 @@
     <div th:remove="tag" th:if="${BandChampions.size() > 0}">
         <div th:each="champion : ${BandChampions}" th:remove="tag">
             <div class="border border-warning rounded p-2 m-1 bg-warning-subtle">
-                <img th:src="@{${STATIC_HOST} + '/icons/trophy-gold.png'}" alt="trophy" />&nbsp;
+                <img th:id="${'champion-' + champion.contestEvent.contest.slug + '-' + champion.contestEvent.eventDateForUrl}" th:src="@{${STATIC_HOST} + '/icons/trophy-gold.png'}" alt="trophy" />&nbsp;
                 <span th:remove="tag" th:text="#{page.band.current-champion-prefix}">Current</span>
                 <span th:remove="tag" th:text="${champion.contestEvent.contest.name}">Yorkshire Area</span>
                 <span th:remove="tag" th:text="#{page.band.current-champion-suffix}">Champion</span>

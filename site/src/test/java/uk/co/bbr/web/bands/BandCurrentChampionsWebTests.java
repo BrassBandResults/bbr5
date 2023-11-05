@@ -29,8 +29,10 @@ import uk.co.bbr.web.LoginMixin;
 import uk.co.bbr.web.security.support.TestUser;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -70,9 +72,13 @@ class BandCurrentChampionsWebTests implements LoginMixin {
 
         ContestDao yorkshireArea = this.contestService.create("Yorkshire Area");
         ContestDao yorkshireCup = this.contestService.create("Yorkshire Cup");
+        ContestDao britishOpen = this.contestService.create("British Open");
+        ContestDao masters = this.contestService.create("Masters");
         ContestDao oldResult = this.contestService.create("Old Contest");
 
         LocalDate agesAgo = LocalDate.now().minus(2, ChronoUnit.YEARS);
+        LocalDate twelveMonthsAgo = LocalDate.now().minus(1, ChronoUnit.YEARS);
+        LocalDate sixMonthsAgo = LocalDate.now().minus(1, ChronoUnit.YEARS);
         LocalDate lastMonth = LocalDate.now().minus(1, ChronoUnit.MONTHS);
         LocalDate today = LocalDate.now();
 
@@ -80,6 +86,8 @@ class BandCurrentChampionsWebTests implements LoginMixin {
         ContestEventDao yorkshireAreaToday = this.contestEventService.create(yorkshireArea, today);
         ContestEventDao oldContest = this.contestEventService.create(oldResult, agesAgo);
         ContestEventDao yorkshireCupLastMonth = this.contestEventService.create(yorkshireCup, lastMonth);
+        ContestEventDao BritishOpenLastYear = this.contestEventService.create(britishOpen, twelveMonthsAgo);
+        ContestEventDao mastersSixMonthsAgo = this.contestEventService.create(masters, sixMonthsAgo);
 
         this.resultService.addResult(yorkshireAreaLastMonth, "1", rtb, davidRoberts);
         this.resultService.addResult(yorkshireAreaLastMonth, "2", notRtb, johnRoberts);
@@ -92,6 +100,10 @@ class BandCurrentChampionsWebTests implements LoginMixin {
         this.resultService.addResult(yorkshireCupLastMonth, "1", rtb, davidRoberts);
         this.resultService.addResult(yorkshireCupLastMonth, "2", notRtb, johnRoberts);
 
+        this.resultService.addResult(BritishOpenLastYear, "1", rtb, johnRoberts);
+
+        this.resultService.addResult(mastersSixMonthsAgo, "1", rtb, johnRoberts);
+
         logoutTestUser();
     }
 
@@ -102,9 +114,22 @@ class BandCurrentChampionsWebTests implements LoginMixin {
         assertTrue(response.contains("<title>Rothwell Temperance Band - Band - Brass Band Results</title>"));
         assertTrue(response.contains("Rothwell Temperance Band"));
 
-        assertTrue(response.contains("Current"));
-        assertTrue(response.contains("Champions"));
-        assertTrue(response.contains("Yorkshire Cup"));
+        LocalDate agesAgo = LocalDate.now().minus(2, ChronoUnit.YEARS);
+        LocalDate sixMonthsAgo = LocalDate.now().minus(1, ChronoUnit.YEARS);
+        LocalDate lastMonth = LocalDate.now().minus(1, ChronoUnit.MONTHS);
+        LocalDate twelveMonthsAgo = LocalDate.now().minus(1, ChronoUnit.YEARS);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String agesAgoString = agesAgo.format(formatter);
+        String lastMonthString = lastMonth.format(formatter);
+        String twelveMonthsAgoString = twelveMonthsAgo.format(formatter);
+        String sixMonthsAgoAsString = sixMonthsAgo.format(formatter);
+
+        assertTrue(response.contains("<img id=\"champion-yorkshire-cup-" + lastMonthString + "\" src=\"https://null/icons/trophy-gold.png\" alt=\"trophy\" />"));
+        assertTrue(response.contains("<img id=\"champion-masters-" + sixMonthsAgoAsString + "\" src=\"https://null/icons/trophy-gold.png\" alt=\"trophy\" />"));
+        assertTrue(response.contains("<img id=\"champion-british-open-" + twelveMonthsAgoString + "\" src=\"https://null/icons/trophy-gold.png\" alt=\"trophy\" />"));
+        assertFalse(response.contains("<img id=\"champion-yorkshire-area-" + lastMonthString + "\" src=\"https://null/icons/trophy-gold.png\" alt=\"trophy\" />"));
+        assertFalse(response.contains("<img id=\"champion-old-contest-" + agesAgoString + "\" src=\"https://null/icons/trophy-gold.png\" alt=\"trophy\" />"));
     }
 }
 

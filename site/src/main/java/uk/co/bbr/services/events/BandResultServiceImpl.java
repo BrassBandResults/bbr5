@@ -124,9 +124,13 @@ public class BandResultServiceImpl implements BandResultService {
     private List<ContestResultDao>  removeWinsWithLaterResult(List<ContestResultDao> currentChampions) {
         List<ContestResultDao> filteredList = new ArrayList<>();
         LocalDate twoMonthsAgo = LocalDate.now().minus(2, ChronoUnit.MONTHS);
-        List<ContestResultDao> lastTwoMonths = currentChampions.stream().filter(p -> p.getContestEvent().getEventDate().isAfter(twoMonthsAgo)).toList();
 
-        for (ContestResultDao eachResult : lastTwoMonths) {
+        for (ContestResultDao eachResult : currentChampions) {
+            if (eachResult.getContestEvent().getEventDate().isBefore(twoMonthsAgo)) {
+                filteredList.add(eachResult);
+                continue;
+            }
+
             List<ContestWinsSqlDto> moreRecentResult = ContestResultSql.selectMoreRecentResult(this.entityManager, eachResult);
             if (moreRecentResult.isEmpty()) {
                 filteredList.add(eachResult);
