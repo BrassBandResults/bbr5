@@ -12,4 +12,5 @@ public class ResultDetailsDto {
     private final List<ContestResultDao> bandNonWhitResults;
     private final List<ContestResultDao> bandWhitResults;
     private final List<ContestResultDao> bandAllResults;
+    private final List<ContestResultDao> currentChampions;
 }

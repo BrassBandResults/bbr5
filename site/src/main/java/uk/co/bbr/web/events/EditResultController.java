@@ -135,6 +135,20 @@ public class EditResultController {
             throw NotFoundException.resultNotOnCorrectContest(contestSlug, contestEventDate);
         }
 
+        // make sure user is allowed to edit this result
+        List<ContestResultDao> eventResults = this.resultService.fetchObjectsForEvent(contestEvent.get());
+        this.resultService.workOutCanEdit(contestEvent.get(), eventResults);
+        if (!contestEvent.get().isCanEdit()) {
+            throw NotFoundException.eventNotFound(contestSlug, contestEventDate);
+        }
+        for (ContestResultDao eachResult : eventResults) {
+            if (eachResult.getId().equals(result.get().getId())) {
+                if (!eachResult.isCanEdit()) {
+                    throw NotFoundException.eventNotFound(contestSlug, contestEventDate);
+                }
+            }
+        }
+
         ResultEditForm editForm = new ResultEditForm(result.get());
 
         model.addAttribute("ContestEvent", contestEvent.get());
@@ -161,6 +175,20 @@ public class EditResultController {
 
         if (!result.get().getContestEvent().getId().equals(contestEvent.get().getId())) {
             throw NotFoundException.resultNotOnCorrectContest(contestSlug, contestEventDate);
+        }
+
+        // make sure user is allowed to edit this result
+        List<ContestResultDao> eventResults = this.resultService.fetchObjectsForEvent(contestEvent.get());
+        this.resultService.workOutCanEdit(contestEvent.get(), eventResults);
+        if (!contestEvent.get().isCanEdit()) {
+            throw NotFoundException.eventNotFound(contestSlug, contestEventDate);
+        }
+        for (ContestResultDao eachResult : eventResults) {
+            if (eachResult.getId().equals(result.get().getId())) {
+                if (!eachResult.isCanEdit()) {
+                    throw NotFoundException.eventNotFound(contestSlug, contestEventDate);
+                }
+            }
         }
 
         submittedResult.validate(bindingResult);

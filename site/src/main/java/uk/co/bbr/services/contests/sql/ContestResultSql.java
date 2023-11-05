@@ -1,16 +1,17 @@
 package uk.co.bbr.services.contests.sql;
 
+import jakarta.persistence.EntityManager;
 import lombok.experimental.UtilityClass;
-import uk.co.bbr.services.contests.sql.dto.ContestWinsSqlDto;
 import uk.co.bbr.services.contests.sql.dto.BandResultSqlDto;
 import uk.co.bbr.services.contests.sql.dto.ContestEventResultSqlDto;
 import uk.co.bbr.services.contests.sql.dto.ContestResultPieceSqlDto;
+import uk.co.bbr.services.contests.sql.dto.ContestWinsSqlDto;
 import uk.co.bbr.services.contests.sql.dto.EventPieceSqlDto;
 import uk.co.bbr.services.contests.sql.dto.PersonConductingResultSqlDto;
 import uk.co.bbr.services.contests.sql.dto.ResultPieceSqlDto;
+import uk.co.bbr.services.events.dao.ContestResultDao;
 import uk.co.bbr.services.framework.sql.SqlExec;
 
-import jakarta.persistence.EntityManager;
 import java.util.List;
 
 @UtilityClass
@@ -130,5 +131,20 @@ public class ContestResultSql {
 
     public static List<ContestWinsSqlDto> selectWinsForContest(EntityManager entityManager, Long contestId) {
         return SqlExec.execute(entityManager, BAND_WINS_FOR_CONTEST_SQL, contestId, ContestWinsSqlDto.class);
+    }
+
+    private static final String MORE_RECENT_WINS = """
+                    SELECT b.slug, b.name, 1
+                    FROM contest_result r
+                             INNER JOIN band b ON b.id = r.band_id
+                             INNER JOIN contest_event e ON e.id = r.contest_event_id
+                             INNER JOIN contest c ON c.id = e.contest_id
+                    WHERE c.slug = ?1
+                      AND r.result_position_type = 'R'
+                      AND r.result_position = 1
+                      AND e.date_of_event > ?2
+                    """;
+    public static List<ContestWinsSqlDto> selectMoreRecentResult(EntityManager entityManager, ContestResultDao result) {
+        return SqlExec.execute(entityManager, MORE_RECENT_WINS, result.getContestEvent().getContest().getSlug(), result.getContestEvent().getEventDate(), ContestWinsSqlDto.class);
     }
 }

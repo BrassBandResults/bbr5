@@ -1,5 +1,6 @@
 package uk.co.bbr.services.events;
 
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import uk.co.bbr.services.bands.dao.BandDao;
@@ -7,6 +8,7 @@ import uk.co.bbr.services.bands.types.ResultSetCategory;
 import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.contests.sql.ContestResultSql;
 import uk.co.bbr.services.contests.sql.dto.BandResultSqlDto;
+import uk.co.bbr.services.contests.sql.dto.ContestWinsSqlDto;
 import uk.co.bbr.services.contests.sql.dto.EventPieceSqlDto;
 import uk.co.bbr.services.contests.sql.dto.ResultPieceSqlDto;
 import uk.co.bbr.services.events.dao.ContestEventDao;
@@ -14,17 +16,14 @@ import uk.co.bbr.services.events.dao.ContestEventTestPieceDao;
 import uk.co.bbr.services.events.dao.ContestResultDao;
 import uk.co.bbr.services.events.dao.ContestResultPieceDao;
 import uk.co.bbr.services.events.dto.ResultDetailsDto;
-import uk.co.bbr.services.events.types.ContestEventDateResolution;
 import uk.co.bbr.services.events.types.ResultPositionType;
 import uk.co.bbr.services.groups.dao.ContestGroupDao;
-import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.pieces.dao.PieceDao;
 import uk.co.bbr.services.tags.dao.ContestTagDao;
 import uk.co.bbr.services.tags.repo.ContestTagRepository;
 import uk.co.bbr.services.tags.sql.ContestTagSql;
 import uk.co.bbr.services.tags.sql.dto.ContestTagSqlDto;
 
-import jakarta.persistence.EntityManager;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -56,61 +55,20 @@ public class BandResultServiceImpl implements BandResultService {
         Set<String> groupSlugs = new HashSet<>();
 
         for (BandResultSqlDto eachSqlResult : bandResultsSql) {
+            // we've only asked for future results, is this result before tomorrow?
             if (ResultSetCategory.FUTURE.equals(category) && eachSqlResult.getEventDate().isBefore(tomorrow)) {
                 continue;
             }
+            // we've only asked for past results, is this result in the future?
             if (ResultSetCategory.PAST.equals(category) && eachSqlResult.getEventDate().isAfter(today)) {
                 continue;
             }
 
-            ContestResultDao eachResult = new ContestResultDao();
-            eachResult.setContestEvent(new ContestEventDao());
-            eachResult.getContestEvent().setContest(new ContestDao());
-
-            eachResult.setId(eachSqlResult.getContestResultId().longValue());
-            eachResult.getContestEvent().setId(eachSqlResult.getContestEventId().longValue());
-
-            eachResult.getContestEvent().setEventDate(eachSqlResult.getEventDate());
-            eachResult.getContestEvent().setEventDateResolution(ContestEventDateResolution.fromCode(eachSqlResult.getEventDateResolution()));
-            eachResult.getContestEvent().getContest().setSlug(eachSqlResult.getContestSlug());
-            eachResult.getContestEvent().getContest().setName(eachSqlResult.getContestName());
-
+            ContestResultDao eachResult = eachSqlResult.toContestResultDao();
             contestSlugs.add(eachSqlResult.getContestSlug());
 
-            if (eachSqlResult.getGroupSlug() != null) {
-                eachResult.getContestEvent().getContest().setContestGroup(new ContestGroupDao());
-                eachResult.getContestEvent().getContest().getContestGroup().setName(eachSqlResult.getGroupName());
-                eachResult.getContestEvent().getContest().getContestGroup().setSlug(eachSqlResult.getGroupSlug());
-
-                groupSlugs.add(eachSqlResult.getGroupSlug());
-            }
-
-            if (eachSqlResult.getResultPosition() != null) {
-                eachResult.setPosition(eachSqlResult.getResultPosition().toString());
-            }
-            eachResult.setResultPositionType(ResultPositionType.fromCode(eachSqlResult.getResultPositionType()));
-            eachResult.setBandName(eachSqlResult.getBandName());
-            eachResult.setDraw(eachSqlResult.getDraw());
-
-            if (eachSqlResult.getConductor1Slug() != null) {
-                eachResult.setConductor(new PersonDao());
-                eachResult.getConductor().setSlug(eachSqlResult.getConductor1Slug());
-                eachResult.getConductor().setFirstNames(eachSqlResult.getConductor1FirstNames());
-                eachResult.getConductor().setSurname(eachSqlResult.getConductor1Surname());
-            }
-
-            if (eachSqlResult.getConductor2Slug() != null) {
-                eachResult.setConductorSecond(new PersonDao());
-                eachResult.getConductorSecond().setSlug(eachSqlResult.getConductor2Slug());
-                eachResult.getConductorSecond().setFirstNames(eachSqlResult.getConductor2FirstNames());
-                eachResult.getConductorSecond().setSurname(eachSqlResult.getConductor2Surname());
-            }
-
-            if (eachSqlResult.getConductor3Slug() != null) {
-                eachResult.setConductorThird(new PersonDao());
-                eachResult.getConductorThird().setSlug(eachSqlResult.getConductor3Slug());
-                eachResult.getConductorThird().setFirstNames(eachSqlResult.getConductor3FirstNames());
-                eachResult.getConductorThird().setSurname(eachSqlResult.getConductor3Surname());
+            if (eachResult.getContestEvent().getContest().getContestGroup() != null) {
+                groupSlugs.add(eachResult.getContestEvent().getContest().getContestGroup().getSlug());
             }
 
             this.populateResultPieces(resultPiecesSql, eachResult);
@@ -125,6 +83,7 @@ public class BandResultServiceImpl implements BandResultService {
             }
         }
 
+        // add tags to results
         List<ContestTagSqlDto> contestTags = ContestTagSql.selectTagsForContestSlugs(this.entityManager, contestSlugs);
         List<ContestTagSqlDto> groupTags = ContestTagSql.selectTagsForGroupSlugs(this.entityManager, groupSlugs);
 
@@ -148,8 +107,32 @@ public class BandResultServiceImpl implements BandResultService {
             }
         }
 
+        // current champions
+        LocalDate thirteenMonthsAgo = LocalDate.now().minus(13, ChronoUnit.MONTHS);
+        List<ContestResultDao> currentChampions = allResults.stream()
+                .filter(r -> r.getResultPositionType().equals(ResultPositionType.RESULT))
+                .filter(r -> r.getPosition() != null)
+                .filter(r -> r.getPosition() == 1)
+                .filter(p -> p.getContestEvent().getEventDate().isAfter(thirteenMonthsAgo))
+                .toList();
 
-        return new ResultDetailsDto(bandResults, whitResults, allResults);
+        List<ContestResultDao> filteredChampions = this.removeWinsWithLaterResult(currentChampions);
+
+        return new ResultDetailsDto(bandResults, whitResults, allResults, filteredChampions);
+    }
+
+    private List<ContestResultDao>  removeWinsWithLaterResult(List<ContestResultDao> currentChampions) {
+        List<ContestResultDao> filteredList = new ArrayList<>();
+        LocalDate twoMonthsAgo = LocalDate.now().minus(2, ChronoUnit.MONTHS);
+        List<ContestResultDao> lastTwoMonths = currentChampions.stream().filter(p -> p.getContestEvent().getEventDate().isAfter(twoMonthsAgo)).toList();
+
+        for (ContestResultDao eachResult : lastTwoMonths) {
+            List<ContestWinsSqlDto> moreRecentResult = ContestResultSql.selectMoreRecentResult(this.entityManager, eachResult);
+            if (moreRecentResult.isEmpty()) {
+                filteredList.add(eachResult);
+            }
+        }
+        return filteredList;
     }
 
     private void populateResultPieces(List<ResultPieceSqlDto> resultPieces, ContestResultDao result) {
@@ -201,7 +184,8 @@ public class BandResultServiceImpl implements BandResultService {
             }
         }
 
-        return new ResultDetailsDto(filteredList, returnData.getBandWhitResults(), returnData.getBandAllResults());
+        List<ContestResultDao> currentChampions = new ArrayList<>();
+        return new ResultDetailsDto(filteredList, returnData.getBandWhitResults(), returnData.getBandAllResults(), currentChampions);
     }
 
     @Override
@@ -215,7 +199,8 @@ public class BandResultServiceImpl implements BandResultService {
             }
         }
 
-        return new ResultDetailsDto(filteredList, returnData.getBandWhitResults(), returnData.getBandAllResults());
+        List<ContestResultDao> currentChampions = new ArrayList<>();
+        return new ResultDetailsDto(filteredList, returnData.getBandWhitResults(), returnData.getBandAllResults(), currentChampions);
     }
 
     @Override
@@ -241,6 +226,7 @@ public class BandResultServiceImpl implements BandResultService {
             }
         }
 
-        return new ResultDetailsDto(filteredList, returnData.getBandWhitResults(), returnData.getBandAllResults());
+        List<ContestResultDao> currentChampions = new ArrayList<>();
+        return new ResultDetailsDto(filteredList, returnData.getBandWhitResults(), returnData.getBandAllResults(), currentChampions);
     }
 }

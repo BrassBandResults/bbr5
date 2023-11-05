@@ -1,7 +1,14 @@
 package uk.co.bbr.services.contests.sql.dto;
 
 import lombok.Getter;
+import uk.co.bbr.services.contests.dao.ContestDao;
+import uk.co.bbr.services.events.dao.ContestEventDao;
+import uk.co.bbr.services.events.dao.ContestResultDao;
+import uk.co.bbr.services.events.types.ContestEventDateResolution;
+import uk.co.bbr.services.events.types.ResultPositionType;
 import uk.co.bbr.services.framework.sql.AbstractSqlDto;
+import uk.co.bbr.services.groups.dao.ContestGroupDao;
+import uk.co.bbr.services.people.dao.PersonDao;
 
 import java.time.LocalDate;
 
@@ -54,5 +61,55 @@ public class BandResultSqlDto extends AbstractSqlDto {
         this.conductor3Slug = this.getString(columnList, 19);
         this.conductor3FirstNames = this.getString(columnList, 20);
         this.conductor3Surname = this.getString(columnList, 21);
+    }
+
+    public ContestResultDao toContestResultDao() {
+        ContestResultDao eachResult = new ContestResultDao();
+        eachResult.setContestEvent(new ContestEventDao());
+        eachResult.getContestEvent().setContest(new ContestDao());
+
+        eachResult.setId(this.getContestResultId().longValue());
+        eachResult.getContestEvent().setId(this.getContestEventId().longValue());
+
+        eachResult.getContestEvent().setEventDate(this.getEventDate());
+        eachResult.getContestEvent().setEventDateResolution(ContestEventDateResolution.fromCode(this.getEventDateResolution()));
+        eachResult.getContestEvent().getContest().setSlug(this.getContestSlug());
+        eachResult.getContestEvent().getContest().setName(this.getContestName());
+
+        if (this.getResultPosition() != null) {
+            eachResult.setPosition(this.getResultPosition().toString());
+        }
+        eachResult.setResultPositionType(ResultPositionType.fromCode(this.getResultPositionType()));
+        eachResult.setBandName(this.getBandName());
+        eachResult.setDraw(this.getDraw());
+
+        if (this.getConductor1Slug() != null) {
+            eachResult.setConductor(new PersonDao());
+            eachResult.getConductor().setSlug(this.getConductor1Slug());
+            eachResult.getConductor().setFirstNames(this.getConductor1FirstNames());
+            eachResult.getConductor().setSurname(this.getConductor1Surname());
+        }
+
+        if (this.getConductor2Slug() != null) {
+            eachResult.setConductorSecond(new PersonDao());
+            eachResult.getConductorSecond().setSlug(this.getConductor2Slug());
+            eachResult.getConductorSecond().setFirstNames(this.getConductor2FirstNames());
+            eachResult.getConductorSecond().setSurname(this.getConductor2Surname());
+        }
+
+        if (this.getConductor3Slug() != null) {
+            eachResult.setConductorThird(new PersonDao());
+            eachResult.getConductorThird().setSlug(this.getConductor3Slug());
+            eachResult.getConductorThird().setFirstNames(this.getConductor3FirstNames());
+            eachResult.getConductorThird().setSurname(this.getConductor3Surname());
+        }
+
+        if (this.getGroupSlug() != null) {
+            eachResult.getContestEvent().getContest().setContestGroup(new ContestGroupDao());
+            eachResult.getContestEvent().getContest().getContestGroup().setName(this.getGroupName());
+            eachResult.getContestEvent().getContest().getContestGroup().setSlug(this.getGroupSlug());
+        }
+
+        return eachResult;
     }
 }

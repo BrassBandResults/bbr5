@@ -17,7 +17,7 @@ public interface FeedbackRepository extends JpaRepository<FeedbackDao, Long> {
     @Query("SELECT COUNT(f) FROM FeedbackDao f WHERE f.status = :statusCode")
     int fetchCount(FeedbackStatus statusCode);
 
-    @Query("SELECT f FROM FeedbackDao f WHERE f.reportedBy = :usercode")
+    @Query("SELECT f FROM FeedbackDao f WHERE f.reportedBy = :usercode ORDER BY f.created DESC")
     List<FeedbackDao> fetchForSubmitter(String usercode);
 
 }

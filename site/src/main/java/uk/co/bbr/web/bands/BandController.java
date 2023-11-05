@@ -65,6 +65,7 @@ public class BandController {
         model.addAttribute("BandResults", bandResults.getBandNonWhitResults());
         model.addAttribute("ResultsCount", bandResults.getBandNonWhitResults().size());
         model.addAttribute("WhitCount", bandResults.getBandWhitResults().size());
+        model.addAttribute("BandChampions", bandResults.getCurrentChampions());
         model.addAttribute("BandRehearsalDays", bandRehearsalDays);
         model.addAttribute("BandRelationships", bandRelationships);
         model.addAttribute("Notes", Tools.markdownToHTML(band.get().getNotes()));
@@ -93,6 +94,7 @@ public class BandController {
         model.addAttribute("BandResults", bandResults.getBandWhitResults());
         model.addAttribute("ResultsCount", bandResults.getBandNonWhitResults().size());
         model.addAttribute("WhitCount", bandResults.getBandWhitResults().size());
+        model.addAttribute("BandChampions", bandResults.getCurrentChampions());
         model.addAttribute("BandRehearsalDays", bandRehearsalDays);
         model.addAttribute("BandRelationships", bandRelationships);
         model.addAttribute("Notes", Tools.markdownToHTML(band.get().getNotes()));
@@ -121,6 +123,7 @@ public class BandController {
         model.addAttribute("BandResults", bandResults.getBandWhitResults());
         model.addAttribute("ResultsCount", bandResults.getBandNonWhitResults().size());
         model.addAttribute("WhitCount", bandResults.getBandWhitResults().size());
+        model.addAttribute("BandChampions", bandResults.getCurrentChampions());
         model.addAttribute("BandRehearsalDays", bandRehearsalDays);
         model.addAttribute("BandRelationships", bandRelationships);
         model.addAttribute("Notes", Tools.markdownToHTML(band.get().getNotes()));
@@ -150,6 +153,7 @@ public class BandController {
         model.addAttribute("BandResults", bandResults.getBandNonWhitResults());
         model.addAttribute("ResultsCount", bandResults.getBandNonWhitResults().size());
         model.addAttribute("WhitCount", bandResults.getBandWhitResults().size());
+        model.addAttribute("BandChampions", bandResults.getCurrentChampions());
         model.addAttribute("BandRehearsalDays", bandRehearsalDays);
         model.addAttribute("BandRelationships", bandRelationships);
         model.addAttribute("FilteredTo", contest.get().getName());
@@ -179,6 +183,7 @@ public class BandController {
         model.addAttribute("BandResults", bandResults.getBandNonWhitResults());
         model.addAttribute("ResultsCount", bandResults.getBandNonWhitResults().size());
         model.addAttribute("WhitCount", bandResults.getBandWhitResults().size());
+        model.addAttribute("BandChampions", bandResults.getCurrentChampions());
         model.addAttribute("BandRehearsalDays", bandRehearsalDays);
         model.addAttribute("BandRelationships", bandRelationships);
         model.addAttribute("FilteredTo", group.get().getName());
@@ -208,6 +213,7 @@ public class BandController {
         model.addAttribute("BandResults", bandResults.getBandNonWhitResults());
         model.addAttribute("ResultsCount", bandResults.getBandNonWhitResults().size());
         model.addAttribute("WhitCount", bandResults.getBandWhitResults().size());
+        model.addAttribute("BandChampions", bandResults.getCurrentChampions());
         model.addAttribute("BandRehearsalDays", bandRehearsalDays);
         model.addAttribute("BandRelationships", bandRelationships);
         model.addAttribute("FilteredTo", tag.get().getName());

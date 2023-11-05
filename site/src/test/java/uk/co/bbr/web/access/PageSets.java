@@ -218,7 +218,6 @@ public abstract class PageSets {
         pageList.add("/contests/ALL");
         pageList.add("/contests/YORKSHIRE-GROUP/years");
         pageList.add("/contests/yorkshire-area/2000-03-01/edit-set-tests");
-        pageList.add("/contests/yorkshire-area/2000-03-01/result/1/edit");
         pageList.add("/contests/yorkshire-area/2000-03-01/result/1/edit-pieces");
         pageList.add("/create/band");
         pageList.add("/create/group");
