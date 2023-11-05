@@ -82,15 +82,15 @@ class BandCurrentChampionsWebTests implements LoginMixin {
         LocalDate lastMonth = LocalDate.now().minus(1, ChronoUnit.MONTHS);
         LocalDate today = LocalDate.now();
 
-        ContestEventDao yorkshireAreaLastMonth = this.contestEventService.create(yorkshireArea, lastMonth);
+        ContestEventDao yorkshireAreaLastYear = this.contestEventService.create(yorkshireArea, twelveMonthsAgo);
         ContestEventDao yorkshireAreaToday = this.contestEventService.create(yorkshireArea, today);
         ContestEventDao oldContest = this.contestEventService.create(oldResult, agesAgo);
         ContestEventDao yorkshireCupLastMonth = this.contestEventService.create(yorkshireCup, lastMonth);
         ContestEventDao BritishOpenLastYear = this.contestEventService.create(britishOpen, twelveMonthsAgo);
         ContestEventDao mastersSixMonthsAgo = this.contestEventService.create(masters, sixMonthsAgo);
 
-        this.resultService.addResult(yorkshireAreaLastMonth, "1", rtb, davidRoberts);
-        this.resultService.addResult(yorkshireAreaLastMonth, "2", notRtb, johnRoberts);
+        this.resultService.addResult(yorkshireAreaLastYear, "1", rtb, davidRoberts);
+        this.resultService.addResult(yorkshireAreaLastYear, "2", notRtb, johnRoberts);
 
         this.resultService.addResult(yorkshireAreaToday, "1", notRtb, johnRoberts);
 
@@ -128,7 +128,7 @@ class BandCurrentChampionsWebTests implements LoginMixin {
         assertTrue(response.contains("<img id=\"champion-yorkshire-cup-" + lastMonthString + "\" src=\"https://null/icons/trophy-gold.png\" alt=\"trophy\" />"));
         assertTrue(response.contains("<img id=\"champion-masters-" + sixMonthsAgoAsString + "\" src=\"https://null/icons/trophy-gold.png\" alt=\"trophy\" />"));
         assertTrue(response.contains("<img id=\"champion-british-open-" + twelveMonthsAgoString + "\" src=\"https://null/icons/trophy-gold.png\" alt=\"trophy\" />"));
-        assertFalse(response.contains("<img id=\"champion-yorkshire-area-" + lastMonthString + "\" src=\"https://null/icons/trophy-gold.png\" alt=\"trophy\" />"));
+        assertFalse(response.contains("<img id=\"champion-yorkshire-area-" + twelveMonthsAgo + "\" src=\"https://null/icons/trophy-gold.png\" alt=\"trophy\" />"));
         assertFalse(response.contains("<img id=\"champion-old-contest-" + agesAgoString + "\" src=\"https://null/icons/trophy-gold.png\" alt=\"trophy\" />"));
     }
 }

@@ -17,6 +17,7 @@ import uk.co.bbr.services.bands.types.ResultSetCategory;
 import uk.co.bbr.services.contests.ContestService;
 import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.events.BandResultService;
+import uk.co.bbr.services.events.dao.ContestResultDao;
 import uk.co.bbr.services.events.dto.ResultDetailsDto;
 import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.groups.ContestGroupService;
@@ -60,12 +61,39 @@ public class BandController {
         List<BandAliasDao> previousNames = this.bandAliasService.findVisibleAliases(band.get());
         List<BandRelationshipDao> bandRelationships = this.bandRelationshipService.fetchRelationshipsForBand(band.get());
 
+        // special award check
+        boolean foundNationalsWin = false;
+        boolean foundBritishOpenWin = false;
+        boolean foundEuropeansWin = false;
+        for (ContestResultDao result : bandResults.getCurrentChampions()) {
+            if (result.getContestEvent().getContest().getSlug().equals("national-finals-championship-section")) {
+                foundNationalsWin = true;
+            }
+            if (result.getContestEvent().getContest().getSlug().equals("british-open")) {
+                foundBritishOpenWin = true;
+            }
+            if (result.getContestEvent().getContest().getSlug().equals("european-championships")) {
+                foundEuropeansWin = true;
+            }
+        }
+
+        boolean hasDouble = false;
+        if (foundNationalsWin && foundBritishOpenWin) {
+            hasDouble = true;
+        }
+        boolean hasGrandSlam = false;
+        if (foundNationalsWin && foundBritishOpenWin && foundEuropeansWin) {
+            hasGrandSlam = true;
+        }
+
         model.addAttribute("Band", band.get());
         model.addAttribute("PreviousNames", previousNames);
         model.addAttribute("BandResults", bandResults.getBandNonWhitResults());
         model.addAttribute("ResultsCount", bandResults.getBandNonWhitResults().size());
         model.addAttribute("WhitCount", bandResults.getBandWhitResults().size());
         model.addAttribute("BandChampions", bandResults.getCurrentChampions());
+        model.addAttribute("HasDouble", hasDouble);
+        model.addAttribute("HasGrandSlam", hasGrandSlam);
         model.addAttribute("BandRehearsalDays", bandRehearsalDays);
         model.addAttribute("BandRelationships", bandRelationships);
         model.addAttribute("Notes", Tools.markdownToHTML(band.get().getNotes()));
