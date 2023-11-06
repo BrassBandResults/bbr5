@@ -233,21 +233,21 @@ public class EditResultController {
             throw NotFoundException.bandNotFoundBySlug(submittedResult.getBandName());
         }
 
-        if (submittedResult.getConductorSlug() != null) {
+        if (submittedResult.getConductorSlug() != null && submittedResult.getConductorName().trim().length() > 0) {
             Optional<PersonDao> conductor = this.personService.fetchBySlug(submittedResult.getConductorSlug());
             conductor.ifPresent(existingResult::setConductor);
         } else {
             existingResult.setConductor(null);
         }
 
-        if (submittedResult.getConductorTwoSlug() != null) {
+        if (submittedResult.getConductorTwoSlug() != null && submittedResult.getConductorTwoName().trim().length() > 0) {
             Optional<PersonDao> conductor = this.personService.fetchBySlug(submittedResult.getConductorTwoSlug());
             conductor.ifPresent(existingResult::setConductorSecond);
         } else {
             existingResult.setConductorSecond(null);
         }
 
-        if (submittedResult.getConductorThreeSlug() != null) {
+        if (submittedResult.getConductorThreeSlug() != null && submittedResult.getConductorThreeName().trim().length() > 0) {
             Optional<PersonDao> conductor = this.personService.fetchBySlug(submittedResult.getConductorThreeSlug());
             conductor.ifPresent(existingResult::setConductorThird);
         } else {
