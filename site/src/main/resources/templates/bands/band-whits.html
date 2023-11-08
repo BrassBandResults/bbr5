@@ -40,9 +40,7 @@
                     <td class="bbr-piece"><span th:replace="~{links/piece-link.html :: resultPieceWithSetTestIfNone(${result})}">Test Piece</span></td>
                     <td class="bbr-conductor"><span th:replace="~{links/person-link.html :: conductorsLinkWithUnknown(${result})}">Bob Childs</span></td>
                     <td  sec:authorize="hasRole('BBR_SUPERUSER')">
-                        <span th:if="${result.canEdit}">
-                            <span th:replace="~{buttons/edit.html :: editResult(${result.contestEvent}, ${result})}"></span>
-                        </span>
+                        <span th:replace="~{buttons/edit.html :: editResult(${result.contestEvent}, ${result})}"></span>
                     </td>
                 </tr>
             </tbody>
