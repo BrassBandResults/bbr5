@@ -5,12 +5,11 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
 import uk.co.bbr.services.email.EmailService;
 import uk.co.bbr.services.framework.NotFoundException;
-import uk.co.bbr.services.security.dao.SiteUserDao;
 import uk.co.bbr.services.security.dao.PendingUserDao;
+import uk.co.bbr.services.security.dao.SiteUserDao;
 import uk.co.bbr.services.security.dao.UserRole;
 import uk.co.bbr.services.security.repo.BbrUserRepository;
 import uk.co.bbr.services.security.repo.PendingUserRepository;
-import uk.co.bbr.web.security.annotations.IsBbrMember;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -113,7 +112,14 @@ public class UserServiceImpl implements UserService {
                 fetchedUser.get().setAccessLevel(UserRole.MEMBER.getCode());
                 this.bbrUserRepository.saveAndFlush(fetchedUser.get());
 
-                this.pendingUserRepository.delete(matchingUser.get());
+                try {
+                    this.pendingUserRepository.delete(matchingUser.get());
+                }
+                catch (Exception ex) {
+                    // if this fails, don't tell the user.  If this happens too quick on a double fetch, user gets a 500 and
+                    // gets confused, we don't want that.
+                    ex.printStackTrace();
+                }
             }
         }
     }
