@@ -46,9 +46,11 @@ public class FeedbackServiceImpl implements FeedbackService {
     @Override
     public FeedbackDao create(FeedbackDao feedback) {
         String currentUsercode = this.securityService.getCurrentUsername();
-        String reportedBy = currentUsercode;
+        String reportedBy;
         if (currentUsercode == null || currentUsercode.strip().length() == 0 || currentUsercode.equals("anonymousUser")) {
             reportedBy = null;
+        } else {
+            reportedBy = currentUsercode;
         }
 
         feedback.addAuditLog(currentUsercode, "Reported by: " + currentUsercode);
@@ -66,7 +68,7 @@ public class FeedbackServiceImpl implements FeedbackService {
         if (user.isEmpty()) {
             user = this.userService.fetchUserByUsercode("tjs");
         }
-        user.ifPresent(bbrUserDao -> this.emailService.sendFeedbackEmail(bbrUserDao, newFeedback.getComment(), newFeedback.getUrl()));
+        user.ifPresent(bbrUserDao -> this.emailService.sendFeedbackEmail(bbrUserDao, newFeedback.getComment(), newFeedback.getUrl(), reportedBy));
 
         return newFeedback;
     }
