@@ -31,7 +31,7 @@ public class EmailServiceImpl implements EmailService {
     }
 
     @Override
-    public void sendFeedbackEmail(SiteUserDao user, String feedbackComment, String feedbackOffset) {
+    public void sendFeedbackEmail(SiteUserDao user, String feedbackComment, String feedbackOffset, String submitter) {
         String destinationEmail = user.getEmail();
         if (user.isFeedbackEmailOptOut()) {
             destinationEmail = FEEDBACK_NOTIFY_ADDRESS;
@@ -47,6 +47,8 @@ public class EmailServiceImpl implements EmailService {
         messageText.append(feedbackComment);
         messageText.append("\n\n");
         messageText.append(this.getSiteUrl()).append(feedbackOffset);
+        messageText.append("\n\n");
+        messageText.append(submitter);
         messageText.append("\n\n");
         messageText.append(this.messageSource.getMessage("email.feedback.opt-out", null, LocaleContextHolder.getLocale()));
         messageText.append(" ");
