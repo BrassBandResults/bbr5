@@ -36,6 +36,9 @@ public class EmailServiceImpl implements EmailService {
         if (user.isFeedbackEmailOptOut()) {
             destinationEmail = FEEDBACK_NOTIFY_ADDRESS;
         }
+        if (submitter == null) {
+            submitter = "";
+        }
 
         StringBuilder messageText = new StringBuilder();
         messageText.append(this.messageSource.getMessage("email.hello", null, LocaleContextHolder.getLocale()));
