@@ -1,5 +1,6 @@
 package uk.co.bbr.web.bands;
 
+import com.azure.cosmos.implementation.guava25.collect.Lists;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,6 +24,8 @@ import uk.co.bbr.services.events.dto.ResultDetailsDto;
 import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.groups.ContestGroupService;
 import uk.co.bbr.services.groups.dao.ContestGroupDao;
+import uk.co.bbr.services.sections.SectionService;
+import uk.co.bbr.services.sections.dao.SectionDao;
 import uk.co.bbr.services.tags.ContestTagService;
 import uk.co.bbr.services.tags.dao.ContestTagDao;
 import uk.co.bbr.web.Tools;
@@ -47,6 +50,7 @@ public class BandController {
     private final ContestTagService contestTagService;
     private final ContestGroupService contestGroupService;
     private final BandResultService bandResultService;
+    private final SectionService sectionService;
 
     @GetMapping("/bands/{bandSlug:[\\-a-z\\d]{2,}}")
     public String bandDetail(Model model, @PathVariable("bandSlug") String bandSlug) {
@@ -65,12 +69,7 @@ public class BandController {
         List<BandAliasDao> previousNames = this.bandAliasService.findVisibleAliases(band.get());
         List<BandRelationshipDao> bandRelationships = this.bandRelationshipService.fetchRelationshipsForBand(band.get());
 
-        LocalDate thirteenMonthsAgo = LocalDate.now().minus(13, ChronoUnit.MONTHS);
-        this.updateBandSection(band.get(), bandResults.getBandNonWhitResults().stream()
-            .filter(p -> p.getContestEvent().getEventDate().isAfter(thirteenMonthsAgo))
-            .filter(p -> p.getContestEvent().getContest().getSection() != null)
-            .sorted(Comparator.comparing(o -> o.getContestEvent().getEventDate()))
-            .toList());
+        this.updateBandSection(band.get(), bandResults.getBandNonWhitResults());
 
         model.addAttribute("Band", band.get());
         model.addAttribute("PreviousNames", previousNames);
@@ -85,12 +84,28 @@ public class BandController {
         return "bands/band";
     }
 
-    private void updateBandSection(BandDao band, List<ContestResultDao> recentResults) {
+    private void updateBandSection(BandDao band, List<ContestResultDao> results) {
         if (band.getStatus().equals(BandStatus.COMPETING)) {
-            for (ContestResultDao result : recentResults) {
+            LocalDate thirteenMonthsAgo = LocalDate.now().minus(13, ChronoUnit.MONTHS);
+            LocalDate fourMonthsInFuture = LocalDate.now().plus(4, ChronoUnit.MONTHS);
+            List<ContestResultDao> lastYearResults = results.stream()
+                .filter(p -> p.getContestEvent().getEventDate().isAfter(thirteenMonthsAgo))
+                .filter(p -> p.getContestEvent().getEventDate().isBefore(fourMonthsInFuture))
+                .filter(p -> p.getContestEvent().getContest().getSection() != null)
+                .sorted(Comparator.comparing(o -> o.getContestEvent().getEventDate()))
+                .toList();
+
+            // sort list latest first
+            List<ContestResultDao> reverseList = Lists.reverse(lastYearResults);
+
+            for (ContestResultDao result : reverseList) {
                 if (result.getContestEvent().getContest().getSection() != null) {
-                    band.setSection(result.getContestEvent().getContest().getSection());
-                    this.bandService.update(band);
+                    Optional<SectionDao> bandSection = this.sectionService.fetchById(result.getContestEvent().getContest().getSection().getId());
+                    if (bandSection.isPresent()) {
+                        band.setSection(bandSection.get());
+                        this.bandService.update(band);
+                        break;
+                    }
                 }
             }
         }

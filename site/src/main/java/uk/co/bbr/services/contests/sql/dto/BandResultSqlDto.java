@@ -9,6 +9,7 @@ import uk.co.bbr.services.events.types.ResultPositionType;
 import uk.co.bbr.services.framework.sql.AbstractSqlDto;
 import uk.co.bbr.services.groups.dao.ContestGroupDao;
 import uk.co.bbr.services.people.dao.PersonDao;
+import uk.co.bbr.services.sections.dao.SectionDao;
 
 import java.time.LocalDate;
 
@@ -37,6 +38,7 @@ public class BandResultSqlDto extends AbstractSqlDto {
     private final String conductor3Slug;
     private final String conductor3FirstNames;
     private final String conductor3Surname;
+    private final Long contestSectionId;
 
     public BandResultSqlDto(Object[] columnList) {
         this.contestResultId = this.getLong(columnList,0);
@@ -61,6 +63,7 @@ public class BandResultSqlDto extends AbstractSqlDto {
         this.conductor3Slug = this.getString(columnList, 19);
         this.conductor3FirstNames = this.getString(columnList, 20);
         this.conductor3Surname = this.getString(columnList, 21);
+        this.contestSectionId = this.getLong(columnList, 22);
     }
 
     public ContestResultDao toContestResultDao() {
@@ -75,6 +78,10 @@ public class BandResultSqlDto extends AbstractSqlDto {
         eachResult.getContestEvent().setEventDateResolution(ContestEventDateResolution.fromCode(this.getEventDateResolution()));
         eachResult.getContestEvent().getContest().setSlug(this.getContestSlug());
         eachResult.getContestEvent().getContest().setName(this.getContestName());
+        if (this.contestSectionId != null) {
+            eachResult.getContestEvent().getContest().setSection(new SectionDao());
+            eachResult.getContestEvent().getContest().getSection().setId(this.contestSectionId);
+        }
 
         if (this.getResultPosition() != null) {
             eachResult.setPosition(this.getResultPosition().toString());
