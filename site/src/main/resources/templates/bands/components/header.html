@@ -33,7 +33,7 @@
                 <span th:remove="tag" th:text="#{page.band.current-champion-suffix}">Champion</span>
             </div>
         </div>
-        <div th:each="award : ${SpecialAwards}" th:remove="tag" sec:authorize="hasRole('BBR_PRO')">
+        <div th:each="award : ${SpecialAwards}" th:remove="tag">
             <div class="border border-primary rounded p-2 m-1 bg-primary-subtle">
                 <img th:src="@{${STATIC_HOST} + '/icons/trophy-silver.png'}" alt="trophy" />&nbsp
                 <span th:remove="tag" th:text="#{${award.translationKey}(${award.year})}">Award text</span>
