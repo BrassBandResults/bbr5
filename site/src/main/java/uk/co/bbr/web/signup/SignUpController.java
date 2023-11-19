@@ -54,6 +54,13 @@ public class SignUpController {
             return "signup/register";
         }
 
+        if (!username.matches("[a-zA-Z0-9 @_\\-.]+")) {
+            model.addAttribute("Errors", "page.signup.errors.usercode-bad-characters");
+            model.addAttribute("Email", email);
+            model.addAttribute("Username", username);
+            return "signup/register";
+        }
+
         if (!password1.equals(password2)) {
             model.addAttribute("Errors", "page.signup.errors.passwords-dont-match");
             model.addAttribute("Email", email);

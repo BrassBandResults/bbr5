@@ -24,7 +24,7 @@ public class UsersController {
     private final SecurityService securityService;
     private final UserService userService;
 
-    @GetMapping("/users/{usercode:[a-zA-Z0-9@_\\-.]+}")
+    @GetMapping("/users/{usercode:[a-zA-Z0-9 @_\\-.]+}")
     public String publicUserPage(Model model, @PathVariable("usercode") String usercode) {
 
         Optional<SiteUserDao> user = this.userService.fetchUserByUsercode(usercode);

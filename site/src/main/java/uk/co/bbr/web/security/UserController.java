@@ -49,7 +49,7 @@ public class UserController {
     }
 
     @IsBbrAdmin
-    @GetMapping("user-list/pro/{usercode:[\\-_@A-Za-z.\\d]+}/remove")
+    @GetMapping("user-list/pro/{usercode:[\\-_@A-Za-z .\\d]+}/remove")
     public String proUserDisable(@PathVariable("usercode") String usercode) {
         Optional<SiteUserDao> user = this.userService.fetchUserByUsercode(usercode);
         if (user.isEmpty()) {
