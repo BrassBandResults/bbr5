@@ -19,7 +19,7 @@
         </div>
     </div>
     <br/>
-    <div th:remove="tag" th:if="${BandChampions.size() > 0}">
+    <div th:remove="tag">
         <div th:each="champion : ${BandChampions}" th:remove="tag">
             <div class="border border-warning rounded p-2 m-1 bg-warning-subtle">
                 <span th:remove="tag" th:if="${champion.contestEvent.contest.name.contains('Whit Friday')}">
@@ -33,8 +33,14 @@
                 <span th:remove="tag" th:text="#{page.band.current-champion-suffix}">Champion</span>
             </div>
         </div>
-        <br/>
+        <div th:each="award : ${SpecialAwards}" th:remove="tag" sec:authorize="hasRole('BBR_PRO')">
+            <div class="border border-primary rounded p-2 m-1 bg-primary-subtle">
+                <img th:src="@{${STATIC_HOST} + '/icons/trophy-silver.png'}" alt="trophy" />&nbsp
+                <span th:remove="tag" th:text="#{${award.translationKey}(${award.year})}">Award text</span>
+            </div>
+        </div>
     </div>
+    <br/>
     <table>
         <tr><td colspan="2" th:if="${Band.status.notCompeting}" th:text="#{${Band.status.translationKey} +'.long'}">Band Status</td></tr>
         <tr th:if="${Band.section}">
