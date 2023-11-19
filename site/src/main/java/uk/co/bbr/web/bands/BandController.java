@@ -13,10 +13,12 @@ import uk.co.bbr.services.bands.dao.BandAliasDao;
 import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.bands.dao.BandRehearsalDayDao;
 import uk.co.bbr.services.bands.dao.BandRelationshipDao;
+import uk.co.bbr.services.bands.types.BandStatus;
 import uk.co.bbr.services.bands.types.ResultSetCategory;
 import uk.co.bbr.services.contests.ContestService;
 import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.events.BandResultService;
+import uk.co.bbr.services.events.dao.ContestResultDao;
 import uk.co.bbr.services.events.dto.ResultDetailsDto;
 import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.groups.ContestGroupService;
@@ -27,6 +29,9 @@ import uk.co.bbr.web.Tools;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 import uk.co.bbr.web.security.annotations.IsBbrPro;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -60,6 +65,13 @@ public class BandController {
         List<BandAliasDao> previousNames = this.bandAliasService.findVisibleAliases(band.get());
         List<BandRelationshipDao> bandRelationships = this.bandRelationshipService.fetchRelationshipsForBand(band.get());
 
+        LocalDate thirteenMonthsAgo = LocalDate.now().minus(13, ChronoUnit.MONTHS);
+        this.updateBandSection(band.get(), bandResults.getBandNonWhitResults().stream()
+            .filter(p -> p.getContestEvent().getEventDate().isAfter(thirteenMonthsAgo))
+            .filter(p -> p.getContestEvent().getContest().getSection() != null)
+            .sorted(Comparator.comparing(o -> o.getContestEvent().getEventDate()))
+            .toList());
+
         model.addAttribute("Band", band.get());
         model.addAttribute("PreviousNames", previousNames);
         model.addAttribute("BandResults", bandResults.getBandNonWhitResults());
@@ -71,6 +83,17 @@ public class BandController {
         model.addAttribute("BandRelationships", bandRelationships);
         model.addAttribute("Notes", Tools.markdownToHTML(band.get().getNotes()));
         return "bands/band";
+    }
+
+    private void updateBandSection(BandDao band, List<ContestResultDao> recentResults) {
+        if (band.getStatus().equals(BandStatus.COMPETING)) {
+            for (ContestResultDao result : recentResults) {
+                if (result.getContestEvent().getContest().getSection() != null) {
+                    band.setSection(result.getContestEvent().getContest().getSection());
+                    this.bandService.update(band);
+                }
+            }
+        }
     }
 
     @GetMapping("/bands/{bandSlug:[\\-a-z\\d]{2,}}/whits")
