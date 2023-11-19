@@ -35,6 +35,17 @@
         </div>
         <br/>
     </div>
+
+    <div th:remove="tag" th:if="${SpecialAwards.size() > 0}" sec:authorize="hasRole('BBR_ADMIN')">
+        <div th:each="award : ${SpecialAwards}" th:remove="tag">
+            <div class="border border-primary rounded p-2 m-1 bg-primary-subtle">
+                <img th:src="@{${STATIC_HOST} + '/icons/trophy-silver.png'}" alt="trophy" />&nbsp
+                <span th:remove="tag" th:text="#{${award.translationKey}(${award.year})}">Award text</span>
+            </div>
+        </div>
+        <br/>
+    </div>
+
     <table>
         <tr><td colspan="2" th:if="${Band.status.notCompeting}" th:text="#{${Band.status.translationKey} +'.long'}">Band Status</td></tr>
         <tr th:if="${Band.section}">
