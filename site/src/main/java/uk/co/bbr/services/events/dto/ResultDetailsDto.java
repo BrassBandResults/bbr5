@@ -57,15 +57,15 @@ public class ResultDetailsDto {
             Optional<ContestResultDao> foundEuropeansWin = winsForThisYear.stream().filter(r-> r.getContestEvent().getContest().getSlug().equals("european-championships")).findAny();
 
             if (foundNationalsWin.isPresent() && foundBritishOpenWin.isPresent() && foundEuropeansWin.isPresent()) {
-                returnList.add(new SpecialAwardDto(year, "page.band.special-award.grand-slam"));
+                returnList.add(new SpecialAwardDto(year.toString(), "page.band.special-award.grand-slam"));
+                continue;
             }
 
             if (foundNationalsWin.isPresent() && foundBritishOpenWin.isPresent()) {
-                returnList.add(new SpecialAwardDto(year, "page.band.special-award.double"));
+                returnList.add(new SpecialAwardDto(year.toString(), "page.band.special-award.double"));
             }
         }
 
-        return returnList;
-
+        return returnList.stream().sorted(Comparator.comparing(SpecialAwardDto::getYear)).toList();
     }
 }

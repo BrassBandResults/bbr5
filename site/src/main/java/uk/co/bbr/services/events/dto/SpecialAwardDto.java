@@ -6,6 +6,6 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public class SpecialAwardDto {
-    private final int year;
+    private final String year;
     private final String translationKey;
 }
