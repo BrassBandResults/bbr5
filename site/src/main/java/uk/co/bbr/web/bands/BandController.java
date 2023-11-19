@@ -69,7 +69,7 @@ public class BandController {
         List<BandAliasDao> previousNames = this.bandAliasService.findVisibleAliases(band.get());
         List<BandRelationshipDao> bandRelationships = this.bandRelationshipService.fetchRelationshipsForBand(band.get());
 
-        this.updateBandSection(band.get(), bandResults.getBandNonWhitResults());
+        //this.updateBandSection(band.get(), bandResults.getBandNonWhitResults());
 
         model.addAttribute("Band", band.get());
         model.addAttribute("PreviousNames", previousNames);
