@@ -22,7 +22,7 @@ public class FeedbackStatusChangeController {
     private final UserService userService;
 
     @IsBbrSuperuser
-    @GetMapping("/feedback/status-change/{type:[a-z]+}/{usercode:[\\-@A-Za-z.\\d]+}/{feedbackId:\\d+}")
+    @GetMapping("/feedback/status-change/{type:[a-z]+}/{usercode:[\\-@A-Za-z .\\d]+}/{feedbackId:\\d+}")
     public String changeStatus(@PathVariable("type") String type, @PathVariable("usercode") String usercode, @PathVariable("feedbackId") Long feedbackId) {
         Optional<FeedbackDao> feedback = this.feedbackService.fetchById(feedbackId);
         if (feedback.isEmpty()) {
