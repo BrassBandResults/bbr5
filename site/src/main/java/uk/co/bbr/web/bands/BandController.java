@@ -26,6 +26,8 @@ import uk.co.bbr.services.groups.ContestGroupService;
 import uk.co.bbr.services.groups.dao.ContestGroupDao;
 import uk.co.bbr.services.sections.SectionService;
 import uk.co.bbr.services.sections.dao.SectionDao;
+import uk.co.bbr.services.security.SecurityService;
+import uk.co.bbr.services.security.dao.SiteUserDao;
 import uk.co.bbr.services.tags.ContestTagService;
 import uk.co.bbr.services.tags.dao.ContestTagDao;
 import uk.co.bbr.web.Tools;
@@ -51,6 +53,7 @@ public class BandController {
     private final ContestGroupService contestGroupService;
     private final BandResultService bandResultService;
     private final SectionService sectionService;
+    private final SecurityService securityService;
 
     @GetMapping("/bands/{bandSlug:[\\-a-z\\d]{2,}}")
     public String bandDetail(Model model, @PathVariable("bandSlug") String bandSlug) {
@@ -69,7 +72,10 @@ public class BandController {
         List<BandAliasDao> previousNames = this.bandAliasService.findVisibleAliases(band.get());
         List<BandRelationshipDao> bandRelationships = this.bandRelationshipService.fetchRelationshipsForBand(band.get());
 
-        //this.updateBandSection(band.get(), bandResults.getBandNonWhitResults());
+        SiteUserDao currentUser = this.securityService.getCurrentUser();
+        if (currentUser != null) {
+            this.updateBandSection(band.get(), bandResults.getBandNonWhitResults());
+        }
 
         model.addAttribute("Band", band.get());
         model.addAttribute("PreviousNames", previousNames);
