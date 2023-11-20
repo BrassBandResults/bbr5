@@ -37,9 +37,14 @@ public class EventSql {
                            LEFT OUTER JOIN contest_group g ON g.id = c.contest_group_id
                            WHERE e.id = ?1
                            ORDER BY CASE
-                             WHEN r.result_position_type = 'U' THEN 10000
-                             WHEN r.result_position_type = 'W' THEN 10001
-                             WHEN r.result_position_type = 'D' THEN 10002
+                             WHEN r.result_position_type = 'U' THEN CASE
+                                   WHEN r.result_award = 'G' THEN 9000
+                                   WHEN r.result_award = 'S' THEN 9005
+                                   WHEN r.result_award = 'B' THEN 9010
+                                   ELSE 10000
+                               END
+                             WHEN r.result_position_type = 'W' THEN 10010
+                             WHEN r.result_position_type = 'D' THEN 10020
                              ELSE r.result_position
                            END, r.draw, r.band_name""";
 
