@@ -276,7 +276,10 @@ public class ContestEventServiceImpl implements ContestEventService {
                 eachWinner.getConductorThird().setFirstNames(eachSqlEvent.getConductor3FirstNames());
                 eachWinner.getConductorThird().setSurname(eachSqlEvent.getConductor3Surname());
             }
-            currentEvent.getWinners().add(eachWinner);
+            Optional<ContestResultDao> existingWinners = currentEvent.getWinners().stream().filter(a -> a.getBand().getSlug().equals(eachWinner.getBand().getSlug())).findFirst();
+            if (existingWinners.isEmpty()) {
+                currentEvent.getWinners().add(eachWinner);
+            }
         }
 
         return returnEvents;
