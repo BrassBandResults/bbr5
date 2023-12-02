@@ -13,4 +13,10 @@ public interface VenueAliasRepository extends JpaRepository<VenueAliasDao, Long>
 
     @Query("SELECT a FROM VenueAliasDao a WHERE a.venue.id = :venueId")
     List<VenueAliasDao> findByVenue(Long venueId);
+
+    @Query("SELECT a FROM VenueAliasDao a WHERE a.venue.id = :venueId AND a.name = :aliasName")
+    Optional<VenueAliasDao> fetchByNameForVenue(Long venueId, String aliasName);
+
+    @Query("SELECT a FROM VenueAliasDao a WHERE a.venue.id = :venueId AND a.id = :aliasId")
+    Optional<VenueAliasDao> fetchByIdForVenue(Long venueId, Long aliasId);
 }

@@ -8,7 +8,6 @@ import uk.co.bbr.services.people.dao.PersonAliasDao;
 import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.people.repo.PersonAliasRepository;
 import uk.co.bbr.services.security.SecurityService;
-import uk.co.bbr.web.security.annotations.IsBbrAdmin;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
 import java.time.LocalDateTime;
@@ -58,7 +57,7 @@ public class PersonAliasServiceImpl implements PersonAliasService, SlugTools {
     public void showAlias(PersonDao band, Long aliasId) {
         Optional<PersonAliasDao> previousName = this.personAliasRepository.fetchByIdForPerson(band.getId(), aliasId);
         if (previousName.isEmpty()) {
-            throw NotFoundException.bandAliasNotFoundByIds(band.getSlug(), aliasId);
+            throw NotFoundException.personAliasNotFoundByIds(band.getSlug(), aliasId);
         }
         previousName.get().setHidden(false);
         this.personAliasRepository.saveAndFlush(previousName.get());
@@ -68,7 +67,7 @@ public class PersonAliasServiceImpl implements PersonAliasService, SlugTools {
     public void hideAlias(PersonDao band, Long aliasId) {
         Optional<PersonAliasDao> previousName = this.personAliasRepository.fetchByIdForPerson(band.getId(), aliasId);
         if (previousName.isEmpty()) {
-            throw NotFoundException.bandAliasNotFoundByIds(band.getSlug(), aliasId);
+            throw NotFoundException.personAliasNotFoundByIds(band.getSlug(), aliasId);
         }
         previousName.get().setHidden(true);
         this.personAliasRepository.saveAndFlush(previousName.get());
@@ -78,7 +77,7 @@ public class PersonAliasServiceImpl implements PersonAliasService, SlugTools {
     public void deleteAlias(PersonDao band, Long aliasId) {
         Optional<PersonAliasDao> previousName = this.personAliasRepository.fetchByIdForPerson(band.getId(), aliasId);
         if (previousName.isEmpty()) {
-            throw NotFoundException.bandAliasNotFoundByIds(band.getSlug(), aliasId);
+            throw NotFoundException.personAliasNotFoundByIds(band.getSlug(), aliasId);
         }
         this.personAliasRepository.delete(previousName.get());
 

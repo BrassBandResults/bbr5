@@ -128,4 +128,16 @@ public class NotFoundException extends RuntimeException {
     public static NotFoundException performanceNotFoundByUserAndId(String usercode, Long performanceId) {
         return new NotFoundException("Performance not found for user " + usercode + " with id " + performanceId);
     }
+
+    public static NotFoundException personAliasNotFoundByIds(String slug, Long aliasId) {
+        return new NotFoundException("Alias with id " + aliasId + " not found for person with slug " + slug);
+    }
+
+    public static NotFoundException pieceAliasNotFoundByIds(String slug, Long aliasId) {
+        return new NotFoundException("Alias with id " + aliasId + " not found for piece with slug " + slug);
+    }
+
+    public static NotFoundException venueAliasNotFoundByIds(String slug, Long aliasId) {
+        return new NotFoundException("Alias with id " + aliasId + " not found for venue with slug " + slug);
+    }
 }
