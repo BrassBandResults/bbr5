@@ -38,8 +38,16 @@
     <span th:replace="~{buttons/button.html :: button(#{page.buttons.edit}, ${'/venues/' + venue.slug + '/edit'})}"></span>
 </span>
 
+<span th:fragment="editVenueAliases(venue)" th:remove="tag">
+    <span th:replace="~{buttons/button.html :: button(#{page.buttons.edit-aliases}, ${'/venues/' + venue.slug + '/edit-aliases'})}"></span>
+</span>
+
 <span th:fragment="editPiece(piece)" th:remove="tag">
     <span th:replace="~{buttons/button.html :: button(#{page.buttons.edit}, ${'/pieces/' + piece.slug + '/edit'})}"></span>
+</span>
+
+<span th:fragment="editPieceAliases(piece)" th:remove="tag">
+    <span th:replace="~{buttons/button.html :: button(#{page.buttons.edit-aliases}, ${'/pieces/' + piece.slug + '/edit-aliases'})}"></span>
 </span>
 
 <span th:fragment="editEvent(event)" th:remove="tag">

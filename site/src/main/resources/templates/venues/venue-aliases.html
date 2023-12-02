@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+<head>
+    <title th:text="@{#{page.venue-aliases.title(${Venue.name})} + ' - Brass Band Results'}">Venue Aliases - Brass Band Results</title>
+</head>
+<body>
+<div layout:fragment="content">
+  <h2><span th:replace="~{links/venue-link.html :: venueLink(${Venue})}"></span> <span th:text="#{page.venue-aliases.page-header}" th:remove="tag">Aliases</span></h2>
+    <table id="bands-aliases" class="table table-hover sortable">
+        <thead>
+        <tr>
+            <th th:text="#{page.column-header.alias}">Alias</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="previousName : ${PreviousNames}">
+            <td class="band-alias" th:text="${previousName.getName()}"></td>
+            <td>
+                <span th:replace="~{buttons/alias.html :: deleteVenueAlias(${Venue}, ${previousName})}">delete</span>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <form method="POST" th:action="${'/venues/' + Venue.slug + '/edit-aliases/add'}">
+        <input type="text" maxlength="100" size="50" id="name" name="name" th:placeholder="#{page.form.placeholder.alias-name}"/>
+        <input type="submit" th:value="#{page.buttons.save-new-alias}" class="btn btn-outline-success btn-sm rounded"/>
+        <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+    </form>
+</div>
+
+<div layout:fragment="feedback">
+</div>
+
+</body>
+</html>

@@ -5,6 +5,7 @@
     </h2>
     <div sec:authorize="hasRole('BBR_SUPERUSER')">
         <span th:replace="~{buttons/edit.html :: editPiece(${Piece})}"></span>
+        <span th:replace="~{buttons/edit.html :: editPieceAliases(${Piece})}"></span>
     </div><br/>
     <span th:replace="~{components/aliases.html :: previousNames(${PreviousNames})}"></span>
 

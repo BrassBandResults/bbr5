@@ -1,4 +1,4 @@
-package uk.co.bbr.web.people;
+package uk.co.bbr.web.pieces;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -18,10 +18,10 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
-import uk.co.bbr.services.people.PersonAliasService;
-import uk.co.bbr.services.people.PersonService;
-import uk.co.bbr.services.people.dao.PersonAliasDao;
-import uk.co.bbr.services.people.dao.PersonDao;
+import uk.co.bbr.services.pieces.dao.PieceAliasDao;
+import uk.co.bbr.services.pieces.dao.PieceDao;
+import uk.co.bbr.services.pieces.PieceAliasService;
+import uk.co.bbr.services.pieces.PieceService;
 import uk.co.bbr.services.security.JwtService;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.services.security.ex.AuthenticationFailedException;
@@ -40,15 +40,15 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ActiveProfiles("test")
 @SpringBootTest(properties = {  "spring.config.location=classpath:test-application.yml",
-        "spring.datasource.url=jdbc:h2:mem:people-alias-web-tests-admin-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE"},
+        "spring.datasource.url=jdbc:h2:mem:piece-alias-web-tests-admin-h2;DB_CLOSE_DELAY=-1;MODE=MSSQLServer;DATABASE_TO_LOWER=TRUE"},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class PersonAliasWebTests implements LoginMixin {
+class PieceAliasWebTests implements LoginMixin {
 
     @Autowired private SecurityService securityService;
     @Autowired private JwtService jwtService;
-    @Autowired private PersonService personService;
-    @Autowired private PersonAliasService personAliasService;
+    @Autowired private PieceService pieceService;
+    @Autowired private PieceAliasService pieceAliasService;
     @Autowired private CsrfTokenRepository csrfTokenRepository;
     @Autowired private RestTemplate restTemplate;
     @LocalServerPort private int port;
@@ -62,27 +62,27 @@ class PersonAliasWebTests implements LoginMixin {
     void setupBands() throws AuthenticationFailedException {
         loginTestUser(this.securityService, this.jwtService, TestUser.TEST_MEMBER);
 
-        PersonDao davidRoberts = this.personService.create("Roberts", "David");
-        PersonAliasDao personPreviousName1 = new PersonAliasDao();
-        personPreviousName1.setOldName("Dave Roberts");
+        PieceDao piece = this.pieceService.create("The Year Of The Dragon");
+        PieceAliasDao personPreviousName1 = new PieceAliasDao();
+        personPreviousName1.setName("Year of the Dragon");
         personPreviousName1.setHidden(false);
-        this.personAliasService.createAlias(davidRoberts, personPreviousName1);
-        PersonAliasDao personPreviousName2 = new PersonAliasDao();
-        personPreviousName2.setOldName("Davey Roberts");
+        this.pieceAliasService.createAlias(piece, personPreviousName1);
+        PieceAliasDao personPreviousName2 = new PieceAliasDao();
+        personPreviousName2.setName("t'Year of the Dragon");
         personPreviousName2.setHidden(true);
-        this.personAliasService.createAlias(davidRoberts, personPreviousName2);
+        this.pieceAliasService.createAlias(piece, personPreviousName2);
 
-        this.personService.create("Roberts", "John");
+        this.pieceService.create("Contest Music");
 
         logoutTestUser();
     }
 
     @Test
     void testListAliasesWorksSuccessfully() {
-        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/people/david-roberts/edit-aliases", String.class);
+        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/pieces/the-year-of-the-dragon/edit-aliases", String.class);
         assertNotNull(response);
-        assertTrue(response.contains("<title>David Roberts - Person Aliases - Brass Band Results</title>"));
-        assertTrue(response.contains(">David Roberts</a>"));
+        assertTrue(response.contains("<title>The Year Of The Dragon - Piece Aliases - Brass Band Results</title>"));
+        assertTrue(response.contains(">The Year Of The Dragon</a>"));
         assertTrue(response.contains("Aliases<"));
 
         assertTrue(response.contains(">Visible<"));
@@ -91,87 +91,89 @@ class PersonAliasWebTests implements LoginMixin {
 
     @Test
     void testListAliasesWithInvalidBandSlugFailsAsExpected() {
-        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/people/not-a-real-person/edit-aliases", String.class));
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/pieces/not-a-real-person/edit-aliases", String.class));
         assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
     }
 
     @Test
     void testHideAliasWorksSuccessfully() {
-        Optional<PersonDao> davidRoberts = this.personService.fetchBySlug("david-roberts");
+        Optional<PieceDao> piece = this.pieceService.fetchBySlug("the-year-of-the-dragon");
 
         long visibleAliasId = 0;
-        List<PersonAliasDao> previousNamesBefore = this.personAliasService.findAllAliases(davidRoberts.get());
-        for (PersonAliasDao previousName : previousNamesBefore) {
-            if (previousName.getOldName().equals("Dave Roberts")) {
+        List<PieceAliasDao> previousNamesBefore = this.pieceAliasService.findAllAliases(piece.get());
+        for (PieceAliasDao previousName : previousNamesBefore) {
+            if (previousName.getName().equals("Year of the Dragon")) {
                 assertFalse(previousName.isHidden());
                 visibleAliasId = previousName.getId();
                 break;
             }
         }
 
-        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/people/david-roberts/edit-aliases/" + visibleAliasId + "/hide", String.class);
+        assertTrue(visibleAliasId != 0);
+
+        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/pieces/the-year-of-the-dragon/edit-aliases/" + visibleAliasId + "/hide", String.class);
         assertNotNull(response);
 
-        List<PersonAliasDao> previousNamesAfter = this.personAliasService.findAllAliases(davidRoberts.get());
-        for (PersonAliasDao previousName : previousNamesAfter) {
-            if (previousName.getOldName().equals("Dave Roberts")) {
+        List<PieceAliasDao> previousNamesAfter = this.pieceAliasService.findAllAliases(piece.get());
+        for (PieceAliasDao previousName : previousNamesAfter) {
+            if (previousName.getName().equals("Year of the Dragon")) {
                 assertTrue(previousName.isHidden());
                 break;
             }
         }
 
-        this.personAliasService.showAlias(davidRoberts.get(), visibleAliasId);
+        this.pieceAliasService.showAlias(piece.get(), visibleAliasId);
     }
 
     @Test
     void testHideAliasesWithInvalidBandSlugFailsAsExpected() {
-        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/people/not-a-real-person/edit-aliases/1/hide", String.class));
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/pieces/not-a-real-person/edit-aliases/1/hide", String.class));
         assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
     }
 
     @Test
     void testHideAliasesWithInvalidAliasIdFailsAsExpected() {
-        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/people/david-roberts/edit-aliases/999/hide", String.class));
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/pieces/the-year-of-the-dragon/edit-aliases/999/hide", String.class));
         assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
     }
 
     @Test
     void testShowAliasWorksSuccessfully() {
-        Optional<PersonDao> davidRoberts = this.personService.fetchBySlug("david-roberts");
+        Optional<PieceDao> piece = this.pieceService.fetchBySlug("the-year-of-the-dragon");
 
         long hiddenAliasId = 0;
-        List<PersonAliasDao> previousNamesBefore = this.personAliasService.findAllAliases(davidRoberts.get());
-        for (PersonAliasDao previousName : previousNamesBefore) {
-            if (previousName.getOldName().equals("Davey Roberts")) {
+        List<PieceAliasDao> previousNamesBefore = this.pieceAliasService.findAllAliases(piece.get());
+        for (PieceAliasDao previousName : previousNamesBefore) {
+            if (previousName.getName().equals("t'Year of the Dragon")) {
                 assertTrue(previousName.isHidden());
                 hiddenAliasId = previousName.getId();
                 break;
             }
         }
 
-        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/people/david-roberts/edit-aliases/" + hiddenAliasId + "/show", String.class);
+        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/pieces/the-year-of-the-dragon/edit-aliases/" + hiddenAliasId + "/show", String.class);
         assertNotNull(response);
 
-        List<PersonAliasDao> previousNamesAfter = this.personAliasService.findAllAliases(davidRoberts.get());
-        for (PersonAliasDao previousName : previousNamesAfter) {
-            if (previousName.getOldName().equals("Davey Roberts")) {
+        List<PieceAliasDao> previousNamesAfter = this.pieceAliasService.findAllAliases(piece.get());
+        for (PieceAliasDao previousName : previousNamesAfter) {
+            if (previousName.getName().equals("t'Year of the Dragon")) {
                 assertFalse(previousName.isHidden());
                 break;
             }
         }
 
-        this.personAliasService.hideAlias(davidRoberts.get(), hiddenAliasId);
+        this.pieceAliasService.hideAlias(piece.get(), hiddenAliasId);
     }
 
     @Test
     void testShowAliasesWithInvalidBandSlugFailsAsExpected() {
-        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/people/not-a-real-person/edit-aliases/1/show", String.class));
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/pieces/not-a-real-person/edit-aliases/1/show", String.class));
         assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
     }
 
     @Test
     void testShowAliasesWithInvalidAliasIdFailsAsExpected() {
-        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/people/david-roberts/edit-aliases/999/show", String.class));
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/pieces/the-year-of-the-dragon/edit-aliases/999/show", String.class));
         assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
     }
 
@@ -179,50 +181,50 @@ class PersonAliasWebTests implements LoginMixin {
     void testDeleteAliasWorksSuccessfully() throws AuthenticationFailedException {
         loginTestUser(this.securityService, this.jwtService, TestUser.TEST_MEMBER);
 
-        Optional<PersonDao> noAliasPerson = this.personService.fetchBySlug("john-roberts");
+        Optional<PieceDao> noAliasPerson = this.pieceService.fetchBySlug("contest-music");
         assertTrue(noAliasPerson.isPresent());
 
-        List<PersonAliasDao> fetchedAliases1 = this.personAliasService.findAllAliases(noAliasPerson.get());
+        List<PieceAliasDao> fetchedAliases1 = this.pieceAliasService.findAllAliases(noAliasPerson.get());
         assertEquals(0, fetchedAliases1.size());
 
-        PersonAliasDao previousName = new PersonAliasDao();
-        previousName.setOldName("Old Name To Delete");
-        PersonAliasDao newAlias = this.personAliasService.createAlias(noAliasPerson.get(), previousName);
+        PieceAliasDao previousName = new PieceAliasDao();
+        previousName.setName("Old Name To Delete");
+        PieceAliasDao newAlias = this.pieceAliasService.createAlias(noAliasPerson.get(), previousName);
 
-        List<PersonAliasDao> fetchedAliases2 = this.personAliasService.findAllAliases(noAliasPerson.get());
+        List<PieceAliasDao> fetchedAliases2 = this.pieceAliasService.findAllAliases(noAliasPerson.get());
         assertEquals(1, fetchedAliases2.size());
 
         logoutTestUser();
 
-        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/people/john-roberts/edit-aliases/" + newAlias.getId() + "/delete", String.class);
+        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/pieces/contest-music/edit-aliases/" + newAlias.getId() + "/delete", String.class);
         assertNotNull(response);
 
-        List<PersonAliasDao> fetchedAliases3 = this.personAliasService.findAllAliases(noAliasPerson.get());
+        List<PieceAliasDao> fetchedAliases3 = this.pieceAliasService.findAllAliases(noAliasPerson.get());
         assertEquals(0, fetchedAliases3.size());
     }
 
     @Test
     void testDeleteAliasWithInvalidBandSlugFailsAsExpected() {
-        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/people/not-a-real-person/edit-aliases/1/delete", String.class));
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/pieces/not-a-real-person/edit-aliases/1/delete", String.class));
         assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
     }
 
     @Test
     void testDeleteAliasWithInvalidAliasIdFailsAsExpected() {
-        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/people/david-roberts/edit-aliases/999/delete", String.class));
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.getForObject("http://localhost:" + this.port + "/pieces/the-year-of-the-dragon/edit-aliases/999/delete", String.class));
         assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
     }
 
     @Test
     void testCreateAliasWorksSuccessfully() {
         // arrange
-        Optional<PersonDao> band = this.personService.fetchBySlug("david-roberts");
+        Optional<PieceDao> band = this.pieceService.fetchBySlug("the-year-of-the-dragon");
         assertTrue(band.isPresent());
-        List<PersonAliasDao> fetchedAliases1 = this.personAliasService.findAllAliases(band.get());
+        List<PieceAliasDao> fetchedAliases1 = this.pieceAliasService.findAllAliases(band.get());
         assertEquals(2, fetchedAliases1.size());
         long aliasId = fetchedAliases1.get(0).getId();
-        assertEquals("Dave Roberts", fetchedAliases1.get(0).getOldName());
-        assertEquals("Davey Roberts", fetchedAliases1.get(1).getOldName());
+        assertEquals("Year of the Dragon", fetchedAliases1.get(0).getName());
+        assertEquals("t'Year of the Dragon", fetchedAliases1.get(1).getName());
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
@@ -232,23 +234,23 @@ class PersonAliasWebTests implements LoginMixin {
         headers.add("Cookie", SecurityFilter.CSRF_HEADER_NAME + "=" + csrfToken.getToken());
 
         MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
-        map.add("oldName", "Robertsy");
+        map.add("name", "New Alias");
         map.add("_csrf", csrfToken.getToken());
         map.add("_csrf_header", SecurityFilter.CSRF_HEADER_NAME);
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
 
         // act
-        ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/people/david-roberts/edit-aliases/add", request, String.class);
+        ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/pieces/the-year-of-the-dragon/edit-aliases/add", request, String.class);
 
         // assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
 
-        List<PersonAliasDao> fetchedAliases2 = this.personAliasService.findAllAliases(band.get());
+        List<PieceAliasDao> fetchedAliases2 = this.pieceAliasService.findAllAliases(band.get());
         assertEquals(3, fetchedAliases2.size());
-        assertEquals("Dave Roberts", fetchedAliases2.get(0).getOldName());
-        assertEquals("Davey Roberts", fetchedAliases2.get(1).getOldName());
-        assertEquals("Robertsy", fetchedAliases2.get(2).getOldName());
+        assertEquals("Year of the Dragon", fetchedAliases2.get(0).getName());
+        assertEquals("t'Year of the Dragon", fetchedAliases2.get(1).getName());
+        assertEquals("New Alias", fetchedAliases2.get(2).getName());
         assertFalse(fetchedAliases2.get(2).isHidden());
     }
 
@@ -262,13 +264,13 @@ class PersonAliasWebTests implements LoginMixin {
         headers.add("Cookie", SecurityFilter.CSRF_HEADER_NAME + "=" + csrfToken.getToken());
 
         MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
-        map.add("oldName", "New Alias");
+        map.add("name", "New Alias");
         map.add("_csrf", csrfToken.getToken());
         map.add("_csrf_header", SecurityFilter.CSRF_HEADER_NAME);
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
 
-        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.postForEntity("http://localhost:" + this.port + "/people/not-a-real-person/edit-aliases/add", request, String.class));
+        HttpClientErrorException ex = assertThrows(HttpClientErrorException.class, () -> this.restTemplate.postForEntity("http://localhost:" + this.port + "/pieces/not-a-real-person/edit-aliases/add", request, String.class));
         assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
     }
 }

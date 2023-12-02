@@ -27,12 +27,14 @@ import uk.co.bbr.services.people.PersonAliasService;
 import uk.co.bbr.services.people.PersonRelationshipService;
 import uk.co.bbr.services.people.PersonService;
 import uk.co.bbr.services.performances.PerformanceService;
+import uk.co.bbr.services.pieces.PieceAliasService;
 import uk.co.bbr.services.pieces.PieceService;
 import uk.co.bbr.services.regions.RegionService;
 import uk.co.bbr.services.security.JwtService;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.services.security.ex.AuthenticationFailedException;
 import uk.co.bbr.services.tags.ContestTagService;
+import uk.co.bbr.services.venues.VenueAliasService;
 import uk.co.bbr.services.venues.VenueService;
 import uk.co.bbr.web.LoginMixin;
 import uk.co.bbr.web.security.support.TestUser;
@@ -68,6 +70,8 @@ class SuperuserPagesTests extends PageSets implements LoginMixin {
     @Autowired private VenueService venueService;
     @Autowired private FeedbackService feedbackService;
     @Autowired private PerformanceService performanceService;
+    @Autowired private VenueAliasService venueAliasService;
+    @Autowired private PieceAliasService pieceAliasService;
     @Autowired private JwtService jwtService;
     @Autowired private RestTemplate restTemplate;
     @Autowired private CsrfTokenRepository csrfTokenRepository;
@@ -85,7 +89,7 @@ class SuperuserPagesTests extends PageSets implements LoginMixin {
     void setupData() throws AuthenticationFailedException {
         loginTestUser(this.securityService, this.jwtService, TestUser.TEST_MEMBER);
 
-        this.setupData(this.regionService, this.bandService, this.bandAliasService, this.bandRelationshipService, this.personService, this.personRelationshipService, this.personAliasService, this.venueService, this.pieceService, this.contestGroupService, this.contestService, this.contestEventService, this.contestResultService, this.contestTagService, this.feedbackService, this.securityService, this.performanceService);
+        this.setupData(this.regionService, this.bandService, this.bandAliasService, this.bandRelationshipService, this.personService, this.personRelationshipService, this.personAliasService, this.venueService, this.pieceService, this.contestGroupService, this.contestService, this.contestEventService, this.contestResultService, this.contestTagService, this.feedbackService, this.securityService, this.performanceService, this.venueAliasService, this.pieceAliasService);
 
         logoutTestUser();
     }

@@ -24,7 +24,9 @@ import uk.co.bbr.services.people.dao.PersonAliasDao;
 import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.people.dao.PersonRelationshipDao;
 import uk.co.bbr.services.performances.PerformanceService;
+import uk.co.bbr.services.pieces.PieceAliasService;
 import uk.co.bbr.services.pieces.PieceService;
+import uk.co.bbr.services.pieces.dao.PieceAliasDao;
 import uk.co.bbr.services.pieces.dao.PieceDao;
 import uk.co.bbr.services.regions.RegionService;
 import uk.co.bbr.services.regions.dao.RegionDao;
@@ -32,7 +34,9 @@ import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.services.security.dao.SiteUserDao;
 import uk.co.bbr.services.tags.ContestTagService;
 import uk.co.bbr.services.tags.dao.ContestTagDao;
+import uk.co.bbr.services.venues.VenueAliasService;
 import uk.co.bbr.services.venues.VenueService;
+import uk.co.bbr.services.venues.dao.VenueAliasDao;
 import uk.co.bbr.services.venues.dao.VenueDao;
 
 import java.time.LocalDate;
@@ -50,7 +54,7 @@ public abstract class PageSets {
                              PersonService personService, PersonRelationshipService personRelationshipService, PersonAliasService personAliasService,
                              VenueService venueService, PieceService pieceService,
                              ContestGroupService contestGroupService, ContestService contestService, ContestEventService contestEventService, ResultService contestResultService, ContestTagService contestTagService,
-                             FeedbackService feedbackService, SecurityService securityService, PerformanceService performanceService) {
+                             FeedbackService feedbackService, SecurityService securityService, PerformanceService performanceService, VenueAliasService venueAliasService, PieceAliasService pieceAliasService) {
         Optional<RegionDao> yorkshire = regionService.fetchBySlug("yorkshire");
         assertTrue(yorkshire.isPresent());
 
@@ -83,6 +87,9 @@ public abstract class PageSets {
 
         VenueDao stGeorges = venueService.create("St George's Hall");
         assertEquals("st-george-s-hall", stGeorges.getSlug());
+        VenueAliasDao newAlias = new VenueAliasDao();
+        newAlias.setName("St Georges");
+        VenueAliasDao stGeorgeALias = venueAliasService.createAlias(stGeorges, newAlias);
 
         ContestDao yorkshireArea = contestService.create("Yorkshire Area");
         ContestEventDao yorkshireArea2010 = contestEventService.create(yorkshireArea, LocalDate.of(2000, 3, 1));
@@ -103,6 +110,9 @@ public abstract class PageSets {
         ContestTagDao tagToDelete = contestTagService.create("Tag To Delete");
 
         PieceDao contestMusic = pieceService.create("Contest Music");
+        PieceAliasDao pieceAlias = new PieceAliasDao();
+        pieceAlias.setName("ContestMusic");
+        PieceAliasDao musicAlias = pieceAliasService.createAlias(contestMusic, pieceAlias);
 
         FeedbackDao feedbackNew = new FeedbackDao();
         feedbackNew.setStatus(FeedbackStatus.NEW);
@@ -229,6 +239,10 @@ public abstract class PageSets {
         pageList.add("/lookup/contest/data.json?s=abc");
         pageList.add("/lookup/person/data.json?s=abc");
         pageList.add("/pieces/ALL");
+        pageList.add("/pieces/contest-music/edit-aliases");
+        pageList.add("/pieces/contest-music/edit-aliases/1/hide");
+        pageList.add("/pieces/contest-music/edit-aliases/1/show");
+        pageList.add("/pieces/contest-music/edit-aliases/1/delete");
         pageList.add("/profile");
         pageList.add("/profile/performances");
         pageList.add("/people/david-roberts/edit");
@@ -242,6 +256,8 @@ public abstract class PageSets {
         pageList.add("/tags/tag-to-delete/delete");
         pageList.add("/venues/ALL");
         pageList.add("/venues/st-george-s-hall/edit");
+        pageList.add("/venues/st-george-s-hall/edit-aliases");
+        pageList.add("/venues/st-george-s-hall/edit-aliases/1/delete");
         pageList.add("/years");
         return pageList;
     }

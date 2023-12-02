@@ -74,8 +74,8 @@ public class EventSql {
            LEFT OUTER JOIN person con2 ON con2.id = r.conductor_two_id
            LEFT OUTER JOIN person con3 ON con3.id = r.conductor_three_id
            LEFT OUTER JOIN contest_group g ON g.id = c.contest_group_id
-           WHERE e.date_of_event > ?1
-           AND e.date_of_event < ?2
+           WHERE e.date_of_event >= ?1
+           AND e.date_of_event <= ?2
            ORDER BY e.date_of_event, g.id, c.ordering, c.slug""";
 
     public static List<EventResultSqlDto> eventsForDateRange(EntityManager entityManager, LocalDate start, LocalDate end) {

@@ -2,6 +2,7 @@
     <h2 th:text="${Venue.name}"></h2>
     <div sec:authorize="hasRole('BBR_SUPERUSER')">
         <span th:replace="~{buttons/edit.html :: editVenue(${Venue})}"></span>
+        <span th:replace="~{buttons/edit.html :: editVenueAliases(${Venue})}"></span>
     </div><br/>
     <span th:replace="~{components/aliases.html :: previousNames(${PreviousNames})}"></span>
     <p th:if="${Venue.parent}"><span th:text="#{page.venue.inside}">Part of </span> <span th:replace="~{links/venue-link.html :: venueLink(${Venue.parent})}">Venue Parent</span></p>

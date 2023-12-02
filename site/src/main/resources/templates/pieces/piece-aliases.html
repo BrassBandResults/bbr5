@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+<head>
+    <title th:text="@{#{page.piece-aliases.title(${Piece.name})} + ' - Brass Band Results'}">piece Aliases - Brass Band Results</title>
+</head>
+<body>
+<div layout:fragment="content">
+  <h2><span th:replace="~{links/piece-link.html :: pieceLink(${Piece})}"></span> <span th:text="#{page.piece-aliases.page-header}" th:remove="tag">Aliases</span></h2>
+    <table id="bands-aliases" class="table table-hover sortable">
+        <thead>
+        <tr>
+            <th th:text="#{page.column-header.alias}">Alias</th>
+            <th th:text="#{page.column-header.visibility}">Visibility</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="previousName : ${PreviousNames}">
+            <td class="band-alias" th:text="${previousName.name}"></td>
+            <td>
+                <span th:text="#{page.aliases.hidden}" th:if="${previousName.hidden}">Hidden</span>
+                <span th:text="#{page.aliases.visible}" th:if="${!previousName.hidden}">Visible</span>
+            </td>
+            <td>
+                <span th:replace="~{buttons/alias.html :: deletePieceAlias(${Piece}, ${previousName})}">delete</span>
+                <span th:if="${!previousName.hidden}" th:remove="tag">
+                    <span th:replace="~{buttons/alias.html :: hidePieceAlias(${Piece}, ${previousName})}">hide</span>
+                </span>
+                <span th:if="${previousName.hidden}" th:remove="tag">
+                    <span th:replace="~{buttons/alias.html :: showPieceAlias(${Piece}, ${previousName})}" th:if="${previousName.hidden}">show</span>
+                </span>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <form method="POST" th:action="${'/pieces/' + Piece.slug + '/edit-aliases/add'}">
+        <input type="text" maxlength="100" size="50" id="name" name="name" th:placeholder="#{page.form.placeholder.alias-name}"/>
+        <input type="submit" th:value="#{page.buttons.save-new-alias}" class="btn btn-outline-success btn-sm rounded"/>
+        <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+    </form>
+</div>
+
+<div layout:fragment="feedback">
+</div>
+
+</body>
+</html>

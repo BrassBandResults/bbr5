@@ -17,31 +17,31 @@ import org.springframework.web.client.RestTemplate;
 import uk.co.bbr.services.bands.BandAliasService;
 import uk.co.bbr.services.bands.BandRelationshipService;
 import uk.co.bbr.services.bands.BandService;
+import uk.co.bbr.services.contests.ContestService;
 import uk.co.bbr.services.events.ContestEventService;
+import uk.co.bbr.services.events.ResultService;
 import uk.co.bbr.services.feedback.FeedbackService;
 import uk.co.bbr.services.groups.ContestGroupService;
-import uk.co.bbr.services.events.ResultService;
-import uk.co.bbr.services.contests.ContestService;
 import uk.co.bbr.services.people.PersonAliasService;
-import uk.co.bbr.services.performances.PerformanceService;
-import uk.co.bbr.services.tags.ContestTagService;
 import uk.co.bbr.services.people.PersonRelationshipService;
 import uk.co.bbr.services.people.PersonService;
+import uk.co.bbr.services.performances.PerformanceService;
+import uk.co.bbr.services.pieces.PieceAliasService;
 import uk.co.bbr.services.pieces.PieceService;
 import uk.co.bbr.services.regions.RegionService;
 import uk.co.bbr.services.security.JwtService;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.services.security.ex.AuthenticationFailedException;
+import uk.co.bbr.services.tags.ContestTagService;
+import uk.co.bbr.services.venues.VenueAliasService;
 import uk.co.bbr.services.venues.VenueService;
 import uk.co.bbr.web.LoginMixin;
 import uk.co.bbr.web.security.support.TestUser;
 
 import java.util.Objects;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -69,6 +69,8 @@ class PublicPagesTests extends PageSets implements LoginMixin {
     @Autowired private VenueService venueService;
     @Autowired private FeedbackService feedbackService;
     @Autowired private PerformanceService performanceService;
+    @Autowired private VenueAliasService venueAliasService;
+    @Autowired private PieceAliasService pieceAliasService;
     @Autowired private JwtService jwtService;
     @Autowired private RestTemplate restTemplate;
     @LocalServerPort private int port;
@@ -77,7 +79,7 @@ class PublicPagesTests extends PageSets implements LoginMixin {
     void setupData() throws AuthenticationFailedException {
         loginTestUser(this.securityService, this.jwtService, TestUser.TEST_MEMBER);
 
-        this.setupData(this.regionService, this.bandService, this.bandAliasService, this.bandRelationshipService, this.personService, this.personRelationshipService, this.personAliasService, this.venueService, this.pieceService, this.contestGroupService, this.contestService, this.contestEventService, this.contestResultService, this.contestTagService, this.feedbackService, this.securityService, this.performanceService);
+        this.setupData(this.regionService, this.bandService, this.bandAliasService, this.bandRelationshipService, this.personService, this.personRelationshipService, this.personAliasService, this.venueService, this.pieceService, this.contestGroupService, this.contestService, this.contestEventService, this.contestResultService, this.contestTagService, this.feedbackService, this.securityService, this.performanceService, this.venueAliasService, this.pieceAliasService);
 
         logoutTestUser();
     }
