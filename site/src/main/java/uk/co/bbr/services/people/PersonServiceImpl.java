@@ -1,9 +1,9 @@
 package uk.co.bbr.services.people;
 
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
-import uk.co.bbr.services.events.ResultService;
 import uk.co.bbr.services.events.dao.ContestAdjudicatorDao;
 import uk.co.bbr.services.events.dao.ContestResultDao;
 import uk.co.bbr.services.events.repo.ContestAdjudicatorRepository;
@@ -24,18 +24,20 @@ import uk.co.bbr.services.people.sql.PeopleBandsSql;
 import uk.co.bbr.services.people.sql.PeopleCompareSql;
 import uk.co.bbr.services.people.sql.PeopleCountSql;
 import uk.co.bbr.services.people.sql.PeopleWinnersSql;
-import uk.co.bbr.services.people.sql.dto.*;
+import uk.co.bbr.services.people.sql.dto.AdjudicationsSqlDto;
+import uk.co.bbr.services.people.sql.dto.CompareConductorsSqlDto;
+import uk.co.bbr.services.people.sql.dto.PeopleBandsSqlDto;
+import uk.co.bbr.services.people.sql.dto.PeopleListSqlDto;
+import uk.co.bbr.services.people.sql.dto.PeopleWinnersSqlDto;
+import uk.co.bbr.services.people.sql.dto.UserAdjudicationsSqlDto;
 import uk.co.bbr.services.pieces.repo.PieceRepository;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.services.security.dao.SiteUserDao;
-import uk.co.bbr.web.security.annotations.IsBbrAdmin;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
-import jakarta.persistence.EntityManager;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -250,6 +252,20 @@ public class PersonServiceImpl implements PersonService, SlugTools {
             return this.personProfileRepository.fetchProfileForPersonSlug(personSlug);
         }
         return this.personProfileRepository.fetchProfileForPersonSlugAndUser(personSlug, user.getUsercode());
+    }
+
+    @Override
+    public PeopleListDto listPeopleDoneNothing() {
+        List<PeopleListSqlDto> sqlResults = PeopleCountSql.selectPeopleWhoHaveDoneNothing(this.entityManager);
+
+        List<PersonDao> peopleToReturn = new ArrayList<>();
+        for (PeopleListSqlDto eachPerson : sqlResults) {
+            peopleToReturn.add(eachPerson.asPerson());
+        }
+
+        long allBandsCount = this.personRepository.count();
+
+        return new PeopleListDto(peopleToReturn.size(), allBandsCount, "NOTHING", peopleToReturn);
     }
 
     @Override
