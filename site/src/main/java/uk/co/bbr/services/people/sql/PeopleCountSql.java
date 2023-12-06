@@ -120,5 +120,66 @@ public class PeopleCountSql {
     public static List<PeopleListSqlDto> selectPeopleWhereSurnameStartsWithLetterForList(EntityManager entityManager, String letter) {
         return SqlExec.execute(entityManager, PEOPLE_LIST_BY_INITIAL_LETTER_SQL, letter + "%", PeopleListSqlDto.class);
     }
+
+
+    private static final String PEOPLE_DONE_NOTHING = """
+                WITH
+        conductor_one_count AS (
+            SELECT result.conductor_id as conductor_id, count(*) as result_count_1
+            FROM contest_result result
+            INNER JOIN person p ON p.id = result.conductor_id
+            GROUP BY result.conductor_id
+        ),
+        conductor_two_count AS (
+            SELECT result.conductor_two_id as conductor_id, count(*) as result_count_2
+            FROM contest_result result
+            INNER JOIN person p ON p.id = result.conductor_two_id
+            GROUP BY result.conductor_two_id
+        ),
+        conductor_three_count AS (
+            SELECT result.conductor_three_id as conductor_id, count(*) as result_count_3
+            FROM contest_result result
+            INNER JOIN person p ON p.id = result.conductor_three_id
+            GROUP BY result.conductor_three_id
+        ),
+        adjudicator_count AS (
+            SELECT a.person_id as adjudicator_id, count(*) as adjudication_count
+            FROM contest_event_adjudicator a
+            INNER JOIN person p ON p.id = a.person_id
+            GROUP BY a.person_id
+        ),
+        composition_count AS (
+            SELECT m.composer_id as composer_id, count(*) as composer_count
+            FROM piece m
+            INNER JOIN person p ON p.id = m.composer_id
+            GROUP BY m.composer_id
+        ),
+        arranger_count AS (
+            SELECT m.arranger_id as arranger_id, count(*) as arranger_count
+            FROM piece m
+            INNER JOIN person p ON p.id = m.arranger_id
+            GROUP BY m.arranger_id
+        )
+        SELECT p.surname as surname, p.first_names as first_names, p.slug as person_slug, p.suffix as suffix, p.known_for as known_for,
+        c1.result_count_1, c2.result_count_2, c3.result_count_3,
+        a.adjudication_count,
+        mc.composer_count, ma.arranger_count
+        FROM person p
+        LEFT OUTER JOIN conductor_one_count c1 ON c1.conductor_id = p.id
+        LEFT OUTER JOIN conductor_two_count c2 ON c2.conductor_id = p.id
+        LEFT OUTER JOIN conductor_three_count c3 ON c3.conductor_id = p.id
+        LEFT OUTER JOIN adjudicator_count a ON a.adjudicator_id = p.id
+        LEFT OUTER JOIN composition_count mc ON mc.composer_id = p.id
+        LEFT OUTER JOIN arranger_count ma ON ma.arranger_id = p.id
+        WHERE c1.result_count_1 = 0
+        AND c2.result_count_2 = 0
+        AND c3.result_count_3 = 0
+        AND a.adjudication_count = 0
+        AND mc.composer_count = 0
+        AND ma.arranger_count = 0
+        ORDER BY p.surname, p.first_names, p.suffix""";
+    public static List<PeopleListSqlDto> selectPeopleWhoHaveDoneNothing(EntityManager entityManager) {
+        return SqlExec.execute(entityManager, PEOPLE_DONE_NOTHING, PeopleListSqlDto.class);
+    }
 }
 
