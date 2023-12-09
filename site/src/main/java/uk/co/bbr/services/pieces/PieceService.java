@@ -30,6 +30,8 @@ public interface PieceService {
 
     PieceListDto listPiecesStartingWith(String letter);
 
+    PieceListDto listUnusedPieces();
+
     List<PieceDao> findPiecesForPerson(PersonDao person);
 
     List<ContestResultPieceDao> fetchOwnChoicePieceUsage(PieceDao piece);

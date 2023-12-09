@@ -71,6 +71,18 @@ public class ContestTagServiceImpl implements ContestTagService, SlugTools {
     }
 
     @Override
+    public List<ContestTagDao> listUnusedTags() {
+        List<TagListSqlDto> tagsSql = ContestTagSql.selectUnusedTagsWithCounts(this.entityManager);
+
+        List<ContestTagDao> tagsToReturn = new ArrayList<>();
+        for (TagListSqlDto eachTag : tagsSql) {
+            tagsToReturn.add(eachTag.asContestTag());
+        }
+
+        return tagsToReturn;
+    }
+
+    @Override
     public ContestTagDetailsDto fetchDetailsBySlug(String slug) {
         Optional<ContestTagDao> tag = this.fetchBySlug(slug);
         if (tag.isEmpty()) {

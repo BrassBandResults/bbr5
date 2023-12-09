@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import uk.co.bbr.services.pieces.PieceService;
 import uk.co.bbr.services.pieces.dto.PieceListDto;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
+import uk.co.bbr.web.security.annotations.IsBbrSuperuser;
 
 @Controller
 @RequiredArgsConstructor
@@ -35,6 +36,16 @@ public class PiecesListController {
         PieceListDto pieces = this.pieceService.listPiecesStartingWith("ALL");
 
         model.addAttribute("PiecePrefixLetter", "ALL");
+        model.addAttribute("Pieces", pieces);
+        return "pieces/pieces";
+    }
+
+    @IsBbrSuperuser
+    @GetMapping("/pieces/UNUSED")
+    public String peopleListUnused(Model model) {
+        PieceListDto pieces = this.pieceService.listUnusedPieces();
+
+        model.addAttribute("PiecePrefixLetter", "UNUSED");
         model.addAttribute("Pieces", pieces);
         return "pieces/pieces";
     }

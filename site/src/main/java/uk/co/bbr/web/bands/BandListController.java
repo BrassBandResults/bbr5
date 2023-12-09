@@ -11,6 +11,7 @@ import uk.co.bbr.services.bands.dto.BandListDto;
 import uk.co.bbr.services.map.LocationService;
 import uk.co.bbr.web.security.annotations.IsBbrAdmin;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
+import uk.co.bbr.web.security.annotations.IsBbrSuperuser;
 
 @Controller
 @RequiredArgsConstructor
@@ -69,5 +70,15 @@ public class BandListController {
         }
 
         return "redirect:/bands";
+    }
+
+    @IsBbrSuperuser
+    @GetMapping("/bands/UNUSED")
+    public String bandListUnused(Model model) {
+        BandListDto bands = this.bandService.listUnusedBands();
+
+        model.addAttribute("BandPrefixLetter", "UNUSED");
+        model.addAttribute("Bands", bands);
+        return "bands/bands";
     }
 }

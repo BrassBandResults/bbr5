@@ -1,35 +1,26 @@
 package uk.co.bbr.services.contests;
 
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import uk.co.bbr.services.contests.dao.ContestAliasDao;
 import uk.co.bbr.services.contests.dao.ContestDao;
+import uk.co.bbr.services.contests.repo.ContestAliasRepository;
+import uk.co.bbr.services.contests.repo.ContestRepository;
 import uk.co.bbr.services.contests.sql.ContestListSql;
 import uk.co.bbr.services.contests.sql.dto.ContestListSqlDto;
-import uk.co.bbr.services.groups.dao.ContestGroupAliasDao;
-import uk.co.bbr.services.groups.dao.ContestGroupDao;
-import uk.co.bbr.services.regions.RegionService;
-import uk.co.bbr.services.tags.dao.ContestTagDao;
-import uk.co.bbr.services.contests.dto.ContestListContestDto;
-import uk.co.bbr.services.contests.dto.ContestListDto;
-import uk.co.bbr.services.contests.repo.ContestAliasRepository;
-import uk.co.bbr.services.groups.repo.ContestGroupAliasRepository;
-import uk.co.bbr.services.groups.repo.ContestGroupRepository;
-import uk.co.bbr.services.contests.repo.ContestRepository;
 import uk.co.bbr.services.framework.ValidationException;
 import uk.co.bbr.services.framework.mixins.SlugTools;
+import uk.co.bbr.services.groups.dao.ContestGroupDao;
+import uk.co.bbr.services.regions.RegionService;
 import uk.co.bbr.services.security.SecurityService;
-import uk.co.bbr.web.security.annotations.IsBbrAdmin;
+import uk.co.bbr.services.tags.dao.ContestTagDao;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
-import jakarta.persistence.EntityManager;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -190,7 +181,6 @@ public class ContestServiceImpl implements ContestService, SlugTools {
 
     @Override
     public List<ContestListSqlDto> listContestsStartingWith(String prefix) {
-
         List<ContestListSqlDto> contests;
 
         if (prefix.equalsIgnoreCase("ALL")) {
@@ -202,6 +192,12 @@ public class ContestServiceImpl implements ContestService, SlugTools {
             String upperPrefix = prefix.strip().toUpperCase();
             contests = ContestListSql.listByPrefixForContestList(this.entityManager, upperPrefix);
         }
+        return contests;
+    }
+
+    @Override
+    public List<ContestListSqlDto> listUnusedContests() {
+        List<ContestListSqlDto> contests = ContestListSql.listUnusedContests(this.entityManager);
         return contests;
     }
 

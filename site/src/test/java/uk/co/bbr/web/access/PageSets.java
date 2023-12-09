@@ -304,7 +304,9 @@ public abstract class PageSets {
         pageList.add("/feedback/status-change/closed/tjs/1");
         pageList.add("/feedback/status-change/inconclusive/tjs/1");
         pageList.add("/feedback/status-change/spam/tjs/1");
-        pageList.add("/people/NOTHING");
+        pageList.add("/people/UNUSED");
+        pageList.add("/tags/UNUSED");
+        pageList.add("/venues/UNUSED");
         return pageList;
     }
 

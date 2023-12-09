@@ -12,7 +12,6 @@
         <span th:text="#{page.people.people-counts(${People.returnedPeopleCount},${People.allPeopleCount})}" th:remove="tag">Showing 1 of 6 people.</span>
     </p>
     <p th:replace="~{navigation/az-picker.html :: azPicker('people', ${PeoplePrefixLetter}, false, false)}"></p>
-    <a href="/people/NOTHING" sec:authorize="hasRole('BBR_SUPERUSER')" th:text="#{page.people.done-nothing}"></a>
     <table id="people" class="table table-hover sortable">
         <thead>
         <tr>

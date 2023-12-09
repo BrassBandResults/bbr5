@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import uk.co.bbr.services.tags.ContestTagService;
 import uk.co.bbr.services.tags.dao.ContestTagDao;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
+import uk.co.bbr.web.security.annotations.IsBbrSuperuser;
 
 import java.util.List;
 
@@ -37,6 +38,16 @@ public class TagsListController {
         List<ContestTagDao> tags = this.contestTagService.listTagsStartingWith("ALL");
 
         model.addAttribute("TagPrefixLetter", "ALL");
+        model.addAttribute("Tags", tags);
+        return "tags/tags";
+    }
+
+    @IsBbrSuperuser
+    @GetMapping("/tags/UNUSED")
+    public String contestUnusedTags(Model model) {
+        List<ContestTagDao> tags = this.contestTagService.listUnusedTags();
+
+        model.addAttribute("TagPrefixLetter", "UNUSED");
         model.addAttribute("Tags", tags);
         return "tags/tags";
     }

@@ -24,6 +24,8 @@ public interface ContestGroupService {
     Optional<ContestGroupDao> fetchBySlug(String groupSlug);
     GroupListDto listGroupsStartingWith(String prefix);
 
+    GroupListDto listUnusedGroups();
+
     ContestGroupDao addGroupTag(ContestGroupDao group, ContestTagDao tag);
     ContestGroupDetailsDto fetchDetail(ContestGroupDao groupGroup);
     ContestGroupYearsDetailsDto fetchYearsBySlug(String groupSlug);

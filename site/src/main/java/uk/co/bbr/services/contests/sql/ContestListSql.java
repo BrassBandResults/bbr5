@@ -97,5 +97,15 @@ public class ContestListSql {
     public static List<ContestListSqlDto> listByPrefixForContestList(EntityManager entityManager, String prefix) {
         return SqlExec.execute(entityManager, CONTEST_LIST_FOR_PREFIX, prefix + '%', ContestListSqlDto.class);
     }
+
+
+    private static final String CONTEST_LIST_UNUSED = """
+       SELECT c.name as contest_name, c.slug as contest_slug, 0
+       FROM contest c
+       WHERE NOT EXISTS (SELECT * FROM contest_event WHERE contest_id = c.id)
+       ORDER BY c.name""";
+    public static List<ContestListSqlDto> listUnusedContests(EntityManager entityManager) {
+        return SqlExec.execute(entityManager, CONTEST_LIST_UNUSED, ContestListSqlDto.class);
+    }
 }
 

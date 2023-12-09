@@ -5,7 +5,6 @@ import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.contests.sql.dto.ContestListSqlDto;
 import uk.co.bbr.services.groups.dao.ContestGroupDao;
 import uk.co.bbr.services.tags.dao.ContestTagDao;
-import uk.co.bbr.services.contests.dto.ContestListDto;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,6 +25,8 @@ public interface ContestService {
     Optional<ContestDao> fetchBySlug(String slug);
 
     List<ContestListSqlDto> listContestsStartingWith(String letter);
+
+    List<ContestListSqlDto> listUnusedContests();
 
     ContestDao addContestToGroup(ContestDao contest, ContestGroupDao group);
 

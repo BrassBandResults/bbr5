@@ -58,4 +58,16 @@ public class ContestTagSql {
     public static List<TagListSqlDto> selectTagsForPrefixWithCount(EntityManager entityManager, String prefix) {
         return SqlExec.execute(entityManager, TAGS_FOR_PREFIX_SQL, prefix + "%", TagListSqlDto.class);
     }
+
+    private static final String UNUSED_TAGS = """
+            SELECT t.slug, t.name, 0, 0
+            FROM contest_tag t
+            WHERE NOT EXISTS (SELECT * FROM contest_tag_link WHERE contest_tag_id = t.id)
+            AND NOT EXISTS (SELECT * FROM contest_group_tag_link WHERE contest_tag_id = t.id)
+            ORDER BY t.name
+            """;
+
+    public static List<TagListSqlDto> selectUnusedTagsWithCounts(EntityManager entityManager) {
+        return SqlExec.execute(entityManager, UNUSED_TAGS, TagListSqlDto.class);
+    }
 }

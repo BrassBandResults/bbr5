@@ -18,6 +18,8 @@ public interface BandService {
 
     BandListDto listBandsStartingWith(String prefix);
 
+    BandListDto listUnusedBands();
+
     Optional<BandDao> fetchBySlug(String bandSlug);
 
     Optional<BandDao> fetchBandByOldId(String bandOldId);
