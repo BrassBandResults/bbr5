@@ -30,11 +30,11 @@ public class PeopleListController {
     }
 
     @IsBbrSuperuser
-    @GetMapping("/people/NOTHING")
+    @GetMapping("/people/UNUSED")
     public String peopleDoneNothing(Model model) {
         PeopleListDto people = this.personService.listPeopleDoneNothing();
 
-        model.addAttribute("PeoplePrefixLetter", "NOTHING");
+        model.addAttribute("PeoplePrefixLetter", "UNUSED");
         model.addAttribute("People", people);
         return "people/people";
     }

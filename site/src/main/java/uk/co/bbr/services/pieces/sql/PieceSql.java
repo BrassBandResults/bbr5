@@ -1,14 +1,15 @@
 package uk.co.bbr.services.pieces.sql;
 
+import jakarta.persistence.EntityManager;
 import lombok.experimental.UtilityClass;
 import uk.co.bbr.services.framework.sql.SqlExec;
 import uk.co.bbr.services.pieces.sql.dto.BestPieceSqlDto;
 import uk.co.bbr.services.pieces.sql.dto.OwnChoiceUsagePieceSqlDto;
+import uk.co.bbr.services.pieces.sql.dto.PieceSqlDto;
 import uk.co.bbr.services.pieces.sql.dto.PieceUsageCountSqlDto;
 import uk.co.bbr.services.pieces.sql.dto.PiecesPerSectionSqlDto;
 import uk.co.bbr.services.pieces.sql.dto.SetTestUsagePieceSqlDto;
 
-import jakarta.persistence.EntityManager;
 import java.util.List;
 
 @UtilityClass
@@ -125,5 +126,16 @@ public class PieceSql {
 
     public static List<PiecesPerSectionSqlDto> piecesForSection(EntityManager entityManager, String sectionSlug) {
         return SqlExec.execute(entityManager, PIECES_FOR_SECTION_SQL, sectionSlug, PiecesPerSectionSqlDto.class);
+    }
+
+    private static final String UNUSED_PIECES_SQL = """
+        SELECT p.slug as piece_slug, p.name as piece_name, p.piece_year, comp.surname as composer_surname, comp.first_names as composer_first_names, comp.suffix as composer_suffix, comp.slug as composer_slug, a.surname as arranger_surname, a.first_names as arranger_first_names, a.suffix as arranger_suffix, a.slug as arranger_slug
+        FROM piece p
+        LEFT OUTER JOIN person comp ON comp.id = p.composer_id
+        LEFT OUTER JOIN person a ON a.id = p.arranger_id
+        WHERE NOT EXISTS (SELECT * FROM contest_event_test_piece WHERE piece_id = p.id)
+          AND NOT EXISTS (SELECT * FROM contest_result_test_piece WHERE piece_id = p.id)""";
+    public static List<PieceSqlDto> selectUnusedPieces(EntityManager entityManager) {
+        return SqlExec.execute(entityManager, UNUSED_PIECES_SQL, PieceSqlDto.class);
     }
 }

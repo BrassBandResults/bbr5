@@ -1,5 +1,6 @@
 package uk.co.bbr.services.venues;
 
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -18,10 +19,8 @@ import uk.co.bbr.services.venues.repo.VenueAliasRepository;
 import uk.co.bbr.services.venues.repo.VenueRepository;
 import uk.co.bbr.services.venues.sql.VenueListSql;
 import uk.co.bbr.services.venues.sql.dto.VenueListSqlDto;
-import uk.co.bbr.web.security.annotations.IsBbrAdmin;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
-import jakarta.persistence.EntityManager;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -145,6 +144,20 @@ public class VenueServiceImpl implements VenueService, SlugTools {
             returnedVenues.add(venue);
         }
         return new VenueListDto(venuesToReturn.size(), allVenuesCount, prefixDisplay, returnedVenues);
+    }
+
+    @Override
+    public VenueListDto listUnusedVenues() {
+        List<VenueListSqlDto> venuesToReturn = VenueListSql.unusedVenues(this.entityManager);
+
+        long allVenuesCount = this.venueRepository.count();
+
+        List<VenueDao> returnedVenues = new ArrayList<>();
+        for (VenueListSqlDto eachVenue : venuesToReturn) {
+            VenueDao venue = eachVenue.asVenue();
+            returnedVenues.add(venue);
+        }
+        return new VenueListDto(venuesToReturn.size(), allVenuesCount, "UNUSED", returnedVenues);
     }
 
     @Override

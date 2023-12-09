@@ -145,5 +145,16 @@ public class BandSql {
     public static List<BandListSqlDto> selectAllBandsForList(EntityManager entityManager) {
         return SqlExec.execute(entityManager, BANDS_LIST_ALL_BANDS_SQL, BandListSqlDto.class);
     }
+
+    private static final String BANDS_LIST_UNUSED_BANDS_SQL = """
+        SELECT b.name as band_name, b.slug as band_slug, r.name as region_name, r.slug as region_slug, r.country_code as region_code, 0
+        FROM band b
+        LEFT OUTER JOIN region r ON r.id = b.region_id
+        WHERE NOT EXISTS (SELECT * FROM contest_result WHERE band_id = b.id)
+        ORDER BY b.name""";
+
+    public static List<BandListSqlDto> selectUnusedBandsForList(EntityManager entityManager) {
+        return SqlExec.execute(entityManager, BANDS_LIST_UNUSED_BANDS_SQL, BandListSqlDto.class);
+    }
 }
 

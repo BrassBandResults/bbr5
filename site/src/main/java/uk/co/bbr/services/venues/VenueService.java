@@ -24,6 +24,8 @@ public interface VenueService {
 
     VenueListDto listVenuesStartingWith(String prefix);
 
+    VenueListDto listUnusedVenues();
+
     List<VenueAliasDao> fetchAliases(VenueDao venue);
 
     VenueDao update(VenueDao venue);

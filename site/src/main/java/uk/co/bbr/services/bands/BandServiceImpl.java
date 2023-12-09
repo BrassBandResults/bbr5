@@ -1,5 +1,6 @@
 package uk.co.bbr.services.bands;
 
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -26,10 +27,8 @@ import uk.co.bbr.services.framework.mixins.SlugTools;
 import uk.co.bbr.services.regions.RegionService;
 import uk.co.bbr.services.regions.dao.RegionDao;
 import uk.co.bbr.services.security.SecurityService;
-import uk.co.bbr.web.security.annotations.IsBbrAdmin;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
-import jakarta.persistence.EntityManager;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -156,6 +155,18 @@ public class BandServiceImpl implements BandService, SlugTools {
             bands.add(band.asBand());
         }
         return new BandListDto(bandsToReturn.size(), allBandsCount, prefix, bands);
+    }
+
+    @Override
+    public BandListDto listUnusedBands() {
+        List<BandListSqlDto> bandsToReturn = BandSql.selectUnusedBandsForList(this.entityManager);
+
+        long allBandsCount = this.bandRepository.count();
+        List<BandDao> bands = new ArrayList<>();
+        for (BandListSqlDto band : bandsToReturn) {
+            bands.add(band.asBand());
+        }
+        return new BandListDto(bandsToReturn.size(), allBandsCount, "UNUSED", bands);
     }
 
     @Override

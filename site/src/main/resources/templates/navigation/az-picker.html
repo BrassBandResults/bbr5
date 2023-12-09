@@ -1,4 +1,4 @@
-<div th:fragment="azPicker(offset, selectedLetter, enableNumbers, enableAll)">
+<div th:fragment="azPicker(offset, selectedLetter, enableNumbers, enableAll)" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <p><span th:text="#{az-picker.starts-with}" th:remove="tag">Starts with:</span>
         <span th:if="${selectedLetter == 'A'}" class="bg-dark text-light rounded p-1">A</span><span th:remove="tag" th:unless="${selectedLetter == 'A'}"><a th:href="${'/' + offset + '/A'}">A</a></span>
         <span th:if="${selectedLetter == 'B'}" class="bg-dark text-light rounded p-1">B</span><span th:remove="tag" th:unless="${selectedLetter == 'B'}"><a th:href="${'/' + offset + '/B'}">B</a></span>
@@ -32,6 +32,9 @@
         </span>
         <span th:if="${enableAll}">
             <span th:if="${selectedLetter == 'ALL'}" class="bg-dark text-light rounded p-1" th:text="#{az-picker.show-all}">Show All</span><span th:remove="tag" th:unless="${selectedLetter == 'ALL'}"><a th:href="${'/' + offset + '/ALL'}" th:text="#{az-picker.show-all}">Show All</a></span>
+        </span>
+        <span sec:authorize="hasRole('BBR_SUPERUSER')">
+            <span th:if="${selectedLetter == 'UNUSED'}" class="bg-dark text-light rounded p-1" th:text="#{az-picker.unused}">Unused</span><span th:remove="tag" th:unless="${selectedLetter == 'UNUSED'}"><a th:href="${'/' + offset + '/UNUSED'}" th:text="#{az-picker.unused}">UNUSED</a></span>
         </span>
     </p>
 </div>

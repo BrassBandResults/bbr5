@@ -1,5 +1,6 @@
 package uk.co.bbr.services.pieces;
 
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,7 @@ import uk.co.bbr.services.pieces.repo.PieceRepository;
 import uk.co.bbr.services.pieces.sql.PieceSql;
 import uk.co.bbr.services.pieces.sql.dto.BestPieceSqlDto;
 import uk.co.bbr.services.pieces.sql.dto.OwnChoiceUsagePieceSqlDto;
+import uk.co.bbr.services.pieces.sql.dto.PieceSqlDto;
 import uk.co.bbr.services.pieces.sql.dto.PieceUsageCountSqlDto;
 import uk.co.bbr.services.pieces.sql.dto.PiecesPerSectionSqlDto;
 import uk.co.bbr.services.pieces.sql.dto.SetTestUsagePieceSqlDto;
@@ -31,10 +33,8 @@ import uk.co.bbr.services.pieces.types.PieceCategory;
 import uk.co.bbr.services.regions.dao.RegionDao;
 import uk.co.bbr.services.sections.dao.SectionDao;
 import uk.co.bbr.services.security.SecurityService;
-import uk.co.bbr.web.security.annotations.IsBbrAdmin;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
-import jakarta.persistence.EntityManager;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -188,9 +188,23 @@ public class PieceServiceImpl implements PieceService, SlugTools {
             }
         }
 
-        long allBandsCount = this.pieceRepository.count();
+        long allPiecesCount = this.pieceRepository.count();
 
-        return new PieceListDto(piecesToReturn.size(), allBandsCount, prefix, piecesToReturn);
+        return new PieceListDto(piecesToReturn.size(), allPiecesCount, prefix, piecesToReturn);
+    }
+
+    @Override
+    public PieceListDto listUnusedPieces() {
+        List<PieceSqlDto> pieces = PieceSql.selectUnusedPieces(this.entityManager);
+
+        List<PieceDao> piecesToReturn = new ArrayList<>();
+        for (PieceSqlDto eachPiece : pieces) {
+            piecesToReturn.add(eachPiece.asPiece());
+        }
+
+        long allPiecesCount = this.pieceRepository.count();
+
+        return new PieceListDto(piecesToReturn.size(), allPiecesCount, "UNUSED", piecesToReturn);
     }
 
     @Override

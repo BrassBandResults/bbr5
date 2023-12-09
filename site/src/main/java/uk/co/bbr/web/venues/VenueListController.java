@@ -11,6 +11,7 @@ import uk.co.bbr.services.venues.dao.VenueDao;
 import uk.co.bbr.services.venues.dto.VenueListDto;
 import uk.co.bbr.web.security.annotations.IsBbrAdmin;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
+import uk.co.bbr.web.security.annotations.IsBbrSuperuser;
 
 @Controller
 @RequiredArgsConstructor
@@ -55,6 +56,15 @@ public class VenueListController {
         VenueListDto venues = this.venueService.listVenuesStartingWith("ALL");
 
         model.addAttribute("VenuePrefixLetter", "ALL");
+        model.addAttribute("Venues", venues);
+        return "venues/venues";
+    }
+
+    @IsBbrSuperuser
+    @GetMapping("/venues/UNUSED")
+    public String venuesListUnused(Model model) {
+        VenueListDto venues = this.venueService.listUnusedVenues();
+        model.addAttribute("VenuePrefixLetter", "UNUSED");
         model.addAttribute("Venues", venues);
         return "venues/venues";
     }

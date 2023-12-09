@@ -83,5 +83,14 @@ public class GroupSql {
         return SqlExec.execute(entityManager, CONTESTS_FOR_GROUP, groupSlug, ContestListSqlDto.class);
     }
 
+    private static final String GROUP_LIST_UNUSED_SQL = """
+            SELECT g.name as group_name, g.slug as group_slug, 0, 0
+            FROM contest_group g
+            WHERE NOT EXISTS (SELECT * FROM contest WHERE contest_group_id = g.id)
+            ORDER BY g.name""";
+
+    public static List<GroupListSqlDto> findUnusedGroupsForList(EntityManager entityManager) {
+        return SqlExec.execute(entityManager, GROUP_LIST_UNUSED_SQL, GroupListSqlDto.class);
+    }
 }
 

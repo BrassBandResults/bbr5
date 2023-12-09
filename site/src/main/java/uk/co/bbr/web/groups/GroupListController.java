@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import uk.co.bbr.services.events.dto.GroupListDto;
 import uk.co.bbr.services.groups.ContestGroupService;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
+import uk.co.bbr.web.security.annotations.IsBbrSuperuser;
 
 @Controller
 @RequiredArgsConstructor
@@ -35,6 +36,16 @@ public class GroupListController {
         GroupListDto groups = this.contestGroupService.listGroupsStartingWith("ALL");
 
         model.addAttribute("GroupPrefixLetter", "ALL");
+        model.addAttribute("Groups", groups);
+        return "groups/groups";
+    }
+
+    @IsBbrSuperuser
+    @GetMapping("/contest-groups/UNUSED")
+    public String contestGroupsListUnused(Model model) {
+        GroupListDto groups = this.contestGroupService.listUnusedGroups();
+
+        model.addAttribute("GroupPrefixLetter", "UNUSED");
         model.addAttribute("Groups", groups);
         return "groups/groups";
     }
