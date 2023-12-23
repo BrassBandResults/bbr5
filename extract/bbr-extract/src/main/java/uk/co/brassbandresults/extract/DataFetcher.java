@@ -10,6 +10,8 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,16 +65,17 @@ public class DataFetcher {
         LEFT OUTER JOIN region r ON r.id = c.region_id
         LEFT OUTER JOIN section s ON s.id = c.section_id
         LEFT OUTER JOIN contest_group g ON g.id = c.contest_group_id
-        LEFT OUTER JOIN venue v ON v.id = e.venue_id""";
-
-    //    WHERE e.id IN (
-    //      SELECT DISTINCT r.contest_event_id
-    //      FROM contest_result r
-    //      WHERE r.updated > CONVERT(datetime, '__UPDATED_SINCE__'))
-    //    """;
+        LEFT OUTER JOIN venue v ON v.id = e.venue_id
+        WHERE e.id IN (
+          SELECT DISTINCT r.contest_event_id
+          FROM contest_result r
+          WHERE r.updated > CONVERT(datetime, '__UPDATED_SINCE__'))
+       """;
 
     public List<ContestEventData> fetchContestsSince(int year, int month, int day) throws SQLException {
-        String sql = SELECT_CONTESTS_SINCE.replace("__UPDATED_SINCE__", year + "-" + month + "-" + day);
+        LocalDate now = LocalDate.now();
+        LocalDate weekAgo = now.minus(1, ChronoUnit.WEEKS);
+        String sql = SELECT_CONTESTS_SINCE.replace("__UPDATED_SINCE__", weekAgo.getYear() + "-" + weekAgo.getMonthValue() + "-" + weekAgo.getDayOfMonth());
 
         List<ContestEventData> contestEvents = new ArrayList<>();
         try (Statement statement = this.dbConnection.createStatement();

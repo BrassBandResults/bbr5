@@ -28,27 +28,26 @@ public class DataWriter {
         for (ContestEventData eachEvent : contestEventData) {
             ContestEventJson contestEventJson = new ContestEventJson(eachEvent);
             String filePath = BASE_OUTPUT_PATH + "/" + contestEventJson.eventYear() + "/" + contestEventJson.eventMonth() + "/" + contestEventJson.getContestSlug() + ".json";
-            if (!contestEventJson.fileExists(filePath)) {
-                List<ContestResultData> resultData = this.dataFetcher.fetchResultsFor(eachEvent);
-                List<AdjudicatorData> adjudicators = this.dataFetcher.fetchAdjudicatorsFor(eachEvent);
-                List<PieceData> setTests = this.dataFetcher.fetchSetTestsFor(eachEvent);
-                List<PieceData> ownChoice = this.dataFetcher.fetchOwnChoiceFor(eachEvent);
+
+            List<ContestResultData> resultData = this.dataFetcher.fetchResultsFor(eachEvent);
+            List<AdjudicatorData> adjudicators = this.dataFetcher.fetchAdjudicatorsFor(eachEvent);
+            List<PieceData> setTests = this.dataFetcher.fetchSetTestsFor(eachEvent);
+            List<PieceData> ownChoice = this.dataFetcher.fetchOwnChoiceFor(eachEvent);
 
 
-                contestEventJson.addResults(resultData);
-                contestEventJson.addAdjudicators(adjudicators);
-                contestEventJson.addSetTests(setTests);
-                contestEventJson.addOwnChoice(ownChoice);
+            contestEventJson.addResults(resultData);
+            contestEventJson.addAdjudicators(adjudicators);
+            contestEventJson.addSetTests(setTests);
+            contestEventJson.addOwnChoice(ownChoice);
 
-                contestEventJson.writeData(filePath);
+            contestEventJson.writeData(filePath);
 
-                if (slow) {
-                    try {
-                        Thread.sleep(100);
-                        System.out.print(".");
-                    } catch (InterruptedException e) {
-                        // do nothing
-                    }
+            if (slow) {
+                try {
+                    Thread.sleep(100);
+                    System.out.print(".");
+                } catch (InterruptedException e) {
+                    // do nothing
                 }
             }
         }
