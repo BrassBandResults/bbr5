@@ -1,5 +1,6 @@
 package uk.co.brassbandresults.extract.json;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Getter;
 import uk.co.brassbandresults.extract.data.ContestResultData;
 import uk.co.brassbandresults.extract.data.PieceData;
@@ -8,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
+@JsonPropertyOrder(alphabetic = true)
 public class ContestResultJson {
 
     private final String bandName;

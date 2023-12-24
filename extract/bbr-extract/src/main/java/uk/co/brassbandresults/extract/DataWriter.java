@@ -6,6 +6,7 @@ import uk.co.brassbandresults.extract.data.ContestResultData;
 import uk.co.brassbandresults.extract.data.PieceData;
 import uk.co.brassbandresults.extract.json.ContestEventJson;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
@@ -28,6 +29,11 @@ public class DataWriter {
         for (ContestEventData eachEvent : contestEventData) {
             ContestEventJson contestEventJson = new ContestEventJson(eachEvent);
             String filePath = BASE_OUTPUT_PATH + "/" + contestEventJson.eventYear() + "/" + contestEventJson.eventMonth() + "/" + contestEventJson.getContestSlug() + ".json";
+
+            //File file = new File(filePath);
+            //if (file.exists()) {
+            //    continue;
+            //}
 
             List<ContestResultData> resultData = this.dataFetcher.fetchResultsFor(eachEvent);
             List<AdjudicatorData> adjudicators = this.dataFetcher.fetchAdjudicatorsFor(eachEvent);

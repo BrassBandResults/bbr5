@@ -1,9 +1,11 @@
 package uk.co.brassbandresults.extract.json;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Getter;
 import uk.co.brassbandresults.extract.data.PieceData;
 
 @Getter
+@JsonPropertyOrder(alphabetic = true)
 public class PieceJson {
     private final String name;
     private final String slug;
