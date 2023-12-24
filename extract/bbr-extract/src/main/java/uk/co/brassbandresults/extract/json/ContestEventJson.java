@@ -1,7 +1,8 @@
 package uk.co.brassbandresults.extract.json;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
-import org.json.JSONObject;
 import uk.co.brassbandresults.extract.data.AdjudicatorData;
 import uk.co.brassbandresults.extract.data.ContestEventData;
 import uk.co.brassbandresults.extract.data.ContestResultData;
@@ -11,10 +12,13 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
+@JsonPropertyOrder(alphabetic = true)
 public class ContestEventJson {
 
     private final String contestSlug;
@@ -109,8 +113,11 @@ public class ContestEventJson {
     }
 
     public void writeData(String filePath) throws IOException {
-        JSONObject jsonObject = new JSONObject(this);
-        String json = jsonObject.toString(2);
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        String json = new ObjectMapper()
+            .setDateFormat(df)
+            .writerWithDefaultPrettyPrinter()
+            .writeValueAsString(this);
 
         File file = new File(filePath.substring(0, filePath.lastIndexOf("/")));
         file.mkdirs();

@@ -1,9 +1,11 @@
 package uk.co.brassbandresults.extract.json;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Getter;
 import uk.co.brassbandresults.extract.data.ContestEventData;
 
 @Getter
+@JsonPropertyOrder(alphabetic = true)
 public class ContestTypeJson {
     private final String contestTypeName;
     private final String contestTypeSlug;
