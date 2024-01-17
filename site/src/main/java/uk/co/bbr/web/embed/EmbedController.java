@@ -162,10 +162,10 @@ public class EmbedController {
                 "  let lTable = '';\n" +
                 "  for (var i=0; i<data.length; i++) {\n" +
                 "    lTable += '<tr>';\n" +
-                "    lTable += '<td><a href='https://www.brassbandresults.co.uk/contests/' + data[i].contest_slug + '/' + data[i].date + '/' title='Click here to view full results for this contest on brassbandresults.co.uk' target='_blank'>' + data[i].date_display + '</a></td>';\n" +
+                "    lTable += '<td><a href=\"https://www.brassbandresults.co.uk/contests/' + data[i].contest_slug + '/' + data[i].date + '/\" title=\"Click here to view full results for this contest on brassbandresults.co.uk\" target=\"_blank\">' + data[i].date_display + '</a></td>';\n" +
                 "    lTable += '<td>' + data[i].contest_name + '</td>';\n" +
                 "    lTable += '<td>' + data[i].result + '</td>';\n" +
-                "    lTable += '<td><a href='https://www.brassbandresults.co.uk/people/' + data[i].conductor_slug + '/' title='Click here to view all results for this conductor on www.brassbandresults.co.uk' target='_blank'>' + data[i].conductor_name + '</a></td>';\n" +
+                "    lTable += '<td><a href=\"https://www.brassbandresults.co.uk/people/' + data[i].conductor_slug + '/\" title=\"Click here to view all results for this conductor on www.brassbandresults.co.uk\" target=\"_blank\">' + data[i].conductor_name + '</a></td>';\n" +
                 "    lTable += '</tr>';\n" +
                 "  }\n" +
                 "  document.getElementById('#bbr-" + bandDao.getSlug() + "-results_" + type + "').innerHtml = resultsTable;\n" +
