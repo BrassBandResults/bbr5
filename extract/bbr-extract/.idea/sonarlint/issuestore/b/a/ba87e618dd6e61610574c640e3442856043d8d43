@@ -1,0 +1,17 @@
+
+C
+java:S1170"!Make this final field static too.(Û­«Äÿÿÿÿÿ8ÖïÀÀÉ1
+^
+java:S1075"ARefactor your code to get this URI from a customizable parameter.(£Ş¢£8×ïÀÀÉ1
+C
+java:S1075"&Remove this hard-coded path-delimiter.(ÿîû‹8ÛïÀÀÉ1
+C
+java:S1075"&Remove this hard-coded path-delimiter.(ÿîû‹8ÛïÀÀÉ1
+C
+java:S1075"&Remove this hard-coded path-delimiter.(ÿîû‹8ÛïÀÀÉ1
+]	java:S125!"<This block of commented-out lines of code should be removed.(î°÷¼øÿÿÿÿ8½ÂéÉ1
+{
+java:S21427"^Either re-interrupt this method or rethrow the "InterruptedException" that can be caught here.(ä ¹€8İïÀÀÉ1
+Z	java:S1066"9Replace this use of System.out or System.err by a logger.(å‡ëÇøÿÿÿÿ8İïÀÀÉ1
+F
+java:S1128	")Remove this unused import 'java.io.File'.(†Ğ¥Å8ÁÂéÉ1
