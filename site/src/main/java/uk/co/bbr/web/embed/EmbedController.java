@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -172,7 +171,7 @@ public class EmbedController {
                 "  document.getElementById('#bbr-" + bandDao.getSlug() + "-results_" + type + "').innerHtml = resultsTable;\n" +
                 "}\n" +
                 "</script><br/><font size='-1'>Results provided by <a href='https://www.brassbandresults.co.uk/'>https://www.brassbandresults.co.uk</a></font>\n" +
-                "<script src='https://www.brassbandresults.co.uk/embed/band/rothwell-temperance-band/results-" + type + "/2023/'></script>\n" +
+                "<script src='https://www.brassbandresults.co.uk/embed/band/" + bandDao.getSlug() + "/results-" + type + "/2023/'></script>\n" +
                 "<!-- End https://www.brassbandresults.co.uk/ embedding code v2023 -->\n";
     }
 }
