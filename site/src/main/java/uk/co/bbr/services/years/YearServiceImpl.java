@@ -1,5 +1,6 @@
 package uk.co.bbr.services.years;
 
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import uk.co.bbr.services.bands.dao.BandDao;
@@ -7,7 +8,6 @@ import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.events.dao.ContestEventDao;
 import uk.co.bbr.services.events.dao.ContestEventTestPieceDao;
 import uk.co.bbr.services.events.dao.ContestResultDao;
-import uk.co.bbr.services.events.dao.ContestResultPieceDao;
 import uk.co.bbr.services.events.types.ContestEventDateResolution;
 import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.pieces.dao.PieceDao;
@@ -16,7 +16,6 @@ import uk.co.bbr.services.years.sql.YearSql;
 import uk.co.bbr.services.years.sql.dto.ContestsForYearEventSqlDto;
 import uk.co.bbr.services.years.sql.dto.YearListEntrySqlDto;
 
-import jakarta.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,13 +55,6 @@ public class YearServiceImpl implements YearService {
                 eachWinner.getBand().setName(eachSqlEvent.getBandName());
                 eachWinner.getBand().setRegion(new RegionDao());
                 eachWinner.getBand().getRegion().setCountryCode(eachSqlEvent.getBandRegionCountryCode());
-            }
-
-            if (eachSqlEvent.getResultPieceSlug() != null && eachSqlEvent.getResultPieceSlug().length() > 0) {
-                eachWinner.getPieces().add(new ContestResultPieceDao());
-                eachWinner.getPieces().get(0).setPiece(new PieceDao());
-                eachWinner.getPieces().get(0).getPiece().setSlug((eachSqlEvent.getResultPieceSlug()));
-                eachWinner.getPieces().get(0).getPiece().setName((eachSqlEvent.getResultPieceName()));
             }
 
             if (eachSqlEvent.getSetPieceSlug() != null && eachSqlEvent.getSetPieceSlug().length() > 0) {
