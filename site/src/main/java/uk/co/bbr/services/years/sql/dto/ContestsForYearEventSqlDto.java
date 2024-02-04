@@ -15,8 +15,6 @@ public class ContestsForYearEventSqlDto extends AbstractSqlDto {
     private final String bandSlug;
     private final String bandName;
     private final String bandRegionCountryCode;
-    private final String resultPieceSlug;
-    private final String resultPieceName;
     private final String setPieceSlug;
     private final String setPieceName;
     private final String conductor1Slug;
@@ -40,18 +38,16 @@ public class ContestsForYearEventSqlDto extends AbstractSqlDto {
         this.bandSlug = this.getString(columnList, 6);
         this.bandName = this.getString(columnList, 7);
         this.bandRegionCountryCode = this.getString(columnList, 8);
-        this.resultPieceSlug = this.getString(columnList, 9);
-        this.resultPieceName = this.getString(columnList, 10);
-        this.setPieceSlug = this.getString(columnList, 11);
-        this.setPieceName = this.getString(columnList, 12);
-        this.conductor1Slug = this.getString(columnList, 13);
-        this.conductor1FirstNames = this.getString(columnList, 14);
-        this.conductor1Surname = this.getString(columnList, 15);
-        this.conductor2Slug = this.getString(columnList, 16);
-        this.conductor2FirstNames = this.getString(columnList, 17);
-        this.conductor2Surname = this.getString(columnList, 18);
-        this.conductor3Slug = this.getString(columnList, 19);
-        this.conductor3FirstNames = this.getString(columnList, 20);
-        this.conductor3Surname = this.getString(columnList, 21);
+        this.setPieceSlug = this.getString(columnList, 9);
+        this.setPieceName = this.getString(columnList, 10);
+        this.conductor1Slug = this.getString(columnList, 11);
+        this.conductor1FirstNames = this.getString(columnList, 12);
+        this.conductor1Surname = this.getString(columnList, 13);
+        this.conductor2Slug = this.getString(columnList, 14);
+        this.conductor2FirstNames = this.getString(columnList, 15);
+        this.conductor2Surname = this.getString(columnList, 16);
+        this.conductor3Slug = this.getString(columnList, 17);
+        this.conductor3FirstNames = this.getString(columnList, 18);
+        this.conductor3Surname = this.getString(columnList, 19);
     }
 }
