@@ -35,13 +35,12 @@ public class YearSql {
                 LEFT OUTER JOIN band b ON b.id = r.band_id
                 LEFT OUTER JOIN region reg ON reg.id = b.region_id
                 LEFT OUTER JOIN contest_event_test_piece et ON et.contest_event_id = e.id
-                LEFT OUTER JOIN contest_result_test_piece rt ON rt.contest_result_id = r.id
                 LEFT OUTER JOIN piece ep ON ep.id = et.piece_id
                 LEFT OUTER JOIN person con1 ON con1.id = r.conductor_id
                 LEFT OUTER JOIN person con2 ON con2.id = r.conductor_two_id
                 LEFT OUTER JOIN person con3 ON con3.id = r.conductor_three_id
             WHERE YEAR(e.date_of_event) = ?1
-            ORDER BY e.date_of_event ASC""";
+            ORDER BY e.date_of_event ASC, c.name ASC""";
 
     public static List<ContestsForYearEventSqlDto> selectEventsForYear(EntityManager entityManager, String year) {
         return SqlExec.execute(entityManager, CONTEST_EVENTS_LIST_FOR_YEAR_SQL, year, ContestsForYearEventSqlDto.class);
