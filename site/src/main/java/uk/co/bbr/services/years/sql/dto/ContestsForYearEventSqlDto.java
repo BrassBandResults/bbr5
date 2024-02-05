@@ -15,8 +15,6 @@ public class ContestsForYearEventSqlDto extends AbstractSqlDto {
     private final String bandSlug;
     private final String bandName;
     private final String bandRegionCountryCode;
-    private final String setPieceSlug;
-    private final String setPieceName;
     private final String conductor1Slug;
     private final String conductor1FirstNames;
     private final String conductor1Surname;
@@ -38,16 +36,14 @@ public class ContestsForYearEventSqlDto extends AbstractSqlDto {
         this.bandSlug = this.getString(columnList, 6);
         this.bandName = this.getString(columnList, 7);
         this.bandRegionCountryCode = this.getString(columnList, 8);
-        this.setPieceSlug = this.getString(columnList, 9);
-        this.setPieceName = this.getString(columnList, 10);
-        this.conductor1Slug = this.getString(columnList, 11);
-        this.conductor1FirstNames = this.getString(columnList, 12);
-        this.conductor1Surname = this.getString(columnList, 13);
-        this.conductor2Slug = this.getString(columnList, 14);
-        this.conductor2FirstNames = this.getString(columnList, 15);
-        this.conductor2Surname = this.getString(columnList, 16);
-        this.conductor3Slug = this.getString(columnList, 17);
-        this.conductor3FirstNames = this.getString(columnList, 18);
-        this.conductor3Surname = this.getString(columnList, 19);
+        this.conductor1Slug = this.getString(columnList, 9);
+        this.conductor1FirstNames = this.getString(columnList, 10);
+        this.conductor1Surname = this.getString(columnList, 11);
+        this.conductor2Slug = this.getString(columnList, 12);
+        this.conductor2FirstNames = this.getString(columnList, 13);
+        this.conductor2Surname = this.getString(columnList, 14);
+        this.conductor3Slug = this.getString(columnList, 15);
+        this.conductor3FirstNames = this.getString(columnList, 16);
+        this.conductor3Surname = this.getString(columnList, 17);
     }
 }
