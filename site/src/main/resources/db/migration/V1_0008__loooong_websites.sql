@@ -1,0 +1,3 @@
+ALTER TABLE band ALTER COLUMN website VARCHAR(120);
+
+
