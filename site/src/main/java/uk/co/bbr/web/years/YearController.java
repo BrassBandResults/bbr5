@@ -11,6 +11,8 @@ import uk.co.bbr.services.years.sql.dto.YearListEntrySqlDto;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 import uk.co.bbr.web.security.annotations.IsBbrPro;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Controller
@@ -24,7 +26,11 @@ public class YearController {
     public String contestYearHome(Model model){
         List<YearListEntrySqlDto> allYears = this.yearService.fetchFullYearList();
 
+        List<YearListEntrySqlDto> reverseYears = new ArrayList<>(allYears);
+        Collections.reverse(reverseYears);
+
         model.addAttribute("Years", allYears);
+        model.addAttribute("ReverseYears", reverseYears);
 
         return "years/home";
     }
