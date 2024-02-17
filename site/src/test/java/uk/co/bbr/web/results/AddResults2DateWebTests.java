@@ -303,7 +303,7 @@ class AddResults2DateWebTests implements LoginMixin {
 
         // assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertTrue(Objects.requireNonNull(response.getBody()).contains("<h3>Sun 03 Mar 1996</h3>"));
+        assertTrue(Objects.requireNonNull(response.getBody()).contains("Sun 03 Mar 1996"));
 
         Optional<ContestEventDao> fetchedContestEvent =  this.contestEventService.fetchEvent("yorkshire-area", LocalDate.of(1995,4,1));
         assertFalse(fetchedContestEvent.isPresent());

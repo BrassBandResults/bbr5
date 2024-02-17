@@ -1,6 +1,6 @@
 <div th:fragment="header(ContestEvent)" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <h2><span th:replace="~{links/contest-link.html :: contestLink(${ContestEvent.contest})}"></span></h2>
-    <h3><a th:href="${'/contests/ON-DATE/' + ContestEvent.eventDateForUrl}"><span th:text="${ContestEvent.eventDateDisplayWithDay}">Sat 23 Mar 1990</span></a></h3>
+    <h3><a th:href="${'/contest-event-date/' + ContestEvent.eventDateForUrl}"><span th:text="${ContestEvent.eventDateDisplayWithDay}">Sat 23 Mar 1990</span></a></h3>
 
     <div class="container">
         <div class="row">

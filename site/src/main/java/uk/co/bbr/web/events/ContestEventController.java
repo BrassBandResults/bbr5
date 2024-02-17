@@ -203,7 +203,7 @@ public class ContestEventController extends AbstractEventController {
     }
 
     @IsBbrPro
-    @GetMapping("/contests/ON-DATE/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}")
+    @GetMapping("/contest-event-date/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}")
     public String contestsForDate(Model model, @PathVariable String contestEventDate) {
         LocalDate eventDate;
         try {
