@@ -27,6 +27,8 @@ import uk.co.bbr.web.framework.AbstractEventController;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 import uk.co.bbr.web.security.annotations.IsBbrPro;
 
+import java.time.DateTimeException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -198,5 +200,23 @@ public class ContestEventController extends AbstractEventController {
         this.performanceService.linkUserPerformance(currentUser, result.get());
 
         return "redirect:/profile/performances";
+    }
+
+    @IsBbrPro
+    @GetMapping("/contests/ON-DATE/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}")
+    public String contestsForDate(Model model, @PathVariable String contestEventDate) {
+        LocalDate eventDate;
+        try {
+            eventDate = Tools.parseEventDate(contestEventDate);
+        }
+        catch (DateTimeException ex) {
+            throw NotFoundException.dateParseError(contestEventDate);
+        }
+
+        List<ContestEventDao> contestEvents = this.contestEventService.fetchEventsforDate(eventDate);
+
+        model.addAttribute("Date", eventDate);
+        model.addAttribute("Events", contestEvents);
+        return "events/contests-on-date";
     }
 }

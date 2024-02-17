@@ -456,4 +456,9 @@ public class ContestEventServiceImpl implements ContestEventService {
             this.contestAdjudicatorRepository.delete(adjudication.get());
         }
     }
+
+    @Override
+    public List<ContestEventDao> fetchEventsforDate(LocalDate eventDate) {
+        return this.contestEventRepository.fetchEventsForDate(eventDate);
+    }
 }
