@@ -12,11 +12,19 @@ import java.util.List;
 public class YearSql {
 
     private static final String YEAR_LIST_SQL = """
-            SELECT YEAR(e.date_of_event) as event_year, count(distinct(r.band_id)) as band_count, count(distinct(e.id)) as event_count
-            FROM contest_event e
-            LEFT OUTER JOIN contest_result r ON r.contest_event_id = e.id
-            GROUP BY YEAR(e.date_of_event)
-            ORDER BY YEAR(e.date_of_event) DESC
+WITH events AS (SELECT YEAR(e.date_of_event) as event_year, count(DISTINCT(e.id)) as event_count
+                FROM contest_event e
+                WHERE e.no_contest = 0
+                GROUP BY YEAR(e.date_of_event)),
+     bands AS (SELECT YEAR(e.date_of_event) as event_year, COUNT(DISTINCT(r.band_id)) as band_count
+                FROM contest_result r
+                INNER JOIN contest_event e ON e.id = r.contest_event_id
+                WHERE e.no_contest = 0
+                GROUP BY YEAR(e.date_of_event))
+SELECT e.event_year, b.band_count, e.event_count
+FROM events e
+INNER JOIN bands b ON b.event_year = e.event_year
+ORDER BY 1 DESC
             """;
 
     public static List<YearListEntrySqlDto> selectYearsPageData(EntityManager entityManager) {
