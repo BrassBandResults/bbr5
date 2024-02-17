@@ -87,7 +87,7 @@ class ContestEventWebTests implements LoginMixin {
         assertNotNull(response);
         assertTrue(response.contains("<title>Yorkshire Area - 01 Mar 2010 - Brass Band Results</title>"));
         assertTrue(response.contains(">Yorkshire Area<"));
-        assertTrue(response.contains("<h3>Mon 01 Mar 2010</h3>"));
+        assertTrue(response.contains("Mon 01 Mar 2010"));
 
         assertTrue(response.contains(">1<"));
         assertTrue(response.contains(">2<"));
@@ -113,7 +113,7 @@ class ContestEventWebTests implements LoginMixin {
     assertNotNull(response);
     assertTrue(response.contains("<title>Yorkshire Area - 01 Mar 2010 - Brass Band Results</title>"));
     assertTrue(response.contains(">Yorkshire Area<"));
-    assertTrue(response.contains("<h3>Mon 01 Mar 2010</h3>"));
+    assertTrue(response.contains("Mon 01 Mar 2010"));
 
     assertTrue(response.contains(">1<"));
     assertTrue(response.contains(">2<"));
@@ -137,7 +137,7 @@ class ContestEventWebTests implements LoginMixin {
     assertNotNull(response);
     assertTrue(response.contains("<title>Yorkshire Area - 01 Mar 2010 - Brass Band Results</title>"));
     assertTrue(response.contains(">Yorkshire Area<"));
-    assertTrue(response.contains("<h3>Mon 01 Mar 2010</h3>"));
+    assertTrue(response.contains("Mon 01 Mar 2010"));
 
     assertTrue(response.contains(">1<"));
     assertTrue(response.contains(">2<"));
@@ -161,7 +161,7 @@ class ContestEventWebTests implements LoginMixin {
     assertNotNull(response);
     assertTrue(response.contains("<title>Yorkshire Area - 01 Mar 2010 - Brass Band Results</title>"));
     assertTrue(response.contains(">Yorkshire Area<"));
-    assertTrue(response.contains("<h3>Mon 01 Mar 2010</h3>"));
+    assertTrue(response.contains("Mon 01 Mar 2010"));
 
     assertTrue(response.contains(">1<"));
     assertTrue(response.contains(">2<"));
@@ -185,7 +185,7 @@ class ContestEventWebTests implements LoginMixin {
     assertNotNull(response);
     assertTrue(response.contains("<title>Yorkshire Area - 01 Mar 2010 - Brass Band Results</title>"));
     assertTrue(response.contains(">Yorkshire Area<"));
-    assertTrue(response.contains("<h3>Mon 01 Mar 2010</h3>"));
+    assertTrue(response.contains("Mon 01 Mar 2010"));
 
     assertTrue(response.contains(">1<"));
     assertTrue(response.contains(">2<"));

@@ -140,4 +140,8 @@ public class NotFoundException extends RuntimeException {
     public static NotFoundException venueAliasNotFoundByIds(String slug, Long aliasId) {
         return new NotFoundException("Alias with id " + aliasId + " not found for venue with slug " + slug);
     }
+
+    public static NotFoundException dateParseError(String contestEventDate) {
+        return new NotFoundException("Can't parse date " + contestEventDate);
+    }
 }

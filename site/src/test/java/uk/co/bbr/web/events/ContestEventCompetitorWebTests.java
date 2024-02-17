@@ -6,10 +6,8 @@ import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import uk.co.bbr.services.bands.BandService;
 import uk.co.bbr.services.bands.dao.BandDao;
@@ -36,10 +34,8 @@ import uk.co.bbr.web.security.support.TestUser;
 import java.time.LocalDate;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ActiveProfiles("test")
@@ -104,7 +100,7 @@ class ContestEventCompetitorWebTests implements LoginMixin {
         assertNotNull(response);
         assertTrue(response.contains("<title>Yorkshire Area - 01 Mar 2010 - Competitors - Brass Band Results</title>"));
         assertTrue(response.contains(">Yorkshire Area<"));
-        assertTrue(response.contains("<h3>Mon 01 Mar 2010</h3>"));
+        assertTrue(response.contains("Mon 01 Mar 2010"));
 
         assertFalse(response.contains("Rothwell Temperance Band"));
         assertFalse(response.contains("Black Dyke"));

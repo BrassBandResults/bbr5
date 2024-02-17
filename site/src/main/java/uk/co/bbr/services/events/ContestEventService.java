@@ -1,11 +1,10 @@
 package uk.co.bbr.services.events;
 
-import uk.co.bbr.services.events.dao.ContestAdjudicatorDao;
 import uk.co.bbr.services.contests.dao.ContestDao;
+import uk.co.bbr.services.events.dao.ContestAdjudicatorDao;
 import uk.co.bbr.services.events.dao.ContestEventDao;
 import uk.co.bbr.services.events.dao.ContestEventTestPieceDao;
 import uk.co.bbr.services.events.dao.ContestResultDao;
-import uk.co.bbr.services.events.sql.dto.EventUpDownLeftRightSqlDto;
 import uk.co.bbr.services.events.types.TestPieceAndOr;
 import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.pieces.dao.PieceDao;
@@ -73,4 +72,6 @@ public interface ContestEventService {
     Optional<ContestEventDao> fetchEventBetweenDates(ContestDao contest, LocalDate startDate, LocalDate endDate);
 
     void removeAdjudicator(ContestEventDao contestEvent, Long adjudicatorId);
+
+    List<ContestEventDao> fetchEventsforDate(LocalDate eventDate);
 }
