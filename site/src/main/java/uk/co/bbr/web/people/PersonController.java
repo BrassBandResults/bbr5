@@ -101,6 +101,9 @@ public class PersonController {
         model.addAttribute("PieceCount", composerCount + arrangerCount);
         model.addAttribute("PersonRelationships", personRelationships);
         model.addAttribute("Notes", Tools.markdownToHTML(person.get().getNotes()));
+        model.addAttribute("WinsCount", personConductingResults.getNonWhitWinsCount());
+        model.addAttribute("TopSixCount", personConductingResults.getNonWhitTopSixCount());
+        model.addAttribute("UnplacedCount", personConductingResults.getNonWhitUnplacedCount());
 
         return "people/tabs/person-profile";
     }
@@ -151,6 +154,9 @@ public class PersonController {
         model.addAttribute("PieceCount", composerCount + arrangerCount);
         model.addAttribute("PersonRelationships", personRelationships);
         model.addAttribute("Notes", Tools.markdownToHTML(person.get().getNotes()));
+        model.addAttribute("WinsCount", personConductingResults.getNonWhitWinsCount());
+        model.addAttribute("TopSixCount", personConductingResults.getNonWhitTopSixCount());
+        model.addAttribute("UnplacedCount", personConductingResults.getNonWhitUnplacedCount());
 
         return "people/tabs/person-conducting";
     }
@@ -189,6 +195,9 @@ public class PersonController {
         model.addAttribute("PieceCount", composerCount + arrangerCount);
         model.addAttribute("PersonRelationships", personRelationships);
         model.addAttribute("Notes", Tools.markdownToHTML(person.get().getNotes()));
+        model.addAttribute("WinsCount", personConductingResults.getWhitWinsCount());
+        model.addAttribute("TopSixCount", personConductingResults.getWhitTopSixCount());
+        model.addAttribute("UnplacedCount", personConductingResults.getWhitUnplacedCount());
 
         return "people/tabs/person-whits";
     }
@@ -344,6 +353,9 @@ public class PersonController {
         model.addAttribute("PersonRelationships", personRelationships);
         model.addAttribute("FilteredTo", contest.get().getName());
         model.addAttribute("Notes", Tools.markdownToHTML(person.get().getNotes()));
+        model.addAttribute("WinsCount", personConductingResults.getNonWhitWinsCount());
+        model.addAttribute("TopSixCount", personConductingResults.getNonWhitTopSixCount());
+        model.addAttribute("UnplacedCount", personConductingResults.getNonWhitUnplacedCount());
 
         return "people/tabs/person-conducting";
     }
@@ -385,6 +397,9 @@ public class PersonController {
         model.addAttribute("PersonRelationships", personRelationships);
         model.addAttribute("FilteredTo", group.get().getName());
         model.addAttribute("Notes", Tools.markdownToHTML(person.get().getNotes()));
+        model.addAttribute("WinsCount", personConductingResults.getNonWhitWinsCount());
+        model.addAttribute("TopSixCount", personConductingResults.getNonWhitTopSixCount());
+        model.addAttribute("UnplacedCount", personConductingResults.getNonWhitUnplacedCount());
 
         return "people/tabs/person-conducting";
     }
@@ -426,6 +441,9 @@ public class PersonController {
         model.addAttribute("PersonRelationships", personRelationships);
         model.addAttribute("FilteredTo", tag.get().getName());
         model.addAttribute("Notes", Tools.markdownToHTML(person.get().getNotes()));
+        model.addAttribute("WinsCount", personConductingResults.getNonWhitWinsCount());
+        model.addAttribute("TopSixCount", personConductingResults.getNonWhitTopSixCount());
+        model.addAttribute("UnplacedCount", personConductingResults.getNonWhitUnplacedCount());
 
         return "people/tabs/person-conducting";
     }

@@ -18,6 +18,12 @@ public class ResultDetailsDto {
     private final List<ContestResultDao> bandAllResults;
     private final List<ContestResultDao> currentChampions;
     private final List<SpecialAwardDto> specialAwards;
+    private final int nonWhitWinsCount;
+    private final int nonWhitTopSixCount;
+    private final int nonWhitUnplacedCount;
+    private final int whitWinsCount;
+    private final int whitTopSixCount;
+    private final int whitUnplacedCount;
 
     public ResultDetailsDto(List<ContestResultDao> bandNonWhitResults, List<ContestResultDao> bandWhitResults, List<ContestResultDao> bandAllResults, List<ContestResultDao> currentChampions) {
         this.bandNonWhitResults = bandNonWhitResults;
@@ -26,6 +32,44 @@ public class ResultDetailsDto {
         this.currentChampions = currentChampions;
 
         this.specialAwards = this.lookForSpecialAwards();
+
+        int tNonWhitWinsCount = 0;
+        int tNonWhitTopSixCount = 0;
+        int tNonWhitUnplacedCount = 0;
+        int tWhitWinsCount = 0;
+        int tWhitTopSixCount = 0;
+        int tWhitUnplacedCount = 0;
+
+        for (ContestResultDao eachResult : bandNonWhitResults) {
+            if (eachResult.getResultPositionType() == ResultPositionType.RESULT && eachResult.getPosition() == 1) {
+                tNonWhitWinsCount++;
+                continue;
+            }
+            if (eachResult.getResultPositionType() == ResultPositionType.RESULT && eachResult.getPosition() >= 2 && eachResult.getPosition() <= 6 ) {
+                tNonWhitTopSixCount++;
+                continue;
+            }
+            tNonWhitUnplacedCount++;
+        }
+
+        for (ContestResultDao eachResult : bandWhitResults) {
+            if (eachResult.getResultPositionType() == ResultPositionType.RESULT && eachResult.getPosition() == 1) {
+                tWhitWinsCount++;
+                continue;
+            }
+            if (eachResult.getResultPositionType() == ResultPositionType.RESULT && eachResult.getPosition() >= 2 && eachResult.getPosition() <= 6 ) {
+                tWhitTopSixCount++;
+                continue;
+            }
+            tWhitUnplacedCount++;
+        }
+
+        nonWhitWinsCount = tNonWhitWinsCount;
+        nonWhitTopSixCount = tNonWhitTopSixCount;
+        nonWhitUnplacedCount = tNonWhitUnplacedCount;
+        whitWinsCount = tWhitWinsCount;
+        whitTopSixCount = tWhitTopSixCount;
+        whitUnplacedCount = tWhitUnplacedCount;
     }
 
     private List<SpecialAwardDto> lookForSpecialAwards() {

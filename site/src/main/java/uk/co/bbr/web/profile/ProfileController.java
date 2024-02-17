@@ -19,7 +19,6 @@ import uk.co.bbr.services.security.types.ContestHistoryVisibility;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 import uk.co.bbr.web.security.annotations.IsBbrPro;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,6 +61,8 @@ public class ProfileController {
         Map<String, PersonDao> conductorList = new HashMap<>();
 
         int winsCount = 0;
+        int topSixCount = 0;
+        int unplacedCount = 0;
         for (PerformanceDao eachPerformance : performances) {
             bandList.put(eachPerformance.getResult().getBand().getSlug(), eachPerformance.getResult().getBand());
             if (eachPerformance.getResult().getConductor() != null) {
@@ -69,7 +70,13 @@ public class ProfileController {
             }
             if (eachPerformance.getResult().getPosition() != null && eachPerformance.getResult().getPosition() == 1) {
                 winsCount++;
+                continue;
             }
+            if (eachPerformance.getResult().getPosition() != null && eachPerformance.getResult().getPosition() >= 2 && eachPerformance.getResult().getPosition() >= 6) {
+                topSixCount++;
+                continue;
+            }
+            unplacedCount++;
         }
 
         model.addAttribute("User", user);
@@ -79,6 +86,8 @@ public class ProfileController {
         model.addAttribute("BandList", bandList.values());
         model.addAttribute("ContestCount", performances.size());
         model.addAttribute("WinsCount", winsCount);
+        model.addAttribute("TopSixCount", topSixCount);
+        model.addAttribute("UnplacedCount", unplacedCount);
 
         return "profile/performances";
     }

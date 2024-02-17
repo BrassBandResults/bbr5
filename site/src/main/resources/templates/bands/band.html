@@ -26,6 +26,11 @@
             <span th:text="#{page.filter.alert}">This view of the band's results is filtered to something.</span>
             <b th:text="${FilteredTo}"></b>
         </p>
+
+        <div sec:authorize="hasRole('BBR_PRO')" class="chart-container" style="position: relative; width:15vw">
+            <canvas id="pieChart"></canvas>
+        </div>
+
         <table class="table table-hover sortable">
             <thead>
                 <tr>
@@ -62,7 +67,36 @@
 </div>
 
 <div layout:fragment="scriptfooter">
-<script th:src="@{${STATIC_HOST} + '/js2023/filter-toggle.js'}"></script>
+    <script th:src="@{${STATIC_HOST} + '/js2023/filter-toggle.js'}"></script>
+    <script sec:authorize="hasRole('BBR_PRO')">
+        const pieChart = document.getElementById('pieChart');
+        const pieData = {
+            datasets: [{
+                data: [
+                    [[${WinsCount}]],
+                    [[${TopSixCount}]],
+                    [[${UnplacedCount}]]
+                ],
+                backgroundColor: [
+                    '#f9f1be',
+                    '#c3c7d0',
+                    '#0d6efd'
+                ],
+            }],
+            labels: [
+                '[[#{chart.pie.win}]]',
+                '[[#{chart.pie.top-six}]]',
+                '[[#{chart.pie.unplaced}]]'
+            ],
+
+        }
+        const pieChartConfig = {
+            type: 'pie',
+            data: pieData
+        }
+
+        new Chart(pieChart, pieChartConfig);
+    </script>
 </div>
 
 </body>
