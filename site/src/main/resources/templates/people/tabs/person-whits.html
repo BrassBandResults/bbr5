@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+<html lang="en" layout:decorate="~{layout}" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
 <head>
     <title th:text="@{#{page.person.title(${Person.name})} + ' - Brass Band Results'}">Person - Brass Band Results</title>
 </head>
@@ -30,6 +30,11 @@
     <br/>
 
     <div class="tab-content">
+
+        <div sec:authorize="hasRole('BBR_PRO')" class="chart-container" style="position: relative; width:15vw">
+            <canvas id="pieChart"></canvas>
+        </div>
+
         <table class="table table-hover sortable">
             <thead>
                 <tr>
@@ -55,5 +60,38 @@
         </table>
     </div>
 </div>
+
+<div layout:fragment="scriptfooter">
+    <script sec:authorize="hasRole('BBR_PRO')">
+        const pieChart = document.getElementById('pieChart');
+        const pieData = {
+            datasets: [{
+                data: [
+                    [[${WinsCount}]],
+                    [[${TopSixCount}]],
+                    [[${UnplacedCount}]]
+                ],
+                backgroundColor: [
+                    '#f9f1be',
+                    '#c3c7d0',
+                    '#0d6efd'
+                ],
+            }],
+            labels: [
+                '[[#{chart.pie.win}]]',
+                '[[#{chart.pie.top-six}]]',
+                '[[#{chart.pie.unplaced}]]'
+            ],
+
+        }
+        const pieChartConfig = {
+            type: 'pie',
+            data: pieData
+        }
+
+        new Chart(pieChart, pieChartConfig);
+    </script>
+</div>
+
 </body>
 </html>

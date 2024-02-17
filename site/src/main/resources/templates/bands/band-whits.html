@@ -20,6 +20,10 @@
     </ul>
     <br/>
 
+    <div sec:authorize="hasRole('BBR_PRO')" class="chart-container" style="position: relative; width:15vw">
+        <canvas id="pieChart"></canvas>
+    </div>
+
     <div class="tab-content">
         <table class="table table-hover sortable">
             <thead>
@@ -39,7 +43,7 @@
                     <td class="bbr-position"><span th:replace="~{components/results-position.html :: resultsPosition(${result})}">1</span></td>
                     <td class="bbr-piece"><span th:replace="~{links/piece-link.html :: resultPieceWithSetTestIfNone(${result})}">Test Piece</span></td>
                     <td class="bbr-conductor"><span th:replace="~{links/person-link.html :: conductorsLinkWithUnknown(${result})}">Bob Childs</span></td>
-                    <td  sec:authorize="hasRole('BBR_SUPERUSER')">
+                    <td sec:authorize="hasRole('BBR_SUPERUSER')">
                         <span th:replace="~{buttons/edit.html :: editResult(${result.contestEvent}, ${result})}"></span>
                     </td>
                 </tr>
@@ -47,5 +51,38 @@
         </table>
     </div>
 </div>
+
+<div layout:fragment="scriptfooter">
+    <script sec:authorize="hasRole('BBR_PRO')">
+        const pieChart = document.getElementById('pieChart');
+        const pieData = {
+            datasets: [{
+                data: [
+                    [[${WinsCount}]],
+                    [[${TopSixCount}]],
+                    [[${UnplacedCount}]]
+                ],
+                backgroundColor: [
+                    '#f9f1be',
+                    '#c3c7d0',
+                    '#0d6efd'
+                ],
+            }],
+            labels: [
+                '[[#{chart.pie.win}]]',
+                '[[#{chart.pie.top-six}]]',
+                '[[#{chart.pie.unplaced}]]'
+            ],
+
+        }
+        const pieChartConfig = {
+            type: 'pie',
+            data: pieData
+        }
+
+        new Chart(pieChart, pieChartConfig);
+    </script>
+</div>
+
 </body>
 </html>

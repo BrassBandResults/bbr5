@@ -87,6 +87,9 @@ public class BandController {
         model.addAttribute("BandRehearsalDays", bandRehearsalDays);
         model.addAttribute("BandRelationships", bandRelationships);
         model.addAttribute("Notes", Tools.markdownToHTML(band.get().getNotes()));
+        model.addAttribute("WinsCount", bandResults.getNonWhitWinsCount());
+        model.addAttribute("TopSixCount", bandResults.getNonWhitTopSixCount());
+        model.addAttribute("UnplacedCount", bandResults.getNonWhitUnplacedCount());
         return "bands/band";
     }
 
@@ -144,6 +147,9 @@ public class BandController {
         model.addAttribute("BandRehearsalDays", bandRehearsalDays);
         model.addAttribute("BandRelationships", bandRelationships);
         model.addAttribute("Notes", Tools.markdownToHTML(band.get().getNotes()));
+        model.addAttribute("WinsCount", bandResults.getWhitWinsCount());
+        model.addAttribute("TopSixCount", bandResults.getWhitTopSixCount());
+        model.addAttribute("UnplacedCount", bandResults.getWhitUnplacedCount());
         return "bands/band-whits";
     }
 
@@ -206,6 +212,9 @@ public class BandController {
         model.addAttribute("BandRelationships", bandRelationships);
         model.addAttribute("FilteredTo", contest.get().getName());
         model.addAttribute("Notes", Tools.markdownToHTML(band.get().getNotes()));
+        model.addAttribute("WinsCount", bandResults.getNonWhitWinsCount());
+        model.addAttribute("TopSixCount", bandResults.getNonWhitTopSixCount());
+        model.addAttribute("UnplacedCount", bandResults.getNonWhitUnplacedCount());
         return "bands/band";
     }
 
@@ -237,6 +246,9 @@ public class BandController {
         model.addAttribute("BandRelationships", bandRelationships);
         model.addAttribute("FilteredTo", group.get().getName());
         model.addAttribute("Notes", Tools.markdownToHTML(band.get().getNotes()));
+        model.addAttribute("WinsCount", bandResults.getNonWhitWinsCount());
+        model.addAttribute("TopSixCount", bandResults.getNonWhitTopSixCount());
+        model.addAttribute("UnplacedCount", bandResults.getNonWhitUnplacedCount());
         return "bands/band";
     }
 
@@ -268,6 +280,9 @@ public class BandController {
         model.addAttribute("BandRelationships", bandRelationships);
         model.addAttribute("FilteredTo", tag.get().getName());
         model.addAttribute("Notes", Tools.markdownToHTML(band.get().getNotes()));
+        model.addAttribute("WinsCount", bandResults.getNonWhitWinsCount());
+        model.addAttribute("TopSixCount", bandResults.getNonWhitTopSixCount());
+        model.addAttribute("UnplacedCount", bandResults.getNonWhitUnplacedCount());
         return "bands/band";
     }
 }
