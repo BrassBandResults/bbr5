@@ -358,7 +358,14 @@ public class ResultServiceImpl implements ResultService {
 
             // get last 10 years of history for this contest, use group if set
             LocalDate tenYearsAgo = contestEvent.getEventDate().minus(10, ChronoUnit.YEARS);
-            List<EventResultSqlDto> lastDecadeThisContest = EventSql.selectLastTenYearsThisContest(this.entityManager, contestEvent.getEventDate(), tenYearsAgo, contestEvent.getContest().getSlug(),  result.getBand().getSlug());
+            List<EventResultSqlDto> lastDecadeThisContest = new ArrayList<>();
+            if (contestEvent.getContest().getContestGroup() != null) {
+                lastDecadeThisContest = EventSql.selectLastTenYearsThisGroup(this.entityManager, contestEvent.getEventDate(), tenYearsAgo, contestEvent.getContest().getContestGroup().getSlug(),  result.getBand().getSlug());
+            } else {
+                lastDecadeThisContest = EventSql.selectLastTenYearsThisContest(this.entityManager, contestEvent.getEventDate(), tenYearsAgo, contestEvent.getContest().getSlug(),  result.getBand().getSlug());
+            }
+
+
             List<ContestResultDao> lastDecadeThisContestResults = new ArrayList<>();
             for (EventResultSqlDto eachResult : lastDecadeThisContest) {
                 lastDecadeThisContestResults.add(eachResult.toResult());
