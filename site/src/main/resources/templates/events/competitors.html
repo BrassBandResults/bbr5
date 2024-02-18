@@ -17,6 +17,9 @@
         <li class="nav-item">
             <a class="nav-link active" th:href="${'/contests/' + ContestEvent.contest.slug + '/' + ContestEvent.eventDateForUrl + '/competitors'}" th:text="#{page.contest-event.tab.competitors}">Competitors</span></a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link" th:href="${'/contests/' + ContestEvent.contest.slug + '/' + ContestEvent.eventDateForUrl + '/form-guide'}" th:text="#{page.contest-event.tab.form-guide}">Form Guide</span></a>
+        </li>
     </ul>
     <br/>
 
@@ -31,7 +34,7 @@
                     <li th:each="competitor : ${band.competitors}">
                         <span th:if="${!competitor.privateUser}" th:remove="tag">
                             <a th:href="${'/users/' + competitor.getUsercode()}" th:text="${competitor.getUsercode()}">User</a>
-                            <span th:if="${competitor.getPosition() != null}">(<span th:text="#{${competitor.getPosition()}}">)</span></span>
+                            <span th:if="${competitor.getPosition() != null}">(<span th:text="#{${competitor.getPosition()}}"></span>)</span>
                         </span>
                         <span th:if="${competitor.privateUser}" th:text="#{page.competitors.private-user}">Private User</span>
                    </li>

@@ -16,6 +16,7 @@ import uk.co.bbr.services.events.dao.ContestAdjudicatorDao;
 import uk.co.bbr.services.events.dao.ContestEventDao;
 import uk.co.bbr.services.events.dao.ContestEventTestPieceDao;
 import uk.co.bbr.services.events.dao.ContestResultDao;
+import uk.co.bbr.services.events.dto.ContestEventFormGuideDto;
 import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.performances.PerformanceService;
 import uk.co.bbr.services.performances.dto.CompetitorBandDto;
@@ -219,4 +220,18 @@ public class ContestEventController extends AbstractEventController {
         model.addAttribute("Events", contestEvents);
         return "events/contests-on-date";
     }
+
+    @IsBbrPro
+    @GetMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}/form-guide")
+    public String contestEventFormGuide(Model model, @PathVariable String contestSlug, @PathVariable String contestEventDate) {
+        ContestEventDao contestEvent = this.contestEventFromUrlParameters(this.contestEventService, contestSlug, contestEventDate);
+
+        List<ContestEventFormGuideDto> eventFormGuideBands = this.resultService.fetchFormGuideForEvent(contestEvent);
+
+        model.addAttribute("ContestEvent", contestEvent);
+        model.addAttribute("EventFormGuideBands", eventFormGuideBands);
+
+        return "events/form-guide";
+    }
+
 }

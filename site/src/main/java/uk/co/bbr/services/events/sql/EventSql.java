@@ -1,12 +1,12 @@
 package uk.co.bbr.services.events.sql;
 
+import jakarta.persistence.EntityManager;
 import lombok.experimental.UtilityClass;
 import uk.co.bbr.services.events.sql.dto.EventResultSqlDto;
 import uk.co.bbr.services.events.sql.dto.EventUpDownLeftRightSqlDto;
 import uk.co.bbr.services.events.sql.dto.ResultPieceSqlDto;
 import uk.co.bbr.services.framework.sql.SqlExec;
 
-import jakarta.persistence.EntityManager;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -160,5 +160,69 @@ public class EventSql {
             return null;
         }
         return returnValue.get(0);
+    }
+
+    private static final String EVENT_RESULTS_RECENT_THIS_CONTEST_SQL = """
+            SELECT e.date_of_event, e.date_resolution, c.slug, r.result_position, r.result_position_type, r.band_name, b.name as actual_band_name, b.slug as band_slug, reg.name as region_name, reg.slug as region_slug, reg.country_code,
+                                  r.draw, r.points_total,
+                                  con1.slug as c1_slug, con1.first_names as c1_first_names, con1.surname as c1_surname,
+                                  con2.slug as c2_slug, con2.first_names as c2_first_names, con2.surname as c2_surname,
+                                  con3.slug as c3_slug, con3.first_names as c3_first_names, con3.surname as c3_surname,
+                                  r.draw_second, r.draw_third,
+                                  r.points_first, r.points_second, r.points_third, r.points_fourth, r.points_fifth, r.points_penalty,
+                                  r.id, r.notes, e.name,
+                                  g.name as group_name, g.slug as group_slug,
+                                  b.latitude, b.longitude, b.status as band_status, sect.slug as section_slug, sect.translation_key as section_translation_key,
+                                  b.created_by, r.result_award
+                           FROM contest_result r
+                           INNER JOIN contest_event e on e.id = r.contest_event_id
+                           INNER JOIN contest c ON c.id = e.contest_id
+                           INNER JOIN band b ON b.id = r.band_id
+                           INNER JOIN region reg ON reg.id = b.region_id
+                           LEFT OUTER JOIN section sect ON sect.id = b.section_id
+                           LEFT OUTER JOIN person con1 ON con1.id = r.conductor_id
+                           LEFT OUTER JOIN person con2 ON con2.id = r.conductor_two_id
+                           LEFT OUTER JOIN person con3 ON con3.id = r.conductor_three_id
+                           LEFT OUTER JOIN contest_group g ON g.id = c.contest_group_id
+                           WHERE e.date_of_event < ?1
+                           AND e.date_of_event > ?2
+                           AND c.slug = ?3
+                           AND b.slug = ?4
+                           ORDER BY e.date_of_event""";
+
+    public static List<EventResultSqlDto> selectLastTenYearsThisContest(EntityManager entityManager, LocalDate eventDateFrom, LocalDate eventDateTo, String contestSlug, String bandSlug) {
+        return SqlExec.execute(entityManager, EVENT_RESULTS_RECENT_THIS_CONTEST_SQL, eventDateFrom, eventDateTo, contestSlug, bandSlug, EventResultSqlDto.class);
+    }
+
+    private static final String EVENT_RESULTS_RECENT_OTHER_CONTEST_SQL = """
+            SELECT e.date_of_event, e.date_resolution, c.slug, r.result_position, r.result_position_type, r.band_name, b.name as actual_band_name, b.slug as band_slug, reg.name as region_name, reg.slug as region_slug, reg.country_code,
+                                  r.draw, r.points_total,
+                                  con1.slug as c1_slug, con1.first_names as c1_first_names, con1.surname as c1_surname,
+                                  con2.slug as c2_slug, con2.first_names as c2_first_names, con2.surname as c2_surname,
+                                  con3.slug as c3_slug, con3.first_names as c3_first_names, con3.surname as c3_surname,
+                                  r.draw_second, r.draw_third,
+                                  r.points_first, r.points_second, r.points_third, r.points_fourth, r.points_fifth, r.points_penalty,
+                                  r.id, r.notes, e.name,
+                                  g.name as group_name, g.slug as group_slug,
+                                  b.latitude, b.longitude, b.status as band_status, sect.slug as section_slug, sect.translation_key as section_translation_key,
+                                  b.created_by, r.result_award
+                           FROM contest_result r
+                           INNER JOIN contest_event e on e.id = r.contest_event_id
+                           INNER JOIN contest c ON c.id = e.contest_id
+                           INNER JOIN band b ON b.id = r.band_id
+                           INNER JOIN region reg ON reg.id = b.region_id
+                           LEFT OUTER JOIN section sect ON sect.id = b.section_id
+                           LEFT OUTER JOIN person con1 ON con1.id = r.conductor_id
+                           LEFT OUTER JOIN person con2 ON con2.id = r.conductor_two_id
+                           LEFT OUTER JOIN person con3 ON con3.id = r.conductor_three_id
+                           LEFT OUTER JOIN contest_group g ON g.id = c.contest_group_id
+                           WHERE e.date_of_event < ?1
+                           AND e.date_of_event > ?2
+                           AND c.slug <> ?3
+                           AND b.slug = ?4
+                           ORDER BY e.date_of_event""";
+
+    public static List<EventResultSqlDto> selectLastYearOtherContest(EntityManager entityManager, LocalDate eventDateFrom, LocalDate eventDateTo, String contestSlug, String bandSlug) {
+        return SqlExec.execute(entityManager, EVENT_RESULTS_RECENT_OTHER_CONTEST_SQL, eventDateFrom, eventDateTo, contestSlug, bandSlug, EventResultSqlDto.class);
     }
 }
