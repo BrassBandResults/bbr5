@@ -41,6 +41,7 @@
                             <thead>
                                 <tr>
                                      <th th:text="#{page.column-header.date}" class="date">Date</th>
+                                    <th th:text="#{page.column-header.contest}">Contest</th>
                                     <th th:text="#{page.column-header.position}" class="result">Position</th>
                                     <th th:text="#{page.column-header.conductor}">Conductor</th>
                                     <th th:text="#{${ContestEvent.contestType.drawOneTitle}}" class="number">Draw 1</th>
@@ -49,6 +50,7 @@
                             <tbody class="align-middle">
                                 <tr th:each="result : ${band.thisContest}" th:class="${result.cssClass}">
                                     <td class="bbr-event" nowrap><span th:replace="~{links/event-link.html :: eventLink(${result.contestEvent})}">9th Sep 2023</span></td>
+                                    <td th:text="${result.contestEvent.contest.name}"></td>
                                     <td class="bbr-position">
                                         <span th:replace="~{components/results-position.html :: resultsPosition(${result})}">1</span>
                                         <span th:replace="~{components/results-position.html :: resultAward(${result})}"></span>
