@@ -10,7 +10,7 @@ import java.util.List;
 
 @UtilityClass
 public class SqlExec {
-    public static <T extends AbstractSqlDto> List<T> execute(EntityManager entityManager, String sql, Object param1, Object param2, Object param3, Class<T> clazz) {
+    public static <T extends AbstractSqlDto> List<T> execute(EntityManager entityManager, String sql, Object param1, Object param2, Object param3, Object param4, Class<T> clazz) {
         List<T> returnData = new ArrayList<>();
         try {
             Query query = entityManager.createNativeQuery(sql);
@@ -22,6 +22,9 @@ public class SqlExec {
             }
             if (param3 != null) {
                 query.setParameter(3, param3);
+            }
+            if (param4 != null) {
+                query.setParameter(4, param4);
             }
             List<Object[]> queryResults = query.getResultList();
 
@@ -39,15 +42,19 @@ public class SqlExec {
         }
     }
 
+    public static <T extends AbstractSqlDto> List<T> execute(EntityManager entityManager, String sql, Object param1, Object param2, Object param3, Class<T> clazz) {
+        return execute(entityManager, sql, param1, param2, param3, null, clazz);
+    }
+
     public static <T extends AbstractSqlDto> List<T> execute(EntityManager entityManager, String sql, Object param1, Object param2, Class<T> clazz) {
-        return execute(entityManager, sql, param1, param2, null, clazz);
+        return execute(entityManager, sql, param1, param2, null, null, clazz);
     }
 
     public static <T extends AbstractSqlDto> List<T> execute(EntityManager entityManager, String sql, Object param1, Class<T> clazz) {
-            return execute(entityManager, sql, param1, null, null, clazz);
+            return execute(entityManager, sql, param1, null, null, null, clazz);
     }
 
     public static <T extends AbstractSqlDto> List<T> execute(EntityManager entityManager, String sql, Class<T> clazz) {
-        return execute(entityManager, sql, null, null, null, clazz);
+        return execute(entityManager, sql, null, null, null, null, clazz);
     }
 }

@@ -274,6 +274,8 @@ public abstract class PageSets {
         pageList.add("/contests/yorkshire-area/own-choice");
         pageList.add("/contests/yorkshire-area/wins");
         pageList.add("/contests/yorkshire-area/streaks");
+        pageList.add("/contests/yorkshire-area/2000-03-01/competitors");
+        pageList.add("/contests/yorkshire-area/2000-03-01/form-guide");
         pageList.add("/contest-event-date/2000-03-01");
         pageList.add("/people/david-roberts/filter/yorkshire-area");
         pageList.add("/people/david-roberts/filter/YORKSHIRE-GROUP");

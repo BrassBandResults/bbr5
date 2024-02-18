@@ -13,6 +13,7 @@ import uk.co.bbr.services.contests.sql.dto.ContestWinsSqlDto;
 import uk.co.bbr.services.events.dao.ContestEventDao;
 import uk.co.bbr.services.events.dao.ContestResultDao;
 import uk.co.bbr.services.events.dao.ContestResultPieceDao;
+import uk.co.bbr.services.events.dto.ContestEventFormGuideDto;
 import uk.co.bbr.services.events.repo.ContestResultPieceRepository;
 import uk.co.bbr.services.events.repo.ContestResultRepository;
 import uk.co.bbr.services.events.sql.EventSql;
@@ -343,6 +344,39 @@ public class ResultServiceImpl implements ResultService {
         }
 
         contestEvent.setCanEdit(canEditAnyResult);
+    }
+
+    @Override
+    public List<ContestEventFormGuideDto> fetchFormGuideForEvent(ContestEventDao contestEvent) {
+
+        List<ContestEventFormGuideDto> returnResults = new ArrayList<>();
+        List<EventResultSqlDto> resultsSql = EventSql.selectEventResults(this.entityManager, contestEvent.getId());
+        for (EventResultSqlDto eachResultSql : resultsSql) {
+            ContestEventFormGuideDto eachBandFormGuide = new ContestEventFormGuideDto();
+            ContestResultDao result = eachResultSql.toResult();
+            eachBandFormGuide.setResult(result);
+
+            // get last 10 years of history for this contest, use group if set
+            LocalDate tenYearsAgo = contestEvent.getEventDate().minus(10, ChronoUnit.YEARS);
+            List<EventResultSqlDto> lastDecadeThisContest = EventSql.selectLastTenYearsThisContest(this.entityManager, contestEvent.getEventDate(), tenYearsAgo, contestEvent.getContest().getSlug(),  result.getBand().getSlug());
+            List<ContestResultDao> lastDecadeThisContestResults = new ArrayList<>();
+            for (EventResultSqlDto eachResult : lastDecadeThisContest) {
+                lastDecadeThisContestResults.add(eachResult.toResult());
+            }
+            eachBandFormGuide.setThisContest(lastDecadeThisContestResults);
+
+            // get band's results in last 13 months that are not this contest
+            LocalDate thirteenMonthsAgo = contestEvent.getEventDate().minus(13, ChronoUnit.MONTHS);
+            List<EventResultSqlDto> lastYearOtherResults = EventSql.selectLastYearOtherContest(this.entityManager, contestEvent.getEventDate(), thirteenMonthsAgo, contestEvent.getContest().getSlug(),  result.getBand().getSlug());
+            List<ContestResultDao> otherContestResults = new ArrayList<>();
+            for (EventResultSqlDto eachResult : lastYearOtherResults) {
+                otherContestResults.add(eachResult.toResult());
+            }
+            eachBandFormGuide.setOtherContests(otherContestResults);
+
+            returnResults.add(eachBandFormGuide);
+        }
+        return returnResults;
     }
 
     private Map<String, List<Integer>> fetchStreakData(ContestDao contest) {

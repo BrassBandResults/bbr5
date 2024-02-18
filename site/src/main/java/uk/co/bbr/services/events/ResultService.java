@@ -7,6 +7,7 @@ import uk.co.bbr.services.contests.sql.dto.ContestWinsSqlDto;
 import uk.co.bbr.services.events.dao.ContestEventDao;
 import uk.co.bbr.services.events.dao.ContestResultDao;
 import uk.co.bbr.services.events.dao.ContestResultPieceDao;
+import uk.co.bbr.services.events.dto.ContestEventFormGuideDto;
 import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.pieces.dao.PieceDao;
 
@@ -54,4 +55,6 @@ public interface ResultService {
     void delete(ContestResultDao contestResult);
 
     void workOutCanEdit(ContestEventDao contestEventDao, List<ContestResultDao> eventResults);
+
+    List<ContestEventFormGuideDto> fetchFormGuideForEvent(ContestEventDao contestEvent);
 }

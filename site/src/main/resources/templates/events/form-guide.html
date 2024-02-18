@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+<head>
+    <title th:text="@{#{page.form-guide.title(${ContestEvent.contest.name}, ${ContestEvent.eventDateDisplay})} + ' - Brass Band Results'}">Yorkshire Area (Championship Section) - 07 Mar 2010 - Brass Band Results</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <span th:replace="~{events/components/header.html :: header(${ContestEvent})}"></span>
+
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link" th:href="${'/contests/' + ContestEvent.contest.slug + '/' + ContestEvent.eventDateForUrl}" th:text="#{page.contest-event.tab.results}">Results</span></a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" th:href="${'/contests/' + ContestEvent.contest.slug + '/' + ContestEvent.eventDateForUrl + '/geography'}" th:text="#{page.contest-event.tab.geography}">Geography</span></a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" th:href="${'/contests/' + ContestEvent.contest.slug + '/' + ContestEvent.eventDateForUrl + '/competitors'}" th:text="#{page.contest-event.tab.competitors}">Competitors</span></a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" th:href="${'/contests/' + ContestEvent.contest.slug + '/' + ContestEvent.eventDateForUrl + '/form-guide'}" th:text="#{page.contest-event.tab.form-guide}">Form Guide</span></a>
+        </li>
+    </ul>
+    <br/>
+
+    <div class="tab-content">
+      <div class="accordion" id="form-accordion">
+            <span th:each="band : ${EventFormGuideBands}" th:remove="tag">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" th:id="${'heading-' + band.result.band.slug}">
+                      <button class="accordion-button" type="button" data-bs-toggle="collapse" th:data-bs-target="${'#collapse-' + band.result.band.slug}">
+                          <span th:text="${band.result.positionDisplay}"></span>
+                          &nbsp;
+                          <span th:text="${band.result.bandName}"></span>
+                      </button>
+                    </h2>
+                    <div th:id="${'collapse-' + band.result.band.slug}" class="accordion-collapse collapse" data-bs-parent="#form-accordion">
+                        <div class="accordion-body">
+                            <h4 th:text="#{page.form-guide.this-contest}">This Contest</h4>
+                            <table class="table table-hover sortable">
+                            <thead>
+                                <tr>
+                                     <th th:text="#{page.column-header.date}" class="date">Date</th>
+                                    <th th:text="#{page.column-header.position}" class="result">Position</th>
+                                    <th th:text="#{page.column-header.conductor}">Conductor</th>
+                                    <th th:text="#{${ContestEvent.contestType.drawOneTitle}}" class="number">Draw 1</th>
+                                </tr>
+                            </thead>
+                            <tbody class="align-middle">
+                                <tr th:each="result : ${band.thisContest}" th:class="${result.cssClass}">
+                                    <td class="bbr-event" nowrap><span th:replace="~{links/event-link.html :: eventLink(${result.contestEvent})}">9th Sep 2023</span></td>
+                                    <td class="bbr-position">
+                                        <span th:replace="~{components/results-position.html :: resultsPosition(${result})}">1</span>
+                                        <span th:replace="~{components/results-position.html :: resultAward(${result})}"></span>
+                                        <img th:if="${result.hasNotes}" th:title="${result.notes}" th:src="@{${STATIC_HOST} + '/icons/comment.png'}"/>
+                                        <span th:if="${result.duplicateBandThisEvent}" class="badge text-bg-danger" th:text="#{page.contest-event.duplicate-band}" th:title="#{page.contest-event.duplicate-band.hint}">Duplicate Band</span>
+                                    </td>
+                                    <td class="bbr-conductor"><span th:replace="~{links/person-link.html :: conductorsLink(${result})}">Bob Childs</span></td>
+                                    <td class="bbr-draw">
+                                        <span th:if="${result.draw != 0}">
+                                          <span th:replace="~{links/contest-link.html :: contestLinkDraw(${ContestEvent.contest}, ${result.draw})}"></span>
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h4 th:text="#{page.form-guide.other-contests}">Other Contest</h4>
+                            <table class="table table-hover sortable">
+                            <thead>
+                                <tr>
+                                     <th th:text="#{page.column-header.date}" class="date">Date</th>
+                                    <th th:text="#{page.column-header.contest}">Contest</th>
+                                    <th th:text="#{page.column-header.position}" class="result">Position</th>
+                                    <th th:text="#{page.column-header.conductor}">Conductor</th>
+                                    <th th:text="#{${ContestEvent.contestType.drawOneTitle}}" class="number">Draw 1</th>
+                                </tr>
+                            </thead>
+                            <tbody class="align-middle">
+                                <tr th:each="result : ${band.otherContests}" th:class="${result.cssClass}">
+                                    <td class="bbr-event" nowrap><span th:replace="~{links/event-link.html :: eventLink(${result.contestEvent})}">9th Sep 2023</span></td>
+                                    <td th:text="${result.contestEvent.contest.name}"></td>
+                                    <td class="bbr-position">
+                                        <span th:replace="~{components/results-position.html :: resultsPosition(${result})}">1</span>
+                                        <span th:replace="~{components/results-position.html :: resultAward(${result})}"></span>
+                                        <img th:if="${result.hasNotes}" th:title="${result.notes}" th:src="@{${STATIC_HOST} + '/icons/comment.png'}"/>
+                                        <span th:if="${result.duplicateBandThisEvent}" class="badge text-bg-danger" th:text="#{page.contest-event.duplicate-band}" th:title="#{page.contest-event.duplicate-band.hint}">Duplicate Band</span>
+                                    </td>
+                                    <td class="bbr-conductor"><span th:replace="~{links/person-link.html :: conductorsLink(${result})}">Bob Childs</span></td>
+                                    <td class="bbr-draw">
+                                        <span th:if="${result.draw != 0}">
+                                          <span th:replace="~{links/contest-link.html :: contestLinkDraw(${ContestEvent.contest}, ${result.draw})}"></span>
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+          </div>
+        </span>
+      </div>
+    </div>
+</div>
+</body>
+</html>
