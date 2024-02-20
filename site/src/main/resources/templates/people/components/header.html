@@ -4,6 +4,7 @@
         <span th:remove="tag" th:text="${Person.name}">Person Name</span>
         <small><small><small th:if="${PersonProfile != null}" th:text="${PersonProfile.qualifications}"></small></small></small>
     </h2>
+    <h3 th:if="${Person.knownFor != null}" th:text="${Person.knownFor}"></h3>
     <div sec:authorize="hasRole('BBR_SUPERUSER')">
         <span th:replace="~{buttons/edit.html :: editPerson(${Person})}"></span>
         <span th:replace="~{buttons/edit.html :: editPersonAliases(${Person})}"></span>
