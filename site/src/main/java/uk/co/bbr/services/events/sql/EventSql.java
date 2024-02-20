@@ -188,7 +188,7 @@ public class EventSql {
                            AND e.date_of_event > ?2
                            AND c.slug = ?3
                            AND b.slug = ?4
-                           ORDER BY e.date_of_event""";
+                           ORDER BY e.date_of_event DESC""";
 
     public static List<EventResultSqlDto> selectLastTenYearsThisContest(EntityManager entityManager, LocalDate eventDateFrom, LocalDate eventDateTo, String contestSlug, String bandSlug) {
         return SqlExec.execute(entityManager, EVENT_RESULTS_RECENT_THIS_CONTEST_SQL, eventDateFrom, eventDateTo, contestSlug, bandSlug, EventResultSqlDto.class);
@@ -220,7 +220,7 @@ public class EventSql {
                            AND e.date_of_event > ?2
                            AND g.slug = ?3
                            AND b.slug = ?4
-                           ORDER BY e.date_of_event""";
+                           ORDER BY e.date_of_event DESC""";
 
     public static List<EventResultSqlDto> selectLastTenYearsThisGroup(EntityManager entityManager, LocalDate eventDateFrom, LocalDate eventDateTo, String groupSlug, String bandSlug) {
         return SqlExec.execute(entityManager, EVENT_RESULTS_RECENT_THIS_GROUP_SQL, eventDateFrom, eventDateTo, groupSlug, bandSlug, EventResultSqlDto.class);
@@ -252,7 +252,7 @@ public class EventSql {
                            AND e.date_of_event > ?2
                            AND c.slug <> ?3
                            AND b.slug = ?4
-                           ORDER BY e.date_of_event""";
+                           ORDER BY e.date_of_event DESC""";
 
     public static List<EventResultSqlDto> selectLastYearOtherContest(EntityManager entityManager, LocalDate eventDateFrom, LocalDate eventDateTo, String contestSlug, String bandSlug) {
         return SqlExec.execute(entityManager, EVENT_RESULTS_RECENT_OTHER_CONTEST_SQL, eventDateFrom, eventDateTo, contestSlug, bandSlug, EventResultSqlDto.class);
