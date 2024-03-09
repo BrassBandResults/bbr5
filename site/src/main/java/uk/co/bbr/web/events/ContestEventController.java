@@ -222,16 +222,29 @@ public class ContestEventController extends AbstractEventController {
     }
 
     @IsBbrPro
-    @GetMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}/form-guide")
-    public String contestEventFormGuide(Model model, @PathVariable String contestSlug, @PathVariable String contestEventDate) {
+    @GetMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}/form-guide-bands")
+    public String contestEventBandFormGuide(Model model, @PathVariable String contestSlug, @PathVariable String contestEventDate) {
         ContestEventDao contestEvent = this.contestEventFromUrlParameters(this.contestEventService, contestSlug, contestEventDate);
 
-        List<ContestEventFormGuideDto> eventFormGuideBands = this.resultService.fetchFormGuideForEvent(contestEvent);
+        List<ContestEventFormGuideDto> eventFormGuideBands = this.resultService.fetchBandFormGuideForEvent(contestEvent);
 
         model.addAttribute("ContestEvent", contestEvent);
         model.addAttribute("EventFormGuideBands", eventFormGuideBands);
 
-        return "events/form-guide";
+        return "events/form-guide-bands";
+    }
+
+    @IsBbrPro
+    @GetMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}/form-guide-conductors")
+    public String contestEventConductorFormGuide(Model model, @PathVariable String contestSlug, @PathVariable String contestEventDate) {
+        ContestEventDao contestEvent = this.contestEventFromUrlParameters(this.contestEventService, contestSlug, contestEventDate);
+
+        List<ContestEventFormGuideDto> eventFormGuideConductors = this.resultService.fetchConductorFormGuideForEvent(contestEvent);
+
+        model.addAttribute("ContestEvent", contestEvent);
+        model.addAttribute("EventFormGuideConductors", eventFormGuideConductors);
+
+        return "events/form-guide-conductors";
     }
 
 }

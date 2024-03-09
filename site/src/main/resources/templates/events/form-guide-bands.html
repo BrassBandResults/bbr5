@@ -9,16 +9,19 @@
 
     <ul class="nav nav-tabs">
         <li class="nav-item">
-            <a class="nav-link" th:href="${'/contests/' + ContestEvent.contest.slug + '/' + ContestEvent.eventDateForUrl}" th:text="#{page.contest-event.tab.results}">Results</span></a>
+            <a class="nav-link" th:href="${'/contests/' + ContestEvent.contest.slug + '/' + ContestEvent.eventDateForUrl}" th:text="#{page.contest-event.tab.results}">Results</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" th:href="${'/contests/' + ContestEvent.contest.slug + '/' + ContestEvent.eventDateForUrl + '/geography'}" th:text="#{page.contest-event.tab.geography}">Geography</span></a>
+            <a class="nav-link" th:href="${'/contests/' + ContestEvent.contest.slug + '/' + ContestEvent.eventDateForUrl + '/geography'}" th:text="#{page.contest-event.tab.geography}">Geography</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" th:href="${'/contests/' + ContestEvent.contest.slug + '/' + ContestEvent.eventDateForUrl + '/competitors'}" th:text="#{page.contest-event.tab.competitors}">Competitors</span></a>
+            <a class="nav-link" th:href="${'/contests/' + ContestEvent.contest.slug + '/' + ContestEvent.eventDateForUrl + '/competitors'}" th:text="#{page.contest-event.tab.competitors}">Competitors</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link active" th:href="${'/contests/' + ContestEvent.contest.slug + '/' + ContestEvent.eventDateForUrl + '/form-guide'}" th:text="#{page.contest-event.tab.form-guide}">Form Guide</span></a>
+            <a class="nav-link active" th:href="${'/contests/' + ContestEvent.contest.slug + '/' + ContestEvent.eventDateForUrl + '/form-guide-bands'}" th:text="#{page.contest-event.tab.form-guide-bands}">Band Form Guide</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" th:href="${'/contests/' + ContestEvent.contest.slug + '/' + ContestEvent.eventDateForUrl + '/form-guide-conductors'}" th:text="#{page.contest-event.tab.form-guide-conductors}">Conductor Form Guide</a>
         </li>
     </ul>
     <br/>
