@@ -94,7 +94,7 @@ public class PaymentsServiceImpl implements PaymentsService {
         for (SiteUserDao user : users) {
             SiteUserProDao wrappedUser = new SiteUserProDao(user);
             for (Subscription sub : subscriptions) {
-                if (user.getStripeEmail() != null && user.getStripeEmail().equals(sub.getCustomerObject().getEmail())) {
+                if (user.getStripeEmail() != null && user.getStripeEmail().equalsIgnoreCase(sub.getCustomerObject().getEmail())) {
                     if (sub.getCurrentPeriodEnd() != null) {
                         wrappedUser.setSubscriptionActive(true);
                         LocalDate endDateTime = Instant.ofEpochSecond(sub.getCurrentPeriodEnd()).atZone(ZoneId.systemDefault()).toLocalDate();

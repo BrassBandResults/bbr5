@@ -56,5 +56,7 @@ public interface ResultService {
 
     void workOutCanEdit(ContestEventDao contestEventDao, List<ContestResultDao> eventResults);
 
-    List<ContestEventFormGuideDto> fetchFormGuideForEvent(ContestEventDao contestEvent);
+    List<ContestEventFormGuideDto> fetchBandFormGuideForEvent(ContestEventDao contestEvent);
+
+    List<ContestEventFormGuideDto> fetchConductorFormGuideForEvent(ContestEventDao contestEvent);
 }
