@@ -35,6 +35,7 @@
                 <th th:text="#{page.column-header.email}">Email</th>
                 <th th:text="#{page.column-header.created}" class="date">Created</th>
                 <th th:text="#{page.column-header.last-login}" class="date">Last Login</th>
+                <th>Days Until Due</th>
                 <th th:text="#{page.column-header.points}">Points</th>
                 <th>Subscription End</th>
             </tr>
@@ -46,6 +47,7 @@
                 <td th:text="${#temporals.format(user.siteUser.created, 'dd MMM yyyy')}"></td>
                 <td th:text="${#temporals.format(user.siteUser.lastLogin, 'dd MMM yyyy')}"></td>
                 <td th:text="${user.siteUser.points}"></td>
+                <td th:text="${user.daysUntilDue}"></td>
                 <td th:if="${user.siteUser.getStripeEmail() != null}">
                     <span class="text-success" th:text="${#temporals.format(user.currentSubscriptionEndDate, 'dd MMM yyyy')}"></span>
                     <span th:if="${!user.subscriptionActive}"><span th:replace="~{buttons/button.html :: removePro(${user.siteUser})}">Remove Pro</span></span>
