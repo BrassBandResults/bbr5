@@ -74,7 +74,7 @@ public class PaymentsServiceImpl implements PaymentsService {
                 SubscriptionSearchParams
                     .builder()
                     .setQuery("status:'active'")
-                    .setLimit(100L)
+                    .setLimit(1000L)
                     .addExpand("data.customer")
                     .build();
 
@@ -97,7 +97,6 @@ public class PaymentsServiceImpl implements PaymentsService {
                 if (user.getStripeEmail() != null && user.getStripeEmail().equalsIgnoreCase(sub.getCustomerObject().getEmail())) {
                     if (sub.getCurrentPeriodEnd() != null) {
                         wrappedUser.setSubscriptionActive(true);
-                        wrappedUser.setDaysUntilDue(sub.getDaysUntilDue());
                         LocalDate endDateTime = Instant.ofEpochSecond(sub.getCurrentPeriodEnd()).atZone(ZoneId.systemDefault()).toLocalDate();
                         wrappedUser.setCurrentSubscriptionEndDate(endDateTime);
                         break;
