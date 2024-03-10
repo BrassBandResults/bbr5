@@ -14,5 +14,4 @@ public class SiteUserProDao {
     @Setter private boolean subscriptionActive;
     @Setter private LocalDate currentSubscriptionEndDate;
     @Setter private LocalDate endedAt;
-    @Setter private Long daysUntilDue;
 }
