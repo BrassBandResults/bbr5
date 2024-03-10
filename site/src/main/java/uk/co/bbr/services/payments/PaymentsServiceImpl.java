@@ -74,7 +74,7 @@ public class PaymentsServiceImpl implements PaymentsService {
                 SubscriptionSearchParams
                     .builder()
                     .setQuery("status:'active'")
-                    .setLimit(100L)
+                    .setLimit(1000L)
                     .addExpand("data.customer")
                     .build();
 
