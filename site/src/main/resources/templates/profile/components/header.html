@@ -7,11 +7,14 @@
                 <p>
                     <span th:text="#{page.profile.member-since}" th:remove="tag">Member since</span>
                     <span th:text="${#temporals.format(User.created, 'dd MMM yyyy')}">date</span>
+                    <br/>
+                    <span th:replace="~{buttons/profile.html :: changePassword()}"></span>
                 </p>
             </div>
             <div class="col text-end">
                 <span th:replace="~{components/gravatar.html :: icon(${User})}"></span>
             </div>
         </div>
+
     </div>
 </div>

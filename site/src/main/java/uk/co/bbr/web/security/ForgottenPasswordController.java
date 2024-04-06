@@ -21,7 +21,7 @@ public class ForgottenPasswordController {
 
     @GetMapping("/acc/forgotten-password")
     public String passwordResetGet() {
-        return "security/password/reset";
+        return "security/forgot-password/reset";
     }
 
     @PostMapping("/acc/forgotten-password")
@@ -39,7 +39,7 @@ public class ForgottenPasswordController {
 
     @GetMapping("/acc/forgotten-password/sent")
     public String passwordResetEmailSent() {
-        return "security/password/sent";
+        return "security/forgot-password/sent";
     }
 
     @GetMapping("/acc/forgotten-password/reset/{resetKey:[-A-Za-z0-9]{40}}")
@@ -53,7 +53,7 @@ public class ForgottenPasswordController {
         model.addAttribute("User", matchingUser.get());
         model.addAttribute("Errors", "");
 
-        return "security/password/enter-new-password";
+        return "security/forgot-password/enter-new-password";
     }
 
     @PostMapping("/acc/forgotten-password/reset/{resetKey:[-A-Za-z0-9]{40}}")
@@ -66,13 +66,13 @@ public class ForgottenPasswordController {
         if (!password1.equals(password2)) {
             model.addAttribute("Errors", "page.signup.errors.passwords-dont-match");
             model.addAttribute("User", matchingUser.get());
-            return "security/password/enter-new-password";
+            return "security/forgot-password/enter-new-password";
         }
 
         if (password1.strip().length() < 8) {
             model.addAttribute("Errors", "page.signup.errors.password-too-short");
             model.addAttribute("User", matchingUser.get());
-            return "security/password/enter-new-password";
+            return "security/forgot-password/enter-new-password";
         }
 
         this.userService.changePassword(matchingUser.get(), password1);
@@ -82,6 +82,6 @@ public class ForgottenPasswordController {
 
     @GetMapping("/acc/forgotten-password/changed")
     public String passwordChanged() {
-        return "security/password/changed";
+        return "security/forgot-password/changed";
     }
 }

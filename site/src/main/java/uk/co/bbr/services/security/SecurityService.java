@@ -8,7 +8,7 @@ public interface SecurityService {
 
     SiteUserDao getCurrentUser();
 
-    SiteUserDao authenticate(String email, String plaintextPassword) throws AuthenticationFailedException;
+    SiteUserDao authenticate(String usercode, String plaintextPassword) throws AuthenticationFailedException;
 
     SiteUserDao createUser(String usercode, String plaintextPassword, String email);
 
