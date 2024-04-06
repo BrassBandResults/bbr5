@@ -212,6 +212,7 @@ public abstract class PageSets {
 
     protected List<String> memberPages() {
         List<String> pageList = new ArrayList<>();
+        pageList.add("/acc/change-password");
         pageList.add("/add-results");
         pageList.add("/bands/ALL");
         pageList.add("/bands/MAP");

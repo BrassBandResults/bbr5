@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+<head>
+    <title th:text="@{#{page.change-password.title} + ' - Brass Band Results'}">Change Password - Brass Band Results</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h2 th:text="#{page.change-password.title}">Change Password</h2>
+
+    <div th:if="${Errors.length > 0}">
+        <p class="text-danger" th:text="#{${Errors}}">Error Text</p>
+    </div>
+
+    <form method="POST" th:action="${'/acc/change-password/'}">
+        <div class="mb-3">
+            <label class="form-label" for="passwordOld" th:text="#{page.field-prompt.password-old}">Old Password:</label>
+            <input id="passwordOld" name="passwordOld" class="form-control" type="password" maxlength="100" size="80" required/>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="passwordNew1" th:text="#{page.field-prompt.password-new}">New Password:</label>
+            <input id="passwordNew1" name="passwordNew1" class="form-control" type="password" maxlength="100" size="80" required/>
+            <small class="form-text" th:text="#{page.field-prompt.password-hint}">Must be eight characters or longer.</small>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="passwordNew2" th:text="#{page.field-prompt.password-new-again}">New Password Again:</label>
+            <input id="passwordNew2" name="passwordNew2" class="form-control" type="password" maxlength="100" size="80" required/>
+        </div>
+
+        <input type="submit" th:value="#{page.buttons.change-password}" class="btn btn-outline-success btn-sm rounded"/>
+        <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+    </form>
+</div>
+
+<div layout:fragment="feedback">
+</div>
+
+</body>
+</html>
