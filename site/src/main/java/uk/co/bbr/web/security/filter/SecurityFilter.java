@@ -114,7 +114,7 @@ public class SecurityFilter extends GenericFilterBean {
                     securityCookie.get().setMaxAge(0);
                     ((HttpServletResponse) response).setStatus(HttpStatus.FORBIDDEN.value());
                     ((HttpServletResponse) response).addCookie(securityCookie.get());
-                    response.getWriter().write("Invalid user session");
+                    response.getWriter().write("Invalid user session - reload the page to logout");
                 }
             } else {
                 // no token, pass request on
