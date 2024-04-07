@@ -111,8 +111,10 @@ public class SecurityFilter extends GenericFilterBean {
                     chain.doFilter(servletRequest, response);
                 } catch (final SignatureVerificationException | InvalidClaimException | JWTDecodeException ex) {
                     // Token failed validation
+                    securityCookie.get().setMaxAge(0);
                     ((HttpServletResponse) response).setStatus(HttpStatus.FORBIDDEN.value());
-                    response.getWriter().write("Invalid user session");
+                    ((HttpServletResponse) response).addCookie(securityCookie.get());
+                    response.getWriter().write("Invalid user session - reload the page to logout");
                 }
             } else {
                 // no token, pass request on
