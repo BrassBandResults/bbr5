@@ -2,10 +2,9 @@ package uk.co.bbr.services.payments;
 
 import com.stripe.model.Subscription;
 import uk.co.bbr.services.security.dao.SiteUserDao;
-import uk.co.bbr.services.security.dao.SiteUserProDao;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.util.Optional;
 
 public interface StripeService {
     boolean isSubscriptionActive(SiteUserDao user);
@@ -13,4 +12,6 @@ public interface StripeService {
     LocalDate subscriptionExpiryDate(SiteUserDao user);
 
     String fetchEmailFromCheckoutSession(String stripeCheckoutSessionId);
+
+    Optional<Subscription> getActiveSubscription(SiteUserDao user);
 }
