@@ -5,6 +5,19 @@ resource "azurerm_service_plan" "bbr5plan" {
   os_type             = "Linux"
   sku_name            = terraform.workspace == "prod" ? "B2" : "B1"
 }
+
+resource "random_password" "jwt_private_key_random" {
+  keepers = {
+    # Generate a new id each time we switch to a new plan
+    plan_id = azurerm_service_plan.bbr5plan.id
+  }
+  min_numeric = 6
+  min_lower   = 6
+  min_upper   = 6
+  length      = 32
+  special     = false
+}
+
 resource "azurerm_linux_web_app" "bbr5" {
   name                = terraform.workspace == "prod" ? "bbr5" : "bbr5-${terraform.workspace}"
   resource_group_name = azurerm_resource_group.this.name
@@ -46,6 +59,7 @@ resource "azurerm_linux_web_app" "bbr5" {
     BBR_COSMOS_DB_URI                 = terraform.workspace == "prod" ? "https://bbr5.documents.azure.com:443/" : "https://bbr5-${terraform.workspace}.documents.azure.com:443/"
     BBR_COSMOS_DB_ACCESS_KEY          = azurerm_cosmosdb_account.bbr5.primary_key
     BBR_COSMOS_DB_NAME                = azurerm_cosmosdb_sql_database.locations.name
+    JWT_PRIVATE_KEY                   = random_password.jwt_private_key_random.result
   }
 }
 
