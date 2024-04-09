@@ -1,5 +1,6 @@
 package uk.co.bbr.web.profile;
 
+import com.stripe.model.Subscription;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,9 +20,13 @@ import uk.co.bbr.services.security.types.ContestHistoryVisibility;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 import uk.co.bbr.web.security.annotations.IsBbrPro;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -42,9 +47,20 @@ public class ProfileController {
         String stripeBuyButtonId = this.paymentsService.fetchStripeBuyButtonId();
         String stripePublishableKey = this.paymentsService.fetchStripePublishableKey();
 
+        Optional<Subscription> currentUserSubOpt = this.paymentsService.fetchSubscription(user);
+        LocalDate subscriptionExpiryDate = null;
+        Subscription subscription = null;
+        if (currentUserSubOpt.isPresent())
+        {
+            subscriptionExpiryDate = Instant.ofEpochSecond(currentUserSubOpt.get().getCurrentPeriodEnd()).atZone(ZoneId.systemDefault()).toLocalDate();
+            subscription = currentUserSubOpt.get();
+        }
+
         model.addAttribute("User", user);
         model.addAttribute("StripeBuyButtonId", stripeBuyButtonId);
         model.addAttribute("StripePublishableKey", stripePublishableKey);
+        model.addAttribute("Subscription", subscription);
+        model.addAttribute("SubscriptionExpiryDate", subscriptionExpiryDate);
 
         return "profile/home";
     }

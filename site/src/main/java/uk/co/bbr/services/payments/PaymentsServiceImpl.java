@@ -139,4 +139,13 @@ public class PaymentsServiceImpl implements PaymentsService {
            // do nothing
         }
     }
+
+    @Override
+    public Optional<Subscription> fetchSubscription(SiteUserDao user) {
+        if (user.getStripeEmail() != null) {
+            Optional<Subscription> optSub = this.stripeService.getActiveSubscription(user);
+            return optSub;
+        }
+        return Optional.empty();
+    }
 }

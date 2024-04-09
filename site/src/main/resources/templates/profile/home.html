@@ -21,7 +21,9 @@
     <br/>
 
     <div class="tab-content">
-        <p th:if="${User.accessLevel == 'P'}">Thanks for being a pro member.</p>
+        <div th:if="${User.accessLevel == 'P'}">
+            <p>Thanks for being a pro member.  Your current subscription runs until <span th:if="${SubscriptionExpiryDate != null}" th:text="${#temporals.format(SubscriptionExpiryDate, 'dd MMM yyyy')}">sub expiry</span>.</p>
+        </div>
         <p th:if="${User.accessLevel == 'S'}">Thanks for being a superuser.  You get the pro features for free.</p>
         <p th:if="${User.accessLevel == 'A'}">Welcome Administrator!</p>
 
@@ -36,10 +38,6 @@
             <p th:text="#{page.profile.pro-upgrade.prompt-3}">Generally, raw data is available without an account, you can add more data with a member account, and the pro-account adds data analysis, including the most successful bands and adjudicators.</p>
             <p th:text="#{page.profile.pro-upgrade.prompt-4}">The table below lists the features of the site that are available to you with public access, after signing up for a free account, and after upgrading to a pro account.</p>
             <p th:text="#{page.profile.pro-upgrade.prompt-5('£19.99')}">Pro Accounts cost just £19.99 per year and will auto-renew each year.  Use the button below to upgrade today!</p>
-
-            <script async
-                    src="https://js.stripe.com/v3/buy-button.js">
-            </script>
 
             <stripe-buy-button
                     th:buy-button-id="${StripeBuyButtonId}"

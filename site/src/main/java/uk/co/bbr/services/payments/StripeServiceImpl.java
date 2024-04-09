@@ -22,7 +22,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class StripeServiceImpl implements StripeService {
 
-    private Optional<Subscription> getActiveSubscription(SiteUserDao user) {
+    public Optional<Subscription> getActiveSubscription(SiteUserDao user) {
         Stripe.apiKey = EnvVar.getEnv("BBR_STRIPE_PRIVATE_API_KEY", "sk_test_abc123");
 
         if (user.getStripeCustomer() == null || user.getStripeCustomer().strip().length() == 0) {
