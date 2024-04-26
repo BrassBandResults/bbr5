@@ -189,4 +189,20 @@ public class PersonDao extends AbstractDao implements NameTools {
         person.put("context", this.knownFor != null ? this.knownFor : "");
         return person;
     }
+
+    public String getDateRange() {
+        if (this.startDate == null && this.endDate == null) {
+            return "";
+        }
+
+        StringBuilder builder = new StringBuilder();
+        if (this.startDate != null) {
+            builder.append(this.startDate.getYear());
+        }
+        builder.append("-");
+        if (this.endDate != null) {
+            builder.append(this.endDate.getYear());
+        }
+        return builder.toString();
+    }
 }
