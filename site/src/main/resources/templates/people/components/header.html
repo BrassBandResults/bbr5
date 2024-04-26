@@ -2,9 +2,13 @@
     <h2>
         <span th:remove="tag" th:if="${PersonProfile != null}" th:text="${PersonProfile.title}">Mr</span>
         <span th:remove="tag" th:text="${Person.name}">Person Name</span>
+        <small><small>
+            <small th:if="${PersonProfile != null}" th:text="${PersonProfile.qualifications}"></small>
+            <small th:if="${Person.dateRange != null && Person.dateRange.length > 0}" th:text="${Person.dateRange}">1940-</small>
+        </small></small>
         <small><small><small th:if="${PersonProfile != null}" th:text="${PersonProfile.qualifications}"></small></small></small>
     </h2>
-    <h3 th:if="${Person.knownFor != null}" th:text="${Person.knownFor}"></h3>
+    <h5 th:if="${Person.knownFor != null}" th:text="${Person.knownFor}"></h5>
     <div sec:authorize="hasRole('BBR_SUPERUSER')">
         <span th:replace="~{buttons/edit.html :: editPerson(${Person})}"></span>
         <span th:replace="~{buttons/edit.html :: editPersonAliases(${Person})}"></span>
