@@ -6,7 +6,6 @@
             <small th:if="${PersonProfile != null}" th:text="${PersonProfile.qualifications}"></small>
             <small th:if="${Person.dateRange != null && Person.dateRange.length > 0}" th:text="${Person.dateRange}">1940-</small>
         </small></small>
-        <small><small><small th:if="${PersonProfile != null}" th:text="${PersonProfile.qualifications}"></small></small></small>
     </h2>
     <h5 th:if="${Person.knownFor != null}" th:text="${Person.knownFor}"></h5>
     <div sec:authorize="hasRole('BBR_SUPERUSER')">
