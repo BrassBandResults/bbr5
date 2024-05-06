@@ -17,6 +17,7 @@ import uk.co.bbr.services.events.ResultService;
 import uk.co.bbr.services.events.dao.ContestEventDao;
 import uk.co.bbr.services.events.dao.ContestResultDao;
 import uk.co.bbr.services.events.types.ResultAwardType;
+import uk.co.bbr.services.events.types.ResultPositionType;
 import uk.co.bbr.services.framework.NotFoundException;
 import uk.co.bbr.services.people.PersonService;
 import uk.co.bbr.services.people.dao.PersonDao;
@@ -25,6 +26,7 @@ import uk.co.bbr.web.events.forms.ResultEditForm;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -49,14 +51,25 @@ public class EditResultController {
         }
 
         List<ContestResultDao> eventResults = this.resultService.fetchForEvent(contestEvent.get());
+        List<ContestResultDao> resultsToEdit = new ArrayList<>();
+        for (ContestResultDao result : eventResults) {
+            if (result.getResultPositionType() == ResultPositionType.DISQUALIFIED){
+                continue;
+            }
+            if (result.getResultPositionType() == ResultPositionType.WITHDRAWN){
+                continue;
+            }
+            resultsToEdit.add(result);
+        }
 
-        this.resultService.workOutCanEdit(contestEvent.get(), eventResults);
+
+        this.resultService.workOutCanEdit(contestEvent.get(), resultsToEdit);
         if (!contestEvent.get().isCanEdit()) {
             throw NotFoundException.eventNotFound(contestSlug, contestEventDate);
         }
 
         model.addAttribute("ContestEvent", contestEvent.get());
-        model.addAttribute("EventResults", eventResults);
+        model.addAttribute("EventResults", resultsToEdit);
 
         return "events/edit-results";
     }
