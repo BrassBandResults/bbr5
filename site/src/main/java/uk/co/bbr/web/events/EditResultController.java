@@ -84,13 +84,23 @@ public class EditResultController {
         }
 
         List<ContestResultDao> eventResults = this.resultService.fetchObjectsForEvent(contestEvent.get());
+        List<ContestResultDao> resultsToEdit = new ArrayList<>();
+        for (ContestResultDao result : eventResults) {
+            if (result.getResultPositionType() == ResultPositionType.DISQUALIFIED){
+                continue;
+            }
+            if (result.getResultPositionType() == ResultPositionType.WITHDRAWN){
+                continue;
+            }
+            resultsToEdit.add(result);
+        }
 
-        this.resultService.workOutCanEdit(contestEvent.get(), eventResults);
+        this.resultService.workOutCanEdit(contestEvent.get(), resultsToEdit);
         if (!contestEvent.get().isCanEdit()) {
             throw NotFoundException.eventNotFound(contestSlug, contestEventDate);
         }
 
-        for (ContestResultDao eachResult : eventResults) {
+        for (ContestResultDao eachResult : resultsToEdit) {
             eachResult.setPosition(this.valueFromForm(allRequestParams, "position", eachResult.getId()));
             eachResult.setDraw(this.integerValueFromForm(allRequestParams, "draw", eachResult.getId()));
             eachResult.setDrawSecond(this.integerValueFromForm(allRequestParams, "drawTwo", eachResult.getId()));
@@ -105,8 +115,6 @@ public class EditResultController {
 
             this.resultService.update(eachResult);
         }
-
-
 
         return "redirect:/contests/{contestSlug}/{contestEventDate}";
     }
