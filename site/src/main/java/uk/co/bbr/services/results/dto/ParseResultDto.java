@@ -95,6 +95,7 @@ public class ParseResultDto implements NameTools {
 
         contestResult.setOriginalConductorName(this.rawConductorName);
         contestResult.setDraw(this.rawDraw);
+        contestResult.setPointsTotal(this.rawPoints);
 
         return contestResult;
     }
