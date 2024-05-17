@@ -83,7 +83,7 @@ public class EventSql {
     }
 
     private static final String EVENT_RESULT_PIECES_SQL = """
-            SELECT p.name as piece_name, p.slug as piece_slug, p.piece_year as piece_year, crtp.contest_result_id as result_id, crtp.ordering as ordering
+            SELECT p.name as piece_name, p.slug as piece_slug, p.piece_year as piece_year, crtp.contest_result_id as result_id, crtp.ordering as ordering, crtp.suffix as suffix
             FROM contest_result_test_piece crtp
             INNER JOIN piece p ON p.id = crtp.piece_id
             INNER JOIN contest_result r ON r.id = crtp.contest_result_id

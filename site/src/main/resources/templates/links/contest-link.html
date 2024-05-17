@@ -2,6 +2,10 @@
     <a th:if="${contest != null}" th:href="${'/contests/' + contest.slug}" th:text="${contest.name}" class="bbr-contest">Contest Name</a>
 </span>
 
+<span th:fragment="contestLinkNameOverride(contest, name)">
+    <a th:if="${contest != null}" th:href="${'/contests/' + contest.slug}" th:text="${name}" class="bbr-contest">Contest Name</a>
+</span>
+
 <span th:fragment="contestLinkDraw(contest, draw)">
     <a th:if="${contest != null}" th:href="${'/contests/' + contest.slug + '/draw/' + draw}" th:text="${draw}">123</a>
 </span>

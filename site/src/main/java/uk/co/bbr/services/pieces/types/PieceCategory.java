@@ -7,6 +7,7 @@ public enum PieceCategory {
     MARCH("M", "piece.march"),
     HYMN("H", "piece.hymn"),
     ENTERTAINMENT("E", "piece.entertainment"),
+    SOLO("S", "piece.solo"),
     OTHER("O", "piece.other"),
     ;
 

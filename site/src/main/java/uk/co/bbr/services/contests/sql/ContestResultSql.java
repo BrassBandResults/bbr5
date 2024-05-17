@@ -31,7 +31,7 @@ public class ContestResultSql {
         LEFT OUTER JOIN person con2 ON con2.id = r.conductor_two_id
         LEFT OUTER JOIN person con3 ON con3.id = r.conductor_three_id
         WHERE r.band_id = ?1
-        ORDER BY e.date_of_event desc""";
+        ORDER BY e.date_of_event desc, c.ordering, c.name""";
 
     public static List<BandResultSqlDto> selectBandResults(EntityManager entityManager, Long bandId) {
         return SqlExec.execute(entityManager, BAND_RESULT_LIST_SQL, bandId, BandResultSqlDto.class);

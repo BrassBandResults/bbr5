@@ -23,6 +23,7 @@
     <div class="tab-content">
         <div th:if="${User.accessLevel == 'P'}">
             <p>Thanks for being a pro member.  Your current subscription runs until <span th:if="${SubscriptionExpiryDate != null}" th:text="${#temporals.format(SubscriptionExpiryDate, 'dd MMM yyyy')}">sub expiry</span>.</p>
+            <p>You can <a th:href="${'https://billing.stripe.com/p/login/5kA00z88wg26aFGaEE?prefilled_email=' + User.stripeEmail}">manage your subscription</a> to add a new card or cancel your renewal.</p>
         </div>
         <p th:if="${User.accessLevel == 'S'}">Thanks for being a superuser.  You get the pro features for free.</p>
         <p th:if="${User.accessLevel == 'A'}">Welcome Administrator!</p>
