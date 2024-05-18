@@ -42,6 +42,8 @@ public class ContestController {
         List<ContestEventDao> pastEventsForContest = this.contestEventService.fetchPastEventsForContest(contest.get());
         int ownChoicePieceCount = this.resultService.fetchCountOfOwnChoiceForContest(contest.get());
         List<ContestAliasDao> contestAliases = this.contestService.fetchAliases(contest.get());
+        ContestDao sectionUp = this.contestService.fetchContestLinkUp(contest.get());
+        ContestDao sectionDown = this.contestService.fetchContestLinkDown(contest.get());
 
         model.addAttribute("Contest", contest.get());
         model.addAttribute("FutureEvents", futureEventsForContest);
@@ -50,6 +52,8 @@ public class ContestController {
         model.addAttribute("PreviousNames", contestAliases);
         model.addAttribute("Description", Tools.markdownToHTML(contest.get().getDescription()));
         model.addAttribute("Notes", Tools.markdownToHTML(contest.get().getNotes()));
+        model.addAttribute("SectionUp", sectionUp);
+        model.addAttribute("SectionDown", sectionDown);
 
         return "contests/contest";
     }

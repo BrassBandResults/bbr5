@@ -25,6 +25,7 @@ public class PersonConductingResultSqlDto extends AbstractSqlDto {
     private final String regionCountryCode;
     private final String groupName;
     private final String groupSlug;
+    private final String resultNotes;
 
     public PersonConductingResultSqlDto(Object[] columnList) {
         this.eventDate = this.getLocalDate(columnList, 0);
@@ -45,5 +46,6 @@ public class PersonConductingResultSqlDto extends AbstractSqlDto {
         this.regionCountryCode = this.getString(columnList, 15);
         this.groupName = this.getString(columnList, 16);
         this.groupSlug = this.getString(columnList, 17);
+        this.resultNotes = this.getString(columnList, 18);
     }
 }

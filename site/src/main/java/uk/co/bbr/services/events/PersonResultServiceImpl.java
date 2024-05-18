@@ -11,6 +11,7 @@ import uk.co.bbr.services.events.dao.ContestEventDao;
 import uk.co.bbr.services.events.dao.ContestResultDao;
 import uk.co.bbr.services.events.dto.ResultDetailsDto;
 import uk.co.bbr.services.events.types.ContestEventDateResolution;
+import uk.co.bbr.services.events.types.ResultAwardType;
 import uk.co.bbr.services.events.types.ResultPositionType;
 import uk.co.bbr.services.groups.dao.ContestGroupDao;
 import uk.co.bbr.services.people.dao.PersonDao;
@@ -94,8 +95,10 @@ public class PersonResultServiceImpl implements PersonResultService {
                 eachResult.setPosition(eachSqlResult.getResultPosition().toString());
             }
             eachResult.setResultPositionType(ResultPositionType.fromCode(eachSqlResult.getResultPositionType()));
+            eachResult.setResultAward(ResultAwardType.fromCode(eachSqlResult.getResultAward()));
             eachResult.setPointsTotal(eachSqlResult.getPoints());
             eachResult.setDraw(eachSqlResult.getDraw());
+            eachResult.setNotes(eachSqlResult.getResultNotes());
 
             if (eachResult.getContestEvent().getContest().getName().contains("Whit Friday")) {
                 whitResults.add(eachResult);
