@@ -23,6 +23,18 @@
     </ul>
     <br/>
 
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <span th:replace="~{links/contest-link.html :: contestNavigationUpLink(${SectionUp})}">Yorkshire Area (Championship Section)</span>
+            </div>
+            <div class="col text-end">
+                <span th:replace="~{links/contest-link.html :: contestNavigationDownLink(${SectionDown})}">Yorkshire Area (Second Section)</span>
+            </div>
+        </div>
+    </div>
+    <br/>
+
     <div class="tab-content">
         <div th:if="${FutureEvents.size() > 0}">
             <h3 th:text="#{page.contest.header.future-events}">Future Events</h3>

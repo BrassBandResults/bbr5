@@ -9,7 +9,9 @@ import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.contests.repo.ContestAliasRepository;
 import uk.co.bbr.services.contests.repo.ContestRepository;
 import uk.co.bbr.services.contests.sql.ContestListSql;
+import uk.co.bbr.services.contests.sql.ContestSql;
 import uk.co.bbr.services.contests.sql.dto.ContestListSqlDto;
+import uk.co.bbr.services.contests.sql.dto.ContestUpDownSqlDto;
 import uk.co.bbr.services.framework.ValidationException;
 import uk.co.bbr.services.framework.mixins.SlugTools;
 import uk.co.bbr.services.groups.dao.ContestGroupDao;
@@ -237,5 +239,31 @@ public class ContestServiceImpl implements ContestService, SlugTools {
             this.contestAliasRepository.delete(alias);
         }
         this.contestRepository.delete(contest);
+    }
+
+    @Override
+    public ContestDao fetchContestLinkUp(ContestDao contest) {
+        if (contest.getContestGroup() == null) {
+            return null;
+        }
+
+        ContestUpDownSqlDto linkContest = ContestSql.selectLinkedUpContest(this.entityManager, contest.getContestGroup().getSlug(), contest.getOrdering());
+        if (linkContest == null) {
+            return null;
+        }
+        return linkContest.getContest();
+    }
+
+    @Override
+    public ContestDao fetchContestLinkDown(ContestDao contest) {
+        if (contest.getContestGroup() == null) {
+            return null;
+        }
+
+        ContestUpDownSqlDto linkContest = ContestSql.selectLinkedDownContest(this.entityManager, contest.getContestGroup().getSlug(), contest.getOrdering());
+        if (linkContest == null) {
+            return null;
+        }
+        return linkContest.getContest();
     }
 }

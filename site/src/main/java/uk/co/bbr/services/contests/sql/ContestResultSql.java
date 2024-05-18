@@ -22,7 +22,8 @@ public class ContestResultSql {
         con1.slug as c1_slug, con1.first_names as c1_first_names, con1.surname as c1_surname,
         con2.slug as c2_slug, con2.first_names as c2_first_names, con2.surname as c2_surname,
         con3.slug as c3_slug, con3.first_names as c3_first_names, con3.surname as c3_surname,
-        c.section_id as contest_section
+        c.section_id as contest_section,
+        r.notes as notes
         FROM contest_result r
         INNER JOIN contest_event e ON e.id = r.contest_event_id
         INNER JOIN contest c ON c.id = e.contest_id
@@ -62,7 +63,7 @@ public class ContestResultSql {
     }
 
     private static final String PERSON_CONDUCTING_SQL = """
-        SELECT e.date_of_event, e.date_resolution, c.slug as contest_slug, c.name as contest_name, r.band_name, b.name as current_band_name, b.slug as band_slug, r.result_position, r.result_position_type, r.result_award, r.points_total, r.draw, r.id as result_id, e.id as event_id, region.name as region_name, region.country_code, g.name as group_name, g.slug as group_slug
+        SELECT e.date_of_event, e.date_resolution, c.slug as contest_slug, c.name as contest_name, r.band_name, b.name as current_band_name, b.slug as band_slug, r.result_position, r.result_position_type, r.result_award, r.points_total, r.draw, r.id as result_id, e.id as event_id, region.name as region_name, region.country_code, g.name as group_name, g.slug as group_slug, r.notes as notes
         FROM contest_result r
                  INNER JOIN contest_event e ON e.id = r.contest_event_id
                  INNER JOIN contest c ON c.id = e.contest_id

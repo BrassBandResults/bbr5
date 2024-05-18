@@ -9,3 +9,17 @@
 <span th:fragment="contestLinkDraw(contest, draw)">
     <a th:if="${contest != null}" th:href="${'/contests/' + contest.slug + '/draw/' + draw}" th:text="${draw}">123</a>
 </span>
+
+<span th:fragment="contestNavigationUpLink(contest)">
+    <span th:if="${contest != null}" th:remove="tag">
+        <img th:src="@{${STATIC_HOST} + '/icons/arrow_up.png'}" th:alt="#{contest.up}"/>
+        <a th:href="${'/contests/' + contest.slug}" th:text="${contest.name}" class="bbr-contest">Yorkshire Area (First Section)</a>
+    </span>
+</span>
+
+<span th:fragment="contestNavigationDownLink(contest)">
+    <span th:if="${contest != null}" th:remove="tag">
+        <a th:href="${'/contests/' + contest.slug}" th:text="${contest.name}" class="bbr-contest">Yorkshire Area (Third Section)</a>
+        <img th:src="@{${STATIC_HOST} + '/icons/arrow_down.png'}" th:alt="#{contest.down}"/>
+    </span>
+</span>

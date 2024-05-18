@@ -39,4 +39,8 @@ public interface ContestService {
     Optional<ContestDao> fetchByNameUpper(String contestName);
 
     void delete(ContestDao contest);
+
+    ContestDao fetchContestLinkUp(ContestDao contest);
+
+    ContestDao fetchContestLinkDown(ContestDao contest);
 }

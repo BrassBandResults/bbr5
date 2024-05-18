@@ -66,7 +66,11 @@
                         </div>
                     </td>
                     <td class="bbr-band"><span th:replace="~{links/band-link.html :: bandLinkWithOverride(${result})}"></span></td>
-                    <td class="bbr-position"><span th:replace="~{components/results-position.html :: resultsPosition(${result})}">1</span></td>
+                    <td class="bbr-position">
+                        <span th:replace="~{components/results-position.html :: resultsPosition(${result})}">1</span>
+                        <span th:replace="~{components/results-position.html :: resultAward(${result})}"></span>
+                        <img th:if="${result.hasNotes}" th:title="${result.notes}" th:src="@{${STATIC_HOST} + '/icons/comment.png'}"/>
+                    </td>
                     <td class="bbr-draw"><span th:if="${result.draw != 0}" th:text="${result.draw}">1</span></td>
                 </tr>
             </tbody>
