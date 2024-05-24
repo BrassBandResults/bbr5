@@ -72,7 +72,6 @@ resource "azurerm_app_service_custom_hostname_binding" "bbr5" {
 }
 
 resource "azurerm_app_service_managed_certificate" "bbr5cert" {
-  depends_on                 = [cloudflare_record.app_service]
   custom_hostname_binding_id = azurerm_app_service_custom_hostname_binding.bbr5.id
 }
 
