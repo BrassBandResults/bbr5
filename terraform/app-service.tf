@@ -23,6 +23,7 @@ resource "azurerm_linux_web_app" "bbr5" {
   resource_group_name = azurerm_resource_group.this.name
   location            = azurerm_service_plan.bbr5plan.location
   service_plan_id     = azurerm_service_plan.bbr5plan.id
+  depends_on          = [cloudflare_record.app_service]
 
   site_config {
     application_stack {
