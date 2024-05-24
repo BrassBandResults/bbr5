@@ -67,7 +67,7 @@ resource "azurerm_app_service_custom_hostname_binding" "bbr5" {
   hostname            = terraform.workspace == "prod" ? "www.brassbandresults.co.uk" : "bbr5-${terraform.workspace}.brassbandresults.co.uk"
   app_service_name    = azurerm_linux_web_app.bbr5.name
   resource_group_name = azurerm_resource_group.this.name
-  depends_on          = [cloudflare_record.app_service]
+  depends_on          = [cloudflare_record.app_service, cloudflare_record.app_service_asuid]
 }
 
 resource "azurerm_app_service_managed_certificate" "bbr5cert" {
