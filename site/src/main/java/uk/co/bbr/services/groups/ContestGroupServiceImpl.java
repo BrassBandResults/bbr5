@@ -23,11 +23,15 @@ import uk.co.bbr.services.groups.dto.ContestGroupDetailsDto;
 import uk.co.bbr.services.groups.dto.ContestGroupYearDto;
 import uk.co.bbr.services.groups.dto.ContestGroupYearsDetailsDto;
 import uk.co.bbr.services.groups.dto.ContestGroupYearsDetailsYearDto;
+import uk.co.bbr.services.groups.dto.WhitFridayOverallBandResultDto;
+import uk.co.bbr.services.groups.dto.WhitFridayOverallResultsDto;
 import uk.co.bbr.services.groups.repo.ContestGroupAliasRepository;
 import uk.co.bbr.services.groups.repo.ContestGroupRepository;
 import uk.co.bbr.services.groups.sql.GroupSql;
+import uk.co.bbr.services.groups.sql.WhitFridaySql;
 import uk.co.bbr.services.groups.sql.dao.ContestListSqlDto;
 import uk.co.bbr.services.groups.sql.dao.GroupListSqlDto;
+import uk.co.bbr.services.groups.sql.dao.WhitFridayResultSqlDto;
 import uk.co.bbr.services.groups.types.ContestGroupType;
 import uk.co.bbr.services.pieces.dao.PieceDao;
 import uk.co.bbr.services.security.SecurityService;
@@ -308,5 +312,47 @@ public class ContestGroupServiceImpl implements ContestGroupService, SlugTools {
         this.contestGroupAliasRepository.deleteAll(aliases);
 
         this.contestGroupRepository.delete(contestGroup);
+    }
+
+    @Override
+    public WhitFridayOverallResultsDto fetchWhitFridayOverallResults(ContestGroupDao group, Integer year) {
+        List<WhitFridayResultSqlDto> rawResults = WhitFridaySql.fetchWhitFridayResults(this.entityManager, group.getSlug(), year);
+
+        List<WhitFridayOverallBandResultDto> bandList = new ArrayList<>();
+
+        for (WhitFridayResultSqlDto eachResult : rawResults) {
+            WhitFridayOverallBandResultDto matchingBand = this.findBandForSlug(bandList, eachResult.getBandSlug());
+            if (matchingBand == null) {
+                matchingBand = new WhitFridayOverallBandResultDto(eachResult.getBandName(), eachResult.getBandSlug(), eachResult.getRegionName(), eachResult.getRegionSlug(), eachResult.getRegionCountryCode());
+                bandList.add(matchingBand);
+            }
+            matchingBand.addResult(eachResult.getPosition());
+        }
+
+        for (WhitFridayOverallBandResultDto eachBand : bandList) {
+            eachBand.sortResults();
+        }
+        bandList = bandList.stream().filter(a -> a.getResults().size() >= 6).sorted(Comparator.comparing(WhitFridayOverallBandResultDto::getTotalResults)).collect(Collectors.toList());
+        int position = 1;
+        int previousPoints = 0;
+        for (WhitFridayOverallBandResultDto eachRow : bandList) {
+            int totalResults = eachRow.getTotalResults();
+            if (previousPoints != totalResults) {
+                eachRow.setPosition(position);
+            }
+            previousPoints = totalResults;
+            position++;
+        }
+
+        return new WhitFridayOverallResultsDto(group, year, bandList);
+    }
+
+    private WhitFridayOverallBandResultDto findBandForSlug(List<WhitFridayOverallBandResultDto> bandList, String bandSlug) {
+        for (WhitFridayOverallBandResultDto eachBand : bandList) {
+            if (eachBand.getBandSlug().equals(bandSlug)) {
+                return eachBand;
+            }
+       }
+        return null;
     }
 }
