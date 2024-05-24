@@ -64,7 +64,7 @@ resource "azurerm_linux_web_app" "bbr5" {
 }
 
 resource "time_sleep" "wait_30_seconds" {
-  depends_on = [cloudflare_record.app_service]
+  depends_on = [cloudflare_record.app_service, cloudflare_record.app_service_asuid]
 
   create_duration = "90s"
 }
