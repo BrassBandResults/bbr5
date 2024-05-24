@@ -10,6 +10,15 @@
         <span th:text="${GroupYearEvents.year}">1234</span>
     </h2>
 
+    <ul class="nav nav-tabs" th:if="${GroupYearEvents.contestGroup.groupType.code == 'W'}">
+        <li class="nav-item">
+            <a class="nav-link active" th:href="${'/contests/' + GroupYearEvents.contestGroup.slug + '/' + GroupYearEvents.year}" th:text="#{page.group-year.tab.contests}">Contests</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" th:href="${'/contests/' + GroupYearEvents.contestGroup.slug + '/' + GroupYearEvents.year + '/overall-results'}" th:text="#{page.group-year.tab.overall-results}">Overall Results</a>
+        </li>
+    </ul>
+    <br/>
 
     <table class="next-previous" width="100%">
         <tr>

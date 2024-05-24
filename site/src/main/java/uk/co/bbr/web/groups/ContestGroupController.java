@@ -12,8 +12,11 @@ import uk.co.bbr.services.groups.dao.ContestGroupDao;
 import uk.co.bbr.services.groups.dto.ContestGroupDetailsDto;
 import uk.co.bbr.services.groups.dto.ContestGroupYearDto;
 import uk.co.bbr.services.groups.dto.ContestGroupYearsDetailsDto;
+import uk.co.bbr.services.groups.dto.WhitFridayOverallResultsDto;
+import uk.co.bbr.services.groups.types.ContestGroupType;
 import uk.co.bbr.web.Tools;
 import uk.co.bbr.web.security.annotations.IsBbrMember;
+import uk.co.bbr.web.security.annotations.IsBbrPro;
 
 import java.util.List;
 import java.util.Optional;
@@ -73,6 +76,24 @@ public class ContestGroupController {
 
         model.addAttribute("GroupYearEvents", eventsForGroupAndYear);
         return "groups/year";
+    }
+
+    @IsBbrPro
+    @GetMapping("/contests/{slug:[\\-A-Z\\d]{2,}}/{year:[0-9]{4}}/overall-results")
+    public String contestGroupOverallResultsDetails(Model model, @PathVariable("slug") String groupSlug, @PathVariable("year") Integer year) {
+        Optional<ContestGroupDao> contestGroup = this.contestGroupService.fetchBySlug(groupSlug);
+        if (contestGroup.isEmpty()) {
+            throw NotFoundException.groupNotFoundBySlug(groupSlug);
+        }
+
+        if (contestGroup.get().getGroupType() == ContestGroupType.NORMAL) {
+            throw NotFoundException.groupNotFoundBySlug(groupSlug);
+        }
+
+        WhitFridayOverallResultsDto whitFridayOverallResults = this.contestGroupService.fetchWhitFridayOverallResults(contestGroup.get(), year);
+
+        model.addAttribute("OverallResults", whitFridayOverallResults);
+        return "groups/year-overall-results";
     }
 
 }
