@@ -5,6 +5,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import uk.co.bbr.services.security.dao.SiteUserDao;
@@ -14,13 +15,16 @@ import uk.co.bbr.services.security.dao.SiteUserDao;
 public class JwtServiceImpl implements JwtService {
 
     private static final String JWT_ISSUER = "brassbandresults.co.uk";
-    private static final String DEFAULT_PRIVATE_KEY = "ThisIsAPrivateKeyHorseBoltBatteryStaple";
+    private String defaultPrivateKey = "";
 
 
     private String getPrivateKey() {
         String key = System.getenv("JWT_PRIVATE_KEY");
         if (key == null || key.strip().length() < 1) {
-            key = DEFAULT_PRIVATE_KEY;
+            if (defaultPrivateKey.length() == 0) {
+                defaultPrivateKey = RandomStringUtils.randomAlphanumeric(40);
+            }
+            key = defaultPrivateKey;
         }
         return key;
     }
