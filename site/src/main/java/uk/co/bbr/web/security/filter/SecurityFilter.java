@@ -4,19 +4,6 @@ import com.auth0.jwt.exceptions.InvalidClaimException;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.SignatureVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.filter.GenericFilterBean;
-import uk.co.bbr.SwaggerConfiguration;
-import uk.co.bbr.api.security.ApiKeyAuthentication;
-import uk.co.bbr.services.security.JwtService;
-import uk.co.bbr.web.SessionKeys;
-
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
@@ -24,8 +11,15 @@ import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.filter.GenericFilterBean;
+import uk.co.bbr.services.security.JwtService;
+import uk.co.bbr.web.SessionKeys;
+
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -54,37 +48,7 @@ public class SecurityFilter extends GenericFilterBean {
             return;
         }
 
-        if (servletRequest.getServletPath().startsWith("/api/")) {
-            this.authApiRequest(servletRequest, response, chain);
-        } else {
-            this.authWebRequest(servletRequest, response, chain);
-        }
-    }
-
-    private void authApiRequest(HttpServletRequest servletRequest, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        try {
-            Authentication authentication = SecurityFilter.getApiAuthentication(servletRequest);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-        } catch (Exception exp) {
-            HttpServletResponse httpResponse = (HttpServletResponse) response;
-            httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            httpResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
-            PrintWriter writer = httpResponse.getWriter();
-            writer.print(exp.getMessage());
-            writer.flush();
-            writer.close();
-        }
-
-        chain.doFilter(servletRequest, response);
-    }
-
-    private static Authentication getApiAuthentication(HttpServletRequest request) {
-        String apiKey = request.getHeader(SwaggerConfiguration.API_KEY_HEADER);
-        if (apiKey == null || !apiKey.equals("ABC123")) {
-            throw new BadCredentialsException("Invalid API Key");
-        }
-
-        return new ApiKeyAuthentication(apiKey, AuthorityUtils.NO_AUTHORITIES);
+        this.authWebRequest(servletRequest, response, chain);
     }
 
     private void authWebRequest(HttpServletRequest servletRequest, ServletResponse response, FilterChain chain) throws IOException, ServletException {
