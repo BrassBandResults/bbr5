@@ -6,13 +6,13 @@ resource "azurerm_static_site" "apps" {
   sku_size            = "Free"
 }
 
-resource "time_sleep" "wait_30_seconds" {
+resource "time_sleep" "static_dns_wait" {
   depends_on      = [cloudflare_record.static_site]
-  create_duration = "30s"
+  create_duration = "5s"
 }
 
 resource "azurerm_static_site_custom_domain" "static" {
-  depends_on      = [time_sleep.wait_30_seconds]
+  depends_on      = [time_sleep.static_dns_wait]
   static_site_id  = azurerm_static_site.apps.id
   domain_name     = terraform.workspace == "prod" ? "static.brassbandresults.co.uk" : "static-${terraform.workspace}.brassbandresults.co.uk"
   validation_type = "cname-delegation"
