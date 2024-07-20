@@ -30,6 +30,6 @@ class RegionServiceTests {
         List<RegionDao> allRegions = this.regionService.findAll();
 
         // assert
-        assertEquals(65, allRegions.size());
+        assertEquals(66, allRegions.size());
     }
 }
