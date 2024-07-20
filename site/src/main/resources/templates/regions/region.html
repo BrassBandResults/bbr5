@@ -28,8 +28,6 @@
 
         <div th:if="${Region.slug != 'unknown'}" id="map" style="width: 100%; height: 600px"></div>
 
-        <p th:text="#{page.region.section.bands.count(${Region.activeBandsCount}, ${Region.extinctBandsCount})}">This region has {0} active bands, and {1} extinct.</p>
-
           <table id="bands" class="table table-hover sortable" th:if="${Region.bands.size > 0}">
             <thead>
                 <tr>
