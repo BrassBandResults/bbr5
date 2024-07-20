@@ -65,7 +65,7 @@ resource "azurerm_linux_web_app" "bbr5" {
 
 resource "time_sleep" "app_service_dns_wait" {
   depends_on      = [cloudflare_record.app_service, cloudflare_record.app_service_asuid]
-  create_duration = "5s"
+  create_duration = "30s"
 }
 
 resource "azurerm_app_service_custom_hostname_binding" "bbr5" {
