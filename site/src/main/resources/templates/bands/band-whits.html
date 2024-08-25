@@ -45,9 +45,7 @@
                     <td class="bbr-conductor"><span th:replace="~{links/person-link.html :: conductorsLinkWithUnknown(${result})}">Bob Childs</span></td>
                     <td sec:authorize="hasRole('BBR_SUPERUSER')">
                         <span th:replace="~{buttons/edit.html :: editResult(${result.contestEvent}, ${result})}"></span>
-                        <span th:if="${result.contestEvent.contestType.ownChoice || result.contestEvent.contestType.entertainments}">
-                            <span th:replace="~{buttons/edit.html :: editResultPieces(${result.contestEvent}, ${result})}"></span>
-                        </span>
+                        <span th:replace="~{buttons/edit.html :: editResultPieces(${result.contestEvent}, ${result})}"></span>
                     </td>
                 </tr>
             </tbody>
