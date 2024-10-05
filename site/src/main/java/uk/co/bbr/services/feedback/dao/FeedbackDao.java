@@ -129,36 +129,34 @@ public class FeedbackDao extends AbstractDao {
     }
 
     @IsBbrSuperuser
-    public void assignToUser(String currentUsername, SiteUserDao siteUserDao) {
-        this.setStatus(FeedbackStatus.WITH_USER);
-        this.setOwnedBy(siteUserDao.getUsercode());
-        this.addAuditLog(currentUsername, "Assigning to user " + siteUserDao.getUsercode());
-    }
-
     public void markDone(String currentUsername) {
         this.setStatus(FeedbackStatus.DONE);
         this.setOwnedBy(currentUsername);
         this.addAuditLog(currentUsername, "Setting status to done");
     }
 
+    @IsBbrSuperuser
     public void sendToOwner(String currentUsername) {
         this.setStatus(FeedbackStatus.OWNER);
         this.setOwnedBy("tjs");
         this.addAuditLog(currentUsername, "Assigning to owner");
     }
 
+    @IsBbrSuperuser
     public void markClosed(String currentUsername) {
         this.setStatus(FeedbackStatus.CLOSED);
         this.setOwnedBy(currentUsername);
         this.addAuditLog(currentUsername, "Setting status closed");
     }
 
+    @IsBbrSuperuser
     public void markInconclusive(String currentUsername) {
         this.setStatus(FeedbackStatus.INCONCLUSIVE);
         this.setOwnedBy(currentUsername);
         this.addAuditLog(currentUsername, "Setting status inconclusive");
     }
 
+    @IsBbrSuperuser
     public void markAsSpam(String currentUsername) {
         this.setStatus(FeedbackStatus.SPAM);
         this.setOwnedBy(currentUsername);

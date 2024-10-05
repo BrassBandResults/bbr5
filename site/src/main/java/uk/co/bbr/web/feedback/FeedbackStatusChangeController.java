@@ -36,7 +36,6 @@ public class FeedbackStatusChangeController {
         String currentUsername = this.securityService.getCurrentUsername();
 
         switch (type) {
-            case "claim" -> feedback.get().assignToUser(currentUsername, destinationUser.get());
             case "done" -> feedback.get().markDone(currentUsername);
             case "owner" -> feedback.get().sendToOwner(currentUsername);
             case "closed" -> feedback.get().markClosed(currentUsername);

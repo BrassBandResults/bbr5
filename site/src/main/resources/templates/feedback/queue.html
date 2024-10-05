@@ -47,7 +47,6 @@
                 </td>
                 <td>
                     <span class="feedback-buttons" th:id="${'feedback-buttons-' + feedback.id}">
-                        <button type="button" class="btn btn-sm btn-outline-warning rounded text-dark bbr-fb-claim" th:data-id="${feedback.id}">Claim</button>
                         <button type="button" class="btn btn-sm btn-outline-warning rounded text-dark bbr-fb-done" th:data-id="${feedback.id}">Mark Done</button>
                         <button type="button" class="btn btn-sm btn-outline-warning rounded text-dark bbr-fb-owner" th:data-id="${feedback.id}" th:if="${feedback.status.code != 'O'}">Send To Owner</button>
                         <button type="button" class="btn btn-sm btn-outline-warning rounded text-dark bbr-fb-closed" th:data-id="${feedback.id}" sec:authorize="hasRole('BBR_ADMIN')">Mark Closed</button>
@@ -68,9 +67,6 @@
             const buttonBlockDiv = document.getElementById(buttonBlockId);
             let newState = "";
             switch(type) {
-                case 'claim':
-                    newState = "Claimed";
-                    break;
                 case 'done':
                     newState = "Done";
                     break;
@@ -91,13 +87,6 @@
             httpRequest.open("GET", url, true);
             httpRequest.send();
         }
-
-        const feedbackClaimLinks = document.querySelectorAll('.bbr-fb-claim');
-        feedbackClaimLinks.forEach(feedbackBlock => {
-            feedbackBlock.addEventListener('click', function claimFeedback() {
-                processClick('claim', feedbackBlock.dataset.id);
-            });
-        });
 
         const feedbackDoneLinks = document.querySelectorAll('.bbr-fb-done');
         feedbackDoneLinks.forEach(feedbackBlock => {
