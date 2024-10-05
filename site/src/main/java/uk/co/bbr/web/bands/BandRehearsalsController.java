@@ -26,7 +26,7 @@ public class BandRehearsalsController {
     private final BandRehearsalsService bandRehearsalsService;
 
     @IsBbrMember
-    @GetMapping("/bands/{bandSlug:[\\-a-z\\d]{2,}}/edit-rehearsals")
+    @GetMapping("/bands/{bandSlug:[\\-_a-z\\d]{2,}}/edit-rehearsals")
     public String bandRehearsalsEdit(Model model, @PathVariable("bandSlug") String bandSlug) {
         Optional<BandDao> band = this.bandService.fetchBySlug(bandSlug);
         if (band.isEmpty()) {
@@ -66,7 +66,7 @@ public class BandRehearsalsController {
     }
 
     @IsBbrMember
-    @PostMapping("/bands/{bandSlug:[\\-a-z\\d]{2,}}/edit-rehearsals")
+    @PostMapping("/bands/{bandSlug:[\\-_a-z\\d]{2,}}/edit-rehearsals")
     public String bandRehearsalsPost(@PathVariable("bandSlug") String bandSlug,
                                      @RequestParam("monday-checkbox") Optional<Boolean> mondayCheckbox, @RequestParam("monday-details") String mondayDetails,
                                      @RequestParam("tuesday-checkbox") Optional<Boolean> tuesdayCheckbox, @RequestParam("tuesday-details") String tuesdayDetails,

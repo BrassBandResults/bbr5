@@ -51,7 +51,7 @@ public class PersonController {
     private final SecurityService securityService;
 
 
-    @GetMapping("/people/{personSlug:[\\-a-z\\d]{2,}}")
+    @GetMapping("/people/{personSlug:[\\-_a-z\\d]{2,}}")
     public String conductingOrProfile(@PathVariable("personSlug") String personSlug) {
         Optional<PersonDao> person = this.personService.fetchBySlug(personSlug);
         if (person.isEmpty()) {
@@ -65,7 +65,7 @@ public class PersonController {
         return "redirect:/people/{personSlug}/conductor";
     }
 
-    @GetMapping("/people/{personSlug:[\\-a-z\\d]{2,}}/profile")
+    @GetMapping("/people/{personSlug:[\\-_a-z\\d]{2,}}/profile")
     public String personProfile(Model model, @PathVariable("personSlug") String personSlug) {
 
         Optional<PersonDao> person = this.personService.fetchBySlug(personSlug);
@@ -108,7 +108,7 @@ public class PersonController {
         return "people/tabs/person-profile";
     }
 
-    @GetMapping("/people/{personSlug:[\\-a-z\\d]{2,}}/conductor")
+    @GetMapping("/people/{personSlug:[\\-_a-z\\d]{2,}}/conductor")
     public String personConducting(Model model, @PathVariable("personSlug") String personSlug) {
         Optional<PersonDao> person = this.personService.fetchBySlug(personSlug);
         if (person.isEmpty()) {
@@ -161,7 +161,7 @@ public class PersonController {
         return "people/tabs/person-conducting";
     }
 
-    @GetMapping("/people/{personSlug:[\\-a-z\\d]{2,}}/whits")
+    @GetMapping("/people/{personSlug:[\\-_a-z\\d]{2,}}/whits")
     public String personWhitFriday(Model model, @PathVariable("personSlug") String personSlug) {
         Optional<PersonDao> person = this.personService.fetchBySlug(personSlug);
         if (person.isEmpty()) {
@@ -202,7 +202,7 @@ public class PersonController {
         return "people/tabs/person-whits";
     }
 
-    @GetMapping("/people/{personSlug:[\\-a-z\\d]{2,}}/pieces")
+    @GetMapping("/people/{personSlug:[\\-_a-z\\d]{2,}}/pieces")
     public String personPieces(Model model, @PathVariable("personSlug") String personSlug) {
         Optional<PersonDao> person = this.personService.fetchBySlug(personSlug);
         if (person.isEmpty()) {
@@ -240,7 +240,7 @@ public class PersonController {
         return "people/tabs/person-pieces";
     }
 
-    @GetMapping("/people/{personSlug:[\\-a-z\\d]{2,}}/adjudicator")
+    @GetMapping("/people/{personSlug:[\\-_a-z\\d]{2,}}/adjudicator")
     public String personAdjudications(Model model, @PathVariable("personSlug") String personSlug) {
         Optional<PersonDao> person = this.personService.fetchBySlug(personSlug);
         if (person.isEmpty()) {
@@ -279,7 +279,7 @@ public class PersonController {
     }
 
     @IsBbrPro
-    @GetMapping("/people/{personSlug:[\\-a-z\\d]{2,}}/user-adjudications")
+    @GetMapping("/people/{personSlug:[\\-_a-z\\d]{2,}}/user-adjudications")
     public String personAdjudicationsForCurrentUser(Model model, @PathVariable("personSlug") String personSlug) {
         Optional<PersonDao> person = this.personService.fetchBySlug(personSlug);
         if (person.isEmpty()) {
@@ -317,7 +317,7 @@ public class PersonController {
     }
 
     @IsBbrPro
-    @GetMapping("/people/{personSlug:[\\-a-z\\d]{2,}}/filter/{contestSlug:[\\-a-z\\d]{2,}}")
+    @GetMapping("/people/{personSlug:[\\-_a-z\\d]{2,}}/filter/{contestSlug:[\\-_a-z\\d]{2,}}")
     public String personFilterToContest(Model model, @PathVariable("personSlug") String personSlug, @PathVariable("contestSlug") String contestSlug) {
         Optional<PersonDao> person = this.personService.fetchBySlug(personSlug);
         if (person.isEmpty()) {
@@ -361,7 +361,7 @@ public class PersonController {
     }
 
     @IsBbrPro
-    @GetMapping("/people/{personSlug:[\\-a-z\\d]{2,}}/filter/{groupSlug:[\\-A-Z\\d]{2,}}")
+    @GetMapping("/people/{personSlug:[\\-_a-z\\d]{2,}}/filter/{groupSlug:[\\-A-Z\\d]{2,}}")
     public String personFilterToContestGroup(Model model, @PathVariable("personSlug") String personSlug, @PathVariable("groupSlug") String groupSlug) {
         Optional<PersonDao> person = this.personService.fetchBySlug(personSlug);
         if (person.isEmpty()) {
@@ -405,7 +405,7 @@ public class PersonController {
     }
 
     @IsBbrPro
-    @GetMapping("/people/{personSlug:[\\-a-z\\d]{2,}}/tag/{tagSlug:[\\-a-z\\d]{2,}}")
+    @GetMapping("/people/{personSlug:[\\-_a-z\\d]{2,}}/tag/{tagSlug:[\\-_a-z\\d]{2,}}")
     public String personFilterToTag(Model model, @PathVariable("personSlug") String personSlug, @PathVariable("tagSlug") String tagSlug) {
         Optional<PersonDao> person = this.personService.fetchBySlug(personSlug);
         if (person.isEmpty()) {

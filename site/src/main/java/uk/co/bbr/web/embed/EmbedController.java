@@ -61,7 +61,7 @@ public class EmbedController {
         return templateEngine.process(template, context);
     }
 
-    @GetMapping("/embed/band/{bandSlug:[\\-a-z\\d]{2,}}/results/{version:\\d}")
+    @GetMapping("/embed/band/{bandSlug:[\\-_a-z\\d]{2,}}/results/{version:\\d}")
     public ResponseEntity<String> embedBandResults(@PathVariable("bandSlug") String bandSlug, @PathVariable("version") int version) {
         Optional<BandDao> band = this.bandService.fetchBySlug(bandSlug);
         if (band.isEmpty()) {
@@ -77,7 +77,7 @@ public class EmbedController {
         return new ResponseEntity<>(json, responseHeaders, HttpStatus.OK);
     }
 
-    @GetMapping("/embed/band/{bandSlug:[\\-a-z\\d]{2,}}/results-{type:all|non_whit|whit}/2023")
+    @GetMapping("/embed/band/{bandSlug:[\\-_a-z\\d]{2,}}/results-{type:all|non_whit|whit}/2023")
     public ResponseEntity<String> embedBandResultsJsonP(@PathVariable("bandSlug") String bandSlug, @PathVariable("type") String type) {
         Optional<BandDao> band = this.bandService.fetchBySlug(bandSlug);
         if (band.isEmpty()) {
@@ -102,7 +102,7 @@ public class EmbedController {
         return new ResponseEntity<>(json, responseHeaders, HttpStatus.OK);
     }
 
-    @GetMapping("/bands/{bandSlug:[\\-a-z\\d]{2,}}/embed")
+    @GetMapping("/bands/{bandSlug:[\\-_a-z\\d]{2,}}/embed")
     public String embedBandResultsAll(Model model, @PathVariable("bandSlug") String bandSlug) {
         Optional<BandDao> band = this.bandService.fetchBySlug(bandSlug);
         if (band.isEmpty()) {
@@ -117,7 +117,7 @@ public class EmbedController {
         return "embed/band-results-embed";
     }
 
-    @GetMapping("/bands/{bandSlug:[\\-a-z\\d]{2,}}/embed/non_whit")
+    @GetMapping("/bands/{bandSlug:[\\-_a-z\\d]{2,}}/embed/non_whit")
     public String embedBandResultsNonWhitFriday(Model model, @PathVariable("bandSlug") String bandSlug) {
         Optional<BandDao> band = this.bandService.fetchBySlug(bandSlug);
         if (band.isEmpty()) {
@@ -133,7 +133,7 @@ public class EmbedController {
     }
 
 
-    @GetMapping("/bands/{bandSlug:[\\-a-z\\d]{2,}}/embed/whit")
+    @GetMapping("/bands/{bandSlug:[\\-_a-z\\d]{2,}}/embed/whit")
     public String embedBandResultsWhitFriday(Model model, @PathVariable("bandSlug") String bandSlug) {
         Optional<BandDao> band = this.bandService.fetchBySlug(bandSlug);
         if (band.isEmpty()) {

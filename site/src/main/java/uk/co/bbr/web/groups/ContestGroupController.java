@@ -32,7 +32,7 @@ public class ContestGroupController {
         return "redirect:/contests/" + groupSlug;
     }
 
-    @GetMapping("/contest-groups/{groupSlug:[\\-a-z\\d]{2,}}")
+    @GetMapping("/contest-groups/{groupSlug:[\\-_a-z\\d]{2,}}")
     public String contestGroupRedirectLowerCase(@PathVariable("groupSlug") String groupSlug) {
         return "redirect:/contests/" + groupSlug.toUpperCase();
     }

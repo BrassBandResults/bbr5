@@ -27,7 +27,7 @@ public class PersonAliasController {
     private static final String REDIRECT_TO_PERSON_ALIASES = "redirect:/people/{personSlug}/edit-aliases";
 
     @IsBbrMember
-    @GetMapping("/people/{personSlug:[\\-a-z\\d]{2,}}/edit-aliases")
+    @GetMapping("/people/{personSlug:[\\-_a-z\\d]{2,}}/edit-aliases")
     public String personAliasEdit(Model model, @PathVariable("personSlug") String personSlug) {
         Optional<PersonDao> person = this.personService.fetchBySlug(personSlug);
         if (person.isEmpty()) {
@@ -42,7 +42,7 @@ public class PersonAliasController {
     }
 
     @IsBbrMember
-    @GetMapping("/people/{personSlug:[\\-a-z\\d]{2,}}/edit-aliases/{aliasId:\\d+}/hide")
+    @GetMapping("/people/{personSlug:[\\-_a-z\\d]{2,}}/edit-aliases/{aliasId:\\d+}/hide")
     public String personAliasHide(@PathVariable("personSlug") String personSlug, @PathVariable("aliasId") Long aliasId) {
         Optional<PersonDao> person = this.personService.fetchBySlug(personSlug);
         if (person.isEmpty()) {
@@ -55,7 +55,7 @@ public class PersonAliasController {
     }
 
     @IsBbrMember
-    @GetMapping("/people/{personSlug:[\\-a-z\\d]{2,}}/edit-aliases/{aliasId:\\d+}/show")
+    @GetMapping("/people/{personSlug:[\\-_a-z\\d]{2,}}/edit-aliases/{aliasId:\\d+}/show")
     public String personAliasShow(@PathVariable("personSlug") String personSlug, @PathVariable("aliasId") Long aliasId) {
         Optional<PersonDao> person = this.personService.fetchBySlug(personSlug);
         if (person.isEmpty()) {
@@ -68,7 +68,7 @@ public class PersonAliasController {
     }
 
     @IsBbrMember
-    @GetMapping("/people/{personSlug:[\\-a-z\\d]{2,}}/edit-aliases/{aliasId:\\d+}/delete")
+    @GetMapping("/people/{personSlug:[\\-_a-z\\d]{2,}}/edit-aliases/{aliasId:\\d+}/delete")
     public String personAliasDelete(@PathVariable("personSlug") String personSlug, @PathVariable("aliasId") Long aliasId) {
         Optional<PersonDao> person = this.personService.fetchBySlug(personSlug);
         if (person.isEmpty()) {
@@ -81,7 +81,7 @@ public class PersonAliasController {
     }
 
     @IsBbrMember
-    @PostMapping("/people/{personSlug:[\\-a-z\\d]{2,}}/edit-aliases/add")
+    @PostMapping("/people/{personSlug:[\\-_a-z\\d]{2,}}/edit-aliases/add")
     public String personAliasShow(@PathVariable("personSlug") String personSlug, @RequestParam("oldName") String oldName) {
         Optional<PersonDao> person = this.personService.fetchBySlug(personSlug);
         if (person.isEmpty()) {

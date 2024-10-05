@@ -31,7 +31,7 @@ public class EditAdjudicatorsController {
     private final ContestEventService contestEventService;
 
     @IsBbrMember
-    @GetMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}/edit-adjudicators")
+    @GetMapping("/contests/{contestSlug:[\\-_a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}/edit-adjudicators")
     public String editAdjudicators(Model model, @PathVariable String contestSlug, @PathVariable String contestEventDate) {
         LocalDate eventDate = Tools.parseEventDate(contestEventDate);
         Optional<ContestEventDao> contestEvent = this.contestEventService.fetchEvent(contestSlug, eventDate);
@@ -52,7 +52,7 @@ public class EditAdjudicatorsController {
     }
 
     @IsBbrMember
-    @PostMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}/edit-adjudicators")
+    @PostMapping("/contests/{contestSlug:[\\-_a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}/edit-adjudicators")
     public String editAdjudicatorsAdd(Model model, @Valid @ModelAttribute("Form") AddAdjudicatorForm submittedForm, BindingResult bindingResult, @PathVariable String contestSlug, @PathVariable String contestEventDate) {
         LocalDate eventDate = Tools.parseEventDate(contestEventDate);
         Optional<ContestEventDao> contestEvent = this.contestEventService.fetchEvent(contestSlug, eventDate);
@@ -76,7 +76,7 @@ public class EditAdjudicatorsController {
     }
 
     @IsBbrMember
-    @GetMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}/edit-adjudicators/{adjudicatorId:\\d+}/delete")
+    @GetMapping("/contests/{contestSlug:[\\-_a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}/edit-adjudicators/{adjudicatorId:\\d+}/delete")
     public String removeAdjudicator(@PathVariable String contestSlug, @PathVariable String contestEventDate, @PathVariable Long adjudicatorId) {
         LocalDate eventDate = Tools.parseEventDate(contestEventDate);
         Optional<ContestEventDao> contestEvent = this.contestEventService.fetchEvent(contestSlug, eventDate);

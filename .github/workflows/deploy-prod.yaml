@@ -93,7 +93,7 @@ jobs:
         uses: hashicorp/setup-terraform@v2
         with:
           terraform_wrapper: false
-          terraform_version: 1.5.2
+          terraform_version: 1.5.7
       -
         name: Terraform fmt
         run: cd terraform && terraform fmt -check
@@ -105,7 +105,7 @@ jobs:
           ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
           ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
           ARM_ACCESS_KEY: ${{ secrets.ARM_ACCESS_KEY }}
-        run: cd terraform && terraform init && terraform workspace select prod
+        run: cd terraform && terraform init -upgrade && terraform workspace select prod
       -
         name: Terraform Validate
         run: terraform validate

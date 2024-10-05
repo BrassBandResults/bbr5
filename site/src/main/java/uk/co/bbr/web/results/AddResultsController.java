@@ -100,7 +100,7 @@ public class AddResultsController extends AbstractEventController {
     }
 
     @IsBbrMember
-    @GetMapping("/add-results/2/{contestSlug:[\\-a-z\\d]{2,}}")
+    @GetMapping("/add-results/2/{contestSlug:[\\-_a-z\\d]{2,}}")
     public String addResultsDateStageGet(Model model, @PathVariable("contestSlug") String contestSlug) {
         Optional<ContestDao> matchingContest = this.contestService.fetchBySlug(contestSlug);
         if (matchingContest.isEmpty()) {
@@ -116,7 +116,7 @@ public class AddResultsController extends AbstractEventController {
     }
 
     @IsBbrMember
-    @PostMapping("/add-results/2/{contestSlug:[\\-a-z\\d]{2,}}")
+    @PostMapping("/add-results/2/{contestSlug:[\\-_a-z\\d]{2,}}")
     public String addResultsDateStagePost(Model model, @Valid @ModelAttribute("Form") AddResultsDateForm submittedForm, BindingResult bindingResult, @PathVariable("contestSlug") String contestSlug) {
         Optional<ContestDao> matchingContest = this.contestService.fetchBySlug(contestSlug);
         if (matchingContest.isEmpty()) {
@@ -189,7 +189,7 @@ public class AddResultsController extends AbstractEventController {
     }
 
     @IsBbrMember
-    @GetMapping("/add-results/3/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}")
+    @GetMapping("/add-results/3/{contestSlug:[\\-_a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}")
     public String addResultsContestTypeStageGet(Model model, @PathVariable("contestSlug") String contestSlug, @PathVariable String contestEventDate) {
         ContestEventDao contestEvent = this.contestEventFromUrlParameters(this.contestEventService, contestSlug, contestEventDate);
 
@@ -206,7 +206,7 @@ public class AddResultsController extends AbstractEventController {
     }
 
     @IsBbrMember
-    @PostMapping("/add-results/3/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}")
+    @PostMapping("/add-results/3/{contestSlug:[\\-_a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}")
     public String addResultsContestTypeStagePost(Model model, @Valid @ModelAttribute("Form") AddResultsContestTypeForm submittedForm, BindingResult bindingResult, @PathVariable("contestSlug") String contestSlug, @PathVariable String contestEventDate) {
         ContestEventDao contestEvent = this.contestEventFromUrlParameters(this.contestEventService, contestSlug, contestEventDate);
 
@@ -222,7 +222,7 @@ public class AddResultsController extends AbstractEventController {
     }
 
     @IsBbrMember
-    @GetMapping("/add-results/4/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}")
+    @GetMapping("/add-results/4/{contestSlug:[\\-_a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}")
     public String addTestPieceStageGet(Model model, @PathVariable("contestSlug") String contestSlug, @PathVariable String contestEventDate) {
         ContestEventDao contestEvent = this.contestEventFromUrlParameters(this.contestEventService, contestSlug, contestEventDate);
 
@@ -238,7 +238,7 @@ public class AddResultsController extends AbstractEventController {
     }
 
     @IsBbrMember
-    @PostMapping("/add-results/4/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}")
+    @PostMapping("/add-results/4/{contestSlug:[\\-_a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}")
     public String addTestPieceStagePost(Model model, @Valid @ModelAttribute("Form") AddResultsTestPieceForm submittedForm, BindingResult bindingResult, @PathVariable("contestSlug") String contestSlug, @PathVariable String contestEventDate) {
         ContestEventDao contestEvent = this.contestEventFromUrlParameters(this.contestEventService, contestSlug, contestEventDate);
 
@@ -267,7 +267,7 @@ public class AddResultsController extends AbstractEventController {
     }
 
     @IsBbrMember
-    @GetMapping("/add-results/5/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}")
+    @GetMapping("/add-results/5/{contestSlug:[\\-_a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}")
     public String addVenueStageGet(Model model, @PathVariable("contestSlug") String contestSlug, @PathVariable String contestEventDate) {
         ContestEventDao contestEvent = this.contestEventFromUrlParameters(this.contestEventService, contestSlug, contestEventDate);
 
@@ -282,7 +282,7 @@ public class AddResultsController extends AbstractEventController {
     }
 
     @IsBbrMember
-    @PostMapping("/add-results/5/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}")
+    @PostMapping("/add-results/5/{contestSlug:[\\-_a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}")
     public String addVenueStagePost(Model model, @Valid @ModelAttribute("Form") AddResultsVenueForm submittedForm, BindingResult bindingResult, @PathVariable("contestSlug") String contestSlug, @PathVariable String contestEventDate) {
         ContestEventDao contestEvent = this.contestEventFromUrlParameters(this.contestEventService, contestSlug, contestEventDate);
 
@@ -315,7 +315,7 @@ public class AddResultsController extends AbstractEventController {
     }
 
     @IsBbrMember
-    @GetMapping("/add-results/6/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}")
+    @GetMapping("/add-results/6/{contestSlug:[\\-_a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}")
     public String addBandsStageGet(Model model, @PathVariable("contestSlug") String contestSlug, @PathVariable String contestEventDate) {
         ContestEventDao contestEvent = this.contestEventFromUrlParameters(this.contestEventService, contestSlug, contestEventDate);
 
@@ -331,7 +331,7 @@ public class AddResultsController extends AbstractEventController {
     }
 
     @IsBbrMember
-    @PostMapping("/add-results/6/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}")
+    @PostMapping("/add-results/6/{contestSlug:[\\-_a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}")
     public String addBandsStagePost(Model model, @Valid @ModelAttribute("Form") AddResultsBandsForm submittedForm, BindingResult bindingResult, @PathVariable("contestSlug") String contestSlug, @PathVariable String contestEventDate) {
         ContestEventDao contestEvent = this.contestEventFromUrlParameters(this.contestEventService, contestSlug, contestEventDate);
 
@@ -355,7 +355,7 @@ public class AddResultsController extends AbstractEventController {
     }
 
     @IsBbrMember
-    @GetMapping("/add-results/7/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}")
+    @GetMapping("/add-results/7/{contestSlug:[\\-_a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}")
     public String addAdjudicatorStageGet(Model model, @PathVariable("contestSlug") String contestSlug, @PathVariable String contestEventDate) {
         ContestEventDao contestEvent = this.contestEventFromUrlParameters(this.contestEventService, contestSlug, contestEventDate);
 
@@ -374,7 +374,7 @@ public class AddResultsController extends AbstractEventController {
     }
 
     @IsBbrMember
-    @GetMapping("/add-results/7/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}/delete/{adjudicatorId:\\d+}")
+    @GetMapping("/add-results/7/{contestSlug:[\\-_a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}/delete/{adjudicatorId:\\d+}")
     public String deleteAdjudicator(@PathVariable("contestSlug") String contestSlug, @PathVariable String contestEventDate, @PathVariable Long adjudicatorId) {
         ContestEventDao contestEvent = this.contestEventFromUrlParameters(this.contestEventService, contestSlug, contestEventDate);
 
@@ -384,7 +384,7 @@ public class AddResultsController extends AbstractEventController {
     }
 
     @IsBbrMember
-    @PostMapping("/add-results/7/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}")
+    @PostMapping("/add-results/7/{contestSlug:[\\-_a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}")
     public String addAdjudicatorStagePost(Model model, @Valid @ModelAttribute("Form") AddResultsAdjudicatorForm submittedForm, BindingResult bindingResult, @PathVariable("contestSlug") String contestSlug, @PathVariable String contestEventDate) {
         ContestEventDao contestEvent = this.contestEventFromUrlParameters(this.contestEventService, contestSlug, contestEventDate);
 
@@ -415,7 +415,7 @@ public class AddResultsController extends AbstractEventController {
     }
 
     @IsBbrMember
-    @GetMapping("/add-results/8/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}")
+    @GetMapping("/add-results/8/{contestSlug:[\\-_a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}")
     public String addNotesStageGet(Model model, @PathVariable("contestSlug") String contestSlug, @PathVariable String contestEventDate) {
         ContestEventDao contestEvent = this.contestEventFromUrlParameters(this.contestEventService, contestSlug, contestEventDate);
 
@@ -434,7 +434,7 @@ public class AddResultsController extends AbstractEventController {
     }
 
     @IsBbrMember
-    @PostMapping("/add-results/8/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}")
+    @PostMapping("/add-results/8/{contestSlug:[\\-_a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}")
     public String addNotesStagePost(@Valid @ModelAttribute("Form") AddResultsNotesForm submittedForm, BindingResult bindingResult, @PathVariable("contestSlug") String contestSlug, @PathVariable String contestEventDate) {
         ContestEventDao contestEvent = this.contestEventFromUrlParameters(this.contestEventService, contestSlug, contestEventDate);
 

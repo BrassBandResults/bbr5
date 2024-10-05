@@ -30,7 +30,7 @@ public class EditVenueController {
     private final LocationService locationService;
 
     @IsBbrMember
-    @GetMapping("/venues/{venueSlug:[\\-a-z\\d]{2,}}/edit")
+    @GetMapping("/venues/{venueSlug:[\\-_a-z\\d]{2,}}/edit")
     public String editContestGroupForm(Model model, @PathVariable("venueSlug") String venueSlug) {
         Optional<VenueDao> venue = this.venueService.fetchBySlug(venueSlug);
         if (venue.isEmpty()) {
@@ -49,7 +49,7 @@ public class EditVenueController {
     }
 
     @IsBbrMember
-    @PostMapping("/venues/{venueSlug:[\\-a-z\\d]{2,}}/edit")
+    @PostMapping("/venues/{venueSlug:[\\-_a-z\\d]{2,}}/edit")
     public String editContestGroupSave(Model model, @Valid @ModelAttribute("Form") VenueEditForm submittedVenue, BindingResult bindingResult, @PathVariable("venueSlug") String venueSlug) {
         Optional<VenueDao> venue = this.venueService.fetchBySlug(venueSlug);
         if (venue.isEmpty()) {

@@ -30,7 +30,7 @@ public class ContestController {
     private final ContestEventService contestEventService;
     private final ResultService resultService;
 
-    @GetMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}")
+    @GetMapping("/contests/{contestSlug:[\\-_a-z\\d]{2,}}")
     public String contestDetails(Model model, @PathVariable String contestSlug) {
         Optional<ContestDao> contest = this.contestService.fetchBySlug(contestSlug);
 
@@ -59,7 +59,7 @@ public class ContestController {
     }
 
     @IsBbrPro
-    @GetMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}/own-choice")
+    @GetMapping("/contests/{contestSlug:[\\-_a-z\\d]{2,}}/own-choice")
     public String contestOwnChoicePieceDetails(Model model, @PathVariable String contestSlug) {
         Optional<ContestDao> contest = this.contestService.fetchBySlug(contestSlug);
 
@@ -80,7 +80,7 @@ public class ContestController {
     }
 
     @IsBbrPro
-    @GetMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}/wins")
+    @GetMapping("/contests/{contestSlug:[\\-_a-z\\d]{2,}}/wins")
     public String contestWins(Model model, @PathVariable String contestSlug) {
         Optional<ContestDao> contest = this.contestService.fetchBySlug(contestSlug);
 
@@ -104,7 +104,7 @@ public class ContestController {
     }
 
     @IsBbrPro
-    @GetMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}/streaks")
+    @GetMapping("/contests/{contestSlug:[\\-_a-z\\d]{2,}}/streaks")
     public String contestStreaks(Model model, @PathVariable String contestSlug) {
         Optional<ContestDao> contest = this.contestService.fetchBySlug(contestSlug);
 
@@ -129,7 +129,7 @@ public class ContestController {
 
 
     @IsBbrPro
-    @GetMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}/position/{position:\\d+|W|D}")
+    @GetMapping("/contests/{contestSlug:[\\-_a-z\\d]{2,}}/position/{position:\\d+|W|D}")
     public String contestResultsForPosition(Model model, @PathVariable String contestSlug, @PathVariable String position) {
         Optional<ContestDao> contest = this.contestService.fetchBySlug(contestSlug);
 
@@ -149,7 +149,7 @@ public class ContestController {
     }
 
     @IsBbrPro
-    @GetMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}/draw/{draw:\\d+}")
+    @GetMapping("/contests/{contestSlug:[\\-_a-z\\d]{2,}}/draw/{draw:\\d+}")
     public String contestResultsForDraw(Model model, @PathVariable String contestSlug, @PathVariable int draw) {
         Optional<ContestDao> contest = this.contestService.fetchBySlug(contestSlug);
 

@@ -28,7 +28,7 @@ public class DeletePersonController {
     private final PersonResultService personResultService;
 
     @IsBbrMember
-    @GetMapping("/people/{personSlug:[\\-a-z\\d]{2,}}/delete")
+    @GetMapping("/people/{personSlug:[\\-_a-z\\d]{2,}}/delete")
     public String deletePerson(Model model, @PathVariable("personSlug") String personSlug) {
         Optional<PersonDao> person = this.personService.fetchBySlug(personSlug);
         if (person.isEmpty()) {

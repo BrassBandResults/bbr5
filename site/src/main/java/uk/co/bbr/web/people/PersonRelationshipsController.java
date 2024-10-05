@@ -28,7 +28,7 @@ public class PersonRelationshipsController {
     private static final String REDIRECT_TO_PERSON_RELATIONSHIPS = "redirect:/people/{personSlug}/edit-relationships";
 
     @IsBbrMember
-    @GetMapping("/people/{personSlug:[\\-a-z\\d]{2,}}/edit-relationships")
+    @GetMapping("/people/{personSlug:[\\-_a-z\\d]{2,}}/edit-relationships")
     public String personRelationshipsEdit(Model model, @PathVariable("personSlug") String personSlug) {
         Optional<PersonDao> person = this.personService.fetchBySlug(personSlug);
         if (person.isEmpty()) {
@@ -47,7 +47,7 @@ public class PersonRelationshipsController {
 
 
     @IsBbrMember
-    @GetMapping("/people/{personSlug:[\\-a-z\\d]{2,}}/edit-relationships/{relationshipId:\\d+}/delete")
+    @GetMapping("/people/{personSlug:[\\-_a-z\\d]{2,}}/edit-relationships/{relationshipId:\\d+}/delete")
     public String personRelationshipsDelete(@PathVariable("personSlug") String personSlug, @PathVariable("relationshipId") Long relationshipId) {
         Optional<PersonDao> person = this.personService.fetchBySlug(personSlug);
         if (person.isEmpty()) {
@@ -65,7 +65,7 @@ public class PersonRelationshipsController {
     }
 
     @IsBbrMember
-    @PostMapping("/people/{personSlug:[\\-a-z\\d]{2,}}/edit-relationships/add")
+    @PostMapping("/people/{personSlug:[\\-_a-z\\d]{2,}}/edit-relationships/add")
     public String personRelationshipsCreate(@PathVariable("personSlug") String personSlug, @RequestParam("RightPersonSlug") String rightPersonSlug,
                                                                                            @RequestParam("RelationshipTypeId") String relationshipTypeId) {
         Optional<PersonDao> leftPerson = this.personService.fetchBySlug(personSlug);

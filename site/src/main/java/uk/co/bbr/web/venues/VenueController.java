@@ -38,7 +38,7 @@ public class VenueController {
     private final LocationService locationService;
     private final ObjectMapper objectMapper;
 
-    @GetMapping("/venues/{venueSlug:[\\-a-z\\d]{2,}}")
+    @GetMapping("/venues/{venueSlug:[\\-_a-z\\d]{2,}}")
     public String venue(Model model, @PathVariable("venueSlug") String venueSlug) {
         Optional<VenueDao> venue = this.venueService.fetchBySlug(venueSlug);
         if (venue.isEmpty()) {
@@ -57,7 +57,7 @@ public class VenueController {
     }
 
     @IsBbrPro
-    @GetMapping("/venues/{venueSlug:[\\-a-z\\d]{2,}}/{contestSlug:[\\-a-z\\d]{2,}}")
+    @GetMapping("/venues/{venueSlug:[\\-_a-z\\d]{2,}}/{contestSlug:[\\-_a-z\\d]{2,}}")
     public String venueContest(Model model, @PathVariable("venueSlug") String venueSlug, @PathVariable("contestSlug") String contestSlug) {
         Optional<VenueDao> venue = this.venueService.fetchBySlug(venueSlug);
         if (venue.isEmpty()) {
@@ -78,7 +78,7 @@ public class VenueController {
     }
 
     @IsBbrPro
-    @GetMapping("/venues/{venueSlug:[\\-a-z\\d]{2,}}/years")
+    @GetMapping("/venues/{venueSlug:[\\-_a-z\\d]{2,}}/years")
     public String venueYears(Model model, @PathVariable("venueSlug") String venueSlug) {
         Optional<VenueDao> venue = this.venueService.fetchBySlug(venueSlug);
         if (venue.isEmpty()) {
@@ -97,7 +97,7 @@ public class VenueController {
     }
 
     @IsBbrMember
-    @GetMapping("/venues/{venueSlug:[\\-a-z\\d]{2,}}/map")
+    @GetMapping("/venues/{venueSlug:[\\-_a-z\\d]{2,}}/map")
     public String venueMap(Model model, @PathVariable("venueSlug") String venueSlug) {
         Optional<VenueDao> venue = this.venueService.fetchBySlug(venueSlug);
         if (venue.isEmpty()) {
@@ -120,7 +120,7 @@ public class VenueController {
     }
 
     @IsBbrMember
-    @GetMapping("/venues/{venueSlug:[\\-a-z\\d]{2,}}/map/nearby.json")
+    @GetMapping("/venues/{venueSlug:[\\-_a-z\\d]{2,}}/map/nearby.json")
     public ResponseEntity<JsonNode> venueMapIcons(@PathVariable("venueSlug") String venueSlug, @RequestParam(value= "distance", required=false) Integer distance) {
         Optional<VenueDao> venue = this.venueService.fetchBySlug(venueSlug);
         if (venue.isEmpty()) {
@@ -146,7 +146,7 @@ public class VenueController {
     }
 
     @IsBbrPro
-    @GetMapping("/venues/{venueSlug:[\\-a-z\\d]{2,}}/years/{year:\\d{4}}")
+    @GetMapping("/venues/{venueSlug:[\\-_a-z\\d]{2,}}/years/{year:\\d{4}}")
     public String venueYearEvents(Model model, @PathVariable("venueSlug") String venueSlug, @PathVariable("year") int year) {
         Optional<VenueDao> venue = this.venueService.fetchBySlug(venueSlug);
         if (venue.isEmpty()) {

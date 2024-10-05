@@ -31,7 +31,7 @@ public class BandAliasController {
     private static final String REDIRECT_TO_BAND_ALIASES = "redirect:/bands/{bandSlug}/edit-aliases";
 
     @IsBbrMember
-    @GetMapping("/bands/{bandSlug:[\\-a-z\\d]{2,}}/edit-aliases")
+    @GetMapping("/bands/{bandSlug:[\\-_a-z\\d]{2,}}/edit-aliases")
     public String bandAliasEdit(Model model, @PathVariable("bandSlug") String bandSlug) {
         Optional<BandDao> band = this.bandService.fetchBySlug(bandSlug);
         if (band.isEmpty()) {
@@ -46,7 +46,7 @@ public class BandAliasController {
     }
 
     @IsBbrMember
-    @GetMapping("/bands/{bandSlug:[\\-a-z\\d]{2,}}/edit-aliases/{aliasId:\\d+}/hide")
+    @GetMapping("/bands/{bandSlug:[\\-_a-z\\d]{2,}}/edit-aliases/{aliasId:\\d+}/hide")
     public String bandAliasHide(@PathVariable("bandSlug") String bandSlug, @PathVariable("aliasId") Long aliasId) {
         Optional<BandDao> band = this.bandService.fetchBySlug(bandSlug);
         if (band.isEmpty()) {
@@ -59,7 +59,7 @@ public class BandAliasController {
     }
 
     @IsBbrMember
-    @GetMapping("/bands/{bandSlug:[\\-a-z\\d]{2,}}/edit-aliases/{aliasId:\\d+}/show")
+    @GetMapping("/bands/{bandSlug:[\\-_a-z\\d]{2,}}/edit-aliases/{aliasId:\\d+}/show")
     public String bandAliasShow(@PathVariable("bandSlug") String bandSlug, @PathVariable("aliasId") Long aliasId) {
         Optional<BandDao> band = this.bandService.fetchBySlug(bandSlug);
         if (band.isEmpty()) {
@@ -72,7 +72,7 @@ public class BandAliasController {
     }
 
     @IsBbrMember
-    @GetMapping("/bands/{bandSlug:[\\-a-z\\d]{2,}}/edit-aliases/{aliasId:\\d+}/delete")
+    @GetMapping("/bands/{bandSlug:[\\-_a-z\\d]{2,}}/edit-aliases/{aliasId:\\d+}/delete")
     public String bandAliasDelete(@PathVariable("bandSlug") String bandSlug, @PathVariable("aliasId") Long aliasId) {
         Optional<BandDao> band = this.bandService.fetchBySlug(bandSlug);
         if (band.isEmpty()) {
@@ -85,7 +85,7 @@ public class BandAliasController {
     }
 
     @IsBbrMember
-    @PostMapping("/bands/{bandSlug:[\\-a-z\\d]{2,}}/edit-aliases/add")
+    @PostMapping("/bands/{bandSlug:[\\-_a-z\\d]{2,}}/edit-aliases/add")
     public String bandAliasAdd(@PathVariable("bandSlug") String bandSlug, @RequestParam("oldName") String oldName) {
         Optional<BandDao> band = this.bandService.fetchBySlug(bandSlug);
         if (band.isEmpty()) {
@@ -103,7 +103,7 @@ public class BandAliasController {
     }
 
     @IsBbrMember
-    @GetMapping("/bands/{bandSlug:[\\-a-z\\d]{2,}}/edit-aliases/{aliasId:\\d+}/edit-dates")
+    @GetMapping("/bands/{bandSlug:[\\-_a-z\\d]{2,}}/edit-aliases/{aliasId:\\d+}/edit-dates")
     public String bandAliasEditDates(Model model, @PathVariable("bandSlug") String bandSlug, @PathVariable("aliasId") Long aliasId) {
         Optional<BandDao> band = this.bandService.fetchBySlug(bandSlug);
         if (band.isEmpty()) {
@@ -124,7 +124,7 @@ public class BandAliasController {
     }
 
     @IsBbrMember
-    @PostMapping("/bands/{bandSlug:[\\-a-z\\d]{2,}}/edit-aliases/{aliasId:\\d+}/edit-dates")
+    @PostMapping("/bands/{bandSlug:[\\-_a-z\\d]{2,}}/edit-aliases/{aliasId:\\d+}/edit-dates")
     public String bandAliasEditDatesPost(Model model, @Valid @ModelAttribute("BandAliasForm") BandAliasEditForm aliasForm, BindingResult bindingResult, @PathVariable("bandSlug") String bandSlug, @PathVariable("aliasId") Long aliasId) {
         Optional<BandDao> band = this.bandService.fetchBySlug(bandSlug);
         if (band.isEmpty()) {

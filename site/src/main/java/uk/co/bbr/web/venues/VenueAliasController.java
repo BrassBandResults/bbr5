@@ -27,7 +27,7 @@ public class VenueAliasController {
     private static final String REDIRECT_TO_VENUE_ALIASES = "redirect:/venues/{venueSlug}/edit-aliases";
 
     @IsBbrMember
-    @GetMapping("/venues/{venueSlug:[\\-a-z\\d]{2,}}/edit-aliases")
+    @GetMapping("/venues/{venueSlug:[\\-_a-z\\d]{2,}}/edit-aliases")
     public String venueAliasEdit(Model model, @PathVariable("venueSlug") String venueSlug) {
         Optional<VenueDao> venue = this.venueService.fetchBySlug(venueSlug);
         if (venue.isEmpty()) {
@@ -42,7 +42,7 @@ public class VenueAliasController {
     }
 
     @IsBbrMember
-    @GetMapping("/venues/{venueSlug:[\\-a-z\\d]{2,}}/edit-aliases/{aliasId:\\d+}/delete")
+    @GetMapping("/venues/{venueSlug:[\\-_a-z\\d]{2,}}/edit-aliases/{aliasId:\\d+}/delete")
     public String venueAliasDelete(@PathVariable("venueSlug") String venueSlug, @PathVariable("aliasId") Long aliasId) {
         Optional<VenueDao> venue = this.venueService.fetchBySlug(venueSlug);
         if (venue.isEmpty()) {
@@ -55,7 +55,7 @@ public class VenueAliasController {
     }
 
     @IsBbrMember
-    @PostMapping("/venues/{venueSlug:[\\-a-z\\d]{2,}}/edit-aliases/add")
+    @PostMapping("/venues/{venueSlug:[\\-_a-z\\d]{2,}}/edit-aliases/add")
     public String venueAliasShow(@PathVariable("venueSlug") String venueSlug, @RequestParam("name") String oldName) {
         Optional<VenueDao> venue = this.venueService.fetchBySlug(venueSlug);
         if (venue.isEmpty()) {

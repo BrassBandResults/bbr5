@@ -44,7 +44,7 @@ public class ContestEventController extends AbstractEventController {
     private final UserService userService;
     private final ObjectMapper objectMapper;
 
-    @GetMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}")
+    @GetMapping("/contests/{contestSlug:[\\-_a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}")
     public String contestEventDetails(Model model, @PathVariable String contestSlug, @PathVariable String contestEventDate) {
         ContestEventDao contestEvent = this.contestEventFromUrlParameters(this.contestEventService, contestSlug, contestEventDate);
 
@@ -113,7 +113,7 @@ public class ContestEventController extends AbstractEventController {
     }
 
     @IsBbrPro
-    @GetMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}/competitors")
+    @GetMapping("/contests/{contestSlug:[\\-_a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}/competitors")
     public String contestEventCompetitors(Model model, @PathVariable String contestSlug, @PathVariable String contestEventDate) {
         ContestEventDao contestEvent = this.contestEventFromUrlParameters(this.contestEventService, contestSlug, contestEventDate);
 
@@ -126,7 +126,7 @@ public class ContestEventController extends AbstractEventController {
     }
 
     @IsBbrMember
-    @GetMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}/geography")
+    @GetMapping("/contests/{contestSlug:[\\-_a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}/geography")
     public String contestEventMap(Model model, @PathVariable String contestSlug, @PathVariable String contestEventDate) {
         ContestEventDao contestEvent = this.contestEventFromUrlParameters(this.contestEventService, contestSlug, contestEventDate);
 
@@ -146,7 +146,7 @@ public class ContestEventController extends AbstractEventController {
     }
 
     @IsBbrMember
-    @GetMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}/map/geography.json")
+    @GetMapping("/contests/{contestSlug:[\\-_a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}/map/geography.json")
     public ResponseEntity<JsonNode> contestEventMapJson(@PathVariable String contestSlug, @PathVariable String contestEventDate) {
         ContestEventDao contestEvent = this.contestEventFromUrlParameters(this.contestEventService, contestSlug, contestEventDate);
 
@@ -172,7 +172,7 @@ public class ContestEventController extends AbstractEventController {
 
 
     @IsBbrMember
-    @GetMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}/performer")
+    @GetMapping("/contests/{contestSlug:[\\-_a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}/performer")
     public String eventPerformerSelectBand(Model model, @PathVariable("contestSlug")  String contestSlug, @PathVariable("contestEventDate") String contestEventDate) {
         ContestEventDao contestEvent = this.contestEventFromUrlParameters(this.contestEventService, contestSlug, contestEventDate);
 
@@ -188,7 +188,7 @@ public class ContestEventController extends AbstractEventController {
     }
 
     @IsBbrMember
-    @GetMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}/performer/{resultId:\\d+}")
+    @GetMapping("/contests/{contestSlug:[\\-_a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}/performer/{resultId:\\d+}")
     public String eventPerformerSelectBand(@PathVariable("contestSlug") String contestSlug, @PathVariable("contestEventDate") String contestEventDate, @PathVariable("resultId") Long resultId) {
         this.contestEventFromUrlParameters(this.contestEventService, contestSlug, contestEventDate);
 
@@ -222,7 +222,7 @@ public class ContestEventController extends AbstractEventController {
     }
 
     @IsBbrPro
-    @GetMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}/form-guide-bands")
+    @GetMapping("/contests/{contestSlug:[\\-_a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}/form-guide-bands")
     public String contestEventBandFormGuide(Model model, @PathVariable String contestSlug, @PathVariable String contestEventDate) {
         ContestEventDao contestEvent = this.contestEventFromUrlParameters(this.contestEventService, contestSlug, contestEventDate);
 
@@ -235,7 +235,7 @@ public class ContestEventController extends AbstractEventController {
     }
 
     @IsBbrPro
-    @GetMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}/form-guide-conductors")
+    @GetMapping("/contests/{contestSlug:[\\-_a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}/form-guide-conductors")
     public String contestEventConductorFormGuide(Model model, @PathVariable String contestSlug, @PathVariable String contestEventDate) {
         ContestEventDao contestEvent = this.contestEventFromUrlParameters(this.contestEventService, contestSlug, contestEventDate);
 

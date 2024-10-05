@@ -24,7 +24,7 @@ public class EditPersonController {
     private final PersonService personService;
 
     @IsBbrMember
-    @GetMapping("/people/{personSlug:[\\-a-z\\d]{2,}}/edit")
+    @GetMapping("/people/{personSlug:[\\-_a-z\\d]{2,}}/edit")
     public String editPersonForm(Model model, @PathVariable("personSlug") String personSlug) {
         Optional<PersonDao> person = this.personService.fetchBySlug(personSlug);
         if (person.isEmpty()) {
@@ -40,7 +40,7 @@ public class EditPersonController {
     }
 
     @IsBbrMember
-    @PostMapping("/people/{personSlug:[\\-a-z\\d]{2,}}/edit")
+    @PostMapping("/people/{personSlug:[\\-_a-z\\d]{2,}}/edit")
     public String editPersonSave(Model model, @Valid @ModelAttribute("PersonForm") PersonEditForm submittedPerson, BindingResult bindingResult, @PathVariable("personSlug") String personSlug) {
         Optional<PersonDao> existingPersonOptional = this.personService.fetchBySlug(personSlug);
         if (existingPersonOptional.isEmpty()) {

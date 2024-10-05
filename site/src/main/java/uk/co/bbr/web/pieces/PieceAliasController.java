@@ -27,7 +27,7 @@ public class PieceAliasController {
     private static final String REDIRECT_TO_PIECE_ALIASES = "redirect:/pieces/{slug}/edit-aliases";
 
     @IsBbrMember
-    @GetMapping("/pieces/{slug:[\\-a-z\\d]{2,}}/edit-aliases")
+    @GetMapping("/pieces/{slug:[\\-_a-z\\d]{2,}}/edit-aliases")
     public String pieceAliasEdit(Model model, @PathVariable("slug") String slug) {
         Optional<PieceDao> piece = this.pieceService.fetchBySlug(slug);
         if (piece.isEmpty()) {
@@ -42,7 +42,7 @@ public class PieceAliasController {
     }
 
     @IsBbrMember
-    @GetMapping("/pieces/{slug:[\\-a-z\\d]{2,}}/edit-aliases/{aliasId:\\d+}/hide")
+    @GetMapping("/pieces/{slug:[\\-_a-z\\d]{2,}}/edit-aliases/{aliasId:\\d+}/hide")
     public String pieceAliasHide(@PathVariable("slug") String slug, @PathVariable("aliasId") Long aliasId) {
         Optional<PieceDao> piece = this.pieceService.fetchBySlug(slug);
         if (piece.isEmpty()) {
@@ -55,7 +55,7 @@ public class PieceAliasController {
     }
 
     @IsBbrMember
-    @GetMapping("/pieces/{slug:[\\-a-z\\d]{2,}}/edit-aliases/{aliasId:\\d+}/show")
+    @GetMapping("/pieces/{slug:[\\-_a-z\\d]{2,}}/edit-aliases/{aliasId:\\d+}/show")
     public String pieceAliasShow(@PathVariable("slug") String slug, @PathVariable("aliasId") Long aliasId) {
         Optional<PieceDao> piece = this.pieceService.fetchBySlug(slug);
         if (piece.isEmpty()) {
@@ -68,7 +68,7 @@ public class PieceAliasController {
     }
 
     @IsBbrMember
-    @GetMapping("/pieces/{slug:[\\-a-z\\d]{2,}}/edit-aliases/{aliasId:\\d+}/delete")
+    @GetMapping("/pieces/{slug:[\\-_a-z\\d]{2,}}/edit-aliases/{aliasId:\\d+}/delete")
     public String pieceAliasDelete(@PathVariable("slug") String slug, @PathVariable("aliasId") Long aliasId) {
         Optional<PieceDao> piece = this.pieceService.fetchBySlug(slug);
         if (piece.isEmpty()) {
@@ -81,7 +81,7 @@ public class PieceAliasController {
     }
 
     @IsBbrMember
-    @PostMapping("/pieces/{slug:[\\-a-z\\d]{2,}}/edit-aliases/add")
+    @PostMapping("/pieces/{slug:[\\-_a-z\\d]{2,}}/edit-aliases/add")
     public String pieceAliasShow(@PathVariable("slug") String slug, @RequestParam("name") String oldName) {
         Optional<PieceDao> piece = this.pieceService.fetchBySlug(slug);
         if (piece.isEmpty()) {

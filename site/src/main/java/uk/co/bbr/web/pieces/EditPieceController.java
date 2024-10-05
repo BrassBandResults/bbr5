@@ -28,7 +28,7 @@ public class EditPieceController {
     private final PieceService pieceService;
 
     @IsBbrMember
-    @GetMapping("/pieces/{pieceSlug:[\\-a-z\\d]{2,}}/edit")
+    @GetMapping("/pieces/{pieceSlug:[\\-_a-z\\d]{2,}}/edit")
     public String editContestGroupForm(Model model, @PathVariable("pieceSlug") String pieceSlug) {
         Optional<PieceDao> piece = this.pieceService.fetchBySlug(pieceSlug);
         if (piece.isEmpty()) {
@@ -44,7 +44,7 @@ public class EditPieceController {
     }
 
     @IsBbrMember
-    @PostMapping("/pieces/{pieceSlug:[\\-a-z\\d]{2,}}/edit")
+    @PostMapping("/pieces/{pieceSlug:[\\-_a-z\\d]{2,}}/edit")
     public String editContestGroupSave(Model model, @Valid @ModelAttribute("Form") PieceEditForm submittedPiece, BindingResult bindingResult, @PathVariable("pieceSlug") String pieceSlug) {
         Optional<PieceDao> piece = this.pieceService.fetchBySlug(pieceSlug);
         if (piece.isEmpty()) {

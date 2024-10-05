@@ -42,7 +42,7 @@ public class EditResultController {
 
 
     @IsBbrMember
-    @GetMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}/edit-results")
+    @GetMapping("/contests/{contestSlug:[\\-_a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}/edit-results")
     public String editEventResultsGet(Model model, @PathVariable("contestSlug") String contestSlug, @PathVariable("contestEventDate") String contestEventDate) {
         LocalDate eventDate = Tools.parseEventDate(contestEventDate);
         Optional<ContestEventDao> contestEvent = this.contestEventService.fetchEvent(contestSlug, eventDate);
@@ -75,7 +75,7 @@ public class EditResultController {
     }
 
     @IsBbrMember
-    @PostMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}/edit-results")
+    @PostMapping("/contests/{contestSlug:[\\-_a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}/edit-results")
     public String editEventResultsPost(@RequestParam Map<String,String> allRequestParams, @PathVariable("contestSlug") String contestSlug, @PathVariable("contestEventDate") String contestEventDate) {
         LocalDate eventDate = Tools.parseEventDate(contestEventDate);
         Optional<ContestEventDao> contestEvent = this.contestEventService.fetchEvent(contestSlug, eventDate);
@@ -138,7 +138,7 @@ public class EditResultController {
     }
 
     @IsBbrMember
-    @GetMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}/result/{resultId:\\d+}/edit")
+    @GetMapping("/contests/{contestSlug:[\\-_a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}/result/{resultId:\\d+}/edit")
     public String editContestResultForm(Model model, @PathVariable("contestSlug") String contestSlug, @PathVariable("contestEventDate") String contestEventDate, @PathVariable("resultId") Long resultId) {
         LocalDate eventDate = Tools.parseEventDate(contestEventDate);
         Optional<ContestEventDao> contestEvent = this.contestEventService.fetchEvent(contestSlug, eventDate);
@@ -180,7 +180,7 @@ public class EditResultController {
     }
 
     @IsBbrMember
-    @PostMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}/result/{resultId:\\d+}/edit")
+    @PostMapping("/contests/{contestSlug:[\\-_a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}/result/{resultId:\\d+}/edit")
     public String editContestResultSave(Model model, @Valid @ModelAttribute("Form") ResultEditForm submittedResult, BindingResult bindingResult, @PathVariable("contestSlug") String contestSlug, @PathVariable("contestEventDate") String contestEventDate, @PathVariable("resultId") Long resultId) {
         LocalDate eventDate = Tools.parseEventDate(contestEventDate);
         Optional<ContestEventDao> contestEvent = this.contestEventService.fetchEvent(contestSlug, eventDate);
