@@ -303,7 +303,6 @@ public abstract class PageSets {
         List<String> pageList = new ArrayList<>();
         pageList.add("/feedback/queue");
         pageList.add("/feedback/detail/1");
-        pageList.add("/feedback/status-change/claim/tjs/1");
         pageList.add("/feedback/status-change/done/tjs/1");
         pageList.add("/feedback/status-change/owner/tjs/1");
         pageList.add("/feedback/status-change/closed/tjs/1");

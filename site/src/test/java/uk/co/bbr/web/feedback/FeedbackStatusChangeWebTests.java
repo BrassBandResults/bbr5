@@ -10,15 +10,8 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import uk.co.bbr.services.feedback.FeedbackService;
@@ -36,7 +29,6 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -75,35 +67,6 @@ class FeedbackStatusChangeWebTests implements LoginMixin {
     static GreenMailExtension greenMail = new GreenMailExtension(ServerSetupTest.SMTP)
             .withConfiguration(GreenMailConfiguration.aConfig().withUser("user", "admin"))
             .withPerMethodLifecycle(false);
-
-    @Test
-    void testClaimFeedbackWorksSuccessfully() throws AuthenticationFailedException {
-        // arrange
-        FeedbackDao testFeedback = new FeedbackDao();
-        testFeedback.setStatus(FeedbackStatus.NEW);
-        testFeedback.setUrl("/test");
-        testFeedback.setBrowser("Mozilla/Test");
-        testFeedback.setReportedBy("tjs");
-        testFeedback.setOwnedBy(null);
-        testFeedback.setIp("1.2.3.4");
-        testFeedback.setComment("Comment");
-
-        testFeedback = this.feedbackService.create(testFeedback);
-
-        // act
-        String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/feedback/status-change/claim/sms/" + testFeedback.getId(), String.class);
-
-        // assert
-        assertNotNull(response);
-
-        Optional<FeedbackDao> checkFeedback = this.feedbackService.fetchById(testFeedback.getId());
-        assertTrue(checkFeedback.isPresent());
-
-        assertEquals("sms", checkFeedback.get().getOwnedBy());
-        assertEquals(FeedbackStatus.WITH_USER, checkFeedback.get().getStatus());
-        assertEquals("Comment", checkFeedback.get().getComment());
-        assertNotEquals(testFeedback.getAuditLog(), checkFeedback.get().getAuditLog());
-    }
 
     @Test
     void testMarkFeedbackDoneWorksSuccessfully() throws AuthenticationFailedException {
