@@ -27,7 +27,7 @@ public class EditPersonProfileController {
     private final PersonService personService;
 
     @IsBbrPro
-    @GetMapping("/profile/people-profiles/{personSlug:[\\-a-z\\d]{2,}}/edit")
+    @GetMapping("/profile/people-profiles/{personSlug:[\\-_a-z\\d]{2,}}/edit")
     public String personProfileGet(Model model, @PathVariable String personSlug) {
         SiteUserDao currentUser = this.securityService.getCurrentUser();
         Optional<PersonProfileDao> personProfile = this.personService.fetchProfileByPersonSlugAndOwner(personSlug, currentUser);
@@ -44,7 +44,7 @@ public class EditPersonProfileController {
     }
 
     @IsBbrPro
-    @PostMapping("/profile/people-profiles/{personSlug:[\\-a-z\\d]{2,}}/edit")
+    @PostMapping("/profile/people-profiles/{personSlug:[\\-_a-z\\d]{2,}}/edit")
     public String personProfilePost(Model model, @Valid @ModelAttribute("Form") EditProfileForm submittedForm, BindingResult bindingResult, @PathVariable("personSlug") String personSlug) {
         SiteUserDao currentUser = this.securityService.getCurrentUser();
         Optional<PersonProfileDao> personProfile = this.personService.fetchProfileByPersonSlugAndOwner(personSlug, currentUser);

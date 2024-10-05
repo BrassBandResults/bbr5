@@ -28,7 +28,7 @@ public class BandRelationshipsController {
     private static final String REDIRECT_TO_BAND_RELATIONSHIPS = "redirect:/bands/{bandSlug}/edit-relationships";
 
     @IsBbrMember
-    @GetMapping("/bands/{bandSlug:[\\-a-z\\d]{2,}}/edit-relationships")
+    @GetMapping("/bands/{bandSlug:[\\-_a-z\\d]{2,}}/edit-relationships")
     public String bandRelationshipsEdit(Model model, @PathVariable("bandSlug") String bandSlug) {
         Optional<BandDao> band = this.bandService.fetchBySlug(bandSlug);
         if (band.isEmpty()) {
@@ -47,7 +47,7 @@ public class BandRelationshipsController {
 
 
     @IsBbrMember
-    @GetMapping("/bands/{bandSlug:[\\-a-z\\d]{2,}}/edit-relationships/{relationshipId:\\d+}/delete")
+    @GetMapping("/bands/{bandSlug:[\\-_a-z\\d]{2,}}/edit-relationships/{relationshipId:\\d+}/delete")
     public String bandRelationshipsDelete(@PathVariable("bandSlug") String bandSlug, @PathVariable("relationshipId") Long relationshipId) {
         Optional<BandDao> band = this.bandService.fetchBySlug(bandSlug);
         if (band.isEmpty()) {
@@ -65,7 +65,7 @@ public class BandRelationshipsController {
     }
 
     @IsBbrMember
-    @PostMapping("/bands/{bandSlug:[\\-a-z\\d]{2,}}/edit-relationships/add")
+    @PostMapping("/bands/{bandSlug:[\\-_a-z\\d]{2,}}/edit-relationships/add")
     public String bandRelationshipsCreate(@PathVariable("bandSlug") String bandSlug, @RequestParam("RightBandSlug") String rightBandSlug,
                                                                                      @RequestParam(name="RightBandName",required=false) String rightBandName,
                                                                                      @RequestParam("RelationshipTypeId") String relationshipTypeId) {

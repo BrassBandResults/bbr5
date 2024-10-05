@@ -37,7 +37,7 @@ public class EditContestController {
     private final SectionService sectionService;
 
     @IsBbrMember
-    @GetMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}/edit")
+    @GetMapping("/contests/{contestSlug:[\\-_a-z\\d]{2,}}/edit")
     public String editContestForm(Model model, @PathVariable("contestSlug") String contestSlug) {
         Optional<ContestDao> contest = this.contestService.fetchBySlug(contestSlug);
         if (contest.isEmpty()) {
@@ -60,7 +60,7 @@ public class EditContestController {
     }
 
     @IsBbrMember
-    @PostMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}/edit")
+    @PostMapping("/contests/{contestSlug:[\\-_a-z\\d]{2,}}/edit")
     public String editContestSave(Model model, @Valid @ModelAttribute("Form") ContestEditForm submittedContest, BindingResult bindingResult, @PathVariable("contestSlug") String contestSlug) {
         Optional<ContestDao> existingContestOptional = this.contestService.fetchBySlug(contestSlug);
         if (existingContestOptional.isEmpty()) {

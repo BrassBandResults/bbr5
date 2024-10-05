@@ -55,7 +55,7 @@ public class BandController {
     private final SectionService sectionService;
     private final SecurityService securityService;
 
-    @GetMapping("/bands/{bandSlug:[\\-a-z\\d]{2,}}")
+    @GetMapping("/bands/{bandSlug:[\\-_a-z\\d]{2,}}")
     public String bandDetail(Model model, @PathVariable("bandSlug") String bandSlug) {
         Optional<BandDao> band = this.bandService.fetchBySlug(bandSlug);
         if (band.isEmpty()) {
@@ -120,7 +120,7 @@ public class BandController {
         }
     }
 
-    @GetMapping("/bands/{bandSlug:[\\-a-z\\d]{2,}}/whits")
+    @GetMapping("/bands/{bandSlug:[\\-_a-z\\d]{2,}}/whits")
     public String bandWhitFridayDetail(Model model, @PathVariable("bandSlug") String bandSlug) {
         Optional<BandDao> band = this.bandService.fetchBySlug(bandSlug);
         if (band.isEmpty()) {
@@ -154,7 +154,7 @@ public class BandController {
     }
 
     @IsBbrMember
-    @GetMapping("/bands/{bandSlug:[\\-a-z\\d]{2,}}/map")
+    @GetMapping("/bands/{bandSlug:[\\-_a-z\\d]{2,}}/map")
     public String bandNearbyMap(Model model, @PathVariable("bandSlug") String bandSlug) {
         Optional<BandDao> band = this.bandService.fetchBySlug(bandSlug);
         if (band.isEmpty()) {
@@ -185,7 +185,7 @@ public class BandController {
     }
 
     @IsBbrPro
-    @GetMapping("/bands/{bandSlug:[\\-a-z\\d]{2,}}/filter/{contestSlug:[\\-a-z\\d]{2,}}")
+    @GetMapping("/bands/{bandSlug:[\\-_a-z\\d]{2,}}/filter/{contestSlug:[\\-_a-z\\d]{2,}}")
     public String bandFilterToContest(Model model, @PathVariable("bandSlug") String bandSlug, @PathVariable("contestSlug") String contestSlug) {
         Optional<BandDao> band = this.bandService.fetchBySlug(bandSlug);
         if (band.isEmpty()) {
@@ -219,7 +219,7 @@ public class BandController {
     }
 
     @IsBbrPro
-    @GetMapping("/bands/{bandSlug:[\\-a-z\\d]{2,}}/filter/{groupSlug:[\\-A-Z\\d]{2,}}")
+    @GetMapping("/bands/{bandSlug:[\\-_a-z\\d]{2,}}/filter/{groupSlug:[\\-A-Z\\d]{2,}}")
     public String bandFilterToContestGroup(Model model, @PathVariable("bandSlug") String bandSlug, @PathVariable("groupSlug") String groupSlug) {
         Optional<BandDao> band = this.bandService.fetchBySlug(bandSlug);
         if (band.isEmpty()) {
@@ -253,7 +253,7 @@ public class BandController {
     }
 
     @IsBbrPro
-    @GetMapping("/bands/{bandSlug:[\\-a-z\\d]{2,}}/tag/{tagSlug:[\\-a-z\\d]{2,}}")
+    @GetMapping("/bands/{bandSlug:[\\-_a-z\\d]{2,}}/tag/{tagSlug:[\\-_a-z\\d]{2,}}")
     public String bandFilterToTag(Model model, @PathVariable("bandSlug") String bandSlug, @PathVariable("tagSlug") String tagSlug) {
         Optional<BandDao> band = this.bandService.fetchBySlug(bandSlug);
         if (band.isEmpty()) {

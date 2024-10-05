@@ -22,7 +22,7 @@ public class DeletePieceController {
     private final PieceService pieceService;
 
     @IsBbrMember
-    @GetMapping("/pieces/{pieceSlug:[\\-a-z\\d]{2,}}/delete")
+    @GetMapping("/pieces/{pieceSlug:[\\-_a-z\\d]{2,}}/delete")
     public String deletePiece(Model model, @PathVariable("pieceSlug") String pieceSlug) {
         Optional<PieceDao> piece = this.pieceService.fetchBySlug(pieceSlug);
         if (piece.isEmpty()) {

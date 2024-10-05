@@ -21,7 +21,7 @@ public class DeleteVenueController {
     private final VenueService venueService;
 
     @IsBbrMember
-    @GetMapping("/venues/{venueSlug:[\\-a-z\\d]{2,}}/delete")
+    @GetMapping("/venues/{venueSlug:[\\-_a-z\\d]{2,}}/delete")
     public String deleteVenue(Model model, @PathVariable("venueSlug") String venueSlug) {
         Optional<VenueDao> venue = this.venueService.fetchBySlug(venueSlug);
         if (venue.isEmpty()) {

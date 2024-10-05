@@ -34,7 +34,7 @@ public class EditEventController {
     private final VenueService venueService;
 
     @IsBbrMember
-    @GetMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}/edit")
+    @GetMapping("/contests/{contestSlug:[\\-_a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}/edit")
     public String editContestEventForm(Model model, @PathVariable String contestSlug, @PathVariable String contestEventDate) {
         LocalDate eventDate = Tools.parseEventDate(contestEventDate);
         Optional<ContestEventDao> contestEvent = this.contestEventService.fetchEvent(contestSlug, eventDate);
@@ -55,7 +55,7 @@ public class EditEventController {
     }
 
     @IsBbrMember
-    @PostMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}/edit")
+    @PostMapping("/contests/{contestSlug:[\\-_a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}/edit")
     public String editContestEventSave(Model model, @Valid @ModelAttribute("Form") EventEditForm submittedEvent, BindingResult bindingResult, @PathVariable String contestSlug, @PathVariable String contestEventDate) {
         LocalDate eventDate = Tools.parseEventDate(contestEventDate);
         Optional<ContestEventDao> contestEvent = this.contestEventService.fetchEvent(contestSlug, eventDate);

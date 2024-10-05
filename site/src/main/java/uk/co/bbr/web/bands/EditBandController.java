@@ -31,7 +31,7 @@ public class EditBandController {
     private final LocationService locationService;
 
     @IsBbrMember
-    @GetMapping("/bands/{bandSlug:[\\-a-z\\d]{2,}}/edit")
+    @GetMapping("/bands/{bandSlug:[\\-_a-z\\d]{2,}}/edit")
     public String editBandForm(Model model, @PathVariable("bandSlug") String bandSlug) {
         Optional<BandDao> band = this.bandService.fetchBySlug(bandSlug);
         if (band.isEmpty()) {
@@ -50,7 +50,7 @@ public class EditBandController {
     }
 
     @IsBbrMember
-    @PostMapping("/bands/{bandSlug:[\\-a-z\\d]{2,}}/edit")
+    @PostMapping("/bands/{bandSlug:[\\-_a-z\\d]{2,}}/edit")
     public String editBandSave(Model model, @Valid @ModelAttribute("BandForm") BandEditForm submittedBand, BindingResult bindingResult, @PathVariable("bandSlug") String bandSlug) {
         Optional<BandDao> existingBandOptional = this.bandService.fetchBySlug(bandSlug);
         if (existingBandOptional.isEmpty()) {

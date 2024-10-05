@@ -32,7 +32,7 @@ public class EditTestPiecesController {
     private final PieceService pieceService;
 
     @IsBbrMember
-    @GetMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}/edit-set-tests")
+    @GetMapping("/contests/{contestSlug:[\\-_a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}/edit-set-tests")
     public String editSetTests(Model model, @PathVariable String contestSlug, @PathVariable String contestEventDate) {
         LocalDate eventDate = Tools.parseEventDate(contestEventDate);
         Optional<ContestEventDao> contestEvent = this.contestEventService.fetchEvent(contestSlug, eventDate);
@@ -53,7 +53,7 @@ public class EditTestPiecesController {
     }
 
     @IsBbrMember
-    @PostMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}/edit-set-tests")
+    @PostMapping("/contests/{contestSlug:[\\-_a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}/edit-set-tests")
     public String editSetTestsAdd(Model model, @Valid @ModelAttribute("Form") AddEventSetTestForm submittedForm, BindingResult bindingResult, @PathVariable String contestSlug, @PathVariable String contestEventDate) {
         LocalDate eventDate = Tools.parseEventDate(contestEventDate);
         Optional<ContestEventDao> contestEvent = this.contestEventService.fetchEvent(contestSlug, eventDate);
@@ -89,7 +89,7 @@ public class EditTestPiecesController {
     }
 
     @IsBbrMember
-    @GetMapping("/contests/{contestSlug:[\\-a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}/edit-set-tests/{eventPieceId:\\d+}/delete")
+    @GetMapping("/contests/{contestSlug:[\\-_a-z\\d]{2,}}/{contestEventDate:\\d{4}-\\d{2}-\\d{2}}/edit-set-tests/{eventPieceId:\\d+}/delete")
     public String removeSetTest(@PathVariable String contestSlug, @PathVariable String contestEventDate, @PathVariable Long eventPieceId) {
         LocalDate eventDate = Tools.parseEventDate(contestEventDate);
         Optional<ContestEventDao> contestEvent = this.contestEventService.fetchEvent(contestSlug, eventDate);

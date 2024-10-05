@@ -53,7 +53,7 @@ public class BandMapController {
     }
 
     @IsBbrMember
-    @GetMapping("/bands/{bandSlug:[\\-a-z\\d]{2,}}/map/nearby.json")
+    @GetMapping("/bands/{bandSlug:[\\-_a-z\\d]{2,}}/map/nearby.json")
     public ResponseEntity<JsonNode> nearbyLocationsOnMap(@PathVariable("bandSlug") String bandSlug, @RequestParam(value= "distance", required=false) Integer distance) {
         Optional<BandDao> band = this.bandService.fetchBySlug(bandSlug);
         if (band.isEmpty()) {

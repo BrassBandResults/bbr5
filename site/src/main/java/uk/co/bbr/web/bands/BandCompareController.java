@@ -28,7 +28,7 @@ public class BandCompareController {
     }
 
     @IsBbrPro
-    @GetMapping("/bands/COMPARE/{leftSlug:[\\-a-z\\d]{2,}}")
+    @GetMapping("/bands/COMPARE/{leftSlug:[\\-_a-z\\d]{2,}}")
     public String compareConductorToAnother(Model model, @PathVariable("leftSlug") String leftSlug) {
         Optional<BandDao> leftBand = this.bandService.fetchBySlug(leftSlug);
         if (leftBand.isEmpty()) {
@@ -41,7 +41,7 @@ public class BandCompareController {
     }
 
     @IsBbrPro
-    @GetMapping("/bands/COMPARE/{leftSlug:[\\-a-z\\d]{2,}}/{rightSlug:[\\-a-z\\d]{2,}}")
+    @GetMapping("/bands/COMPARE/{leftSlug:[\\-_a-z\\d]{2,}}/{rightSlug:[\\-_a-z\\d]{2,}}")
     public String compareBandsDisplay(Model model, @PathVariable("leftSlug") String leftSlug, @PathVariable("rightSlug") String rightSlug) {
         Optional<BandDao> leftBand = this.bandService.fetchBySlug(leftSlug);
         if (leftBand.isEmpty()) {
@@ -67,7 +67,7 @@ public class BandCompareController {
     }
 
     @IsBbrPro
-    @GetMapping("/bands/COMPARE/{leftSlug:[\\-a-z\\d]{2,}}/{rightSlug:[\\-a-z\\d]{2,}}/{contestSlug:[\\-a-z\\d]{2,}}")
+    @GetMapping("/bands/COMPARE/{leftSlug:[\\-_a-z\\d]{2,}}/{rightSlug:[\\-_a-z\\d]{2,}}/{contestSlug:[\\-_a-z\\d]{2,}}")
     public String compareBandsDisplayFilterToContest(Model model, @PathVariable("leftSlug") String leftSlug, @PathVariable("rightSlug") String rightSlug, @PathVariable("contestSlug") String contestSlug) {
         Optional<BandDao> leftBand = this.bandService.fetchBySlug(leftSlug);
         if (leftBand.isEmpty()) {

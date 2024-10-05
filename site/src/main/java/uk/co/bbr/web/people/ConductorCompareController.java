@@ -28,7 +28,7 @@ public class ConductorCompareController {
     }
 
     @IsBbrPro
-    @GetMapping("/people/COMPARE-CONDUCTORS/{leftSlug:[\\-a-z\\d]{2,}}")
+    @GetMapping("/people/COMPARE-CONDUCTORS/{leftSlug:[\\-_a-z\\d]{2,}}")
     public String compareConductorToAnother(Model model, @PathVariable("leftSlug") String leftSlug) {
         Optional<PersonDao> leftPerson = this.personService.fetchBySlug(leftSlug);
         if (leftPerson.isEmpty()) {
@@ -41,7 +41,7 @@ public class ConductorCompareController {
     }
 
     @IsBbrPro
-    @GetMapping("/people/COMPARE-CONDUCTORS/{leftSlug:[\\-a-z\\d]{2,}}/{rightSlug:[\\-a-z\\d]{2,}}")
+    @GetMapping("/people/COMPARE-CONDUCTORS/{leftSlug:[\\-_a-z\\d]{2,}}/{rightSlug:[\\-_a-z\\d]{2,}}")
     public String compareConductorsDisplay(Model model, @PathVariable("leftSlug") String leftSlug, @PathVariable("rightSlug") String rightSlug) {
         Optional<PersonDao> leftPerson = this.personService.fetchBySlug(leftSlug);
         if (leftPerson.isEmpty()) {
@@ -67,7 +67,7 @@ public class ConductorCompareController {
     }
 
     @IsBbrPro
-    @GetMapping("/people/COMPARE-CONDUCTORS/{leftSlug:[\\-a-z\\d]{2,}}/{rightSlug:[\\-a-z\\d]{2,}}/{contestSlug:[\\-a-z\\d]{2,}}")
+    @GetMapping("/people/COMPARE-CONDUCTORS/{leftSlug:[\\-_a-z\\d]{2,}}/{rightSlug:[\\-_a-z\\d]{2,}}/{contestSlug:[\\-_a-z\\d]{2,}}")
     public String compareConductorsDisplayFilterToContest(Model model, @PathVariable("leftSlug") String leftSlug, @PathVariable("rightSlug") String rightSlug, @PathVariable("contestSlug") String contestSlug) {
         Optional<PersonDao> leftPerson = this.personService.fetchBySlug(leftSlug);
         if (leftPerson.isEmpty()) {

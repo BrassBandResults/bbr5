@@ -23,7 +23,7 @@ public class DeleteBandController {
     private final BandResultService bandResultService;
 
     @IsBbrMember
-    @GetMapping("/bands/{bandSlug:[\\-a-z\\d]{2,}}/delete")
+    @GetMapping("/bands/{bandSlug:[\\-_a-z\\d]{2,}}/delete")
     public String deleteBand(Model model, @PathVariable("bandSlug") String bandSlug) {
         Optional<BandDao> band = this.bandService.fetchBySlug(bandSlug);
         if (band.isEmpty()) {

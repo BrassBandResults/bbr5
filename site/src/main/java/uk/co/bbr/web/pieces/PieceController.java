@@ -33,7 +33,7 @@ public class PieceController {
     private final SecurityService securityService;
     private final PerformanceService performanceService;
 
-    @GetMapping("/pieces/{slug:[\\-a-z\\d]{2,}}")
+    @GetMapping("/pieces/{slug:[\\-_a-z\\d]{2,}}")
     public String pieceDetails(Model model, @PathVariable("slug") String slug) {
         Optional<PieceDao> piece = this.pieceService.fetchBySlug(slug);
         if (piece.isEmpty()) {
@@ -59,7 +59,7 @@ public class PieceController {
         return "pieces/piece";
     }
 
-    @GetMapping("/pieces/{slug:[\\-a-z\\d]{2,}}/own-choice")
+    @GetMapping("/pieces/{slug:[\\-_a-z\\d]{2,}}/own-choice")
     public String pieceOwnChoiceDetails(Model model, @PathVariable("slug") String slug) {
         Optional<PieceDao> piece = this.pieceService.fetchBySlug(slug);
         if (piece.isEmpty()) {
@@ -85,7 +85,7 @@ public class PieceController {
         return "pieces/piece-own-choice";
     }
 
-    @GetMapping("/pieces/{slug:[\\-a-z\\d]{2,}}/performances")
+    @GetMapping("/pieces/{slug:[\\-_a-z\\d]{2,}}/performances")
     public String piecePerformanceDetails(Model model, @PathVariable("slug") String slug) {
         Optional<PieceDao> piece = this.pieceService.fetchBySlug(slug);
         if (piece.isEmpty()) {
@@ -114,7 +114,7 @@ public class PieceController {
     }
 
     @IsBbrPro
-    @GetMapping("/pieces/BY-SECTION/{sectionSlug:[\\-a-z\\d]{2,}}")
+    @GetMapping("/pieces/BY-SECTION/{sectionSlug:[\\-_a-z\\d]{2,}}")
     public String piecesBySection(Model model, @PathVariable("sectionSlug") String sectionSlug) throws Exception {
         Optional<SectionDao> sectionOptional = this.sectionService.fetchBySlug(sectionSlug);
         if (sectionOptional.isEmpty()) {

@@ -19,7 +19,7 @@ public class ContestTagsController {
 
     private final ContestTagService contestTagService;
 
-    @GetMapping("/tags/{slug:[\\-a-z\\d]{2,}}")
+    @GetMapping("/tags/{slug:[\\-_a-z\\d]{2,}}")
     public String showSpecificContestTag(Model model, @PathVariable("slug") String slug) {
         ContestTagDetailsDto tagDetails = this.contestTagService.fetchDetailsBySlug(slug);
 
@@ -28,7 +28,7 @@ public class ContestTagsController {
     }
 
     @IsBbrMember
-    @GetMapping("/tags/{slug:[\\-a-z\\d]{2,}}/delete")
+    @GetMapping("/tags/{slug:[\\-_a-z\\d]{2,}}/delete")
     public String deleteContestTag(@PathVariable("slug") String slug) {
         Optional<ContestTagDao> tag = this.contestTagService.fetchBySlug(slug);
         if (tag.isEmpty()) {
