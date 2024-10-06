@@ -10,16 +10,6 @@
         <p th:utext="#{page.home.lead-2}"><strong>We need your help!</strong> Do you have contest results that are not in the database?  Then please register and add them!  Make <i>your</i> contribution to this unique project today.  You can add results from any contest in any country, this isn't just restricted to the big contests, and not just to the top bands.</p>
     </header>
 
-    <div class="container">
-    <h3 th:text="#{page.home.latest-news}">Latest News</h3>
-    <p>
-        <a href="/blog/2023/08/13/new-site" class="text-primary">August 2023 - Welcome to the New Site!</a>
-        The Brass Band results website was started in 2009, and it's been showing its age for a while.  Following several library upgrades over the years, the site was creaking around the edges and bits of it started breaking.  It was past the time that something was done about this.
-        <br/><a class="btn btn-sm btn-outline-primary" href="/blog/2023/08/13/new-site">Read More</a>
-    </p>
-    </div>
-
-
     <div class="container" th:if="${LastWeekendEvents.size() > 0}">
         <h3 th:text="#{page.home.last-weekend}">Last Weekend</h3>
         <ul>
