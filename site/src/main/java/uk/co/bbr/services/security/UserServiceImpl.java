@@ -184,4 +184,11 @@ public class UserServiceImpl implements UserService {
     public void removePendingUser(PendingUserDao user) {
         this.pendingUserRepository.delete(user);
     }
+
+    @Override
+    public void generateUuid(SiteUserDao user) {
+        user.getUuid();
+
+        this.bbrUserRepository.saveAndFlush(user);
+    }
 }

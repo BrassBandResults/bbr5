@@ -16,7 +16,7 @@ public class FeedbackOptOutController {
     private final UserService userService;
 
 
-    @GetMapping("/acc/feedback/opt-out/{uuid:[-1A-Za-z0-9]{40}}")
+    @GetMapping("/acc/feedback/opt-out/{uuid:[A-Za-z0-9]{40}}")
     public String feedbackOptOut(@PathVariable("uuid") String uuid) {
         Optional<SiteUserDao> matchingUser = this.userService.fetchUserByUuid(uuid);
         if (matchingUser.isEmpty()) {

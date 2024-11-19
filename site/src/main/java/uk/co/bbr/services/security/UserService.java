@@ -41,4 +41,6 @@ public interface UserService {
     void optUserOutFromFeedbackEmails(SiteUserDao siteUser);
 
     void removePendingUser(PendingUserDao user);
+
+    void generateUuid(SiteUserDao user);
 }
