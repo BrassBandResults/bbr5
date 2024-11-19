@@ -67,7 +67,12 @@ public class FeedbackServiceImpl implements FeedbackService {
         Optional<SiteUserDao> user = this.userService.fetchUserByUsercode(feedback.getOwnedBy());
         if (user.isEmpty()) {
             user = this.userService.fetchUserByUsercode("tjs");
+        } else {
+            this.userService.generateUuid(user.get());
         }
+
+
+
         user.ifPresent(bbrUserDao -> this.emailService.sendFeedbackEmail(bbrUserDao, newFeedback.getComment(), newFeedback.getUrl(), reportedBy));
 
         return newFeedback;
