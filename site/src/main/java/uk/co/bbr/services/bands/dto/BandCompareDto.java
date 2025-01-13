@@ -2,7 +2,6 @@ package uk.co.bbr.services.bands.dto;
 
 import lombok.Getter;
 import uk.co.bbr.services.bands.sql.dto.CompareBandsSqlDto;
-import uk.co.bbr.services.people.sql.dto.CompareConductorsSqlDto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,10 +35,10 @@ public class BandCompareDto {
         int rightCount = 0;
 
         for (CompareBandsSqlDto eachResult : resultsToAnalyse) {
-            if (eachResult.getLeftResult() < eachResult.getRightResult()) {
+            if (eachResult.getLeftResult() != 0 && eachResult.getLeftResult() < eachResult.getRightResult()) {
                 leftCount++;
             }
-            if (eachResult.getLeftResult() > eachResult.getRightResult()) {
+            if (eachResult.getRightResult() != 0 && eachResult.getLeftResult() > eachResult.getRightResult()) {
                 rightCount++;
             }
         }
