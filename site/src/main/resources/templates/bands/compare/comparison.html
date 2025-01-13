@@ -42,7 +42,7 @@
         </thead>
         <tbody>
             <tr th:each="result : ${Results}">
-                <td th:class="${result.leftClass}" th:text="${result.leftResult}" th:if="${result.LeftResult > 0}">1</td>
+                <td th:class="${result.leftClass}" th:text="${result.leftResult}"><span th:if="${result.LeftResult > 0}">1</span></td>
                 <td><span th:replace="~{links/person-link.html :: personLink(${result.leftConductor})}">Bob Childs</span></td>
                 <td class="bbr-event" nowrap><span th:replace="~{links/event-link.html :: eventLink(${result.event})}">9th Sep 2023</span></td>
                 <td>
@@ -51,7 +51,7 @@
                     <div class="toggle-filter-links" th:id="${'toggle-filter-' + result.event.id}">12345</div>
                 </td>
                 <td><span th:replace="~{links/person-link.html :: personLink(${result.rightConductor})}">Bob Childs</span></td>
-                <td th:class="${result.rightClass}"  th:text="${result.rightResult}" th:if="${result.rightResult > 0}">2</td>
+                <td th:class="${result.rightClass}"  th:text="${result.rightResult}"><span th:if="${result.rightResult > 0}">2</span></td>
             </tr>
         </tbody>
     </table>
