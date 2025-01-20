@@ -71,6 +71,7 @@ public class ContestResultSql {
                  LEFT OUTER JOIN region region on region.id = b.region_id
                  LEFT OUTER JOIN contest_group g ON g.id = c.contest_group_id
         WHERE r.conductor_id = ?1 OR r.conductor_two_id = ?1 OR r.conductor_three_id = ?1
+        AND r.result_position_type != 'W'
         ORDER BY e.date_of_event DESC;
         """;
 
