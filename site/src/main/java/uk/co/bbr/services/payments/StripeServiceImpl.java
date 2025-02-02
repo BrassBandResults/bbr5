@@ -2,6 +2,8 @@ package uk.co.bbr.services.payments;
 
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
+import com.stripe.model.Customer;
+import com.stripe.model.CustomerCollection;
 import com.stripe.model.Subscription;
 import com.stripe.model.SubscriptionCollection;
 import com.stripe.model.checkout.Session;
@@ -28,8 +30,12 @@ public class StripeServiceImpl implements StripeService {
         if (user.getStripeEmail() == null || user.getStripeEmail().isBlank()) {
             return Optional.empty();
         }
-
         try {
+            Map<String, Object> customerParams = new HashMap<>();
+            customerParams.put("email", user.getStripeEmail());
+            CustomerCollection customers = Customer.list(customerParams);
+            user.setStripeCustomer(customers.getData().get(0).getId());
+
             Map<String, Object> params = new HashMap<>();
             params.put("customer", user.getStripeCustomer());
 
