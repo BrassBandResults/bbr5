@@ -25,7 +25,7 @@ public class StripeServiceImpl implements StripeService {
     public Optional<Subscription> getActiveSubscription(SiteUserDao user) {
         Stripe.apiKey = EnvVar.getEnv("BBR_STRIPE_PRIVATE_API_KEY", "sk_test_abc123");
 
-        if (user.getStripeCustomer() == null || user.getStripeCustomer().strip().length() == 0) {
+        if (user.getStripeEmail() == null || user.getStripeEmail().isBlank()) {
             return Optional.empty();
         }
 
