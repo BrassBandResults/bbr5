@@ -33,7 +33,7 @@ public class FeedbackSubmitController {
             return "redirect:/feedback/thanks?next=/&t=r2";
         }
 
-        if (feedback.strip().length() == 0) {
+        if (feedback.strip().length() < 4) {
             return "redirect:/feedback/thanks?next=/&t=b";
         }
 
@@ -51,6 +51,10 @@ public class FeedbackSubmitController {
             ip = request.getRemoteAddr();
         }
 
+        if (ip.equals("45.153.163.104")) {
+            return "redirect:/feedback/thanks?next=/&t=ip";
+        }
+
         String strippedOwnerUsercode = ownerUsercode;
         if (ownerUsercode != null) {
             strippedOwnerUsercode = ownerUsercode.strip();
@@ -59,6 +63,7 @@ public class FeedbackSubmitController {
         if (feedback != null) {
             strippedFeedback = feedback.strip();
         }
+
         this.feedbackService.submit(offset, referrer, strippedOwnerUsercode, strippedFeedback, browserName, ip);
 
         return "redirect:/feedback/thanks?next=" + offset;
