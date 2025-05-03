@@ -59,4 +59,6 @@ public interface ResultService {
     List<ContestEventFormGuideDto> fetchBandFormGuideForEvent(ContestEventDao contestEvent);
 
     List<ContestEventFormGuideDto> fetchConductorFormGuideForEvent(ContestEventDao contestEvent);
+
+    List<ContestResultDao> fetchDuplicateResultsForThisBand(ContestResultDao contestResultDao);
 }

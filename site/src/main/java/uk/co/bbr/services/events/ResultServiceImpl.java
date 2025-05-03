@@ -439,6 +439,11 @@ public class ResultServiceImpl implements ResultService {
         return returnResults;
     }
 
+    @Override
+    public List<ContestResultDao> fetchDuplicateResultsForThisBand(ContestResultDao contestResultDao) {
+        return this.contestResultRepository.findDuplicateResultsForBand(contestResultDao.getBand().getId(), contestResultDao.getContestEvent().getId(), contestResultDao.getId());
+    }
+
     private Map<String, List<Integer>> fetchStreakData(ContestDao contest) {
         Map<String, List<Integer>> streaksBandSlugToYear = new HashMap<>();
 
