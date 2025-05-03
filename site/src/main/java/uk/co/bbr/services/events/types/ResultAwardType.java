@@ -1,8 +1,12 @@
 package uk.co.bbr.services.events.types;
 
+import lombok.Getter;
+
 import java.util.stream.Stream;
 
+@Getter
 public enum ResultAwardType {
+    PLATINUM("P", "result-award.platinum"),
     GOLD("G", "result-award.gold"),
     SILVER("S", "result-award.silver"),
     BRONZE("B",  "result-award.bronze"),
@@ -17,19 +21,11 @@ public enum ResultAwardType {
         this.translationKey = translationKey;
     }
 
-    public String getCode() {
-        return this.code;
-    }
-
-    public String getTranslationKey(){
-        return this.translationKey;
-    }
-
     public static ResultAwardType fromCode(String code) {
         if (code == null) {
             return null;
         }
-        if (code.trim().length() == 0) {
+        if (code.trim().isEmpty()) {
             return null;
         }
         return Stream.of(ResultAwardType.values())
