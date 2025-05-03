@@ -22,4 +22,7 @@ public interface ContestResultRepository extends JpaRepository<ContestResultDao,
 
     @Query("SELECT r FROM ContestResultDao r WHERE r.contestEvent.id = :contestEventId")
     List<ContestResultDao> fetchForEvent(Long contestEventId);
+
+    @Query("SELECT r FROM ContestResultDao r WHERE r.contestEvent.id = :contestEventId AND r.band.id = :bandId AND r.id != :excludeResultId")
+    List<ContestResultDao> findDuplicateResultsForBand(Long bandId, Long contestEventId, Long excludeResultId);
 }

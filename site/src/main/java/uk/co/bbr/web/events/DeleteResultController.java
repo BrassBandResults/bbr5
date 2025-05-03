@@ -51,11 +51,21 @@ public class DeleteResultController {
         List<PerformanceDao> performances = this.performanceService.fetchPerformancesForResult(result.get());
 
         if (!performances.isEmpty()) {
-            model.addAttribute("ContestEvent", contestEvent.get());
-            model.addAttribute("Result", result.get());
-            model.addAttribute("Performances", performances);
+            List<ContestResultDao> duplicatesForThisBand = this.resultService.fetchDuplicateResultsForThisBand(result.get());
+            if (!duplicatesForThisBand.isEmpty()) {
+                for (PerformanceDao performance : performances)
+                {
+                    performance.setResult(duplicatesForThisBand.get(0));
+                    this.performanceService.update(performance);
+                }
+            } else {
 
-            return "events/delete-result-blocked";
+                model.addAttribute("ContestEvent", contestEvent.get());
+                model.addAttribute("Result", result.get());
+                model.addAttribute("Performances", performances);
+
+                return "events/delete-result-blocked";
+            }
         }
 
         this.resultService.delete(result.get());
