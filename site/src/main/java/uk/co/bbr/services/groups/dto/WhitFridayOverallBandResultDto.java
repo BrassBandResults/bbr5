@@ -50,6 +50,12 @@ public class WhitFridayOverallBandResultDto {
         return returnTotal;
     }
 
+    public int getMedianResult() {
+        int value1 = this.results.get(2);
+        int value2 = this.results.get(3);
+        return (value1 + value2) / 2;
+    }
+
     public void addResult(int position) {
         this.results.add(position);
     }

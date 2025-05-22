@@ -15,15 +15,15 @@
             <a class="nav-link" th:href="${'/contests/' + OverallResults.contestGroup.slug + '/' + OverallResults.year}" th:text="#{page.group-year.tab.contests}">Contests</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link active" th:href="${'/contests/' + OverallResults.contestGroup.slug + '/' + OverallResults.year + '/overall-results'}" th:text="#{page.group-year.tab.overall-results}">Overall Results</a>
+            <a class="nav-link" th:href="${'/contests/' + OverallResults.contestGroup.slug + '/' + OverallResults.year + '/overall-results'}" th:text="#{page.group-year.tab.overall-results}">Overall Results</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" th:href="${'/contests/' + OverallResults.contestGroup.slug + '/' + OverallResults.year + '/overall-results-median'}" th:text="#{page.group-year.tab.overall-results-median}">Overall Results</a>
+            <a class="nav-link active" th:href="${'/contests/' + OverallResults.contestGroup.slug + '/' + OverallResults.year + '/overall-results-median'}" th:text="#{page.group-year.tab.overall-results-median}">Overall Results</a>
         </li>
     </ul>
     <br/>
 
-    <p th:text="#{page.group-year.title-explain}">How we calculate this</p>
+    <p th:text="#{page.group-year.title-explain-median}">How we calculate this</p>
 
     <table id="bands" class="table table-hover sortable">
         <thead>

@@ -347,6 +347,39 @@ public class ContestGroupServiceImpl implements ContestGroupService, SlugTools {
         return new WhitFridayOverallResultsDto(group, year, bandList);
     }
 
+    @Override
+    public WhitFridayOverallResultsDto fetchWhitFridayOverallResultsMedian(ContestGroupDao group, Integer year) {
+        List<WhitFridayResultSqlDto> rawResults = WhitFridaySql.fetchWhitFridayResults(this.entityManager, group.getSlug(), year);
+
+        List<WhitFridayOverallBandResultDto> bandList = new ArrayList<>();
+
+        for (WhitFridayResultSqlDto eachResult : rawResults) {
+            WhitFridayOverallBandResultDto matchingBand = this.findBandForSlug(bandList, eachResult.getBandSlug());
+            if (matchingBand == null) {
+                matchingBand = new WhitFridayOverallBandResultDto(eachResult.getBandName(), eachResult.getBandSlug(), eachResult.getRegionName(), eachResult.getRegionSlug(), eachResult.getRegionCountryCode());
+                bandList.add(matchingBand);
+            }
+            matchingBand.addResult(eachResult.getPosition());
+        }
+
+        for (WhitFridayOverallBandResultDto eachBand : bandList) {
+            eachBand.sortResults();
+        }
+        bandList = bandList.stream().filter(a -> a.getResults().size() >= 6).sorted(Comparator.comparing(WhitFridayOverallBandResultDto::getTotalResults)).collect(Collectors.toList());
+        int position = 1;
+        int previousPoints = 0;
+        for (WhitFridayOverallBandResultDto eachRow : bandList) {
+            int totalResults = eachRow.getMedianResult();
+            if (previousPoints != totalResults) {
+                eachRow.setPosition(position);
+            }
+            previousPoints = totalResults;
+            position++;
+        }
+
+        return new WhitFridayOverallResultsDto(group, year, bandList);
+    }
+
     private WhitFridayOverallBandResultDto findBandForSlug(List<WhitFridayOverallBandResultDto> bandList, String bandSlug) {
         for (WhitFridayOverallBandResultDto eachBand : bandList) {
             if (eachBand.getBandSlug().equals(bandSlug)) {
