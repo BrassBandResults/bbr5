@@ -17,6 +17,9 @@
         <li class="nav-item">
             <a class="nav-link" th:href="${'/contests/' + GroupYearEvents.contestGroup.slug + '/' + GroupYearEvents.year + '/overall-results'}" th:text="#{page.group-year.tab.overall-results}">Overall Results</a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link" th:href="${'/contests/' + OverallResults.contestGroup.slug + '/' + OverallResults.year + '/overall-results-median'}" th:text="#{page.group-year.tab.overall-results-median}">Overall Results</a>
+        </li>
     </ul>
     <br/>
 

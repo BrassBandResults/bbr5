@@ -38,5 +38,6 @@ public interface ContestGroupService {
     void delete(ContestGroupDao contestGroup);
 
     WhitFridayOverallResultsDto fetchWhitFridayOverallResults(ContestGroupDao group, Integer year);
+    WhitFridayOverallResultsDto fetchWhitFridayOverallResultsMedian(ContestGroupDao group, Integer year);
 }
 

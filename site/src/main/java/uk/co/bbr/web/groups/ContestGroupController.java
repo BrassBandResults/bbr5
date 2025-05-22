@@ -96,4 +96,22 @@ public class ContestGroupController {
         return "groups/year-overall-results";
     }
 
+    @IsBbrPro
+    @GetMapping("/contests/{slug:[\\-A-Z\\d]{2,}}/{year:[0-9]{4}}/overall-results-median")
+    public String contestGroupOverallResultsMEdianDetails(Model model, @PathVariable("slug") String groupSlug, @PathVariable("year") Integer year) {
+        Optional<ContestGroupDao> contestGroup = this.contestGroupService.fetchBySlug(groupSlug);
+        if (contestGroup.isEmpty()) {
+            throw NotFoundException.groupNotFoundBySlug(groupSlug);
+        }
+
+        if (contestGroup.get().getGroupType() == ContestGroupType.NORMAL) {
+            throw NotFoundException.groupNotFoundBySlug(groupSlug);
+        }
+
+        WhitFridayOverallResultsDto whitFridayOverallResults = this.contestGroupService.fetchWhitFridayOverallResultsMedian(contestGroup.get(), year);
+
+        model.addAttribute("OverallResults", whitFridayOverallResults);
+        return "groups/year-overall-results-median";
+    }
+
 }
