@@ -37,7 +37,7 @@
         <tr th:each="result : ${OverallResults.overallBandResults}">
             <td><span th:if="${result.position != 0}" th:text="${result.position}"></span></td>
             <td> <span th:replace="~{links/band-link.html :: bandLink(${result.band}, true, false)}"></span></td>
-            <td th:text="${result.totalResults}"></td>
+            <td th:text="${result.medianResult}"></td>
         </tr>
         </tbody>
     </table>
