@@ -366,8 +366,10 @@ public class ContestGroupServiceImpl implements ContestGroupService, SlugTools {
             eachBand.sortResults();
         }
         bandList = bandList.stream().filter(a -> a.getResults().size() >= 6).sorted(Comparator.comparing(WhitFridayOverallBandResultDto::getTotalResults)).collect(Collectors.toList());
-        int position = 1;
+        bandList.sort(new BandMedianResultsComparator());
+
         int previousPoints = 0;
+        int position = 1;
         for (WhitFridayOverallBandResultDto eachRow : bandList) {
             int totalResults = eachRow.getMedianResult();
             if (previousPoints != totalResults) {
