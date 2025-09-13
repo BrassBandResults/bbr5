@@ -3,6 +3,7 @@ package uk.co.bbr.services.venues;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import uk.co.bbr.services.contests.dao.ContestDao;
 import uk.co.bbr.services.events.dao.ContestEventDao;
@@ -118,6 +119,7 @@ public class VenueServiceImpl implements VenueService, SlugTools {
 
 
     @Override
+    @Cacheable(cacheNames = "venuesStartingWith", key = "#prefix", cacheManager = "caffeineCacheManager")
     public VenueListDto listVenuesStartingWith(String prefix) {
         List<VenueListSqlDto> venuesToReturn;
         String prefixDisplay = prefix;

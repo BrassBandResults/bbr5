@@ -26,7 +26,9 @@ public class CacheConfiguration {
             "thisWeekendEvents",
             "lastWeekendEvents",
             "resultsForBand",
-            "resultsForConductor"
+            "resultsForConductor",
+            "peopleStartingWith",
+            "venuesStartingWith"
         );
 
         // Add this annotation at service layer to enable caching

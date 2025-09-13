@@ -3,6 +3,7 @@ package uk.co.bbr.services.people;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import uk.co.bbr.services.events.dao.ContestAdjudicatorDao;
 import uk.co.bbr.services.events.dao.ContestResultDao;
@@ -135,6 +136,7 @@ public class PersonServiceImpl implements PersonService, SlugTools {
     }
 
     @Override
+    @Cacheable(cacheNames = "peopleStartingWith", key = "#prefix", cacheManager = "caffeineCacheManager")
     public PeopleListDto listPeopleStartingWith(String prefix) {
         if (prefix.strip().length() != 1) {
             throw new UnsupportedOperationException("Prefix must be a single character");
