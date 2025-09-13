@@ -16,15 +16,17 @@ public class CacheConfiguration {
     @Bean
     public CacheManager caffeineCacheManager() {
         Caffeine<Object, Object> builder = Caffeine.newBuilder()
-            .maximumSize(10_000)                   // adjust to traffic/heap
-            .expireAfterWrite(Duration.ofSeconds(30)); // short-term cache
+            .maximumSize(30) // max entries in each cache
+            .expireAfterWrite(Duration.ofSeconds(30));
 
         CaffeineCacheManager manager = new CaffeineCacheManager(
             "todayInHistory",
             "thisWeekInHistory",
             "nextWeekendEvents",
             "thisWeekendEvents",
-            "lastWeekendEvents"
+            "lastWeekendEvents",
+            "resultsForBand",
+            "resultsForConductor"
         );
 
         // Add this annotation at service layer to enable caching

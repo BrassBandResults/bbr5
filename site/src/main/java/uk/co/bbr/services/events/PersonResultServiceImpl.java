@@ -1,6 +1,7 @@
 package uk.co.bbr.services.events;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.bands.types.ResultSetCategory;
@@ -38,6 +39,7 @@ public class PersonResultServiceImpl implements PersonResultService {
 
 
     @Override
+    @Cacheable(cacheNames = "resultsForConductor", key = "#person.slug", cacheManager = "caffeineCacheManager")
     public ResultDetailsDto findResultsForConductor(PersonDao person, ResultSetCategory category) {
         List<PersonConductingResultSqlDto> conductingResultsSql = ContestResultSql.selectPersonConductingResults(this.entityManager, person.getId());
 
