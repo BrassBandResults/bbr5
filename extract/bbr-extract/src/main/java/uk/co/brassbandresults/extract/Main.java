@@ -17,6 +17,6 @@ public class Main {
 
         DataFetcher dataFetcher = new DataFetcher(connectionUrl);
         DataWriter dataWriter = new DataWriter(dataFetcher);
-        dataWriter.writeSince(2023, 1, 1);
+        dataWriter.writeSince(2024, 1, 1);
     }
 }

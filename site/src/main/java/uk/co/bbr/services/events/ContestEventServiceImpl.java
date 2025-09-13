@@ -2,6 +2,7 @@ package uk.co.bbr.services.events;
 
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.contests.dao.ContestDao;
@@ -340,6 +341,7 @@ public class ContestEventServiceImpl implements ContestEventService {
     }
 
     @Override
+    @Cacheable(cacheNames = "lastWeekendEvents", cacheManager = "caffeineCacheManager")
     public List<ContestResultDao> fetchLastWeekend() {
         LocalDate previousSunday = DateTools.previousSundayDate();
         if (previousSunday == null) {
@@ -348,7 +350,9 @@ public class ContestEventServiceImpl implements ContestEventService {
         return this.fetchEventsForWeekend(previousSunday);
     }
 
+
     @Override
+    @Cacheable(cacheNames = "thisWeekendEvents", cacheManager = "caffeineCacheManager")
     public List<ContestResultDao> fetchThisWeekend() {
         LocalDate thisSunday = DateTools.thisWeekendSundayDate();
         if (thisSunday == null) {
@@ -358,6 +362,7 @@ public class ContestEventServiceImpl implements ContestEventService {
     }
 
     @Override
+    @Cacheable(cacheNames = "nextWeekendEvents", cacheManager = "caffeineCacheManager")
     public List<ContestResultDao> fetchNextWeekend() {
         LocalDate nextSunday = DateTools.nextSundayDate();
 
@@ -412,6 +417,7 @@ public class ContestEventServiceImpl implements ContestEventService {
     }
 
     @Override
+    @Cacheable(cacheNames = "todayInHistory", cacheManager = "caffeineCacheManager")
     public ContestResultDao fetchTodayInHistory() {
         List<HistoricalEventSqlDto> inHistory = null;
         try {
@@ -426,6 +432,7 @@ public class ContestEventServiceImpl implements ContestEventService {
     }
 
     @Override
+    @Cacheable(cacheNames = "thisWeekInHistory", cacheManager = "caffeineCacheManager")
     public ContestResultDao fetchThisWeekInHistory() {
         List<HistoricalEventSqlDto> inHistory = null;
         try {

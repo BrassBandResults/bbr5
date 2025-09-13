@@ -2,6 +2,7 @@ package uk.co.bbr.services.events;
 
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.bands.types.ResultSetCategory;
@@ -39,6 +40,7 @@ public class BandResultServiceImpl implements BandResultService {
     private final EntityManager entityManager;
 
     @Override
+    @Cacheable(cacheNames = "resultsForBand", key = "#band.slug", cacheManager = "caffeineCacheManager")
     public ResultDetailsDto findResultsForBand(BandDao band, ResultSetCategory category) {
         List<BandResultSqlDto> bandResultsSql = ContestResultSql.selectBandResults(this.entityManager, band.getId());
         List<ResultPieceSqlDto> resultPiecesSql = ContestResultSql.selectBandResultPerformances(this.entityManager, band.getId());
