@@ -16,8 +16,8 @@ public class CacheConfiguration {
     @Bean
     public CacheManager caffeineCacheManager() {
         Caffeine<Object, Object> builder = Caffeine.newBuilder()
-            .maximumSize(30) // max entries in each cache
-            .expireAfterWrite(Duration.ofSeconds(30));
+            .maximumSize(50) // max entries in each cache
+            .expireAfterWrite(Duration.ofSeconds(120));
 
         CaffeineCacheManager manager = new CaffeineCacheManager(
             "todayInHistory",
