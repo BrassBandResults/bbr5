@@ -63,15 +63,44 @@ public class ContestResultSql {
     }
 
     private static final String PERSON_CONDUCTING_SQL = """
-        SELECT e.date_of_event, e.date_resolution, c.slug as contest_slug, c.name as contest_name, r.band_name, b.name as current_band_name, b.slug as band_slug, r.result_position, r.result_position_type, r.result_award, r.points_total, r.draw, r.id as result_id, e.id as event_id, region.name as region_name, region.country_code, g.name as group_name, g.slug as group_slug, r.notes as notes
-        FROM contest_result r
-                 INNER JOIN contest_event e ON e.id = r.contest_event_id
-                 INNER JOIN contest c ON c.id = e.contest_id
-                 INNER JOIN band b ON b.id = r.band_id
-                 LEFT OUTER JOIN region region on region.id = b.region_id
-                 LEFT OUTER JOIN contest_group g ON g.id = c.contest_group_id
-        WHERE (r.conductor_id = ?1 OR r.conductor_two_id = ?1 OR r.conductor_three_id = ?1)
-        AND r.result_position_type != 'W'
+        WITH R AS (
+          SELECT r.id, r.contest_event_id, r.band_id
+          FROM contest_result r
+          WHERE r.result_position_type <> 'W'
+            AND EXISTS (
+              SELECT 1
+              FROM (VALUES (r.conductor_id),
+                           (r.conductor_two_id),
+                           (r.conductor_three_id)) v(conductor_id)
+              WHERE v.conductor_id = ?1
+            )
+        )
+        SELECT e.date_of_event,
+               e.date_resolution,
+               c.slug as contest_slug,
+               c.name as contest_name,
+               rfull.band_name,
+               b.name as current_band_name,
+               b.slug as band_slug,
+               rfull.result_position,
+               rfull.result_position_type,
+               rfull.result_award,
+               rfull.points_total,
+               rfull.draw,
+               rfull.id as result_id,
+               e.id as event_id,
+               region.name as region_name,
+               region.country_code,
+               g.name as group_name,
+               g.slug as group_slug,
+               rfull.notes as notes
+        FROM R
+        INNER JOIN contest_result rfull ON rfull.id = R.id
+        INNER JOIN contest_event e ON e.id = R.contest_event_id
+        INNER JOIN contest c ON c.id = e.contest_id
+        INNER JOIN band b ON b.id = R.band_id
+        LEFT OUTER JOIN region ON region.id = b.region_id
+        LEFT OUTER JOIN contest_group g ON g.id = c.contest_group_id
         ORDER BY e.date_of_event DESC;
         """;
 
