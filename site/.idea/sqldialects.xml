@@ -3,5 +3,6 @@
   <component name="SqlDialectMappings">
     <file url="file://$PROJECT_DIR$/src/main/resources/db/migration/V1_0002__tables.sql" dialect="TSQL" />
     <file url="file://$PROJECT_DIR$/src/main/resources/db/migration/V1_0016__wellington_contest_type.sql" dialect="AZURE" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/db/migration/V1_0017__wellington_contest_type_corrections.sql" dialect="AZURE" />
   </component>
 </project>
