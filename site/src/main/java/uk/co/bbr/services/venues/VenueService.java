@@ -40,5 +40,7 @@ public interface VenueService {
 
     List<ContestEventDao> fetchVenueContestYear(VenueDao venue, int year);
 
+    List<VenueDao> fetchSubVenues(VenueDao venue);
+
     void delete(VenueDao venue);
 }

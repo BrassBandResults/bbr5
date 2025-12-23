@@ -1,11 +1,17 @@
-<div th:fragment="header(Venue, PreviousNames)" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<div th:fragment="header(Venue, PreviousNames, SubVenues)" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <h2 th:text="${Venue.name}"></h2>
     <div sec:authorize="hasRole('BBR_SUPERUSER')">
         <span th:replace="~{buttons/edit.html :: editVenue(${Venue})}"></span>
         <span th:replace="~{buttons/edit.html :: editVenueAliases(${Venue})}"></span>
     </div><br/>
     <span th:replace="~{components/aliases.html :: previousNames(${PreviousNames})}"></span>
-    <p th:if="${Venue.parent}"><span th:text="#{page.venue.inside}">Part of </span> <span th:replace="~{links/venue-link.html :: venueLink(${Venue.parent})}">Venue Parent</span></p>
+    <p th:if="${Venue.parent}"><span th:text="#{page.venue.inside}">Inside </span> <span th:replace="~{links/venue-link.html :: venueLink(${Venue.parent})}">Venue Parent</span></p>
+    <p th:if="${SubVenues != null and !SubVenues.isEmpty()}">
+        <span th:text="#{page.venue.sub-venues}">Contains</span>
+        <span th:each="subVenue, iterStat : ${SubVenues}">
+            <span th:replace="~{links/venue-link.html :: venueLink(${subVenue})}">Sub Venue</span><span th:if="${!iterStat.last}">, </span>
+        </span>
+    </p>
     <p th:utext="${Notes}">Notes</p>
     <br/>
 </div>

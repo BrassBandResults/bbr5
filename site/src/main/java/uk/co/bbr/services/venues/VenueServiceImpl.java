@@ -244,6 +244,11 @@ public class VenueServiceImpl implements VenueService, SlugTools {
     }
 
     @Override
+    public List<VenueDao> fetchSubVenues(VenueDao venue) {
+        return this.venueRepository.findWhereParent(venue.getId());
+    }
+
+    @Override
     public void delete(VenueDao venue) {
         List<VenueAliasDao> aliases = this.venueAliasRepository.findByVenue(venue.getId());
         this.venueAliasRepository.deleteAll(aliases);
