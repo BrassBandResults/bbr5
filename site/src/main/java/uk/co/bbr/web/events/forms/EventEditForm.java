@@ -22,6 +22,7 @@ public class EventEditForm {
     private String venueName;
     private String venueSlug;
     private boolean noContest;
+    private boolean complete;
     private Long contestType;
 
     public EventEditForm() {
@@ -40,6 +41,7 @@ public class EventEditForm {
             this.venueSlug = event.getVenue().getSlug();
         }
         this.noContest = event.isNoContest();
+        this.complete = event.isComplete();
         this.contestType = event.getContestType().getId();
     }
 

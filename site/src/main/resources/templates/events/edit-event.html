@@ -56,6 +56,11 @@
             <small class="form-text" th:text="#{page.contest-edit.hint.no-contest}">Enable this if this event did not take place.</small>
         </div>
         <div class="mb-3">
+            <input id="complete" class="form-check-input" type="checkbox" th:field="*{complete}"/>
+            <label class="form-label" for="complete" th:text="#{page.checkbox-prompt.complete}">Complete</label><br/>
+            <small class="form-text" th:text="#{page.contest-edit.hint.complete}">Enable this if this event is complete on this site, and no further information needs adding.</small>
+        </div>
+        <div class="mb-3">
             <label class="form-label" for="notes" th:text="#{page.field-prompt.notes}">Notes:</label>
             <textarea id="notes" class="form-control" th:field="*{notes}" cols="80" rows="10"></textarea>
             <small class="form-text" th:text="#{page.event-edit.hint.notes}">Notes</small>

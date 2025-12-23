@@ -81,6 +81,7 @@ public class EditEventController {
         existingEvent.setEventDateResolution(ContestEventDateResolution.fromCode(submittedEvent.getDateResolution()));
         existingEvent.setNotes(submittedEvent.getNotes());
         existingEvent.setNoContest(submittedEvent.isNoContest());
+        existingEvent.setComplete(submittedEvent.isComplete());
 
         Optional<ContestTypeDao> contestType = this.contestTypeService.fetchById(submittedEvent.getContestType());
         if (contestType.isPresent()) {
