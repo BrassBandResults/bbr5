@@ -163,6 +163,20 @@ public class VenueServiceImpl implements VenueService, SlugTools {
     }
 
     @Override
+    public VenueListDto listVenuesWithNoLocation() {
+        List<VenueListSqlDto> venuesToReturn = VenueListSql.noLocationVenues(this.entityManager);
+
+        long allVenuesCount = this.venueRepository.count();
+
+        List<VenueDao> returnedVenues = new ArrayList<>();
+        for (VenueListSqlDto eachVenue : venuesToReturn) {
+            VenueDao venue = eachVenue.asVenue();
+            returnedVenues.add(venue);
+        }
+        return new VenueListDto(venuesToReturn.size(), allVenuesCount, "NOLOCATION", returnedVenues);
+    }
+
+    @Override
     public List<VenueAliasDao> fetchAliases(VenueDao venue) {
         return this.venueAliasRepository.findByVenue(venue.getId());
     }

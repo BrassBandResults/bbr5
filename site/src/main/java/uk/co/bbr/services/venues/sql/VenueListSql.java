@@ -62,4 +62,15 @@ public class VenueListSql {
     public static List<VenueListSqlDto> unusedVenues(EntityManager entityManager) {
         return SqlExec.execute(entityManager, VENUE_LIST_UNUSED_SQL, VenueListSqlDto.class);
     }
+
+    private static final String VENUE_LIST_NO_LOCATION_SQL = """
+        SELECT v.slug as venue_slug, v.name as venue_name, r.slug as region_slug, r.name as region_name, r.country_code, 0 as event_count, v.latitude, v.longitude, v.id
+        FROM venue v
+        LEFT OUTER JOIN region r ON r.id = v.region_id
+        WHERE v.latitude IS NULL OR LENGTH(TRIM(v.latitude)) = 0 OR v.longitude IS NULL OR LENGTH(TRIM(v.longitude)) = 0
+        ORDER BY v.name""";
+
+    public static List<VenueListSqlDto> noLocationVenues(EntityManager entityManager) {
+        return SqlExec.execute(entityManager, VENUE_LIST_NO_LOCATION_SQL, VenueListSqlDto.class);
+    }
 }

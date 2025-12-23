@@ -26,6 +26,8 @@ public interface VenueService {
 
     VenueListDto listUnusedVenues();
 
+    VenueListDto listVenuesWithNoLocation();
+
     List<VenueAliasDao> fetchAliases(VenueDao venue);
 
     VenueDao update(VenueDao venue);
