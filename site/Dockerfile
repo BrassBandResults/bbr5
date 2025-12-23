@@ -1,4 +1,4 @@
-FROM openjdk:17-slim-bullseye as builder
+FROM amazoncorretto:21-alpine3.22 AS builder
 
 COPY . /app
 
@@ -8,7 +8,7 @@ WORKDIR /app
 
 RUN ./mvnw --batch-mode package -DskipTests
 
-FROM openjdk:17-slim-bullseye
+FROM amazoncorretto:21-alpine3.22
 
 COPY --from=builder /app/target/bbr5-*.jar /bbr5.jar
 
