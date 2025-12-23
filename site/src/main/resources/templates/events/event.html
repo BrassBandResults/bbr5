@@ -85,7 +85,7 @@
                     <th th:if="${ShowPoints5}" th:text="#{${ContestEvent.contestType.pointsFiveTitle}}" class="number">Points 5</th>
                     <th th:if="${ShowPointsPenalty}" th:text="#{${ContestEvent.contestType.pointsPenaltyTitle}}" class="number">Points Penalty</th>
                     <th th:if="${ShowPointsTotal}" th:text="#{${ContestEvent.contestType.pointsTotalTitle}}" class="number">Points Total</th>
-                    <td th:if="${ContestEvent.canEdit}"><span th:replace="~{buttons/edit.html :: editResults(${ContestEvent})}"></span></td>
+                    <td th:if="${ContestEvent.canEdit && !ContestEvent.complete}"><span th:replace="~{buttons/edit.html :: editResults(${ContestEvent})}"></span></td>
                 </tr>
             </thead>
             <tbody class="align-middle">
@@ -117,7 +117,7 @@
                     <td class="bbr-draw" th:if="${ShowPoints5}" th:text="${result.pointsFifth}"></td>
                     <td class="bbr-draw" th:if="${ShowPointsPenalty}" th:text="${result.pointsPenalty}"></td>
                     <td class="bbr-draw" th:if="${ShowPointsTotal}" th:text="${result.pointsTotal}"></td>
-                    <td th:if="${ContestEvent.canEdit}">
+                    <td th:if="${ContestEvent.canEdit && !ContestEvent.complete}">
                         <span th:if="${result.canEdit}">
                             <span th:replace="~{buttons/edit.html :: editResult(${ContestEvent}, ${result})}"></span>
                             <span th:if="${ContestEvent.contestType.ownChoice || ContestEvent.contestType.entertainments}">
@@ -143,7 +143,7 @@
         <div class="container">
             <div class="row">
                 <div class="col">
-                    <span th:if="${ContestEvent.canEdit}">
+                    <span th:if="${ContestEvent.canEdit && !ContestEvent.complete}">
                         <span th:replace="~{buttons/button.html :: greenButton(#{page.buttons.add-results}, ${'/add-results/6/' + ContestEvent.contest.slug + '/' + ContestEvent.eventDateForUrl})}"></span>
                         <br/><br/>
                     </span>
