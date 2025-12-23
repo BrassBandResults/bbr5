@@ -311,6 +311,7 @@ public abstract class PageSets {
         pageList.add("/people/UNUSED");
         pageList.add("/tags/UNUSED");
         pageList.add("/venues/UNUSED");
+        pageList.add("/venues/NOLOCATION");
         return pageList;
     }
 

@@ -69,6 +69,15 @@ public class VenueListController {
         return "venues/venues";
     }
 
+    @IsBbrSuperuser
+    @GetMapping("/venues/NOLOCATION")
+    public String venuesListNoLocation(Model model) {
+        VenueListDto venues = this.venueService.listVenuesWithNoLocation();
+        model.addAttribute("VenuePrefixLetter", "NOLOCATION");
+        model.addAttribute("Venues", venues);
+        return "venues/venues-no-location";
+    }
+
     @IsBbrAdmin
     @GetMapping("/venues/ALL/upload-locations")
     public String uploadAllVenueLocations() {

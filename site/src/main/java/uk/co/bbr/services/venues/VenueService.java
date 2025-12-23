@@ -26,6 +26,8 @@ public interface VenueService {
 
     VenueListDto listUnusedVenues();
 
+    VenueListDto listVenuesWithNoLocation();
+
     List<VenueAliasDao> fetchAliases(VenueDao venue);
 
     VenueDao update(VenueDao venue);
@@ -37,6 +39,8 @@ public interface VenueService {
     List<VenueContestYearDto> fetchVenueContestYears(VenueDao venue);
 
     List<ContestEventDao> fetchVenueContestYear(VenueDao venue, int year);
+
+    List<VenueDao> fetchSubVenues(VenueDao venue);
 
     void delete(VenueDao venue);
 }

@@ -5,11 +5,7 @@
 </head>
 <body>
 <div layout:fragment="content">
-    <span th:if="${VenuePrefixLetter == 'ALL'}"><h2><span th:text="#{page.venues.page-title}" th:remove="tag">All Venues</span></h2></span>
-    <span th:if="${VenuePrefixLetter != 'ALL'}"><h2><span th:text="#{page.venues.venues-starting-with(${VenuePrefixLetter})}" th:remove="tag">Venues starting with R</span></h2></span>
-    <p sec:authorize="hasRole('BBR_MEMBER')" th:replace="~{buttons/create.html :: createVenue()}"></p>
-    <p sec:authorize="hasRole('BBR_SUPERUSER')"><a class="btn btn-secondary btn-sm" th:href="@{/venues/NOLOCATION}">Venues with no location</a></p>
-    <br/><br/>
+    <h2>Venues Without Location</h2>
     <p th:replace="~{navigation/az-picker.html :: azPicker('venues', ${RegionPrefixLetter}, true, true)}"></p>
     <table id="venues" class="table table-hover sortable">
         <thead>

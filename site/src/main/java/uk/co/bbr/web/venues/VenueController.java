@@ -47,10 +47,12 @@ public class VenueController {
         List<VenueAliasDao> previousNames = this.venueService.fetchAliases(venue.get());
 
         List<VenueContestDto> venueContests = this.venueService.fetchVenueContests(venue.get());
+        List<VenueDao> subVenues = this.venueService.fetchSubVenues(venue.get());
 
         model.addAttribute("Venue", venue.get());
         model.addAttribute("PreviousNames", previousNames);
         model.addAttribute("VenueContests", venueContests);
+        model.addAttribute("SubVenues", subVenues);
         model.addAttribute("Notes", Tools.markdownToHTML(venue.get().getNotes()));
 
         return "venues/venue";
@@ -87,10 +89,12 @@ public class VenueController {
         List<VenueAliasDao> previousNames = this.venueService.fetchAliases(venue.get());
 
         List<VenueContestYearDto> venueYears = this.venueService.fetchVenueContestYears(venue.get());
+        List<VenueDao> subVenues = this.venueService.fetchSubVenues(venue.get());
 
         model.addAttribute("Venue", venue.get());
         model.addAttribute("PreviousNames", previousNames);
         model.addAttribute("VenueYears", venueYears);
+        model.addAttribute("SubVenues", subVenues);
         model.addAttribute("Notes", Tools.markdownToHTML(venue.get().getNotes()));
 
         return "venues/years";
@@ -104,6 +108,7 @@ public class VenueController {
             throw NotFoundException.venueNotFoundBySlug(venueSlug);
         }
         List<VenueAliasDao> previousNames = this.venueService.fetchAliases(venue.get());
+        List<VenueDao> subVenues = this.venueService.fetchSubVenues(venue.get());
         boolean venueHasLocation = venue.get().hasLocation();
         int zoomLevel = 6;
         if (!venueHasLocation){
@@ -112,6 +117,7 @@ public class VenueController {
 
         model.addAttribute("Venue", venue.get());
         model.addAttribute("PreviousNames", previousNames);
+        model.addAttribute("SubVenues", subVenues);
         model.addAttribute("ZoomLevel", zoomLevel);
         model.addAttribute("HasNoLocation", !venueHasLocation);
         model.addAttribute("Notes", Tools.markdownToHTML(venue.get().getNotes()));
