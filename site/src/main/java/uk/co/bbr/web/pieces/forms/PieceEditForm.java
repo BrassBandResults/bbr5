@@ -14,6 +14,8 @@ public class PieceEditForm {
     private String name;
     private String notes;
     private String year;
+    private Integer durationMinutes;
+    private String percussionRequirements;
     private String category;
     private String composerName;
     private String composerSlug;
@@ -30,6 +32,8 @@ public class PieceEditForm {
         this.name = piece.getName();
         this.notes = piece.getNotes();
         this.year = piece.getYear();
+        this.durationMinutes = piece.getDurationMinutes();
+        this.percussionRequirements = piece.getPercussionRequirements();
         this.category = piece.getCategory().getCode();
         if (piece.getComposer() != null) {
             this.composerName = piece.getComposer().getName();
