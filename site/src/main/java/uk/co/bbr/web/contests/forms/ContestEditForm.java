@@ -18,6 +18,7 @@ public class ContestEditForm {
     private Long region;
     private Long section;
     private Integer ordering;
+    private Integer repeatPeriod;
     private String description;
     private String notes;
     private boolean extinct;
@@ -47,6 +48,7 @@ public class ContestEditForm {
             this.section = contest.getSection().getId();
         }
         this.ordering = contest.getOrdering();
+        this.repeatPeriod = contest.getRepeatPeriod();
         this.description = contest.getDescription();
         this.notes = contest.getNotes();
         this.extinct = contest.isExtinct();

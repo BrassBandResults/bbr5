@@ -114,6 +114,7 @@ class ContestEditWebTests implements LoginMixin {
         map.add("region", String.valueOf(region.get().getId()));
         map.add("section", String.valueOf(section.get().getId()));
         map.add("ordering", "10");
+        map.add("repeatPeriod", "24");
         map.add("description", "Contest description");
         map.add("notes", "Contest notes");
         map.add("extinct", "true");
@@ -139,6 +140,7 @@ class ContestEditWebTests implements LoginMixin {
         assertEquals("Yorkshire", fetchedContest.get().getRegion().getName());
         assertEquals("first", fetchedContest.get().getSection().getSlug());
         assertEquals(10, fetchedContest.get().getOrdering());
+        assertEquals(24, fetchedContest.get().getRepeatPeriod());
         assertEquals("Contest description", fetchedContest.get().getDescription());
         assertEquals("Contest notes", fetchedContest.get().getNotes());
         assertTrue(fetchedContest.get().isExtinct());

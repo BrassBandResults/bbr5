@@ -71,6 +71,7 @@ public class CreateContestController {
         newContest.setDescription(submittedForm.getDescription());
         newContest.setNotes(submittedForm.getNotes());
         newContest.setOrdering(submittedForm.getOrdering() != null ? submittedForm.getOrdering() : 0);
+        newContest.setRepeatPeriod(submittedForm.getRepeatPeriod());
         newContest.setExtinct(submittedForm.isExtinct());
         newContest.setExcludeFromGroupResults(submittedForm.isExcludeFromGroupResults());
 

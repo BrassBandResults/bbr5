@@ -110,17 +110,23 @@ public class BandResultServiceImpl implements BandResultService {
         }
 
         // current champions
-        LocalDate thirteenMonthsAgo = LocalDate.now().minus(13, ChronoUnit.MONTHS);
         List<ContestResultDao> currentChampions = allResults.stream()
                 .filter(r -> r.getResultPositionType().equals(ResultPositionType.RESULT))
                 .filter(r -> r.getPosition() != null)
                 .filter(r -> r.getPosition() == 1)
-                .filter(p -> p.getContestEvent().getEventDate().isAfter(thirteenMonthsAgo))
+                .filter(this::isWithinChampionPeriod)
                 .toList();
 
         List<ContestResultDao> filteredChampions = this.removeWinsWithLaterResult(currentChampions);
 
         return new ResultDetailsDto(bandResults, whitResults, allResults, filteredChampions);
+    }
+
+    private boolean isWithinChampionPeriod(ContestResultDao result) {
+        Integer repeatPeriod = result.getContestEvent().getContest().getRepeatPeriod();
+        int championPeriod = repeatPeriod != null && repeatPeriod > 0 ? repeatPeriod : 12;
+        LocalDate championCutoff = LocalDate.now().minus(championPeriod + 1L, ChronoUnit.MONTHS);
+        return result.getContestEvent().getEventDate().isAfter(championCutoff);
     }
 
     private List<ContestResultDao>  removeWinsWithLaterResult(List<ContestResultDao> currentChampions) {

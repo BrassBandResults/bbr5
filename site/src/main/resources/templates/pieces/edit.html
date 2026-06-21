@@ -25,6 +25,10 @@
             <small class="form-text" th:text="#{page.piece-edit.hint.year}">The year this piece was composed or published.</small>
         </div>
         <div class="mb-3">
+            <label class="form-label" for="durationMinutes" th:text="#{page.field-prompt.duration-minutes}">Duration in Minutes:</label>
+            <input id="durationMinutes" class="form-control" type="number" th:field="*{durationMinutes}" min="0" max="999" size="80"/>
+        </div>
+        <div class="mb-3">
             <label class="form-label" for="category" th:text="#{page.field-prompt.category}">Category:</label>
             <select id="category" class="form-select" th:field="*{category}">
                 <option th:each="state : ${T(uk.co.bbr.services.pieces.types.PieceCategory).values()}"
@@ -46,6 +50,10 @@
         <div class="mb-3">
             <label class="form-label" for="notes" th:text="#{page.field-prompt.notes}">Notes:</label>
             <textarea id="notes" class="form-control" th:field="*{notes}" cols="80" rows="10"></textarea>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="percussionRequirements" th:text="#{page.field-prompt.percussion-requirements}">Percussion Requirements:</label>
+            <textarea id="percussionRequirements" class="form-control" th:field="*{percussionRequirements}" cols="80" rows="5"></textarea>
         </div>
 
         <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">

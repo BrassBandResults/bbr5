@@ -62,6 +62,8 @@ public class EditPieceController {
 
         existingPiece.setName(submittedPiece.getName());
         existingPiece.setYear(submittedPiece.getYear());
+        existingPiece.setDurationMinutes(submittedPiece.getDurationMinutes());
+        existingPiece.setPercussionRequirements(submittedPiece.getPercussionRequirements());
         existingPiece.setNotes(submittedPiece.getNotes());
         existingPiece.setCategory(PieceCategory.fromCode(submittedPiece.getCategory()));
 

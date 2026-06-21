@@ -38,6 +38,12 @@ public class PieceDao extends AbstractDao implements NameTools {
     @Column(name="piece_year")
     private String year;
 
+    @Column(name="duration_minutes")
+    private Integer durationMinutes;
+
+    @Column(name="percussion_requirements")
+    private String percussionRequirements;
+
     @Column(name="category")
     @Setter
     private PieceCategory category;
@@ -95,6 +101,17 @@ public class PieceDao extends AbstractDao implements NameTools {
             year = year.strip();
         }
         this.year = year;
+    }
+
+    public void setDurationMinutes(Integer durationMinutes) {
+        this.durationMinutes = durationMinutes;
+    }
+
+    public void setPercussionRequirements(String percussionRequirements) {
+        if (percussionRequirements != null) {
+            percussionRequirements = percussionRequirements.strip();
+        }
+        this.percussionRequirements = percussionRequirements;
     }
 
     public ObjectNode asLookup(ObjectMapper objectMapper) {

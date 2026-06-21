@@ -75,6 +75,9 @@ class BandCurrentChampionsWebTests implements LoginMixin {
         ContestDao britishOpen = this.contestService.create("British Open");
         ContestDao masters = this.contestService.create("Masters");
         ContestDao oldResult = this.contestService.create("Old Contest");
+        ContestDao skippedYearContest = this.contestService.create("Skipped Year Contest");
+        skippedYearContest.setRepeatPeriod(24);
+        this.contestService.update(skippedYearContest);
         ContestDao whitFriday = this.contestService.create("Somewhere (Whit Friday)");
 
         LocalDate agesAgo = LocalDate.now().minus(2, ChronoUnit.YEARS);
@@ -86,6 +89,7 @@ class BandCurrentChampionsWebTests implements LoginMixin {
         ContestEventDao yorkshireAreaLastYear = this.contestEventService.create(yorkshireArea, twelveMonthsAgo);
         ContestEventDao yorkshireAreaToday = this.contestEventService.create(yorkshireArea, today);
         ContestEventDao oldContest = this.contestEventService.create(oldResult, agesAgo);
+        ContestEventDao skippedYearContestTwoYearsAgo = this.contestEventService.create(skippedYearContest, agesAgo);
         ContestEventDao yorkshireCupLastMonth = this.contestEventService.create(yorkshireCup, lastMonth);
         ContestEventDao BritishOpenLastYear = this.contestEventService.create(britishOpen, twelveMonthsAgo);
         ContestEventDao mastersSixMonthsAgo = this.contestEventService.create(masters, sixMonthsAgo);
@@ -98,6 +102,8 @@ class BandCurrentChampionsWebTests implements LoginMixin {
 
         this.resultService.addResult(oldContest, "1", rtb, davidRoberts);
         this.resultService.addResult(oldContest, "2", notRtb, johnRoberts);
+
+        this.resultService.addResult(skippedYearContestTwoYearsAgo, "1", rtb, davidRoberts);
 
         this.resultService.addResult(yorkshireCupLastMonth, "1", rtb, davidRoberts);
         this.resultService.addResult(yorkshireCupLastMonth, "2", notRtb, johnRoberts);
@@ -132,6 +138,7 @@ class BandCurrentChampionsWebTests implements LoginMixin {
         assertTrue(response.contains("<img id=\"champion-yorkshire-cup-" + lastMonthString + "\" src=\"https://null/icons/trophy-gold.png\" alt=\"trophy\" />"));
         assertTrue(response.contains("<img id=\"champion-masters-" + sixMonthsAgoString + "\" src=\"https://null/icons/trophy-gold.png\" alt=\"trophy\" />"));
         assertTrue(response.contains("<img id=\"champion-british-open-" + twelveMonthsAgoString + "\" src=\"https://null/icons/trophy-gold.png\" alt=\"trophy\" />"));
+        assertTrue(response.contains("<img id=\"champion-skipped-year-contest-" + agesAgoString + "\" src=\"https://null/icons/trophy-gold.png\" alt=\"trophy\" />"));
         assertTrue(response.contains("<img id=\"champion-somewhere-whit-friday-" + sixMonthsAgoString + "\" src=\"https://null/icons/award-gold.png\" alt=\"rosette\" />"));
 
         assertFalse(response.contains("<img id=\"champion-yorkshire-area-" + twelveMonthsAgo + "\" src=\"https://null/icons/trophy-gold.png\" alt=\"trophy\" />"));
