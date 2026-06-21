@@ -85,6 +85,7 @@ public class EditContestController {
         existingContest.setExtinct(submittedContest.isExtinct());
         existingContest.setExcludeFromGroupResults(submittedContest.isExcludeFromGroupResults());
         existingContest.setOrdering(submittedContest.getOrdering());
+        existingContest.setRepeatPeriod(submittedContest.getRepeatPeriod());
         existingContest.setDescription(submittedContest.getDescription());
         if (submittedContest.getQualifiesForSlug() != null) {
             Optional<ContestDao> qualifiesFor = this.contestService.fetchBySlug(submittedContest.getQualifiesForSlug());

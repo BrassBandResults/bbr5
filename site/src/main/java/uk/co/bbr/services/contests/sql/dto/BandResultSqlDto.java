@@ -41,6 +41,7 @@ public class BandResultSqlDto extends AbstractSqlDto {
     private final String conductor3Surname;
     private final Long contestSectionId;
     private final String resultNotes;
+    private final Integer repeatPeriod;
 
     public BandResultSqlDto(Object[] columnList) {
         this.contestResultId = this.getLong(columnList,0);
@@ -67,6 +68,7 @@ public class BandResultSqlDto extends AbstractSqlDto {
         this.conductor3Surname = this.getString(columnList, 21);
         this.contestSectionId = this.getLong(columnList, 22);
         this.resultNotes = this.getString(columnList, 23);
+        this.repeatPeriod = this.getInteger(columnList, 24);
     }
 
     public ContestResultDao toContestResultDao() {
@@ -81,6 +83,7 @@ public class BandResultSqlDto extends AbstractSqlDto {
         eachResult.getContestEvent().setEventDateResolution(ContestEventDateResolution.fromCode(this.getEventDateResolution()));
         eachResult.getContestEvent().getContest().setSlug(this.getContestSlug());
         eachResult.getContestEvent().getContest().setName(this.getContestName());
+        eachResult.getContestEvent().getContest().setRepeatPeriod(this.getRepeatPeriod());
         if (this.contestSectionId != null) {
             eachResult.getContestEvent().getContest().setSection(new SectionDao());
             eachResult.getContestEvent().getContest().getSection().setId(this.contestSectionId);

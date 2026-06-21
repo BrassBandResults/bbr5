@@ -23,7 +23,8 @@ public class ContestResultSql {
         con2.slug as c2_slug, con2.first_names as c2_first_names, con2.surname as c2_surname,
         con3.slug as c3_slug, con3.first_names as c3_first_names, con3.surname as c3_surname,
         c.section_id as contest_section,
-        r.notes as notes
+        r.notes as notes,
+        c.repeat_period
         FROM contest_result r
         INNER JOIN contest_event e ON e.id = r.contest_event_id
         INNER JOIN contest c ON c.id = e.contest_id
