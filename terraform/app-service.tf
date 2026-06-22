@@ -68,38 +68,20 @@ resource "time_sleep" "app_service_dns_wait" {
   create_duration = "60s"
 }
 
-resource "azurerm_app_service_custom_hostname_binding" "bbr5couk" {
+resource "azurerm_app_service_custom_hostname_binding" "bbr5" {
   hostname            = terraform.workspace == "prod" ? "www.brassbandresults.co.uk" : "bbr5-${terraform.workspace}.brassbandresults.co.uk"
   app_service_name    = azurerm_linux_web_app.bbr5.name
   resource_group_name = azurerm_resource_group.this.name
   depends_on          = [time_sleep.app_service_dns_wait]
 }
 
-resource "azurerm_app_service_custom_hostname_binding" "bbr5com" {
-  hostname            = terraform.workspace == "prod" ? "www.brassbandresults.com" : "bbr5-${terraform.workspace}.brassbandresults.com"
-  app_service_name    = azurerm_linux_web_app.bbr5.name
-  resource_group_name = azurerm_resource_group.this.name
-  depends_on          = [time_sleep.app_service_dns_wait]
-}
-
-resource "azurerm_app_service_managed_certificate" "bbr5coukcert" {
+resource "azurerm_app_service_managed_certificate" "bbr5cert" {
   depends_on                 = [cloudflare_record.app_service]
-  custom_hostname_binding_id = azurerm_app_service_custom_hostname_binding.bbr5couk.id
+  custom_hostname_binding_id = azurerm_app_service_custom_hostname_binding.bbr5.id
 }
 
-resource "azurerm_app_service_managed_certificate" "bbr5comcert" {
-  depends_on                 = [cloudflare_record.app_service]
-  custom_hostname_binding_id = azurerm_app_service_custom_hostname_binding.bbr5com.id
-}
-
-resource "azurerm_app_service_certificate_binding" "bbr5coukcert" {
-  hostname_binding_id = azurerm_app_service_custom_hostname_binding.bbr5couk.id
-  certificate_id      = azurerm_app_service_managed_certificate.bbr5coukcert.id
-  ssl_state           = "SniEnabled"
-}
-
-resource "azurerm_app_service_certificate_binding" "bbr5comcert" {
-  hostname_binding_id = azurerm_app_service_custom_hostname_binding.bbr5com.id
-  certificate_id      = azurerm_app_service_managed_certificate.bbr5comcert.id
+resource "azurerm_app_service_certificate_binding" "bbr5cert" {
+  hostname_binding_id = azurerm_app_service_custom_hostname_binding.bbr5.id
+  certificate_id      = azurerm_app_service_managed_certificate.bbr5cert.id
   ssl_state           = "SniEnabled"
 }
