@@ -25,8 +25,9 @@
             <small class="form-text" th:text="#{page.piece-edit.hint.year}">The year this piece was composed or published.</small>
         </div>
         <div class="mb-3">
-            <label class="form-label" for="durationMinutes" th:text="#{page.field-prompt.duration-minutes}">Duration in Minutes:</label>
+            <label class="form-label" for="durationMinutes" th:text="#{page.field-prompt.duration-minutes}">Duration:</label>
             <input id="durationMinutes" class="form-control" type="number" th:field="*{durationMinutes}" min="0" max="999" size="80"/>
+            <small class="form-text" th:text="#{page.piece-edit.hint.year}">Duration of a typical performance of this piece in minutes.</small>
         </div>
         <div class="mb-3">
             <label class="form-label" for="category" th:text="#{page.field-prompt.category}">Category:</label>
@@ -82,12 +83,13 @@
             let inputSlugElement = document.getElementById(inputId + '-slug');
             inputElement.value = matchName;
             inputSlugElement.value = matchSlug;
-            inputElement.classList.remove("bg-warning-subtle");
-            inputElement.classList.remove("bg-danger-subtle");
+            inputElement.classList.remove("bg-warning-subtle", "bg-danger-subtle");
             inputElement.classList.add("bg-success-subtle");
 
             document.getElementById('list-' + inputId).remove();
         }
+
+        const _ = new EasyMDE({element: document.getElementById('percussionRequirements')});
     </script>
 </div>
 
