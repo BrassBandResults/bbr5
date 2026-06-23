@@ -55,6 +55,7 @@ public class PieceController {
         model.addAttribute("PreviousNames", pieceAliases);
         model.addAttribute("PerformanceCount", performances.size());
         model.addAttribute("Notes", Tools.markdownToHTML(piece.get().getNotes()));
+        model.addAttribute("PercussionRequirements", Tools.markdownToHTML(piece.get().getPercussionRequirements()));
 
         return "pieces/piece";
     }
@@ -81,6 +82,7 @@ public class PieceController {
         model.addAttribute("PreviousNames", pieceAliases);
         model.addAttribute("PerformanceCount", performances.size());
         model.addAttribute("Notes", Tools.markdownToHTML(piece.get().getNotes()));
+        model.addAttribute("PercussionRequirements", Tools.markdownToHTML(piece.get().getPercussionRequirements()));
 
         return "pieces/piece-own-choice";
     }
@@ -109,6 +111,7 @@ public class PieceController {
         model.addAttribute("PerformanceCount", performances.size());
         model.addAttribute("Performances", performances);
         model.addAttribute("Notes", Tools.markdownToHTML(piece.get().getNotes()));
+        model.addAttribute("PercussionRequirements", Tools.markdownToHTML(piece.get().getPercussionRequirements()));
 
         return "pieces/piece-performances";
     }
