@@ -13,6 +13,6 @@ resource "azurerm_storage_account" "bbr5" {
 }
 
 resource "azurerm_storage_queue" "point-awards" {
-  name                 = "point-awards"
-  storage_account_id   = azurerm_storage_account.bbr5.name
+  name               = "point-awards"
+  storage_account_id = azurerm_storage_account.bbr5.name
 }
