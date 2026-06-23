@@ -22,7 +22,19 @@
         </tr>
         <tr>
             <th th:text="#{page.field-prompt.type}">Type:</th>
-            <td><span th:text="#{${Piece.category.translationKey}}"</td>
+            <td><span th:text="#{${Piece.category.translationKey}}">Test Piece</span></td>
+        </tr>
+        <tr>
+            <th th:text="#{page.field-prompt.duration-minutes}">Duration in Minutes:</th>
+            <td th:text="${Piece.durationMinutes}">11</td>
+        </tr>
+        <tr>
+            <th th:text="#{page.field-prompt.notes}">Notes:</th>
+            <td th:text="${Piece.notes}">Notes</td>
+        </tr>
+        <tr>
+            <th th:text="#{page.field-prompt.percussion-requirements}">Percussion Requirements:</th>
+            <td th:text="${Piece.percussionRequirements}">Percussion requirements</td>
         </tr>
     </table>
     <br/>

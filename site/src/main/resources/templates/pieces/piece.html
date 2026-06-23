@@ -7,19 +7,6 @@
 <div layout:fragment="content">
     <span th:replace="~{pieces/components/header.html :: header(${Piece},${PreviousNames})}"></span>
 
-    <table class="table" th:if="${Piece.durationMinutes != null || Piece.percussionRequirements != null}">
-        <tbody>
-        <tr th:if="${Piece.durationMinutes != null}">
-            <th th:text="#{page.field-prompt.duration-minutes}">Duration in Minutes:</th>
-            <td th:text="${Piece.durationMinutes}">11</td>
-        </tr>
-        <tr th:if="${Piece.percussionRequirements != null}">
-            <th th:text="#{page.field-prompt.percussion-requirements}">Percussion Requirements:</th>
-            <td th:text="${Piece.percussionRequirements}">Percussion requirements</td>
-        </tr>
-        </tbody>
-    </table>
-
     <ul class="nav nav-tabs">
         <li class="nav-item">
             <a class="nav-link active" th:href="${'/pieces/' + Piece.slug}" th:text="#{page.piece.header.set-test(${SetTestCount})}">Set Tests</a>
