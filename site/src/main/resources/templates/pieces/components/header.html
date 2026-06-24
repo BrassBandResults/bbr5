@@ -30,7 +30,7 @@
         </tr>
         <tr>
             <th th:text="#{page.field-prompt.duration-minutes}">Duration:</th>
-            <td><span th:text="${Piece.durationMinutes}">11</span> <span th:text="#{page.field-prompt.minutes}">minutes</span></td>
+            <td><span th:text="${Piece.durationMinutes}">11</span> <span th:if="${Piece.durationMinutes != null}" th:text="#{page.field-prompt.minutes}">minutes</span></td>
         </tr>
         <tr>
             <th th:text="#{page.field-prompt.percussion-requirements}">Percussion Requirements:</th>
