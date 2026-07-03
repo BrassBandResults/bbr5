@@ -220,6 +220,16 @@ public class BandServiceImpl implements BandService, SlugTools {
     }
 
     @Override
+    public List<BandDao> findNonExtinctBandsInUkRegionsWithLocation() {
+        List<BandDao> bandData = new ArrayList<>();
+        List<RegionBandSqlDto> sqlData = BandMapSql.selectNonExtinctBandsInUkRegionsWithLocation(this.entityManager);
+        for (RegionBandSqlDto eachRow : sqlData) {
+            bandData.add(eachRow.getBand());
+        }
+        return bandData;
+    }
+
+    @Override
     public void delete(BandDao band) {
         List<BandRehearsalDayDao> days = this.bandRehearsalDayRepository.findForBand(band.getId());
         this.bandRehearsalDayRepository.deleteAll(days);

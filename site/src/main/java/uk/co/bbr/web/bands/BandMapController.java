@@ -36,10 +36,33 @@ public class BandMapController {
     }
 
     @IsBbrMember
+    @GetMapping("/bands/MAP/consituencies")
+    public String constituencyMap() {
+        return "bands/map-constituencies";
+    }
+
+    @IsBbrMember
     @GetMapping(value="/bands/MAP/for-day/bands.json", produces="application/json")
     public ResponseEntity<JsonNode> bandsByRehearsalDayMapJson() {
 
         List<BandDao> bandsForMap = new ArrayList<>(this.bandService.findBandsWithMapLocationAndRehearsals());
+
+        ObjectNode objectNode = objectMapper.createObjectNode();
+        objectNode.put("type", "FeatureCollection");
+        ArrayNode features = objectNode.putArray("features");
+
+        for (BandDao eachBand : bandsForMap) {
+            features.add(eachBand.asGeoJson(this.objectMapper));
+        }
+
+        return ResponseEntity.ok(objectNode);
+    }
+
+    @IsBbrMember
+    @GetMapping(value="/bands/MAP/consituencies/bands.json", produces="application/json")
+    public ResponseEntity<JsonNode> bandsInUkRegionsMapJson() {
+
+        List<BandDao> bandsForMap = new ArrayList<>(this.bandService.findNonExtinctBandsInUkRegionsWithLocation());
 
         ObjectNode objectNode = objectMapper.createObjectNode();
         objectNode.put("type", "FeatureCollection");
