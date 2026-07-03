@@ -10,6 +10,7 @@ import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.client.RestTemplate;
 import uk.co.bbr.services.bands.BandService;
+import uk.co.bbr.services.bands.dao.BandDao;
 import uk.co.bbr.services.regions.RegionService;
 import uk.co.bbr.services.regions.dao.RegionDao;
 import uk.co.bbr.services.security.JwtService;
@@ -46,7 +47,22 @@ class ConstituencyMapWebTests implements LoginMixin {
         loginTestUser(this.securityService, this.jwtService, TestUser.TEST_MEMBER);
 
         RegionDao yorkshire = this.regionService.fetchBySlug("yorkshire").get();
-        this.bandService.create("Rothwell Temperance Band", yorkshire);
+        BandDao yorkshireBand = this.bandService.create("Rothwell Temperance Band", yorkshire);
+        yorkshireBand.setLatitude("53.0");
+        yorkshireBand.setLongitude("-1.0");
+        this.bandService.update(yorkshireBand);
+
+        RegionDao ni = this.regionService.fetchBySlug("northern-ireland").get();
+        BandDao niBand = this.bandService.create("NI Band", ni);
+        niBand.setLatitude("54.0");
+        niBand.setLongitude("-6.0");
+        this.bandService.update(niBand);
+
+        RegionDao iom = this.regionService.fetchBySlug("isle-of-man").get();
+        BandDao iomBand = this.bandService.create("IOM Band", iom);
+        iomBand.setLatitude("54.2");
+        iomBand.setLongitude("-4.5");
+        this.bandService.update(iomBand);
 
         logoutTestUser();
     }
@@ -65,7 +81,8 @@ class ConstituencyMapWebTests implements LoginMixin {
         String response = this.restTemplate.getForObject("http://localhost:" + this.port + "/bands/MAP/consituencies/bands.json", String.class);
         assertNotNull(response);
         assertTrue(response.contains("FeatureCollection"));
-        // Band might not be in the results if it doesn't have a location, 
-        // but the query is successful.
+        assertTrue(response.contains("Rothwell Temperance Band"));
+        assertTrue(response.contains("NI Band"));
+        assertTrue(response.contains("IOM Band"));
     }
 }
