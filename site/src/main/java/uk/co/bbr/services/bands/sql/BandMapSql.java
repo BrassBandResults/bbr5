@@ -51,5 +51,21 @@ public class BandMapSql {
     public static List<RegionBandSqlDto> selectBandsWithRehearsalsForBandMap(EntityManager entityManager) {
         return SqlExec.execute(entityManager, MAP_BANDS_FOR_DAYS_MAP, RegionBandSqlDto.class);
     }
+
+    private static final String MAP_BANDS_IN_UK_REGIONS = """
+        SELECT b.slug as band_slug, b.name as band_name, b.status as band_status,
+               s.slug as section_slug, s.name as section_name, s.translation_key as section_key, s.map_short_code as section_map_code,
+               b.longitude, b.latitude, b.website,
+               NULL as sunday, NULL as monday, NULL as tuesday, NULL as wednesday, NULL as thursday, NULL as friday, NULL as saturday
+        FROM band b
+        INNER JOIN region r ON r.id = b.region_id
+        LEFT OUTER JOIN section s ON s.id = b.section_id
+        WHERE b.status != 0
+        AND r.slug IN ('yorkshire', 'west-england', 'wales', 'scotland', 'north-west', 'north', 'midlands', 'london-and-southern-counties')
+        AND LEN(b.latitude) > 0 AND LEN(b.longitude) > 0""";
+
+    public static List<RegionBandSqlDto> selectNonExtinctBandsInUkRegionsWithLocation(EntityManager entityManager) {
+        return SqlExec.execute(entityManager, MAP_BANDS_IN_UK_REGIONS, RegionBandSqlDto.class);
+    }
 }
 
