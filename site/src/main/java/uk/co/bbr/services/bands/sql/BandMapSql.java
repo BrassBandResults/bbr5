@@ -61,7 +61,7 @@ public class BandMapSql {
         INNER JOIN region r ON r.id = b.region_id
         LEFT OUTER JOIN section s ON s.id = b.section_id
         WHERE b.status != 0
-        AND r.slug IN ('yorkshire', 'west-england', 'wales', 'scotland', 'north-west', 'north', 'midlands', 'london-and-southern-counties')
+        AND r.slug IN ('yorkshire', 'west-england', 'wales', 'scotland', 'north-west', 'north', 'midlands', 'london-and-southern-counties', 'northern-ireland', 'isle-of-man')
         AND LEN(b.latitude) > 0 AND LEN(b.longitude) > 0""";
 
     public static List<RegionBandSqlDto> selectNonExtinctBandsInUkRegionsWithLocation(EntityManager entityManager) {
