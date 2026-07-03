@@ -56,15 +56,67 @@
             "#aaffc3", "#808000", "#ffd8b1", "#000075", "#808080"
         ];
 
-        function getConstituencyStyle(feature) {
-            let name = feature.properties.PCON24NM || "";
-            let hash = 0;
-            for (let i = 0; i < name.length; i++) {
-                hash = name.charCodeAt(i) + ((hash << 5) - hash);
+        function assignColors(geojson) {
+            const features = geojson.features;
+            const neighbors = new Array(features.length).fill(0).map(() => new Set());
+            const pointToFeatures = new Map();
+
+            function processCoords(coords, featureIndex) {
+                if (typeof coords[0] === 'number') {
+                    const key = coords[0].toFixed(6) + ',' + coords[1].toFixed(6);
+                    let set = pointToFeatures.get(key);
+                    if (!set) {
+                        set = new Set();
+                        pointToFeatures.set(key, set);
+                    }
+                    set.add(featureIndex);
+                } else {
+                    for (const element of coords) {
+                        processCoords(element, featureIndex);
+                    }
+                }
             }
-            let colorIndex = Math.abs(hash) % constituencyColors.length;
+
+            features.forEach((feature, i) => {
+                if (feature.geometry && feature.geometry.coordinates) {
+                    processCoords(feature.geometry.coordinates, i);
+                }
+            });
+
+            for (const featureIndicesSet of pointToFeatures.values()) {
+                if (featureIndicesSet.size > 1) {
+                    const indices = Array.from(featureIndicesSet);
+                    for (let i = 0; i < indices.length; i++) {
+                        for (let j = i + 1; j < indices.length; j++) {
+                            neighbors[indices[i]].add(indices[j]);
+                            neighbors[indices[j]].add(indices[i]);
+                        }
+                    }
+                }
+            }
+
+            const assignedColors = new Array(features.length).fill(-1);
+            for (let i = 0; i < features.length; i++) {
+                const neighborColors = new Set();
+                neighbors[i].forEach(neighborIndex => {
+                    if (assignedColors[neighborIndex] !== -1) {
+                        neighborColors.add(assignedColors[neighborIndex]);
+                    }
+                });
+
+                let color = 0;
+                while (neighborColors.has(color)) {
+                    color++;
+                }
+                assignedColors[i] = color;
+                features[i].properties.colorIndex = color;
+            }
+        }
+
+        function getConstituencyStyle(feature) {
+            let colorIndex = feature.properties.colorIndex || 0;
             return {
-                fillColor: constituencyColors[colorIndex],
+                fillColor: constituencyColors[colorIndex % constituencyColors.length],
                 fillOpacity: 0.5,
                 color: "white",
                 weight: 1,
@@ -89,7 +141,10 @@
         let boundariesUrl = 'https://services1.arcgis.com/ESMARspQHYMw9BZ9/arcgis/rest/services/Westminster_Parliamentary_Constituencies_July_2024_Boundaries_UK_BGC/FeatureServer/0/query?where=1%3D1&outFields=PCON24NM&outSR=4326&f=geojson';
         fetch(boundariesUrl)
             .then(response => response.json())
-            .then(json => layers["boundaries"].addData(json));
+            .then(json => {
+                assignColors(json);
+                layers["boundaries"].addData(json);
+            });
 
         let bandsUrl = '/bands/MAP/consituencies/bands.json';
         fetch(bandsUrl)
