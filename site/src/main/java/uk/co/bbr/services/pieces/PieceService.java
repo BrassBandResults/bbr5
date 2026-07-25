@@ -5,6 +5,7 @@ import uk.co.bbr.services.events.dao.ContestResultPieceDao;
 import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.pieces.dao.PieceAliasDao;
 import uk.co.bbr.services.pieces.dao.PieceDao;
+import uk.co.bbr.services.pieces.dao.PieceHistoryDao;
 import uk.co.bbr.services.pieces.dto.BestOwnChoiceDto;
 import uk.co.bbr.services.pieces.dto.PieceListDto;
 import uk.co.bbr.services.pieces.sql.dto.PiecesPerSectionSqlDto;
@@ -43,4 +44,6 @@ public interface PieceService {
     List<PiecesPerSectionSqlDto> fetchPiecesForSection(SectionDao section);
 
     void delete(PieceDao piece);
+
+    List<PieceHistoryDao> fetchHistory(PieceDao piece);
 }

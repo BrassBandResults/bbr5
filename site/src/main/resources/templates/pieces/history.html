@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+<head>
+    <title th:text="${'History of ' + Piece.name + ' - Brass Band Results'}">Piece History - Brass Band Results</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h2>History of <span th:text="${Piece.name}">Piece Name</span></h2>
+    <a th:href="${'/pieces/' + Piece.slug}" class="btn btn-secondary mb-3">Back to Piece</a>
+    <br/>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th th:text="#{page.column-header.date}">Date Changed</th>
+            <th th:text="#{page.column-header.user}">Changed By</th>
+            <th th:text="#{page.column-header.name}">Name</th>
+            <th th:text="#{page.column-header.year}">Year</th>
+            <th th:text="#{page.column-header.composer}">Composer</th>
+            <th th:text="#{page.column-header.arranger}">Arranger</th>
+            <th th:text="#{page.column-header.type}">Category</th>
+            <th th:text="#{page.field-prompt.duration-minutes}">Duration</th>
+            <th th:text="#{page.field-prompt.percussion-requirements}">Percussion Requirements</th>
+            <th th:text="#{page.field-prompt.notes}">Notes</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="historyItem : ${History}">
+            <td th:text="${#temporals.format(historyItem.updated, 'dd/MM/yyyy HH:mm')}">Date</td>
+            <td th:text="${historyItem.updatedBy}">User</td>
+            <td th:text="${historyItem.name}">Name</td>
+            <td th:text="${historyItem.year}">Year</td>
+            <td th:text="${historyItem.composer != null ? historyItem.composer.name : ''}">Composer</td>
+            <td th:text="${historyItem.arranger != null ? historyItem.arranger.name : ''}">Arranger</td>
+            <td><span th:if="${historyItem.category != null}" th:text="#{${historyItem.category.translationKey}}"></span></td>
+            <td th:text="${historyItem.durationMinutes}">Duration</td>
+            <td th:text="${historyItem.percussionRequirements}">Percussion</td>
+            <td th:text="${historyItem.notes}">Notes</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

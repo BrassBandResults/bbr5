@@ -3,9 +3,10 @@
         <span th:remove="tag" th:text="${Piece.name}">Piece Name</span>
         <small th:if="${Piece.year != null}"><small><small th:text="${Piece.year}"></small></small></small>
     </h2>
-    <div sec:authorize="hasRole('BBR_SUPERUSER')">
+    <div sec:authorize="hasAnyRole('BBR_MEMBER')">
         <span th:replace="~{buttons/edit.html :: editPiece(${Piece})}"></span>
         <span th:replace="~{buttons/edit.html :: editPieceAliases(${Piece})}"></span>
+        <span sec:authorize="hasRole('BBR_SUPERUSER')" th:replace="~{buttons/edit.html :: pieceHistory(${Piece})}"></span>
     </div><br/>
     <span th:replace="~{components/aliases.html :: previousNames(${PreviousNames})}"></span>
 

@@ -18,9 +18,11 @@ import uk.co.bbr.services.framework.mixins.SlugTools;
 import uk.co.bbr.services.people.dao.PersonDao;
 import uk.co.bbr.services.pieces.dao.PieceAliasDao;
 import uk.co.bbr.services.pieces.dao.PieceDao;
+import uk.co.bbr.services.pieces.dao.PieceHistoryDao;
 import uk.co.bbr.services.pieces.dto.BestOwnChoiceDto;
 import uk.co.bbr.services.pieces.dto.PieceListDto;
 import uk.co.bbr.services.pieces.repo.PieceAliasRepository;
+import uk.co.bbr.services.pieces.repo.PieceHistoryRepository;
 import uk.co.bbr.services.pieces.repo.PieceRepository;
 import uk.co.bbr.services.pieces.sql.PieceSql;
 import uk.co.bbr.services.pieces.sql.dto.BestPieceSqlDto;
@@ -48,14 +50,10 @@ public class PieceServiceImpl implements PieceService, SlugTools {
 
     private final PieceRepository pieceRepository;
     private final PieceAliasRepository pieceAliasRepository;
+    private final PieceHistoryRepository pieceHistoryRepository;
     private final SecurityService securityService;
     private final EntityManager entityManager;
 
-    @Override
-    @IsBbrMember
-    public PieceDao create(PieceDao piece) {
-        return this.create(piece, false);
-    }
 
     private void validateMandatory(PieceDao piece) {
         // validation
@@ -63,8 +61,9 @@ public class PieceServiceImpl implements PieceService, SlugTools {
             throw new ValidationException("Piece name must be specified");
         }
     }
-
-    private PieceDao create(PieceDao piece, boolean migrating) {
+    @Override
+    @IsBbrMember
+    public PieceDao create(PieceDao piece) {
        this.validateMandatory(piece);
 
         // defaults
@@ -86,13 +85,15 @@ public class PieceServiceImpl implements PieceService, SlugTools {
             throw new ValidationException("Piece with slug " + piece.getSlug() + " already exists.");
         }
 
-        if (!migrating) {
-            piece.setCreated(LocalDateTime.now());
-            piece.setCreatedBy(this.securityService.getCurrentUsername());
-            piece.setUpdated(LocalDateTime.now());
-            piece.setUpdatedBy(this.securityService.getCurrentUsername());
-        }
-        return this.pieceRepository.saveAndFlush(piece);
+        piece.setCreated(LocalDateTime.now());
+        piece.setCreatedBy(this.securityService.getCurrentUsername());
+        piece.setUpdated(LocalDateTime.now());
+        piece.setUpdatedBy(this.securityService.getCurrentUsername());
+
+        PieceDao savedPiece = this.pieceRepository.saveAndFlush(piece);
+        this.pieceHistoryRepository.save(new PieceHistoryDao(savedPiece));
+
+        return savedPiece;
     }
 
     @Override
@@ -121,7 +122,9 @@ public class PieceServiceImpl implements PieceService, SlugTools {
 
         piece.setUpdated(LocalDateTime.now());
         piece.setUpdatedBy(this.securityService.getCurrentUsername());
-        return this.pieceRepository.saveAndFlush(piece);
+        PieceDao savedPiece = this.pieceRepository.saveAndFlush(piece);
+        this.pieceHistoryRepository.save(new PieceHistoryDao(savedPiece));
+        return savedPiece;
     }
 
     @Override
@@ -331,6 +334,14 @@ public class PieceServiceImpl implements PieceService, SlugTools {
         List<PieceAliasDao> pieceAliases = this.pieceAliasRepository.findForPieceId(piece.getId());
         this.pieceAliasRepository.deleteAll(pieceAliases);
 
+        List<PieceHistoryDao> pieceHistory = this.pieceHistoryRepository.findForPieceId(piece.getId());
+        this.pieceHistoryRepository.deleteAll(pieceHistory);
+
         this.pieceRepository.delete(piece);
+    }
+
+    @Override
+    public List<PieceHistoryDao> fetchHistory(PieceDao piece) {
+        return this.pieceHistoryRepository.findForPieceId(piece.getId());
     }
 }
