@@ -50,6 +50,10 @@
     <span th:replace="~{buttons/button.html :: button(#{page.buttons.edit-aliases}, ${'/pieces/' + piece.slug + '/edit-aliases'})}"></span>
 </span>
 
+<span th:fragment="pieceHistory(piece)" th:remove="tag">
+    <span th:replace="~{buttons/button.html :: button(#{page.buttons.history}, ${'/pieces/' + piece.slug + '/history'})}"></span>
+</span>
+
 <span th:fragment="editEvent(event)" th:remove="tag">
     <span th:replace="~{buttons/button.html :: button(#{page.buttons.edit-event}, ${'/contests/' + event.contest.slug + '/' + event.eventDateForUrl + '/edit'})}"></span>
 </span>
