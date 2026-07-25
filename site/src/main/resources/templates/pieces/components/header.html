@@ -13,7 +13,7 @@
     <div style="white-space: pre-line" th:utext="${Notes}">Notes</div>
 
     <div th:if="${PercussionRequirements != null && PercussionRequirements.length() > 0}">
-      <h3>Percussion Requirements</h3>
+      <h4>Percussion Requirements</h4>
       <div style="white-space: pre-line" th:utext="${PercussionRequirements}">Percussion Requirements</div>
     </div>
     <table>
@@ -32,10 +32,6 @@
         <tr>
             <th th:text="#{page.field-prompt.duration-minutes}">Duration:</th>
             <td><span th:text="${Piece.durationMinutes}">11</span> <span th:if="${Piece.durationMinutes != null}" th:text="#{page.field-prompt.minutes}">minutes</span></td>
-        </tr>
-        <tr>
-            <th th:text="#{page.field-prompt.percussion-requirements}">Percussion Requirements:</th>
-            <td th:text="${Piece.percussionRequirements}">Percussion requirements</td>
         </tr>
     </table>
     <br/>
