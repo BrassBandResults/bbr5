@@ -74,6 +74,9 @@ public class SecurityServiceImpl implements SecurityService {
             loggedInUser = userOptional.get();
         }
 
+        loggedInUser.setLastLogin(LocalDateTime.now());
+        this.bbrUserRepository.saveAndFlush(loggedInUser);
+
         return loggedInUser;
     }
 
