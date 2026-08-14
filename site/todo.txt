@@ -1,81 +1,89 @@
-Multiple map icons on same location
-https://github.com/Leaflet/Leaflet.markercluster
-https://stackoverflow.com/questions/29824478/leaflet-markercluster-with-geojson
+(These aren't in any particular order)
+
+The general approach for levels of user is
+- Public - contest results and simple lists from those results.  Basic data, no interpretation.  Remember that any SQL in these pages will be executed by all bots
+- Member - same as public, plus ability to add results, and to add comments.  Any SQL in these pages is protected from bots so can be heavier
+- Pro - adds access to interpretation and aggregation of data we hold.
+- Superuser - Someone who can see the feedback list and has the access to edit the data to fix them
+- Admin - Site owners
+
+# Map
+Multiple map icons on same location https://github.com/Leaflet/Leaflet.markercluster https://stackoverflow.com/questions/29824478/leaflet-markercluster-with-geojson
+Search for location on map and give bands and venues within specific range of it [PRO]
+Filter map by section [PRO]
+
+# Whit Friday
 
 New page for overall Whit Friday results like
 https://brassbandresults.co.uk/contests/WHIT-FRIDAY-SADDLEWORTH/2023-06-02/
 
-Add placeholder text to form fields
-
-csrf + tidy configuration
-
-coverage
-
-filter band/conductor results to a tag
-
-Band result don't show conductor for withdrawn result
-
-Current champions band header badge
-
-Result piece move up/down buttons to reorder
-Create piece on result pieces page
-
-Piece add context for working out which is which to replace square brackets
-
+# Profile
 Change password for user
-
+Allow user Change email address
+Show results added on person’s profile
+Show feedback submitted on person’s profile - remove when dealt with
+Prompt when empty performances list for how to add one
 Add pro status to users profile page
 Add owner status to users profile page
 
-Add owned feedback to users profile page
-
-lookup tests to check for aliases
-
-tests to check mime type on embed jsonp responses
-
-Validate api key
-
+# Tech
+Upgrade to later spring boot
+csrf protection + tidy configuration
+fix deprecations in terraform
+upgrade terraform version
+MCP Server [PRO with time limited api key]
+Create new thing with same name crashes on slug
+Save contest result test piece shouldn’t error if it already exists
+Better search
+Add placeholder text to all form fields
 robots.txt
 sitemap.xml
 keywords for SEO in headers
-
-Search for location on map and give bands and venues within specific range of it
-Filter map by section
-
-Download band csv
-Download conductor csv
-
-Member can add missing conductor
-
 Do tags better, and don't link direct to the contest and contestGroup objects.
 
-Export results to files in git repo
+# Tests
+more test code coverage
+Add some Playwright smoke tests in pipeline
+lookup tests to check for aliases
+tests to check mime type on embed jsonp responses
 
-Split Australian regions into states?
-
-Email for bands created in last month
-
+# Bands/Conductors
+Support for @ in band name - anything else to do?
+Bands competing per region per year [PRO]
+Bands created by month [PRO]
+Download band csv [PRO]
+Download conductor csv [PRO]
+filter band/conductor results to a tag [PRO]
 Name synonym list William <=> Bill etc, and <=> &
 Infer person date range from event dates
-
-Badges?
-
-Cache years page data
-
-Chart on years data for pro users
-
-Result awards out of comments
-
-page showing contests for a given date
-- linked to from contest event page
-- links through to calendar to show a full month
-
-Follow a band or person
+Follow a band or person [PRO]
 - Email notification for when something related to that band or person changes
 - (Add date ranges for personal contest history)
 - (Fetch pending performances works out ones that aren't in history and aren't rejected)
-
 Embed results - add piece and composer option
+
+# Contests
+Result piece move up/down buttons to reorder
+Create piece on result pieces page
+Video link support for videos of contest performances - Youtube/BrassBanned
+Ability to maintain contest/group tags [SUPERUSER]
+Edit Results changes to Add Results if no results to edit
+Conductor streaks at contest [PRO]
+there’s something wrong with filtering to tag from groups
+show cancelled flag on homepage for recent events
+Result awards out of comments and into database as items, hopefully totally remove result comment field.
+page showing contests for a given date [PRO]
+- linked to from contest event page
+- links through to calendar to show a full month
+
+# Pieces
+Piece add context for working out which is which to replace square brackets
+
+# Regions
+Split Australian regions into states?
+Better handling of hierarchy in regions - UK -> England -> Yorkshire etc.
+
+Badges?
 
 https://github.com/Azure/azure-sdk-for-java/issues/29528
 
