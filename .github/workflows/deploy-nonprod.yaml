@@ -25,10 +25,22 @@ jobs:
 
     steps:
       -
-        name: Checkout
-        uses: actions/checkout@v3
+        name: Checkout base
+        uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.pull_request.head.sha || github.ref }}
+          persist-credentials: false
+      -
+        name: Checkout PR head
+        run: |
+          git fetch origin pull/${{ github.event.number }}/head:pr
+          if [[ "${{ github.event.pull_request.head.repo.full_name }}" != "${{ github.repository }}" ]]; then
+            echo "Verifying external PR..."
+            if git diff --name-only HEAD pr | grep -q '^\.github/workflows/'; then
+              echo "Error: External PR modifies workflow files. This is prohibited for security reasons."
+              exit 1
+            fi
+          fi
+          git checkout pr
       -
         name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
@@ -66,7 +78,9 @@ jobs:
     steps:
       -
         name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
       -
         name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
