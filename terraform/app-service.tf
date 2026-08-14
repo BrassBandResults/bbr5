@@ -75,13 +75,20 @@ resource "azurerm_app_service_custom_hostname_binding" "bbr5" {
   depends_on          = [time_sleep.app_service_dns_wait]
 }
 
+# Managed certificates are only issued for the unproxied non-prod hostnames.
+# The prod hostname (www) is proxied through Cloudflare, so Azure's CNAME
+# validation sees Cloudflare's IPs instead of this app service and always
+# fails with a 400. Prod origin TLS is served by the default
+# *.azurewebsites.net certificate behind the Cloudflare proxy.
 resource "azurerm_app_service_managed_certificate" "bbr5cert" {
+  count                      = terraform.workspace == "prod" ? 0 : 1
   depends_on                 = [cloudflare_record.app_service]
   custom_hostname_binding_id = azurerm_app_service_custom_hostname_binding.bbr5.id
 }
 
 resource "azurerm_app_service_certificate_binding" "bbr5cert" {
+  count               = terraform.workspace == "prod" ? 0 : 1
   hostname_binding_id = azurerm_app_service_custom_hostname_binding.bbr5.id
-  certificate_id      = azurerm_app_service_managed_certificate.bbr5cert.id
+  certificate_id      = azurerm_app_service_managed_certificate.bbr5cert[0].id
   ssl_state           = "SniEnabled"
 }
