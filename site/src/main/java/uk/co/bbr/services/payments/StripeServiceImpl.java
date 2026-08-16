@@ -34,6 +34,11 @@ public class StripeServiceImpl implements StripeService {
             Map<String, Object> customerParams = new HashMap<>();
             customerParams.put("email", user.getStripeEmail());
             CustomerCollection customers = Customer.list(customerParams);
+            if (customers.getData().isEmpty()) {
+                // the stored stripe email has no matching customer, for example a
+                // subscriber from before a stripe account change
+                return Optional.empty();
+            }
             user.setStripeCustomer(customers.getData().get(0).getId());
 
             Map<String, Object> params = new HashMap<>();
@@ -63,7 +68,10 @@ public class StripeServiceImpl implements StripeService {
             return null;
         }
         Long endDateTime = subscription.get().getCurrentPeriodEnd();
-        return Instant.ofEpochMilli(endDateTime).atZone(ZoneId.systemDefault()).toLocalDate();
+        if (endDateTime == null) {
+            return null;
+        }
+        return Instant.ofEpochSecond(endDateTime).atZone(ZoneId.systemDefault()).toLocalDate();
     }
 
     @Override
