@@ -25,17 +25,58 @@ jobs:
         with:
           persist-credentials: false
       -
-        name: Checkout PR head
+        name: Verify PR head has not changed
+        environment:
+          ${{ github.event_name == 'pull_request_target' && github.event.pull_request.head.repo.full_name != github.repository && 'external' || 'internal' }}
+        env: 
+          GH_TOKEN: $$ {{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          APPROVED_SHA: ${{ github.event.pull_request.head.sha }}
+          REPOSITORY: ${{ github.repository }}
+        shell: bash
         run: |
-          git fetch origin pull/${{ github.event.number }}/head:pr
-          if [[ "${{ github.event.pull_request.head.repo.full_name }}" != "${{ github.repository }}" ]]; then
-            echo "Verifying external PR..."
-            if git diff --name-only HEAD pr | grep -q '^\.github/workflows/'; then
-              echo "Error: External PR modifies workflow files. This is prohibited for security reasons."
-              exit 1
-            fi
+          set -euo pipefail
+          CURRENT_SHA="$(
+            gh api "repos/${REPOSITORY}/pulls/${PR_NUMBER}" --jq '.head.sha'
+          )"
+          
+          echo "Approved SHA: ${APPROVED_SHA}"
+          echo "Current SHA: ${CURRENT_SHA}"
+
+          if [[ "${APPROVED_SHA}" != "${CURRENT_SHA}" ]]; then
+            echo "::error:: PR head has changed since approval. Please re-approve the PR."
+            echo "::error:: Approved SHA: ${APPROVED_SHA}, but current SHA: ${CURRENT_SHA}"
+            exit 1
           fi
-          git checkout pr
+      -
+        name: Checkout exact approved PR head
+        environment:
+          ${{ github.event_name == 'pull_request_target' && github.event.pull_request.head.repo.full_name != github.repository && 'external' || 'internal' }}
+        run: |
+          set -euo pipefail
+
+          git fetch origin "${APPROVED_SHA}"
+          git checkout --detatch "${APPROVED_SHA}"
+
+          ACTUAL_SHA="$(git rev-parse HEAD)"
+
+          if [[ "${APPROVED_SHA}" != "${ACTUAL_SHA}" ]]; then
+            echo "::error:: Approved SHA: ${APPROVED_SHA}, but actual SHA: ${ACTUAL_SHA}"
+            exit 1
+          fi
+      - 
+        name: Reject workflow changes from external PRs
+        if: ${{ github.event.pull_request.head.repo.full_name != github.repository }}
+        env:
+          APPROVED_SHA: ${{ github.event.pull_request.head.sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if git diff --name-only "${{ github.event.pull_request.base.sha }}" "${APPROVED_SHA}" | grep -q '^\.github/workflows/'; then
+            echo "Error: External PR modifies workflow files. This is prohibited for security reasons."
+            exit 1
+          fi
       -
         name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
