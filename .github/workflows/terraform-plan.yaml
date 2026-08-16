@@ -26,8 +26,6 @@ jobs:
           persist-credentials: false
       -
         name: Verify PR head has not changed
-        environment:
-          ${{ github.event_name == 'pull_request_target' && github.event.pull_request.head.repo.full_name != github.repository && 'external' || 'internal' }}
         env: 
           GH_TOKEN: ${{ github.token }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
@@ -50,10 +48,8 @@ jobs:
           fi
       -
         name: Checkout exact approved PR head
-        environment:
-          ${{ github.event_name == 'pull_request_target' && github.event.pull_request.head.repo.full_name != github.repository && 'external' || 'internal' }}
         env:
-          APPROVED_SHA: ${{ github.event.pull_request.head.sha }}d
+          APPROVED_SHA: ${{ github.event.pull_request.head.sha }}
         run: |
           set -euo pipefail
 

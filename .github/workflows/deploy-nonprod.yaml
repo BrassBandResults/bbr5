@@ -20,6 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+      packages: write
 
     steps:
       -
@@ -97,9 +98,6 @@ jobs:
       -
         name: Build and push
         uses: docker/build-push-action@v4
-        permissions:
-          contents: read
-          packages: write
         with:
           context: site/.
           push: true
