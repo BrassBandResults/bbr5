@@ -21,14 +21,64 @@ jobs:
     permissions:
       contents: read
       packages: write
-      pull-requests: read
 
     steps:
       -
-        name: Checkout
-        uses: actions/checkout@v3
+        name: Checkout base
+        uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.pull_request.head.sha || github.ref }}
+          persist-credentials: false
+      -
+        name: Verify PR head has not changed
+        env: 
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          APPROVED_SHA: ${{ github.event.pull_request.head.sha }}
+          REPOSITORY: ${{ github.repository }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          CURRENT_SHA="$(
+            gh api "repos/${REPOSITORY}/pulls/${PR_NUMBER}" --jq '.head.sha'
+          )"
+          
+          echo "Approved SHA: ${APPROVED_SHA}"
+          echo "Current SHA: ${CURRENT_SHA}"
+
+          if [[ "${APPROVED_SHA}" != "${CURRENT_SHA}" ]]; then
+            echo "::error:: PR head has changed since approval. Please re-approve the PR."
+            echo "::error:: Approved SHA: ${APPROVED_SHA}, but current SHA: ${CURRENT_SHA}"
+            exit 1
+          fi
+      -
+        name: Checkout exact approved PR head
+        env:
+          APPROVED_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -euo pipefail
+
+          git fetch origin "${APPROVED_SHA}"
+          git checkout --detach "${APPROVED_SHA}"
+
+          ACTUAL_SHA="$(git rev-parse HEAD)"
+
+          if [[ "${APPROVED_SHA}" != "${ACTUAL_SHA}" ]]; then
+            echo "::error:: Approved SHA: ${APPROVED_SHA}, but actual SHA: ${ACTUAL_SHA}"
+            exit 1
+          fi
+      - 
+        name: Reject workflow changes from external PRs
+        if: ${{ github.event.pull_request.head.repo.full_name != github.repository }}
+        env:
+          APPROVED_SHA: ${{ github.event.pull_request.head.sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if git diff --name-only "${{ github.event.pull_request.base.sha }}" "${APPROVED_SHA}" | grep -q '^\.github/workflows/'; then
+            echo "Error: External PR modifies workflow files. This is prohibited for security reasons."
+            exit 1
+          fi
       -
         name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
@@ -66,7 +116,9 @@ jobs:
     steps:
       -
         name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
       -
         name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
