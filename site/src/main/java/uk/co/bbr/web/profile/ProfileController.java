@@ -52,8 +52,11 @@ public class ProfileController {
         Subscription subscription = null;
         if (currentUserSubOpt.isPresent())
         {
-            subscriptionExpiryDate = Instant.ofEpochSecond(currentUserSubOpt.get().getCurrentPeriodEnd()).atZone(ZoneId.systemDefault()).toLocalDate();
             subscription = currentUserSubOpt.get();
+            Long currentPeriodEnd = subscription.getCurrentPeriodEnd();
+            if (currentPeriodEnd != null) {
+                subscriptionExpiryDate = Instant.ofEpochSecond(currentPeriodEnd).atZone(ZoneId.systemDefault()).toLocalDate();
+            }
         }
 
         model.addAttribute("User", user);
