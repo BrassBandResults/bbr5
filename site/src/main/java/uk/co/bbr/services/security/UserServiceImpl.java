@@ -157,11 +157,14 @@ public class UserServiceImpl implements UserService {
             throw NotFoundException.userNotFoundByActivationKey();
         }
 
-        matchingUser.get().setSalt(PasswordTools.createSalt());
-        matchingUser.get().setPasswordVersion(PasswordTools.latestVersion());
-        matchingUser.get().setPassword(PasswordTools.hashPassword(PasswordTools.latestVersion(), matchingUser.get().getSalt(), siteUser.getUsercode(), plaintextPassword));
+        SiteUserDao matchingUserDao = matchingUser.get();
 
-        this.bbrUserRepository.saveAndFlush(matchingUser.get());
+        matchingUserDao.setSalt(PasswordTools.createSalt());
+        matchingUserDao.setPasswordVersion(PasswordTools.latestVersion());
+        matchingUserDao.setPassword(PasswordTools.hashPassword(PasswordTools.latestVersion(), matchingUserDao.getSalt(), siteUser.getUsercode(), plaintextPassword));
+        matchingUserDao.setUpdated(LocalDateTime.now());
+
+        this.bbrUserRepository.saveAndFlush(matchingUserDao);
     }
 
     @Override
@@ -177,6 +180,7 @@ public class UserServiceImpl implements UserService {
         }
 
         matchingUser.get().setFeedbackEmailOptOut(true);
+        matchingUser.get().setUpdated(LocalDateTime.now());
         this.bbrUserRepository.saveAndFlush(matchingUser.get());
     }
 
