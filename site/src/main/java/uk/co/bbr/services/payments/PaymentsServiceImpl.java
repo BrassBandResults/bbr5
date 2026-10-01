@@ -93,8 +93,23 @@ public class PaymentsServiceImpl implements PaymentsService {
 
                 SubscriptionSearchResult result2 = Subscription.search(params2);
                 subs.addAll(result2.getData());
-                return subs;
+
+                if (subs.size() == 200) {
+                    SubscriptionSearchParams params3 =
+                        SubscriptionSearchParams
+                            .builder()
+                            .setQuery("status:'active'")
+                            .setLimit(100L)
+                            .setPage(result2.getNextPage())
+                            .addExpand("data.customer")
+                            .build();
+
+                    SubscriptionSearchResult result3 = Subscription.search(params3);
+                    subs.addAll(result3.getData());
+                    return subs;
+                }
             }
+            return subs;
         } catch (StripeException ex) {
             ex.printStackTrace();
         }
