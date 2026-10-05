@@ -47,6 +47,9 @@ public class PersonDao extends AbstractDao implements NameTools {
     @Setter
     private boolean deceased;
 
+    @Column(name="locked", nullable=false)
+    private boolean locked;
+
     @Column(name="start_date")
     @Setter
     private LocalDate startDate;

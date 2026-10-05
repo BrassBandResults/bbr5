@@ -62,7 +62,7 @@
                     <input type="submit" th:value="#{page.buttons.save-changes}" class="btn btn-outline-success"/>
                     <a th:href="${'/people/' + Person.slug}" th:text="#{page.buttons.cancel-without-saving}" class="btn btn-light">Cancel wout saving</a>
                 </div>
-                <div class="col text-end">
+                <div class="col text-end" th:unless="${Person.locked}">
                     <span th:replace="~{buttons/delete.html :: deletePerson(${Person})}"></span>
                 </div>
             </div>

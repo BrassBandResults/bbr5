@@ -35,6 +35,10 @@ public class DeletePersonController {
             throw NotFoundException.personNotFoundBySlug(personSlug);
         }
 
+        if (person.get().isLocked()) {
+            return "redirect:/people/{personSlug}";
+        }
+
         ResultDetailsDto personConductingResults = this.personResultService.findResultsForConductor(person.get(), ResultSetCategory.ALL);
         List<ContestAdjudicatorDao> adjudications = this.personService.fetchAdjudications(person.get());
         List<PieceDao> personPieces = this.pieceService.findPiecesForPerson(person.get());

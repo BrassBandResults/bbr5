@@ -8,7 +8,7 @@
         </small></small>
     </h2>
     <h5 th:if="${Person.knownFor != null}" th:text="${Person.knownFor}"></h5>
-    <div sec:authorize="hasRole('BBR_SUPERUSER')">
+    <div sec:authorize="hasRole('BBR_SUPERUSER')" th:unless="${Person.locked}">
         <span th:replace="~{buttons/edit.html :: editPerson(${Person})}"></span>
         <span th:replace="~{buttons/edit.html :: editPersonAliases(${Person})}"></span>
         <span th:replace="~{buttons/edit.html :: editPersonRelationships(${Person})}"></span>
