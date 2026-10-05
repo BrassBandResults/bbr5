@@ -34,6 +34,10 @@ public class PersonAliasController {
             throw NotFoundException.personNotFoundBySlug(personSlug);
         }
 
+        if (person.get().isLocked()) {
+            return "redirect:/people/{personSlug}";
+        }
+
         List<PersonAliasDao> previousNames = this.personAliasService.findAllAliases(person.get());
 
         model.addAttribute("Person", person.get());
@@ -49,6 +53,10 @@ public class PersonAliasController {
             throw NotFoundException.personNotFoundBySlug(personSlug);
         }
 
+        if (person.get().isLocked()) {
+            return "redirect:/people/{personSlug}";
+        }
+
         this.personAliasService.hideAlias(person.get(), aliasId);
 
         return REDIRECT_TO_PERSON_ALIASES;
@@ -60,6 +68,10 @@ public class PersonAliasController {
         Optional<PersonDao> person = this.personService.fetchBySlug(personSlug);
         if (person.isEmpty()) {
             throw NotFoundException.personNotFoundBySlug(personSlug);
+        }
+
+        if (person.get().isLocked()) {
+            return "redirect:/people/{personSlug}";
         }
 
         this.personAliasService.showAlias(person.get(), aliasId);
@@ -75,6 +87,10 @@ public class PersonAliasController {
             throw NotFoundException.personNotFoundBySlug(personSlug);
         }
 
+        if (person.get().isLocked()) {
+            return "redirect:/people/{personSlug}";
+        }
+
         this.personAliasService.deleteAlias(person.get(), aliasId);
 
         return REDIRECT_TO_PERSON_ALIASES;
@@ -86,6 +102,10 @@ public class PersonAliasController {
         Optional<PersonDao> person = this.personService.fetchBySlug(personSlug);
         if (person.isEmpty()) {
             throw NotFoundException.personNotFoundBySlug(personSlug);
+        }
+
+        if (person.get().isLocked()) {
+            return "redirect:/people/{personSlug}";
         }
 
         PersonAliasDao previousName = new PersonAliasDao();

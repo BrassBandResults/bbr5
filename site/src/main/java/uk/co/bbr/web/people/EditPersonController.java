@@ -31,6 +31,10 @@ public class EditPersonController {
             throw NotFoundException.personNotFoundBySlug(personSlug);
         }
 
+        if (person.get().isLocked()) {
+            return "redirect:/people/{personSlug}";
+        }
+
         PersonEditForm personEditDto = new PersonEditForm(person.get());
 
         model.addAttribute("Person", person.get());
@@ -45,6 +49,10 @@ public class EditPersonController {
         Optional<PersonDao> existingPersonOptional = this.personService.fetchBySlug(personSlug);
         if (existingPersonOptional.isEmpty()) {
             throw NotFoundException.personNotFoundBySlug(personSlug);
+        }
+
+        if (existingPersonOptional.get().isLocked()) {
+            return "redirect:/people/{personSlug}";
         }
 
         submittedPerson.validate(bindingResult);

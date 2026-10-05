@@ -35,6 +35,10 @@ public class PersonRelationshipsController {
             throw NotFoundException.personNotFoundBySlug(personSlug);
         }
 
+        if (person.get().isLocked()) {
+            return "redirect:/people/{personSlug}";
+        }
+
         List<PersonRelationshipDao> relationships = this.personRelationshipService.fetchRelationshipsForPerson(person.get());
         List<PersonRelationshipTypeDao> relationshipTypes = this.personRelationshipService.listTypes();
 
@@ -54,6 +58,10 @@ public class PersonRelationshipsController {
             throw NotFoundException.personNotFoundBySlug(personSlug);
         }
 
+        if (person.get().isLocked()) {
+            return "redirect:/people/{personSlug}";
+        }
+
         Optional<PersonRelationshipDao> relationship = this.personRelationshipService.fetchById(relationshipId);
         if (relationship.isEmpty()) {
             throw NotFoundException.relationshipNotFoundById(relationshipId);
@@ -71,6 +79,10 @@ public class PersonRelationshipsController {
         Optional<PersonDao> leftPerson = this.personService.fetchBySlug(personSlug);
         if (leftPerson.isEmpty()) {
             throw NotFoundException.personNotFoundBySlug(personSlug);
+        }
+
+        if (leftPerson.get().isLocked()) {
+            return "redirect:/people/{personSlug}";
         }
 
         Optional<PersonDao> rightPerson = this.personService.fetchBySlug(rightPersonSlug);

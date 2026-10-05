@@ -35,6 +35,10 @@ public class EditPersonProfileController {
             throw NotFoundException.personNotFoundBySlug(personSlug);
         }
 
+        if (personProfile.get().getPerson().isLocked()) {
+            return "redirect:/profile/people-profiles";
+        }
+
         EditProfileForm form = new EditProfileForm(personProfile.get());
 
         model.addAttribute("PersonProfile", personProfile.get());
@@ -50,6 +54,10 @@ public class EditPersonProfileController {
         Optional<PersonProfileDao> personProfile = this.personService.fetchProfileByPersonSlugAndOwner(personSlug, currentUser);
         if (personProfile.isEmpty()) {
             throw NotFoundException.personNotFoundBySlug(personSlug);
+        }
+
+        if (personProfile.get().getPerson().isLocked()) {
+            return "redirect:/profile/people-profiles";
         }
 
         submittedForm.validate(bindingResult);
