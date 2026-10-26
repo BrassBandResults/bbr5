@@ -164,6 +164,12 @@ public class UserServiceImpl implements UserService {
         matchingUserDao.setPassword(PasswordTools.hashPassword(PasswordTools.latestVersion(), matchingUserDao.getSalt(), siteUser.getUsercode(), plaintextPassword));
         matchingUserDao.setUpdated(LocalDateTime.now());
 
+        // If the user hasn't activated their account yet (access level is "0"), activate them now.
+        // Successfully resetting their password validates their email address, so they become a valid member.
+        if (UserRole.NO_ACCESS.getCode().equals(matchingUserDao.getAccessLevel())) {
+            matchingUserDao.setAccessLevel(UserRole.MEMBER.getCode());
+        }
+
         this.bbrUserRepository.saveAndFlush(matchingUserDao);
     }
 

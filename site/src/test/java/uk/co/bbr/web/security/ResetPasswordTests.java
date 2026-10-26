@@ -24,6 +24,8 @@ import org.springframework.web.client.RestTemplate;
 import uk.co.bbr.services.security.SecurityService;
 import uk.co.bbr.services.security.UserService;
 import uk.co.bbr.services.security.dao.SiteUserDao;
+import uk.co.bbr.services.security.dao.UserRole;
+import uk.co.bbr.services.security.repo.BbrUserRepository;
 import uk.co.bbr.web.LoginMixin;
 import uk.co.bbr.web.security.filter.SecurityFilter;
 
@@ -43,6 +45,7 @@ class ResetPasswordTests implements LoginMixin {
     @Autowired private CsrfTokenRepository csrfTokenRepository;
     @Autowired private UserService userService;
     @Autowired private SecurityService securityService;
+    @Autowired private BbrUserRepository bbrUserRepository;
     @Autowired private RestTemplate restTemplate;
     @LocalServerPort private int port;
 
@@ -343,6 +346,60 @@ class ResetPasswordTests implements LoginMixin {
         assertEquals(HttpStatus.OK, response.getStatusCode());
         String responseBody = response.getBody();
         assertTrue(Objects.requireNonNull(response.getBody()).contains("Your password is too short, please use one that&#39;s more than eight characters or more."));
+    }
+
+    @Test
+    void testSubmitNewPasswordPageActivatesUnactivatedUser() throws FolderException {
+        // arrange
+        greenMail.purgeEmailFromAllMailboxes();
+
+        // Create a user (which starts as MEMBER), then downgrade to NO_ACCESS to simulate an unactivated account
+        this.securityService.createUser("test-user7", "password1", "test-reset7@brassbandresults.co.uk");
+        Optional<SiteUserDao> user = this.userService.fetchUserByUsercode("test-user7");
+        assertTrue(user.isPresent());
+
+        // Simulate an unactivated account by setting access level to NO_ACCESS
+        user.get().setAccessLevel(UserRole.NO_ACCESS.getCode());
+        user.get().setUpdatedBy("test");
+        this.bbrUserRepository.saveAndFlush(user.get());
+
+        // Verify the user is now unactivated
+        Optional<SiteUserDao> userBefore = this.userService.fetchUserByUsercode("test-user7");
+        assertTrue(userBefore.isPresent());
+        assertEquals(UserRole.NO_ACCESS.getCode(), userBefore.get().getAccessLevel());
+
+        this.userService.sendResetPasswordEmail(user.get());
+        String resetKey = user.get().getResetPasswordKey();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+        CsrfToken csrfToken = csrfTokenRepository.generateToken(null);
+        headers.add(csrfToken.getHeaderName(), csrfToken.getToken());
+        headers.add("Cookie", SecurityFilter.CSRF_HEADER_NAME + "=" + csrfToken.getToken());
+
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+        map.add("password1", "new-password");
+        map.add("password2", "new-password");
+        map.add("_csrf", csrfToken.getToken());
+        map.add("_csrf_header", SecurityFilter.CSRF_HEADER_NAME);
+
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
+
+        // act
+        ResponseEntity<String> response = this.restTemplate.postForEntity("http://localhost:" + port + "/acc/forgotten-password/reset/" + resetKey, request, String.class);
+
+        // assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+
+        Optional<SiteUserDao> userAfter = this.userService.fetchUserByUsercode("test-user7");
+        assertTrue(userAfter.isPresent());
+
+        // Verify the password was changed
+        assertNotEquals(userBefore.get().getPassword(), userAfter.get().getPassword());
+
+        // Verify the account was activated (level changed from "0" to "M")
+        assertEquals(UserRole.MEMBER.getCode(), userAfter.get().getAccessLevel());
     }
 
 }
